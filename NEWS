@@ -1,0 +1,68 @@
+CHANGES IN VERSION 0.5.3
+------------------------
+ o updated vignette with course background <2012-01-07 Sat>
+
+CHANGES IN VERSION 0.5.2
+------------------------
+ o added Cpp example
+
+CHANGES IN VERSION 0.5.1
+------------------------
+ o added figure example in vignette <2011-11-24 Thu>
+ o updated inst/doc/Makefile to build vignette <2011-11-24 Thu>
+
+CHANGES IN VERSION 0.5.0
+------------------------
+ o added Seq reference class <2011-11-23 Wed>
+ o Seq documentation <2011-11-23 Wed>
+
+CHANGES IN VERSION 0.4.1
+------------------------
+ o added [,GenSeq-method 
+
+CHANGES IN VERSION 0.4.0
+------------------------
+ o created test_that tests
+
+CHANGES IN VERSION 0.3.9
+------------------------
+ o added startup message 
+ o defined "$(R_HOME)/bin/R" in inst/doc/Makefile
+
+CHANGES IN VERSION 0.3.8
+------------------------
+ o fixed type in DnaSeq-class.Rd
+ o added rev alias to GenericSeq-class
+ o added -method aliases
+
+CHANGES IN VERSION 0.3.7
+------------------------
+ o added gccount.c code
+
+CHANGES IN VERSION 0.3.6
+------------------------
+ o update print method, remove pgfSweave dependency for vignette and added print exemple chunk
+
+CHANGES IN VERSION 0.3.5
+------------------------
+ o added toupper in seq replaceMethod
+
+CHANGES IN VERSION 0.3.4
+------------------------
+  o added tests
+
+CHANGES IN VERSION 0.3.3
+------------------------
+  o added initialize method for GenericSeq
+
+CHANGES IN VERSION 0.3.2
+------------------------
+  o added LazyData
+
+CHANGES IN VERSION 0.3.1
+------------------------
+  o Added NEWS file
+
+CHANGES IN VERSION 0.3
+----------------------
+  o Code and man completed - checks without warnings

@@ -1,0 +1,25 @@
+
+R Under development (unstable) (2011-11-01 r57541)
+Copyright (C) 2011 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-unknown-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(sequences)
+This is package 'sequences'
+
+> aa <- new("DnaSeq",sequence="AGTC",id="my test seq of length 4")
+> length(aa)==4
+[1] TRUE
+> 

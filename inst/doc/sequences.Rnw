@@ -1,0 +1,141 @@
+%\VignetteIndexEntry{Brief overview of the 'sequences' package}
+%\VignetteKeywords{sequences, DNA, RNA}
+%\VignettePackage{sequence-demo}
+\documentclass{article}
+\usepackage[nogin]{Sweave}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+
+\SweaveOpts{echo=T,eval=T,cache=F}
+
+\newcommand{\R}{\texttt{R} }
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
+%% colors
+\usepackage{color}
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\hypersetup{%
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+\author{Laurent Gatto\\
+  \email{lg390@cam.ac.uk}\\
+  Cambridge Center for Proteomics\\
+  University of Cambridge\\
+  \small{and}\\
+  PRIDE team\\
+  European Bioinformatics Institute
+}
+
+
+\begin{document}
+
+\title{Short overview of the \Rpackage{sequences} package}
+
+\maketitle
+
+%%\tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}\label{sec:intro} 
+
+The dummy \Rpackage{sequences} package is used to illustrate the 
+\textit{Advanced R programming and package development}. 
+It describes classes and methods 
+to manipulate generic and biological sequences. 
+If you are interested in real sequence manipulation in \R, 
+have a look at \Rpackage{Biostrings}\footnote{%%
+  \url{http://www.bioconductor.org/help/bioc-views/release/bioc/html/Biostrings.html}}
+ or \Rpackage{ape}\footnote{
+   \url{http://cran.r-project.org/web/packages/ape/index.html}}
+ and possibly others.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Using \Rpackage{sequences}}\label{sec:howto}
+
+Let's start by loading the package and read a 
+fasta sequence that is provided with the package. 
+
+<<load,echo=TRUE>>=
+library(sequences)
+fastafilename <- dir(system.file(package="sequences",dir="extdata"),
+                     full.name=TRUE,
+                     pattern="fasta$")
+fastafilename
+myseq <- readFasta(fastafilename)
+myseq
+@ 
+
+Printing the sequence displays it's sequence numbering 
+the lines.
+
+<<printseq,echo=TRUE>>=
+print(myseq)
+@ 
+
+This creates an instance of class \Sexpr{class(myseq)} that can 
+be transcribed with the \Rfunction{transcribe} method.
+
+<<transcribe,echo=TRUE>>=
+transcribe(myseq)
+@ 
+
+\begin{figure}[!htb]
+<<gccount, fig=TRUE, echo=TRUE, height=4, width=4>>=
+barplot(gccount(seq(myseq)))
+@
+\caption{Number of A, C, G and T bases in the \Robject{myseq} object.}
+\label{fig:gccount}
+\end{figure}
+
+\clearpage
+
+\section{Background}\label{sec:background}
+
+This package is developed as part of the \textit{Advanced R programming and package development}
+(ARPD) course, taught by Laurent Gatto and Robert Stojnic. 
+The course has originally been set up and run as an intense 1 day course 
+in the Graduate School of Life Sciences of the University of Cambridge. 
+Since March 2011, the course has been run on a regular basis 
+in the Bioinformatics Teaching Facilty in the Department of Genetics, Cambridge.
+
+On the 28 and 29 November, a 2 day version was taught at the EMBL in Heidelberg, 
+at Wolfgang Huber's invitation (see figure \ref{fig:heidelberg2011}).
+
+\begin{figure}[htb]
+  \includegraphics[width=\linewidth]{r-advanced-course-2011.jpg}
+  \caption{Delegates and organisers, EMBL, Heidelberg, 28 - 29 November 2011}
+  \label{fig:heidelberg2011}
+\end{figure}
+
+\paragraph{Acknowledgements} Several people have been contributed to 
+make this course possible. David P. Judge, initially helped us to set up 
+the course in the Bioinformatics Teaching Facilty at the Cambridge University. 
+Wolfgang Huber, invited us at the EMBL in Heidelberg, in November 2011, 
+
+
+\clearpage
+
+\section{Session information}\label{sec:sessionInfo} 
+<<label=sessioninfo,results=tex,echo=FALSE,cache=FALSE>>=
+toLatex(sessionInfo())
+@
+
+\end{document}
