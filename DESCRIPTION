@@ -18,3 +18,5 @@ Depends: methods, Rcpp
 LinkingTo: Rcpp
 Suggests: testthat
 License: GPL-3
+biocViews: Bioinformatics, Infrastructure, DataRepresentation, DataImport
+
