@@ -60,7 +60,9 @@ It describes classes and methods
 to manipulate generic and biological sequences. 
 If you are interested in real sequence manipulation in \R, 
 have a look at \Rpackage{Biostrings}\footnote{%%
-  \url{http://www.bioconductor.org/help/bioc-views/release/bioc/html/Biostrings.html}}
+  \url{http://www.bioconductor.org/help/bioc-views/release/bioc/html/Biostrings.html}},
+\Rpackage{seqinr}\footnote{%%
+\url{http://seqinr.r-forge.r-project.org/}}
  or \Rpackage{ape}\footnote{
    \url{http://cran.r-project.org/web/packages/ape/index.html}}
  and possibly others.
