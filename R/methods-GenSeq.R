@@ -6,6 +6,7 @@ setMethod("show",
             cat(" Length:",length(object),"\n")
             cat(" Alphabet:",alphabet(object),"\n")
             cat(" Sequence:",seq(object), "\n")
+            invisible(NULL)
           })
 
 
