@@ -1,7 +1,3 @@
-CHANGES IN VERSION 0.5.5
-------------------------
-o added invisible(NULL) to show GenericSeq <2012-05-29 Tue>
-
 CHANGES IN VERSION 0.5.4
 ------------------------
 o added seqinr package reference in vignette <2012-02-10 Fri>
