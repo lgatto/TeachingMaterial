@@ -9,24 +9,15 @@ pygments: true
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : Jekyll Bootstrap
-tagline: Site Tagline
+title : Git/github tutorial
+tagline: Karl's primitive tutorial on github and git
 author :
-  name : Name Lastname
-  email : blah@email.test
-  github : username
-  twitter : username
-  feedburner : feedname
+  name : Karl Broman
+  email : kbroman@gmail.com
+  github : kbroman
+  twitter : kwbroman
 
-# The production_url is only used when full-domain names are needed
-# such as sitemap.txt 
-# Most places will/should use BASE_PATH to make the urls
-#
-# If you have set a CNAME (pages.github.com) set your custom domain here.
-# Else if you are pushing to username.github.io, replace with your username.
-# Finally if you are pushing to a GitHub project page, include the project name at the end.
-#
-production_url : http://username.github.io
+production_url : http://kbroman.github.io/github_tutorial
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
