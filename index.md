@@ -5,7 +5,7 @@ tagline: Karl's practical tutorial
 ---
 
 All statistical/computational scientists should use
-[git](http://git-scm.com) and [github](http://github.com).  It can be
+[git](http://git-scm.com) and [github](http://github.com), but it can be
 hard to get started.  I hope these pages help.  (More blather below.)
 
 - [Your first time](pages/first_time.html): get account; set up ssh
