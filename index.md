@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Git/github tutorial
-tagline: Karl's guide to git and github
+title: Git/github guide
+tagline: A primitive tutorial
 ---
 
 I love [git](http://git-scm.com) and [github](http://github.com).  I
