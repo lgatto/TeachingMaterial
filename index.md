@@ -8,10 +8,10 @@ All statistical/computational scientists should use
 [git](http://git-scm.com) and [github](http://github.com).  It can be
 hard to get started.  I hope these pages help.  (More blather below.)
 
-- [Your first time](first_time.html): get account; set up ssh
+- [Your first time](pages/first_time.html): get account; set up ssh
 - Typical use: add, commit, push
 - Start new repository: from scratch; using current project
-- [Contribute to someone's repository](fork.html)
+- [Contribute to someone's repository](pages/fork.html)
 - I want to fix a bug in someone's project
 - A package I'm using has a bug but I can't figure out how to fix it
 - Oops; that last commit message was wrong
@@ -42,4 +42,4 @@ errors in my understanding.
 
 If you have suggestions for changes or improvements, fork
 [the repo](http://github.com/kbroman/github_tutorial): Follow the
-instructions above, &ldquo;[Contribute to someone's repository](fork.html).&rdquo;
+instructions above, &ldquo;[Contribute to someone's repository](pages/fork.html).&rdquo;
