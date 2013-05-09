@@ -20,24 +20,24 @@ hard to get started.  I hope these pages help.  (More blather below.)
 - Markdown
 - Song of github
 
-I love [git](http://git-scm.com) and [github](http://github.com).  I
+I love git and github.  I
 use both for keeping track of programming projects, papers, talks, and
-data analyses.  And [github](http://github.com) has enabled me to
+data analyses.  And github has enabled me to
 contribute at least minor things to others' projects, like the
 [D phobos library](https://github.com/D-Programming-Language/phobos)
 and [d3-tip](https://github.com/Caged/d3-tip).
 
-I use [git](http://git-scm.com) mostly from the command line on a Mac.  I use the [github](http://github.com)
+I use git mostly from the command line on a Mac.  I use the github
 site to explore others' code, make pull requests, and indicate issues.
 
 I would like all of my statistical/computational collaborators to use
-[git](http://git-scm.com) and [github](http://github.com), so that we
+git and github, so that we
 may collaborate more easily.  But for
 statisticians with no history of use of version control, it can be
 hard to get started.  This is a tutorial of sorts, to help.
 
 [Pjotr Prins](http://www.thebird.nl) got me to move from SVN to
-[git](http://git-scm.com), but don't hold him responsible for any
+git, but don't hold him responsible for any
 errors in my understanding.
 
 If you have suggestions for changes or improvements, fork
