@@ -1,0 +1,146 @@
+\section{Useful functions}
+
+\begin{frame}
+  \begin{block}{Data IO}
+    \begin{description}
+    \item[read.table] creates a \Robject{data.frame} from a spreadsheet file.
+    \item[write.table] writes a \Robject{data.frame}/\Robject{matrix} to a spreadsheet (tsv, csv).
+    \item[save] writes an binary representation of \R objects to a file (cross-platform).
+    \item[load] load a binary \R file from disk.      
+    \end{description}
+  \end{block}
+  Specialised data formats often have specific i/o functionality (microarray \texttt{CEL} files, \texttt{XML}, \ldots)
+\end{frame}
+
+\begin{frame}[fragile]
+<<read.csv0, tidy = FALSE>>=
+read.table("./Data/data.csv", sep = ",",
+           header = TRUE, row.names = 1)
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+<<read.csv1>>=
+read.csv("./Data/data.csv", row.names = 1)
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+<<read.csv2>>=
+x <- read.csv("./Data/data.csv", row.names = 1)
+save(x, file = "./Data/data.rda")
+rm(x)
+load("./Data/data.rda")
+x[1:3, ]
+@   
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{String manipulation (1)}
+<<str1>>=
+paste("abc", "def", sep = "-")
+paste0("abc", "def")
+@     
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{String manipulation (2)}
+<<str2>>=
+month.name[1:4]
+grep("Feb", month.name)
+grep("Feb", month.name, value = TRUE)
+grepl("Feb", month.name)
+@     
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{String manipulation (3)}
+<<str3>>=
+month.name[1]
+length(month.name[1])
+nchar(month.name[1])
+@     
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{String manipulation (4)}
+<<str4>>=
+strsplit("abc-def", "-")
+@     
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Comparing and matching (1)}
+<<comp>>=
+set.seed(1)
+x <- sample(letters[1:10], 6)
+y <- sample(letters[1:10], 6)
+x
+y
+@     
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Comparing and matching (2)}
+<<comp2>>=
+intersect(x, y)
+setdiff(x, y)
+union(x, y)
+@     
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Comparing and matching (3)}
+<<comp3>>=
+x %in% y
+x == y
+match(x, y)
+@     
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Generating data (1)}
+<<gen>>=
+seq(1,7,3)
+rep(1:2, 2)
+rep(1:2, each = 2)
+@ 
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Generating data (2)}
+<<gen2>>=
+runif(5)
+rnorm(5)
+@ 
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{About the data}
+<<aboutdata>>=
+table(sample(letters, 100, replace = TRUE))
+summary(rnorm(100))
+head(x)
+tail(x)
+@ 
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<head>>=
+M <- matrix(rnorm(1000), ncol=4)
+head(M)
+@  
+\end{frame}

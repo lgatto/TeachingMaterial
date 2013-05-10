@@ -1,0 +1,37 @@
+\section{Introduction}
+
+\begin{frame}[fragile]
+  \begin{block}{Hello world}
+<<intro>>=
+x <- 1 ## a variable
+x
+x = 2 ## overwrite the value x
+x
+y <- length(x) ## calling a function
+y
+@ 
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Getting help}
+    \begin{itemize}
+    \item Just ask!
+    \item \Rfunction{help.start()} and the HTML help button in the Windows GUI.
+    \item \Rfunction{help} and \Rfunction{?}: \Rfunction{help("data.frame")} or \Rfunction{?help}.
+    \item \Rfunction{help.search}, \Rfunction{apropos}
+    \item Online manuals and mailing lists
+      \bigskip
+    \item Local R user groups
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<env>>=
+ls()
+rm(y)
+ls()
+@   
+  
+\end{frame}

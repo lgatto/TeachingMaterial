@@ -1,0 +1,9 @@
+* TODO
+- [X] move to knitr 
+
+* Notes
+- names
+
+- vectorized arithmetics
+- x < 0
+- M[x<0] <- 0
