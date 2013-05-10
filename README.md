@@ -10,6 +10,7 @@ The local copies linking to external repositories are prefixed with and undersco
 Unless otherwise stated, all material is licensed under [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/) CC-BY-SA.
 
 
+
 ## Material
 
 ### spr
@@ -35,5 +36,11 @@ Unless otherwise stated, all material is licensed under [Creative Commons Attrib
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/RIntro
 - More details: https://github.com/lgatto/RIntro#readme
+
+### R functional programming
+- Description: A short topic section on functional programming in R
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/R-functional-programming
+- More details: https://github.com/lgatto/R-functional-programming#readme
 
 More to come soon.
