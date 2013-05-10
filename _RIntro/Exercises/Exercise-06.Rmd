@@ -1,0 +1,105 @@
+# A short Bioconductor data analysis
+
+We start by loading the packages that will provide the infrastrucutre 
+to the Affymetric microarrys that we want to import and explore.
+
+```{r lib, message = FALSE}
+library("Biobase")
+library("affy")
+library("AnnotationDbi")
+```
+
+The Affymetrix raw data files are listed and saved in a vector of file names
+
+
+```{r fls}
+dir()
+flnms <- dir(pattern = "*CEL")
+flnms
+```
+
+All raw data files and then read with the specialised `ReadAffy` function
+to produce a specific object of class `AffyBatch`.
+
+```{r readraw}
+rawdata <- ReadAffy(filenames = flnms)
+class(rawdata)
+```
+
+Below, we show how to plot the array using the `image` function.
+
+```{r plotraw}
+par(mfrow = c(2, 2))
+image(rawdata[, 1:4])
+```
+
+Let perform some quality control and assess whether RNA degradation is a concern here. 
+The `AffyRNAdeg` function calculates a degradation pattern for each samples, 
+that can then be plotted with `plotAffyRNAdeg`.
+
+```{r rnadeg}
+deg <- AffyRNAdeg(rawdata)
+plotAffyRNAdeg(deg)
+```
+
+The `AffyBatch` object stores raw data. Before proceeding with data analysis, 
+we normalise the data with the popular robust multi-array average methods, 
+implemented in the `rma` function. This produces another type of specialised 
+object, an `ExpressionSet`. We can extract the assay data with the `exprs` 
+accessor.
+
+```{r norm}
+eset <- rma(rawdata)
+class(eset)
+eset
+head(exprs(eset))
+```
+
+We can now produce a boxplot of normalised intensities
+
+```{r boxplot}
+boxplot(exprs(eset))
+```
+
+Let's extract all control probe sets that are labelled `AFFX`, 
+extract their measured expression intensities and generate a 
+heatmap.
+
+```{r ctrlhmap}
+ctrl <- grep("AFFX", featureNames(eset))
+heatmap(exprs(eset[ctrl, ]))
+```
+
+The code below illustrates a principal component analysis. 
+The samples are then plotted on a 2 dimensional PCA plot 
+
+```{r pca}
+pca <- prcomp(t(exprs(eset)))
+plot(pca$x[, 1:2], pch = 19, col = "#AB000030", cex = 3)
+text(pca$x[, 1:2], labels = 1:5)
+grid()
+```
+
+We can save the `ExpressionSet` for later re-use with the 
+`save` function.
+
+```{r save, eval=FALSE}
+save(eset, file = "eset.rda")
+```
+
+A complete set of quality metrics and plots are available through the 
+`arrayQualityMetrics` function from the `arrayQualityMetrics` package. 
+This function creates a complete html report in the `aqmReport` directory. 
+
+
+```{r aqm, eval = FALSE}
+library("arrayQualityMetrics")
+arrayQualityMetrics(eset, outdir = "aqmReport")
+```
+
+See the vignette for more details.
+
+```{r vig, eval = FALSE}
+vignette(package = "arrayQualityMetrics")
+vignette("arrayQualityMetrics", package = "arrayQualityMetrics")
+```

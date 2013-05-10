@@ -1,38 +1,51 @@
-###################################
-## (1) Create the data structure ##
-###################################
+
 
 exp <- read.csv("MAdata1.csv", row.names = 1)
 head(exp)
+
+
+
 class(exp)
 exp <- as.matrix(exp)
+class(exp)
+
+
 
 smeta <- read.csv("smeta1.csv", row.names = 1)
-
 fmeta <- read.csv("fmeta1.csv", row.names = 1)
-names(fmeta)
+class(smeta)
+
+
 
 marray <- list(expression = exp,
                featuremeta = fmeta,
                samplemeta = smeta)
+str(marray)
+
+
 
 save(marray, file = "marray.rda")
-rm(list = ls())
+rm(list = ls()) ## clean working environment
 load("marray.rda")
+str(marray)
 
+
+
+names(marray$featuremeta)
 de <- marray$featuremeta[, "bh"] < 0.05
 class(de)
 table(de)
 
 
-######################
-##   (2) Plotting   ##
-######################
 
 boxplot(marray$expression)
 
+
+
 plot(marray$expression[, 1],
      marray$expression[, 4])
+
+
 
 exp <- marray$expression
 plot(exp[, 1], exp[, 4],
@@ -43,13 +56,19 @@ grid()
 points(exp[de, 1], exp[de, 4], col = "red", pch = 19)
 abline(0, 1)
 
-identify(exp[, 1], exp[, 4], labels = fmeta$genes)
 
-pairs(exp)
+
+## identify(exp[, 1], exp[, 4], labels = fmeta$genes)
+
+
 
 smoothScatter(exp[, 1], exp[, 4])
 
+
+
 hist(exp[, 1])
+
+
 
 par(mfrow = c(3, 2))
 for (i in 1:6) {
@@ -60,23 +79,28 @@ for (i in 1:6) {
 }
 
 
+
 colnames(exp) <- marray$samplemeta$sample
 rownames(exp) <- marray$featuremeta$genes
+
+
 
 heatmap(exp)
 heatmap(exp[de, ])
 
-###############################################
-## (3) Count number of DE genes and plotting ##
-###############################################
+
 
 dir()
 dir(pattern = "fmeta")
 
-## for (fmetafile in dir(patterm = "fmeta")) {
-##   fmeta <- read.csv(fmetafile, row.names = 1)
-##   ## ...
-## }
+
+
+for (fmetafile in dir(pattern = "fmeta")) {
+  fmeta <- read.csv(fmetafile, row.names = 1)
+  print(dim(fmeta))
+}
+
+
 
 for (i in 1:3) {
   fmetafile <- paste0("fmeta", i, ".csv")
@@ -96,3 +120,5 @@ for (i in 1:3) {
     cat("No DE found.\n")
   }
 }
+
+
