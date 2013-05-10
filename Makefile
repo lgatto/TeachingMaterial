@@ -70,6 +70,11 @@ clean:
 	rm -f *~
 	rm -rf figure
 	rm -rf Exercises/aqmReport
+	rm -rf Exercises/*~
+	rm -rf Exercises/*pdf
+	rm -rf Exercises/*rda
+	rm -rf Exercises/figure
+
 
 StangleAll:
 	"$(R_HOME)/bin/R" --vanilla -e "sapply(dir(pattern = 'Rnw'), Stangle)"
