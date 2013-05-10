@@ -7,7 +7,7 @@ tagline: A minimal tutorial on make
 I would argue that the most important tool for reproducible research
 is not [Sweave](http://www.stat.uni-muenchen.de/~leisch/Sweave/) or 
 [knitr](http://yihui.name/knitr/) but
-*[GNU make](http://www.gnu.org/software/make)* (cf
+*[GNU make](http://www.gnu.org/software/make)* (or
 [rake](http://rake.rubyforge.org)).
 
 Consider, for example, all of the files associated with a manuscript.
