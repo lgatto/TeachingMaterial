@@ -43,4 +43,10 @@ Unless otherwise stated, all material is licensed under [Creative Commons Attrib
 - Original repository: https://github.com/lgatto/R-functional-programming
 - More details: https://github.com/lgatto/R-functional-programming#readme
 
+### R vectorisation
+- Description: A short topic section on vectorisation in R
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/R-vectorisation
+- More details: https://github.com/lgatto/R-vectorisation#readme
+
 More to come soon.
