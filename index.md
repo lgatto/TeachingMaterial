@@ -1,13 +1,17 @@
 ---
 layout: page
 title: git/github guide
-tagline: Karl's practical tutorial
+tagline: Karl's minimal tutorial
 ---
 
 All statistical/computational scientists should use
 [git](http://git-scm.com) and [github](http://github.com), but it can be
 hard to get started.  I hope these pages help.  (More blather below.)
 
+There are many resources for git and github; my aim is to provide the
+minimal guide to get started.
+
+- Why?
 - [Your first time](pages/first_time.html): get account; set up ssh
 - Typical use: add, commit, push
 - Start new repository: from scratch; using current project
@@ -15,10 +19,8 @@ hard to get started.  I hope these pages help.  (More blather below.)
 - I want to fix a bug in someone's project
 - A package I'm using has a bug but I can't figure out how to fix it
 - Oops; that last commit message was wrong
-- Exploring what I've done
-- R packages
-- Markdown
-- Song of github
+- Exploring the code and its history
+- Resources
 
 I love git and github.  I
 use both for keeping track of programming projects, papers, talks, and
