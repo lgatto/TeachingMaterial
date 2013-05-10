@@ -41,7 +41,7 @@ it's hosted on github.
 _You don't have to set up a git server._ 
 
 
-### Peruse others' repositories
+### Peruse repositories
 
 If you're still not sure about git and github, spend a bit of time
 looking through the repositories for packages of interest to you.  For
