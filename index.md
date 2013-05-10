@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Minimal make
+title: minimal make
 tagline: A minimal tutorial on make
 ---
 
