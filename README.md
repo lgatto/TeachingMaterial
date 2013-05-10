@@ -5,14 +5,14 @@ This repository is an aggregator for various [R](http://www.r-project.org/) teac
 Most of the courses are taught at the University of Cambridge, UK, and some have been adapted and exported outside. 
 Each material subdirectory has its own repository; `TeachingMaterial` aggregates a snapshot as a central entry point. 
 Aggregation is done using `git-subtree` and will be documented soon. 
-The local copies linking to external repositories are prefixed with and underscore. 
+The local copies linking to external repositories are prefixed with an underscore. 
 
-Unless otherwise stated, all material is licensed under [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/) CC-BY-SA.
+Unless otherwise stated, all material is licensed under a [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/).
 
 ## Material
 
 ### spr
-- Descrition: Scientific Programmign with `R`, MPhil in Computational Biology
+- Description: Scientific Programmign with `R`, MPhil in Computational Biology
 - Author: [Stephen Eglen](http://www.damtp.cam.ac.uk/user/sje30/) with contributions from [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/spr
 - More details: https://github.com/lgatto/spr#readme
@@ -60,8 +60,7 @@ Unless otherwise stated, all material is licensed under [Creative Commons Attrib
 - More details: https://github.com/lgatto/R-parallel#readme
 
 ### R object oriented programming
-- Description: Object oriented programming in `R`. 
-  Covers S3, S4 and S4 Reference Classes leading to a class system for DNA/RNA sequence data manipulation.
+- Description: Covers S3, S4 and S4 Reference Classes OO programming using DNA/RNA sequence data manipulation as a working example.
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
 - Original repository: https://github.com/lgatto/roo
 - More details: https://github.com/lgatto/roo#readme
