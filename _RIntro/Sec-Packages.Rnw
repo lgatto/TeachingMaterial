@@ -1,0 +1,103 @@
+
+\section{Packages}
+
+\begin{frame}{Packages}
+  \begin{itemize}
+  \item Primary mechanism to distribute \R software is via \emph{packages}.
+  \item \emph{Packages} are installed in \emph{libraries} (directories) on your had disk, and they are loaded with the \Rfunction{library} function.
+  \item There are \emph{software}, \emph{data} and \emph{annotation} packages.
+  \item The \textbf{Comprehensive R Archive Network} (\texttt{CRAN}) is the main package repository. It provides an automatic build framework for package authors. 
+  \item The \textbf{Bioconductor} project manages its own CRAN-style repository.
+  \item \textbf{R-forge} -- \url{https://r-forge.r-project.org/}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{columns}[c]
+      \begin{column}{.5\linewidth}
+        \begin{description}
+        \item[Bioconductor] 671 reviewed packages (2.12)
+          \bigskip
+        \item[CRAN] 4262 packages 
+        \item[R-forge] 1453 projects 
+        \end{description}
+        \flushright \tiny 19$^{th}$ June 2012
+    \end{column}
+    \begin{column}{.5\linewidth}
+      \includegraphics[width=\linewidth]{./Figures/CRANpackageNumbers.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Finding packages}
+    \begin{itemize}
+    \item BiocViews -- \url{http://bioconductor.org/packages/release/BiocViews.html}.
+    \item CRAN Task Views -- \url{http://cran.r-project.org/web/views/}.
+%%    \item \Rpackage{sos} to search inside contributed \R packages.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \begin{block}{Package installation}
+    \begin{itemize}
+    \item From within \R, using \Rfunction{install.packages} - takes care of dependencies.
+    \item Update all installed packages with \Rfunction{update.packages}.
+    \item For Bioconductor packages, use \Rfunction{biocLite}:
+      \small
+<<bioclite, echo=TRUE, eval=FALSE>>=
+source("http://www.bioconductor.org/biocLite.R")
+## or, if you have already done so in the past
+library("BiocInstaller")
+biocLite("packageName")  
+@
+    \end{itemize}  
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \begin{block}{Getting information about packages}
+    \begin{itemize}
+    \item CRAN/Bioconductor/R-forge web pages
+    \item Documentation 
+      \small
+<<pckhelp, eval = FALSE>>=
+help(package = "Biobase")
+@ 
+    \item Vignettes (mandatory for Bioconductor packages)
+<<pckvig0, eval = FALSE, tidy = FALSE>>=
+vignette(package = "Biobase")
+@ 
+<<pckvig1, eval = FALSE, tidy = FALSE>>=
+vignette("Bioconductor", package = "Biobase")
+@ 
+    \item Demos
+<<pckdemo, eval = FALSE>>=
+demo("lattice", package = "lattice")
+@ 
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+%% \begin{frame}[fragile]
+%%   \scriptsize
+%% <<pkgversion>>=
+%% packageDescription("Biobase")
+%% @      
+%% \end{frame}
+
+%% \begin{frame}[fragile]
+%%   \begin{block}{Package versions}
+%%     \begin{itemize}
+%%     \item New Bioconductor releases appear twice a year. Bioconductor versions are tied to \R versions.
+%%     \item Stable packages versions are \texttt{x.y.z} where \texttt{x} $>=$ 1 and \texttt{y} is even
+%%     \item Devel packages have \texttt{z} odd. 
+%%     \item New (devel) packages have \texttt{0.y.z} (\texttt{y} odd); if \texttt{y} == 99, then the package will become \texttt{1.0.0} in the next release.
+%%     \end{itemize}
+%%   \end{block}
+%% \end{frame}
+

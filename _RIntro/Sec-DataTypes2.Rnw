@@ -1,0 +1,298 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<knitr, echo=FALSE>>=
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Matrices}
+
+\begin{frame}[fragile]
+  \begin{block}{Matrices are 2-dimensional vectors}
+<<mat>>=
+m <- matrix(1:12, nrow = 4, ncol = 3)
+m
+dim(m)
+ncol(m) ## and also nrow(m)
+@
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+What if I don't get the data or dimensions right?
+<<mat2>>=
+matrix(1:11, 4, 3)
+matrix(1:12, 3, 3)
+@   
+\end{frame}
+
+
+%% \begin{frame}[fragile]
+%% <<mat3>>=
+%% x <- 1:12
+%% dim(x)
+%% dim(x) <- c(4, 3)
+%% x
+%% class(x)
+%% @     
+%% \end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Subsetting matrices}
+<<submat>>=
+dim(m)
+m[3:4, 2:3]
+m[1, ]
+m[, 1]
+@     
+  \end{block}  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Arrays}
+
+\begin{frame}[fragile]
+  \begin{block}{Arrays are n-dimensional vectors}
+<<arrays>>=
+array(1:16, dim = c(2, 4, 2))
+@     
+  \end{block}  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Lists}
+
+\begin{frame}[fragile]
+  \begin{block}{Lists are ordered set of arbitrary \R objects.}
+<<list>>=
+ll <- list(a = 1:3, b = letters[1:2])
+ll
+ll[[1]]
+ll$b
+@     
+\end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Data frames}
+
+\begin{frame}[fragile]
+  \begin{block}{Dataframes are 2-dimensional list.}  
+<<dfr, tidy = FALSE>>=
+dfr <- data.frame(type = c("A", "A", "B", "B"),
+                  time = rnorm(4))
+dfr
+@ 
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<dfr2>>=
+dfr[1,]
+dfr[1, "time"]
+dfr$time
+@ 
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% \subsection*{Evironments}
+
+%% \begin{frame}[fragile]
+%%   \begin{block}{An environment is an unordered collection of objects}
+%% <<env>>=
+%% e <- new.env()
+%% e[["a"]] <- 1:3
+%% assign("b", "CSAMA", envir = e)
+%% ls(e)
+%% e$a
+%% get("b", e)
+%% @ 
+%%   \end{block}
+%% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Names}
+
+\begin{frame}[fragile]
+  \begin{block}{Names}
+    We have seen that function arguments have names, and named our \Robject{data.frame} columns. We can also name \Robject{matrix}/\Robject{data.frame} columns and rows, dimensions, and vector items.
+  \end{block}
+<<names>>=
+x <- c(a = 1, b = 2)
+x
+names(x)
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+<<matdimnames0, tidy = FALSE>>=
+M <- matrix(c(4, 8, 5, 6, 4, 2, 1, 5, 7), nrow=3)
+colnames(M) <- c(2005, 2006, 2007)
+rownames(M) <- c("plane", "bus", "boat")
+M
+M[c("plane", "boat"), "2005"]
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+<<matdimnames, tidy = FALSE>>=
+M <- matrix(c(4, 8, 5, 6, 4, 2, 1, 5, 7), nrow=3)
+dimnames(M) <- list(year = 
+                    c(2005, 2006, 2007),
+                    "mode of transport" =                     
+                    c("plane", "bus", "boat"))
+M
+@ 
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Subsetting with numbers, characters, logicals}
+<<subsetsmry>>=
+x <- 1:5
+names(x) <- letters[1:5]
+x[c(1, 3)]
+x[c("a", "c")]
+x[c(TRUE, FALSE, TRUE, FALSE, FALSE)]
+@ 
+
+    
+  \end{block}  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Factors}
+
+\begin{frame}[fragile]
+  \begin{block}{Factors represent categorical data}
+<<fac>>=
+gender_char <- sample(c("M", "F"), 10, replace = TRUE)
+gender_fac <- factor(gender_char)
+gender_fac
+@     
+  \end{block}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \begin{block}{Special values}
+<<specialvals, eval=FALSE>>=
+NULL; is.null()
+NA; NaN; is.na()
+Inf; -Inf; is.infinite()
+@     
+  \end{block}
+\begin{block}{}
+  What are the mode and types of these?
+\end{block}
+\end{frame}
+
+
+\subsection{Exercise}
+
+\begin{frame}{\exercise}
+  \begin{block}{How to store microarray data?}
+    \begin{itemize}
+    \item What information do we want to store?
+    \item How to store these individual pieces of information?
+    \item How to store these together?
+    \end{itemize}    
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{The \Rfunction{paste} function}
+<<paste>>=
+paste("A", "B", "C", sep = "-")
+paste0("A", "B", "C") ## sep = ""
+@         
+  \end{block}
+  \begin{block}{Normally distributed data}
+<<rnorm>>=
+rnorm(3)
+rnorm(5, mean = 10, sd = 2)
+@     
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{The expression data}
+<<maex0, tidy = FALSE>>=
+expdata <- matrix(rnorm(200), nrow = 50, ncol = 4)
+dimnames(expdata) <- 
+  list(features = paste0("gene", 1:nrow(expdata)),
+       samples = paste0("sample", 1:ncol(expdata)))
+head(expdata)
+@   
+See \texttt{Exercise-03.R}
+
+
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Sample description}
+<<maex1, tidy = FALSE>>=
+smdata <- data.frame(feature = colnames(expdata),
+                     group = c("ctrl", "ctrl",
+                       "cond1", "cond1"),
+                     replicate = rep(1:2, each = 2))
+smdata
+@   
+See \texttt{Exercise-03.R}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Feature description}    
+<<maex2, tidy = FALSE, eval = FALSE>>=
+fmdata <- data.frame(feature = rownames(expdata),
+                     description = ...)
+@   
+See \texttt{Exercise-03.R}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{The complete experiment}   
+<<maex3, tidy = FALSE, eval = FALSE>>=
+marray <- list(
+  expression = expdata,
+  featuremeta = fmdata,
+  samplemeta = smdata)
+@   
+See \texttt{Exercise-03.R}
+  \end{block}
+\end{frame}

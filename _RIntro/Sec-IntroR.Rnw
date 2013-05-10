@@ -1,0 +1,108 @@
+\section{Hello woRld}
+
+<<knitr, echo=FALSE>>=
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
+
+\begin{frame}[fragile]
+  \begin{block}{Hello woRld}
+<<intro0>>=
+5
+2 + 2
+sin(pi/2)
+@ 
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{}
+<<intro>>=
+x <- 1 ## a variable
+x
+x = 2 ## overwrite the content of x
+x
+y <- length(x) ## calling a function
+y
+y + 2
+@ 
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<env>>=
+## just a comment
+ls()
+rm(y)
+ls()
+rm(list = ls())
+ls()
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{The working directory}
+<<wd>>=
+getwd()
+setwd("/home/lgatto/tmp")
+getwd()
+@     
+  \end{block}
+(or use the GUI in RStudio)
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Functions: \Rfunction{fname(argument)}}
+<<funs>>=
+floor(2.3)
+sum(3, 4, 10)
+max(3, 10, 1, -0.2)
+mean(3, 4, 5, 6) ## !
+@     
+  \end{block}  
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Getting help}
+    \begin{itemize}
+    \item Just ask!
+    \item \Rfunction{help.start()} and the HTML help button in the Windows GUI.
+    \item \Rfunction{help} and \Rfunction{?}: \Rfunction{help("sin")} or \Rfunction{?sin}.
+    \item \Rfunction{??}, \Rfunction{help.search}, \Rfunction{apropos}.
+    \item Online manuals and mailing lists.
+    \item Vignettes
+      \bigskip
+    \item Local R user groups
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{\exercise}
+    In the interactive \R console, calculate the following expressions, 
+    where \Robject{x} and \Robject{y} have values \Robject{-0.25} and \Robject{2} respecively. 
+    Then store the result in a new variable and print its content. 
+<<hello, eval = FALSE>>=
+x + cos(pi/y)
+@     
+  \end{block}
+
+Same, as above, but writing the code in an \R source code file using the editor.
+Then, clean your working environment (delete all your variables) and execute the content 
+of that file.
+
+\bigskip
+
+New functions: \Rfunction{print} to explicitely print to the console and 
+\Rfunction{source} to execute the content of a file.
+
+\end{frame}

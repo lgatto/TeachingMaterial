@@ -1,0 +1,26 @@
+\section{Bioconductor}
+
+\begin{frame}{The Bioconductor project}  
+  Bioconductor\footnote{\url{http://bioconductor.org/}} provides tools for the analysis and comprehension of high-throughput genomic data. Bioconductor uses the R statistical programming language, and is open source and open development.
+  
+  \bigskip
+  
+  \begin{itemize}
+  \item Good to get \textit{things} done.
+  \item Good to programming (as in engineering).
+  \item Excellent for bioinformatics.
+  \item Community support.
+  \item Reproducible research.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Bioconductor provides}
+    \begin{itemize}
+    \item dedicated statistical methodologies 
+    \item that work \textit{out-of-the-box} on specialised data structures (objects)
+    \item including relevant annotation
+    \item and come with extensive documentation
+    \end{itemize}
+  \end{block}
+\end{frame}

@@ -1,0 +1,246 @@
+\section{Data types}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Basic data structures}
+
+<<knitr, echo=FALSE>>=
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Atomic vectors}
+
+\begin{frame}[fragile]{Atomic vectors}
+<<vec0>>=
+1
+c(1, 4, 7, 10) ## concatenate
+c(0.001, 1e3, 9, -1)
+@ 
+  A \Robject{vector} contains an indexed set of values
+  \begin{itemize}
+  \item index starts at \Robject{1}
+  \item all items are of the same \textit{kind} (see later)
+  %% \item one of \Robject{logical}, \Robject{numeric}, \Robject{complex} or \Robject{character},
+  \end{itemize}
+  \bigskip
+  %% \Robject{numeric} can futher be broken into \Robject{integer}, \Robject{single} and \Robject{double} types
+  %% (only important when passing these to \texttt{C} or \texttt{Fortran} code, though).
+\end{frame}
+
+\begin{frame}[fragile]
+  Back to our \textit{mean} issue \ldots
+<<meanargs>>=
+mean(3, 4, 5, 6) ## 4 arguments
+mean(c(3, 4, 5, 6)) ## 1 argument
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+  Functions to create vectors: constructors with default values
+<<createvecs0>>=
+vector(mode = "numeric", length = 4)
+numeric(4)
+@ 
+\end{frame}
+
+
+\begin{frame}[fragile]
+  Functions to create vectors: \Rfunction{seq}
+<<createvecs>>=
+1:5 
+seq(from = 1, to = 10, by = 2)
+seq(from = 1, to = 10, length.out = 4)
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+  More functions to create vectors: \Rfunction{rep}
+<<createvecs2>>=
+rep(1, 5)
+rep(1:3, 2)
+rep(1:3, each = 2)
+@ 
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \begin{block}{Arguments by position or name}
+<<args, tidy = FALSE>>=
+(z1 <- seq(from = 1, to = 10, by = 2))
+z2 <- seq(1, 10, 2)
+z3 <- seq(to = 10, by = 2, from = 1)
+identical(z1, z2) ## returns a logical
+identical(z1, z3)
+@ 
+  \end{block}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Subsetting}
+
+\begin{frame}[fragile]{Subsetting}
+  \begin{block}{The \Rfunction{[} operator}
+<<sub>>=
+x <- 1:10
+x[4:5]
+x[seq(1, 10, 3)]
+x[c(7, 1)]
+@     
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{}
+  \begin{block}{Negative indices in \Rfunction{[}}
+<<negsub>>=
+x <- 1:10
+x[-(1:5)] ## ? -1:5
+x[-seq(1, 10, 3)]
+@     
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Out of range indices}
+<<subcaution>>=
+x <- 1:5
+x[5:6]
+x[0:1]
+@ 
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{}
+  \begin{block}{Replacement with \Rfunction{[}}
+<<repsub>>=
+(x <- 1:10)
+x[1] <- 100
+head(x)
+x[1:5] <- 0
+x[4:8]
+@     
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Vectorised arithmetic}
+<<vec>>=
+x <- 1:5; y <- 5:1
+x
+y
+x + y
+x^2
+@     
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Vectorised arithmetic: recycling rule}
+<<vec2>>=
+x <- 1:10
+x + 1:2
+x + 1:3 
+@     
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[fragile]{Modes and types}
+  \begin{block}{}
+<<mtintro, eval=FALSE>>=
+a <- 10
+a <- "10"
+a <- b
+a <- "b"
+@     
+\pause
+\end{block}
+  \begin{columns}[c]
+    \begin{column}{.32\linewidth}
+      \begin{block}{modes}
+        \begin{itemize}
+        \item logical, numeric and character
+        \item \Rfunction{mode()}
+        \end{itemize}    
+      \end{block}      
+    \end{column}
+    \begin{column}{.32\linewidth}
+      \begin{block}{types}
+        \begin{itemize}
+        \item logical, integer, double, character
+        \item \Rfunction{typeof()}
+        \end{itemize}    
+  \end{block}      
+    \end{column}
+    \begin{column}{.32\linewidth}
+      \begin{block}{class}
+        \begin{itemize}
+        \item logical, integer, numeric, character and many more
+        \item \Rfunction{class()}
+        \end{itemize}    
+  \end{block}      
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+<<mtexample1, tidy=FALSE>>=
+x <- 1; y <- "1"; z <- as.integer(x)
+class(x) 
+class(y) 
+class(z)
+@     
+\end{frame}
+
+\begin{frame}[fragile]
+<<mtexample2, tidy=FALSE>>=
+x <- 1; y <- "1"; z <- as.integer(x)
+x + z
+x + y
+x == z
+@     
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{\exercise}
+    Create vectors \Robject{i}, \Robject{l}, \Robject{s} and \Robject{d} of type
+    \Robject{integer}, \Robject{logical}, \Robject{character} and \Robject{double} 
+    respectively.    
+  \end{block}
+  \begin{block}{Hints}   
+    For example, use \Rfunction{sample} to create a sequence of integers, 
+    the built-in \Robject{letters} character variable, 
+    \Rfunction{runif} to generate doubles and a 
+    logical operator (\Rfunction{==}, \Rfunction{>}, \Rfunction{<=}, \ldots) to 
+    create logicals. 
+
+    \bigskip
+    See \texttt{Exercise-02.R} for a solution.
+  \end{block}  
+\end{frame}
+
+

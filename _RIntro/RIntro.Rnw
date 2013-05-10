@@ -1,0 +1,209 @@
+\documentclass{beamer}
+% Setup appearance:
+% \usetheme{Darmstadt}
+\usefonttheme[onlylarge]{structurebold}
+
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+% Standard packages
+% \usepackage[english]{babel}
+% \usepackage[latin1]{inputenc}
+% \usepackage{times}
+% \usepackage[T1]{fontenc}
+\usepackage{wrapfig}
+\usepackage{ulem}
+\usepackage{colortbl}
+% \usecolortheme{seagull}
+\usecolortheme{default}
+
+%% new commande
+\let\code=\texttt
+\let\proglang=\textsf
+
+\newcommand{\R}{\texttt{R} }
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
+%% colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\hypersetup{%
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+%% Exercise counter
+\newcounter{exerciseCounter}
+\newcommand{\exerciseCount}{%
+    \stepcounter{exerciseCounter}%
+      \theexerciseCounter}
+
+\newcommand{\exercise}{\textbf{Exercise \exerciseCount:}~}
+
+
+% Author, Title, etc.
+\title[R Introduction]
+{%
+  An Introduction to R 
+}
+
+\author[L. Gatto]
+{
+  Laurent Gatto \\
+  \scriptsize \url{lg390@cam.ac.uk}
+}
+
+%% \institute[CCP]
+%% {
+%% %   \inst{1}%
+%%   Cambridge System Biology Centre\\
+%%   University of Cambridge \\
+%% }
+
+\date[]
+{
+  \textbf{Microarray Analysis using \R and Bioconductor}\\
+  diXa Training --  14$^{th}$ May 2013
+}
+
+
+\pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
+\pgfdeclareimage[height=.7cm]{ebi-logo}{./Figures/EMBLEBIlogo}
+% \logo{\pgfuseimage{uc-logo}}
+
+
+\AtBeginSection[] % Do nothing for \section*
+{
+\begin{frame}<beamer>
+\frametitle{Plan}
+\tableofcontents[currentsection]
+\end{frame}
+}
+
+
+% The main document
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Title frame                                                 %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Table of contents                                           %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Plan}
+  \footnotesize
+  \tableofcontents
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<echo=FALSE, message=FALSE>>=
+library(Biobase)
+data(sample.ExpressionSet)
+@ 
+
+\input{Sec-AboutR.tex}
+
+\input{Sec-IntroR.tex}
+
+\input{Sec-DataTypes1.tex}
+
+\input{Sec-DataTypes2.tex}
+
+\input{Sec-UseCase.tex}
+
+\input{Sec-Packages.tex}
+
+\input{Sec-RBioc.tex}
+
+\input{Sec-objects.tex}
+
+\input{Sec-BiocCase.tex}
+
+%% \input{Sec-Plotting.tex}
+
+%% \input{Sec-Programming.tex}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{References}
+  \begin{block}{General}
+    \begin{itemize}
+    \item W. N. Venables, D. M. Smith and the R Development Core Team, 
+      An Introduction to R (get it with \Rfunction{help.start()})
+    \item R. Gentleman, R Programming for Bioinformatics, CRC Press, 2008
+    \item Plenty of free documentation on the \R web page and elsewhere.
+    \end{itemize}
+  \end{block}
+  \begin{block}{Bioconductor}
+    \begin{itemize}  
+    \item Gentleman et al., 
+      \textit{Bioconductor: open software development for computational biology and bioinformatics},      
+      Genome Biol. 2004; 5:(10)R80
+    \item \textit{Bioconductor Case Studies}, 2008, Springer.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{References}
+  \begin{block}{Plotting}
+    \begin{itemize}
+    \item We have covered base graphics, not \Rpackage{lattice} and \Rpackage{ggplot2}.
+    \item Lattice: Multivariate Data Visualization with R, Deepayan Sarkar (2008)
+    \item ggplot2: Elegant Graphics for Data Analysis, Hadley Wickham (2010)
+    \item \url{http://gallery.r-enthusiasts.com/allgraph.php}
+    \item R Graphics manual: \url{http://rgm3.lab.nig.ac.jp/RGM/r_image_list}
+    \item \url{http://www.cookbook-r.com/Graphs/} (ggplot2)
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+<<sessioninfo, results='asis'>>=
+toLatex(sessionInfo())
+@   
+\end{frame}
+
+\begin{frame}
+  \vspace{2cm}
+  \begin{itemize}
+  \item Parts of these slides are based on the
+    \textit{Beginners guide to solving biological problems in \texttt{R}} course\footnote{%%
+      \url{http://www.training.cam.ac.uk/gsls/course/gsls-rintro}}, University of Cambridge.
+  \item This work is licensed under a CC BY-SA 3.0 License 
+  \end{itemize}
+  \vspace{.7cm}
+  \begin{center}
+  \textbf{Thank you for your attention}
+
+  \vspace{1cm}
+  \includegraphics[width=2cm]{../cc-by-sa.png}
+  \end{center}
+  
+
+\end{frame}
+
+\end{document}

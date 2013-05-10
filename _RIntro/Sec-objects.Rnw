@@ -1,0 +1,112 @@
+<<env0, echo=FALSE, message = FALSE>>=
+library("Biobase")
+data(sample.ExpressionSet)
+@ 
+
+<<knitr, echo=FALSE>>=
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                 subsection                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{The \Robject{eSet} class}
+
+\begin{frame}{The \Robject{eSet} class}
+  \begin{block}{Higher order objects}
+  When the data to be stored is more complex, special objects are created to store and handle it in a specialised manner. 
+  These higher order objects are constructed using the data types we have seen so far as building blocks.
+  
+  \bigskip
+  Let's look at how microarray data is handled in Bioconductor - the \Robject{eSet} structure.
+  
+  \bigskip
+  (The \Robject{eSet} model has been re-used for other technologies.)
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<eset>>=
+library("Biobase")
+data(sample.ExpressionSet)
+sample.ExpressionSet
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+<<eset2>>=
+class(sample.ExpressionSet)
+slotNames(sample.ExpressionSet)
+@ 
+<<eset2b, eval=FALSE>>=
+class?ExpressionSet
+@ 
+\end{frame}
+
+\begin{frame}
+  \begin{description}
+  \item[assayData] expression values in identical sized matrices.
+  \item[phenoData] sample annotation in \Robject{AnnotatedDataFrame}.
+  \item[featureData] feature annotation in \Robject{AnnotatedDataFrame}.
+  \item[experimentData] description of the experiment as a \Robject{MIAME} object (see \Rfunction{?MIAME} for more details).
+  \item[annotation] type of chip as a \Robject{character}.
+  \item[protocolData] scan dates as a \Robject{character}.   
+  \end{description}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{The \Robject{assayData} slot}
+    Stored the expression data of the assay.
+<<eset3>>=
+exprs(sample.ExpressionSet)[1:4, 1:3]
+dim(sample.ExpressionSet)
+@   
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{The \Robject{phenoData} slot}
+    stores the meta data about the samples.
+<<eset4>>=
+phenoData(sample.ExpressionSet)
+@   
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{The \Robject{featureData} slot}
+    stores the meta data about the feautres.
+<<eset5>>=
+featureData(sample.ExpressionSet)
+@   
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{\Robject{AnnotatedDataFrame}}
+    consists of a collection of samples and the values of variables measured on those samples. 
+    There is also a description of each variable measured.    
+    \Robject{AnnotatedDataFrame} associates a \Robject{data.frame} with its metadata.
+<<pdata>>=
+head(pData(sample.ExpressionSet))
+@ 
+  \end{block}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Subsetting \Robject{ExpressionSet} instances}
+    It is reasonable to expect that subsetting operations work also for higher order objects. 
+<<subexprs>>=
+sample.ExpressionSet[1:10, 1:2]
+@     
+  \end{block}
+\end{frame}
