@@ -37,3 +37,5 @@ github.  I
 [fixed some problems](https://github.com/Caged/d3-tip/commit/c0117472438db94e0cf3febd45bf768ddc1bea5c)
 in some very useful code developed by someone I don't know, because
 it's hosted on github.
+
+_You don't have to set up a git server._ 
