@@ -200,7 +200,7 @@ toLatex(sessionInfo())
   \textbf{Thank you for your attention}
 
   \vspace{1cm}
-  \includegraphics[width=2cm]{../cc-by-sa.png}
+  \includegraphics[width=2cm]{./Figures/cc-by-sa.png}
   \end{center}
   
 
