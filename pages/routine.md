@@ -53,7 +53,7 @@ separate `add` and `commit` commands and just type
     $ git commit -a
 
 I try to avoid this, as it can lead to mistakes (committing more
-modifications then intended).
+modifications than intended).
 
 ### Push to [github](http://github.com)
 
@@ -61,11 +61,11 @@ To push committed changes to github, type
 
     $ git push
 
-You don't need to do this every time, but do so after you've completed a batch
+You don't need to do this every time. Do it after you've completed a batch
 of changes that you're thoroughly happy with and before you move on to
 something else.
 
-Once you've pushed a commit, it's hard to take it away.  But if you've
+Once you've pushed a commit, it's hard to take it away.  If you've
 not pushed it yet, you _can_ go back and scrap it and not have it part
 of your project's history.
 
@@ -113,7 +113,8 @@ of commit messages they write.
 
 Don't include files that are derived from others.  (Are you using
 [make](http://www.gnu.org/software/make/) or
-[rake](http://rake.rubyforge.org/)?  You should be!)  
+[rake](http://rake.rubyforge.org/)?  You should be!  See my
+[make tutorial](kbroman.github.io/minimal_make).)
 
 For example, for a [LaTeX](http://www.latex-project.org/) manuscript,
 I wouldn't include all the .log, .dvi, .aux, etc., files.  And if I
@@ -122,7 +123,7 @@ figure.
 
 Be careful about committing binary files, or really big files.  Git
 works best with text files (like source code), as it keeps track of
-just the lines that were changed.  With binary file, you'll save the
+just the lines that were changed.  With a binary file, you'll save the
 entire file again with each change; that will clutter up your
 repository.  
 
@@ -130,7 +131,7 @@ And once you've committed a big file to your repository, it's there
 forever, even if you use `git rm` to remove it later.
 
 For big data files that are changing, you'll want to track a
-text-based version (not .xls!), and you probably will want to make a
+text-based version (not .xls!), and you may want to make a
 fully separate git repository for the data.
 
 ### .gitignore
