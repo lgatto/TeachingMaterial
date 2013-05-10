@@ -7,7 +7,7 @@ Say you want to contribute changes to someone else's repository (eg,
 [this one](http://github.com/kbroman/github_tutorial)).
 
 - Go to the repository on github.  (Say it's by `myfriend`, and is
-  called `the_repo`, then you'll find it at `http://github.com/myfriend/the_repo`.
+  called `the_repo`, then you'll find it at `http://github.com/myfriend/the_repo`.)
 
 - Click the &ldquo;Fork&rdquo; button at the top right.
 
@@ -41,7 +41,7 @@ Say you want to contribute changes to someone else's repository (eg,
 
 - Go to _your version_ of the repository on github.
 
-- Click &ldquo;Pull Request&rdquo; button at the top.
+- Click the &ldquo;Pull Request&rdquo; button at the top.
 
 - Note that your friend's repository will be on the left and _your
   repository_ will be on the right.
@@ -65,3 +65,72 @@ made.
 Now push them back to your github repository.
 
     $ git push
+
+
+### Handling pull requests
+
+Say your friend has suggested some changes to your code.
+
+Ask them to [get a github account](first_use.html) and follow the
+instructions above: fork your
+repository, make the changes, and submit a pull request.
+
+Once they do that, you'll get an email about it.  How to handle it?
+
+#### Using the github website:
+
+- Go to your version of the repository.
+
+- Click on &ldquo;Pull Requests&rdquo; at the top.
+
+- Click on the particular request.
+
+- You'll see their comments on the pull request, and can click to see
+  the exact changes.
+
+- If you want them to make further changes before you merge
+  the changes into your repository, add a comment.
+  
+- If you hate the whole idea, just click the &ldquo;Close&rdquo;
+  button.
+  
+- If you want to merge the changes into your repository, click the
+  &ldquo;Merge pull request&rdquo; button.
+
+- Your github repository will now be fixed, but you'll want to get
+  them into your local repository, too.
+
+- Open a terminal/shell, and type
+
+    ````
+    $ git pull
+    ````
+
+#### Using the command line
+
+You don't have to use the github website for this.
+
+- Open a terminal/shell.
+
+- Go into the directory for your project.
+
+- Add a connection to your friend's version of the github repository,
+  if you haven't already.
+  
+    ````
+    $ git remote add mycollaborator git://github.com/mycollaborator/scratch_repo.git
+    ````
+    
+- Pull his/her changes.
+
+    ````
+    $ git pull mycollaborator master
+    ````
+    
+- Push them back to your github repository.
+
+    ````
+    $ git push
+    ````
+
+- The pull request on github will be automatically closed.
