@@ -1,0 +1,504 @@
+%!PS-Adobe-3.0
+%%Creator: graphviz version 2.26.3 (20100126.1600)
+%%Title: G
+%%Pages: (atend)
+%%BoundingBox: (atend)
+%%EndComments
+save
+%%BeginProlog
+/DotDict 200 dict def
+DotDict begin
+
+/setupLatin1 {
+mark
+/EncodingVector 256 array def
+ EncodingVector 0
+
+ISOLatin1Encoding 0 255 getinterval putinterval
+EncodingVector 45 /hyphen put
+
+% Set up ISO Latin 1 character encoding
+/starnetISO {
+        dup dup findfont dup length dict begin
+        { 1 index /FID ne { def }{ pop pop } ifelse
+        } forall
+        /Encoding EncodingVector def
+        currentdict end definefont
+} def
+/Times-Roman starnetISO def
+/Times-Italic starnetISO def
+/Times-Bold starnetISO def
+/Times-BoldItalic starnetISO def
+/Helvetica starnetISO def
+/Helvetica-Oblique starnetISO def
+/Helvetica-Bold starnetISO def
+/Helvetica-BoldOblique starnetISO def
+/Courier starnetISO def
+/Courier-Oblique starnetISO def
+/Courier-Bold starnetISO def
+/Courier-BoldOblique starnetISO def
+cleartomark
+} bind def
+
+%%BeginResource: procset graphviz 0 0
+/coord-font-family /Times-Roman def
+/default-font-family /Times-Roman def
+/coordfont coord-font-family findfont 8 scalefont def
+
+/InvScaleFactor 1.0 def
+/set_scale {
+       dup 1 exch div /InvScaleFactor exch def
+       scale
+} bind def
+
+% styles
+/solid { [] 0 setdash } bind def
+/dashed { [9 InvScaleFactor mul dup ] 0 setdash } bind def
+/dotted { [1 InvScaleFactor mul 6 InvScaleFactor mul] 0 setdash } bind def
+/invis {/fill {newpath} def /stroke {newpath} def /show {pop newpath} def} bind def
+/bold { 2 setlinewidth } bind def
+/filled { } bind def
+/unfilled { } bind def
+/rounded { } bind def
+/diagonals { } bind def
+
+% hooks for setting color 
+/nodecolor { sethsbcolor } bind def
+/edgecolor { sethsbcolor } bind def
+/graphcolor { sethsbcolor } bind def
+/nopcolor {pop pop pop} bind def
+
+/beginpage {	% i j npages
+	/npages exch def
+	/j exch def
+	/i exch def
+	/str 10 string def
+	npages 1 gt {
+		gsave
+			coordfont setfont
+			0 0 moveto
+			(\() show i str cvs show (,) show j str cvs show (\)) show
+		grestore
+	} if
+} bind def
+
+/set_font {
+	findfont exch
+	scalefont setfont
+} def
+
+% draw text fitted to its expected width
+/alignedtext {			% width text
+	/text exch def
+	/width exch def
+	gsave
+		width 0 gt {
+			[] 0 setdash
+			text stringwidth pop width exch sub text length div 0 text ashow
+		} if
+	grestore
+} def
+
+/boxprim {				% xcorner ycorner xsize ysize
+		4 2 roll
+		moveto
+		2 copy
+		exch 0 rlineto
+		0 exch rlineto
+		pop neg 0 rlineto
+		closepath
+} bind def
+
+/ellipse_path {
+	/ry exch def
+	/rx exch def
+	/y exch def
+	/x exch def
+	matrix currentmatrix
+	newpath
+	x y translate
+	rx ry scale
+	0 0 1 0 360 arc
+	setmatrix
+} bind def
+
+/endpage { showpage } bind def
+/showpage { } def
+
+/layercolorseq
+	[	% layer color sequence - darkest to lightest
+		[0 0 0]
+		[.2 .8 .8]
+		[.4 .8 .8]
+		[.6 .8 .8]
+		[.8 .8 .8]
+	]
+def
+
+/layerlen layercolorseq length def
+
+/setlayer {/maxlayer exch def /curlayer exch def
+	layercolorseq curlayer 1 sub layerlen mod get
+	aload pop sethsbcolor
+	/nodecolor {nopcolor} def
+	/edgecolor {nopcolor} def
+	/graphcolor {nopcolor} def
+} bind def
+
+/onlayer { curlayer ne {invis} if } def
+
+/onlayers {
+	/myupper exch def
+	/mylower exch def
+	curlayer mylower lt
+	curlayer myupper gt
+	or
+	{invis} if
+} def
+
+/curlayer 0 def
+
+%%EndResource
+%%EndProlog
+%%BeginSetup
+14 default-font-family set_font
+1 setmiterlimit
+% /arrowlength 10 def
+% /arrowwidth 5 def
+
+% make sure pdfmark is harmless for PS-interpreters other than Distiller
+/pdfmark where {pop} {userdict /pdfmark /cleartomark load put} ifelse
+% make '<<' and '>>' safe on PS Level 1 devices
+/languagelevel where {pop languagelevel}{1} ifelse
+2 lt {
+    userdict (<<) cvn ([) cvn load put
+    userdict (>>) cvn ([) cvn load put
+} if
+
+%%EndSetup
+setupLatin1
+%%Page: 1 1
+%%PageBoundingBox: 36 36 584 215
+%%PageOrientation: Portrait
+0 0 1 beginpage
+gsave
+36 36 548 179 boxprim clip newpath
+1 1 set_scale 0 rotate 40 41 translate
+% sim2.dat
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+342 41.4 moveto 60 (sim2.dat) alignedtext
+grestore
+% params.R
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+460.5 135.4 moveto 65 (params.R) alignedtext
+grestore
+% sim2.dat->params.R
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 397.91 63.09 moveto
+401.99 66.03 406.13 69.07 410 72 curveto
+428.1 85.71 447.9 101.66 463.63 114.56 curveto
+stroke
+0 0 0 edgecolor
+newpath 461.5 117.34 moveto
+471.45 121 lineto
+465.95 111.94 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 461.5 117.34 moveto
+471.45 121 lineto
+465.95 111.94 lineto
+closepath stroke
+grestore
+% simulator.R
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+454 68.4 moveto 78 (simulator.R) alignedtext
+grestore
+% sim2.dat->simulator.R
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 410.29 53.54 moveto
+418.35 55.34 427.02 57.28 435.61 59.19 curveto
+stroke
+0 0 0 edgecolor
+newpath 435.09 62.66 moveto
+445.61 61.43 lineto
+436.61 55.83 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 435.09 62.66 moveto
+445.61 61.43 lineto
+436.61 55.83 lineto
+closepath stroke
+grestore
+% all
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+19 68.4 moveto 16 (all) alignedtext
+grestore
+% report.pdf
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+98.5 68.4 moveto 69 (report.pdf) alignedtext
+grestore
+% all->report.pdf
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 54.02 72 moveto
+62.04 72 71.12 72 80.19 72 curveto
+stroke
+0 0 0 edgecolor
+newpath 80.37 75.5 moveto
+90.37 72 lineto
+80.37 68.5 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 80.37 75.5 moveto
+90.37 72 lineto
+80.37 68.5 lineto
+closepath stroke
+grestore
+% report.tex
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+220 14.4 moveto 70 (report.tex) alignedtext
+grestore
+% report.pdf->report.tex
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 173.96 53.87 moveto
+183.82 49.51 194.46 44.79 204.69 40.27 curveto
+stroke
+0 0 0 edgecolor
+newpath 206.21 43.42 moveto
+213.94 36.18 lineto
+203.38 37.02 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 206.21 43.42 moveto
+213.94 36.18 lineto
+203.38 37.02 lineto
+closepath stroke
+grestore
+% sim1.pdf
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+226 122.4 moveto 58 (sim1.pdf) alignedtext
+grestore
+% report.pdf->sim1.pdf
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 173.96 90.13 moveto
+185 95.01 197.01 100.33 208.33 105.34 curveto
+stroke
+0 0 0 edgecolor
+newpath 207.08 108.62 moveto
+217.64 109.46 lineto
+209.91 102.21 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 207.08 108.62 moveto
+217.64 109.46 lineto
+209.91 102.21 lineto
+closepath stroke
+grestore
+% sim2.pdf
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+226 68.4 moveto 58 (sim2.pdf) alignedtext
+grestore
+% report.pdf->sim2.pdf
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 175.67 72 moveto
+185.98 72 197.05 72 207.56 72 curveto
+stroke
+0 0 0 edgecolor
+newpath 207.84 75.5 moveto
+217.84 72 lineto
+207.84 68.5 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 207.84 75.5 moveto
+217.84 72 lineto
+207.84 68.5 lineto
+closepath stroke
+grestore
+% sim1.dat
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+342 149.4 moveto 60 (sim1.dat) alignedtext
+grestore
+% sim1.dat->params.R
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 410.29 148.57 moveto
+420.46 147.39 431.62 146.1 442.35 144.86 curveto
+stroke
+0 0 0 edgecolor
+newpath 442.92 148.32 moveto
+452.46 143.69 lineto
+442.12 141.36 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 442.92 148.32 moveto
+452.46 143.69 lineto
+442.12 141.36 lineto
+closepath stroke
+grestore
+% sim1.dat->simulator.R
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 399.15 134.82 moveto
+416.36 123.31 438.79 108.29 457.41 95.82 curveto
+stroke
+0 0 0 edgecolor
+newpath 459.57 98.59 moveto
+465.94 90.12 lineto
+455.68 92.77 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 459.57 98.59 moveto
+465.94 90.12 lineto
+455.68 92.77 lineto
+closepath stroke
+grestore
+% sim1.pdf->sim1.dat
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 292.02 134.54 moveto
+302.06 136.86 313.09 139.41 323.66 141.84 curveto
+stroke
+0 0 0 edgecolor
+newpath 323.08 145.3 moveto
+333.61 144.14 lineto
+324.65 138.48 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 323.08 145.3 moveto
+333.61 144.14 lineto
+324.65 138.48 lineto
+closepath stroke
+grestore
+% plotter.R
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+342 95.4 moveto 60 (plotter.R) alignedtext
+grestore
+% sim1.pdf->plotter.R
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 292.02 117.46 moveto
+302.06 115.14 313.09 112.59 323.66 110.16 curveto
+stroke
+0 0 0 edgecolor
+newpath 324.65 113.52 moveto
+333.61 107.86 lineto
+323.08 106.7 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 324.65 113.52 moveto
+333.61 107.86 lineto
+323.08 106.7 lineto
+closepath stroke
+grestore
+% clean
+gsave
+0 0 0 nodecolor
+14 /Times-Roman set_font
+8.5 122.4 moveto 37 (clean) alignedtext
+grestore
+% sim2.pdf->sim2.dat
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 292.02 63.46 moveto
+302.06 61.14 313.09 58.59 323.66 56.16 curveto
+stroke
+0 0 0 edgecolor
+newpath 324.65 59.52 moveto
+333.61 53.86 lineto
+323.08 52.7 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 324.65 59.52 moveto
+333.61 53.86 lineto
+323.08 52.7 lineto
+closepath stroke
+grestore
+% sim2.pdf->plotter.R
+gsave
+1 setlinewidth
+0 0 0 edgecolor
+newpath 292.02 80.54 moveto
+302.06 82.86 313.09 85.41 323.66 87.84 curveto
+stroke
+0 0 0 edgecolor
+newpath 323.08 91.3 moveto
+333.61 90.14 lineto
+324.65 84.48 lineto
+closepath fill
+1 setlinewidth
+solid
+0 0 0 edgecolor
+newpath 323.08 91.3 moveto
+333.61 90.14 lineto
+324.65 84.48 lineto
+closepath stroke
+grestore
+endpage
+showpage
+grestore
+%%PageTrailer
+%%EndPage: 1
+%%Trailer
+%%Pages: 1
+%%BoundingBox: 36 36 584 215
+end
+restore
+%%EOF

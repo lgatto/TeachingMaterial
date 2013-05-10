@@ -1,0 +1,57 @@
+\documentclass{article}
+
+\usepackage{listings,graphicx}
+\usepackage[a4paper,margin=2cm,noheadfoot]{geometry}
+\begin{document}
+
+\title{Example report compiled using Make}
+\author{Stephen J. Eglen}
+\date{\today}
+\maketitle
+
+
+\section{Introduction}
+
+This is an example of using a \texttt{Makefile} to assemble all of the results
+and graphs needed to re-generate a report.  
+
+We can draw the graphical dependencies involved in regenerating all of
+these files.
+
+So, e.g. if I edit the \texttt{.tex} file, then only the report needs to be
+regenerated, not all of the simulations.  (Compare this with Sweave.)
+
+
+\section{Parameters}
+
+Here is the input file that provides the key parameters for the
+simulations:
+
+{\lstinputlisting{params.R}}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=8cm]{sim1.pdf}
+  \includegraphics[width=8cm]{sim2.pdf}
+  \caption{Result of simulation. Left: rnorm.  Right: runif.}
+  \label{fig:res}
+\end{figure}
+
+\clearpage
+
+%% Technically you could argue that I should add the following files
+%% as dependencies to the Makefile entry for report.pdf, but they are 
+%% included just to save paper, and would complicate the description
+%% of the Makefile.
+
+\section{simulator.R}
+
+\lstinputlisting{simulator.R}
+
+\section{plotter.R}
+\lstinputlisting{plotter.R}
+
+\section{Makefile}
+\lstinputlisting{Makefile}
+
+\end{document}

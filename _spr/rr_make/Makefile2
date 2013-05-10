@@ -1,0 +1,29 @@
+FILES2CLEAN = report.pdf\
+	    *.log\
+	    *aux\
+	    sim1.*\
+	    sim2.*
+
+.PHONY: all clean
+
+all: report.pdf
+
+report.pdf: report.tex sim1.pdf sim2.pdf 
+	texi2pdf report.tex
+
+sim1.dat: params.R simulator.R
+	Rscript simulator.R rnorm > $@
+
+sim2.dat: params.R simulator.R
+	Rscript simulator.R runif > $@
+
+sim1.pdf: sim1.dat plotter.R
+	Rscript plotter.R sim1.dat
+
+sim2.pdf: sim2.dat plotter.R
+	Rscript plotter.R sim2.dat
+
+clean:
+	rm -f $(FILES2CLEAN)
+	rm -f *~
+

@@ -1,0 +1,7 @@
+make -npr > Makefile.complete
+## make_grapher.py and functionnal_utils.py
+## http://code.google.com/p/makegrapher/
+## https://bitbucket.org/jpbarrette/makegrapher/overview/
+python make_grapher.py -T Makefile.complete -o test.dot
+dot -Tps test.dot > test.ps
+epstopdf makedep.ps
