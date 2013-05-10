@@ -24,7 +24,7 @@ R_HOME= $(shell R RHOME)
 endif
 
 
-roo.pdf: intro.tex revision.tex oo-intro.tex roo.Rnw S3.tex S4.tex Ref.tex 
+roo.pdf: roo.Rnw intro.tex revision.tex oo-intro.tex roo.Rnw S3.tex S4.tex Ref.tex 
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('roo.Rnw');"
 	pdflatex roo.tex
 
