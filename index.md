@@ -12,9 +12,9 @@ is not [Sweave](http://www.stat.uni-muenchen.de/~leisch/Sweave/) or
 
 Consider, for example, all of the files associated with a manuscript.
 In the simplest case, I would have an [R](http://r-project.org)
-scripts for each figure plus a [LaTeX](http://www.latex-project.org)
+script for each figure plus a [LaTeX](http://www.latex-project.org)
 file for the main text.  And then a [BibTeX](http://www.bibtex.org)
-file.
+file for the references.
 
 Compiling the final PDF is a bit of work: 
 
@@ -32,10 +32,10 @@ that looks something like [the following](assets/Makefile) (here using
 [pdflatex](http://www.tug.org/applications/pdftex/)).
 
     mypaper.pdf: mypaper.bib mypaper.tex Figs/fig1.pdf Figs/fig2.pdf
-    	latex mypaper
+    	pdflatex mypaper
     	bibtex mypaper
-    	latex mypaper
-    	latex mypaper
+    	pdflatex mypaper
+    	pdflatex mypaper
 
     Figs/fig1.pdf: R/fig1.R
     	cd R;R CMD BATCH fig1.R fig1.Rout
