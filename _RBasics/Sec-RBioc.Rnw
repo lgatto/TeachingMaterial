@@ -1,0 +1,10 @@
+\section{Why are R/Bioc great}
+\begin{frame} 
+  \begin{itemize}
+  \item Good at getting \textit{things} done.
+  \item Good at programming (as in engineering).
+  \item Excellent for bioinformatics.
+  \item Community support.
+  \item Reproducible research.
+  \end{itemize}
+\end{frame}

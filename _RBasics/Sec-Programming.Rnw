@@ -1,0 +1,160 @@
+\section{Programming}
+
+\begin{frame}
+  \begin{block}{Flow control}
+<<flowctrl, eval = FALSE, tidy = FALSE>>=
+for (var in seq) expr
+while (cond) expr
+repeat expr
+break
+@
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<for>>=
+for (i in 1:4) { ## bad
+  print(i^2)
+}
+(1:4)^2 ## good
+@   
+\end{frame}
+
+
+\begin{frame}
+  \begin{block}{The \Rfunction{apply} family and friends}
+    \begin{itemize}
+    \item Applies a function to each element of an input, being a list or a vector (\Rfunction{sapply}, \Rfunction{lapply}), a matrix or a data frame (\Rfunction{apply}) or an environment (\Rfunction{eapply}).
+    \item Same functionality than an explicit \Robject{for} loop, but often more elegant, function-centric, \textbf{not} faster.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<apply>>=
+M <- matrix(1:9, ncol = 3)
+M
+apply(M, 1, max)
+apply(M, 2, max)
+2
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<slapply>>=
+sapply(month.name[1:2], paste0, "_2012")
+lapply(month.name[1:2], paste0, "_2012")
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<replicate>>=
+mean(rnorm(100))
+replicate(3, mean(rnorm(100)))
+replicate(2, rnorm(3))
+@
+\end{frame}
+
+%% eapply
+%% replicate
+%% by
+%% tapply
+%% rapply
+
+\begin{frame}
+  \begin{block}{Conditionals}
+<<flow, eval = FALSE, tidy = FALSE>>=
+if (cond) expr1 else expr2
+ifelse(cond, expr1, expr2)
+switch
+@
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<ifelse>>=
+x <- 2
+if (x > 0) { ## bad
+  log2(x)
+} else {
+  log2(-x)
+}
+log2(abs(x)) ## better 
+@ 
+  
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Exception handling}    
+    \begin{description}
+    \item[\Rfunction{try(exprs)}] will either return the value of the expression \Robject{expr}, or an object of class \Robject{try-error}.
+    \item[\Rfunction{tryCatch}] provides a more configurable mechanism for condition handling and error recovery.
+    \end{description}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Writing functions}    
+<<fun, eval=FALSE, tidy = FALSE>>=
+myFun <- function(param1, param2, ...) {
+  ## function body
+  ## acting on copies of the params
+  ans <- param1 + param2  
+  return(ans) 
+}
+@ 
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Function facts}    
+    \begin{itemize}
+    \item Single \Rfunction{return} value.
+    \item To return multiple items, use a \Robject{list} or a proper \Robject{object} (see OO programming).
+    \item The return value is either the last statement, or explicit return using \Rfunction{return} (can be called from any where in a function)
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Function facts (cont.)}    
+    \begin{itemize}
+    \item Functions act on a pass-by-copy semantic.
+<<f1>>=
+x <- 1
+f <- function(x) { x <- x + 10; x }
+f(x)
+x
+@       
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Function facts (cont.)}    
+    \begin{itemize}
+    \item Functions live/act in their own environment and 
+      have access to \textit{global} variables.
+<<f2>>=
+x <- 1
+f <- function() { x <- x + 10; x }
+f()
+x
+@       
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Anonymous function}    
+<<anonymfun>>=
+M <- matrix(rnorm(50), ncol = 5)
+M[sample(50, 10)] <- NA
+sum(is.na(M))
+apply(M, 1, function(x) sum(is.na(x)))
+apply(M, 2, function(x) sum(is.na(x)))
+@       
+\end{block}
+\end{frame}

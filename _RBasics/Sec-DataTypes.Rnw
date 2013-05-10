@@ -1,0 +1,334 @@
+\section{Data types and structures}
+
+<<env0, echo=FALSE, message = FALSE>>=
+library(Biobase)
+data(sample.ExpressionSet)
+@ 
+
+\subsection{Basic data types}
+
+\subsection*{Atomic vector}
+
+\begin{frame}[fragile]
+<<vec0>>=
+c(1,3,9,-1)
+@ 
+  A \Robject{vector} contains an indexed set of values
+  \begin{itemize}
+  \item index starts at \Robject{1};
+  \item all items are of the same storage \Robject{mode};
+  \item one of \Robject{logical}, \Robject{numeric}, \Robject{complex} or \Robject{character},
+  \end{itemize}
+  \bigskip
+  \Robject{numeric} can futher be broken into \Robject{integer}, \Robject{single} and \Robject{double} types
+  (only important when passing these to \texttt{C} or \texttt{Fortran} code, though).
+\end{frame}
+
+\begin{frame}[fragile]
+<<vecs>>=
+mode(1)
+typeof(1)
+mode(1L)
+typeof(1L)
+@     
+\end{frame}
+
+
+\begin{frame}[fragile]
+<<vecs2>>=
+mode("1")
+typeof("1")
+mode(TRUE)
+typeof(FALSE)
+## as we are talking about booleans...
+TRUE & TRUE
+TRUE | FALSE
+@     
+\end{frame}
+
+\begin{frame}[fragile]
+The different modes an types can be retrieved and coerced with the \Rfunction{is.*} and \Rfunction{as.*} functions.
+<<isas>>=
+x <- 1
+typeof(x)
+y <- as.integer(x)
+typeof(y)
+is.integer(y)
+@ 
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Special values}
+<<specialvals, eval=FALSE>>=
+NULL; NA; NaN; Inf; -Inf
+is.null(); is.na(); is.infinite()
+@     
+  \end{block}
+\begin{block}{}
+  What are the mode and types of these?
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  All these are objects with a certain \Robject{class}.
+<<class>>=
+class(x)
+class("a character")
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+  Creating vectors with functions
+<<createvecs0>>=
+vector(mode = "character", length = 3)
+vector(mode = "numeric", length = 4)
+numeric(4)
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+  Creating vectors with functions (2)
+<<createvecs>>=
+x <- c(1, 4, 7, 10) ## concatenate
+x
+y <- 1:5 ## integer sequence 
+y
+z <- seq(from = 1, to = 10, by = 2)
+z
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Arguments by position or name}
+<<args>>=
+z1 <- seq(from = 1, to = 10, by = 2)
+z2 <- seq(1, 10, 2)
+z1 == z2
+all(z1 == z2)
+identical(z1, z2)
+@     
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Vectorised arithmetic}
+<<vec>>=
+x <- 1:5; y <- 5:1
+x
+y
+x + y
+x^2
+@     
+  \end{block}
+\end{frame}
+
+\subsection*{Matrices}
+
+\begin{frame}[fragile]
+  \begin{block}{Matrices}
+    are 2-dimensional vectors
+<<mat>>=
+m <- matrix(1:12, nrow = 4, ncol = 3)
+m
+dim(m)
+@
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+What if I don't get the data or dimensions right?
+<<mat2>>=
+matrix(1:11, 4, 3)
+matrix(1:12, 3, 3)
+@   
+\end{frame}
+
+
+\begin{frame}[fragile]
+<<mat3>>=
+x <- 1:12
+class(x)
+dim(x)
+dim(x) <- c(4, 3)
+x
+class(x)
+@     
+\end{frame}
+
+\subsection*{Arrays}
+
+\begin{frame}[fragile]
+  \begin{block}{Arrays}
+    are n-dimensional vectors
+<<arrays>>=
+array(1:16, dim = c(2, 4, 2))
+@     
+  \end{block}  
+\end{frame}
+
+
+\subsection*{Lists, data frames and evironments}
+
+\begin{frame}[fragile]
+  \begin{block}{list}
+is an ordered set of elements that can be arbitrary \R objects.
+<<list>>=
+ll <- list(a = 1:3, c = length)
+ll
+ll[[1]]
+ll$c(ll)
+@     
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{data.frame}  
+    is a 2-dimensional \Rfunction{list}.
+<<dfr, tidy = FALSE>>=
+dfr <- data.frame(type = c(
+                    rep("case", 2), 
+                    rep("ctrl", 2)),
+                  time = rnorm(4))
+dfr
+@ 
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<dfr2>>=
+dfr[1,]
+dfr[1, "time"]
+dfr$time
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{environment}
+    is an unordered collection of objects.
+<<env>>=
+e <- new.env()
+e[["a"]] <- 1:3
+assign("b", "CSAMA", envir = e)
+ls(e)
+e$a
+get("b", e)
+@ 
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Names}
+    We have seen that function arguments have names, and named our \Robject{data.frame} columns. We can also name \Robject{matrix}/\Robject{data.frame} columns and rows, dimensions, and vector items.
+  \end{block}
+<<names>>=
+x <- c(a = 1, b = 2)
+x
+names(x)
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+<<matdimnames, tidy = FALSE>>=
+M <- matrix(c(4, 8, 5, 6, 4, 2, 1, 5, 7), nrow=3)
+dimnames(M) <- list(year = 
+                    c(2005, 2006, 2007),
+                    "mode of transport" =                     
+                    c("plane", "bus", "boat"))
+M
+@ 
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{factor}
+    for categorical data
+<<>>=
+sample.ExpressionSet$type
+@     
+  \end{block}
+\end{frame}
+
+
+\subsection{Higher order objects}
+
+\begin{frame}
+  \begin{block}{Higher order objects}
+  When the data to be stored is more complex, special objects are created to store and handle it in a specialised manner. 
+  These higher order objects are constructed using the data types we have seen so far as building blocks.
+  \newline
+  Let's look at how microarray data is handled in Bioconductor. 
+  \newline
+  The \Robject{eSet} model has been re-used for other technologies.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<eset>>=
+library(Biobase)
+data(sample.ExpressionSet)
+sample.ExpressionSet
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+<<eset2>>=
+class(sample.ExpressionSet)
+slotNames(sample.ExpressionSet)
+@ 
+<<eset2b, eval=FALSE>>=
+class?ExpressionSet
+@ 
+\end{frame}
+
+\begin{frame}
+  \begin{description}
+  \item[assayData] expression values in identical sized matrices.
+  \item[phenoData] sample annotation in \Robject{AnnotatedDataFrame}.
+  \item[featureData] feature annotation in \Robject{AnnotatedDataFrame}.
+  \item[experimentData] description of the experiment as a \Robject{MIAME} object (see \Rfunction{?MIAME} for more details).
+  \item[annotation] type of chip as a \Robject{character}.
+  \item[protocolData] scan dates as a \Robject{character}.   
+  \end{description}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{The \Robject{assayData} slot}
+    Stored the expression data of the assay.
+<<eset3>>=
+exprs(sample.ExpressionSet)[1:4, 1:3]
+dim(sample.ExpressionSet)
+@   
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{The \Robject{phenoData} slot}
+    stores the meta data about the samples.
+<<eset4>>=
+phenoData(sample.ExpressionSet)
+@   
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{The \Robject{featureData} slot}
+    stores the meta data about the feautres.
+<<eset5>>=
+featureData(sample.ExpressionSet)
+@   
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{\Robject{AnnotatedDataFrame}}
+    consists of a collection of samples and the values of variables measured on those samples. 
+    There is also a description of each variable measured.    
+    \Robject{AnnotatedDataFrame} associates a \Robject{data.frame} with its metadata.
+<<pdata>>=
+head(pData(sample.ExpressionSet))
+@ 
+  \end{block}  
+\end{frame}
+
