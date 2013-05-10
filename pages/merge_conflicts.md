@@ -21,7 +21,7 @@ You'll get a message like
     CONFLICT (content): Merge conflict in README.md
     Automatic merge failed; fix conflicts and then commit the result.
 
-If open the offending file in a text editor, you'll find an indication
+If you open the offending file in a text editor, you'll find an indication
 of the bits that are different, something like this:
 
     <<<<<<< HEAD
