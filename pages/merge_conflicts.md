@@ -31,6 +31,6 @@ of the bits that are different, something like this:
     >>>>>>> 031389f2cd2acde08e32f0beb084b2f7c3257fff
 
 Edit the bits from `<<<<<<<` to `>>>>>>>`, to make the file just as
-you want it
+you want it.
 
 Then do `git add`, `git commit`, and `git push`.
