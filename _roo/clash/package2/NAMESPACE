@@ -1,0 +1,7 @@
+exportPattern("^[[:alpha:]]+")
+exportMethods(
+    "score" 
+)
+exportClasses(
+    "Package2Class" 
+)

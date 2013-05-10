@@ -1,0 +1,49 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\section{Course introduction}
+
+\begin{frame}[t]{Course introduction}
+
+\begin{block}{Course agenda}
+	\begin{itemize}
+		\item Object-oriented programming in R: S3 and S4 class systems
+		\item Package development in R: creating and documenting packages
+		\item Other advanced topics: testing, debugging, profiling, C/C++ interface, 
+		      parallel computation
+		%% \item This is an \textbf{intensive} course
+	\end{itemize}
+\end{block}
+
+\begin{block}{Objectives}
+	By the end of the course you should have created a working package written
+	in the S4 class system. 
+
+	\bigskip
+	You should be able to use the code as a template for your own work. Our
+	example has been chosen for demonstrative purposes. 
+
+\end{block}
+\end{frame}
+
+
+\begin{frame}[shrink]{Course working example: "sequences" package}
+\begin{block}{Working example}
+	We will make a simple package to handle sequence data.
+	\smallskip
+
+	This package will be able to load a FASTA file and based on sequence type
+	do some operations, like finding the sequence length or reverse sequence.
+	For simplicity we will manipulate single sequences only.
+\end{block}
+
+
+\smallskip
+
+\begin{center}
+\pgfuseimage{uml-diagram}
+
+{\small UML class diagram for the "sequences" package}
+\end{center}
+\end{frame}

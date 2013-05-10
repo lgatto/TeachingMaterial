@@ -1,0 +1,247 @@
+\documentclass{beamer}
+%% FOR HANDOUTS UNCOMMENT:
+%\documentclass[handout]{beamer}
+
+% Setup appearance:
+% \usetheme{Darmstadt}
+% \usetheme{Copenhagen}
+\usetheme{Boadilla}
+\usefonttheme[onlylarge]{structurebold}
+
+\usepackage{graphicx, color}
+\usepackage{underscore}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FOR HANDOUTS UNCOMMENT:
+%\usepackage{handoutWithNotes}
+%\pgfpagesuselayout{3 on 1 with notes}[a4paper,border shrink=5mm]
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+% Standard packages
+% \usepackage[english]{babel}
+% \usepackage[latin1]{inputenc}
+% \usepackage{times}
+% \usepackage[T1]{fontenc}
+
+\usepackage{ulem}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+\usepackage{colortbl}
+% Setup TikZ
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
+% \usecolortheme{seagull}
+\usecolortheme{seahorse}
+
+%% new commande
+\let\code=\texttt
+\let\proglang=\textsf
+
+\newcommand{\R}{\texttt{R}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+
+\newcommand{\comments}[1]{}
+
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\hypersetup{%
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+\newenvironment<>{varblock}[2][\textwidth]{%
+  \setlength{\textwidth}{#1}
+  \begin{actionenv}#3%
+    \def\insertblocktitle{#2}%
+    \par%
+    \usebeamertemplate{block begin}}
+  {\par%
+    \usebeamertemplate{block end}%
+  \end{actionenv}}
+
+
+%% Exercise counter
+\newcounter{exerciseCounter}
+\newcommand{\exerciseCount}{%
+  \stepcounter{exerciseCounter}%
+  \theexerciseCounter}
+
+\newcommand{\exercise}{\textbf{Exercise \exerciseCount:}~}
+
+% Author, Title, etc.
+\title[] 
+{
+  R Object Oriented Programming
+}
+
+\author[Stojni\'c and Gatto]
+{
+  Robert~Stojni\'c \url{rs550@cam.ac.uk} \\
+  Laurent~Gatto \url{lg390@cam.ac.uk} \\
+  ~\\
+  %Course website:\\
+  %\url{http://logic.sysbiol.cam.ac.uk/teaching/advancedR/}
+}
+
+\institute[CSBC]
+{
+%   \inst{1}%
+  Cambridge System Biology Centre \\
+  University of Cambridge \\
+  \pgfuseimage{uc-logo}
+}
+
+\date[24-25/01/2013]
+{
+  24 - 25 January 2013
+}
+
+
+\pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
+\pgfdeclareimage[height=.7cm]{ebi-logo}{./Figures/EMBLEBIlogo}
+\pgfdeclareimage[width=5.5cm]{uml-diagram}{./Figures/uml-diagram}
+%% \logo{\pgfuseimage{uc-logo}}
+
+\AtBeginSection[] % Do nothing for \section*
+{
+\begin{frame}<beamer>
+\frametitle{Plan}
+\tableofcontents[currentsection]
+\end{frame}
+}
+
+
+% The main document
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Title frame                                                 %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Disclaimer                                                  %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% \begin{frame}{}
+%%  \begin{alertblock}{Disclaimer}
+%%  \end{alertblock}
+%% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+<<knitr, echo=FALSE>>=
+library("knitr")
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
+\section*{Before we start}
+
+\begin{frame}
+  \begin{block}{General overview}
+  \begin{itemize}
+  	\item \R~object-oriented programming -- in details; 
+          after this, you should be able to tackle more complicated 
+          OO designs.
+  	%% \item Day 2: make a package with day 1's code and general 
+        %%   coding/development problem solving 
+        %%   (debugging, optimisation, ...) -- more demonstration based.
+  \end{itemize}
+  \end{block}
+  \begin{block}{Prerequisites}
+  \begin{itemize}
+  	\item good knowledge of R (data types, functions, scripting ...)
+  	%% \item basic knowledge of CLI
+  	%% \item some Latex knowledge helpful but not essential
+  	\item object-oriented programming knowledge helpful but not essential
+  \end{itemize}
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Table of contents                                           %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Plan}
+  \footnotesize
+  \tableofcontents
+\end{frame}
+
+
+\input{intro.tex}
+
+\input{revision.tex}
+
+\input{oo-intro.tex}
+
+\input{S3.tex}
+
+\input{S4.tex}
+
+\input{Ref.tex}
+
+\section*{Wrap up}
+
+\begin{frame}[fragile]
+  \begin{block}{Wrap up}
+    \begin{itemize}
+    \item Object-oriented programming paradigm.
+    \item S3 -- easy, but can get unsafe; widely used in \R.
+    \item S4 -- more verbose, but with more features (explicit classes, introspection, consistency and validity checks, multiple dispatch and inheritance, ...).
+    \item Reference classes -- pass-by-reference semantic, Java-like.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+%% % Lunch break!
+%% \begin{frame}[fragile]{Lunch break}
+%%   \begin{center}
+%%     {\Large It is time for lunch...}
+%%     \bigskip
+%%     {\large resume at 1:30pm~~~}
+%%   \end{center}
+%% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Last slide                                                  %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%\vspace{5cm}
+%% \begin{frame}
+%% \begin{block}{}
+%%  \centering
+%%  End of Day 1.
+%% \end{block}
+%% \end{frame}
+
+\end{document}

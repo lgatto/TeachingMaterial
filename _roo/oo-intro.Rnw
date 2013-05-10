@@ -1,0 +1,131 @@
+<<knitr, echo=FALSE>>=
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
+
+\section{Object-oriented (OO) Programming}
+
+% OOP basic concepts
+\begin{frame}{Object-oriented Programming (OOP)}  
+  \begin{block}{Object-oriented vs Procedural programming}
+    
+    \begin{itemize}
+    \item OOP introduced in 1970s in Smalltalk but gained wider popularity in 1990s with programming languages like C++ and Delphi
+      \bigskip
+    \item Traditional (procedural) programming - data and functions decoupled
+    \item Object-oriented programming - data and functions tied together in \textbf{objects}
+    \end{itemize}
+  \end{block}
+  
+  \begin{block}{OOP concepts}
+    \begin{itemize}
+    \item \textbf{Abstraction} - related data is stored and handled together
+    \item \textbf{Inheritance} - code reuse by hierarchy of more-to-less general object types (classes)
+    \item \textbf{Polymorphism} - the most appropriate function is called based on the dataset (e.g various \texttt{plot} functions)		
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+% explain OOP modelling on a simple example (without emphasis on syntax)
+\begin{frame}[fragile]{Procedural vs Object-oriented Programming}
+
+  \begin{columns}[t]
+    \begin{column}{0.38\textwidth}
+      Procedural programming
+      \begin{scriptsize}          
+<<procedural-area,echo=TRUE, tidy = FALSE>>=
+area <- 
+  function(x1,y1,x2,y2){
+    abs(x2-x1)*abs(y2-y1)
+  }
+area(0, 0, 5, 5)
+@ 
+\end{scriptsize}
+    \end{column}
+
+    \begin{column}{0.62\textwidth}
+      Object-oriented programming
+      \begin{scriptsize}
+<<oop-area,echo=TRUE, tidy=FALSE>>=
+setClass("Rectangle", 
+         representation = representation(
+           x1 = "numeric",
+           y1 = "numeric",
+           x2 = "numeric",
+           y2 = "numeric")
+         )
+setGeneric("area", 
+           function(obj) standardGeneric("area"))
+setMethod("area", "Rectangle", function(obj) {
+  abs(obj@x2 - obj@x1) * abs(obj@y2 - obj@y1)
+})
+rect = new("Rectangle", x1=0, y1=0, x2=5, y2=5)
+area(rect)
+@
+\end{scriptsize}
+    \end{column}
+  \end{columns}
+
+\end{frame}
+
+% S3 and S4 in R
+\begin{frame}{OOP in R (1)}
+  \begin{block}{S3}    
+    Older and less formal framework with no explicit class definitions. 
+      Many parts of base \R use S3, e.g. plotting, linear modelling, ... 
+      \begin{itemize}
+      \item limited introspection, single inheritance, single dispatch, instance-based
+      \end{itemize}
+  \end{block}
+
+  \begin{block}{S4}        
+    Full-fledged object-oriented framework, de-facto standard for most modern packages and 
+    required for Bioconductor packages.
+    \begin{itemize}
+    \item introspection, multiple inheritance, multiple dispatch (introduces a small overhead)
+    \end{itemize}
+  \end{block}
+\end{frame}
+  
+\begin{frame}[t]{OOP in R (2)}
+  \begin{block}{S4 Reference classes}
+    Introduced in \R-2.12
+    \begin{itemize}
+    \item mutable objects, single inheritance, single dispatch, fields and methods in class definition, 
+      methods associated with classes (rather than generics)
+    \end{itemize}    
+  \end{block}
+\end{frame}
+
+% Description of the working example
+\begin{frame}[t]{Course working example}
+
+  \begin{block}{Working example revisited}
+    \small
+    Working example for this course will be \textbf{manipulating DNA/RNA sequence data}.
+    \smallskip
+
+    Functions we would like to have:
+    \begin{itemize}
+    \item \code{readFasta()} - read in a single sequence from a FASTA file
+    \item \code{id(), seq()} - return the ID of sequence and the sequence (accessors)
+    \item \code{rev()} - return reverse DNA/RNA sequence
+    \item \code{length()} - return DNA/RNA sequence length
+    \item \code{comp()} - return complementary DNA/RNA sequence
+    \item \code{transcribe()} - return RNA sequence for DNA sequence	
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Goal}
+    \small
+    The final product should be an R package using S4 framework. But we need to get there, 
+    so lets start with a procedural and S3 implementation...	
+  \end{block}
+\end{frame}

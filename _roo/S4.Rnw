@@ -1,0 +1,580 @@
+<<knitr, echo=FALSE>>=
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
+\section{S4 object oriented framework}
+
+% S4 class system introduction
+\begin{frame}[t]{Introduction to S4 class system}
+
+\begin{block}{Differences of S4 class system to S3}
+\begin{small}
+\begin{itemize}
+\item \textbf{Classes are explicit} - they have slots which describe what kind of data is stored
+\item \textbf{Improved introspection} - class, method and slot introspection
+\item \textbf{Consistency checking} - can no longer assign any class name, class hierarchy is explicitly checked and reinforced 
+\item \textbf{Validity checking} - custom automatic checks of data consistency 
+\item \textbf{Multiple inheritance, multiple dispatch, virtual classes}
+\end{itemize}
+\end{small}
+
+\bigskip
+S4 class system is the de-facto standard in Bioconductor. 
+
+\end{block}
+
+\end{frame}
+
+% Defining a class in S4
+\begin{frame}[fragile]{Defining S4 classes}
+
+\begin{block}{Defining S4 class}
+  Each class in S4 needs to be defined before it can be used. At this stage data types and inheritance are specified.
+\end{block}
+
+<<GenericSeq-S4,echo=TRUE, tidy = FALSE>>=
+setClass("GenericSeq",
+         representation = representation(
+           id = "character",
+           alphabet = "character",
+           sequence =  "character"
+          ))
+@
+\end{frame}
+
+\begin{frame}[fragile]{Defining S4 classes}
+  \begin{block}{S4 class slots}
+    Slots define the {\bf names and types} of variables that are going to be
+    stored in the object. Types can be any of the basic R type or S3/S4 classes. To inspect
+    how basic R types are called use \code{class()}, e.g.    
+  \end{block}
+
+<<basic-types,echo=TRUE>>=
+class("hello")
+@
+\end{frame}
+
+%% S4 objects
+\begin{frame}[fragile]{S4 objects}
+  \begin{block}{Creating S4 objects}
+    Once we have a class definition, we can make an object by filling out the slots. 
+    We can directly access the slots using the \Rfunction{@} notation although this is discouraged.
+  \end{block}
+<<make-obj1,echo=TRUE, tidy = FALSE>>=
+genseq <- new("GenericSeq", 
+              id="sequence name", 
+              alphabet=c("A", "C", "G", "T"), 
+              sequence="AGATACCCCGAAACGA")
+@
+\end{frame}
+
+\begin{frame}[fragile]{S4 objects}
+  \begin{scriptsize}
+<<make-obj2,echo=TRUE, tidy = FALSE>>=
+genseq
+genseq@id
+slot(genseq, "id")
+@
+  \end{scriptsize}
+\end{frame}
+
+% S4 methods
+\begin{frame}[fragile]{S4 methods}
+\begin{block}{Creating S4 methods}
+  Similar to S3 we define object methods in two steps: by defining a 
+  \textbf{generic} and the \textbf{method}. 
+\end{block}
+
+<<s4-methods,echo=TRUE, tidy = FALSE>>=
+setGeneric("rev", function(x) standardGeneric("rev"))
+setMethod("rev", "GenericSeq", 
+          function(x) 
+          paste(rev(unlist(strsplit(x@sequence, ""))), 
+                collapse=""))         
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<s4-method2>>=
+rev(genseq)
+showMethods("rev")
+@   
+\end{frame}
+
+% S4 methods - getters and setters
+\begin{frame}[fragile]
+  \begin{block}{S4 accessor methods}
+    It is considered bad practice to use \Rfunction{@} in your code to access slots. 
+    It breaks the division between the internal class implementation and class usage. 
+    
+    \smallskip
+    Instead, create getter and setter methods for all slots you want to expose.
+  \end{block}
+
+<<s4-accessors,echo=TRUE, tidy=FALSE>>=
+setGeneric("id", function(object) standardGeneric("id"))
+setMethod("id", "GenericSeq", function(object) object@id)
+id(genseq)
+@
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{scriptsize}
+<<s4-accessor2, tidy = FALSE>>=
+setGeneric("id<-", 
+           function(object,value) standardGeneric("id<-"))
+setReplaceMethod("id", 
+                 signature(object="GenericSeq", 
+                           value="character"),
+                 function(object, value) {
+                   object@id <- value
+                   return(object)
+                 })
+id(genseq) <- "new sequence name"
+id(genseq)
+@   
+  \end{scriptsize}
+\end{frame}
+
+
+% S4 first batch of exercises
+\begin{frame}[fragile]{S4 introspection}
+  \begin{block}{\exercise (code: \code{04_basic_S4.R})}
+    \small
+    Try the following introspection functions: 
+  \end{block}
+<<eval = FALSE>>=
+showMethods("rev")
+getClass("GenericSeq")
+slotNames(genseq)
+getMethod("rev", "GenericSeq")
+findMethods("rev")
+isGeneric("rev")
+@ 
+\begin{block}{}
+  What do these function output? In some cases the result is an object.
+  Use the introspection functions to find out more about the results 
+  (e.g. \code{class()}, \code{getClass()},...).
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{block}{\exercise (code as above, solution: \code{05_accessors_solution.R})}
+\small
+Lets complete our \code{GenericSeq} implementation with some more methods.
+Implement getter/setter method \code{seq()} and getter only \code{alphabet()}.
+Then implement the method \code{length()} to return sequence length.
+First check if \code{"length"} is already a generic though. 
+\end{block}
+
+<<echo=FALSE>>=
+invisible({
+  setGeneric("alphabet", function(object) standardGeneric("alphabet"))
+
+  ## There is already a 'seq' method (see ?seq),
+  ## although not a generic one (see isGeneric(seq))
+  setGeneric("seq", function(...) standardGeneric("seq"))
+  setGeneric("seq<-", function(object,value) standardGeneric("seq<-"))
+  setMethod("alphabet", "GenericSeq", function(object) object@alphabet)
+  setMethod("length", "GenericSeq", function(x) nchar(x@sequence))
+  setMethod("seq", "GenericSeq", function(object,...) object@sequence)
+  
+  setMethod("seq<-", "GenericSeq",
+            function(object,value) object@sequence <- value)
+  
+  setReplaceMethod("seq",
+                   signature(object="GenericSeq",
+                             value="character"),
+                   function(object, value) {
+                     object@sequence <- value
+                   if (validObject(object))
+                     return(object)
+                   })
+})
+@
+\end{frame}
+
+% S4 further methods
+\begin{frame}[fragile,t]
+  \begin{block}{Special methods - \code{show()}}
+    You might have noticed that many object print a custom description instead of
+    a plain list of slots. We can add this functionality by setting 
+    \code{show()} and \code{print()} methods.
+  \end{block}
+
+\begin{scriptsize}
+<<s4-show, echo=TRUE>>=
+setMethod("show",
+          "GenericSeq",
+          function(object) {
+            cat("Object of class",class(object),"\n")
+            cat(" Id:",id(object),"\n")
+            cat(" Length:",length(object),"\n")
+            cat(" Alphabet:",alphabet(object),"\n")
+            cat(" Sequence:",seq(object), "\n")
+          })
+genseq
+@
+\end{scriptsize}
+
+\end{frame}
+
+% S4 methods - print
+\begin{frame}[fragile,t]
+  \begin{block}{Special methods - \code{print()}}
+    The \code{print()} function already exists, but is not an S4 generic. 
+  \end{block}
+
+\begin{scriptsize}
+<<s4-show2, echo=TRUE>>=
+setGeneric("print", function(x,...) standardGeneric("print"))
+setMethod("print", "GenericSeq",
+          function(x) {
+            sq <- strsplit(seq(x),"")[[1]]
+            cat(">", id(x), "\n", " 1  ")
+            for (i in 1:length(x)) {
+              if ((i %% 10) == 0) 
+                cat("\n", i, " ")
+              cat(sq[i])
+            }
+            cat("\n")
+          })
+@
+\end{scriptsize}
+\end{frame}
+
+\begin{frame}[fragile]
+<<s4-print>>=
+print(genseq)
+@ 
+\end{frame}
+
+% S4 methods - initialize
+\begin{frame}[fragile]
+\begin{block}{Special methods - \code{initialize()}}
+  We might need to do some special processing on object creation. We can
+  do this with a custom \code{initialize()} method. \\
+  Use named arguments with default values (otherwise class checking might fail).
+\end{block}
+
+\begin{scriptsize}
+<<initialize,echo=TRUE, tidy = FALSE>>=
+setMethod("initialize", "GenericSeq",
+    function(.Object, ..., id="", sequence="", alphabet=""){
+        .Object@id <- id
+        .Object@sequence <- toupper(sequence)
+        .Object@alphabet <- alphabet
+        callNextMethod(.Object, ...) # call parent class initialize()
+    })	
+show(new("GenericSeq", id="new seq.", alphabet=c("A", "T"), sequence="atatta"))
+@
+\end{scriptsize}
+\end{frame}
+
+
+
+% S4 inheritance
+\begin{frame}[fragile]
+  \begin{block}{Inheritance in S4 class system}
+    \begin{small}
+      Implementation of \code{GenericSeq} is finished. Now we want to
+      re-use this code and add some extra functionality for \code{DnaSeq}
+      and \code{RnaSeq}.
+      \smallskip
+      
+      We start by defining the new classes that will inherit (contain) our \code{GenericSeq} class. It
+      is good practise to provide some default (prototype) values.
+    \end{small}
+  \end{block}
+  
+  \begin{scriptsize}
+<<inheritance1, tidy = FALSE>>=
+setClass("DnaSeq",
+         contains = "GenericSeq",
+         prototype = prototype(
+           id = paste("my DNA sequence", date()),
+           alphabet = c("A", "C", "G", "T"),
+           sequence = character()))
+
+setClass("RnaSeq",
+         contains = "GenericSeq",
+         prototype = prototype(
+           id = paste("my RNA sequence", date()),
+           alphabet = c("A", "C", "G", "U"),
+           sequence = character()))
+@
+\end{scriptsize}
+\end{frame}
+
+% inheritance methods
+\begin{frame}[fragile,t]{Extending child classes with custom methods}
+  \begin{block}{Custom \code{comp()} methods in two subclasses}
+    \small
+    Now we can write the \code{comp()} method which is going to work differently
+    for DNA and RNA sequences. 
+  \end{block}
+
+\begin{scriptsize}
+<<echo=TRUE>>=
+setGeneric("comp",function(object, ...) standardGeneric("comp"))
+setMethod("comp", "DnaSeq",
+          function(object, ...) {
+            chartr("ACGT", "TGCA", seq(object))
+          })          
+setMethod("comp","RnaSeq",
+          function(object, ...) {
+            chartr("ACGU", "UGCA", seq(object))
+          })
+@
+\end{scriptsize}
+\end{frame}
+
+% Creating inherited objects
+\begin{frame}[fragile,t]
+
+\begin{block}{Creating objects of appropriate class}
+  \begin{small}
+    We could use \code{new()} to create new object instances, but it is
+    tedious and error prone. Instead, we should provide a function that
+    reads in some data and sets the right class for the data.
+  \end{small}
+\end{block}
+
+\begin{tiny}
+<<readfasta-full,echo=TRUE>>=
+readFasta <- function(infile){
+  lines <- readLines(infile)
+  header <- grep("^>", lines)
+  if (length(header)>1) {
+    warning("Reading first sequence only.")
+    lines <- lines[header[1]:(header[2]-1)]
+    header <- header[1]
+  }
+  .id <- sub("^> *","",lines[header],perl=TRUE)
+  .sequence <- toupper(paste(lines[(header+1):length(lines)],collapse=""))
+  .alphabet <- toupper(unique(strsplit(.sequence,"")[[1]]))
+  if (all(.alphabet %in% c("A","C","G","T"))) {
+    newseq <- new("DnaSeq",
+                  id=.id,
+                  sequence=.sequence)
+  } else if (all(.alphabet %in% c("A","C","G","U"))) {
+    newseq <- new("RnaSeq",
+                  id=.id,
+                  sequence=.sequence)
+  } else {
+    stop("Alphabet ",.alphabet," is unknown.")
+  }
+  return(newseq)
+}
+@ 
+\end{tiny}
+\end{frame}
+
+% Validity test
+\begin{frame}[fragile,t,shrink]
+  \begin{block}{Object validity tests}
+    \begin{small}
+      The user can still use \code{new} in an inconsistent way or change a consistent
+      object in the way that will render it inconsistent (e.g. assign 
+      an RNA sequence to an object of class \code{DnaSeq}).       
+      \smallskip
+      First lets make sure each new object is consistent, e.g. that alphabet matches sequence.
+\end{small}
+\end{block}
+
+\begin{scriptsize}
+<<validity-class,tidy=FALSE>>=
+setClass("GenericSeq",
+         representation = representation(
+           id = "character",
+           alphabet = "character",
+           sequence =  "character"),
+         validity = function(object) {
+           isValid <- TRUE
+           if (nchar(object@sequence)>0) {
+             chars <- casefold(unique(unlist(strsplit(object@sequence,""))))
+             isValid <- all(chars %in% casefold(object@alphabet))
+           }
+           if (!isValid)
+             cat("Some characters are not defined in the alphabet.\n")
+           return(isValid)
+         })
+@         
+\end{scriptsize}
+
+\end{frame}
+
+% Validity in assignment
+\begin{frame}[fragile,t,shrink]
+
+\begin{block}{Validity tests - setters}
+
+{\small Now lets make sure the user cannot render the objects
+inconsistent by modifying the object.}
+\end{block}
+
+\begin{scriptsize}
+<<validity-class2,echo=TRUE>>=
+setReplaceMethod("id",
+                 signature(object="GenericSeq",
+                           value="character"),
+                 function(object, value) {
+                   object@id <- value
+                   if (validObject(object))
+                     return(object)
+                 })
+                 
+setReplaceMethod("seq",
+                 signature(object="GenericSeq",
+                           value="character"),
+                 function(object, value) {
+                   object@sequence <- value
+                   if (validObject(object))
+                     return(object)
+                 })
+@         
+\end{scriptsize}
+
+\end{frame}
+
+% Final S4 exercises
+\begin{frame}[fragile,t]{S4 exercises}
+
+Look at the code we wrote so far and understand it. Then solve the
+following exercise.
+\bigskip
+
+\begin{block}{\exercise (code: \code{06_S4_complete.R})}
+\small
+Try again reading the supplied fasta file using \\
+~~~~~~~~~~~~\code{ x <- readFasta("aDnaSeq.fasta")} \\
+Inspect the resulting object using object introspection tools. Try to break the resulting 
+object by assigning invalid values to sequence. 
+What happens if you do: \\
+~~~~~~~~~~~~~\code{seq(x) <- "!"} \\
+and what if: \\
+~~~~~~~~~~~~~\code{x@sequence <- "!"}
+\end{block}
+
+
+\begin{block}{\exercise (code as above, solution: \code{07_transcribe_solution.R)}}
+\small
+Implement a new method \code{transcribe()} of \code{DnaSeq}. This method should take a
+\code{DnaSeq}, replace the T's with U's and return a \code{RnaSeq} object.
+\end{block}
+
+
+\bigskip
+\bigskip
+\bigskip
+<<echo=FALSE>>=
+invisible({
+setGeneric("transcribe", function(object, ...) standardGeneric("transcribe"))
+setMethod("transcribe","DnaSeq",
+          function(object, ...) {
+            .sequence <- chartr("T","U",toupper(seq(object)))
+            .id <-  paste(id(object),"-- transcribed")
+            rna <- new("RnaSeq",
+                       id=.id,
+                       alphabet=c("A","C","G","U"),
+                       sequence=.sequence)
+            if (validObject(rna))
+              return(rna)
+          })
+})
+@
+
+\end{frame}
+
+% Some final considerations
+\begin{frame}[fragile,t,shrink]{More S4 features and considerations}
+
+\begin{block}{Virtual classes}
+A class can be marked to be \textbf{virtual} so that no objects can be made,
+but it can only be inherited. In our case, we might want to mark
+\code{GenericSeq} as virtual, to do so just add parameter \code{"VIRTUAL"}
+into class \code{representation}. 
+\end{block}
+
+\begin{block}{Class unions}
+In some cases we might want a slot to contain an object from one of multiple
+unrelated classes. In that case we would create a "dummy" class to serve
+as a place holder. For this we can use \textbf{class union}, for example
+\code{setClassUnion("AOrB", c("A", "B"))} would create a new virtual
+class \code{AOrB} that is a parent class to both \code{A} and \code{B}. 
+\end{block}
+
+\end{frame}
+
+% Some final considerations
+\begin{frame}[fragile,t]{S4 operator overloading}
+  \begin{block}{Overriding operators}
+    \textbf{Operators} in R can also be overridden. For instance \code{setMethod("[", MyClass, ....)} will
+      override the subsetting operator \code{[]} for \code{MyClass} to give it custom functionality. Other operators
+      like \code{[[]]} and \code{\$} can also be overridden. 
+  \end{block}
+
+\begin{scriptsize}
+<<subsetting,tidy=FALSE>>=
+setMethod("[", 
+          signature = signature(x = "GenericSeq", 
+            i = "ANY", j = "missing"), 
+          function(x, i, j, ..., drop = TRUE) { 
+            paste(unlist(strsplit(x@sequence,""))[i], collapse="")
+          })
+genseq[1:10]
+@
+\end{scriptsize}
+
+\end{frame}
+
+% Generic clashes
+\begin{frame}[fragile]{S4 generics clashes}
+  \begin{block}{Same generic name in two packages}
+    What if two R packages, both using S4, provide a different generics definition?
+  \end{block}
+
+\begin{scriptsize}
+<<clash,echo=TRUE, eval=FALSE>>=
+# generic in package1
+setGeneric("score", function(object, ...) standardGeneric("score"))
+# generic in package2
+setGeneric("score", function(x, ...) standardGeneric("score"))	
+@
+\end{scriptsize}
+
+\begin{block}{Generics masking}
+Although the difference is only in the name of the argument we are dispatching on, the second generic
+is going to mask the first one, and any S4 methods that are defined for the first generic in package1
+will no longer work. 
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]{Mutability in S3 and S4}
+  \begin{block}{Mutability}
+    \small
+    \R~objects are not \textbf{mutable}; \R~has a \textbf{pass-by-value} semantics, 
+    consistently with functional programming semantics. 
+    Whenever\footnote{\tiny{Although, in general, \R~tries to avoid copying objects unless they are modified.}} 
+    you pass an object to a function, a copy is passed as argument; changes made to the object are local to the function call; 
+    the original object is unchanged. This is how things work for both S3 and S4 class systems. 
+  \end{block}
+\begin{scriptsize}
+<<makea, echo=FALSE>>=
+a <- new("DnaSeq",sequence="ACGTaa")
+@   
+<<mutability,echo=TRUE>>=
+seq(a)
+comp(a)
+seq(a)
+@ 
+\end{scriptsize}
+\end{frame}

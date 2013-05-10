@@ -1,0 +1,138 @@
+<<knitr, echo=FALSE>>=
+library("knitr")
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
+\section{S4 Reference Classes}
+
+\begin{frame}[fragile]{Reference classes}
+  \begin{block}{Reference classes}
+    \begin{itemize}
+      \item This paradigm uses \textbf{pass-by-reference} semantics:
+        invoking a method may modify the content of the fields.
+      \item Methods in this paradigm are associated with the object (rather than to generics)
+      \item Java-like logic.
+      \item See \texttt{?ReferenceClasses} for all the details.
+    \end{itemize}
+  \end{block}
+  \begin{example}
+\begin{verbatim}
+## here, you would have
+> a$seq() ## equivalent of seq(a)
+[1] "AGCATG"
+> a$comp()
+> a$seq()
+[1] "TCGTAC"
+\end{verbatim}
+  \end{example}
+\end{frame}
+
+
+\begin{frame}[fragile]{Reference classes - objects and fields}
+\begin{block}{Defining a reference class}
+Slots $\rightarrow$ a list of \textbf{fields}
+\end{block}
+\bigskip
+<<RefClass-1,tidy=FALSE>>=
+Seq <- setRefClass("Seq",
+                   fields = list(
+                     id = "character",
+                     alphabet = "character",
+                     sequence = "character"))
+@
+
+\begin{block}{Generator objects}
+The return value of \code{setRefClass} is a \textbf{generator object} that is used
+to construct new object of given class. 
+\end{block}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Reference classes - methods}
+  \begin{block}{Defining a reference class}
+    Methods $\rightarrow$ a list of \textbf{functions}
+  \end{block}
+\begin{scriptsize}
+<<RefClass-2, echo=TRUE, tidy = FALSE>>=
+Seq <- setRefClass("Seq",
+                   fields = list(
+                     id = "character",
+                     alphabet = "character",
+                     sequence = "character"),
+                   methods = list(
+                     comp = function() {
+                       'Complements the (DNA) sequence' ## inline docs
+                       sequence <<- chartr("ACGT","TGCA",.self$sequence)
+                       id <<- paste(.self$id, "-- complemented")                     
+                     }
+                     ## there can be more, of course
+                     ))
+
+@
+\end{scriptsize}
+
+\begin{block}{}
+  Methods can be added either directly in class definition or later by calling
+  \code{Seq\$methods(functionName = function() \{ ...code... \})}. 
+\end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{Using the reference classes}
+  \begin{block}{You also need to know that...}
+    \begin{itemize}
+    \item accessing fields and calling methods is done with the \code{\$} operator.
+    \item the current object can be referred to in a method by the reserved name \code{.self}.
+    \item Changing fields of an object within methods needs to be done with the \code{{<}{<}-} operator.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\begin{scriptsize}
+<<RefClass-example,echo=TRUE, tidy=FALSE>>=
+s <- Seq$new(id="foo", sequence="GATCATCA")
+s
+s$sequence
+s$comp()
+s$sequence
+@
+%$
+\end{scriptsize}
+\end{frame}
+
+\begin{frame}[fragile]{Reference classes}
+  \begin{block}{Suitable for...}
+    Reference classes are suitable for objects that are \textit{dynamically tracked} by all the code: 
+    GUI components, read-only access to files (streams, data bases), internet resources, 
+    editing facilities, ...
+  \end{block}
+\end{frame}
+
+%% Final Reference class exercises
+
+\begin{frame}[fragile,t]{S4 introspection and methods exercises}
+\begin{block}{\exercise (code: \code{08_seqRefClass.R})}
+We implemented some more methods using Reference Classes. Read through the methods
+and make sure you understand how they work. Then try out the test code in
+\code{08_seqRefClass.R}. What happens when we assign one Reference Class object
+to another? 
+\end{block}
+
+%% \begin{block}{\exercise}
+%% What is the result of \code{isS4(Seq)}? Can you find out more about the implementation of
+%% Reference Classes? \\
+%% {\small Tip: try \code{ls(envir=....)}}
+%% \end{block}
+
+\end{frame}
+
