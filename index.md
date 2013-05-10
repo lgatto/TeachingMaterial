@@ -11,7 +11,7 @@ hard to get started.  I hope these pages help.  (More blather below.)
 There are many resources for git and github; my aim is to provide the
 minimal guide to get started.
 
-- [Why?](pages/why.html)
+- [Why git and github?](pages/why.html)
 - [Your first time](pages/first_time.html): get github account;
   install git, set up ssh.
 - [Typical use](pages/routine.html): add, commit, push, plus status
