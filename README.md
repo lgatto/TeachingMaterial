@@ -24,7 +24,7 @@ Unless otherwise stated, all material is licensed under a [Creative Commons Attr
 - More details: https://github.com/lgatto/QuickPackage#readme
 
 ### RBasics
-- Description: A introduction to `R` for knowledgeable bioinformaticians. Used as `R` intro lecture for a Bioconductor workshop.
+- Description: A introduction to `R` for knowledgeable bioinformaticians. Used as `R` intro lecture for the [CSAMA](http://marray.economia.unimi.it/) workshop.
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/RBasics
 - More details: https://github.com/lgatto/RBasics#readme
