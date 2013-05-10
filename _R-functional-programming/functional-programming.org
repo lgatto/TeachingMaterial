@@ -1,0 +1,720 @@
+% Created 2013-05-02 Thu 11:07
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\newcommand{\Slang}{\texttt{S} }
+\newcommand{\R}{\texttt{R} }
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\usepackage[overlay,absolute]{textpos}
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+\usepackage{hyperref}
+\hypersetup{%
+pdfusetitle,
+bookmarks = {true},
+bookmarksnumbered = {true},
+bookmarksopen = {true},
+bookmarksopenlevel = 2,
+unicode = {true},
+breaklinks = {false},
+hyperindex = {true},
+colorlinks = {true},
+linktocpage = {true},
+plainpages = {false},
+linkcolor = {Blue},
+citecolor = {Blue},
+urlcolor = {Red},
+pdfstartview = {Fit},
+pdfpagemode = {UseOutlines},
+pdfview = {XYZ null null null}
+}
+\AtBeginSection{\begin{frame} \frametitle{Outline} \tableofcontents[currentsection] \end{frame}}
+\setbeamersize{text margin left=0.25cm}
+\setbeamersize{text margin right=0.25cm}
+\setbeamertemplate{navigation symbols}{}
+\usepackage{listings}
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Functional programming in \texttt{R}}
+\author{L. Gatto}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.8.11}}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+
+\newcommand{\BC}{\begin{columns}[t]}
+\newcommand{\EC}{\end{columns}}
+
+\makeatletter
+\def\DIfF^#1{%
+  \mathop{\mathrm{\mathstrut \text{d}}}%
+  \nolimits^{#1}\gobblespace}
+\makeatother
+
+%% fragwidth will measure the width of the text, and then we use
+%% it for the width of the textblock.
+\newdimen{\fragwidth}
+
+\newcommand{\mybottomleft}[1]{
+\settowidth{\fragwidth}{#1}
+\begin{textblock*}{\fragwidth}[0,0](2mm,90mm)  %% {width}(horiz, vert)
+  #1
+\end{textblock*}
+}
+
+\newcommand{\mybottomright}[1]{
+\settowidth{\fragwidth}{#1}
+\begin{textblock*}{\fragwidth}[1,0](126mm,90mm)  %% {width}(horiz, vert)
+  #1
+\end{textblock*}
+}
+
+\newcommand{\deriv}[3][]{% \deriv[<order>]{<func>}{<var>}
+  \ensuremath{\frac{\partial^{#1} {#2}}{\partial {#3}^{#1}}}}
+
+
+
+
+
+
+\section{Introduction}
+\label{sec-1}
+\begin{frame}
+\frametitle{Terminology}
+\label{sec-1-1}
+
+
+\begin{itemize}
+\item \emph{First-class functions} -- a function is a value just like any other variable. 
+  Functions can thus be used as arguments to other functions. 
+  Functions are considered \emph{first-class citizens}.
+\item \emph{Higher-order functions} -- refers to functions that take functions as 
+  parameters (input) or return functions (output).
+\end{itemize}
+
+\bigskip
+
+\begin{itemize}
+\item Illustrate cases where we
+\begin{itemize}
+\item assign functions to variables or storing them in data structures
+\item pass functions as arguments to other functions
+\item return function as the values from other functions
+\end{itemize}
+\end{itemize}
+\end{frame}
+\section{Function stored as data structures}
+\label{sec-2}
+\begin{frame}[fragile]
+\frametitle{An OO implementation}
+\label{sec-2-1}
+
+
+
+\begin{verbatim}
+L <- list(data = rnorm(5), fun = mean, res = NULL)
+L
+\end{verbatim}
+
+
+\begin{verbatim}
+
+$data
+[1]  0.1565569 -0.2507388 -0.2940839  1.4638425 -0.4700434
+
+$fun
+function (x, ...) 
+UseMethod("mean")
+<bytecode: 0x2349d68>
+<environment: namespace:base>
+
+$res
+NULL
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{An OO implementation}
+\label{sec-2-2}
+
+
+
+\begin{verbatim}
+L$res <- L$fun(L$data)
+L
+\end{verbatim}
+
+
+\begin{verbatim}
+
+$data
+[1]  0.1565569 -0.2507388 -0.2940839  1.4638425 -0.4700434
+
+$fun
+function (x, ...) 
+UseMethod("mean")
+<bytecode: 0x2349d68>
+<environment: namespace:base>
+
+$res
+[1] 0.1211067
+\end{verbatim}
+\end{frame}
+\section{Functions as input and output}
+\label{sec-3}
+\begin{frame}[fragile]
+\frametitle{Functions and function arguments}
+\label{sec-3-1}
+
+
+
+\begin{verbatim}
+10^(1:5)
+`^`(10, seq(1, 5, 1))
+\end{verbatim}
+
+\begin{verbatim}
+ [1] 1e+01 1e+02 1e+03 1e+04 1e+05
+ 
+ [1] 1e+01 1e+02 1e+03 1e+04 1e+05
+\end{verbatim}
+
+
+\begin{verbatim}
+(v <- rnorm(6))
+v[v > 0]
+`[`(v, `>`(v, 0))
+\end{verbatim}
+
+\begin{verbatim}
+ [1]  0.1433087  1.0431326  0.7330517 -1.0431603  0.5226738  0.2518947
+ 
+ [1] 0.1433087 1.0431326 0.7330517 0.5226738 0.2518947
+ 
+ [1] 0.1433087 1.0431326 0.7330517 0.5226738 0.2518947
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Functions and function arguments (recursion)}
+\label{sec-3-2}
+
+
+\begin{verbatim}
+fact <- function(x) 
+  ifelse (x == 0 | x == 1,
+          1,
+          fact(x - 1) * x)
+
+fact(3)
+fact(6)
+fact(fact(3))
+\end{verbatim}
+
+\begin{verbatim}
+ [1] 6
+ 
+ [1] 720
+ 
+ [1] 720
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Function creating functions (1)}
+\label{sec-3-3}
+
+
+
+\begin{verbatim}
+make.power <- function(n) {
+  function(x) x^n
+}
+
+cube <- make.power(3)
+square <- make.power(2)
+cube(2)
+square(2)
+\end{verbatim}
+
+\begin{verbatim}
+ [1] 8
+ [1] 4
+\end{verbatim}
+
+  
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Function creating functions (2)}
+\label{sec-3-4}
+
+
+
+\begin{verbatim}
+colramp <- colorRampPalette(c("blue", "yellow"))
+colramp
+\end{verbatim}
+
+\begin{verbatim}
+ function (n) 
+ {
+     x <- ramp(seq.int(0, 1, length.out = n))
+     rgb(x[, 1L], x[, 2L], x[, 3L], maxColorValue = 255)
+ }
+ <bytecode: 0x1da0320>
+ <environment: 0x1da1948>
+\end{verbatim}
+\end{frame}
+\begin{frame}
+\frametitle{Function creating functions (3)}
+\label{sec-3-5}
+
+
+
+
+\includegraphics[width=.9\linewidth]{fig-colorramp.pdf}
+\end{frame}
+\section{Higher-order functions}
+\label{sec-4}
+\begin{frame}[fragile]
+\frametitle{Reduce}
+\label{sec-4-1}
+
+
+\texttt{Reduce(f, x)} uses a binary function to successively combine the
+elements of a given vector and a possibly given initial value.
+
+
+\begin{verbatim}
+L <- replicate(3, matrix(rnorm(9), 3), simplify = FALSE)
+Reduce("+", L)
+try(sum(L))
+\end{verbatim}
+
+\begin{verbatim}
+ 
+            [,1]       [,2]       [,3]
+ [1,] -0.9375172  0.1751917  2.4015698
+ [2,] -2.0221494 -0.7916472  0.8566429
+ [3,]  0.6414585  2.2553825 -4.3977670
+ 
+ Error in sum(L) : invalid 'type' (list) of argument
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Reduce (2)}
+\label{sec-4-2}
+
+
+
+\begin{verbatim}
+## Using a vector to save space
+Reduce("+", list(1, 2, 3), init = 10)
+Reduce("+", list(1, 2, 3), accumulate = TRUE)
+Reduce("+", list(1, 2, 3), right = TRUE, accumulate = TRUE)
+\end{verbatim}
+
+\begin{verbatim}
+ 
+ [1] 16
+ [1] 1 3 6
+ [1] 6 5 3
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Filter and Negate}
+\label{sec-4-3}
+
+\texttt{Filter(f, x)} extracts the elements of a vector for which a predicate (logical) function gives true.
+
+\bigskip
+
+\texttt{Negate(f)}  creates the negation of a given function.
+
+
+\begin{verbatim}
+even <- function(x) x %% 2 == 0
+(y <- sample(100, 10))
+Filter(even, y)
+Filter(Negate(even), y)
+\end{verbatim}
+
+\begin{verbatim}
+ 
+  [1] 78 21 28 88 81 92 99 16 77  9
+ 
+ [1] 78 28 88 92 16
+ 
+ [1] 21 81 99 77  9
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Map}
+\label{sec-4-4}
+
+
+\texttt{Map(f, ...)} applies a function to the corresponding elements of 
+given vectors. Similar to \texttt{mapply} without any attempt to simplify.
+
+
+\begin{verbatim}
+Map(even, 1:3)
+\end{verbatim}
+
+\begin{verbatim}
+ [[1]]
+ [1] FALSE
+ 
+ [[2]]
+ [1] TRUE
+ 
+ [[3]]
+ [1] FALSE
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Find and Position}
+\label{sec-4-5}
+
+\texttt{Find(f, x)} and \texttt{Position(f, x)} give the first (or last elements) and
+its position in the vector, for which a predicate (logical) function gives true.
+
+
+\begin{verbatim}
+Find(even, 10:15)
+Find(even, 10:15, right = TRUE)
+Position(Negate(even), 10:15)
+Position(Negate(even), 10:15, right = TRUE)
+\end{verbatim}
+
+\begin{verbatim}
+ [1] 10
+ 
+ [1] 14
+ 
+ [1] 2
+ 
+ [1] 6
+\end{verbatim}
+\end{frame}
+\section{Conclusions}
+\label{sec-5}
+\begin{frame}
+\frametitle{A note on efficiency}
+\label{sec-5-1}
+
+
+Although these higher order functions are arguably elegant and allow 
+powerful constructs (see references), they come at a slight speed 
+cost compared to \texttt{mapply}, \texttt{[} and vectorised functions.
+
+\bigskip
+
+\textbf{Note:} Hadoop's \emph{MapReduce} model is a programming model for processing large data sets, 
+typically used to do distributed computing on clusters of computers.
+The model is inspired by the map and reduce functions commonly used in functional programming, 
+although their purpose in the MapReduce framework is not the same as their original forms.
+(Wikipedia, \href{http://en.wikipedia.org/wiki/MapReduce}{MapReduce})
+\end{frame}
+\begin{frame}
+\frametitle{References}
+\label{sec-5-2}
+
+\begin{itemize}
+\item R Gentleman, \emph{R Programming for Bioinformatics}, CRC Press, 2008
+\item \texttt{?Map}, or any other of the higher order functions
+\item Blog post, \emph{Higher Order Functions in R}, John Myles White 
+  \href{http://www.johnmyleswhite.com/notebook/2010/09/23/higher-order-functions-in-r/}{http://www.johnmyleswhite.com/notebook/2010/09/23/higher-order-functions-in-r/}
+\end{itemize}
+\end{frame}
+
+\end{document}
+#+LaTeX_CLASS: beamer
+#+MACRO: BEAMERMODE presentation
+
+#+BEAMER_FRAME_LEVEL: 2
+
+# Turn on org-beamer-mode; 
+#+STARTUP: beamer
+
+#+LATEX_HEADER: \newcommand{\Slang}{\texttt{S} }
+#+LATEX_HEADER: \newcommand{\R}{\texttt{R} }
+#+LATEX_HEADER: \newcommand{\Rfunction}[1]{{\texttt{#1}}}
+#+LATEX_HEADER: \newcommand{\Robject}[1]{{\texttt{#1}}}
+#+LATEX_HEADER: \newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+
+## http://lists.gnu.org/archive/html/emacs-orgmode/2009-11/msg01129.html
+#+latex: \newcommand{\BC}{\begin{columns}[t]}
+#+latex: \newcommand{\EC}{\end{columns}}
+
+#+BEGIN_LaTeX
+\makeatletter
+\def\DIfF^#1{%
+  \mathop{\mathrm{\mathstrut \text{d}}}%
+  \nolimits^{#1}\gobblespace}
+\makeatother
+
+%% fragwidth will measure the width of the text, and then we use
+%% it for the width of the textblock.
+\newdimen{\fragwidth}
+
+\newcommand{\mybottomleft}[1]{
+\settowidth{\fragwidth}{#1}
+\begin{textblock*}{\fragwidth}[0,0](2mm,90mm)  %% {width}(horiz, vert)
+  #1
+\end{textblock*}
+}
+
+\newcommand{\mybottomright}[1]{
+\settowidth{\fragwidth}{#1}
+\begin{textblock*}{\fragwidth}[1,0](126mm,90mm)  %% {width}(horiz, vert)
+  #1
+\end{textblock*}
+}
+
+\newcommand{\deriv}[3][]{% \deriv[<order>]{<func>}{<var>}
+  \ensuremath{\frac{\partial^{#1} {#2}}{\partial {#3}^{#1}}}}
+#+END_LaTeX
+
+#+LATEX_HEADER: \usepackage[overlay,absolute]{textpos}
+# SJE: should not need to specify beamertheme, if taking default.
+# +MACRO: BEAMERTHEME default
+# +MACRO: BEAMERCOLORTHEME lily
+# +MACRO: BEAMERSUBJECT R Programming
+# +MACRO: BEAMERINSTITUTE University of Cambridge
+
+# Some of my own macros.  hash at the start of the line is my
+# comment.  Macros get written as {{{macro(arg1,arg2)}}}
+# Would be nice if all the emacs hackery could be specified within
+# this file, rather than having to edit the .emacs file too.
+
+#+LATEX_HEADER: \definecolor{Red}{rgb}{0.7,0,0}
+#+LATEX_HEADER: \definecolor{Blue}{rgb}{0,0,0.8}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+LATEX_HEADER: \hypersetup{%
+#+LATEX_HEADER:   pdfusetitle,
+#+LATEX_HEADER:   bookmarks = {true},
+#+LATEX_HEADER:   bookmarksnumbered = {true},
+#+LATEX_HEADER:   bookmarksopen = {true},
+#+LATEX_HEADER:   bookmarksopenlevel = 2,
+#+LATEX_HEADER:   unicode = {true},
+#+LATEX_HEADER:   breaklinks = {false},
+#+LATEX_HEADER:   hyperindex = {true},
+#+LATEX_HEADER:   colorlinks = {true},
+#+LATEX_HEADER:   linktocpage = {true},
+#+LATEX_HEADER:   plainpages = {false},
+#+LATEX_HEADER:   linkcolor = {Blue},
+#+LATEX_HEADER:   citecolor = {Blue},
+#+LATEX_HEADER:   urlcolor = {Red},
+#+LATEX_HEADER:   pdfstartview = {Fit},
+#+LATEX_HEADER:   pdfpagemode = {UseOutlines},
+#+LATEX_HEADER:   pdfview = {XYZ null null null}
+#+LATEX_HEADER: }
+
+#+LATEX_HEADER: \AtBeginSection{\begin{frame} \frametitle{Outline} \tableofcontents[currentsection] \end{frame}}
+#+LATEX_HEADER:   \setbeamersize{text margin left=0.25cm}
+#+LATEX_HEADER:   \setbeamersize{text margin right=0.25cm}
+#+LATEX_HEADER:  \setbeamertemplate{navigation symbols}{}
+#+LATEX_HEADER:  \usepackage{listings}
+# what do these other options do? apart from toc?
+#+OPTIONS:   H:3 num:t toc:nil \n:nil @:t ::t |:t ^:t -:t f:t *:t <:t
+
+#+MACRO: ALERT \alert{$1}
+#+MACRO: FIGURE \begin{centering}\includegraphics[$2]{$1}\par \end{centering} 
+#+TITLE: Functional programming in =R=
+#+AUTHOR: L. Gatto
+
+* Introduction
+
+** Terminology
+
+- /First-class functions/ -- a function is a value just like any other variable. 
+  Functions can thus be used as arguments to other functions. 
+  Functions are considered /first-class citizens/.
+
+- /Higher-order functions/ -- refers to functions that take functions as 
+  parameters (input) or return functions (output).
+
+\bigskip
+
+- Illustrate cases where we 
+   - assign functions to variables or storing them in data structures
+   - pass functions as arguments to other functions
+   - return function as the values from other functions
+
+
+* Function stored as data structures
+
+** An OO implementation 
+
+#+begin_src R :results output :session *R* output :exports both
+  L <- list(data = rnorm(5), fun = mean, res = NULL)
+  L
+#+end_src
+
+** An OO implementation 
+
+#+begin_src R :results output :session *R* output :exports both
+  L$res <- L$fun(L$data)
+  L
+#+end_src
+
+
+* Functions as input and output
+
+** Functions and function arguments 
+
+#+begin_src R :results output :session *R* output :exports both
+  10^(1:5)
+  `^`(10, seq(1, 5, 1))
+#+end_src  
+
+#+begin_src R :results output :session *R* output :exports both
+  (v <- rnorm(6))
+  v[v > 0]
+  `[`(v, `>`(v, 0))
+#+end_src  
+
+
+** Functions and function arguments (recursion)
+#+begin_src R :results output :session *R*  :exports both  
+  fact <- function(x) 
+    ifelse (x == 0 | x == 1,
+            1,
+            fact(x - 1) * x)
+  
+  fact(3)
+  fact(6)
+  fact(fact(3))  
+#+end_src
+
+** Function creating functions (1)
+
+#+begin_src R :results output :exports both
+  make.power <- function(n) {
+    function(x) x^n
+  }
+  
+  cube <- make.power(3)
+  square <- make.power(2)
+  cube(2)
+  square(2)  
+#+end_src
+  
+** Function creating functions (2)
+
+#+begin_src R :results output :session *R*  :exports both  
+  colramp <- colorRampPalette(c("blue", "yellow"))
+  colramp
+#+end_src
+
+** Function creating functions (3)
+
+#+header: :height 5
+#+begin_src R :results graphics :session *R* :file fig-colorramp.pdf :exports results 
+  par(mfrow=c(1,2))
+  plot(1:10, col = colramp(10), pch = 19, cex = 2,
+       main = "colramp(10)")
+  plot(1:100, col = colramp(100), pch = 19, cex = 2,
+       main = "colramp(100)")
+#+end_src
+
+
+* Higher-order functions
+
+** Reduce
+
+=Reduce(f, x)= uses a binary function to successively combine the
+elements of a given vector and a possibly given initial value.
+
+#+begin_src R :results output :session *R* output :exports both
+  L <- replicate(3, matrix(rnorm(9), 3), simplify = FALSE)
+  Reduce("+", L)
+  try(sum(L))
+#+end_src
+
+** Reduce (2)
+
+#+begin_src R :results output :session *R* output :exports both
+  ## Using a vector to save space
+  Reduce("+", list(1, 2, 3), init = 10)
+  Reduce("+", list(1, 2, 3), accumulate = TRUE)
+  Reduce("+", list(1, 2, 3), right = TRUE, accumulate = TRUE)  
+#+end_src
+
+** Filter and Negate
+=Filter(f, x)= extracts the elements of a vector for which a predicate (logical) function gives true.
+
+\bigskip
+
+=Negate(f)=  creates the negation of a given function.
+
+#+begin_src R :results output :session *R* output :exports both
+  even <- function(x) x %% 2 == 0
+  (y <- sample(100, 10))
+  Filter(even, y)
+  Filter(Negate(even), y)
+#+end_src
+
+** Map
+
+=Map(f, ...)= applies a function to the corresponding elements of 
+given vectors. Similar to =mapply= without any attempt to simplify.
+
+#+begin_src R :results output :session *R* output :exports both
+Map(even, 1:3)
+#+end_src
+
+** Find and Position
+=Find(f, x)= and =Position(f, x)= give the first (or last elements) and
+its position in the vector, for which a predicate (logical) function gives true.
+
+#+begin_src R :results output :session *R* output :exports both
+  Find(even, 10:15)
+  Find(even, 10:15, right = TRUE)
+  Position(Negate(even), 10:15)
+  Position(Negate(even), 10:15, right = TRUE)
+#+end_src
+
+
+* Conclusions
+** A note on efficiency
+
+Although these higher order functions are arguably elegant and allow 
+powerful constructs (see references), they come at a slight speed 
+cost compared to =mapply=, =[= and vectorised functions.
+
+\bigskip
+
+*Note:* Hadoop's /MapReduce/ model is a programming model for processing large data sets, 
+typically used to do distributed computing on clusters of computers.
+The model is inspired by the map and reduce functions commonly used in functional programming, 
+although their purpose in the MapReduce framework is not the same as their original forms.
+(Wikipedia, [[http://en.wikipedia.org/wiki/MapReduce][MapReduce]])
+
+** References
+- R Gentleman, /R Programming for Bioinformatics/, CRC Press, 2008
+- =?Map=, or any other of the higher order functions
+- Blog post, /Higher Order Functions in R/, John Myles White 
+  http://www.johnmyleswhite.com/notebook/2010/09/23/higher-order-functions-in-r/
