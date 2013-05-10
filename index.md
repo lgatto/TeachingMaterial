@@ -22,7 +22,7 @@ minimal guide to get started.
 - [Handling merge conflicts](pages/merge_conflicts.html).
 - [Oops; that last commit message was wrong](pages/amend_commit_msg.html).
 - [Exploring the code and its history](pages/exploring_code.html).
-- [Other (much more thorough) resources](pages/resources).
+- [Other (much more thorough) resources](pages/resources.html).
 
 I love git and github.  I
 use both for keeping track of programming projects, papers, talks, and
