@@ -7,7 +7,7 @@ tagline: A minimal tutorial on make
 I would argue that the most important tool for reproducible research
 is not [Sweave](http://www.stat.uni-muenchen.de/~leisch/Sweave/) or 
 [knitr](http://yihui.name/knitr/) but
-*[make](http://www.gnu.org/software/make)* (cf
+*[GNU make](http://www.gnu.org/software/make)* (cf
 [rake](http://rake.rubyforge.org)).
 
 Consider, for example, all of the files associated with a manuscript.
@@ -26,19 +26,74 @@ changed.
 
 ### A simple example
 
-[make](http://www.gnu.org/software/make) makes this easy.  In your
+[GNU make](http://www.gnu.org/software/make) makes this easy.  In your
 directory for the manuscript, you create a text file called `Makefile`
-that looks something like the following (here using
+that looks something like [the following](assets/Makefile) (here using
 [pdflatex](http://www.tug.org/applications/pdftex/)).
 
     mypaper.pdf: mypaper.bib mypaper.tex Figs/fig1.pdf Figs/fig2.pdf
-        latex mypaper
-        bibtex mypaper
-        latex mypaper
-        latex mypaper
+    	latex mypaper
+    	bibtex mypaper
+    	latex mypaper
+    	latex mypaper
 
     Figs/fig1.pdf: R/fig1.R
     	cd R;R CMD BATCH fig1.R fig1.Rout
 
     Figs/fig2.pdf: R/fig2.R
     	cd R;R CMD BATCH fig2.R fig2.Rout
+
+Each batch of lines indicates a file to be created (the _target_), the files it
+depends on (the _dependencies_), and then a set of commands needed to
+construct the target from the dependent files.  Note that the lines
+with the commands _must_ start with a tab character.  
+
+One oddity: if you need to change directories to run a command, do
+the `cd` on the same line as the related command.  The following
+_*would not work*_:
+
+    Figs/fig1.pdf: R/fig1.R    ### this doesn't work ###
+    	cd R
+    	R CMD BATCH fig1.R fig1.Rout
+
+Another great feature: in the example above, you'd only build
+`fig1.pdf` when `fig1.R` changed.  And note that the dependencies
+propagate.  If you change `fig1.R`, then `fig1.pdf` will change, and
+so `mypaper.pdf` will be re-built.
+
+### Using GNU make
+
+You probably already have make installed on your computer.  Type
+`make` in a terminal to see.
+
+To use make:
+
+- Go into the the directory for your project.
+- Create the `Makefile` file.
+- Every time you want to build the project, type `make`.
+- In the example above, if you want to build `fig1.pdf` without
+  building `mypaper.pdf`, just type `make fig1.pdf`.
+
+### More complicated examples
+
+There are complicated Makefiles all over the place.  Poke around
+[github](http://github.com) and study them.
+
+Here are some of my own examples:
+
+- [Makefile](https://github.com/kbroman/ailProbPaper/blob/master/Makefile)
+  for my [AIL probabilities paper](http://www.g3journal.org/content/2/2/199.long)
+
+- [Makefile](https://github.com/kbroman/phyloQTLpaper/blob/master/Makefile)
+  for
+  [my phylo QTL paper](http://www.genetics.org/content/192/1/267.full)
+  
+- [Makefile](https://github.com/kbroman/preCCProbPaper/blob/master/Makefile)
+  for my
+  [pre-CC probabilities paper](http://www.genetics.org/content/190/2/403.full)
+
+- [Makefile](https://github.com/kbroman/Talk_InteractiveGraphs1/blob/master/Makefile) 
+  for a [talk on interactive graphs](http://www.biostat.wisc.edu/~kbroman/talks/InteractiveGraphs/).
+
+- [Makefile](https://github.com/kbroman/Talk_FunQTL/blob/master/Makefile)
+  for a [talk on QTL mapping for function-valued traits](http://www.biostat.wisc.edu/~kbroman/talks/FunQTL/).
