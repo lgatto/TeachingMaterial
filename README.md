@@ -65,3 +65,14 @@ Unless otherwise stated, all material is licensed under a [Creative Commons Attr
 - Original repository: https://github.com/lgatto/roo
 - More details: https://github.com/lgatto/roo#readme
 
+### R package development
+- Description: Developing. documenting and testing an `R` package
+- Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
+- Original repository: https://github.com/lgatto/RPackageDevelopment
+- More details: https://github.com/lgatto/RPackageDevelopment#readme
+
+### sequences
+- Description: Educational package used in `R` to illustrate OO programming and package development
+- Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
+- Original repository: https://github.com/lgatto/sequences
+- More details: https://github.com/lgatto/sequences/blob/master/DESCRIPTION
