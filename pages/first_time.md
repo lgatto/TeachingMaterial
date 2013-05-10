@@ -38,7 +38,7 @@ but repeated here for completeness.
   - Copy your public key into your clipboard: In the terminal/shell, type:
   
     ````
-    $ pbcopy < ~ /.ssh/id_rsa.pub
+    $ pbcopy < ~/.ssh/id_rsa.pub
     ````
 
 - Paste your ssh public key into your github account settings.
