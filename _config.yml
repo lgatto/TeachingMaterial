@@ -8,15 +8,15 @@ pygments: true
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : git/github guide
+title : minimal make
 author :
   name : Karl Broman
   email : kbroman@gmail.com
   github : kbroman
   twitter : kwbroman
-  feedburner : nill
+  feedburner : nil
 
-production_url : http://kbroman.github.io/github_tutorial
+production_url : http://kbroman.github.io/minimal_make
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
@@ -45,7 +45,7 @@ JB :
   #   - Only the following values are falsy: ["", null, false]
   #   - When setting BASE_PATH it must be a valid url.
   #     This means always setting the protocol (http|https) or prefixing with "/"
-  BASE_PATH : http://kbroman.github.io/github_tutorial
+  BASE_PATH : http://kbroman.github.io/minimal_make
 
   # By default, the asset_path is automatically defined relative to BASE_PATH plus the enabled theme.
   # ex: [BASE_PATH]/assets/themes/[THEME-NAME]

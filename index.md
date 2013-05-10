@@ -1,49 +1,44 @@
 ---
 layout: page
-title: git/github guide
-tagline: Karl's minimal tutorial
+title: Minimal make
+tagline: A minimal tutorial on make
 ---
 
-All statistical/computational scientists should use
-[git](http://git-scm.com) and [github](http://github.com), but it can be
-hard to get started.  I hope these pages help.  (More blather below.)
+I would argue that the most important tool for reproducible research
+is not [Sweave](http://www.stat.uni-muenchen.de/~leisch/Sweave/) or 
+[knitr](http://yihui.name/knitr/) but
+*[make](http://www.gnu.org/software/make)* (cf
+[rake](http://rake.rubyforge.org)).
 
-There are many resources for git and github; my aim is to provide the
-minimal guide to get started.
+Consider, for example, all of the files associated with a manuscript.
+In the simplest case, I would have an [R](http://r-project.org)
+scripts for each figure plus a [LaTeX](http://www.latex-project.org)
+file for the main text.  And then a [BibTeX](http://www.bibtex.org)
+file.
 
-- [Why?](pages/why.html)
-- [Your first time](pages/first_time.html): get github account;
-  install git, set up ssh.
-- [Typical use](pages/routine.html): add, commit, push, plus status
-  and diff.
-- [Start a new repository](pages/init.html): from scratch, or with an
-  existing project.
-- [Contribute to someone's repository](pages/fork.html): fork.
-- [Handling merge conflicts](pages/merge_conflicts.html).
-- [Oops; that last commit message was wrong](pages/amend_commit_msg.html).
-- [Exploring the code and its history](pages/exploring_code.html).
-- [Other (much more thorough) resources](pages/resources.html).
+Compiling the final PDF is a bit of work: 
 
-I love git and github.  I
-use both for keeping track of programming projects, papers, talks, and
-data analyses.  And github has enabled me to
-contribute at least minor things to others' projects, like the
-[D phobos library](https://github.com/D-Programming-Language/phobos)
-and [d3-tip](https://github.com/Caged/d3-tip).
+- Run each R script through R to produce the relevant
+- Run latex and then bibtex and then latex a couple of more times.
 
-I use git mostly from the command line on a Mac.  I use the github
-site to explore others' code, make pull requests, and indicate issues.
+And the R scripts need to be run before latex is, and only if they've
+changed.
 
-I would like all of my statistical/computational collaborators to use
-git and github, so that we
-may collaborate more easily.  But for
-statisticians with no history of use of version control, it can be
-hard to get started.  This is a tutorial of sorts, to help.
+### A simple example
 
-[Pjotr Prins](http://www.thebird.nl) got me to move from subversion to
-git, but don't hold him responsible for any
-errors in my understanding.
+[make](http://www.gnu.org/software/make) makes this easy.  In your
+directory for the manuscript, you create a text file called `Makefile`
+that looks something like the following (here using
+[pdflatex](http://www.tug.org/applications/pdftex/)).
 
-If you have suggestions for changes or improvements, fork
-[the repo](http://github.com/kbroman/github_tutorial): Follow the
-instructions above, &ldquo;[Contribute to someone's repository](pages/fork.html).&rdquo;
+    mypaper.pdf: mypaper.bib mypaper.tex Figs/fig1.pdf Figs/fig2.pdf
+        latex mypaper
+        bibtex mypaper
+        latex mypaper
+        latex mypaper
+
+    Figs/fig1.pdf: R/fig1.R
+    	cd R;R CMD BATCH fig1.R fig1.Rout
+
+    Figs/fig2.pdf: R/fig2.R
+    	cd R;R CMD BATCH fig2.R fig2.Rout
