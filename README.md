@@ -5,7 +5,7 @@ This repository is an aggregator for various teaching material used by several p
 Most of the course are taught at the University of Cambridge, UK, and some have been adapted and exported outside. 
 Each material subdirectory has its own repository; `TeachingMaterial` aggregates a snapshot as a central entry point. 
 Aggregation is done using `git-subtree` and will be documented soon. 
-The local copies are external repositories are prefixed with and underscore. 
+The local copies linking to external repositories are prefixed with and underscore. 
 
 Unless otherwise stated, all material is licensed under [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/) CC-BY-SA.
 
