@@ -25,7 +25,6 @@ minimal guide to get started.
 - [Branching and merging](pages/branching.html).
 - [Other (much more thorough) resources](pages/resources.html).
 
-
 I love git and github.  I
 use both for keeping track of programming projects, papers, talks, and
 data analyses.  And github has enabled me to
