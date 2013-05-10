@@ -5,7 +5,7 @@ title: Start a new git repository
 
 Your first instinct, when you start to do something new, should be
 `git init`.  You're starting to write a new paper, you're writing a
-bit of code to do a computer simulation, you mucking around with some
+bit of code to do a computer simulation, you're mucking around with some
 new data ... _anything_: think `git init`.
 
 ### A new repo from scratch
@@ -29,8 +29,8 @@ the project.
 
 ### A new repo from an existing project
 
-Say you've got an existing project on which you've not been using
-version control, and you want to start.
+Say you've got an existing project that you want to start tracking
+with git.
 
 - Go into the directory containing the project.
 - Type `git init`.
