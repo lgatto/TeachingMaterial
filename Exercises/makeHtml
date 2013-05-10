@@ -1,0 +1,22 @@
+#! /usr/local/bin/Rscript
+
+args <- commandArgs()
+args <- args[-(1:match("--args", args))]
+
+if (length(args) == 0) {
+  message("Provide at least one 'Rmd' file as argument")
+  q()
+}
+
+library('knitr')
+library('markdown')
+
+for (rmd in args) {
+  .rmd <- rmd
+  .html <- sub("Rmd", "html", rmd)
+  .md <- sub("Rmd", "md", rmd)
+  knit(rmd, tangle = TRUE)
+  knit(rmd, tangle = FALSE)
+  markdownToHTML(.md, .html)
+  unlink(.md)
+}
