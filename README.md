@@ -12,6 +12,12 @@ Unless otherwise stated, all material is licensed under [Creative Commons Attrib
 
 ## Material
 
+### spr
+- Descrition: Scientific Programmign with R, MPhil in Computational Biology
+- Author: [Stephen Eglen](http://www.damtp.cam.ac.uk/user/sje30/) with contributions from [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/spr
+- More details: https://github.com/lgatto/spr#readme
+
 ### QuickPackage
 - Description: A very brief overview of R package creation
 - Author: [Laurent Gatto](https://github.com/lgatto)
