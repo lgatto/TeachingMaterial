@@ -112,3 +112,5 @@ see John on twitter as [@StrictlyStat](https://twitter.com/StrictlyStat), plus [
 - O'Reilly
   [Managing projects with GNU make](http://oreilly.com/catalog/make3/book/)
   book (part of the [Open Books project]http://oreilly.com/openbook/)
+
+- [Software carpentry](http://software-carpentry.org/)'s [make tutorial](http://software-carpentry.org/4_0/make/index.html)
