@@ -1,0 +1,349 @@
+<<knitr, echo=FALSE>>=
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
+
+\section{S3 object oriented framework}
+
+% input to readFasta()
+\begin{frame}[fragile]
+
+\begin{block}{\code{readFasta()} input file}
+We will start with the implementation of \code{readFasta()}. This function should load the data 
+from a FASTA file and somehow represent it in \R. 
+\bigskip
+
+A sample FASTA file:
+\begin{Verbatim}[frame=single, xleftmargin=5mm, xrightmargin=5mm]
+> example dna sequence
+agcatacgacgactacgacactacgacatcagacactacagactactac
+gactacagacatcagacactacatatttacatcatcagagattatatta
+acatcagacatcgacacatcatcatcagcatcat
+\end{Verbatim}
+\smallskip
+\end{block}
+
+\begin{block}{Sequence description}
+Notice that a sequence is described by the: 
+\begin{itemize}
+	\item name (\code{example dna sequence})
+	\item nucleotide sequence
+	\item sequence alphabet (in case of DNA ATGC, for RNA AUGC)
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+% simple readFasta()
+\begin{frame}[fragile]{Naive \code{readFasta()} implementation}
+  \begin{block}{readFasta() implementation}
+    Read in a sequence from FASTA file and return the \code{id, sequence} and \code{alphabet} in a list:
+  \end{block}
+
+\begin{scriptsize}
+<<readFasta-S3, echo=TRUE>>=
+readFasta <- function(infile){
+  lines <- readLines(infile)
+  header <- grep("^>", lines) 
+  if ( length(header) > 1 ) {
+    warning("Reading first sequence only.")
+    lines <- lines[header[1]:(header[2]-1)]
+    header <- header[1]
+  }  
+  id <- sub("^> *","",lines[header],perl=TRUE)
+  sequence <- toupper(paste(lines[(header+1):length(lines)],collapse=""))
+  alphabet <- unique(strsplit(sequence,"")[[1]])  
+  return.value <- list(id=id, sequence=sequence, alphabet=alphabet)
+  class(return.value) <- "GenericSeq"  
+  return.value
+}
+@
+\end{scriptsize}
+\end{frame}
+
+% inspect S3 objects and introduce methods
+
+\begin{frame}[fragile]{S3 objects}
+  \begin{scriptsize}
+<<readFasta-use,echo=TRUE>>=
+s <- readFasta("aDnaSeq.fasta")
+s
+names(s)
+@
+\end{scriptsize}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{S3 object definition}
+    \begin{itemize}
+    \item Any variable that has a "\code{class}" attribute is an S3 object. 
+    \item Now we can write class-specific functions - \textbf{methods}.
+    \end{itemize}
+\end{block}
+\end{frame}
+
+% S3 dispatch example for summary()
+
+\begin{frame}[fragile]{S3 generics and dispatch}
+\begin{scriptsize}
+<<generics,echo=TRUE>>=
+x <- c(1, 4, 2, 1, 4, 2)
+summary(x)
+summary
+@
+\end{scriptsize}
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{scriptsize}
+<<generics2,echo=TRUE>>=
+methods(summary)
+@
+\end{scriptsize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{S3 dispatch}
+    Since \code{summary()} is marked as a generic function, \R is looking at \Rfunction{class()} of the first argument 
+    of \texttt{summary()} and based on it calls a function of name \code{summary.className()}. Since 
+    \texttt{summary.numeric()} does not exist, it calls \texttt{summary.default()}
+  \end{block}
+
+\begin{scriptsize}
+<<generics3,echo=TRUE>>=
+x <- c(1, 4, 2, 1, 4, 2)
+class(x)
+summary(x)
+summary.default(x)
+@
+\end{scriptsize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\begin{scriptsize}
+<<generics4,echo=TRUE>>=
+y <- table(c(0, 1, 1, 0), c(1, 0, 1, 1))
+class(y)
+summary(y)
+summary.table(y)
+@
+\end{scriptsize}
+\end{frame}
+
+
+% Methods in S3
+\begin{frame}[fragile]{S3 methods}
+  \begin{block}{Methods: class-specific functions}
+    \small
+    Lets write the \code{id()} method that will return the sequence id. 
+    There are two parts to defining a class-specific function (\textbf{method}): 
+    \begin{itemize}
+    \item Defining a generic function
+    \item Defining the class method
+    \end{itemize}
+  \end{block}
+
+<<def-id,echo=TRUE>>=
+id <- function(x){ UseMethod("id") } # generic
+id.GenericSeq <- function(x){ x$id } # method
+id(s)
+@
+%$
+\end{frame}
+
+\begin{frame}{S3 methods}
+  \begin{block}{S3 methods mechanism}
+    \small
+    \textbf{Generic function} has the desired function name and contains only one command 
+    \code{UseMethod("functionName")} called a \textbf{dispatch command}. This command based
+    on the first parameter's class calls an appropriate function of format \code{functionName.className}.
+    If such function doesn't exist \code{functionName.default} is called.
+  \end{block}  
+\end{frame}
+
+% seq() function
+\begin{frame}[fragile]{Adding to existing S3 generics}
+  \begin{block}{The \Rfunction{seq()} method}
+    Now consider the \code{seq()} function. This function already exists (try \code{?seq}). We would like to
+    retain this old function, but also add our \code{seq()} that return the DNA/RNA sequence.
+    \bigskip
+    The \code{seq()} function is \textbf{already a generic}. We don't need to redefine it. 
+  \end{block}
+
+  \begin{scriptsize}  
+<<seq-investigate, echo=TRUE>>=
+seq
+methods("seq")
+@
+  \end{scriptsize}
+\end{frame}
+
+\begin{frame}[fragile]
+  Our \Robject{GenericSeq}-sepcific \Rfunction{seq} method
+<<def-seq,echo=TRUE>>=
+seq.GenericSeq <- function(x){ x$sequence }
+seq(s)
+@
+%$
+\end{frame}
+
+\begin{frame}[t]{S3 methods exercises}
+\small
+Look at the code we have written so far, understand it, and then solve
+the following exercise.
+
+\begin{block}{\exercise}
+\small
+Explore some of the built-in generics and methods. Try the following commands:\\
+\smallskip
+\code{methods("summary")}\\
+\code{methods(class="lm")}\\
+\end{block}
+
+
+\begin{block}{\exercise (code:\code{02_GenericSeq.R}, solution:\code{02_GenericSeq_solution.R})}
+\small
+Both \code{length()} and \code{rev()} are already generic functions,
+but \code{alphabet()} is not. 
+Add these methods for class \code{GenericSeq}:
+\begin{itemize}
+	\item \code{length()} should return the length of the DNA/RNA sequence
+	\item \code{alphabet()} should return the alphabet of the sequence
+	\item \code{rev()} should return the sequence in reverse ({\scriptsize Hint:
+	try to use functions \code{strsplit()} and the existing base \code{rev()} function}).
+\end{itemize}
+\end{block}
+
+\comments{
+<<exercise2,echo=FALSE>>=
+invisible(alphabet <- function(x) UseMethod("alphabet"))
+invisible(alphabet.GenericSeq <- function(x) x$alphabet)
+
+invisible(rev <- function(x) UseMethod("rev"))
+invisible(rev.GenericSeq <- function(x) paste(rev(unlist(strsplit(x$sequence, ""))), collapse=""))
+@
+}
+
+\end{frame}
+
+% Introduce S3 inheritance
+\begin{frame}[fragile]{S3 inheritance}
+
+\begin{block}{Reusing class methods}
+So far we have written methods for \code{GenericSeq} that work with any sequence type.
+Now lets introduce a new class \code{DnaSeq}. We want to \textbf{inherit}
+all methods from \code{GenericSeq} - to achieve this simply set the \code{class}
+attribute to all applicable class names. 
+\end{block}
+
+\smallskip
+\begin{scriptsize}
+<<seq-type,echo=TRUE>>=
+setSeqSubtype <- function(s){
+  if (all( alphabet(s) %in% c("A","C","G","T") )) {
+    class(s) <- c("DnaSeq", "GenericSeq")  
+  } else if (all( alphabet(s) %in% c("A","C","G","U") )) {
+    class(s) <- c("RnaSeq", "GenericSeq")
+  } else {
+    stop("Alphabet ", alphabet(s) ," is unknown.")
+  }
+  
+  return(s)
+}
+s.dna <- setSeqSubtype(s)
+class(s.dna)
+@
+
+\end{scriptsize}
+
+\end{frame}
+
+% define the DnaSeq function and show how it works
+\begin{frame}[fragile]{S3 inheritance continued}
+  \begin{block}{\code{DnaSeq} methods}
+    \small
+    Define a \code{DnaSeq} method \code{comp()}. All \code{GenericSeq} methods still work with \code{DnaSeq} objects, but
+    the \code{comp()} only works with \code{DnaSeq}.
+  \end{block}
+
+<<comp,echo=TRUE>>=
+comp <- function(x){ UseMethod("comp") }
+comp.DnaSeq <- function(x) chartr("ACGT", "TGCA", seq(x))
+@
+\end{frame}
+
+\begin{frame}[fragile]{S3 inheritance continued}
+<<inheritance,echo=TRUE>>=
+id(s) # works on GenericSeq
+id(s.dna) # works on DnaSeq, GenericSeq
+comp(s) # fails with error
+comp(s.dna)
+@
+\end{frame}
+
+\begin{frame}[fragile]{S3 inheritance continued}
+  \begin{block}{S3 dispatch and inheritance}
+    The dispatching will look for appropriate methods for all \code{x} (sub-)classes
+    (in order in which they are set).
+  \end{block}
+\end{frame}
+
+% S3 inheritance exercise
+\begin{frame}[t]{S3 inheritance exercise}
+
+Look at the inheritance code and understand how it works. Then solve the following exercise.
+
+\begin{block}{\exercise (code: \code{03_inherit.R}, solution: \code{03_inherit_solution.R})}
+Write the \code{comp()} method for \code{RnaSeq} class. Since we don't have a RNA FASTA
+file you will have to make a new \code{RnaSeq} object by hand and assign the right classes
+to test your code. 
+
+\bigskip
+What do you notice about the S3 class system, is it easy to make mistakes? Could you also make
+your RNA sequence to be of class "\code{lm}"?
+
+\end{block}
+
+\end{frame}
+
+% final S3 revision
+\begin{frame}
+
+\begin{block}{S3 class system revision}
+\smallskip
+\begin{small}
+\begin{itemize}
+	\item Classes are implicit (no formal class definition)
+	\item Making new objects is done by simply setting the \code{class} attribute
+	\item Making class methods is done by defining a generic function \code{functionName()} and a normal function \code{functionName.className()}. 
+	Methods can be retrieved using the \code{methods()} function.
+	\item Objects can inherit multiple classes by setting the \code{class} attribute to a vector of class names
+	\item Many functions in base R use the S3 system
+	\item Easy to make new ad-hoc classes and objects, but also mistakes and inconsistencies
+\end{itemize}
+\end{small}
+\bigskip
+
+The S4 class system is designed to address some of these concerns. 
+
+\end{block}
+
+\end{frame}
+
+%% % Coffee break!
+%% \begin{frame}[fragile]{But before we continue...}
+%%   \begin{center}
+%%     {\Large It is time for morning coffee...}
+%%     \bigskip
+%%     (15 minute break)
+%%   \end{center}
+%% \end{frame}

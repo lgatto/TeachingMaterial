@@ -1,0 +1,170 @@
+<<knitr, echo=FALSE>>=
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+  
+\section{Revision of basic R}
+
+\begin{frame}{Basic R functions (size reflects frequency of usage)}
+\begin{center}
+  \includegraphics[height=0.8\textheight, keepaspectratio=true]{./Figures/functionCloud.png}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Defining functions in R}
+Simple function with 4 arguments:  
+\begin{scriptsize} 
+<<function-example, echo=TRUE>>=
+# Function to calculate area of rectangle
+area <- function(x1, y1, x2, y2){
+  abs(x2-x1) * abs(y2-y1)
+}
+area(0, 0, 5, 5)
+@ 
+\end{scriptsize}
+
+Special argument "..." for any:
+
+\begin{scriptsize} 
+<<function-example2, echo=TRUE>>=
+# Plot with a message before the plot
+plotMsg <- function(x, y, ...){
+	cat("Plotting", length(x), "data points!\n")
+	plot(x, y, ...)
+}
+@ 
+\end{scriptsize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Output of plotMsg()}
+\begin{scriptsize}
+\setkeys{Gin}{height=0.7\textheight,keepaspectratio=true}
+<<label=plotmsg, echo=TRUE, tidy=FALSE>>=
+plotMsg(1:10, 1:10, main="My plot")
+@
+\end{scriptsize}
+\end{frame}
+
+%%% Useful functions
+
+\begin{frame}[fragile]{Useful R function 1/2}
+	\begin{itemize}
+	\item readLines() - reads raw lines of text from a file
+	\item nchar() - gives number of characters in a string
+\begin{scriptsize} 
+<<echo=TRUE>>=
+nchar("Some text")
+@
+\end{scriptsize}
+	\item strsplit() - split a string by some separator
+\begin{scriptsize} 
+<<echo=TRUE>>=
+strsplit("Some text", " ")
+strsplit("Some text", "")
+@
+\end{scriptsize}
+	\item unique() - unique elements of a vector
+\begin{scriptsize} 
+<<echo=TRUE>>=
+unique(c(1, 1, 2, 2, 3))
+unique(c("a", "b", "a"))
+@
+\end{scriptsize}
+
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Useful R function 2/2}
+	\begin{itemize}
+	\item \code{grep()} - find which elements of vector match regular expression
+\begin{scriptsize} 
+<<echo=TRUE>>=
+grep("[AT]+", c("CGC", "TAT", "TATCATA"))
+@
+\end{scriptsize}
+
+	\item \code{sub()} - replace matches to regular expression
+\begin{scriptsize} 
+<<echo=TRUE>>=
+sub("[AT]+", "-", c("CGC", "TAT", "TATCATA")) 
+@
+\end{scriptsize}
+
+	\item \code{chartr()} - translate a string by replacing individual characters
+\begin{scriptsize} 
+<<echo=TRUE>>=
+chartr("TA", "AT", "TATCTA")
+@
+\end{scriptsize}
+
+	\item \code{rev()} - reverse ordering in a vector
+\begin{scriptsize} 
+<<echo=TRUE>>=
+rev(c("TAT", "ATT", "TTT"))
+@
+\end{scriptsize}
+
+	\item \code{paste()} - concatenate variables into a string representation
+\begin{scriptsize} 
+<<echo=TRUE>>=
+paste(c("A", "T", "A"), collapse="")
+@
+\end{scriptsize}
+
+	\end{itemize}
+\end{frame}
+
+
+%%% Revision of R lists
+
+\begin{frame}[fragile]{Lists in R}
+List is a data structure that can hold a vector of any other variables.
+\bigskip
+\begin{scriptsize} 
+<<lists,echo=TRUE>>=
+x <- list(a=10, b="text")
+x$a
+x[["b"]]
+x[[1]]
+names(x)
+@
+%$
+\end{scriptsize}
+\end{frame}
+
+%%% Everything is object
+
+\begin{frame}[fragile]{Everything in R has a class}
+Everything in R has a type - in object oriented programming called a \textbf{class}.
+\small
+\begin{scriptsize} 
+<<everythingobj,echo=TRUE>>=
+class(c(1, 2, 3))
+class("Some text")
+class(matrix(0, nrow=10, ncol=10))
+class(plot)
+class(table(1:4, 1:4))
+@
+\end{scriptsize}
+
+\end{frame}
+
+\begin{frame}{Recommended coding standards}
+  \begin{block}{Coding standards}
+    \begin{itemize}
+    \item Use \texttt{<-} for assignment rather than \texttt{=}.
+    \item Avoid long lines (80 characters).
+    \item Use spaces for identation (2 or 4).
+    \item No semi-colomns (unless you have several expression in a line).
+    \item Start names with upper case for classes, lower for the rest.
+    \item Use syntax highlighting
+    \end{itemize}
+  \end{block}
+\end{frame}
