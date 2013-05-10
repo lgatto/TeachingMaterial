@@ -12,8 +12,9 @@ There are many resources for git and github; my aim is to provide the
 minimal guide to get started.
 
 - [Why?](pages/why.html)
-- [Your first time](pages/first_time.html): get account; set up ssh
-- Typical use: add, commit, push
+- [Your first time](pages/first_time.html): get github account;
+  install git, set up ssh.
+- [Typical use](pages/routine.html): status, add, commit, push
 - Start new repository: from scratch; using current project
 - [Contribute to someone's repository](pages/fork.html)
 - I want to fix a bug in someone's project
