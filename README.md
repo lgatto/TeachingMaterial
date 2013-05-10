@@ -14,7 +14,7 @@ Unless otherwise stated, all material is licensed under [Creative Commons Attrib
 
 ### QuickPackage
 - Author: [Laurent Gatto](https://github.com/lgatto)
-- Original repository: [https://github.com/lgatto/QuickPackage]
-- More details: [https://github.com/lgatto/QuickPackage#readme]
+- Original repository: https://github.com/lgatto/QuickPackage
+- More details: https://github.com/lgatto/QuickPackage#readme
 
 More to come soon.
