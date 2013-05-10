@@ -24,10 +24,10 @@ can look at what they're working on and easily peruse their
 code and make suggestions or changes.
 
 _It's really open source._ &ldquo;Open source&rdquo; is not so open if
-you can't easily study it.  With github, all of the code easily
+you can't easily study it.  With github, all of the code is easily
 inspected, as is its entire history.
 
-_Github lowers the barriers to collaboration._  It's dead easy to
+_Github lowers the barriers to collaboration._  It's easy to
 offer suggested changes to others' code through github.  I was able to
 [fix a mistake](https://github.com/D-Programming-Language/phobos/commit/903a5e821a54a7dc5a2695e47db3abe2517742fe)
 in the
@@ -38,7 +38,8 @@ github.  I
 in some very useful code developed by someone I don't know, because
 it's hosted on github.
 
-_You don't have to set up a git server._ 
+_You don't have to set up a git server._ It's surprisingly easy
+[first_time.md](to get things set up).
 
 
 ### Peruse repositories
