@@ -1,0 +1,55 @@
+\section{About \R}
+
+\begin{frame}[fragile]
+  \begin{block}{Today's topics}
+    \begin{itemize}
+    \item The \emph{command line interface} is your friend
+    \item Reading/writing code (you will have to teach yourself programming, through practice)
+    \item Today, I will concentrate on \textbf{data} (create and manipulate)
+    \item \R - the environment and the language
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{What is R?}
+    \begin{itemize}
+    \item An \emph{interactive} statistical environment
+    \item A programming language
+    \item A language and associated tools for reproducible research (these slides for example)
+    \end{itemize}
+  \end{block}
+  \pause
+  \begin{block}{}
+    \begin{itemize}    
+    \item Open source and cross platform (GNU/Linux, Windows, Mac and others)
+    \item Stable (currently 3.0) and development versions.
+    \item Extensive graphics capabilites
+    \item Diverse range of add-on packages
+    \item Active community of developers
+    \item Thorough documentation
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \includegraphics[width=\linewidth]{./Figures/r-project.png}
+\end{frame}
+
+\begin{frame}[fragile]  
+  \begin{block}{}
+    What is needed:
+    \begin{itemize}
+    \item The \R console
+    \item An editor
+    \end{itemize}
+    We will use:
+    \begin{itemize}
+    \item RStudio IDE
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \includegraphics[width=\linewidth]{./Figures/rstudio.png}
+\end{frame}

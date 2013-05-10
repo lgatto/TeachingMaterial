@@ -1,0 +1,101 @@
+\section{Plotting}
+
+<<env, echo=FALSE, massage = FALSE>>=
+suppressPackageStartupMessages(library(Biobase))
+data(sample.ExpressionSet)
+@ 
+
+\begin{frame}
+  \begin{itemize}
+  \item Scatterplots with \Rfunction{plot}
+  \item Boxplots with \Rfunction{boxplot}
+  \item Barplots with \Rfunction{barplot}
+  \item Histograms with \Rfunction{hist}    
+  \item \Rfunction{smoothScatter}        
+  \end{itemize}  
+\end{frame}
+
+\begin{frame}[fragile]
+<<plotcode, eval = FALSE, tidy = FALSE>>=
+plot(exprs(sample.ExpressionSet[, 1]), 
+     exprs(sample.ExpressionSet[, 2]), 
+     log = "xy", 
+     xlab = sampleNames(sample.ExpressionSet)[1],
+     ylab = sampleNames(sample.ExpressionSet)[2])
+abline(0, 1)
+grid()
+@   
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \scriptsize
+<<label=plotfig1, echo=FALSE, fig.width=5, fig.height=4, tidy=FALSE, warning = FALSE>>=
+plot(exprs(sample.ExpressionSet[, 1]), 
+     exprs(sample.ExpressionSet[, 2]), 
+     log = "xy", 
+     xlab = sampleNames(sample.ExpressionSet)[1],
+     ylab = sampleNames(sample.ExpressionSet)[2])
+abline(0, 1)
+grid()
+@
+\end{frame}
+
+
+\begin{frame}[fragile]
+  To create subplots, one can use \Rfunction{par(mfrow = c(2,2))}, \Rfunction{layout}, or (for scatterplots)
+<<plotcode0, eval = FALSE, tidy = FALSE>>=
+pairs(log2(exprs(sample.ExpressionSet)[, 1:4]),
+      pch = 19,
+      col = "#0000FF20")
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+  \scriptsize
+<<label=plotfig2,echo=FALSE,fig.width=3.5,fig.height=3.5,tidy=FALSE, warning = FALSE>>=
+pairs(log2(exprs(sample.ExpressionSet)[, 1:3]),
+      pch = 19,
+      col = "#0000FF20")
+@
+\end{frame}
+
+\begin{frame}[fragile]
+<<plotcode1, eval = FALSE>>=
+boxplot(log2(exprs(sample.ExpressionSet)))
+@   
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \scriptsize
+<<label=plotfig3,echo=FALSE,fig.width=5,fig.height=4,tidy=FALSE>>=
+boxplot(log2(exprs(sample.ExpressionSet)))
+@
+\end{frame}
+
+%% \begin{frame}[fragile]
+%% <<plotcode2, eval = FALSE>>=
+%% smoothScatter(log2(exprs(sample.ExpressionSet)[, 1:2]))
+%% @   
+%% \end{frame}
+
+\begin{frame}[fragile]
+  \scriptsize
+<<label=plotfig4,echo=TRUE,fig.width=5,fig.height=4,tidy=FALSE, warning = FALSE, message = FALSE>>=
+smoothScatter(log2(exprs(sample.ExpressionSet)[, 1:2]))
+@
+\end{frame}
+
+\begin{frame}
+  \begin{block}{References}
+    We have not covered \Rpackage{lattice} and \Rpackage{ggplot2}.
+  \end{block}
+  \begin{block}{References}
+    \begin{itemize}
+    \item \url{http://gallery.r-enthusiasts.com/allgraph.php}
+    \item R Graphics manual: \url{http://rgm3.lab.nig.ac.jp/RGM/r_image_list}
+    \item \url{http://www.cookbook-r.com/Graphs/} (ggplot2)
+    \end{itemize}
+  \end{block}
+\end{frame}

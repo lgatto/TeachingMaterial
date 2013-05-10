@@ -1,0 +1,67 @@
+\section{R scripting: a complete use case}
+
+\begin{frame}
+  \begin{block}{\exercise}
+    \begin{itemize}
+    \item Reproduce the data structure of the previous exercise using the 
+      \texttt{MAdata1.csv}, \texttt{smeta1.csv} and \texttt{fmeta1.csv} files.
+    \item Produce figures to explore the data.
+    \item Count and visualise the differentially expressed genes in three microarray result data.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Data IO}
+    \begin{description}
+    \item[read.table] creates a \Robject{data.frame} from a spreadsheet file.
+    \item[write.table] writes a \Robject{data.frame}/\Robject{matrix} to a spreadsheet (tsv, csv).
+    \item[Specialised data] formats often have specific i/o functionality 
+      (microarray \texttt{CEL} files see later)      
+    \item[save] writes an binary representation of \R objects to a file (cross-platform).
+    \item[load] load a binary \R file from disk.
+    \end{description}
+  \end{block}
+    See \texttt{Exercise-04.R}
+\end{frame}
+
+
+\begin{frame}
+  \begin{block}{Plotting}
+    \begin{itemize}
+    \item scatter plots with \Rfunction{plot} and \Rfunction{smoothScatter}
+    \item boxplots with \Rfunction{boxplot},
+    \item histograms with \Rfunction{hist}
+    \item heatmaps with \Rfunction{heatmap}
+    \end{itemize}
+  \end{block}
+  See \texttt{Exercise-04.R}
+\end{frame}
+
+
+\begin{frame}
+  \begin{block}{Programming}
+    \begin{itemize}
+    \item Flow control: \Rfunction{for} \textcolor{gray}{(and \Rfunction{while})} loops
+    \item Conditions: \Rfunction{if}, \textcolor{gray}{(\Rfunction{if else})} and \Rfunction{else}
+    \item \textcolor{gray}{(The \Rfunction{apply} family of functions)}
+    %% \item Writing functions.
+    \end{itemize}    
+  \end{block}
+  See \texttt{Exercise-04.R}
+\end{frame}
+
+
+\begin{frame}
+  \begin{block}{Optional \exercise}
+    \begin{itemize}
+    \item Combine gene expression results from multiple files into one matrix and visualise the results.
+    \item Extract some genes of interest from a table and subset the original data.
+    \end{itemize}
+  \end{block}
+  New functions: \Rfunction{lapply}, \Rfunction{unlist}, \Rfunction{unique}, \Rfunction{match} and \Rfunction{strsplit}.
+  
+  \bigskip
+  See \texttt{Exercise-05.R}
+\end{frame}
+

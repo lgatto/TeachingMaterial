@@ -1,0 +1,45 @@
+\section{A Bioc script}
+
+\begin{frame}
+  \begin{block}{}
+    A typical Bioconductor script for microarray data analysis.
+    \begin{itemize}
+    \item Getting data
+    \item Import data into \R using dedicated infrastructure
+    \item Analyse
+    \item Save script, plots and objects      
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \begin{block}{Using a subset of the \textit{tg-gates} data}
+    \begin{itemize}
+    \item \texttt{E-MTAB-800}: transcription profiling by array of rat liver and kidney after exposure to approximately 130 chemicals collected from repeat dosing studies\footnote{\url{http://www.ebi.ac.uk/arrayexpress/experiments/E-MTAB-800/}}
+    \item Downloaded and unzipped \texttt{E-MTAB-800.raw.1.zip}
+    \item Using only a subset of files below.
+    \end{itemize}     
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{\exercise}
+  \begin{block}{Loading libraries}
+<<biocenv, eval = FALSE>>=
+library("Biobase")
+library("affy")
+@     
+  \end{block}    
+  \begin{block}{Reading data}
+<<readcel, eval = FALSE>>=
+rawdata <- ReadAffy(filenames = flnms)
+@     
+  \end{block}
+  \begin{block}{Normalisation}
+<<norm, eval = FALSE>>=
+eset <- rma(rawdata)
+@     
+  \end{block}
+See \texttt{Exercise-06.R}
+\end{frame}
