@@ -1,0 +1,466 @@
+% Copyright 2009 by Guido Diepen <guido@guidodiepen.nl>
+% 	Parts provided by Edson Valle
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+% 
+% Changelog
+%	20091202 - Added "1 on 1 with notes" layout, provided by Harald Welte
+%	20091108 - Added "2 on 1 with notes landscape" layout, provided by Edson Valle
+%	20091104 - Added "3 on 1 with notes" layout
+%	20091104 - Added "2 on 1 with notes" layout
+%	20091104 - Added "1 on 1 with notes landscape" layout, provided by Edson Valle
+%   20090101 - Initial Version
+
+\RequirePackage{pgfpages}
+ \pgfpagesdeclarelayout{1 on 1 with notes landscape} {
+    \edef\pgfpageoptionheight{\the\paperwidth}
+    \edef\pgfpageoptionwidth{\the\paperheight}
+    \edef\pgfpageoptionborder{0pt}
+ }
+ {
+    \setkeys{pgfpagesuselayoutoption}{landscape}
+    \pgfpagesphysicalpageoptions
+    {%
+      logical pages=2,%
+      physical height=\pgfpageoptionheight,%
+      physical width=\pgfpageoptionwidth,%
+%      last logical shipout=3%
+      last logical shipout=1%
+    }
+    
+        \pgfpageslogicalpageoptions{1}
+        {%
+                scale=1.2,
+                center=\pgfpoint{.3\pgfphysicalwidth}{.5\pgfphysicalheight}%
+        }%
+
+	
+	
+	\pgfpageslogicalpageoptions{2}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.45\pgfphysicalwidth,%
+      resized height=.45\pgfphysicalheight,%
+      center=\pgfpoint{.78\pgfphysicalwidth}{.6\pgfphysicalheight},%
+      copy from=2
+    }%    
+
+    \AtBeginDocument{
+      \newbox\notesbox
+      \setbox\notesbox=\vbox{
+        \hsize=\paperwidth
+        \vskip-1in\hskip-1in\vbox{
+          \vskip1cm
+        Notes\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+	\hrule width\paperwidth\vskip1cm
+	\hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+	\hrule width\paperwidth\vskip1cm
+	\hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth}
+      }
+      \pgfpagesshipoutlogicalpage{2}\copy\notesbox
+   
+     
+    }
+ }
+ 
+ \pgfpagesdeclarelayout{4 on 1 with notes} {
+    \edef\pgfpageoptionheight{\the\paperheight}
+    \edef\pgfpageoptionwidth{\the\paperwidth}
+    \edef\pgfpageoptionborder{0pt}
+ }
+ {
+    \pgfpagesphysicalpageoptions
+    {%
+      logical pages=8,%
+      physical height=\pgfpageoptionheight,%
+      physical width=\pgfpageoptionwidth,%
+%      last logical shipout=3%
+      last logical shipout=4%
+    }
+    
+        \pgfpageslogicalpageoptions{1}
+        {%
+                scale=.70,
+                center=\pgfpoint{.25\pgfphysicalwidth}{.875\pgfphysicalheight}%
+        }%
+        \pgfpageslogicalpageoptions{2}
+        {%
+                scale=.70,
+                center=\pgfpoint{.25\pgfphysicalwidth}{.625\pgfphysicalheight}%
+        }%
+
+        \pgfpageslogicalpageoptions{3}
+        {%
+                scale=.70,
+                center=\pgfpoint{.25\pgfphysicalwidth}{.375\pgfphysicalheight}%
+        }%
+
+        \pgfpageslogicalpageoptions{4}
+        {%
+                scale=.70,
+                center=\pgfpoint{.25\pgfphysicalwidth}{.125\pgfphysicalheight}%
+        }%
+	
+	
+	
+	
+	
+	
+	
+	
+	\pgfpageslogicalpageoptions{5}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.5\pgfphysicalwidth,%
+      resized height=.3333\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.875\pgfphysicalheight},%
+      copy from=5
+    }%
+    \pgfpageslogicalpageoptions{6}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.5\pgfphysicalwidth,%
+      resized height=.3333\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.625\pgfphysicalheight},%
+      copy from=6
+    }%
+    \pgfpageslogicalpageoptions{7}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.5\pgfphysicalwidth,%
+      resized height=.3333\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.375\pgfphysicalheight},%
+      copy from=7
+    }%
+    \pgfpageslogicalpageoptions{8}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.5\pgfphysicalwidth,%
+      resized height=.3333\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.125\pgfphysicalheight},%
+      copy from=8
+    }%
+    \AtBeginDocument{
+      \newbox\notesbox
+      \setbox\notesbox=\vbox{
+        \hsize=\paperwidth
+        \vskip-1in\hskip-1in\vbox{
+          \vskip1cm
+        Notes\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth}
+      }
+      \pgfpagesshipoutlogicalpage{5}\copy\notesbox
+      \pgfpagesshipoutlogicalpage{6}\copy\notesbox
+      \pgfpagesshipoutlogicalpage{7}\copy\notesbox
+      \pgfpagesshipoutlogicalpage{8}\copy\notesbox
+    }
+ }
+
+
+
+ \pgfpagesdeclarelayout{2 on 1 with notes} {
+    \edef\pgfpageoptionheight{\the\paperheight}
+    \edef\pgfpageoptionwidth{\the\paperwidth}
+    \edef\pgfpageoptionborder{0pt}
+ }
+ {
+    \pgfpagesphysicalpageoptions
+    {%
+      logical pages=4,%
+      physical height=\pgfpageoptionheight,%
+      physical width=\pgfpageoptionwidth,%
+%      last logical shipout=3%
+      last logical shipout=2%
+    }
+    
+        \pgfpageslogicalpageoptions{1}
+        {%
+                scale=.70,
+                center=\pgfpoint{.25\pgfphysicalwidth}{.67\pgfphysicalheight}%
+        }%
+        \pgfpageslogicalpageoptions{2}
+        {%
+                scale=.70,
+                center=\pgfpoint{.25\pgfphysicalwidth}{.33\pgfphysicalheight}%
+        }%
+
+	
+	\pgfpageslogicalpageoptions{3}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.5\pgfphysicalwidth,%
+      resized height=.5\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.67\pgfphysicalheight},%
+      copy from=3
+    }%
+    \pgfpageslogicalpageoptions{4}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.5\pgfphysicalwidth,%
+      resized height=.5\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.33\pgfphysicalheight},%
+      copy from=4
+    }%
+    
+	\AtBeginDocument{
+      \newbox\notesbox
+      \setbox\notesbox=\vbox{
+        \hsize=\paperwidth
+        \vskip-1in\hskip-1in\vbox{
+          \vskip1cm
+        Notes\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth}
+      }
+      \pgfpagesshipoutlogicalpage{3}\copy\notesbox
+      \pgfpagesshipoutlogicalpage{4}\copy\notesbox
+    }
+ }
+
+
+ \pgfpagesdeclarelayout{3 on 1 with notes} {
+    \edef\pgfpageoptionheight{\the\paperheight}
+    \edef\pgfpageoptionwidth{\the\paperwidth}
+    \edef\pgfpageoptionborder{0pt}
+ }
+ {
+    \pgfpagesphysicalpageoptions
+    {%
+      logical pages=6,%
+      physical height=\pgfpageoptionheight,%
+      physical width=\pgfpageoptionwidth,%
+%      last logical shipout=3%
+      last logical shipout=3%
+    }
+    
+        \pgfpageslogicalpageoptions{1}
+        {%
+                scale=.70,
+                center=\pgfpoint{.25\pgfphysicalwidth}{.82\pgfphysicalheight}%
+        }%
+        \pgfpageslogicalpageoptions{2}
+        {%
+                scale=.70,
+                center=\pgfpoint{.25\pgfphysicalwidth}{.50\pgfphysicalheight}%
+        }%
+        \pgfpageslogicalpageoptions{3}
+        {%
+                scale=.70,
+                center=\pgfpoint{.25\pgfphysicalwidth}{.18\pgfphysicalheight}%
+        }%
+
+	
+	\pgfpageslogicalpageoptions{4}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.5\pgfphysicalwidth,%
+      resized height=.5\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.82\pgfphysicalheight},%
+      copy from=4
+    }%
+    \pgfpageslogicalpageoptions{5}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.5\pgfphysicalwidth,%
+      resized height=.5\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.50\pgfphysicalheight},%
+      copy from=5
+    }%
+    \pgfpageslogicalpageoptions{6}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.5\pgfphysicalwidth,%
+      resized height=.5\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.18\pgfphysicalheight},%
+      copy from=6
+    }%
+    
+	\AtBeginDocument{
+      \newbox\notesbox
+      \setbox\notesbox=\vbox{
+        \hsize=\paperwidth
+        \vskip-1in\hskip-1in\vbox{
+          \vskip1cm
+        Notes\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth}
+      }
+      \pgfpagesshipoutlogicalpage{4}\copy\notesbox
+      \pgfpagesshipoutlogicalpage{5}\copy\notesbox
+      \pgfpagesshipoutlogicalpage{6}\copy\notesbox
+    }
+ }
+
+
+
+
+
+ \pgfpagesdeclarelayout{2 on 1 with notes landscape} {
+    \edef\pgfpageoptionheight{\the\paperheight}
+    \edef\pgfpageoptionwidth{\the\paperwidth}
+    \edef\pgfpageoptionborder{0pt}
+ }
+ {
+    \setkeys{pgfpagesuselayoutoption}{landscape}
+    \pgfpagesphysicalpageoptions
+    {%
+      logical pages=4,%
+      physical height=\pgfpageoptionheight,%
+      physical width=\pgfpageoptionwidth,%
+%      last logical shipout=3%
+      last logical shipout=2%
+    }
+   
+        \pgfpageslogicalpageoptions{1}
+        {%
+                scale=1,
+				center=\pgfpoint{.3\pgfphysicalwidth}{.75\pgfphysicalheight}%
+        }%
+        \pgfpageslogicalpageoptions{2}
+        {%
+                scale=1,
+				center=\pgfpoint{.3\pgfphysicalwidth}{.25\pgfphysicalheight}%
+        }%
+
+   
+   
+    \pgfpageslogicalpageoptions{3}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.7\pgfphysicalwidth,%
+      resized height=.4\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.3\pgfphysicalheight},%
+      copy from=3
+    }%   
+   
+    \pgfpageslogicalpageoptions{4}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=.7\pgfphysicalwidth,%
+      resized height=.4\pgfphysicalheight,%
+      center=\pgfpoint{.75\pgfphysicalwidth}{.8\pgfphysicalheight},%
+      copy from=4
+    }%
+
+    \AtBeginDocument{
+      \newbox\notesbox
+      \setbox\notesbox=\vbox{
+        \hsize=\paperwidth
+        \vskip-1in\hskip-1in\vbox{
+          \vskip1cm
+        Notes\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+    %\hrule width\paperwidth\vskip1cm
+    %\hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth\vskip1cm
+    \hrule width\paperwidth\vskip1cm
+    \hrule width\paperwidth\vskip1cm
+        \hrule width\paperwidth}
+      }
+		\pgfpagesshipoutlogicalpage{3}\copy\notesbox
+		\pgfpagesshipoutlogicalpage{4}\copy\notesbox
+  
+    
+    }
+ }
+
+
+
+  \pgfpagesdeclarelayout{1 on 1 with notes} {
+    \edef\pgfpageoptionheight{\the\paperwidth}
+    \edef\pgfpageoptionwidth{\the\paperheight}
+    \edef\pgfpageoptionborder{0pt}
+ }
+ {
+    \setkeys{pgfpagesuselayoutoption}{portrait}
+    \pgfpagesphysicalpageoptions
+    {%
+      logical pages=2,%
+      physical height=\pgfpageoptionheight,%
+      physical width=\pgfpageoptionwidth,%
+%      last logical shipout=3%
+      last logical shipout=1%
+    }
+    
+        \pgfpageslogicalpageoptions{1}
+        {%
+                scale=1.5,
+                center=\pgfpoint{.5\pgfphysicalwidth}{.73\pgfphysicalheight}%
+        }%
+
+	
+	
+	\pgfpageslogicalpageoptions{2}
+    {%
+      border shrink=\pgfpageoptionborder,%
+      resized width=\pgfphysicalwidth,%
+      resized height=\pgfphysicalheight,%
+      center=\pgfpoint{.5\pgfphysicalwidth}{.25\pgfphysicalheight},%
+      copy from=2
+    }%    
+
+    \AtBeginDocument{
+      \newbox\notesbox
+      \setbox\notesbox=\vbox{
+        \hsize=.85\paperwidth
+        \vskip-1in\hskip-1in\vbox{
+          \vskip1cm
+        Notes\vskip5mm
+        \hrule width\paperwidth\vskip5mm
+        \hrule width\paperwidth\vskip5mm
+        \hrule width\paperwidth\vskip5mm
+        \hrule width\paperwidth\vskip5mm
+        \hrule width\paperwidth\vskip5mm
+        \hrule width\paperwidth\vskip5mm
+	\hrule width\paperwidth\vskip5mm
+	\hrule width\paperwidth\vskip5mm
+        \hrule width\paperwidth\vskip5mm
+	\hrule width\paperwidth\vskip5mm
+	\hrule width\paperwidth\vskip5mm
+	\hrule width\paperwidth\vskip5mm
+	\hrule width\paperwidth\vskip5mm
+	\hrule width\paperwidth\vskip5mm
+        \hrule width\paperwidth}
+      }
+      \pgfpagesshipoutlogicalpage{2}\copy\notesbox
+   
+     
+    }
+ }
+
+
+
+
+

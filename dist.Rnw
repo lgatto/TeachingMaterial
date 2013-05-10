@@ -1,0 +1,21 @@
+\section{Distributing packages}
+
+\begin{frame}{Submission}
+  \begin{block}{}
+    \begin{description}
+      \item[CRAN] Upload your \alert{checked} \texttt{myPackage\_x.y.z.tar.gz} to 
+        \texttt{ftp://cran.R-project.org/incoming} 
+        and optionally send a message to \url{CRAN@R-project.org}. Your package will be installable 
+        with \Rfunction{install.packages("myRpackage")}.
+      \item[R-forge] Log in, regitser a project and wait for acceptance. 
+        Then commit you code to the svn repository. Your package will be installable with 
+        \Rfunction{install.packages} using \texttt{repos="http://R-Forge.R-project.org"}.
+      \item[Bioconductor] Make sure to satisfy submission criteria (pass \texttt{check}, 
+        have a vignette, use S4 if OO, have a \texttt{NAMESPACE}, make use of appropriate existing 
+        infrastructure, include a NEWS file, must \textbf{not} already be on CRAN, \ldots) 
+        and submit by email. Your package will then be reviewed before acceptance. 
+        A svn account will then be created. Package will be installable with 
+        \Rfunction{biocLite("myPackage")}.
+    \end{description}
+  \end{block}
+\end{frame}

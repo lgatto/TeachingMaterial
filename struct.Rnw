@@ -1,0 +1,258 @@
+<<knitr, echo=FALSE>>=
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
+
+\section{Package structure}
+
+\begin{frame}[fragile]
+  \begin{block}{A minimal package}
+    Function package.skeleton() automates some of the setup for a new source package. 
+    Calling it with minimal arguments produces the following hierarchy:
+  \end{block}
+<<minpkg,echo=TRUE>>=
+foo <- function(x) x
+package.skeleton(name="myRpackage",list="foo")
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+<<minpkg2, echo=TRUE, eval = FALSE>>=
+foo <- function(x) x
+package.skeleton(name="myRpackage",list="foo")
+@ 
+\begin{block}{}
+  produces
+\end{block}
+\begin{scriptsize}
+\begin{verbatim}
+myRpackage/
+|-- DESCRIPTION
+|-- man
+|   |-- foo.Rd
+|   `-- myRpackage-package.Rd
+|-- R
+|   `-- foo.R
+`-- Read-and-delete-me
+
+2 directories, 5 files
+\end{verbatim}
+\end{scriptsize}  
+\end{frame}
+
+\begin{frame}[fragile]{DESCRIPTION}
+  \begin{small}
+\begin{verbatim}
+Package: myRpackage ## mandatory (*)
+Type: Package ## optional, 'Package' is default type 
+Title: What the package does (short line) ## *
+Version: 1.0 ##  *
+Date: 2013-05-10 ## release date of the current version 
+Author: Who wrote it ## *
+Maintainer: Who to complain to <yourfault@somewhere.net> ## *
+Description: More about what it does (maybe more than one line) ## *
+License: What license is it under? ## *
+\end{verbatim}
+  \end{small}
+\end{frame}
+
+\begin{frame}{Lazy}
+  \begin{block}{Lazy loading}
+    A mechanism used to defer initialization of an object until the point at which it is needed.
+    The individual objects in the package's environment are indirect references to the actual objects until, 
+    for example a function is called or an object loaded. \\
+    \bigskip
+    The \texttt{LazyLoad} and \texttt{LazyData} fields control whether the R objects and the datasets (respectively) use lazy-loading. 
+    \texttt{LazyLoad} must be set if the \Rpackage{methods} package is used. \\
+    \bigskip
+    \texttt{LazyLoad} is now on by default.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{example}
+    \R~uses \textit{Lazy evaluation}, which delays the evaluation of an expression 
+    (here the argument) until its value is actually required 
+      [\footnote{example from Hadley Wickham's devtools}]:
+  \end{example}
+<<lazy,echo=TRUE, tidy = FALSE>>=
+f <- function(x) { 10 }
+system.time(f(Sys.sleep(3)))
+f <- function(x) { force(x); 10 }
+system.time(f(Sys.sleep(3)))
+@     
+\end{frame}
+
+%% \begin{frame}[fragile]{Lazy}
+%% \begin{example}
+%% \begin{verbatim}
+%% > suppressWarnings(dump("dnaseq","",evaluate=FALSE))
+%% dnaseq <-
+%% <promise: lazyLoadDBfetch(c(0L, 195L), datafile, compressed, 
+%%     envhook)>
+%% \end{verbatim}
+%% \end{example}
+%% \end{frame}
+
+\begin{frame}[fragile]{DESCRIPTION}
+  \begin{block}{Other important fields}  
+    \begin{description}
+      \item[Depends] A comma-separated list of package names (optionally with versions) which this package depends on.
+      \item[Suggests] Packages that are not necessarily needed: used only in examples, tests or vignettes, 
+        packages loaded in the body of functions (see \Rfunction{require()}).
+      \item[Imports] Packages whose name spaces are imported from (as specified in the \texttt{NAMESPACE} file) 
+        but which do not need to be attached to the search path. 
+      \item[Collate] Controls the collation order for the R code files in a package. If filed is present, all source files must be listed.
+      \item[URL] A list of URLs separated by commas or whitespace.
+      \item \ldots
+    \end{description}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{NAMESPACE}
+  \begin{block}{The NAMESPACE file}
+    Stored in the package directory. Restrict the symbols that are exported and imports functionality from other packages. 
+    Only the exported symbols will have to be documented. \\
+    Note: \texttt{NAMESPACE} is now required (since R 2.14).
+  \end{block}
+\begin{verbatim}
+export(f, g) ## exports f and g 
+exportPattern("^[^\\.]")
+import(foo) ## imports all symbols from package foo
+importFrom(foo, f, g) ## imports f and g from foo
+\end{verbatim}
+\begin{block}{}
+  It is possible to explicitely use symbol \Robject{s} from package \Rpackage{foo} with 
+  \texttt{foo::s} or \texttt{foo:::s} if \Robject{s} is not exported.
+\end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Attach and load}
+    Packages are attached to the search path with \Rfunction{library} or \Rfunction{require}. 
+    \begin{description}
+    \item[Attach] When a package is attached, then all
+      of its dependencies (see \texttt{Depends} field in its \texttt{DESCRIPTION}
+      file) are also attached. Such packages are part of the evaluation environment
+      and will be searched. 
+    \item[Load] One can also use the \texttt{Imports} field in the \texttt{NAMESPACE} file. 
+      Imported packages are loaded but are not attached:
+      they do not appear on the search path and are available only to the package
+      that imported them.
+    \end{description}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Package subdirectories}
+  \begin{block}{R}
+    Contains \Rfunction{source()}able \R~source code to be installed. 
+    Files must start with an ASCII (lower or upper case) letter or digit and have one of the extensions 
+    \texttt{.R} (recommended), \texttt{.S}, \texttt{.q}, \texttt{.r}, or \texttt{.s}.
+    File order is important if code relies on \textit{earlier} code -- order use \texttt{Collate} filed in \texttt{DESCRIPTION} file.
+  \end{block}
+  \begin{example}
+\begin{verbatim}
+## works fine without Collate field
+AllGenerics.R       DataClasses.R
+methods-ClassA.R    methods-ClassB.R
+functions-ClassA.R  ...
+\end{verbatim}
+  \end{example}
+  \begin{block}{}
+    \texttt{zzz.R} is generally used to define special functions used to initialize 
+    (called after a package is loaded and attached) and clean up (just before the package is detached). 
+    See \texttt{help(".onLoad"))}, \Rfunction{?.First.Lib} and \Rfunction{?.Last.Lib} for more details.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Package subdirectories}
+  \begin{block}{man}
+    Manuals for the objects (package, functions, generics, methods, classes and data sets) 
+    in the package in R documentation (\texttt{Rd}) format. 
+    The filenames must start with an ASCII (lower or upper case) letter or digit and 
+    have the extension \texttt{.Rd} or \texttt{.rd} and should be URL compatible. 
+    If you use a NAMESPACE, only exported symbols need to be documented. 
+    Without NAMESPACE, internal use only objects should be documented in \texttt{pkg-internal.Rd}.\\    
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Package subdirectories}
+  \begin{block}{data}
+    Contains data files, made available via \textit{lazy-loading} or for loading using \Rfunction{data()}.
+    Data types that are allowed are
+    \begin{description}
+      \item[R code] self-sufficient plain R code (\texttt{.R} or \texttt{.r}), 
+      \item[Tables] possibly compressed tables (\texttt{.tab}, \texttt{.txt}, or \texttt{.csv}, see \texttt{?data} for the file formats)
+      \item[Objects] created using \Rfunction{save()} (\texttt{.RData} or \texttt{.rda}).
+    \end{description}
+  \end{block}
+  \begin{example}
+    There is a \Robject{DnaSeq} object in \texttt{sequences/data}.
+  \end{example}
+\end{frame}
+
+\begin{frame}[fragile]{Package subdirectories}
+  \begin{block}{inst}
+    Content is copied recursively to the installation directory, for example
+    \begin{description}
+    \item[CITATION] file (see \Rfunction{citation()} function), 
+    \item[doc] directory for additional documents (see 
+      vignettes\footnote{\small It is now also possible to use the \texttt{./vignettes} directory for these.}, later).
+    \item[extdata] directory for other data files, not belonging in \texttt{data}.
+    \item[tests] code for unit tests (see later).
+    \end{description}
+  \end{block}
+  \begin{example}
+    In our \Rpackage{sequences} package, there is a \texttt{fasta}
+    sequence in \texttt{sequences/inst/extdata} used to illustrate the 
+    \Rfunction{readFasta} function.
+  \end{example}
+\end{frame}
+  
+\begin{frame}[fragile]{Package subdirectories}
+  \begin{block}{tests}
+    Contains additional package-specific test code. We will talk about unit tests later.
+  \end{block}
+  \begin{block}{src}
+    Contains sources and headers for the compiled code, plus optionally a file Makevars or Makefile.
+  \end{block}
+  \begin{block}{demo}
+    R scripts runned via \Rfunction{demo()} that demonstrate some of the functionality of the package. 
+    Execution of these scripts is not checked.
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{\exercise Let's create a package}
+    So far, you have defined a set of classes, methods and functions \ldots
+    Create the required directory structure and files using 
+    \Rfunction{package.skeleton(name="sequences")} or manually. 
+    For the former, you can use different arguments:
+    \begin{description}
+    \item[list] to specify the R objects by their names.
+    \item[code\_files] to specify R code files (use this if you have S4 classes).
+    \item[environment] to specify an environment where objects are looked for.
+    \end{description}
+    See \Rfunction{?package.skeleton} for more details.\\
+    \bigskip
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{\exercise Let's build/check it}
+    Do you expect the package to \texttt{build}/\texttt{check}/\texttt{INSTALL}: 
+    \begin{verbatim}
+R CMD build sequences
+R CMD check sequences_1.0.tar.gz
+R CMD INSTALL sequences_1.0.tar.gz
+    \end{verbatim}
+    Why? Have a look at \texttt{R CMD build|check -{}-help}.
+  \end{block}
+\end{frame}

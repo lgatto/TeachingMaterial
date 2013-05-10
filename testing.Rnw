@@ -1,0 +1,76 @@
+
+\section{Package unit testing}
+
+\begin{frame}
+  \begin{block}{How to test the code in your package?}
+    Or how to make sure that changes in your code do not break existing functionality?
+    \begin{itemize}
+      \item Implicitely, documentation examples and a vignette do some tests.
+      \item Using \R's build-in testing, that runs some code and compares the output to a saved template.
+      \item Specific packages for unit testing: 
+        \Rpackage{RUnit}\footnote{\url{http://cran.r-project.org/web/packages/RUnit/index.html}} or 
+        \Rpackage{testthat}\footnote{\url{http://cran.r-project.org/web/packages/testthat/index.html}}.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Using an \texttt{.Rout.save} file}
+  \begin{block}{In \texttt{package/tests/}}
+    Create
+    \begin{itemize}
+      \item \texttt{mytest.R} with code to be tested
+      \item \texttt{mytest.Rout.save} with the reference output
+    \end{itemize}
+    When \texttt{check}ing your package \R~ will
+    \begin{enumerate}
+      \item execute the code in \texttt{mytest.R}
+      \item save the output to \texttt{mytest.Rout}
+      \item compare \texttt{mytest.Rout} to \texttt{mytest.Rout.save}
+      \item report any differences
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Using \Rpackage{testthat}}
+  \begin{block}{Test individual expression}
+    \texttt{expect\_that(object\_or\_expression, condition)} with conditions 
+    \begin{description}
+    \item[equals] \texttt{expect\_that(1+2,equals(3))} or \texttt{expect\_equal(1+2,3)}
+    \item[gives\_warning] \texttt{expect\_that(warning("a"), gives\_warning())}
+    \item[is\_a] \texttt{expect\_that(1, is\_a("numeric"))} or \texttt{expect\_is(1,"numeric")}
+    \item[is\_true] \texttt{expect\_that(2 == 2, is\_true())} or \texttt{expect\_true(2==2)} 
+    \item[matches] \texttt{expect\_that("Testing is fun", matches("fun"))} or 
+      \texttt{expect\_match("Testing is fun", "f.n")}
+    \item[takes\_less\_than] \texttt{expect\_that(Sys.sleep(1),takes\_less\_than(3))}
+    \item[...]
+    \end{description}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{Using \Rpackage{testthat}}
+  \begin{example}
+<<testthat1,echo=TRUE, tidy = FALSE>>=
+library(sequences)
+library(testthat)
+a <- new("DnaSeq",sequence="ACGTaa")
+test_that("ok test", { 
+  expect_equal(length(a),6)
+  expect_true(seq(a)=="ACGTAA")
+  expect_is(a,"DnaSeq")
+})
+expect_true(seq(a)=="ACGTaa")
+@ 
+  \end{example}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Demonstration}
+    \begin{itemize}
+      \item Let's inspect the \texttt{sequences/tests/sequences-test.R} and \texttt{sequences-test.Rout.save} files. 
+        When actually \Rfunction{check}ing the package, the resulting \texttt{sequences-test.Rout} file is in 
+        \texttt{sequences.Rcheck/tests/}.
+      \item Let's play with \Rpackage{testthat} interactively.
+    \end{itemize}
+  \end{block}
+\end{frame}
