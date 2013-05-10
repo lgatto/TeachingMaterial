@@ -14,7 +14,7 @@ minimal guide to get started.
 - [Why git and github?](pages/why.html)
 - [Your first time](pages/first_time.html): get github account;
   install git, set up ssh.
-- [Typical use](pages/routine.html): add, commit, push, plus status
+- [Typical use](pages/routine.html): add, commit, push, status,
   and diff.
 - [Start a new repository](pages/init.html): from scratch, or with an
   existing project.
@@ -41,9 +41,11 @@ may collaborate more easily.  But for
 statisticians with no history of use of version control, it can be
 hard to get started.  This is a tutorial of sorts, to help.
 
+[Saunak Sen](http://www.epibiostat.ucsf.edu/biostat/sen/index.html)
+got me started with version control (using subversion), and
 [Pjotr Prins](http://www.thebird.nl) got me to move from subversion to
-git, but don't hold him responsible for any
-errors in my understanding.
+git, but don't hold either responsible for any errors in my
+understanding.
 
 If you have suggestions for changes or improvements, fork
 [the repo](http://github.com/kbroman/github_tutorial): Follow the
