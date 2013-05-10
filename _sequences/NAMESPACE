@@ -1,0 +1,22 @@
+useDynLib(sequences)
+
+import("methods")
+
+exportClasses(GenericSeq,
+              DnaSeq,
+              RnaSeq)
+
+exportMethods(id, "id<-",
+              seq, "seq<-",
+              "[",
+              alphabet,
+              print, show,
+              rev,
+              comp,
+              length,
+              transcribe)
+
+export(readFasta,
+       gccount,
+       gccount2,
+       Seq)
