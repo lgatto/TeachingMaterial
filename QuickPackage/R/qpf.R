@@ -1,3 +1,0 @@
-qpf <-
-function() 
-  packageDescription("QuickPackage")

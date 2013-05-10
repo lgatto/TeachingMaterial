@@ -1,8 +1,0 @@
-Package: QuickPackage
-Type: Package
-Title: A quick and mini R package
-Version: 1.0
-Author: Laurent Gatto <lg390@cam.ac.uk>
-Maintainer: Laurent Gatto <lg390@cam.ac.uk>
-Description: Mini intro on building R packages.
-License: GPL-2
