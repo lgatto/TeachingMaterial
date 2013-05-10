@@ -8,7 +8,7 @@ pygments: true
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
 #
-title : Git/github guide
+title : git/github guide
 author :
   name : Karl Broman
   email : kbroman@gmail.com

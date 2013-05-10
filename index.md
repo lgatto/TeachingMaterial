@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Git/github guide
+title: git/github guide
 tagline: Karl's practical tutorial
 ---
 

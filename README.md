@@ -1,4 +1,4 @@
-## Git/github guide: Karl's practical tutorial
+## git/github guide: Karl's practical tutorial
 
 All statistical/computational scientists should use
 [git](http://git-scm.com) and [github](http://github.com), but it can be
