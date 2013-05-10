@@ -11,7 +11,7 @@ hard to get started.  I hope these pages help.  (More blather below.)
 There are many resources for git and github; my aim is to provide the
 minimal guide to get started.
 
-- Why?
+- [Why?](pages/why.html)
 - [Your first time](pages/first_time.html): get account; set up ssh
 - Typical use: add, commit, push
 - Start new repository: from scratch; using current project
@@ -19,6 +19,7 @@ minimal guide to get started.
 - I want to fix a bug in someone's project
 - A package I'm using has a bug but I can't figure out how to fix it
 - Oops; that last commit message was wrong
+- Merge conflicts
 - Exploring the code and its history
 - Resources
 
@@ -38,7 +39,7 @@ may collaborate more easily.  But for
 statisticians with no history of use of version control, it can be
 hard to get started.  This is a tutorial of sorts, to help.
 
-[Pjotr Prins](http://www.thebird.nl) got me to move from SVN to
+[Pjotr Prins](http://www.thebird.nl) got me to move from subversion to
 git, but don't hold him responsible for any
 errors in my understanding.
 
