@@ -12,13 +12,13 @@ Unless otherwise stated, all material is licensed under [Creative Commons Attrib
 ## Material
 
 ### spr
-- Descrition: Scientific Programmign with R, MPhil in Computational Biology
+- Descrition: Scientific Programmign with `R`, MPhil in Computational Biology
 - Author: [Stephen Eglen](http://www.damtp.cam.ac.uk/user/sje30/) with contributions from [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/spr
 - More details: https://github.com/lgatto/spr#readme
 
 ### QuickPackage
-- Description: A very brief overview of R package creation
+- Description: A very brief overview of `R` package creation
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/QuickPackage
 - More details: https://github.com/lgatto/QuickPackage#readme
@@ -30,31 +30,39 @@ Unless otherwise stated, all material is licensed under [Creative Commons Attrib
 - More details: https://github.com/lgatto/RBasics#readme
 
 ### RIntro
-- Description: A 1 day introductionary course, developed specifically for Microarray Analysis using R and Bioconductor.
+- Description: A 1 day introductionary course, developed specifically for Microarray Analysis using `R` and Bioconductor.
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/RIntro
 - More details: https://github.com/lgatto/RIntro#readme
 
 ### R functional programming
-- Description: A short topic section on functional programming in R
+- Description: A short topic section on functional programming in `R`
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/R-functional-programming
 - More details: https://github.com/lgatto/R-functional-programming#readme
 
 ### R vectorisation
-- Description: A short topic section on vectorisation in R
+- Description: A short topic section on vectorisation in `R`
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/R-vectorisation
 - More details: https://github.com/lgatto/R-vectorisation#readme
 
 ### R debugging
-- Description: A short topic section on debugging in R
+- Description: A short topic section on debugging in `R`
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
 - Original repository: https://github.com/lgatto/R-debugging
 - More details: https://github.com/lgatto/R-debugging#readme
 
 ### R parallel
-- Description: A short topic section on parallal computing in R
+- Description: A short topic section on parallal computing in `R`
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
 - Original repository: https://github.com/lgatto/R-parallel
 - More details: https://github.com/lgatto/R-parallel#readme
+
+### R object oriented programming
+- Description: Object oriented programming in `R`. 
+  Covers S3, S4 and S4 Reference Classes leading to a class system for DNA/RNA sequence data manipulation.
+- Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
+- Original repository: https://github.com/lgatto/roo
+- More details: https://github.com/lgatto/roo#readme
+
