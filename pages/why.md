@@ -56,6 +56,6 @@ example:
 
 - My own [R/qtl](http://github.com/kbroman/qtl)
 
-Poke around through the files, and also through the commits: 
+Poke around in the files, and also the commits: 
 Click the &ldquo;Commits&rdquo; tab and then click on a given commit
 to see what changes were made.
