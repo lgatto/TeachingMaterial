@@ -39,3 +39,23 @@ in some very useful code developed by someone I don't know, because
 it's hosted on github.
 
 _You don't have to set up a git server._ 
+
+
+### Peruse others' repositories
+
+If you're still not sure about git and github, spend a bit of time
+looking through the repositories for packages of interest to you.  For
+example:
+
+- [Hadley Wickham](http://had.co.nz)'s
+  [bigvis](https://github.com/hadley/bigvis),
+  [ggplot2](https://github.com/hadley/ggplot2),
+  [lubridate](https://github.com/hadley/lubridate), ...
+  
+- [Yihui Xie](http://yihui.name)'s [knitr](https://github.com/yihui/knitr)
+
+- My own [R/qtl](http://github.com/kbroman/qtl)
+
+Poke around through the files, and also through the commits: 
+Click the &ldquo;Commits&rdquo; tab and then click on a given commit
+to see what changes were made.
