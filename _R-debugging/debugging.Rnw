@@ -1,0 +1,316 @@
+\SweaveOpts{engine=R,eps=FALSE,keep.source=T}
+\SweaveOpts{prefix.string=.sweave/sweave}
+
+\documentclass{beamer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FOR HANDOUTS UNCOMMENT:
+%\documentclass[handout]{beamer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Setup appearance:
+% \usetheme{Darmstadt}
+%\usetheme{Copenhagen}
+\usetheme{Boadilla}
+\usefonttheme[onlylarge]{structurebold}
+\usepackage{underscore}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FOR HANDOUTS UNCOMMENT:
+%\usepackage{handoutWithNotes}
+%\pgfpagesuselayout{3 on 1 with notes}[a4paper,border shrink=5mm]
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+% Standard packages
+% \usepackage[english]{babel}
+% \usepackage[latin1]{inputenc}
+% \usepackage{times}
+% \usepackage[T1]{fontenc}
+\usepackage{Sweave}
+\usepackage{ulem}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+% Setup TikZ
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
+% \usecolortheme{seagull}
+\usecolortheme{seahorse}
+
+%% new commande
+\let\code=\texttt
+\let\proglang=\textsf
+
+\newcommand{\R}{\texttt{R}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+
+\newcommand{\comments}[1]{}
+
+\newenvironment<>{varblock}[2][\textwidth]{%
+  \setlength{\textwidth}{#1}
+  \begin{actionenv}#3%
+    \def\insertblocktitle{#2}%
+    \par%
+    \usebeamertemplate{block begin}}
+  {\par%
+    \usebeamertemplate{block end}%
+  \end{actionenv}}
+
+
+%% Exercise counter
+\newcounter{exerciseCounter}
+\newcommand{\exerciseCount}{%
+  \stepcounter{exerciseCounter}%
+  \theexerciseCounter}
+
+\newcommand{\exercise}{\textbf{Exercise \exerciseCount:}~}
+
+% Author, Title, etc.
+\title[Debugging] 
+{
+  Debugging \R~code
+}
+
+\author[Stojnic and Gatto]
+{
+  Robert~Stojnic <\url{rs550@cam.ac.uk}> \\
+  Laurent~Gatto <\url{lg390@cam.ac.uk}> \\
+}
+
+\institute[CSBC]
+{
+%   \inst{1}%
+  Cambridge System Biology Centre \\
+  University of Cambridge \\
+%%  \pgfuseimage{uc-logo}
+}
+
+%% \pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
+%% \pgfdeclareimage[height=.7cm]{ebi-logo}{./Figures/EMBLEBIlogo}
+%% \logo{\pgfuseimage{uc-logo}}
+
+
+%% \AtBeginSection[] %% Do nothing for \section*
+%% {
+%% \begin{frame}<beamer>
+%% \frametitle{Plan}
+%% \tableofcontents[currentsection]
+%% \end{frame}
+%% }
+
+
+% The main document
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Title frame                                                 %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Table of contents                                           %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% \begin{frame}{Plan}
+%%   \footnotesize
+%%   \tableofcontents
+%% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Overview}
+
+\begin{frame}{Overview}
+  \begin{block}{Using \R's tools}
+    \begin{itemize}
+    \item Call \Rfunction{traceback()} after error to print the sequence of calls 
+      that lead to the error.
+    \item Use \Rfunction{debug(faultyFunction)} to register \Rfunction{faultyFunction} for debugging, 
+      so that \Rfunction{browser()} will be called on entry. In \Rfunction{browser} mode, the execution 
+      of an expression is interrupted and it is possible to inspect the environment (with \Rfunction{ls()}).
+      Use \Rfunction{undebug(faultyFunction)} to revert to normal usage. \\
+      See exercise on next slide.
+    \item Use \Rfunction{trace()} to insert code into functions, 
+      start the \Rfunction{browser} or \Rfunction{recover()} from error. %% Let's illustrate \Rfunction{recover()}.
+    \item Set \Rfunction{options(error=recover)} to get the call stack and browse in any of the function calls.
+    \end{itemize}
+    Good reference: \textit{An Introduction to the Interactive Debugging Tools in R}\footnote{%%
+      \url{http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf}}
+  \end{block}
+\end{frame}
+
+\section{Example}
+
+\begin{frame}[fragile]{Debugging example (1)}
+  Let's walk through an example\footnote{credit Martin Morgan and Robert Gentleman}. 
+  The buggy setp is:
+\begin{verbatim}
+e <- function(i) {
+  x <- 1:4
+  if (i < 5) x[1:2]
+  else x[-1:2] # oops! x[-(1:2)]
+}
+f <- function() sapply(1:10, e)
+g <- function() f()
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Debugging example (2)}
+\begin{verbatim}
+> g()
+Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+> traceback()
+5: FUN(1:10[[5L]], ...)
+4: lapply(X = X, FUN = FUN, ...)
+3: sapply(1:10, e) at #1
+2: f() at #1
+1: g()
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Debugging example (3)}  
+  Using \Rfunction{options(error=recover)}, we are given a list of frames to debug.
+  Once inside a frame, one can view and modify variables.
+
+\begin{verbatim}  
+> g()
+Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+
+Enter a frame number, or 0 to exit   
+
+1: g()
+2: #1: f()
+3: #1: sapply(1:10, e)
+4: lapply(X = X, FUN = FUN, ...)
+5: FUN(1:10[[5]], ...)
+
+Selection: 
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Debugging example (4)}  
+\begin{verbatim}  
+Selection: 5
+[...]
+Browse[1]> ls()
+[1] "i" "x"
+Browse[1]> c
+
+Enter a frame number, or 0 to exit   
+
+1: g()
+2: #1: f()
+3: #1: sapply(1:10, e)
+4: lapply(X = X, FUN = FUN, ...)
+5: FUN(1:10[[5]], ...)
+
+Selection: 0
+options(error = NULL)
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Using the debugger directly}
+\begin{verbatim}
+> debug(e)
+> g()
+debugging in: FUN(1:10[[1L]], ...)
+debug at #1: {
+    x <- 1:4
+    if (i < 5) 
+        x[1:2]
+    else x[-1:2]
+}
+Browse[2]> debug at #2: x <- 1:4
+Browse[2]> Q
+> undebug(e)
+\end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]{Using \textbf{trace}}
+\begin{verbatim}
+## Report whenever e invoked
+trace(e)
+## Evaluate arbitrary code whenever e invoked
+trace(e, quote(cat("i am", i, "\n")))
+## Another way to enter browser whenver e invoked
+trace(e, browser)
+## stop tracing
+untrace(e)
+\end{verbatim}
+
+\begin{verbatim}
+require("stats4")
+## Debug S4 methods with signature argument
+trace("plot", browser, exit = browser, signature = c("track", "missing"))
+\end{verbatim}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Calling with custom handlers (1)}
+  The \Rfunction{withCallingHandlers} function allows to defined special behaviour in 
+  case of /unusual conditions/, including warnings and errors. In the example below, 
+  we start a browser in case of (obscure) warnings.
+  \bigskip
+<<handler, echo=TRUE, eval=TRUE>>=
+f <- function(x){
+  for(i in 1:10){
+    ## make an example 2x2 contingency table
+    d = matrix(sample(4:10, 4), nrow=2, ncol=2)
+    ## will produce warning if there is a 5 or less 
+    ## in the contingency table
+    chisq.test(d)
+  }
+}
+@ 
+\end{frame}
+
+\begin{frame}[fragile]{Calling with custom handlers (2)}
+<<handler,echo=TRUE, eval=FALSE>>=
+set.seed(1)
+f()
+set.seed(1)
+withCallingHandlers(f(), warning=function(e) recover())
+@ 
+\end{frame}
+
+\section{Exercise}  
+  
+\begin{frame}[fragile]{}
+%%   \begin{block}{\exercise}
+  \begin{block}{Exercise}
+    The \Rfunction{readFasta2} function is similar to \Rfunction{readFasta}, 
+    but reads multiple sequences in a fasta file and returns a list of 
+    \Robject{DnaSeq} instances... at least, that's what it is supposed to do. 
+
+    \begin{enumerate}
+    \item source the \texttt{readFasta2.R} file, and try the function with the 
+      \texttt{multiple.fasta} file.
+    \item Prepare for debugging: \Rfunction{debug(readFasta2)}.
+    \item Debug!
+    \item \Rfunction{fix} the function.
+    \end{enumerate}
+    \bigskip
+    Hint: when debugging, use \texttt{n} (or an empty line) to advance to the next step,
+    \texttt{c} to continue to the end of the current context (to the end of a loop for instance),     
+    \texttt{where} to print the stack trace of all active function calls 
+    and 
+    \texttt{Q} to exit the \Rfunction{browser}. \\
+    Other hint: use \Rfunction{ls(all.names=TRUE)} to see all objects, also those that start with a '\texttt{.}'.
+  \end{block}
+\end{frame}
+
+
+\end{document}
