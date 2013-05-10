@@ -102,3 +102,13 @@ Here are some of my own examples:
 Also look at [John Muschelli](http://biostat.jhsph.edu/~jmuschel)'s [Makefile](https://github.com/muschellij2/ENAR_2013_Talk/blob/master/Makefile) for
 [his ENAR talk on Visualizing Brain Imaging](http://htmlpreview.github.io/?https://github.com/muschellij2/ENAR_2013_Talk/blob/master/ENAR_Visualization.html). (Also
 see John on twitter as [@StrictlyStat](https://twitter.com/StrictlyStat), plus [his blog](http://hopstat.wordpress.com).)
+
+### Resources
+
+- [GNU make webpage](http://www.gnu.org/software/make)
+
+- [Official manual](http://www.gnu.org/software/make/manual/make.html)
+
+- O'Reilly
+  [Managing projects with GNU make](http://oreilly.com/catalog/make3/book/)
+  book
