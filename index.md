@@ -16,7 +16,8 @@ minimal guide to get started.
   install git, set up ssh.
 - [Typical use](pages/routine.html): add, commit, push, plus status
   and diff.
-- Start new repository: from scratch; using current project
+- [Start a new repository](pages/init.html): from scratch, or with an
+  existing project.
 - [Contribute to someone's repository](pages/fork.html)
 - I want to fix a bug in someone's project
 - A package I'm using has a bug but I can't figure out how to fix it
