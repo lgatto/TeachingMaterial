@@ -24,5 +24,10 @@ Unless otherwise stated, all material is licensed under [Creative Commons Attrib
 - Original repository: https://github.com/lgatto/RBasics
 - More details: https://github.com/lgatto/RBasics#readme
 
+### RIntro
+- Description: A 1 day introductionary course, developed specifically for Microarray Analysis using R and Bioconductor.
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/RIntro
+- More details: https://github.com/lgatto/RIntro#readme
 
 More to come soon.
