@@ -13,8 +13,16 @@ Unless otherwise stated, all material is licensed under [Creative Commons Attrib
 ## Material
 
 ### QuickPackage
+- Description: A very brief overview of R package creation
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/QuickPackage
 - More details: https://github.com/lgatto/QuickPackage#readme
+
+### RBasics
+- Description: A introduction to `R` for knowledgeable bioinformaticians. Used as `R` intro lecture for a Bioconductor workshop.
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/RBasics
+- More details: https://github.com/lgatto/RBasics#readme
+
 
 More to come soon.
