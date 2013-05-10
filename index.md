@@ -52,7 +52,8 @@ One oddity: if you need to change directories to run a command, do
 the `cd` on the same line as the related command.  The following
 _*would not work*_:
 
-    Figs/fig1.pdf: R/fig1.R    ### this doesn't work ###
+    ### this doesn't work ###
+    Figs/fig1.pdf: R/fig1.R
     	cd R
     	R CMD BATCH fig1.R fig1.Rout
 
