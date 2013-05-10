@@ -20,7 +20,7 @@ LATEXFILES = *.aux\
 
 all:
 	make RIntro
-	make StangleAll
+	## make StangleAll
 
 setvars:
 ifeq (${R_HOME},)
@@ -76,6 +76,6 @@ clean:
 	rm -rf Exercises/figure
 
 
-StangleAll:
-	"$(R_HOME)/bin/R" --vanilla -e "sapply(dir(pattern = 'Rnw'), Stangle)"
-	cat Sec-IntroR.R Sec-DataTypes1.R Sec-DataTypes2.R Sec-objects.R Sec-UseCase.R Sec-Plotting.R Sec-Programming.R Sec-Packages.R Sec-RBioc.R > R-Basics_LG_2012.R
+# StangleAll:
+# 	"$(R_HOME)/bin/R" --vanilla -e "sapply(dir(pattern = 'Rnw'), Stangle)"
+# 	cat Sec-IntroR.R Sec-DataTypes1.R Sec-DataTypes2.R Sec-objects.R Sec-UseCase.R Sec-Plotting.R Sec-Programming.R Sec-Packages.R Sec-RBioc.R > R-Basics_LG_2012.R

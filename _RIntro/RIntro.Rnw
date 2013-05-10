@@ -194,6 +194,7 @@ toLatex(sessionInfo())
     \textit{Beginners guide to solving biological problems in \texttt{R}} course\footnote{%%
       \url{http://www.training.cam.ac.uk/gsls/course/gsls-rintro}}, University of Cambridge.
   \item This work is licensed under a CC BY-SA 3.0 License 
+  \item Course web page: \url{https://github.com/lgatto/TeachingMaterial}
   \end{itemize}
   \vspace{.7cm}
   \begin{center}
