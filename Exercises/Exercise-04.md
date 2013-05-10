@@ -159,7 +159,7 @@ A boxplot showing the distrubtion of expression data for each sample.
 boxplot(marray$expression)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7.png) 
+![plot of chunk marraybxplot](figure/marraybxplot.png) 
 
 
 A scatter plot comparing the expression values of the first and fourth samples
@@ -169,7 +169,7 @@ A scatter plot comparing the expression values of the first and fourth samples
 plot(marray$expression[, 1], marray$expression[, 4])
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8.png) 
+![plot of chunk expplot](figure/expplot.png) 
 
 
 Let's tune the above scatter plot. To reduce typing, the expression data is stored in the `exp` variable.
@@ -186,7 +186,7 @@ points(exp[de, 1], exp[de, 4], col = "red", pch = 19)
 abline(0, 1)
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
+![plot of chunk expplot2](figure/expplot2.png) 
 
 
 We can identify individual points on the plot
@@ -215,7 +215,7 @@ smoothScatter(exp[, 1], exp[, 4])
 ## KernSmooth 2.23 loaded Copyright M. P. Wand 1997-2009
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11.png) 
+![plot of chunk smoothscatter](figure/smoothscatter.png) 
 
 
 A histogram of expression values for sample 1
@@ -225,7 +225,7 @@ A histogram of expression values for sample 1
 hist(exp[, 1])
 ```
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12.png) 
+![plot of chunk exphist](figure/exphist.png) 
 
 
 Below, we prepate a 3 by 2 matrix of figures with `par` and use a `for` loop 
@@ -240,7 +240,7 @@ for (i in 1:6) {
 }
 ```
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13.png) 
+![plot of chunk exphist6](figure/exphist6.png) 
 
 
 By extracting the expression data, we have lost some information 
@@ -261,13 +261,13 @@ Below, we plot a heatmap of all genes and those that we deemed significantly dif
 heatmap(exp)
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-151.png) 
+![plot of chunk expheatmaps](figure/expheatmaps1.png) 
 
 ```r
 heatmap(exp[de, ])
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-152.png) 
+![plot of chunk expheatmaps](figure/expheatmaps2.png) 
 
 
 ## Counting number of DE genes
@@ -288,19 +288,22 @@ dir()
 ##  [9] "Exercise-02.Rmd"       "Exercise-03.html"     
 ## [11] "Exercise-03.md"        "Exercise-03.R"        
 ## [13] "Exercise-03.Rmd"       "Exercise-04.html"     
-## [15] "Exercise-04.R"         "Exercise-04.Rmd"      
-## [17] "Exercise-05-DE1.tsv"   "Exercise-05-DE2.tsv"  
-## [19] "Exercise-05-DE3.tsv"   "Exercise-05-DE4.tsv"  
-## [21] "Exercise-05-DE5.tsv"   "Exercise-05.html"     
-## [23] "Exercise-05.R"         "Exercise-05.Rmd"      
-## [25] "Exercise-05-table.tsv" "Exercise-06.html"     
-## [27] "Exercise-06.R"         "Exercise-06.Rmd"      
-## [29] "figure"                "fmeta1.csv"           
-## [31] "fmeta2.csv"            "fmeta3.csv"           
-## [33] "MAdata1.csv"           "MAdata2.csv"          
-## [35] "MAdata3.csv"           "makeHtml"             
-## [37] "marray.rda"            "smeta1.csv"           
-## [39] "smeta2.csv"            "smeta3.csv"
+## [15] "Exercise-04.md"        "Exercise-04.R"        
+## [17] "Exercise-04.Rmd"       "Exercise-05-DE1.tsv"  
+## [19] "Exercise-05-DE2.tsv"   "Exercise-05-DE3.tsv"  
+## [21] "Exercise-05-DE4.tsv"   "Exercise-05-DE5.tsv"  
+## [23] "Exercise-05.html"      "Exercise-05.md"       
+## [25] "Exercise-05.R"         "Exercise-05.Rmd"      
+## [27] "Exercise-05-table.tsv" "Exercise-06.html"     
+## [29] "Exercise-06.md"        "Exercise-06.R"        
+## [31] "Exercise-06.Rmd"       "figure"               
+## [33] "fmeta1.csv"            "fmeta2.csv"           
+## [35] "fmeta3.csv"            "heatmap1.pdf"         
+## [37] "heatmap2.pdf"          "MAdata1.csv"          
+## [39] "MAdata2.csv"           "MAdata3.csv"          
+## [41] "makeHtml"              "marray.rda"           
+## [43] "smeta1.csv"            "smeta2.csv"           
+## [45] "smeta3.csv"
 ```
 
 ```r

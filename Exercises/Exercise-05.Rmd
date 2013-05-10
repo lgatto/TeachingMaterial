@@ -5,7 +5,7 @@
 This this, we use `dir` and a file pattern to create a vector 
 of file names.
 
-```{r}
+```{r flsexr5}
 fls <- dir(pattern = "Exercise-05-DE")
 length(fls)
 fls
@@ -19,7 +19,7 @@ using the first column. As suggested by the letter `l`, `lapply`, returns
 a list of length equal to the length of its first argument. 
 Because `read.delim` returns a `data.fame`, `l` will be a list of `data.frames`.
 
-```{r}
+```{r lapplyreaddelim}
 l <- lapply(fls, read.delim, row.names = 1)
 length(l)
 class(l)
@@ -32,7 +32,7 @@ producing a vector containing all the elements of the list and
 finall keep `unique` instances of each gene name (removing all duplicated gene names).
 
 
-```{r}
+```{r allgenes}
 allgenes <- lapply(l, rownames)
 allgenes <- unique(unlist(allgenes))
 length(allgenes)
@@ -44,7 +44,7 @@ We now know how many unique genes have been observed in total
 and initialise a matrix of adequate dimensions with 0s. We also 
 use the gene names to set to matrix row names.
 
-```{r}
+```{r esetinit}
 eset <- matrix(0, nrow = length(allgenes), ncol = length(l))
 rownames(eset) <- allgenes
 ```
@@ -56,7 +56,7 @@ matrix and the individual replicate data stored in the `l` matrix.
 matrix. We then use these, and the loop index to set the expression 
 data.
 
-```{r}
+```{r foridxeset}
 for (i in 1:length(l)) {
   ## find the row indices
   idx <- match(rownames(l[[i]]), rownames(eset))
@@ -66,7 +66,7 @@ for (i in 1:length(l)) {
 
 Finally, we plot a heatmap of `eset`.
 
-```{r}
+```{r heatmapesetex5}
 heatmap(eset)
 ```
 
@@ -77,7 +77,7 @@ We first read the data, assuring that the content of the
 resulting `data.frame` is interpreted as characters instead 
 as factors.
 
-```{r}
+```{r tabvalgenes}
 tab <- read.delim("Exercise-05-table.tsv", stringsAsFactors = FALSE)
 tab
 ```
@@ -86,16 +86,16 @@ We then  split the comma separated genes names to produce a list
 (of length 2 because there were two rows in `tab`), which is then 
 flattened with `unlist`.
 
-```{r}
+```{r valgenenames}
 genes <- unlist( strsplit(tab$genes, ",") )
 genes
 ```
 Before subsetting our `eset` matrix, we check that all the extracted 
 gene names are present.
 
-```{r}
+```{r allvalgenesineset}
 all(genes %in% rownames(eset))
 ```
-```{r}
+```{r healmapvalgenes}
 heatmap(eset[genes, ])
 ```

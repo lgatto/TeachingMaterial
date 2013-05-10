@@ -208,14 +208,15 @@ library(&quot;AnnotationDbi&quot;)
 ## [23] &quot;Exercise-05.html&quot;      &quot;Exercise-05.md&quot;       
 ## [25] &quot;Exercise-05.R&quot;         &quot;Exercise-05.Rmd&quot;      
 ## [27] &quot;Exercise-05-table.tsv&quot; &quot;Exercise-06.html&quot;     
-## [29] &quot;Exercise-06.R&quot;         &quot;Exercise-06.Rmd&quot;      
-## [31] &quot;figure&quot;                &quot;fmeta1.csv&quot;           
-## [33] &quot;fmeta2.csv&quot;            &quot;fmeta3.csv&quot;           
-## [35] &quot;heatmap1.pdf&quot;          &quot;heatmap2.pdf&quot;         
-## [37] &quot;MAdata1.csv&quot;           &quot;MAdata2.csv&quot;          
-## [39] &quot;MAdata3.csv&quot;           &quot;makeHtml&quot;             
-## [41] &quot;marray.rda&quot;            &quot;smeta1.csv&quot;           
-## [43] &quot;smeta2.csv&quot;            &quot;smeta3.csv&quot;
+## [29] &quot;Exercise-06.md&quot;        &quot;Exercise-06.R&quot;        
+## [31] &quot;Exercise-06.Rmd&quot;       &quot;figure&quot;               
+## [33] &quot;fmeta1.csv&quot;            &quot;fmeta2.csv&quot;           
+## [35] &quot;fmeta3.csv&quot;            &quot;heatmap1.pdf&quot;         
+## [37] &quot;heatmap2.pdf&quot;          &quot;MAdata1.csv&quot;          
+## [39] &quot;MAdata2.csv&quot;           &quot;MAdata3.csv&quot;          
+## [41] &quot;makeHtml&quot;              &quot;marray.rda&quot;           
+## [43] &quot;smeta1.csv&quot;            &quot;smeta2.csv&quot;           
+## [45] &quot;smeta3.csv&quot;
 </code></pre>
 
 <pre><code class="r">flnms &lt;- dir(pattern = &quot;*CEL&quot;)
@@ -251,11 +252,6 @@ The <code>AffyRNAdeg</code> function calculates a degradation pattern for each s
 that can then be plotted with <code>plotAffyRNAdeg</code>.</p>
 
 <pre><code class="r">deg &lt;- AffyRNAdeg(rawdata)
-</code></pre>
-
-<pre><code>## ```
-
-```r
 plotAffyRNAdeg(deg)
 </code></pre>
 

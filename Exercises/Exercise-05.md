@@ -115,7 +115,7 @@ Finally, we plot a heatmap of `eset`.
 heatmap(eset)
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6.png) 
+![plot of chunk heatmapesetex5](figure/heatmapesetex5.png) 
 
 
 ##  Extracting and visualising genes of interest  
@@ -170,5 +170,5 @@ all(genes %in% rownames(eset))
 heatmap(eset[genes, ])
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10.png) 
+![plot of chunk healmapvalgenes](figure/healmapvalgenes.png) 
 

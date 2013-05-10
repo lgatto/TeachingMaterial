@@ -34,14 +34,15 @@ dir()
 ## [23] "Exercise-05.html"      "Exercise-05.md"       
 ## [25] "Exercise-05.R"         "Exercise-05.Rmd"      
 ## [27] "Exercise-05-table.tsv" "Exercise-06.html"     
-## [29] "Exercise-06.R"         "Exercise-06.Rmd"      
-## [31] "figure"                "fmeta1.csv"           
-## [33] "fmeta2.csv"            "fmeta3.csv"           
-## [35] "heatmap1.pdf"          "heatmap2.pdf"         
-## [37] "MAdata1.csv"           "MAdata2.csv"          
-## [39] "MAdata3.csv"           "makeHtml"             
-## [41] "marray.rda"            "smeta1.csv"           
-## [43] "smeta2.csv"            "smeta3.csv"
+## [29] "Exercise-06.md"        "Exercise-06.R"        
+## [31] "Exercise-06.Rmd"       "figure"               
+## [33] "fmeta1.csv"            "fmeta2.csv"           
+## [35] "fmeta3.csv"            "heatmap1.pdf"         
+## [37] "heatmap2.pdf"          "MAdata1.csv"          
+## [39] "MAdata2.csv"           "MAdata3.csv"          
+## [41] "makeHtml"              "marray.rda"           
+## [43] "smeta1.csv"            "smeta2.csv"           
+## [45] "smeta3.csv"
 ```
 
 ```r
