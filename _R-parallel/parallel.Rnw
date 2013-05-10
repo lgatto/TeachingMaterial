@@ -1,0 +1,214 @@
+\SweaveOpts{engine=R,eps=FALSE,keep.source=T}
+\SweaveOpts{prefix.string=.sweave/sweave}
+
+\documentclass{beamer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FOR HANDOUTS UNCOMMENT:
+%\documentclass[handout]{beamer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Setup appearance:
+% \usetheme{Darmstadt}
+%\usetheme{Copenhagen}
+\usetheme{Boadilla}
+\usefonttheme[onlylarge]{structurebold}
+\usepackage{underscore}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FOR HANDOUTS UNCOMMENT:
+%\usepackage{handoutWithNotes}
+%\pgfpagesuselayout{3 on 1 with notes}[a4paper,border shrink=5mm]
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+% Standard packages
+% \usepackage[english]{babel}
+% \usepackage[latin1]{inputenc}
+% \usepackage{times}
+% \usepackage[T1]{fontenc}
+\usepackage{Sweave}
+\usepackage{ulem}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+% Setup TikZ
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
+% \usecolortheme{seagull}
+\usecolortheme{seahorse}
+
+%% new commande
+\let\code=\texttt
+\let\proglang=\textsf
+
+\newcommand{\R}{\texttt{R}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+
+\newcommand{\comments}[1]{}
+
+\newenvironment<>{varblock}[2][\textwidth]{%
+  \setlength{\textwidth}{#1}
+  \begin{actionenv}#3%
+    \def\insertblocktitle{#2}%
+    \par%
+    \usebeamertemplate{block begin}}
+  {\par%
+    \usebeamertemplate{block end}%
+  \end{actionenv}}
+
+
+%% Exercise counter
+\newcounter{exerciseCounter}
+\newcommand{\exerciseCount}{%
+  \stepcounter{exerciseCounter}%
+  \theexerciseCounter}
+
+\newcommand{\exercise}{\textbf{Exercise \exerciseCount:}~}
+
+% Author, Title, etc.
+\title[Day 2] 
+{
+  Parallel computation in \R
+}
+
+\author[Stojnic and Gatto]
+{
+  Robert~Stojnic <\url{rs550@cam.ac.uk}> \\
+  Laurent~Gatto <\url{lg390@cam.ac.uk}> \\
+}
+
+\institute[CSBC]
+{
+%   \inst{1}%
+  Cambridge System Biology Centre \\
+  University of Cambridge
+}
+
+
+%% \AtBeginSection[] % Do nothing for \section*
+%% {
+%% \begin{frame}<beamer>
+%% \frametitle{Plan}
+%% \tableofcontents[currentsection]
+%% \end{frame}
+%% }
+
+
+% The main document
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Title frame                                                 %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Table of contents                                           %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% \begin{frame}{Plan}
+%%   \footnotesize
+%%   \tableofcontents
+%% \end{frame}
+
+\section{Parallel computation}
+
+\begin{frame}{Parallel execution}
+\begin{block}{Introduction}
+  \begin{itemize}
+  \item Applicable when repeating \textit{independent} computations a certain number of times; 
+    results just need to be combined after parallel executions are done. 
+  \item A cluster of nodes: generate multiple workers listening to the master; 
+    these workers are new processes that can run on the current machine or a 
+    similar one with an identical R installation. Should work on all \R~plateforms 
+    (as in package \Rpackage{snow}).
+  \item The \R~process is \textit{forked} to create new \R~processes by taking a 
+    complete copy of the masters process, including workspace 
+    (pioneered by package \Rpackage{multicore}). Does not work on Windows.
+  \item Grid computing.
+  \end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Parallel execution}
+\begin{block}{Packages}
+  \begin{itemize}
+    \item Package \Rpackage{parallel}, first included in \R~2.14.0 builds on CRAN 
+      packages \Rpackage{multicore} and \Rpackage{snow}. 
+    \item Package \Rpackage{foreach}, introducing a new looping construct supporting 
+      parallel execution. Natural choice to parallelise a \texttt{for} loop.  
+  \end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{\Rpackage{parallel} example}
+  \begin{block}{Dropin replacement for \Rfunction{*apply} functions}
+    \begin{itemize}
+    \item \Rfunction{mclapply(X, FUN, ...)} (adapted from \Rpackage{multicore}).
+    \item \Rfunction{parLapply(cl, X, FUN, ...)} (adapted from \Rpackage{snow}).
+    \end{itemize}
+  \end{block}
+  (demonstration)
+\end{frame}
+
+\begin{frame}[fragile]{\Rpackage{foreach} example}
+  \begin{block}{}
+\begin{verbatim}
+library(doMC)
+library(foreach)
+registerDoMC(2)
+foreach(i = ll) %dopar% f(i)
+foreach(i = ll) %do% f(i) ## serial version
+
+library(plyr)
+llply(ll, f, .parallel=TRUE)
+\end{verbatim}
+  \end{block}
+  (demonstration)
+\end{frame}
+
+\begin{frame}[fragile]{In Bioconductor}
+  \begin{block}{BiocParallel}
+    This package provides modified versions and novel implementation 
+    of functions for parallel evaluation, tailored to use with 
+    Bioconductor objects. Currently in Bioc devel (2.12) only.
+  \end{block}
+<<bp, echo = TRUE, eval = FALSE>>=
+library("BiocParallel")
+
+ll <- replicate(8, matrix(rnorm(1e6),1000), simplify=FALSE)
+f <- function(x) mean(solve(x), trim=0.7)
+
+p <- SnowParam(4L)
+bplapply(ll, f, param = p)
+@ 
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{References}
+
+\begin{frame}{References}
+  \begin{block}{Further reading}
+    \begin{itemize}
+    \item Parallel R, McCallum and Weston, O'Reilly (2011).
+    \item \Rpackage{parallel} and \Rpackage{foreach} vignettes.
+    \item \textit{High Performance Computing} CRAN task view.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\end{document}
