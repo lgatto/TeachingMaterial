@@ -19,7 +19,7 @@ minimal guide to get started.
 - [Start a new repository](pages/init.html): from scratch, or with an
   existing project.
 - [Contribute to someone's repository](pages/fork.html)
-- [Handling merge conflicts](merge_conflicts.html)
+- [Handling merge conflicts](pages/merge_conflicts.html)
 - Oops; that last commit message was wrong
 - Exploring the code and its history
 - Resources
