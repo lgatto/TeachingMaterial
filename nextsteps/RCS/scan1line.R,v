@@ -1,0 +1,28 @@
+head	1.1;
+access;
+symbols;
+locks; strict;
+comment	@# @;
+
+
+1.1
+date	2010.11.07.22.34.45;	author stephen;	state Exp;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@Initial revision
+@
+text
+@con <- file("version1.dat", "r")
+while (length(dat <- scan(con,n=5,quiet=T))>0) {
+  print(mean(dat))
+}
+close(con)
+@

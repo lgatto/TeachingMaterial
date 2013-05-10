@@ -1,0 +1,26 @@
+See rpc/ for originals
+
+- latex is not about latex, but rr
+- fib for golden ratio
+
+* Imporvements
+ - vectorisation!
+ - maybe more practical examples on how to handle big data?
+
+* next steps
+- Rcpp
+- pass by values, pass by reference
+- environments
+- regexp and string processing in =R=
+- benchmarking, with =rbenchmark=
+- code profiling
+
+- plotting: 
+  - smoothScatter, hexbin
+
+* Last lecture
+- will send email on mailing list for assignment 1 feedback
+- a bit of de and phase plan analysis 
+- simulation (in booklet) - bring book
+- mention organelle proteomics project
+

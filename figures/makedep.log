@@ -1,0 +1,33 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.8.27)  23 OCT 2012 15:56
+entering extended mode
+ %&-line parsing enabled.
+**\AtBeginDocument{\RequirePackage{pst-pdf}} \input{makedep.ps}
+(./makedep.ps
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.7 s
+     ave
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.7 s
+     ave
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+ 
+Here is how much of TeX's memory you used:
+ 7 strings out of 495062
+ 267 string characters out of 1182644
+ 45108 words of memory out of 3000000
+ 3282 multiletter control sequences out of 15000+50000
+ 3640 words of font info for 14 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 6i,0n,4p,114b,14s stack positions out of 5000i,500n,10000p,200000b,50000s
+No pages of output.

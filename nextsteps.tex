@@ -1,0 +1,911 @@
+% Created 2012-10-30 Tue 12:39
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{soul}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{latexsym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\newcommand{\Slang}{\texttt{S} }
+\newcommand{\R}{\texttt{R} }
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\usepackage[overlay,absolute]{textpos}
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+\usepackage{hyperref}
+\hypersetup{%
+pdfusetitle,
+bookmarks = {true},
+bookmarksnumbered = {true},
+bookmarksopen = {true},
+bookmarksopenlevel = 2,
+unicode = {true},
+breaklinks = {false},
+hyperindex = {true},
+colorlinks = {true},
+linktocpage = {true},
+plainpages = {false},
+linkcolor = {Blue},
+citecolor = {Blue},
+urlcolor = {Red},
+pdfstartview = {Fit},
+pdfpagemode = {UseOutlines},
+pdfview = {XYZ null null null}
+}
+\AtBeginSection{\begin{frame} \frametitle{Outline} \tableofcontents[currentsection] \end{frame}}
+\setbeamersize{text margin left=0.25cm}
+\setbeamersize{text margin right=0.25cm}
+\setbeamertemplate{navigation symbols}{}
+\usepackage{listings}
+\providecommand{\alert}[1]{\textbf{#1}}
+
+\title{Starting points for future work}
+\author{L Gatto and S J Eglen}
+\date{\today}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs Org-mode version 7.8.11}}
+
+\begin{document}
+
+\maketitle
+
+
+
+
+
+\makeatletter
+\def\DIfF^#1{%
+  \mathop{\mathrm{\mathstrut \text{d}}}%
+  \nolimits^{#1}\gobblespace}
+\makeatother
+
+%% fragwidth will measure the width of the text, and then we use
+%% it for the width of the textblock.
+\newdimen{\fragwidth}
+
+\newcommand{\mybottomleft}[1]{
+\settowidth{\fragwidth}{#1}
+\begin{textblock*}{\fragwidth}[0,0](2mm,90mm)  %% {width}(horiz, vert)
+  #1
+\end{textblock*}
+}
+
+\newcommand{\mybottomright}[1]{
+\settowidth{\fragwidth}{#1}
+\begin{textblock*}{\fragwidth}[1,0](126mm,90mm)  %% {width}(horiz, vert)
+  #1
+\end{textblock*}
+}
+
+\newcommand{\deriv}[3][]{% \deriv[<order>]{<func>}{<var>}
+  \ensuremath{\frac{\partial^{#1} {#2}}{\partial {#3}^{#1}}}}
+
+
+
+
+
+
+
+\section{Key unix tools and languages}
+\label{sec-1}
+\begin{frame}
+\frametitle{The shell}
+\label{sec-1-1}
+
+
+The unix \texttt{shell} is an extremely powerful environment that features many 
+extremely handy tools, that do simple things, and that can be piped (\texttt{|}) 
+together.
+
+\begin{itemize}
+\item \texttt{wc}, \texttt{grep}, \texttt{cut}
+\item \texttt{tr}, \texttt{sed}, \texttt{awk}
+\end{itemize}
+
+\texttt{shell} can also be used for scripting.
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{grep, sed, awk}
+\label{sec-1-2}
+
+
+\begin{itemize}
+\item All exploit regular expressions. See ItDT book (later).
+\item \texttt{grep}: find matching lines
+\item \texttt{sed}: stream-editor.  Incredibly handy for one-liners:
+\end{itemize}
+\href{http://sed.sourceforge.net/sed1line.txt}{http://sed.sourceforge.net/sed1line.txt}
+
+\begin{verbatim}
+ sed 's/foo/bar/g'            # replaces ALL instances in line
+ # print section of file between two regular expressions
+ sed -n '/Iowa/,/Montana/p'             # case sensitive
+\end{verbatim}
+
+\begin{itemize}
+\item awk: flexible pattern matching/ processing of text
+  files.
+\end{itemize}
+\href{http://www.pement.org/awk/awk1line.txt}{http://www.pement.org/awk/awk1line.txt}
+\begin{verbatim}
+ # print the sums of the fields of every line
+ awk '{s=0; for (i=1; i<=NF; i++) s=s+$i; print s}'
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{diff: where do my files differ?}
+\label{sec-1-3}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+\begin{block}{version1.dat}
+\label{sec-1-3-1}
+
+\footnotesize
+
+\begin{verbatim}
+0.701 -0.764 -0.226 0.796 -0.337
+0.249 -1.51 0.876 2.25 -0.879
+-0.523 -1.29 0.354 -0.378 -1.39
+0.565 1.31 -0.237 -0.844 0.28
+2 -0.128 -0.841 1.31 -0.651
+-0.565 0.81 -0.116 0.582 -0.0334
+1.03 -0.75 1.7 -0.829 2.3
+0.797 -0.988 0.667 -0.492 -0.78
+0.94 -0.0931 -0.22 -1.29 -1.21
+-0.456 -0.0231 0.603 1.43 0.734
+0.598 -0.113 0.852 -1.58 -0.165
+0.126 -0.0806 0.951 0.49 0.328
+\end{verbatim}
+\end{block}
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{block}{version2.dat}
+\label{sec-1-3-2}
+
+\footnotesize
+
+\begin{verbatim}
+0.701 -0.764 -0.226 0.796 -0.337
+0.249 -1.51 0.876 2.25 -0.879
+-0.523 -1.29 0.354 -0.378 -1.39
+0.565 1.31 -0.235 -0.844 0.28
+2 -0.128 -0.841 1.31 -0.651
+-0.565 0.81 -0.116 0.582 -0.0334
+1.03 -0.75 1.7 -0.829 2.3
+0.797 -0.988 0.667 -0.492 -0.78
+0.94 -0.0932 -0.22 -1.29 -1.21
+-0.456 -0.0231 0.603 1.43 0.734
+0.598 -0.113 0.852 -1.58 -0.165
+0.126 -0.0806 0.951 0.49 0.328
+\end{verbatim}
+
+   \note{ \url{~/txt/computing/diff_talk/diff_talk_notes.txt} }
+\end{block}
+\end{column}
+\end{columns}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{diff and patch}
+\label{sec-1-4}
+
+
+\begin{itemize}
+\item \emph{diff} shows the differences between version1 and version 2.
+\end{itemize}
+
+\begin{verbatim}
+ diff nextsteps/version1.dat  nextsteps/version2.dat
+\end{verbatim}
+
+\begin{itemize}
+\item \emph{patch}:  new file = old file + diff
+\end{itemize}
+
+
+\begin{itemize}
+\item \emph{patches} are efficient ways of sending updates.  Useful for syncing
+  and version control.
+\end{itemize}
+
+\begin{verbatim}
+ diff version1.dat version2.dat > p
+ patch version1.dat p
+ diff version1.dat version2.dat
+\end{verbatim}
+\end{frame}
+\begin{frame}
+\frametitle{Perl: Practical Extraction and Report Language}
+\label{sec-1-5}
+
+
+\begin{itemize}
+\item Most unix tools (used to be) limited by length of lines.  Perl
+  removed those restrictions, combining features of awk, sh and C.
+\item `duct tape' programming language.
+\item Useful in computational biology.  See \href{http://www.bioperl.org}{http://www.bioperl.org}
+\item Excellent Ensembl API, \href{http://www.ensembl.org/info/data/api.html}{http://www.ensembl.org/info/data/api.html}
+\item G. Valiente. Combinatorial Pattern Matching Algorithms in Computational Biology using Perl and \R. Taylor \& Francis/CRC Press (2009).
+\item Verdict: yucky, but probably [essential | good to now].
+\item Bidirectional \R/Perl interfaces \href{http://www.omegahat.org/RSPerl/}{http://www.omegahat.org/RSPerl/}
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{\R can also \texttt{regexp}}
+\label{sec-1-6}
+
+\begin{itemize}
+\item \texttt{grep}, \texttt{sub}, \texttt{gsub}, \texttt{strsplit}, \texttt{nchar}, \texttt{substr}, \ldots{}
+\item also \Rpackage{stringr} package
+\end{itemize}
+
+and for sequence data storing and manipulation 
+
+\begin{itemize}
+\item \Rpackage{Biostrings} package
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Python}
+\label{sec-1-7}
+
+
+\begin{itemize}
+\item Modern programming language; less compact than perl:
+\end{itemize}
+
+\footnotesize
+
+\begin{verbatim}
+while (<>) {             | import sys
+    print if /perl/i;    | for line in sys.stdin.readlines():
+}                        |     if line.lower().find("perl") > -1:
+                         |         print line,
+http://www.sabren.net/articles/againstperl.php3
+\end{verbatim}
+\normalsize
+
+\begin{itemize}
+\item Clean syntax
+\item Properly object-oriented.
+\item Not as much support in computational biology (yet).  See
+  \href{http://www.biopython.org}{http://www.biopython.org}
+\item Verdict: More general programming language than \R; lacking (perhaps?)
+  in core numerics and graphics -- see NumPy and RPy(2).
+\item Bidirectional \R/Python interface \href{http://www.omegahat.org/RSPython/}{http://www.omegahat.org/RSPython/}
+\end{itemize}
+\end{frame}
+\section{\texttt{C} and \texttt{C++} from \R}
+\label{sec-2}
+\begin{frame}
+\frametitle{C}
+\label{sec-2-1}
+
+
+\begin{itemize}
+\item Low-level programming language
+\item Very fast, but takes a long time to write code.
+\item You have to worry about memory allocation yourself.
+\item All variables have predefined type.
+\item Critical for numerical-intensive work.  (FORTRAN less-popular.)
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{C from \R}
+\label{sec-2-2}
+
+
+\begin{itemize}
+\item \R has build-in \texttt{C} interfaces
+\begin{itemize}
+\item Better know how to program in \texttt{C}.
+\item Documentation is not always easy to follow: R-Ext, R Internals as well as \R and other package's code.
+\end{itemize}
+\item \texttt{.C}  Arguments and return values must be \textit{primitive} (vectors of doubles or integers)
+\item \texttt{.Call} Accepts \R data structures as arguments and return values (\texttt{SEXP} and friends) (no type checking is done though).
+\item Memory management: memory allocated for \R objects is garbage collected. Thus \R objects in \texttt{C} code, you must be explicitely \texttt{PROTECT}ed to 
+      avoid being \texttt{gc()}ed, and subsequently \texttt{UNPROTECT}ed.
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Using \texttt{.Call}}
+\label{sec-2-3}
+
+\tiny
+
+\begin{verbatim}
+#include <R.h> 
+#include <Rdefines.h>
+
+SEXP gccount(SEXP inseq) {
+  int i, l;
+  SEXP ans, dnaseq;    
+  PROTECT(dnaseq = STRING_ELT(inseq, 0)); 
+  l = LENGTH(dnaseq); 
+  printf("length %d\n",l);
+  PROTECT(ans = NEW_NUMERIC(4));
+
+  for (i = 0; i < 4; i++) 
+    REAL(ans)[i] = 0;
+
+  for (i = 0; i < l; i++) {
+    char p = CHAR(dnaseq)[i];
+    if (p=='A') 
+      REAL(ans)[0]++;
+    else if (p=='C') 
+      REAL(ans)[1]++;
+    else if (p=='G') 
+      REAL(ans)[2]++;
+    else if (p=='T') 
+      REAL(ans)[3]++;
+    else 
+      error("Wrong alphabet");
+  }
+  UNPROTECT(2);
+  return(ans);
+}
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Using our \texttt{C} code}
+\label{sec-2-4}
+
+\begin{itemize}
+\item Create a shared library: \texttt{R CMD SHLIB gccount.c}
+\item Load the shared object: \Rfunction{dyn.load("gccount.so")}
+\item Create an \R function that uses it: \Rfunction{gccount <- function(inseq) .Call("gccount",inseq)}
+\item Use the \texttt{C} code: \Rfunction{gccount("GACAGCATCA")}
+\end{itemize}
+
+
+\begin{verbatim}
+s <- "GACTACGA"
+gccount
+gccount(s)
+table(strsplit(s, ""))
+system.time(replicate(10000, gccount(s)))
+system.time(replicate(10000, table(strsplit(s, ""))))
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{\Rpackage{Rcpp} for \texttt{C++}}
+\label{sec-2-5}
+
+\begin{itemize}
+\item \Rpackage{Rcpp} is a great package for writing both \texttt{C} and \texttt{C++} code:
+\item It comes with loads of documentation and examples.
+\item No need to worry about garbage collection.
+\item All basic \R types are implemented as \texttt{C++} classes.
+\item Easy to interface \texttt{C++} classes (via \texttt{modules})
+\item With package \Rpackage{inline} code can be easily compiled in \R.
+\end{itemize}
+\small
+
+\begin{verbatim}
+library(Rcpp)
+library(inline)
+cppCode <- '
+    Rcpp::NumericVector cx(x);
+    Rcpp::NumericVector ret(1);
+    ret[0] = cx[0] * cx[0];
+    return(ret);
+    '
+squareOne <- cxxfunction(signature(x="numeric"), 
+                      plugin="Rcpp", body=cppCode)
+squareOne(10)
+\end{verbatim}
+\end{frame}
+\section{Not only local}
+\label{sec-3}
+\begin{frame}
+\frametitle{Syncing your files}
+\label{sec-3-1}
+
+
+\begin{itemize}
+\item How do you keep two directories in synchrony, e.g. your home
+  directory on laptop and desktop?
+\item \texttt{sftp}, \texttt{ssh}, \texttt{rsync}
+\item \texttt{Unison} gets Stephen's vote since 2003 -- \href{http://www.damtp.cam.ac.uk/internal/computing/unison/}{http://www.damtp.cam.ac.uk/internal/computing/unison/}
+\item Modern services like Dropbox are useful and build upon these unix
+  tools.
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{Version control / revision control system (RCS)}
+\label{sec-3-2}
+
+
+\begin{itemize}
+\item How to keep backup copies over time?
+\item Just copy files, e.g. \emph{mycode.jan1.R}, \emph{mycode.jan2.R}, \ldots{}
+\item Leads to many large copies, with no trace of what you did over time.
+\item more principled way is to use version control: every time you make
+  significant changes, you \emph{commit} a new version with a succint log
+  file saying what you changed.
+\item RCS: going since 1982\ldots{} old and simple but stable.  Typically
+  single-user.
+\end{itemize}
+\url{http://www.cl.cam.ac.uk/~mgk25/rcsintro.html}
+
+\begin{itemize}
+\item More modern approaches: \emph{cvs}, \emph{svn}, \emph{git}, \ldots{}
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{For packages, analysis projects, papers and slides}
+\label{sec-3-3}
+
+\begin{itemize}
+\item Github, google code, bitbucket, \ldots{}
+\item R-forge: svn and build system
+\end{itemize}
+\end{frame}
+\section{Handling large files / databases}
+\label{sec-4}
+\begin{frame}
+\frametitle{Handling large data files.}
+\label{sec-4-1}
+
+\begin{itemize}
+\item Computational Biology requires access to large data files.
+\item Reading them all into memory is difficult, when files are very large
+     (> 1 Gb).
+\item Some approaches:
+\begin{enumerate}
+\item Compress files.
+\item Selectively use scan or connections.
+\item Use a database.
+\end{enumerate}
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{1. Compress files.}
+\label{sec-4-2}
+
+
+\begin{itemize}
+\item This produces typically x2 compression:
+\end{itemize}
+
+\begin{verbatim}
+ Rscript -e 'write(rnorm(99999), file="largefile.dat")'
+ ls -lh largefile.dat
+ gzip largefile.dat
+ ls -lh largefile.dat.gz
+ gunzip largefile.dat
+\end{verbatim}
+
+\begin{itemize}
+\item \R can read in compressed files natively.
+\end{itemize}
+
+\begin{verbatim}
+ x <- scan('largefile.dat.gz')
+\end{verbatim}
+
+\begin{itemize}
+\item Other compression options also recognised: xz, bzip2
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{2. Scan and Connections.}
+\label{sec-4-3}
+
+
+\begin{itemize}
+\item scan() is very flexible; e.g. read just 2nd column:
+\end{itemize}
+\footnotesize
+
+\begin{verbatim}
+scan(file = "", what = double(0), nmax = -1, n = -1, sep = "",
+     quote = if(identical(sep, "\n")) "" else "'\"", dec = ".",
+     skip = 0, nlines = 0, na.strings = "NA",
+     flush = FALSE, fill = FALSE, strip.white = FALSE,
+     quiet = FALSE, blank.lines.skip = TRUE, multi.line = TRUE,
+     comment.char = "", allowEscapes = FALSE,
+     fileEncoding = "", encoding = "unknown")
+
+x <- scan(file, what=list(NULL,"",NULL), skip=2, sep='\t')
+\end{verbatim}
+\normalsize
+
+\begin{itemize}
+\item connections allow you to maintain state between accesses to a file.
+\end{itemize}
+
+\footnotesize
+
+\begin{verbatim}
+con <- file("version1.dat", "r")
+while (length(dat <- scan(con,n = 5,quiet = TRUE)) > 0) {
+  print(mean(dat))
+}
+close(con)
+\end{verbatim}
+\end{frame}
+\begin{frame}
+\frametitle{3. Relational databases}
+\label{sec-4-4}
+
+
+\begin{itemize}
+\item Relational database: data stored in tables, very similar in nature
+  to \R's data.frames.
+\item Databases allow for multiple-accesses, locks for restricted changes,
+  very scalable.
+\item Many databases available: Oracle, Postgres, Access, MySQL.
+\item SQL -- Structured Query Language: language to interrogate databses.
+\end{itemize}
+\end{frame}
+\begin{frame}
+\frametitle{What is SQLite?}
+\label{sec-4-5}
+
+
+\begin{itemize}
+\item Most databases run on remote server; SQLite is embedded into your
+  program.
+\item Embedding the database simplifies setup of server, but means your
+  databases are not shared in the same way that others are.  (You have
+  to share the .sql files.)
+\item Incredibly small (1/4 Mb) and useful.  Widely used (e.g. mac, iOS,
+  Firefox, Android).  Not as fast as e.g. Oracle.
+\item You compile your SQLite within your program.
+\item All handled with you by \R, care of \emph{RSQLite} package.
+  (e.g. Bioconductor uses it for data files.)
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Using databases in \R, a simple session (Gentleman, p239)}
+\label{sec-4-6}
+
+
+\begin{itemize}
+\item package \emph{DBI} interfaces to all database platforms.
+\end{itemize}
+
+
+\begin{verbatim}
+library(RSQLite)
+m = dbDriver("SQLite")
+
+## Create a new database from an R data frame.
+con = dbConnect(m, dbname = "arrest.db")
+data(USArrests)
+dbWriteTable(con, "USArrests", USArrests, overwrite=TRUE)
+dbListTables(con)
+
+## Later, query the database.
+rs = dbSendQuery(con, "select * from USArrests")
+d1 = fetch(rs, n=5)      ## get first five
+print(d1)
+d1 = fetch(rs, n=-1)
+dbDisconnect(con)
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Other uses for sqlite}
+\label{sec-4-7}
+
+
+\begin{itemize}
+\item \texttt{sqldf} Performs SQL selects on \R data frames.
+\item supports SQLite backend database (by default), the H2 java db and PostgreSQL and MySQL.
+\item avoid read.csv entirely  \href{http://code.google.com/p/sqldf/}{http://code.google.com/p/sqldf/}
+\end{itemize}
+
+\begin{quote}
+``See ?read.csv.sql in sqldf.  It uses RSQLite and SQLite to read the
+file into an sqlite database (which it sets up for you) completely
+bypassing \R and from there grabs it into \R removing the database it
+created at the end.'' (G. Grothendieck, r-help mailing list).
+\end{quote}
+
+\begin{itemize}
+\item Good book: \verb~^((HT|X)M|SQ)L|R$~
+
+  Introduction to Data Technologies.
+\end{itemize}
+
+\url{http://www.stat.auckland.ac.nz/~paul/ItDT/}
+\end{frame}
+\begin{frame}
+\frametitle{\texttt{ff}: back to the future?}
+\label{sec-4-8}
+
+
+\begin{itemize}
+\item \emph{ff} package stores objects on disk, but looks like they are in
+   memory.
+\item ``back to the future'': S used to store objects in disk.
+\item Sorting a single column of 81e6 entries.  Time-taken in seconds.
+\end{itemize}
+
+Oct 2010 results from.
+\href{http://tolstoy.newcastle.edu.au/R/packages/10/0697.html}{http://tolstoy.newcastle.edu.au/R/packages/10/0697.html}
+
+
+
+\begin{center}
+\begin{tabular}{lrrllllll}
+\hline
+      &  ruinteger  &  rinteger  &  rusingle  &  rsingle  &  rudouble  &  rdouble  &  rfactor  &  rchar  \\
+\hline
+ ram  &       5.58  &      3.23  &  NA        &  NA       &  NA        &  NA       &  0.49     &  NA     \\
+ ff   &      10.70  &      8.54  &  51.35     &  28.98    &  70.20     &  44.13    &  7.91     &  NA     \\
+ R    &        OOM  &       OOM  &  OOM       &  OOM      &  OOM       &  OOM      &  OOM      &  OOM    \\
+ SAS  &      61.45  &     44.94  &  NA        &  NA       &  63.14     &  46.56    &  NA       &  OOD    \\
+\hline
+\end{tabular}
+\end{center}
+
+
+
+(ram=in-memory, optimized for speed, not ram; ff=on disk).
+
+\note{see text in nextsteps/ff-oct2010.txt}
+\end{frame}
+\begin{frame}
+\frametitle{Other}
+\label{sec-4-9}
+
+
+\begin{itemize}
+\item The \texttt{bigmemory} package by Kane and Emerson permits storing large objects such as matrices in memory (as well as via files) and uses external pointer objects to refer to them.
+\item netCDF data files: \texttt{ncdf} and \texttt{RNetCDF} packages.
+\item hdf5 format: \texttt{rhdf5} package
+\item \texttt{XML} package to parse xml data
+\item \ldots{}
+\end{itemize}
+\end{frame}
+\section{Parallel processing}
+\label{sec-5}
+\begin{frame}
+\frametitle{Introduction}
+\label{sec-5-1}
+
+\begin{itemize}
+\item Applicable when repeating \textit{independent} computations a certain number of times; results just need to be combined after parallel executions are done.
+\item A cluster of nodes: generate multiple workers listening to the master; these workers are new processes that can run on the current machine or a similar one with an identical R installation. Should work on all \R plateforms (as in package \Rpackage{snow}).
+\item The \R process is \textit{forked} to create new \R\~{}processes by taking a complete copy of the masters process, including workspace (pioneered by package \Rpackage{multicore}). Does not work on Windows.
+\item Grid computing.
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Packages}
+\label{sec-5-2}
+
+\begin{itemize}
+\item Package \Rpackage{parallel}, first included in \R 2.14.0 builds on CRAN packages \Rpackage{multicore} and \Rpackage{snow}.
+\end{itemize}
+\begin{verbatim}
+ mclapply(X, FUN, ...) (adapted from multicore).
+ parLapply(cl, X, FUN, ...) (adapted from snow ).
+\end{verbatim}
+
+\begin{itemize}
+\item Package \Rpackage{foreach}, introducing a new looping construct supporting parallel execution. Natural choice to parallelise a \texttt{for} loop.
+\end{itemize}
+\begin{verbatim}
+ library(doMC)
+ library(foreach)
+ registerDoMC(2)
+ foreach(i = ll) %dopar% f(i)
+ foreach(i = ll) %do% f(i) ## serial version
+ library(plyr)
+ llply(ll, f, .parallel=TRUE)
+\end{verbatim}
+\end{frame}
+\begin{frame}
+\frametitle{High performance computing}
+\label{sec-5-3}
+
+
+\begin{itemize}
+\item Find information about managing and chunking big data:
+\begin{itemize}
+\item High performance computing CRAN task view
+\item \href{http://cran.r-project.org/web/views/HighPerformanceComputing.html}{http://cran.r-project.org/web/views/HighPerformanceComputing.html}
+\end{itemize}
+\end{itemize}
+\end{frame}
+\section{A few more words about about \R}
+\label{sec-6}
+\begin{frame}[fragile]
+\frametitle{Pass by \ldots{}}
+\label{sec-6-1}
+
+
+\begin{itemize}
+\item \textbf{value} is the default in \R
+\item \textbf{reference} using S4 ReferenceClasses (OO)
+\item can emulate pass by ref using an \texttt{environment}
+\end{itemize}
+
+
+\begin{verbatim}
+e <- new.env()
+e$x <- 1
+f <- function(myenv) myenv$x <- 2
+f(e)
+e$x
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Profiling}
+\label{sec-6-2}
+
+
+
+\begin{verbatim}
+m <- matrix(rnorm(1e6), ncol=100)
+Rprof("rprof")                                
+res <- apply(m,1,mean,trim=.3)                
+Rprof(NULL)
+summaryRprof("rprof")
+\end{verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Benchmarking}
+\label{sec-6-3}
+
+
+
+\begin{verbatim}
+m <- matrix(rnorm(1e6), ncol=100)
+f1 <- function(x, t = 0.3) {
+  xx <- 0
+  for (i in 1:nrow(x)) {
+    xx <- c(xx, sum(m[i, ]))
+  }
+  mean(xx, trim = t)
+}
+f2 <- function(x, t = 0.3) mean(rowSums(x), trim = t)
+
+library(rbenchmark)
+benchmark(f1(m), f2(m),
+          columns=c("test", "replications", 
+            "elapsed", "relative"),
+          order = "relative", replications = 10)
+\end{verbatim}
+\end{frame}
+\section{Differential equations and phase plane analysis}
+\label{sec-7}
+\begin{frame}
+\frametitle{Lotka–Volterra equations}
+\label{sec-7-1}
+
+
+Describe simple models of populations dynamics of species competing for some common resource. 
+When two species are not interacting, their population evolve according to the logistic 
+equations and the rate of reproduction is proportional to both the existing population 
+and the amount of available resources
+
+\begin{align*}
+ \deriv{x}{t} &= r_{1} x ~ (1 - \frac{x}{k_{1}} )\\
+ \deriv{y}{t} &= r_{2} y ~ (1 - \frac{y}{k_{2}} )
+\end{align*}
+
+where the constant $r_{i}$ defines the growth rate and $k_{i}$ is the carrying capacity of the environment.
+\end{frame}
+\begin{frame}
+\frametitle{Competitive Lotka–Volterra equations}
+\label{sec-7-2}
+
+
+When competing for the same resource, the animals have a negative influence on their competitors growth.
+
+\begin{align*}
+ \deriv{x}{t} &= r_{1} x ~ (1 - \frac{x}{k_{1}} ) - axy\\
+ \deriv{y}{t} &= r_{2} y ~ (1 - \frac{y}{k_{2}} ) - bxy
+\end{align*}
+\end{frame}
+\begin{frame}
+\frametitle{Rabbits vs sheep  (Strogatz, p155)}
+\label{sec-7-3}
+
+
+Here is an example with $r_{1} = 3$, $k_{1} = 3$, $a = 2$, $r_{2} = 2$, $k_{2} = 2$, $b = 1$, which simplifies to
+
+\begin{align*}
+ \deriv{r}{t} &= r( 3 - r - 2s)\\
+ \deriv{s}{t} &= s( 2 - r - s)
+\end{align*}
+\end{frame}
+\begin{frame}[fragile]
+\frametitle{Computing a trajectory over time}
+\label{sec-7-4}
+
+
+i.e. use numerical integration, with $r_0 = 1$ and $s_0 = 1.2$
+
+
+\begin{verbatim}
+library(deSolve)
+Sheep <- function(t, y, parms) {
+  r=y[1]; s=y[2]
+  drdt = r * (3 - r - (2*s))
+  dsdt = s * (2 - r - s)
+  list(c(drdt, dsdt))
+}
+
+x0 <- c(1, 1.2)
+times <- seq(0, 30, by=0.2)
+parms <- 0
+out <- rk4(x0, times, Sheep, parms)
+head(out)
+\end{verbatim}
+\end{frame}
+\begin{frame}
+\frametitle{Plotting population growth}
+\label{sec-7-5}
+
+
+\includegraphics[width=.9\linewidth]{./de/sheep_run_01.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Phase plane analysis}
+\label{sec-7-6}
+
+
+\includegraphics[width=.9\linewidth]{./de/sheep_phase.pdf}
+\end{frame}
+\begin{frame}
+\frametitle{Starting points}
+\label{sec-7-7}
+
+
+\begin{itemize}
+\item \texttt{deSolve} package
+\item phase planes and nullclines (\texttt{DMBpplane.r} from DMB site, modified
+     from Daniel Kaplan)
+\item \texttt{integrate()}  -- quadrature
+\item \texttt{D()} -- symbolic differentiation
+\item \texttt{optimize()} (1d) and \texttt{optim()} (n-d)
+\item Steven Strogatz.  Nonlinear dynamics and chaos.
+\item NR: William Press et al.  Numerical Recipes in C/C++
+\item More slides about DE and phase plane -- \url{de.pdf}
+\end{itemize}
+\end{frame}
+\section{Conclusions}
+\label{sec-8}
+\begin{frame}
+\frametitle{Conclusions}
+\label{sec-8-1}
+
+
+\begin{itemize}
+\item Looking for packages
+\begin{itemize}
+\item CRAN Task Views \href{http://cran.r-project.org/web/views/}{http://cran.r-project.org/web/views/}
+\item Bioconductor biocViews \href{http://bioconductor.org/packages/release/BiocViews.html}{http://bioconductor.org/packages/release/BiocViews.html}
+\end{itemize}
+\end{itemize}
+
+
+\begin{itemize}
+\item Reproducibility is crucial
+\item Have several tools at hand
+\begin{itemize}
+\item editor, programming languages, shell, \ldots{}
+\end{itemize}
+\item Practice to keep learning
+\item Have fun! \smiley{}
+\end{itemize}
+\end{frame}
+
+\end{document}

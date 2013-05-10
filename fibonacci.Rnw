@@ -1,0 +1,232 @@
+\documentclass[]{beamer}
+%%\documentclass[notes]{beamer} %% include notes.
+
+\newcommand{\Slang}{\texttt{S} }
+\newcommand{\R}{\texttt{R} }
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\usepackage{hyperref}
+\hypersetup{%
+  pdfusetitle,
+  bookmarks = {true},
+  bookmarksnumbered = {true},
+  bookmarksopen = {true},
+  bookmarksopenlevel = 2,
+  unicode = {true},
+  breaklinks = {false},
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+
+\usepackage{ifthen}
+\providecommand*{\handouts}{false}
+
+%% Following is useful for getting 4-up output directly to A4 pdf.
+\ifthenelse{\equal{\handouts}{true}}
+{\usepackage{pgfpages}
+  \pgfpagesuselayout{4 on 1}[a4paper,landscape]}
+{}
+
+\usepackage{bm} %% Bold math allows Greeksymbols in bold.
+
+
+\newcommand{\adv}{{\tiny (Advanced)}}
+
+%%\usepackage{emaxima}
+\usepackage[overlay]{textpos}   %For using textblock
+
+\setlength{\TPHorizModule}{10mm}
+\setlength{\TPVertModule}{\TPHorizModule}
+\newcommand{\ds}{\vspace*{5mm}}
+\newcommand{\xstar}{\ensuremath{x^\ast}}
+
+\newcommand{\vmu}{{\bm{\mu}}\xspace}
+
+%%\usepackage{theapa}
+\usepackage{amsmath,graphicx}
+%%\usepackage{multimedia}  %% Need for movies.
+
+\newcommand{\smallref}[1]{{\small #1}}
+%% \newcommand{\mybox}[1]{\fbox{#1}}x
+
+%% %% \graphicspath{{../talk_figs/}{/home/anotherpath/}}
+%% \graphicspath{{figs/}}
+
+\setlength{\TPHorizModule}{10mm}
+\setlength{\TPVertModule}{10mm}
+
+\newcommand{\colhalf}{\column{0.48\textwidth}}
+
+\author{
+  Laurent Gatto\footnote{\url{lg390@cam.ac.uk} -- \url{http://proteome.sysbiol.cam.ac.uk/lgatto}}\\ 
+}
+\date{\today}
+
+
+\mode<presentation>
+{
+  \setbeamersize{text margin left=0.25cm}
+  \setbeamersize{text margin right=0.25cm}
+
+  \beamertemplatedotitem
+
+  \beamertemplateheadempty %% Remove headline (at top of frame)
+  %% \beamertemplatefootempty %% Remove headline (at top of frame)
+  \beamertemplatefootpagenumber %% pagenumber only in footer.
+  %% Remove navigation icons.
+  \beamertemplatenavigationsymbolsempty
+  %% Show start of every lecture. Not available in article.
+  %% \AtBeginLecture{\begin{frame}{\Large Lecture \insertlecture}\end{frame}}
+}
+
+\mode<article>
+{
+  \usepackage{fullpage}
+  \usepackage{pgf}
+  \usepackage{hyperref}
+  %%\setjobnamebeamerversion{aa}
+}
+
+%% This is run at the start of every section.
+\AtBeginSection[] % Do nothing for \section*
+{
+  \begin{frame}<beamer>
+    \frametitle{Outline}
+    \tableofcontents[currentsection]
+    %%\frametitle{currentsection}
+  \end{frame}
+}
+
+\title{Fibonacci series in \R}
+
+\begin{document}
+
+\mode<article>
+{
+\date{\today}
+\maketitle
+}
+
+
+\mode<presentation>
+{
+\date{\today}
+\maketitle
+}
+
+<<external-src, cache=FALSE, echo=FALSE>>=
+library(knitr)
+options(width = 60)
+opts_chunk$set(prompt = TRUE,
+               comment = '',
+               fig.align = 'center')
+
+@ %% $
+
+\begin{frame}
+  \frametitle{Fibonacci sequence\footnote{\tiny Slide from \textit{Scientific programming with \R}, MPhil in Computational Biology, Cambridge}}
+  
+  \centerline{$0, 1, 1, 2, 3, 5, 8, 13, 21, \ldots$}
+
+  \[ f[n] = f[n-1] + f[n-2] \]
+
+  How to vectorize?  \ds
+
+  Exercise: write a function, \Rfunction{fibonnaci(n)} that returns the $n^{th}$
+  element of the sequence.  Assume that \Robject{fibonnaci(1) == 0}, 
+    \Robject{fibonacci(2) == 1}. \ds
+
+  Exercise: use \Rfunction{fibonacci()} to estimate the golden ratio.
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Fibonacci sequence}  
+<<fibo1>>=
+fibonacci <- function(n) {
+  .fib <- function(n) {
+    if (n == 0)
+      return(0)
+    if (n < 3)
+      return(1)
+    ans <- c(1, 1, rep(0, n-2))
+    for (i in 3:n)
+      ans[i] <- ans[i-1] + ans[i-2]
+    return(ans[n])
+  }
+  if (length(n) == 1)
+    return(.fib(n))
+  sapply(n, .fib)
+}
+@
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Fibonacci sequence}
+
+Using $F(n) = \frac{\varphi^n - (1 - \varphi)^n}{\sqrt{5}} = \frac{\varphi^n - (- \varphi)^{-n}}{\sqrt{5}}$, 
+where $\varphi = \frac{1 + \sqrt{5}}{2}$ is the golden ratio.
+
+<<fibodirect>>=
+fibdirect <- function(n) {
+  stopifnot(n >= 0)
+  phi <- (1+sqrt(5))/2 
+  round((phi^n - (1 - phi)^n)/sqrt(5))
+}
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Fibonacci sequence}
+<<checkfib>>=
+x <- 1:100
+all.equal(fibonacci(x), fibdirect(x))
+@ 
+<<fibbench, tidy=FALSE>>=
+library("rbenchmark")
+benchmark(fibonacci(x), fibdirect(x),
+          columns=c("test", "replications", 
+            "elapsed", "relative"),
+          order = "relative", replications = 100)
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Golden ratio}
+  We have $\lim_{x \to \infty} \frac{F(n+1)}{F(n)} = \varphi$
+<<gratio>>=
+all.equal((1+sqrt(5))/2, fibonacci(10)/fibonacci(9))
+all.equal((1+sqrt(5))/2, fibonacci(20)/fibonacci(19))
+all.equal((1+sqrt(5))/2, fibonacci(30)/fibonacci(29))
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Golden ratio}
+<<fibplot, out.width = '.4\\linewidth', fig.show='hold', size='small'>>=
+phi <- (1+sqrt(5))/2
+plot(fibdirect(2:20)/fibdirect(1:19), type = "b")
+abline(h = phi, lty = "dotted", col = "red")
+plot(fibdirect(19:27)/fibdirect(18:26), type = "b")
+abline(h = phi, lty = "dotted", col = "red")
+@ 
+\end{frame}
+
+
+\end{document}
+
+
+ 

@@ -1,0 +1,24 @@
+* Practical 1 - Dynamic models in Biology, up to exercise 9.
+
+- The looping exercices just that; there are ways to do the same without for loops. 
+- Exercise 6.4: identical is more that all(x == y) - read ?identical
+
+#+begin_src R :results output
+  y <- x <- 1:5
+  x == y
+  all(x == y)
+  identical(x, y)
+  names(x) <- letters[1:5]
+  names(y) <- LETTERS[1:5]
+  all(x == y)
+  identical(x, y)
+#+end_src
+
+- Exercise 7.1: the if/else script can be simplified!
+- Numerical Matrix Algebra: R uses the BLAS and LAPACK libraries.
+
+* Practical 2 - LaTeX
+
+* Practical 3 - Assignment 1
+
+* Practical 4 - Reproducible research with Sweave

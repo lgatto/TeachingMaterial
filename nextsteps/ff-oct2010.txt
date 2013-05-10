@@ -1,0 +1,325 @@
+
+  [R-pkgs] ff version 2.2.0
+
+    * This message: [ Message body <#start> ] [ More options <#options2> ]
+    * Related messages: [ Previous message <0695.html> ]
+
+From: =?UTF-8?Q? Jens_Oehlschl=C3=A4gel ?=
+<jens.oehlschlaegel_at_truecluster.com
+<mailto:jens.oehlschlaegel_at_truecluster.com?Subject=Re:%20[R-pkgs]%20ff%20version%202.2.0>>
+
+Date: Fri, 01 Oct 2010 17:36:04 +0200 (CEST)
+
+
+Dear R community,
+
+The next release of package ff is available on CRAN. With kind help of
+Brian Ripley it now supports the Win64 and Sun versions of R. It has
+three major functional enhancements:
+
+   1. new fast in-memory sorting and ordering functions (single-threaded)
+   2. ff now supports on-disk sorting and ordering of ff vectors and
+      ffdf dataframes
+   3. ff integer vectors now can be used as subscripts of ff vectors and
+      ffdf dataframes
+   4. is achieved by careful implementation of NA-handling and
+      exploiting context information
+   5. although permanently stored, sorting and ordering of ff objects
+      can be faster than the standard routines in R
+   6. applying an order to ff vectors and ffdf dataframes is
+      substantially slower than in pure R because it involves
+      disk-access AND sorting index positions (to avoid random access). 
+
+There is still room for improvement, however, the current status should
+already be useful. I run some comparisons with SAS (see end of mail):
+
+- both could sort German census size (81e6 rows) on a 3GB notebook
+- ff sorts and orders faster on single columns
+- sorting big multicolumn-tables is faster in SAS
+
+Win64 binaries and version 2.2.1 supporting Sun should appear during the
+next days on CRAN. For the impatient: checkout from r-forge with
+revision 67 or higher. Non-Windows users: please note that you need to
+set appropriate values for options 'ffbatchbytes' and 'ffmaxbytes'
+yourself.
+
+Note that virtual window support is deprecated now because it leads to
+too complex code. Let us know if you urgently need this and why.
+
+Feedback, ideas and contributions appreciated. To those who offered code
+during the last months: please forgive us that integrating and
+documenting was not possible with this release.
+
+Jens & Daniel
+
+*P.S. NEWS *                 CHANGES IN ff VERSION 2.2.0
+
+*NEW FEATURES *
+
+    o	ff now supports the 64 bit Windows and Sun versions of R 
+    	(thanks to Brian Ripley)
+    o	ff now supports sorting and ordering of ff vectors and dataframes
+    	(see ramsort, ffsort, ffdfsort, ramorder, fforder, ffdforder)
+    o	ff now supports ff vectors as subscripts of ff objects
+    	(currently positive integers only, booleans are planned)
+    o	New option 'ffmaxbytes' which allows certain ff procedures like sorting
+    	using larger limit of RAM than 'ffbatchbytes' in chunked processing.
+    	Such higher limit is useful for (single-R-process) sorting compared to
+    	some multi-R-process chunked processing. It is a good idea to reduce 
+    	'ffmaxbytes' on slaves or avoid ff sorting there completely.
+    o	New generic 'pagesize' with method 'pagesize.ff' which returns the 
+    	current pagesize as defined on opening the ff object.
+
+
+*USER VISIBLE CHANGES *
+
+    o	[.ff now returns with the same vmode as the ff-object
+    o	Certain operations are faster now because we worked around 
+    	unnecessary copying triggered by many of R's assignment functions.
+    	For example reading a factor from a (well-cached) file is now 20%
+    	faster and thus as fast as just creating this factor in-RAM using 
+    	levels()<- and class()<- assignments. 
+    	(consider this tuning temporary, hoping for a generic fix in base R)
+    o	ff() can now open files larger than .Machine$integer.max elements
+    	(but gives access only to the first .Machine$integer.max elements)
+    o	ff now has default pattern NULL translating to the pattern in 'filename'
+        (and only to the previous default 'ff' if no filename is given)
+    o	ff now sets the pattern in synch with a requested 'filename'
+    o	clone.ff now always creates a file consistent with the previous pattern
+    o	clone.ff now always creates a finalizer consistent with the file location
+    o	clone.ffdf has a new argument 'nrow' which allows to create an empty copy 
+        with a different number of rows (currently requires 'initdata=NULL')
+    o	clone.default now deep-copies lists and atomic vectors
+    	
+    
+
+*DEPRECATED *     o virtual window support is deprecated. Let us know if
+you urgently need this and why.    
+
+*BUG FIXES *     o read.table.ffdf now also works if transFUN filters
+and returns less rows
+
+BUG FIXES at 2.1.4
+
+    o	[<-.ffdf no longer does calculate the number of elements in an ffdf
+    	which could led to an integer overflow
+
+
+BUG FIXES at 2.1.3
+
+    o ffsafe now always closes ffdf objects - also partially closed ones
+
+    o ffsafe no longer passes arguments 'add' and 'move' to 'save'
+
+    o	ffsafe and friends now work around the fact that under windows getwd()
+    	can report the same path in upper and lower case versions. 
+
+
+
+    CHANGES IN bit VERSION 1.1.5
+
+*NEW FEATURES *     o new utility functions setattr() and
+setattributes() allow to set attributes       by reference (unlike
+attr()<- attributes()<- without copying the object)
+
+    o new utility unattr() returns copy of input with attributes removed
+
+*USER VISIBLE CHANGES *     o certain operations like creating a bit
+object are even faster now: need       half the time and RAM through the
+use of setattr() instead of attr()<-
+
+    o [.bit now decorates its logical return vector with
+attr(,'vmode')='boolean',       i.e. we retain the information that
+there are no NAs.
+
+*BUG FIXES *     o .onLoad() no longer calls installed.packages() which
+substantially       improves startup time (thanks to Brian Ripley)
+
+P.P.S. Below are some timings in seconds at 3e6, 9e6, 27e6 and 81e6
+elements from a Lenovo 410s notebook (3GB RAM, i5 m520, 2 real cores, 4
+hyperthreaded cores, SSD drive, Windows7 32bit)
+
+Legend for software
+
+  ram:  new in-ram inplace operations receiving enough RAM to optimize for speed, not for memory
+   ff:  new on-disk operations limiting RAM for this operation at ~500GB
+    R:  timings from standard sort() and order()
+  SAS:  timings from SAS 9.2 allowing for multithreaded sorting
+
+
+Legend for type of random data
+
+  rboolean:  bi-boolean with 50% FALSE and TRUE
+  rlogical:  tri-boolean with 33% NA, FALSE and TRUE
+    rubyte:  integers from 0..255
+     rbyte:  33% NA and 67% -127..127
+   rushort:  integers from 0..65535
+    rshort:  33% NA and 67% -32767..32767
+ ruinteger:  50% NA and 50% integers
+  rinteger:  random integers
+  rusingle:  50% NA and 50% singles
+   rsingle:  random singles
+  rudouble:  50% NA and 50% doubles
+   rdouble:  doubles
+   rfactor:  factor with 64 levels of length 66 (being different at bytes 65 and 66)
+     rchar:  64 strings of length 66 (being different at bytes 65 and 66)
+
+
+Legend for abbreviations
+
+  OOM:  out of memory
+  OOD:  out of disk
+   NT:  not timed because too slow
+   NA:  not available
+   
+
+
+Results for sorting a single column
+
+------------------------------------------------------------------------
+
+/, , 3e6/
+
+    rboolean rlogical rubyte rbyte rushort rshort ruinteger rinteger
+rusingle rsingle rudouble rdouble rfactor rchar
+
+ram     0.02     0.03   0.02  0.04    0.02   0.02      0.17     0.11     0.66    0.36     0.66    0.36    0.03    NA
+ff      0.25     0.33   0.22  0.25    0.28   0.26      0.38     0.30     1.02    0.65     0.92    0.67    0.39    NA
+R         NA     0.35     NA    NA      NA     NA      0.83     0.54       NA      NA     1.28    0.90   64.83 51.20
+SAS       NA       NA     NA    NA      NA     NA      1.61     1.32       NA      NA     1.57    1.29      NA 17.01
+
+/, , 9e6/
+
+    rboolean rlogical rubyte rbyte rushort rshort ruinteger rinteger
+rusingle rsingle rudouble rdouble rfactor rchar
+
+ram     0.04     0.07   0.03  0.08    0.03   0.07      0.50     0.31     1.88    0.97     1.87    0.97    0.04    NA
+ff      0.72     0.93   0.61  0.73    0.84   0.75      1.08     0.86     2.68    1.62     2.57    1.67    0.78    NA
+R         NA     0.90     NA    NA      NA     NA      2.84     1.78       NA      NA     3.51    2.12      NA    NT
+SAS       NA       NA     NA    NA      NA     NA      4.99     3.90       NA      NA     4.91    4.48      NA 62.76
+
+/, , 27e6/
+
+    rboolean rlogical rubyte rbyte rushort rshort ruinteger rinteger
+rusingle rsingle rudouble rdouble rfactor rchar
+
+ram     0.10     0.24   0.09  0.23    0.11   0.23      1.58     1.00     6.06    3.15     6.00    3.23    0.16     NA
+ff      2.19     2.98   1.92  2.21    2.56   2.31      3.22     2.68     8.49    5.18     8.10    5.35    2.58     NA
+R         NA     2.72     NA    NA      NA     NA      9.69     5.80       NA      NA    12.34    6.97      NA     NT
+SAS       NA       NA     NA    NA      NA     NA     17.02    12.67       NA      NA    17.05   14.07      NA 176.63
+
+/, , 81e6/
+
+    rboolean rlogical rubyte rbyte rushort rshort ruinteger rinteger
+rusingle rsingle rudouble rdouble rfactor rchar
+
+ram     0.27     0.67   0.28  0.67    0.33   0.72      5.58     3.23       NA      NA       NA      NA    0.49    NA
+ff      6.56     9.06   5.93  6.88    8.52   7.15     10.70     8.54    51.35   28.98    70.20   44.13    7.91    NA
+R        OOM      OOM    OOM   OOM     OOM    OOM       OOM      OOM      OOM     OOM      OOM     OOM     OOM   OOM
+SAS       NA       NA     NA    NA      NA     NA     61.45    44.94       NA      NA    63.14   46.56      NA   OOD
+
+
+
+
+Results for calculating the order on a single column
+
+------------------------------------------------------------------------
+
+/, , 3e6/
+
+    rboolean rlogical rubyte rbyte rushort rshort ruinteger rinteger
+rusingle rsingle rudouble rdouble rfactor rchar
+
+ram     0.05     0.07   0.04  0.07    0.09   0.11      0.92     0.53     1.46    0.81     1.31    0.64    0.06     NA
+ff      0.14     0.19   0.77  0.58    0.87   0.67      1.04     0.60     1.66    0.81     1.43    0.85    0.74     NA
+R         NA     3.23     NA    NA      NA     NA      4.57     4.07       NA      NA     5.27    4.61    4.59 193.75
+SAS       NA       NA     NA    NA      NA     NA      1.86     1.48       NA      NA     1.63    1.39      NA  16.83
+
+/, , 9e6/
+
+    rboolean rlogical rubyte rbyte rushort rshort ruinteger rinteger
+rusingle rsingle rudouble rdouble rfactor rchar
+
+ram     0.16     0.21   0.17  0.20    0.30   0.28      3.07     1.61     4.24    2.16     4.22    2.19    0.19    NA
+ff      0.48     0.51   2.45  1.84    2.91   2.15      3.38     1.92     4.72    2.48     4.54    2.45    1.91    NA
+R         NA    12.31     NA    NA      NA     NA     17.02    15.56       NA      NA    16.96   15.47      NT    NT
+SAS       NA       NA     NA    NA      NA     NA      6.71     5.97       NA      NA     6.25    5.41      NA 59.27
+
+/, , 27e6/
+
+    rboolean rlogical rubyte rbyte rushort rshort ruinteger rinteger
+rusingle rsingle rudouble rdouble rfactor rchar
+
+ram     0.51     0.67    0.5  0.69    0.92   0.94      9.89     5.31    15.13    7.69    15.15    7.70    0.58     NA
+ff      1.33     1.51    7.6  5.77    9.25   6.79     10.72     6.12    15.98    8.53    15.96    8.92    5.80     NA
+R         NA    46.37     NA    NA      NA     NA     65.57    59.17       NA      NA    63.74   58.37      NT     NT
+SAS       NA       NA     NA    NA      NA     NA     21.41    18.77       NA      NA    20.22   18.84      NA 182.74
+
+/, , 81e6/
+
+    rboolean rlogical rubyte rbyte rushort rshort ruinteger rinteger
+rusingle rsingle rudouble rdouble rfactor rchar
+
+ram     1.49     2.03    1.5  2.06    3.15   2.98     34.33    17.89       NA      NA       NA      NA    1.90    NT
+ff      3.98     4.65   22.9 17.42   30.33  21.82     36.68    20.36    77.16   49.55   125.01   59.27   17.39    NT
+R        OOM      OOM    OOM   OOM     OOM    OOM       OOM      OOM      OOM     OOM      OOM     OOM     OOM   OOM
+SAS       NA       NA     NA    NA      NA     NA     86.24    70.32       NA      NA    84.40   68.66      NA    NA
+
+
+
+
+Results for sorting all columns of a table with m columns of random
+double data (without NAs)
+
+------------------------------------------------------------------------
+
+/, , 3e6/
+
+ncol 1 2 5 10 20
+
+SAS 1.65 1.83 3.71 6.90 14.06
+ff  1.97 2.37 3.75 6.21 10.86
+R   4.70 5.67 5.65 6.46  8.06
+
+/, , 9e6/
+
+ncol 1 2 5 10 20
+
+SAS  5.18  6.70 14.02 19.25 41.65
+ff   6.38  7.96 12.12 19.58 45.43
+R   18.86 19.20 20.58   OOM   OOM
+
+/, , 27e6/
+
+ncol 1 2 5 10 20
+
+SAS 17.79 19.52 35.03 83.30 142.09
+ff  22.68 25.79 46.25 87.55 157.62
+R   65.56   OOM   OOM   OOM    OOM
+
+/, , 81e6/
+
+ncol 1 2 5 10 20
+*SAS 64.78 83.39 143.59 242.23 408.72 *
+ff 167.52 220.03 324.03 502.42 884.03
+*R OOM OOM OOM OOM OOM *
+
+------------------------------------------------------------------------
+
+R-packages mailing list
+R-packages_at_r-project.org
+https://stat.ethz.ch/mailman/listinfo/r-packages Received on Sat 02 Oct
+2010 - 06:12:10 EST
+
+    * This message: [ Message body <#start> ]
+    * Previous message: KuhnA03: "[R-pkgs] caret package version 4.63"
+      <0695.html>
+
+    * Contemporary messages sorted: [ by date <date.html#697> ] [ by
+      thread <index.html#697> ] [ by subject <subject.html#697> ] [ by
+      author <author.html#697> ] [ by messages with attachments
+      <attachment.html> ]
+
+/This archive was generated by hypermail 2.2.0
+<http://www.hypermail-project.org/> : Sat 02 Oct 2010 - 06:20:02 EST /
+
