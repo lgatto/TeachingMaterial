@@ -73,7 +73,7 @@ clean:
 	rm -rf Exercises/*~
 	rm -rf Exercises/*pdf
 	rm -rf Exercises/*rda
-	rm -rf Exercises/figure
+	rm -rf Exercises/.Rhistory
 
 
 # StangleAll:

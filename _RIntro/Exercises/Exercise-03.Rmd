@@ -8,14 +8,14 @@ All values are of the same type (numerical values).
 Below we generate a matrix of random (normally distributed data),
 representing 50 genes measured for 4 samples.
 
-```{r}
+```{r expdata}
 expdata <- matrix(rnorm(200), nrow = 50, ncol = 4)
 head(expdata)
 ```
 
 Note that this also support missing data encoded as `NA`.
 
-```{r}
+```{r expdatana}
 expdatana <- expdata
 expdatana[2, 2] <- NA
 head(expdatana)
@@ -25,7 +25,7 @@ mode(expdatana)
 
 We also want to set gene (row) and sample (column) names.
 
-```{r}
+```{r expnames}
 dimnames(expdata) <-
   list(features = paste0("gene", 1:nrow(expdata)),
        samples = paste0("sample", 1:ncol(expdata)))
@@ -37,7 +37,7 @@ We provide addition information on the genes and samples using two data frames.
 We have to make sure that the respective dimensions of the expression data 
 and gene/sample meta data match.
 
-```{r}
+```{r smdata}
 smdata <- data.frame(feature = colnames(expdata),
                      group = c("ctrl", "ctrl",
                        "cond1", "cond1"),
@@ -49,7 +49,7 @@ ncol(expdata)
 nrow(smdata) == ncol(expdata)
 ```
 
-```{r}
+```{r fmdata}
 fmdata <- data.frame(feature = rownames(expdata),                     
                      description = paste("Important gene",
                        rownames(expdata)))
@@ -67,7 +67,7 @@ We then print the structure of the list as a summary to ensure that
 we have the expected representation.
 
 
-```{r}
+```{r marray}
 marray <- list(
   expression = expdata,
   featuremeta = fmdata,

@@ -6,7 +6,7 @@ We are going to use `read.csv` to import our comma-separated spreadsheet into `R
 Setting `row.names = 1` uses the first columns to define the row names of the 
 resulting data frame. 
 
-```{r}
+```{r exp}
 exp <- read.csv("MAdata1.csv", row.names = 1)
 head(exp)
 ```
@@ -14,7 +14,7 @@ head(exp)
 Because we want to store our expression data in a `matrix`, 
 we explicitely coerce the `data.frame` into the adequate class.
 
-```{r}
+```{r expmat}
 class(exp)
 exp <- as.matrix(exp)
 class(exp)
@@ -24,7 +24,7 @@ class(exp)
 We use the same call to create the sample and feaure meta data, 
 which are directly represented as the expected `data.frame` class.
 
-```{r}
+```{r metadata}
 smeta <- read.csv("smeta1.csv", row.names = 1)
 fmeta <- read.csv("fmeta1.csv", row.names = 1)
 class(smeta)
@@ -32,7 +32,7 @@ class(smeta)
 
 We now only need to create our final `marray` list as shown in the previous exercise.
 
-```{r}
+```{r marraylist}
 marray <- list(expression = exp,
                featuremeta = fmeta,
                samplemeta = smeta)
@@ -43,7 +43,7 @@ To avoid repeating the above every time we use `R` to study this data,
 we `save` it on disk as a binary representation and verify that we can 
 `load` it again.
 
-```{r}
+```{r savemarray}
 save(marray, file = "marray.rda")
 rm(list = ls()) ## clean working environment
 load("marray.rda")
@@ -55,7 +55,7 @@ the Benjamini Hochberg method. Let's verify the number of significant
 values using 0.5 as theshold and verfiy how many pass our threshold.
 
 
-```{r}
+```{r marraynamesandde}
 names(marray$featuremeta)
 de <- marray$featuremeta[, "bh"] < 0.05
 class(de)
@@ -65,13 +65,13 @@ table(de)
 
 A boxplot showing the distrubtion of expression data for each sample.
 
-```{r}
+```{r marraybxplot}
 boxplot(marray$expression)
 ```
 
 A scatter plot comparing the expression values of the first and fourth samples
 
-```{r}
+```{r expplot}
 plot(marray$expression[, 1],
      marray$expression[, 4])
 ```
@@ -80,7 +80,7 @@ Let's tune the above scatter plot. To reduce typing, the expression data is stor
 We customise the plot with axes labels, a title, a grid, and a diagonal identity line.
 We also use the `de` logical vector to highlight the significantly differentially expressed genes.
 
-```{r}
+```{r expplot2}
 exp <- marray$expression
 plot(exp[, 1], exp[, 4],
      xlab = colnames(exp)[1],
@@ -106,20 +106,20 @@ pairs(exp)
 We can also represent the data using density colouring instead of plotting 
 individial points.
 
-```{r}
+```{r smoothscatter}
 smoothScatter(exp[, 1], exp[, 4])
 ```
 
 A histogram of expression values for sample 1
 
-```{r}
+```{r exphist}
 hist(exp[, 1])
 ```
 
 Below, we prepate a 3 by 2 matrix of figures with `par` and use a `for` loop 
 to plot the 6 histograms of intensities.
 
-```{r}
+```{r exphist6}
 par(mfrow = c(3, 2))
 for (i in 1:6) {
   hist(exp[, i],
@@ -133,14 +133,14 @@ By extracting the expression data, we have lost some information
 that was stored in the respective meta data elements. 
 Let set the sample and gene names.
 
-```{r}
+```{r expcolrownames}
 colnames(exp) <- marray$samplemeta$sample
 rownames(exp) <- marray$featuremeta$genes
 ```
 
 Below, we plot a heatmap of all genes and those that we deemed significantly differentially expressed.
 
-```{r}
+```{r expheatmaps}
 heatmap(exp)
 heatmap(exp[de, ])
 ```
@@ -150,7 +150,7 @@ heatmap(exp[de, ])
 We first use the `dir` function to list all the files in our working directory 
 and then filter only those with a pattern of interest.
 
-```{r}
+```{r dirfmeta}
 dir()
 dir(pattern = "fmeta")
 ```
@@ -158,7 +158,7 @@ dir(pattern = "fmeta")
 We could create `dir` to create a vector of file names of interest and 
 iterate over those, as illustrated below.
 
-```{r}
+```{r flsforloop}
 for (fmetafile in dir(pattern = "fmeta")) {
   fmeta <- read.csv(fmetafile, row.names = 1)
   print(dim(fmeta))
@@ -171,7 +171,7 @@ extract the differentially expressed genes and, if there are any,
 print how many have been counted, import the expression data and save
 a heatmap into a pdf file.
 
-```{r}
+```{r paste0forloop}
 for (i in 1:3) {
   fmetafile <- paste0("fmeta", i, ".csv")
   cat(fmetafile, ": ", sep = "")

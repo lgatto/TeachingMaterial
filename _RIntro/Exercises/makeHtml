@@ -18,5 +18,5 @@ for (rmd in args) {
   knit(rmd, tangle = TRUE)
   knit(rmd, tangle = FALSE)
   markdownToHTML(.md, .html)
-  unlink(.md)
+  ## unlink(.md)
 }
