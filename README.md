@@ -49,4 +49,10 @@ Unless otherwise stated, all material is licensed under [Creative Commons Attrib
 - Original repository: https://github.com/lgatto/R-vectorisation
 - More details: https://github.com/lgatto/R-vectorisation#readme
 
+### R debugging
+- Description: A short topic section on debugging in R
+- Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
+- Original repository: https://github.com/lgatto/R-debugging
+- More details: https://github.com/lgatto/R-debuggin#readme
+
 More to come soon.
