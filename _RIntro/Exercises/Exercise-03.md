@@ -2,7 +2,7 @@
 
 ## The expression data
 
-The most natural way to store the expresion data is a `matrix`,
+The most natural way to store the expression data is with a `matrix`,
 where genes are represented along the rows and samples along the columns.
 All values are of the same type (numerical values). 
 Below we generate a matrix of random (normally distributed data),
@@ -15,13 +15,13 @@ head(expdata)
 ```
 
 ```
-##         [,1]     [,2]    [,3]    [,4]
-## [1,] -0.6786  0.32974  1.7837 -1.7958
-## [2,]  0.4432 -0.64824 -0.5657 -1.4607
-## [3,] -0.4760 -1.05433 -0.2263 -1.4705
-## [4,]  0.4359 -0.87535 -0.2836  2.0408
-## [5,]  0.1113 -0.91643 -0.6065 -0.7697
-## [6,]  0.8124  0.02264  0.9025  0.4838
+##         [,1]     [,2]    [,3]     [,4]
+## [1,]  0.3148 -0.79262  1.7571 -0.07668
+## [2,]  0.4207 -1.58493 -0.8764 -0.07054
+## [3,] -0.9228 -2.34246 -0.8919  0.03740
+## [4,]  1.3592 -0.04233  0.6697  0.36964
+## [5,]  1.3146 -1.62385  1.9986  0.42057
+## [6,] -0.3190  0.75425  0.4131  0.64756
 ```
 
 
@@ -29,19 +29,19 @@ Note that this also support missing data encoded as `NA`.
 
 
 ```r
-expdatana <- expdata
+expdatana <- expdata  ## a copy of expdata
 expdatana[2, 2] <- NA
 head(expdatana)
 ```
 
 ```
-##         [,1]     [,2]    [,3]    [,4]
-## [1,] -0.6786  0.32974  1.7837 -1.7958
-## [2,]  0.4432       NA -0.5657 -1.4607
-## [3,] -0.4760 -1.05433 -0.2263 -1.4705
-## [4,]  0.4359 -0.87535 -0.2836  2.0408
-## [5,]  0.1113 -0.91643 -0.6065 -0.7697
-## [6,]  0.8124  0.02264  0.9025  0.4838
+##         [,1]     [,2]    [,3]     [,4]
+## [1,]  0.3148 -0.79262  1.7571 -0.07668
+## [2,]  0.4207       NA -0.8764 -0.07054
+## [3,] -0.9228 -2.34246 -0.8919  0.03740
+## [4,]  1.3592 -0.04233  0.6697  0.36964
+## [5,]  1.3146 -1.62385  1.9986  0.42057
+## [6,] -0.3190  0.75425  0.4131  0.64756
 ```
 
 ```r
@@ -65,8 +65,9 @@ We also want to set gene (row) and sample (column) names.
 
 
 ```r
-dimnames(expdata) <- list(features = paste0("gene", 1:nrow(expdata)), samples = paste0("sample", 
-    1:ncol(expdata)))
+dimnames(expdata) <-
+  list(features = paste0("gene", 1:nrow(expdata)),
+       samples = paste0("sample", 1:ncol(expdata)))
 ```
 
 
@@ -78,16 +79,18 @@ and gene/sample meta data match.
 
 
 ```r
-smdata <- data.frame(feature = colnames(expdata), group = c("ctrl", "ctrl", 
-    "cond1", "cond1"), replicate = rep(1:2, each = 2))
+smdata <- data.frame(feature = colnames(expdata),
+                     group = c("ctrl", "ctrl",
+                       "cond1", "cond1"),
+                     replicate = rep(1:2, 2))
 smdata
 ```
 
 ```
 ##   feature group replicate
 ## 1 sample1  ctrl         1
-## 2 sample2  ctrl         1
-## 3 sample3 cond1         2
+## 2 sample2  ctrl         2
+## 3 sample3 cond1         1
 ## 4 sample4 cond1         2
 ```
 
@@ -126,8 +129,8 @@ nrow(smdata) == ncol(expdata)
 
 
 ```r
-fmdata <- data.frame(feature = rownames(expdata), description = paste("Important gene", 
-    rownames(expdata)))
+fmdata <- data.frame(feature = rownames(expdata),                     
+                     description = paste("Important gene", rownames(expdata)))
 fmdata
 ```
 
@@ -213,20 +216,23 @@ nrow(fmdata) == nrow(expdata)
 ## A complete representation
 
 We now combine the respective objects into a list to keep the 
-expression data and its description togeter. 
+expression data and its description together. 
 We then print the structure of the list as a summary to ensure that 
 we have the expected representation.
 
 
 
 ```r
-marray <- list(expression = expdata, featuremeta = fmdata, samplemeta = smdata)
+marray <- list(
+  expression = expdata,
+  featuremeta = fmdata,
+  samplemeta = smdata)
 str(marray)
 ```
 
 ```
 ## List of 3
-##  $ expression : num [1:50, 1:4] -0.679 0.443 -0.476 0.436 0.111 ...
+##  $ expression : num [1:50, 1:4] 0.315 0.421 -0.923 1.359 1.315 ...
 ##   ..- attr(*, "dimnames")=List of 2
 ##   .. ..$ features: chr [1:50] "gene1" "gene2" "gene3" "gene4" ...
 ##   .. ..$ samples : chr [1:4] "sample1" "sample2" "sample3" "sample4"
@@ -236,6 +242,6 @@ str(marray)
 ##  $ samplemeta :'data.frame':	4 obs. of  3 variables:
 ##   ..$ feature  : Factor w/ 4 levels "sample1","sample2",..: 1 2 3 4
 ##   ..$ group    : Factor w/ 2 levels "cond1","ctrl": 2 2 1 1
-##   ..$ replicate: int [1:4] 1 1 2 2
+##   ..$ replicate: int [1:4] 1 2 1 2
 ```
 

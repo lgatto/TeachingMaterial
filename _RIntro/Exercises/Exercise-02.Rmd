@@ -1,7 +1,7 @@
 ## A vector of `integer`s
 
 We are going to use the `sample` function to create such a vector. 
-As its name implied, the function samples among a set it is provided as imput. 
+As its name implied, the function samples among a set it is provided as input. 
 It is as such important to provide a set in integers. As explained in 
 `?sample`, if given a single numeric input `n`, `sample` will sample `n` values 
 from `1:n` without replacement (`replacement = FALSE`), resulting in a permutation of `1:n`.
@@ -22,8 +22,7 @@ typeof(i)
 
 ## A vector of `double`s
 
-The `runing` sample a certain number of values from a uniform distribution ranging (by default)
-from 0 to 1. 
+The `runif(n)` function samples `n` values from a uniform distribution ranging (by default) from 0 to 1. 
 
 ```{r}
 d <- runif(20)
@@ -56,12 +55,15 @@ Other built-in variables of interest are `LETTERS` (as `letters`, but capital le
 ## A vector of `logical`s
 
 Although `TRUE` is a perfectly valid vector of logicals (of length 1), we are going to use 
-a logical operator on the vector `i` to create a vector of logicals. Each element of `i` 
-will be used to the comparison in turn, effectively resulting in a vector of logicals of the 
-same length than `i`.
+a comparison operator on the vector `i` to create a vector of logicals 
+(see `?'=='` or `help("<")` for details). 
+Each element of `i` will be used in turn and compared to the second operand (`10` below), 
+effectively resulting in a vector of logicals of the same length than `i`.
 
 ```{r}
 l <- i >= 10
+## same as 
+l <- (i >= 10)
 l
 typeof(l)
 length(i)

@@ -5,7 +5,7 @@ head(expdata)
 
 
 
-expdatana <- expdata
+expdatana <- expdata ## a copy of expdata
 expdatana[2, 2] <- NA
 head(expdatana)
 class(expdatana)
@@ -22,7 +22,7 @@ dimnames(expdata) <-
 smdata <- data.frame(feature = colnames(expdata),
                      group = c("ctrl", "ctrl",
                        "cond1", "cond1"),
-                     replicate = rep(1:2, each = 2))
+                     replicate = rep(1:2, 2))
 smdata
 class(smdata)
 nrow(smdata)
@@ -32,8 +32,7 @@ nrow(smdata) == ncol(expdata)
 
 
 fmdata <- data.frame(feature = rownames(expdata),                     
-                     description = paste("Important gene",
-                       rownames(expdata)))
+                     description = paste("Important gene", rownames(expdata)))
 fmdata
 nrow(fmdata)
 nrow(expdata)

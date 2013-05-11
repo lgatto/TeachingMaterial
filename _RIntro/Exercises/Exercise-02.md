@@ -1,7 +1,7 @@
 ## A vector of `integer`s
 
 We are going to use the `sample` function to create such a vector. 
-As its name implied, the function samples among a set it is provided as imput. 
+As its name implied, the function samples among a set it is provided as input. 
 It is as such important to provide a set in integers. As explained in 
 `?sample`, if given a single numeric input `n`, `sample` will sample `n` values 
 from `1:n` without replacement (`replacement = FALSE`), resulting in a permutation of `1:n`.
@@ -27,7 +27,7 @@ i
 ```
 
 ```
-##  [1]  3 13 15  1  6 11  2 17 12 14 16 19  7  8 10  9 18  4  5 20
+##  [1]  2  7  5 17 14 10 15  1 12 13  6  9 18 11 16  3 19 20  4  8
 ```
 
 ```r
@@ -41,8 +41,7 @@ typeof(i)
 
 ## A vector of `double`s
 
-The `runing` sample a certain number of values from a uniform distribution ranging (by default)
-from 0 to 1. 
+The `runif(n)` function samples `n` values from a uniform distribution ranging (by default) from 0 to 1. 
 
 
 ```r
@@ -51,9 +50,9 @@ d
 ```
 
 ```
-##  [1] 0.19290 0.61971 0.48283 0.55939 0.47877 0.38178 0.01488 0.19948
-##  [9] 0.54318 0.34219 0.50203 0.52519 0.60642 0.79278 0.93961 0.83412
-## [17] 0.48865 0.09721 0.97350 0.32690
+##  [1] 0.43514 0.28883 0.87758 0.08802 0.32376 0.15818 0.76988 0.51394
+##  [9] 0.93103 0.14682 0.62064 0.34712 0.40829 0.44959 0.80837 0.78791
+## [17] 0.16037 0.28768 0.79473 0.48247
 ```
 
 ```r
@@ -97,8 +96,8 @@ s
 ```
 
 ```
-##  [1] "c" "m" "o" "a" "f" "k" "b" "q" "l" "n" "p" "s" "g" "h" "j" "i" "r"
-## [18] "d" "e" "t"
+##  [1] "b" "g" "e" "q" "n" "j" "o" "a" "l" "m" "f" "i" "r" "k" "p" "c" "s"
+## [18] "t" "d" "h"
 ```
 
 ```r
@@ -124,19 +123,22 @@ Other built-in variables of interest are `LETTERS` (as `letters`, but capital le
 ## A vector of `logical`s
 
 Although `TRUE` is a perfectly valid vector of logicals (of length 1), we are going to use 
-a logical operator on the vector `i` to create a vector of logicals. Each element of `i` 
-will be used to the comparison in turn, effectively resulting in a vector of logicals of the 
-same length than `i`.
+a comparison operator on the vector `i` to create a vector of logicals 
+(see `?'=='` or `help("<")` for details). 
+Each element of `i` will be used in turn and compared to the second operand (`10` below), 
+effectively resulting in a vector of logicals of the same length than `i`.
 
 
 ```r
 l <- i >= 10
+## same as
+l <- (i >= 10)
 l
 ```
 
 ```
-##  [1] FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE
-## [12]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE
+##  [1] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE
+## [12] FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
 ```
 
 ```r

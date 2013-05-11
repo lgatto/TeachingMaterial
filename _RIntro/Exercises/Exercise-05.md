@@ -2,7 +2,7 @@
 
 ## Combine expression data
 
-This this, we use `dir` and a file pattern to create a vector 
+This time this, we use `dir` and a file pattern to create a vector 
 of file names.
 
 
@@ -25,12 +25,13 @@ fls
 ```
 
 
-We then use the `lapply` function that iterates over vector of file names 
+We then use the `lapply` function that iterates over our vector of file names 
 (passed as first argument) and applies the `read.delim` function 
-(the second argument) on each element of `fls`. The third argument of 
-`lapply` is passed to `read.delim` to set the resulting `data.frame` row names
+(the second argument) on each element of `fls`. The third (optional) argument of 
+`lapply` is passed to `read.delim` to set the resulting `data.frame`'s row names
 using the first column. As suggested by the letter `l`, `lapply`, returns 
 a list of length equal to the length of its first argument. 
+See `?lapply` for other variant of `apply`.
 Because `read.delim` returns a `data.fame`, `l` will be a list of `data.frames`.
 
 
@@ -54,9 +55,9 @@ class(l)
 
 To obtain a vector of unique gene names, we iterate through the list 
 of `data.frame`, extract their respective row names to create a list 
-of characters (the gene names). We then `unlist`/flatten this list, 
+of characters (the first `allgenes` variable). We then `unlist`/flatten this list, 
 producing a vector containing all the elements of the list and 
-finall keep `unique` instances of each gene name (removing all duplicated gene names).
+finally keep `unique` instances of each gene name (removing all duplicated gene names).
 
 
 
@@ -93,8 +94,8 @@ rownames(eset) <- allgenes
 
 We populate the matrix by iterating over the number of replicates. 
 On each iteration, we `match` the position of the genes in our big
-matrix and the individual replicate data stored in the `l` matrix. 
-`idx` gives us the row indices of the exeriments in the big `eset` 
+matrix and the individual replicate data stored in the `i`th element of `l`. 
+`idx` gives us the row indices of the genes of experiment `i` in the big `eset` 
 matrix. We then use these, and the loop index to set the expression 
 data.
 
@@ -120,7 +121,7 @@ heatmap(eset)
 
 ##  Extracting and visualising genes of interest  
 
-We have a table of validated genes that need to be parsed. 
+We have a table of validated genes that needs to be parsed. 
 We first read the data, assuring that the content of the 
 resulting `data.frame` is interpreted as characters instead 
 as factors.
@@ -138,7 +139,7 @@ tab
 ```
 
 
-We then  split the comma separated genes names to produce a list 
+We then  split the comma separated gene names to produce a list 
 (of length 2 because there were two rows in `tab`), which is then 
 flattened with `unlist`.
 
@@ -153,7 +154,7 @@ genes
 ##  [8] "tna"     "Kr-h1"   "rux"
 ```
 
-Before subsetting our `eset` matrix, we check that all the extracted 
+Before sub-setting our `eset` matrix, we check that all the extracted 
 gene names are present.
 
 

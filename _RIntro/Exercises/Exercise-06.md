@@ -1,7 +1,7 @@
 # A short Bioconductor data analysis
 
-We start by loading the packages that will provide the infrastrucutre 
-to the Affymetric microarrys that we want to import and explore.
+We start by loading the packages that will provide the infrastructure 
+to the Affymetrix microarrys that we want to import and explore.
 
 
 ```r
@@ -83,7 +83,21 @@ image(rawdata[, 1:4])
 ![plot of chunk plotraw](figure/plotraw.png) 
 
 
-Let perform some quality control and assess whether RNA degradation is a concern here. 
+We can also use some of the functions seen so far. 
+Below we explicitey extract the probe level intensities with `exprs` and 
+log2 transform them before producing the boxplot. 
+We could also directly have used `boxplot`. 
+Try also `hist(rawdata)`.
+
+
+```r
+boxplot(log2(exprs(rawdata)))
+```
+
+![plot of chunk bxaffx](figure/bxaffx.png) 
+
+
+Let's perform some quality control and assess whether RNA degradation is a concern here. 
 The `AffyRNAdeg` function calculates a degradation pattern for each samples, 
 that can then be plotted with `plotAffyRNAdeg`.
 
@@ -91,9 +105,6 @@ that can then be plotted with `plotAffyRNAdeg`.
 ```r
 deg <- AffyRNAdeg(rawdata)
 ```
-
-```
-## ```
 
 ```r
 plotAffyRNAdeg(deg)

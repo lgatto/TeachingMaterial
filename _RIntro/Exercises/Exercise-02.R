@@ -29,6 +29,8 @@ length(s)
 
 
 l <- i >= 10
+## same as 
+l <- (i >= 10)
 l
 typeof(l)
 length(i)
