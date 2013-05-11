@@ -2,7 +2,7 @@
 
 ## The expression data
 
-The most natural way to store the expresion data is a `matrix`,
+The most natural way to store the expression data is with a `matrix`,
 where genes are represented along the rows and samples along the columns.
 All values are of the same type (numerical values). 
 Below we generate a matrix of random (normally distributed data),
@@ -16,7 +16,7 @@ head(expdata)
 Note that this also support missing data encoded as `NA`.
 
 ```{r expdatana}
-expdatana <- expdata
+expdatana <- expdata ## a copy of expdata
 expdatana[2, 2] <- NA
 head(expdatana)
 class(expdatana)
@@ -25,7 +25,7 @@ mode(expdatana)
 
 We also want to set gene (row) and sample (column) names.
 
-```{r expnames}
+```{r expnames, tidy = FALSE}
 dimnames(expdata) <-
   list(features = paste0("gene", 1:nrow(expdata)),
        samples = paste0("sample", 1:ncol(expdata)))
@@ -37,11 +37,11 @@ We provide addition information on the genes and samples using two data frames.
 We have to make sure that the respective dimensions of the expression data 
 and gene/sample meta data match.
 
-```{r smdata}
+```{r smdata, tidy = FALSE}
 smdata <- data.frame(feature = colnames(expdata),
                      group = c("ctrl", "ctrl",
                        "cond1", "cond1"),
-                     replicate = rep(1:2, each = 2))
+                     replicate = rep(1:2, 2))
 smdata
 class(smdata)
 nrow(smdata)
@@ -49,10 +49,9 @@ ncol(expdata)
 nrow(smdata) == ncol(expdata)
 ```
 
-```{r fmdata}
+```{r fmdata, tidy = FALSE}
 fmdata <- data.frame(feature = rownames(expdata),                     
-                     description = paste("Important gene",
-                       rownames(expdata)))
+                     description = paste("Important gene", rownames(expdata)))
 fmdata
 nrow(fmdata)
 nrow(expdata)
@@ -62,12 +61,12 @@ nrow(fmdata) == nrow(expdata)
 ## A complete representation
 
 We now combine the respective objects into a list to keep the 
-expression data and its description togeter. 
+expression data and its description together. 
 We then print the structure of the list as a summary to ensure that 
 we have the expected representation.
 
 
-```{r marray}
+```{r marray, tidy = FALSE}
 marray <- list(
   expression = expdata,
   featuremeta = fmdata,

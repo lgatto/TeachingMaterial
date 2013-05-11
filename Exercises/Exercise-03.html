@@ -183,7 +183,7 @@ hljs.initHighlightingOnLoad();
 
 <h2>The expression data</h2>
 
-<p>The most natural way to store the expresion data is a <code>matrix</code>,
+<p>The most natural way to store the expression data is with a <code>matrix</code>,
 where genes are represented along the rows and samples along the columns.
 All values are of the same type (numerical values). 
 Below we generate a matrix of random (normally distributed data),
@@ -193,29 +193,29 @@ representing 50 genes measured for 4 samples.</p>
 head(expdata)
 </code></pre>
 
-<pre><code>##         [,1]     [,2]    [,3]    [,4]
-## [1,] -0.6786  0.32974  1.7837 -1.7958
-## [2,]  0.4432 -0.64824 -0.5657 -1.4607
-## [3,] -0.4760 -1.05433 -0.2263 -1.4705
-## [4,]  0.4359 -0.87535 -0.2836  2.0408
-## [5,]  0.1113 -0.91643 -0.6065 -0.7697
-## [6,]  0.8124  0.02264  0.9025  0.4838
+<pre><code>##         [,1]     [,2]    [,3]     [,4]
+## [1,]  0.3148 -0.79262  1.7571 -0.07668
+## [2,]  0.4207 -1.58493 -0.8764 -0.07054
+## [3,] -0.9228 -2.34246 -0.8919  0.03740
+## [4,]  1.3592 -0.04233  0.6697  0.36964
+## [5,]  1.3146 -1.62385  1.9986  0.42057
+## [6,] -0.3190  0.75425  0.4131  0.64756
 </code></pre>
 
 <p>Note that this also support missing data encoded as <code>NA</code>.</p>
 
-<pre><code class="r">expdatana &lt;- expdata
+<pre><code class="r">expdatana &lt;- expdata  ## a copy of expdata
 expdatana[2, 2] &lt;- NA
 head(expdatana)
 </code></pre>
 
-<pre><code>##         [,1]     [,2]    [,3]    [,4]
-## [1,] -0.6786  0.32974  1.7837 -1.7958
-## [2,]  0.4432       NA -0.5657 -1.4607
-## [3,] -0.4760 -1.05433 -0.2263 -1.4705
-## [4,]  0.4359 -0.87535 -0.2836  2.0408
-## [5,]  0.1113 -0.91643 -0.6065 -0.7697
-## [6,]  0.8124  0.02264  0.9025  0.4838
+<pre><code>##         [,1]     [,2]    [,3]     [,4]
+## [1,]  0.3148 -0.79262  1.7571 -0.07668
+## [2,]  0.4207       NA -0.8764 -0.07054
+## [3,] -0.9228 -2.34246 -0.8919  0.03740
+## [4,]  1.3592 -0.04233  0.6697  0.36964
+## [5,]  1.3146 -1.62385  1.9986  0.42057
+## [6,] -0.3190  0.75425  0.4131  0.64756
 </code></pre>
 
 <pre><code class="r">class(expdatana)
@@ -232,8 +232,9 @@ head(expdatana)
 
 <p>We also want to set gene (row) and sample (column) names.</p>
 
-<pre><code class="r">dimnames(expdata) &lt;- list(features = paste0(&quot;gene&quot;, 1:nrow(expdata)), samples = paste0(&quot;sample&quot;, 
-    1:ncol(expdata)))
+<pre><code class="r">dimnames(expdata) &lt;-
+  list(features = paste0(&quot;gene&quot;, 1:nrow(expdata)),
+       samples = paste0(&quot;sample&quot;, 1:ncol(expdata)))
 </code></pre>
 
 <h2>The meta data</h2>
@@ -242,15 +243,17 @@ head(expdatana)
 We have to make sure that the respective dimensions of the expression data 
 and gene/sample meta data match.</p>
 
-<pre><code class="r">smdata &lt;- data.frame(feature = colnames(expdata), group = c(&quot;ctrl&quot;, &quot;ctrl&quot;, 
-    &quot;cond1&quot;, &quot;cond1&quot;), replicate = rep(1:2, each = 2))
+<pre><code class="r">smdata &lt;- data.frame(feature = colnames(expdata),
+                     group = c(&quot;ctrl&quot;, &quot;ctrl&quot;,
+                       &quot;cond1&quot;, &quot;cond1&quot;),
+                     replicate = rep(1:2, 2))
 smdata
 </code></pre>
 
 <pre><code>##   feature group replicate
 ## 1 sample1  ctrl         1
-## 2 sample2  ctrl         1
-## 3 sample3 cond1         2
+## 2 sample2  ctrl         2
+## 3 sample3 cond1         1
 ## 4 sample4 cond1         2
 </code></pre>
 
@@ -278,8 +281,8 @@ smdata
 <pre><code>## [1] TRUE
 </code></pre>
 
-<pre><code class="r">fmdata &lt;- data.frame(feature = rownames(expdata), description = paste(&quot;Important gene&quot;, 
-    rownames(expdata)))
+<pre><code class="r">fmdata &lt;- data.frame(feature = rownames(expdata),                     
+                     description = paste(&quot;Important gene&quot;, rownames(expdata)))
 fmdata
 </code></pre>
 
@@ -357,16 +360,19 @@ fmdata
 <h2>A complete representation</h2>
 
 <p>We now combine the respective objects into a list to keep the 
-expression data and its description togeter. 
+expression data and its description together. 
 We then print the structure of the list as a summary to ensure that 
 we have the expected representation.</p>
 
-<pre><code class="r">marray &lt;- list(expression = expdata, featuremeta = fmdata, samplemeta = smdata)
+<pre><code class="r">marray &lt;- list(
+  expression = expdata,
+  featuremeta = fmdata,
+  samplemeta = smdata)
 str(marray)
 </code></pre>
 
 <pre><code>## List of 3
-##  $ expression : num [1:50, 1:4] -0.679 0.443 -0.476 0.436 0.111 ...
+##  $ expression : num [1:50, 1:4] 0.315 0.421 -0.923 1.359 1.315 ...
 ##   ..- attr(*, &quot;dimnames&quot;)=List of 2
 ##   .. ..$ features: chr [1:50] &quot;gene1&quot; &quot;gene2&quot; &quot;gene3&quot; &quot;gene4&quot; ...
 ##   .. ..$ samples : chr [1:4] &quot;sample1&quot; &quot;sample2&quot; &quot;sample3&quot; &quot;sample4&quot;
@@ -376,7 +382,7 @@ str(marray)
 ##  $ samplemeta :&#39;data.frame&#39;: 4 obs. of  3 variables:
 ##   ..$ feature  : Factor w/ 4 levels &quot;sample1&quot;,&quot;sample2&quot;,..: 1 2 3 4
 ##   ..$ group    : Factor w/ 2 levels &quot;cond1&quot;,&quot;ctrl&quot;: 2 2 1 1
-##   ..$ replicate: int [1:4] 1 1 2 2
+##   ..$ replicate: int [1:4] 1 2 1 2
 </code></pre>
 
 </body>

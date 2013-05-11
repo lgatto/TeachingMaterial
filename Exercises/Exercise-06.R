@@ -22,6 +22,10 @@ image(rawdata[, 1:4])
 
 
 
+boxplot(log2(exprs(rawdata)))
+
+
+
 deg <- AffyRNAdeg(rawdata)
 plotAffyRNAdeg(deg)
 

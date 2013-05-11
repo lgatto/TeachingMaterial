@@ -62,6 +62,10 @@ abline(0, 1)
 
 
 
+pairs(exp)
+
+
+
 smoothScatter(exp[, 1], exp[, 4])
 
 
@@ -104,21 +108,23 @@ for (fmetafile in dir(pattern = "fmeta")) {
 
 for (i in 1:3) {
   fmetafile <- paste0("fmeta", i, ".csv")
-  cat(fmetafile, ": ", sep = "")
+  cat(fmetafile, ":\n")
   fmeta <- read.csv(fmetafile, row.names = 1)
   de <- which(fmeta$bh < 0.05)
   if (length(de) > 0) {
     expfile <- paste0("MAdata", i, ".csv")
     exp <- read.csv(expfile, row.names = 1)
     exp <- as.matrix(exp)
-    cat(length(de), "DE genes.\n")
     pdffile <- paste0("heatmap", i, ".pdf")
+	cat(length(de), "DE genes.\n")
+	cat("Saved", pdffile, ".\n")
     pdf(pdffile)
     heatmap(exp[de, ])
     dev.off()
   } else {
     cat("No DE found.\n")
   }
+  cat("\n")
 }
 
 

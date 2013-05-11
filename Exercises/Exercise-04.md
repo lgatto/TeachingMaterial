@@ -1,10 +1,10 @@
 # A short microarray analysis
 
-## Create am `marray` list
+## Create an `marray` list
 
 We are going to use `read.csv` to import our comma-separated spreadsheet into `R`.
-Setting `row.names = 1` uses the first columns to define the row names of the 
-resulting data frame. 
+Setting `row.names = 1` uses the first column of the imported spreadshhet 
+to define the row names of the resulting data frame. 
 
 
 ```r
@@ -24,7 +24,7 @@ head(exp)
 
 
 Because we want to store our expression data in a `matrix`, 
-we explicitely coerce the `data.frame` into the adequate class.
+we explicitly coerce the `data.frame` into the adequate class.
 
 
 ```r
@@ -46,8 +46,8 @@ class(exp)
 
 
 
-We use the same call to create the sample and feaure meta data, 
-which are directly represented as the expected `data.frame` class.
+We use the same call to create the sample and feature meta data, 
+which are directly represented by the desired `data.frame` class.
 
 
 ```r
@@ -65,7 +65,9 @@ We now only need to create our final `marray` list as shown in the previous exer
 
 
 ```r
-marray <- list(expression = exp, featuremeta = fmeta, samplemeta = smeta)
+marray <- list(expression = exp,
+               featuremeta = fmeta,
+               samplemeta = smeta)
 str(marray)
 ```
 
@@ -119,7 +121,7 @@ str(marray)
 
 The feature meta data has a `bh` column with FDR adjusted p-values using 
 the Benjamini Hochberg method. Let's verify the number of significant 
-values using 0.5 as theshold and verfiy how many pass our threshold.
+values using 0.05 as threshold and count how many pass our threshold.
 
 
 
@@ -152,7 +154,7 @@ table(de)
 
 ## Exploratory data analysis
 
-A boxplot showing the distrubtion of expression data for each sample.
+A boxplot showing the distribution of expression data for each sample.
 
 
 ```r
@@ -199,12 +201,16 @@ identify(exp[, 1], exp[, 4], labels = fmeta$genes)
 
 The `pairs` function creates all possible pairs of scatter plots
 
-```{p}
+
+```r
 pairs(exp)
-````
+```
+
+![plot of chunk plotpairs](figure/plotpairs.png) 
+
 
 We can also represent the data using density colouring instead of plotting 
-individial points.
+individual points.
 
 
 ```r
@@ -228,7 +234,7 @@ hist(exp[, 1])
 ![plot of chunk exphist](figure/exphist.png) 
 
 
-Below, we prepate a 3 by 2 matrix of figures with `par` and use a `for` loop 
+Below, we prepare a 3 by 2 matrix of figures with `par` and use a `for` loop 
 to plot the 6 histograms of intensities.
 
 
@@ -254,7 +260,7 @@ rownames(exp) <- marray$featuremeta$genes
 ```
 
 
-Below, we plot a heatmap of all genes and those that we deemed significantly differentially expressed.
+Below, we plot a heatmap of all genes and those that were deemed significantly differentially expressed.
 
 
 ```r
@@ -315,7 +321,7 @@ dir(pattern = "fmeta")
 ```
 
 
-We could create `dir` to create a vector of file names of interest and 
+We could use `dir` to create a vector of file names of interest and 
 iterate over those, as illustrated below.
 
 
@@ -343,33 +349,42 @@ a heatmap into a pdf file.
 ```r
 for (i in 1:3) {
     fmetafile <- paste0("fmeta", i, ".csv")
-    cat(fmetafile, ": ", sep = "")
+    cat(fmetafile, ":\n")
     fmeta <- read.csv(fmetafile, row.names = 1)
     de <- which(fmeta$bh < 0.05)
     if (length(de) > 0) {
         expfile <- paste0("MAdata", i, ".csv")
         exp <- read.csv(expfile, row.names = 1)
         exp <- as.matrix(exp)
-        cat(length(de), "DE genes.\n")
         pdffile <- paste0("heatmap", i, ".pdf")
+        cat(length(de), "DE genes.\n")
+        cat("Saved", pdffile, ".\n")
         pdf(pdffile)
         heatmap(exp[de, ])
         dev.off()
     } else {
         cat("No DE found.\n")
     }
+    cat("\n")
 }
 ```
 
 ```
-## fmeta1.csv: 15 DE genes.
+## fmeta1.csv :
+## 15 DE genes.
+## Saved heatmap1.pdf .
 ```
 
 ```
-## fmeta2.csv: 5 DE genes.
+## 
+## fmeta2.csv :
+## 5 DE genes.
+## Saved heatmap2.pdf .
 ```
 
 ```
-## fmeta3.csv: No DE found.
+## 
+## fmeta3.csv :
+## No DE found.
 ```
 

@@ -182,7 +182,7 @@ hljs.initHighlightingOnLoad();
 <h2>A vector of <code>integer</code>s</h2>
 
 <p>We are going to use the <code>sample</code> function to create such a vector. 
-As its name implied, the function samples among a set it is provided as imput. 
+As its name implied, the function samples among a set it is provided as input. 
 It is as such important to provide a set in integers. As explained in 
 <code>?sample</code>, if given a single numeric input <code>n</code>, <code>sample</code> will sample <code>n</code> values 
 from <code>1:n</code> without replacement (<code>replacement = FALSE</code>), resulting in a permutation of <code>1:n</code>.</p>
@@ -201,7 +201,7 @@ from <code>1:n</code> without replacement (<code>replacement = FALSE</code>), re
 i
 </code></pre>
 
-<pre><code>##  [1]  3 13 15  1  6 11  2 17 12 14 16 19  7  8 10  9 18  4  5 20
+<pre><code>##  [1]  2  7  5 17 14 10 15  1 12 13  6  9 18 11 16  3 19 20  4  8
 </code></pre>
 
 <pre><code class="r">typeof(i)
@@ -212,16 +212,15 @@ i
 
 <h2>A vector of <code>double</code>s</h2>
 
-<p>The <code>runing</code> sample a certain number of values from a uniform distribution ranging (by default)
-from 0 to 1. </p>
+<p>The <code>runif(n)</code> function samples <code>n</code> values from a uniform distribution ranging (by default) from 0 to 1. </p>
 
 <pre><code class="r">d &lt;- runif(20)
 d
 </code></pre>
 
-<pre><code>##  [1] 0.19290 0.61971 0.48283 0.55939 0.47877 0.38178 0.01488 0.19948
-##  [9] 0.54318 0.34219 0.50203 0.52519 0.60642 0.79278 0.93961 0.83412
-## [17] 0.48865 0.09721 0.97350 0.32690
+<pre><code>##  [1] 0.43514 0.28883 0.87758 0.08802 0.32376 0.15818 0.76988 0.51394
+##  [9] 0.93103 0.14682 0.62064 0.34712 0.40829 0.44959 0.80837 0.78791
+## [17] 0.16037 0.28768 0.79473 0.48247
 </code></pre>
 
 <pre><code class="r">typeof(d)
@@ -254,8 +253,8 @@ We will select the letters at positions 1 to 20 in the order defined by <code>i<
 s
 </code></pre>
 
-<pre><code>##  [1] &quot;c&quot; &quot;m&quot; &quot;o&quot; &quot;a&quot; &quot;f&quot; &quot;k&quot; &quot;b&quot; &quot;q&quot; &quot;l&quot; &quot;n&quot; &quot;p&quot; &quot;s&quot; &quot;g&quot; &quot;h&quot; &quot;j&quot; &quot;i&quot; &quot;r&quot;
-## [18] &quot;d&quot; &quot;e&quot; &quot;t&quot;
+<pre><code>##  [1] &quot;b&quot; &quot;g&quot; &quot;e&quot; &quot;q&quot; &quot;n&quot; &quot;j&quot; &quot;o&quot; &quot;a&quot; &quot;l&quot; &quot;m&quot; &quot;f&quot; &quot;i&quot; &quot;r&quot; &quot;k&quot; &quot;p&quot; &quot;c&quot; &quot;s&quot;
+## [18] &quot;t&quot; &quot;d&quot; &quot;h&quot;
 </code></pre>
 
 <pre><code class="r">typeof(s)
@@ -276,16 +275,19 @@ s
 <h2>A vector of <code>logical</code>s</h2>
 
 <p>Although <code>TRUE</code> is a perfectly valid vector of logicals (of length 1), we are going to use 
-a logical operator on the vector <code>i</code> to create a vector of logicals. Each element of <code>i</code> 
-will be used to the comparison in turn, effectively resulting in a vector of logicals of the 
-same length than <code>i</code>.</p>
+a comparison operator on the vector <code>i</code> to create a vector of logicals 
+(see <code>?&#39;==&#39;</code> or <code>help(&quot;&lt;&quot;)</code> for details). 
+Each element of <code>i</code> will be used in turn and compared to the second operand (<code>10</code> below), 
+effectively resulting in a vector of logicals of the same length than <code>i</code>.</p>
 
 <pre><code class="r">l &lt;- i &gt;= 10
+## same as
+l &lt;- (i &gt;= 10)
 l
 </code></pre>
 
-<pre><code>##  [1] FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE  TRUE  TRUE  TRUE
-## [12]  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE  TRUE
+<pre><code>##  [1] FALSE FALSE FALSE  TRUE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE
+## [12] FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE FALSE
 </code></pre>
 
 <pre><code class="r">typeof(l)
