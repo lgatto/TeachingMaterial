@@ -118,7 +118,7 @@ You don't have to use the github website for this.
   if you haven't already.
   
     ````
-    $ git remote add myfriend git://github.com/myfriendr/the_repo.git
+    $ git remote add myfriend git://github.com/myfriend/the_repo.git
     ````
     
 - Pull his/her changes.
