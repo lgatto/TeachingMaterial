@@ -118,13 +118,13 @@ You don't have to use the github website for this.
   if you haven't already.
   
     ````
-    $ git remote add mycollaborator git://github.com/mycollaborator/scratch_repo.git
+    $ git remote add myfriend git://github.com/myfriendr/the_repo.git
     ````
     
 - Pull his/her changes.
 
     ````
-    $ git pull mycollaborator master
+    $ git pull myfriend master
     ````
     
 - Push them back to your github repository.
