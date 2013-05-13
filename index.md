@@ -114,3 +114,5 @@ see John on twitter as [@StrictlyStat](https://twitter.com/StrictlyStat), plus [
   book (part of the [Open Books project](http://oreilly.com/openbook/))
 
 - [Software carpentry](http://software-carpentry.org/)'s [make tutorial](http://software-carpentry.org/4_0/make/index.html)
+
+Also see my [tutorial on git/github](http://kbroman.github.io/github_tutorial).
