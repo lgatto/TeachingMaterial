@@ -55,6 +55,12 @@ example:
   
 - [Yihui Xie](http://yihui.name)'s [knitr](https://github.com/yihui/knitr)
 
+- [healthvis](https://github.com/hcorrada/healthvis), by
+  [Prasad Patil](http://www.biostat.jhsph.edu/people/student/patil.shtml),
+  [Hector Corada Bravo](http://www.cbcb.umd.edu/~hcorrada/), and [Jeff Leek](http://www.biostat.jhsph.edu/~jleek/)
+
+- [Nacho Caballero](http://github.com/nachocab)'s [clickme](https://github.com/nachocab/clickme)
+
 - My own [R/qtl](http://github.com/kbroman/qtl)
 
 Poke around in the files, and also the commits: 
