@@ -7,7 +7,7 @@ title: Amend the last commit message
 [How do I edit an incorrect commit message?](http://stackoverflow.com/questions/179123/how-do-i-edit-an-incorrect-commit-message-in-git)&rdquo;
 
 This usually happens to me when I intended to use just `git commit`
-but typed `git commit -a` and committed a whole bunch of more stuff
+but typed `git commit -a` and committed a whole bunch more stuff
 that I hadn't mentioned in the commit message.
 
 It's easy to fix just the message for the last commit:
