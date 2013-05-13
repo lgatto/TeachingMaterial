@@ -21,7 +21,8 @@ minimal guide to get started.
 - [Contribute to someone's repository](pages/fork.html): fork.
 - [Handling merge conflicts](pages/merge_conflicts.html).
 - [Oops; that last commit message was wrong](pages/amend_commit_msg.html).
-- [Exploring the code and its history](pages/exploring_code.html).
+- [Exploring the code and its history](pages/exploring_code.html):
+  tag, diff
 - [Branching and merging](pages/branching.html).
 - [Other (much more thorough) resources](pages/resources.html).
 
