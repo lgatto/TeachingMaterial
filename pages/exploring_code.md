@@ -53,7 +53,12 @@ To see all of the changes since a given commit, type
     git diff [commit]
 
 Where in place of `[commit]` you use the initial part of a hash tag,
-like `9f4668c`, or a tag you've created, like `1.28-1`.
+like `5fb8045`, or a tag you've created, like `1.22-21`.
+
+For example:
+
+    git diff 5fb8045
+    git diff 1.22-21
 
 To see all of the changes to a given file since a given commit, type
 
@@ -67,7 +72,11 @@ To see all of the changes between two revisions, type something like
 
     git diff 1.22-21 1.23-16
 
+And again you can use this for a particular file:
+
+    git diff 1.22-21 1.23-16 inst/STATUS.txt
+
 If you use [gitx](http://gitx.frim.nl/), you can use it to view the
-differences using a pipe:
+differences; use a pipe:
 
     git diff 1.22-21 1.23-16 | gitx
