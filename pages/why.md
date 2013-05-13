@@ -39,7 +39,7 @@ in some very useful code developed by someone I don't know, because
 it's hosted on github.
 
 _You don't have to set up a git server._ It's surprisingly easy
-[first_time.md](to get things set up).
+[to get things set up](first_time.html).
 
 
 ### Peruse repositories
