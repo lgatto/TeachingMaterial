@@ -25,10 +25,9 @@ minimal guide to get started.
 - [Branching and merging](pages/branching.html).
 - [Other (much more thorough) resources](pages/resources.html).
 
-I love git and github.  I
-use both for keeping track of programming projects, papers, talks, and
-data analyses.  And github has enabled me to
-contribute at least minor things to others' projects, like the
+I love git and github.  I use both for keeping track of programming
+projects, papers, talks, and data analyses.  And github has enabled me
+to contribute at least minor things to others' projects, like the
 [D phobos library](https://github.com/D-Programming-Language/phobos)
 and [d3-tip](https://github.com/Caged/d3-tip).
 
