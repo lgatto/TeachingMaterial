@@ -115,4 +115,4 @@ see John on twitter as [@StrictlyStat](https://twitter.com/StrictlyStat), plus [
 
 - [Software carpentry](http://software-carpentry.org/)'s [make tutorial](http://software-carpentry.org/4_0/make/index.html)
 
-Also see my [tutorial on git/github](http://kbroman.github.io/github_tutorial).
+Also see my [git/github guide](http://kbroman.github.io/github_tutorial).
