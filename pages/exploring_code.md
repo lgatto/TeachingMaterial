@@ -42,7 +42,7 @@ and then you need to remove the tag from github
 
     git push origin :refs/tags/1.28-5
 
-### More uses for diff
+### Uses of diff
 
 To see all of the changes since the last commit, type
 
