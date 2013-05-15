@@ -1,6 +1,10 @@
+CHANGES IN VERSION 0.5.5
+------------------------
+ o updated gccount.c <2013-05-15 Wed>
+
 CHANGES IN VERSION 0.5.4
 ------------------------
-o added seqinr package reference in vignette <2012-02-10 Fri>
+ o added seqinr package reference in vignette <2012-02-10 Fri>
 
 CHANGES IN VERSION 0.5.3
 ------------------------
