@@ -9,9 +9,9 @@ Author@R: c(person(given = "Laurent", family = "Gatto",
 		   role = "aut"))
 Author: Laurent Gatto and Robert Stojnic
 Maintainer: Laurent Gatto <lg390@cam.ac.uk>
-Description: Educational package used in R courses illustratin OO programming 
+Description: Educational package used in R courses illustrating OO programming 
        	     and package development using biological sequences (DNA and RNA) 
-	     as working example.
+	     as a working example.
 Depends: methods, Rcpp
 LinkingTo: Rcpp
 Suggests: testthat
