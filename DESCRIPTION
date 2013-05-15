@@ -9,11 +9,9 @@ Author@R: c(person(given = "Laurent", family = "Gatto",
 		   role = "aut"))
 Author: Laurent Gatto and Robert Stojnic
 Maintainer: Laurent Gatto <lg390@cam.ac.uk>
-Description: Dummy package used in an R course to illustrate OO programming 
-       	     and package development. The course is aimed at bioinformaticians 
-	     and biologists. Relevant illustrative examples used in the package
- 	     are generic sequences as a top virtual class and specific 
-	     biological (DNA and RNA) sequences.
+Description: Educational package used in R courses illustratin OO programming 
+       	     and package development using biological sequences (DNA and RNA) 
+	     as working example.
 Depends: methods, Rcpp
 LinkingTo: Rcpp
 Suggests: testthat
