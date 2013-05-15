@@ -25,7 +25,7 @@ endif
 
 
 
-rccpp: rccpp.Rnw intro.tex call.tex 
+rccpp: rccpp.Rnw intro.tex call.tex rcpp.tex
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('rccpp.Rnw');"
 	pdflatex rccpp.tex
 
@@ -34,6 +34,9 @@ intro.tex: intro.Rnw
 
 call.tex: intro.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('call.Rnw');"
+
+rcpp.tex: rcpp.Rnw
+	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('rcpp.Rnw');"
 
 clean:
 	rm -f $(LATEXFILES)

@@ -141,89 +141,9 @@
 
 \input{intro.tex}
 
-
 \input{call.tex}
 
-\begin{frame}[fragile]{Using C/C++ code with Rcpp}
-  \begin{block}{Rcpp package}
-    \textbf{Rcpp} is a great package for writing both C and C++ code:
-    \begin{itemize}
-    	\item It comes with loads of documentation and examples. 
-    	\item All basic R types are implemented as C++ classes.
-    	\item No need to worry about garbage collection. 
-    	\item With package \code{inline} code can be easily compiled in R
-    \end{itemize}
-  \end{block}
-  
-\begin{scriptsize}
-<<inline-example,echo=TRUE>>=
-library(Rcpp)
-library(inline)
-cppCode <- '
-    Rcpp::NumericVector cx(x);
-    Rcpp::NumericVector ret(1);
-    ret[0] = cx[0] * cx[0];
-    return(ret);
-    '
-squareOne <- cxxfunction(signature(x="numeric"), 
-                      plugin="Rcpp", body=cppCode)
-squareOne(10)
-@
-\end{scriptsize}
-\end{frame}
-
-\begin{frame}[fragile]{\code{gccount2} example with \code{Rcpp}}
-  \begin{example}
-    \tiny
-\begin{verbatim}
-#include <Rcpp.h>
-
-using namespace Rcpp;
-
-RcppExport SEXP gccount2(SEXP inseq){
-  Rcpp::CharacterVector dnaseq(inseq);
-  Rcpp::NumericVector ans(4);
-  std::string s = Rcpp::as<std::string>(dnaseq);
-
-  for (int i = 0; i < 4; i++) 
-    ans[i] = 0;
-
-  for (int i = 0; i < s.size(); i++) {
-    char p = s[i];
-    if (p=='A') 
-      ans[0]++;
-    else if (p=='C') 
-      ans[1]++;
-    else if (p=='G') 
-      ans[2]++;
-    else if (p=='T') 
-      ans[3]++;
-    else 
-      Rf_error("Wrong alphabet");
-  }
-  
-  return(ans);
-}
-\end{verbatim}
-  \end{example}
-\end{frame}
-
-\begin{frame}{Using Rcpp in a package}
-  \begin{block}{Using in a package}
-    \begin{enumerate}
-      \item You will need a \texttt{Makevars} file in the \code{src} directory
-      \item Modify \texttt{DESCRIPTION} file: \\
-      	\code{Depends: Rcpp} \\
-      	\code{LinkingTo: Rcpp}
-      \item Create an \R~function that uses it: \texttt{gccount2 <- function(inseq) .Call("gccount2",inseq)}
-      \item In \texttt{NAMESPACE} file export the shared objects with \texttt{useDynLib}.
-    \end{enumerate}
-  \end{block}
-  \begin{example}
-	See package \texttt{sequences} for a working example.
-  \end{example}
-\end{frame}
-
+\input{rcpp.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% section                                                     %% 
@@ -234,10 +154,12 @@ RcppExport SEXP gccount2(SEXP inseq){
 \begin{frame}{References}
   \begin{block}{Further reading}
     \begin{itemize}
-    \item R Installation and Administration, R Core team 
-    \item Writing R Extensions, R Core team      
-    \item R Programming for Bioinformatics, Robert Gentleman
-    \item \Rpackage{Rcpp} documentation
+    \item Writing R Extensions, R Core team.      
+    \item \Rpackage{Rcpp} documentation.
+    \item Dirk Eddelbuettel, Seamless {R} and {C++} Integration with {Rcpp}, Springer, 2013.
+    \item Dirk Eddelbuettel and Romain Francois, \textit{Rcpp: Seamless R and C++ Integration}, 
+      Journal of Statistical Software, Vol. 40, Issue 8, Apr 2011, 
+      \url{http://www.jstatsoft.org/v40/i08/}.
     \item Relevant \emph{devtools} sections: \textit{C interface} and \textit{Rcpp}.      
     \end{itemize}
   \end{block}
