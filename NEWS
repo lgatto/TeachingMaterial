@@ -1,10 +1,13 @@
+CHANGES IN VERSION 0.5.6
+------------------------
+ o updated gccount2.cpp <2013-05-15 Wed>
+ o typo Author[s]@R <2013-05-15 Wed>
+ o using ./vignettes <2013-05-15 Wed>
+
 CHANGES IN VERSION 0.5.5
 ------------------------
  o updated gccount.c <2013-05-15 Wed>
  o updates Description of package <2013-05-15 Wed>
- o updated gccount2.cpp <2013-05-15 Wed>
- o typo Author[s]@R <2013-05-15 Wed>
- o using vignettes <2013-05-15 Wed>
 
 CHANGES IN VERSION 0.5.4
 ------------------------
