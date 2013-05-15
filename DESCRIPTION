@@ -1,12 +1,12 @@
 Package: sequences
 Title: Generic and biological sequences.
 Version: 0.5.5
-Author@R: c(person(given = "Laurent", family = "Gatto",
- 	           email = "lg390@cam.ac.uk",
- 		   role = c("aut","cre")),
-            person(given = "Robert", family ="Stojnic",
-	           email = "rs550@cam.ac.uk",
-		   role = "aut"))
+Authors@R: c(person(given = "Laurent", family = "Gatto",
+	            email = "lg390@cam.ac.uk",
+ 		    role = c("aut","cre")),
+             person(given = "Robert", family ="Stojnic",
+  	            email = "rs550@cam.ac.uk",
+		    role = "aut"))
 Author: Laurent Gatto and Robert Stojnic
 Maintainer: Laurent Gatto <lg390@cam.ac.uk>
 Description: Educational package used in R courses to illustrate OO programming 
