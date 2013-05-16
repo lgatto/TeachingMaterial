@@ -1,7 +1,7 @@
 library("Rcpp")
 
 cppFunction(code = "
-NumericVector gccount2(CharacterVector inseq) {
+NumericVector ingccount2(CharacterVector inseq) {
   Rcpp::CharacterVector dnaseq(inseq);
   Rcpp::NumericVector ans(4);
   std::string s = Rcpp::as<std::string>(dnaseq);

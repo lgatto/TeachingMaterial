@@ -162,14 +162,15 @@
 \begin{frame}{References}
   \begin{block}{Further reading}
     \begin{itemize}
-    \item Writing R Extensions, R Core team.      
+    \item Writing R Extensions, R Core team. 
+    \item Robert Gentleman, \R Programming for Bioinformatics, 2008.
     \item \Rpackage{Rcpp} documentation.
     \item Dirk Eddelbuettel, Seamless \R and \Cpp Integration with \Rpackage{Rcpp}, Springer, 2013.
     \item Dirk Eddelbuettel and Romain Francois, 
       \textit{Rcpp: Seamless R and C++ Integration}, 
       Journal of Statistical Software, Vol. 40, Issue 8, Apr 2011, 
       \url{http://www.jstatsoft.org/v40/i08/}.
-    \item Relevant \emph{devtools} sections: \textit{C interface} and \textit{Rcpp}.      
+    \item Relevant \texttt{devtools} sections: \textit{C interface} and \textit{Rcpp}.      
     \end{itemize}
   \end{block}
 \end{frame}

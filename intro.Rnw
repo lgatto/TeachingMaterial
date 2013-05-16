@@ -17,14 +17,38 @@
       \end{block}
 \end{frame}
 
+
+\begin{frame}
+  Robert Gentleman, in \R Programming for Bioinformatics, 2008.
+  \begin{quote}
+    Since R is not compiled,
+    in some situations its performance can be substantially improved by writing
+    code in a compiled language. There are also reasons not to write code in other
+    languages, and in particular we caution against premature optimization, pro-
+    totyping in R is often cost effective. And in our experience very few routines
+    need to be implemented in other languages for efficiency reasons. Another
+    substantial reason not to use an implementation in some other language is
+    increased complexity. The use of another language almost always results in
+    higher maintenance costs and less stability. In addition, any extensions or
+    enhancements of the code will require someone that is proficient in both R
+    and the other language.
+  \end{quote}
+  %% Donald Knuth
+  %%   \begin{quote}
+  %%     We should forget about small efficiencies, say about 97\% of the time: 
+  %%     \emph{premature optimization is the root of all evil}. 
+  %%     Yet we should not pass up our opportunities in that critical 3\%.
+  %%   \end{quote}
+\end{frame}
   
 \begin{frame}
   \begin{block}{}
     \begin{itemize}
-    \item \textbf{Why?} \R is getting slow or is not doing well in terms of memory management. 
-    \item \textbf{When?} \R can't do better \textbf{and} the slow code has been identified $\rightarrow$ code profiling.
-    \end{itemize}    
-  \end{block}
+    \item \textbf{Why?} \R is getting slow or is not doing well in terms of memory management: 
+      for example \texttt{for} loops that can't be vectorised, recursion, \ldots
+    \item \textbf{When?} \R can't do better \textbf{and} the slow code has been identified $\rightarrow$ \Rfunction{Rprof}
+    \end{itemize} 
+  \end{block}  
   \pause
   \begin{block}{}  
     \begin{itemize}
@@ -48,3 +72,4 @@
     \end{enumerate}    
   \end{block}
 \end{frame}
+

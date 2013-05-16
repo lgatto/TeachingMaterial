@@ -1,3 +1,16 @@
+<<recache, echo=FALSE, message = FALSE>>=
+library("sequences")
+x <- "ACCGGGTTTT"
+gccountr <- function(x) table(strsplit(x, "")[1])
+source("./src/ingccount.R")
+source("./src/ingccount2.R")
+if (!file.exists("src/gccount.so"))
+  system("R CMD SHLIB src/gccount.c")
+dyn.load("src/gccount.so")
+gccountC <- 
+  function(inseq) .Call("gccount", inseq)
+@ 
+
 \section{The \texttt{Rcpp} package}
 
 \begin{frame}
@@ -32,9 +45,31 @@
   \end{block}
 \end{frame}
 
+\subsection{As a replacement for \Rfunction{.Call}}
+
+  
+\begin{frame}
+  \begin{block}{Standard template library}
+    
+  \end{block}
+\end{frame}
+
 \begin{frame}{\url{./src/ingccount2.R}}
   \tiny
   \verbatiminput{src/ingccount2.R}
+\end{frame}
+
+\begin{frame}[fragile]
+<<ingccount2>>=
+x <- "ACCGGGTTTT"
+source("src/ingccount2.R")
+ingccount2(x)
+@   
+\end{frame}
+
+\begin{frame}{\url{./src/ingccount2.R}}
+  \tiny
+  \verbatiminput{src/gccount2.cpp}
 \end{frame}
 
 
@@ -46,7 +81,7 @@
       	\code{Depends: Rcpp} \\
       	\code{LinkingTo: Rcpp}
       \item Create an \R function that uses it
-<<gccount2r, tidy = FALSE>>=
+<<gccount2r, tidy = FALSE, eval = FALSE>>=
 gccount2 <- function(inseq) 
   .Call("gccount2", inseq, PACKAGE = "mypackage")
 @         
@@ -56,4 +91,45 @@ gccount2 <- function(inseq)
   \end{block}
 	See package \texttt{sequences} for a working example.
 \end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Benchmarking}
+\scriptsize    
+<<bench, cache = TRUE, tidy = FALSE>>=
+library(microbenchmark)
+microbenchmark(gccountr(x),
+               ingccount(x),  ## inline
+               ingccount2(x), ## cppFunction
+               sequences::gccount(x),
+               sequences::gccount2(x),
+               times = 1e4)
+@     
+  \end{block}  
+\end{frame}
+
+
+\begin{frame}[fragile]
+  Could we do better in \R? (should be asked first, really)
+  \pause
+\scriptsize    
+<<usetabulate, tidy = FALSE>>=
+gccountr2 <- 
+  function(x) tabulate(factor(strsplit(x, "")[[1]]))
+@ 
+\pause
+<<bench2, cache = TRUE, tidy = FALSE>>=
+microbenchmark(gccountr(x),
+               gccountr2(x),
+               ingccount(x),  ## inline
+               ingccount2(x), ## cppFunction
+               sequences::gccount(x),
+               sequences::gccount2(x),
+               times = 1e4)
+@     
+\end{frame}
+
+\subsection{The pi example}
+
+\subsection{Rcpp classes}
 

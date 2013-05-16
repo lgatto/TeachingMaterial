@@ -128,8 +128,9 @@ return(y)
     We have a DNA sequence, represented by a string of A, C, G and T and we want to compute the GC content.
   \end{example}
 <<gcr>>=
-x <- "AGCATCGCACTACAT"
-table(strsplit(x, "")[[1]])
+x <- "ACCGGGTTTT"
+gccountr <- function(x) table(strsplit(x, "")[1])
+gccountr(x)
 @   
 \end{frame}
 
@@ -160,16 +161,23 @@ ingccount(x)
 \end{frame}
 
 \begin{frame}[fragile]
+<<shlib, echo=FALSE>>=
+system("R CMD SHLIB src/gccount.c")
+dyn.load("src/gccount.so")
+@   
   \begin{block}{Use directly}
     \begin{enumerate}
       \item Create a shared library: \texttt{R CMD SHLIB gccount.c}
       \item Load the shared object: \texttt{dyn.load("gccount.so")}
       \item Create an \R function that uses it: 
-<<gccountr0, eval = FALSE, tidy = FALSE>>=
-gccount <- 
+<<gccountr0, tidy = FALSE>>=
+gccountC <- 
   function(inseq) .Call("gccount", inseq)
 @
-      \item Use you \C code: \Rfunction{gccount("GACAGCATCA")}
+      \item Use you \C code: 
+<<gccountC>>=
+gccountC(x)
+@         
     \end{enumerate}
   \end{block}
 \end{frame}
@@ -194,10 +202,8 @@ gccount <- function(inseq)
     \small
 <<gccount,echo=TRUE, message = FALSE>>=
 library(sequences)
-s <- "GACTACGA"
 gccount
-gccount(s)
-table(strsplit(s,""))
+gccount(x)
 @ 
   \end{block}
 \end{frame}
@@ -211,7 +217,7 @@ if (TYPEOF(inseq) != STRSXP)
 @   
 although
 <<>>=
-.Call("gccount", 123)
+gccountC(123)
 @ 
 and type checking could easily be done at the \R level.
 There is also \Rfunction{isRead(x)}, \Rfunction{isInteger(x)}, \ldots for atomics vectors.

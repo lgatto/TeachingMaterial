@@ -40,6 +40,9 @@ rcpp.tex: rcpp.Rnw
 
 clean:
 	rm -f $(LATEXFILES)
+	rm -rf cache
 	rm -rf figure
 	rm -f .Rhistory
 	rm -f src/*~
+	rm -f src/*.o
+	rm -f src/*.so
