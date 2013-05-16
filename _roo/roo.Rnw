@@ -41,7 +41,7 @@
 \let\code=\texttt
 \let\proglang=\textsf
 
-\newcommand{\R}{\texttt{R}}
+\newcommand{\R}{\texttt{R}~}
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
 \newcommand{\Rpackage}[1]{{\textit{#1}}}
@@ -169,7 +169,7 @@ options(width = 60)
 \begin{frame}
   \begin{block}{General overview}
   \begin{itemize}
-  	\item \R~object-oriented programming -- in details; 
+  	\item \R object-oriented programming -- in details; 
           after this, you should be able to tackle more complicated 
           OO designs.
   	%% \item Day 2: make a package with day 1's code and general 

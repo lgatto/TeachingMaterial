@@ -561,9 +561,9 @@ will no longer work.
 \begin{frame}[fragile]{Mutability in S3 and S4}
   \begin{block}{Mutability}
     \small
-    \R~objects are not \textbf{mutable}; \R~has a \textbf{pass-by-value} semantics, 
+    \R objects are not \textbf{mutable}; \R has a \textbf{pass-by-value} semantics, 
     consistently with functional programming semantics. 
-    Whenever\footnote{\tiny{Although, in general, \R~tries to avoid copying objects unless they are modified.}} 
+    Whenever\footnote{\tiny{Although, in general, \R tries to avoid copying objects unless they are modified.}} 
     you pass an object to a function, a copy is passed as argument; changes made to the object are local to the function call; 
     the original object is unchanged. This is how things work for both S3 and S4 class systems. 
   \end{block}
