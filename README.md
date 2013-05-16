@@ -79,7 +79,7 @@ Unless otherwise stated, all material is licensed under a [Creative Commons Attr
 - Installation from CRAN: `install.packages("sequences")`
 - Installation from github (requires `R` and `C/C++` building tools): 
 
-```r
+```c
 library(devtools)
 install_github("sequences", "lgatto")
 ```
