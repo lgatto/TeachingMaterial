@@ -200,7 +200,7 @@ gccount <- function(inseq)
 \begin{frame}[fragile]
   \begin{block}{Using the \Rpackage{sequences} package}
     \small
-<<gccount,echo=TRUE, message = FALSE>>=
+<<gccount, echo=TRUE, message = FALSE>>=
 library(sequences)
 gccount
 gccount(x)
@@ -227,4 +227,40 @@ There is also \Rfunction{isRead(x)}, \Rfunction{isInteger(x)}, \ldots for atomic
 \begin{frame}
   \centering
   There is of course much more to this \ldots see references at the end.
+\end{frame}
+
+<<echo=FALSE>>=
+library("sequences")
+@ 
+
+\begin{frame}[fragile]
+  \begin{block}{Benchmarking}
+\scriptsize    
+<<bench, cache = TRUE, tidy = FALSE>>=
+library(microbenchmark)
+microbenchmark(gccountr(x),
+               ingccount(x), ## inline
+               gccount(x),   ## sequences
+               times = 1e4)
+@     
+  \end{block}  
+\end{frame}
+
+
+\begin{frame}[fragile]
+  Could we do better in \R? (should be asked first, really)
+  \pause
+\scriptsize    
+<<usetabulate, tidy = FALSE>>=
+gccountr2 <- 
+  function(x) tabulate(factor(strsplit(x, "")[[1]]))
+@ 
+\pause
+<<bench2, cache = TRUE, tidy = FALSE>>=
+microbenchmark(gccountr(x),
+               gccountr2(x),
+               ingccount(x),  ## inline
+               gccount(x),    ## sequences
+               times = 1e4)
+@     
 \end{frame}

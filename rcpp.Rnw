@@ -1,14 +1,6 @@
 <<recache, echo=FALSE, message = FALSE>>=
 library("sequences")
 x <- "ACCGGGTTTT"
-gccountr <- function(x) table(strsplit(x, "")[1])
-source("./src/ingccount.R")
-source("./src/ingccount2.R")
-if (!file.exists("src/gccount.so"))
-  system("R CMD SHLIB src/gccount.c")
-dyn.load("src/gccount.so")
-gccountC <- 
-  function(inseq) .Call("gccount", inseq)
 @ 
 
 \section{The \texttt{Rcpp} package}
@@ -45,12 +37,50 @@ gccountC <-
   \end{block}
 \end{frame}
 
-\subsection{As a replacement for \Rfunction{.Call}}
-
-  
 \begin{frame}
-  \begin{block}{Standard template library}
-    
+  \begin{block}{Types}    
+    \begin{center}
+      \begin{tabular}{lll}
+        \texttt{Scalar} & \texttt{Vector}          & \texttt{Matrix}          \\ \hline
+        \texttt{double} & \texttt{NumericVector}   & \texttt{NumericMatrix}   \\
+        \texttt{int}    & \texttt{IntegerVector}   & \texttt{IntegerMatrix}   \\
+        \texttt{string} & \texttt{CharacterVector} & \texttt{CharacterMatrix} \\
+        \texttt{bool}   & \texttt{LogicalVector}   & \texttt{LogicalMatrix}   \\
+      \end{tabular}
+    \end{center}
+    Anf \texttt{Function}, \texttt{List}, \texttt{DataFrame} \ldots
+  \end{block}  
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Standard template library}    
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{}
+    \begin{enumerate}
+    \item \Rfunction{ingccount2}: embedding the \Cpp directly in \R 
+      using the \Rfunction{Rcpp::cppFunction} package. 
+      (Note there is also \Rfunction{inline::cxxfunction}).
+    \item \Rfunction{gccount2}: in a package, writing the \Cpp into its own code file and using \Rfunction{.Call}.
+    \item \Rfunction{gccountX}: using \Rfunction{sourceCpp} to source the \Cpp file and export the function to \R.
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{}
+    \begin{itemize}
+    %% \item \Rfunction{sourceCpp} to source a \Cpp code and export it as an \R function, 
+    %%   while exposing code in \Cpp directly to \R using modules 
+    %%   (see the \href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-modules.pdf}{Rcpp-modules} vignette).
+    \item \Rfunction{sugar}: expression templates that allow compact vectorised expression just 
+      like in \R but at compiled speed 
+      (see the \href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-sugar.pdf}{Rcpp-sugar} vignette).
+    \item Using S4 Reference Classes to reflect \Cpp classes and methods 
+      (see the \href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-modules.pdf}{Rcpp-modules} vignette).
+    \end{itemize}
   \end{block}
 \end{frame}
 
@@ -58,6 +88,7 @@ gccountC <-
   \tiny
   \verbatiminput{src/ingccount2.R}
 \end{frame}
+
 
 \begin{frame}[fragile]
 <<ingccount2>>=
@@ -67,6 +98,7 @@ ingccount2(x)
 @   
 \end{frame}
 
+
 \begin{frame}{\url{./src/ingccount2.R}}
   \tiny
   \verbatiminput{src/gccount2.cpp}
@@ -74,7 +106,7 @@ ingccount2(x)
 
 
 \begin{frame}[fragile]
-  \begin{block}{Using in a package}
+  \begin{block}{In a package}
     \begin{enumerate}
       \item You will need a \texttt{Makevars} file in the \code{src} directory
       \item Modify \texttt{DESCRIPTION} file: \\
@@ -94,42 +126,48 @@ gccount2 <- function(inseq)
 
 
 \begin{frame}[fragile]
-  \begin{block}{Benchmarking}
-\scriptsize    
-<<bench, cache = TRUE, tidy = FALSE>>=
-library(microbenchmark)
-microbenchmark(gccountr(x),
-               ingccount(x),  ## inline
-               ingccount2(x), ## cppFunction
-               sequences::gccount(x),
-               sequences::gccount2(x),
-               times = 1e4)
-@     
-  \end{block}  
+  \begin{block}{Using \Rfunction{sourceCpp}}    
+    \begin{itemize}
+    \item Write the \Cpp code into a \texttt{cpp} file, including headers and dedicated export statement (see next slide).
+    \item Source it and use the \R function.
+<<sourcercpp>>=
+sourceCpp("src/gccountX.cpp")
+gccountX(x)
+@       
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 
-\begin{frame}[fragile]
-  Could we do better in \R? (should be asked first, really)
-  \pause
-\scriptsize    
-<<usetabulate, tidy = FALSE>>=
-gccountr2 <- 
-  function(x) tabulate(factor(strsplit(x, "")[[1]]))
-@ 
-\pause
-<<bench2, cache = TRUE, tidy = FALSE>>=
-microbenchmark(gccountr(x),
-               gccountr2(x),
-               ingccount(x),  ## inline
-               ingccount2(x), ## cppFunction
-               sequences::gccount(x),
-               sequences::gccount2(x),
-               times = 1e4)
-@     
+\begin{frame}{\url{./src/gccountX.R}}
+  \tiny
+  \verbatiminput{src/gccountX.cpp}
 \end{frame}
+
 
 \subsection{The pi example}
+\begin{frame}
+  \begin{block}{Modules and sugar}
+    The pi example
+  \end{block}
+\end{frame}
 
 \subsection{Rcpp classes}
+
+\begin{frame}
+  \begin{block}{Boost}    
+  \end{block}
+\end{frame}
+
+\subsection{Rcpp in packages}
+
+\begin{frame}[fragile]
+<<cpppack, eval = FALSE>>=
+Rcpp.package.skeleton("NewPackage")
+Rcpp.package.skeleton("NewPackage", attribute = TRUE)
+Rcpp.package.skeleton("NewPackage", module = TRUE)
+Rcpp.package.skeleton("NewPackage", cpp_files = c("convolve.cpp"))
+@   
+\end{frame}
+
 

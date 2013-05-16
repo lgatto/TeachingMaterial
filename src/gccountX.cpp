@@ -1,7 +1,8 @@
-library("Rcpp")
+#include <Rcpp.h>
+using namespace Rcpp;
 
-cppFunction("
-IntegerVector ingccount2(CharacterVector inseq) {
+// [[Rcpp::export]]
+IntegerVector gccountX(CharacterVector inseq) {
   IntegerVector ans(4);
   std::string s = Rcpp::as<std::string>(inseq(0));
   int n = inseq(0).size();
@@ -15,8 +16,7 @@ IntegerVector ingccount2(CharacterVector inseq) {
     else if (s[i] == 'T') 
       ans[3]++;
     else 
-      Rf_error(\"Wrong alphabet\");
+      Rf_error("Wrong alphabet");
   }
   return(ans);
-}")
-
+}
