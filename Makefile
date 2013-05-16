@@ -32,7 +32,7 @@ rccpp: rccpp.Rnw intro.tex call.tex rcpp.tex
 intro.tex: intro.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('intro.Rnw');"
 
-call.tex: intro.Rnw
+call.tex: call.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('call.Rnw');"
 
 rcpp.tex: rcpp.Rnw
@@ -41,3 +41,5 @@ rcpp.tex: rcpp.Rnw
 clean:
 	rm -f $(LATEXFILES)
 	rm -rf figure
+	rm -f .Rhistory
+	rm -f src/*~

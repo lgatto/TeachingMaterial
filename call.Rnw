@@ -1,113 +1,224 @@
+\section{Build-in \C interface}
 
-\begin{frame}{\R's build-in \texttt{C} interfaces}
-  \begin{block}{}
+\begin{frame}
+  \begin{block}{The \R \C API}
     \begin{itemize}
+    \item Very frequent in \R but with its quirks. 
     \item Better know how to program in \texttt{C}.
-    \item Documentation is not always easy to follow: R-Ext, R Internals as well as \R~and other package's code.
+    \item Documentation is not always easy to follow: R-Ext, R Internals as well as \R and other package's code.
     \end{itemize}
+    We need a \C implementation and an \R function that calls the \R code.
   \end{block}
+\end{frame}
+
+\begin{frame}
   \begin{block}{\texttt{.C}}
     \begin{itemize}
-    \item \textit{Easy} way
-    \item Arguments and return values must be \textit{primitive} (vectors of doubles or integers)
+    \item Not recommended.
+    \item Arguments and return values must be \textit{primitives} (vectors of doubles or integers).
     \end{itemize}
   \end{block}
   \begin{block}{\texttt{.Call}}
     \begin{itemize}
-    \item Accepts \R~data structures as arguments and return values (\texttt{SEXP} and friends) 
-      (no type checking is done though).
-    \item Memory management: memory allocated for R objects is garbage collected. 
-      Thus \R~objects in \texttt{C} code, you must be explicitely \texttt{PROTECT}ed to 
-      avoid being \texttt{gc()}ed, and subsequently \texttt{UNPROTECT}ed.      
+    \item Accepts any \R data structures as arguments and return values (no type checking is done though).      
+    \item Manual memory management: allocate memory, 
+      protect objects to avoid them being garbage collected
+      and subsequently unprotect them.
     \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{\texttt{.Call} example}
-  \begin{example}
-    \tiny
-\begin{verbatim}
-#include <R.h> 
-#include <Rdefines.h>
-
-SEXP gccount(SEXP inseq) {
-  int i, l;
-  SEXP ans, dnaseq;    
-  PROTECT(dnaseq = STRING_ELT(inseq, 0)); 
-  l = LENGTH(dnaseq); 
-  printf("length %d\n",l);
-  PROTECT(ans = NEW_NUMERIC(4));
-
-  for (i = 0; i < 4; i++) 
-    REAL(ans)[i] = 0;
-
-  for (i = 0; i < l; i++) {
-    char p = CHAR(dnaseq)[i];
-    if (p=='A') 
-      REAL(ans)[0]++;
-    else if (p=='C') 
-      REAL(ans)[1]++;
-    else if (p=='G') 
-      REAL(ans)[2]++;
-    else if (p=='T') 
-      REAL(ans)[3]++;
-    else 
-      error("Wrong alphabet");
-  }
-  UNPROTECT(2);
-  return(ans);
-}
-\end{verbatim}
-  \end{example}
+\begin{frame}[fragile]
+  \begin{block}{S-expression}
+    \texttt{SEXP} is a super-type that matches all \R data structures.         
+    Each data type has its own \texttt{SEXP} sub-type. 
+    \begin{itemize}
+    \item \texttt{REALSXP} and \texttt{INTSXP} for double and integer vectors
+    \item \texttt{LGLSXP} and \texttt{STRSXP} for logical and character vectors
+    \item \texttt{VECSXP} for a list (NB: \R list are called vectors at the \C level)
+    \item \ldots
+    \end{itemize} 
+    Function input and outputs are always \texttt{SEXP} and will have to be coerced to the appropriate \texttt{SXP} sub-type. \\
+    \texttt{Rinternals.h} defines all \C functions, data types and macros.
+<<>>=
+file.path(R.home(), "include", "Rinternals.h")
+@         
+  \end{block}
+  \note{A macro is a fragment of code which has been given a name. Whenever the name is used, it is replaced by the contents of the macro.}
 \end{frame}
 
-\begin{frame}{Using your \texttt{C} code}
-  \begin{block}{Directly}
+\begin{frame}[fragile]
+  \begin{columns}[t]
+    \begin{column}{0.63\textwidth}      
+      \tiny
+      \verbatiminput{src/sexp.R}  
+    \end{column}
+    \begin{column}{0.37\textwidth}      
+      \tiny
+<<sexp>>=
+source("src/sexp.R")
+sexp_type(1:3)
+sexp_type(10L)
+sexp_type(TRUE)
+sexp_type(letters)
+sexp_type(list(a = 1, b = letters))
+sexp_type(ls)
+@  
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \begin{block}{Garbage collection}
+    Every \R object that is created at the \C level (not function arguments, that \R is already aware of)
+    must be \texttt{PROTECT}ed to avoid being garbage collected. 
+    Before the return statement, these must be explicitely \texttt{UNPROTECT}ed.    
+  \end{block}
+<<eval=FALSE>>=
+SEXP x;
+PROTECT(x = ... )
+## do stuff
+UNPROTECT(1)
+return(y)
+@   
+\note{If the number of PROTECT and UNPROTECT don't match, R will warn about a ``stack imbalance in .Call''.}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Object creation}
+    \begin{enumerate}
+    \item Allocate memory: \Rfunction{allocVector}, \Rfunction{allocMatrix}, \Rfunction{alloc3DArray}
+    \item Initialise objects: \Rfunction{memset}
+    \end{enumerate}
+  \end{block}  
+<<eval=FALSE>>=
+SEXP x;
+PROTECT(x = allocVector(INTSXP, 10) )
+memset(INTEGER(x), 0, 10 * sizeof(int))
+## do stuff
+UNPROTECT(1)
+return(y)
+@   
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Accessing/setting \texttt{SXP} elements}
+    \begin{itemize}
+    \item \Rfunction{REAL(x)[i]} if \texttt{x} is a \Rfunction{REALSXP}
+    \item \Rfunction{INTEGER(x)[i]} if \texttt{x} is a \Rfunction{INTSXP}
+    \item \Rfunction{LOGICAL(x)[i]} if \texttt{x} is a \Rfunction{LGLSXP}
+    \item \ldots
+    \end{itemize}
+    \begin{itemize}
+    \item \Rfunction{STRING_ELT(x, i)} to access individual \texttt{CHARSXP} elements of a \texttt{STRSXP}
+    \item \Rfunction{VECTOR_ELT(x, i)} to access individual \texttt{SXP} elements of a \texttt{VECSXP}
+    \end{itemize}
+    \begin{itemize}
+    \item \Rfunction{SET_STRING_ELT(out, 0, x))} to set an element in a string.
+    \item \Rfunction{SET_VECTOR_ELT(out, 0, x))} to set an element in a list.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{example}
+    We have a DNA sequence, represented by a string of A, C, G and T and we want to compute the GC content.
+  \end{example}
+<<gcr>>=
+x <- "AGCATCGCACTACAT"
+table(strsplit(x, "")[[1]])
+@   
+\end{frame}
+
+\begin{frame}
+  \begin{block}{}
+    \begin{enumerate}
+    \item \Rfunction{ingccount}: embedding the \C directly in \R  using the \Rpackage{inline} package.
+    \item \Rfunction{gccount}: writing the \C into its own code file and using \Rfunction{.Call}.
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}{\url{./src/ingccount.R}}
+  \tiny
+  \verbatiminput{src/ingccount.R}
+\end{frame}
+
+\begin{frame}[fragile]
+<<ingccount, message = FALSE>>=
+source("./src/ingccount.R")
+ingccount(x)
+@   
+\end{frame}
+
+\begin{frame}{\url{text/gccount.c}}
+  \tiny
+  \verbatiminput{src/gccount.c}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Use directly}
     \begin{enumerate}
       \item Create a shared library: \texttt{R CMD SHLIB gccount.c}
       \item Load the shared object: \texttt{dyn.load("gccount.so")}
-      \item Create an \R~function that uses it: \texttt{gccount <- function(inseq) .Call("gccount",inseq)}
-      \item Use you \texttt{C} code: \texttt{gccount("GACAGCATCA")}
+      \item Create an \R function that uses it: 
+<<gccountr0, eval = FALSE, tidy = FALSE>>=
+gccount <- 
+  function(inseq) .Call("gccount", inseq)
+@
+      \item Use you \C code: \Rfunction{gccount("GACAGCATCA")}
     \end{enumerate}
   \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
   \begin{block}{In a package}
     \begin{itemize}
-    \item Document you function.
-    \item Export the shared objects with \texttt{useDynLib} in your \texttt{NAMESPACE}.
-    \item (Without \texttt{NAMESPACE}, overwrite \texttt{.First.lib} to \texttt{dyn.load} you shared object.)
+    \item The \C code comes in the \texttt{src} directory.
+    \item The \R wrapper will be
+<<gccountr, eval = FALSE, tidy = FALSE>>=
+gccount <- function(inseq) 
+  .Call("gccount", inseq, PACKAGE = "mypackage")
+@       
+    \item Document the \R function
+    \item Export the \R function and \texttt{useDynLib(mypackge)} in the \texttt{NAMESPACE}
     \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{\Rpackage{sequences} example}
-  \begin{example}
-    In \Rpackage{sequences}, we have
-    \begin{itemize}
-      \item The \texttt{gccount.c} code in \texttt{src}.
-      \item Defined a \R~ function in \texttt{R/functions.R}
-\begin{verbatim}
-gccount <- function(inseq) {
-  .Call("gccount",
-        inseq,
-        PACKAGE="sequences")
-}
-\end{verbatim}
-\item Written the \texttt{man/gccount.Rd} man page.
-\item Exported the function in \texttt{NAMESPACE} using \texttt{export(gccount)} and the shared library with \texttt{useDynLib(sequences)}
-    \end{itemize}
-\end{example}
-\end{frame}
-
-\begin{frame}[fragile]{\Rpackage{sequences} example}
-  \begin{example}
-<<lib,echo=FALSE>>=
+\begin{frame}[fragile]
+  \begin{block}{Using the \Rpackage{sequences} package}
+    \small
+<<gccount,echo=TRUE, message = FALSE>>=
 library(sequences)
-@ 
-<<gccount,echo=TRUE>>=
 s <- "GACTACGA"
 gccount
 gccount(s)
 table(strsplit(s,""))
 @ 
-  \end{example}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  We could check that 
+<<eval=FALSE, tidy=FALSE>>=
+if (TYPEOF(inseq) != STRSXP) 
+  error("Need a character vector!");
+@   
+although
+<<>>=
+.Call("gccount", 123)
+@ 
+and type checking could easily be done at the \R level.
+There is also \Rfunction{isRead(x)}, \Rfunction{isInteger(x)}, \ldots for atomics vectors.
+\end{frame}
+
+
+\begin{frame}
+  \centering
+  There is of course much more to this \ldots see references at the end.
 \end{frame}

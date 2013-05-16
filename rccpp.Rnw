@@ -13,13 +13,19 @@
 % \usetheme{Copenhagen}
 \setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
 %% \setbeamertemplate{navigation symbols}{}
-\usecolortheme{default}
 
+%% \setbeameroption{hide notes}
+%% \setbeameroption{show notes}
+%% \setbeameroption{notes on second screen}
+%% \setbeameroption{show only notes}
+
+\usecolortheme{default}
 % Standard packages
 % \usepackage[english]{babel}
 % \usepackage[latin1]{inputenc}
 % \usepackage{times}
 % \usepackage[T1]{fontenc}
+\usepackage{pgfpages}
 \usepackage{underscore}
 \usepackage{ulem}
 \usepackage{colortbl}
@@ -36,6 +42,8 @@
 \let\code=\texttt
 \let\proglang=\textsf
 
+\newcommand{\C}{\texttt{C}~}
+\newcommand{\Cpp}{\texttt{C++}~}
 \newcommand{\R}{\texttt{R}~}
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
@@ -78,12 +86,12 @@
 \newcommand{\exercise}{\textbf{Exercise \exerciseCount:}~}
 
 % Author, Title, etc.
-\title[Day 2] 
+\title[RCCPP] 
 {
-  Using C and C++ with R
+  Using \C and \Cpp with \R
 }
 
-\author[Stojnic and Gatto]
+\author[L. Gatto]
 {
   Laurent~Gatto \url{lg390@cam.ac.uk}
 }
@@ -156,8 +164,9 @@
     \begin{itemize}
     \item Writing R Extensions, R Core team.      
     \item \Rpackage{Rcpp} documentation.
-    \item Dirk Eddelbuettel, Seamless {R} and {C++} Integration with {Rcpp}, Springer, 2013.
-    \item Dirk Eddelbuettel and Romain Francois, \textit{Rcpp: Seamless R and C++ Integration}, 
+    \item Dirk Eddelbuettel, Seamless \R and \Cpp Integration with \Rpackage{Rcpp}, Springer, 2013.
+    \item Dirk Eddelbuettel and Romain Francois, 
+      \textit{Rcpp: Seamless R and C++ Integration}, 
       Journal of Statistical Software, Vol. 40, Issue 8, Apr 2011, 
       \url{http://www.jstatsoft.org/v40/i08/}.
     \item Relevant \emph{devtools} sections: \textit{C interface} and \textit{Rcpp}.      

@@ -3,7 +3,7 @@
 \begin{frame}
       \begin{block}{Foreign languages}
         \begin{itemize}
-        \item \texttt{C}, \texttt{C++}\footnote{\url{http://dirk.eddelbuettel.com/code/rcpp.html}}, 
+        \item \C, \Cpp
         \item \texttt{Fortran} 
         \item \texttt{Java}\footnote{\url{http://www.rforge.net/rJava/}}.
         \end{itemize}
@@ -21,14 +21,30 @@
 \begin{frame}
   \begin{block}{}
     \begin{itemize}
-    \item \textbf{Why} \R is getting slow or is not doing well in terms of memory management. 
-    \item \textbf{When} \R can't do better \textbf{and} the slow code has been identified $\rightarrow$ code proiling.
+    \item \textbf{Why?} \R is getting slow or is not doing well in terms of memory management. 
+    \item \textbf{When?} \R can't do better \textbf{and} the slow code has been identified $\rightarrow$ code profiling.
     \end{itemize}    
   \end{block}
   \pause
   \begin{block}{}  
     \begin{itemize}
-    \item \textbf{Why} Re-using existing infrastructure 
+    \item \textbf{Why?} Re-using existing infrastructure 
     \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \begin{block}{Requirement for \texttt{C/C++}}
+    \bigskip
+    Working compilers. On Windows, \texttt{Rtools}$^{1, 2}$. On Mac, \texttt{Xcode}$^{3, 4}$.
+    \bigskip
+    \tiny
+    \begin{enumerate}
+    \item \url{http://cran.r-project.org/bin/windows/Rtools/}
+    \item \url{http://cran.r-project.org/doc/manuals/R-admin.html\#The-Windows-toolset}
+    \item \url{http://cran.r-project.org/doc/manuals/R-admin.html\#Installing-R-under-\_0028Mac\_0029-OS-X}
+    \item \url{http://cran.r-project.org/doc/manuals/R-admin.html\#Mac-OS-X}
+    \end{enumerate}    
   \end{block}
 \end{frame}
