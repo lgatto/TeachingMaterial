@@ -8,8 +8,8 @@
 
 \begin{block}{Course agenda}
 	\begin{itemize}
-		\item Object-oriented programming in R: S3 and S4 class systems
-		\item Package development in R: creating and documenting packages
+		\item Object-oriented programming in \R: S3 and S4 class systems
+		\item Package development in \R: creating and documenting packages
 		\item Other advanced topics: testing, debugging, profiling, C/C++ interface, 
 		      parallel computation
 		%% \item This is an \textbf{intensive} course
