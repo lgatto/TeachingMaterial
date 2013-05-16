@@ -99,10 +99,6 @@ Here are some of my own examples:
 - [Makefile](https://github.com/kbroman/Talk_FunQTL/blob/master/Makefile)
   for a [talk on QTL mapping for function-valued traits](http://www.biostat.wisc.edu/~kbroman/talks/FunQTL/).
 
-Also look at [John Muschelli](http://biostat.jhsph.edu/~jmuschel)'s [Makefile](https://github.com/muschellij2/ENAR_2013_Talk/blob/master/Makefile) for
-[his ENAR talk on Visualizing Brain Imaging](http://htmlpreview.github.io/?https://github.com/muschellij2/ENAR_2013_Talk/blob/master/ENAR_Visualization.html). (Also
-see John on twitter as [@StrictlyStat](https://twitter.com/StrictlyStat), plus [his blog](http://hopstat.wordpress.com).)
-
 ### Resources
 
 - [GNU make webpage](http://www.gnu.org/software/make)
