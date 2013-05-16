@@ -21,7 +21,7 @@
       \item \texttt{mytest.R} with code to be tested
       \item \texttt{mytest.Rout.save} with the reference output
     \end{itemize}
-    When \texttt{check}ing your package \R~ will
+    When \texttt{check}ing your package \R will
     \begin{enumerate}
       \item execute the code in \texttt{mytest.R}
       \item save the output to \texttt{mytest.Rout}

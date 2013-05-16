@@ -57,7 +57,7 @@
 \let\code=\texttt
 \let\proglang=\textsf
 
-\newcommand{\R}{\texttt{R}}
+\newcommand{\R}{\texttt{R~}}
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
 \newcommand{\Rpackage}[1]{{\textit{#1}}}
@@ -175,7 +175,7 @@
     \begin{columns}[c]
       \begin{column}{.55\linewidth}
         \begin{block}{Packages}
-        One of the aspects that make \R~appealing:
+        One of the aspects that make \R appealing:
         \begin{description}
         \item[CRAN] package repository features 4262 available packages.
         \item[R-forge] 1453 hosted projects.
@@ -212,11 +212,11 @@
 
 \begin{frame}[fragile]{Administration}
   \begin{block}{Building packages}
-    \texttt{R CMD build myPackage} -- the \R~package builder builds R package (and vignettes if available).
+    \texttt{R CMD build myPackage} -- the \R package builder builds R package (and vignettes if available).
   \end{block}
   \begin{block}{Checking packages}
     \texttt{R CMD check myPackage\_0.1.1.tar.gz} or \texttt{R CMD check myPackage} -- 
-    the \R~package checker tests whether the package or source work correctly.
+    the \R package checker tests whether the package or source work correctly.
     \begin{itemize}
     \scriptsize
     \item The package is installed (checks missing cross-references and duplicate aliases in help files).
@@ -241,7 +241,7 @@
     Use \Rfunction{library()} or \Rfunction{require()}.
   \end{block}
   \begin{block}{On Windows}
-    \R~is very much Unix centric. To build from source on Windows, you will need \texttt{Rtools}\footnote{%%
+    \R is very much Unix centric. To build from source on Windows, you will need \texttt{Rtools}\footnote{%%
       \url{http://www.murdoch-sutherland.com/Rtools/}}. See the \textit{The Windows toolset} in R-Admin 
     for more details. 
     %% It is also possible to build Windows binary packages from Linux\footnote{%%
@@ -267,9 +267,9 @@
 \begin{frame}{References}
   \begin{block}{Further reading}
     \begin{itemize}
-    \item R Installation and Administration, R Core team 
-    \item Writing R Extensions, R Core team      
-    \item R Programming for Bioinformatics, Robert Gentleman
+    \item R Installation and Administration, R Core team.
+    \item Writing R Extensions, R Core team.
+    \item Robert Gentleman, \R Programming for Bioinformatics, 2008.
 %%     \item \Rpackage{Rcpp} documentation
 %%     \item Parallel R (end 2011), \Rpackage{parallel} and \Rpackage{foreach} vignettes
 %%       and the \textit{High Performance Computing} CRAN task view.
@@ -284,17 +284,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
-  %% \begin{block}{Acknowledgement}
-  %%   \begin{itemize}
-  %%     \item Graduate School of Life Sciences, University of Cambridge
-  %%     \item David Judge, University of Cambridge
-  %%     \item Wolfgang Huber, EMBL Heidelberg, Germany 
-  %%   \end{itemize}
-  %% \end{block}
-  \begin{block}{}
-    \centering
+  \vspace{2cm}
+  \begin{itemize}
+  \item This work is licensed under a CC BY-SA 3.0 License 
+  \item Slides and other material: \url{https://github.com/lgatto/TeachingMaterial}
+  \end{itemize}
+  \vspace{.7cm}
+  \begin{center}
     Thank you for you attention.
-  \end{block}
+  \end{center}
 \end{frame}
 
 
