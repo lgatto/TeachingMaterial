@@ -76,3 +76,10 @@ Unless otherwise stated, all material is licensed under a [Creative Commons Attr
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
 - Original repository: https://github.com/lgatto/sequences
 - More details: https://github.com/lgatto/sequences/blob/master/DESCRIPTION
+- Installation from CRAN: `install.pacckages("sequences")`
+- Installation from github (requires `R` and `C/C++` building tools): 
+```{r}
+library(devtools)
+install_github("sequences", "lgatto")
+```
+
