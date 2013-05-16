@@ -7,7 +7,14 @@ Each material subdirectory has its own repository; `TeachingMaterial` aggregates
 Aggregation is done using `git-subtree` and will be documented soon. 
 The local copies linking to external repositories are prefixed with an underscore. 
 
-Unless otherwise stated, all material is licensed under a [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/).
+Unless otherwise stated, all material is licensed under a 
+[Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/). 
+This means you are free to copy, distribute and transmit the work, 
+adapt it to your needs as long as you cite its origin and, 
+if you do redistribute it, do so under the same license.
+
+If you like this material and/or this initiative, do not hesitate to let us know
+by starring the repo, tweet about it and mention it to your colleagues. 
 
 ## Material
 
