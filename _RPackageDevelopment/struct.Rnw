@@ -78,7 +78,7 @@ License: What license is it under? ## *
 
 \begin{frame}[fragile]
   \begin{example}
-    \R~uses \textit{Lazy evaluation}, which delays the evaluation of an expression 
+    \R uses \textit{Lazy evaluation}, which delays the evaluation of an expression 
     (here the argument) until its value is actually required 
       [\footnote{example from Hadley Wickham's devtools}]:
   \end{example}
@@ -152,7 +152,7 @@ importFrom(foo, f, g) ## imports f and g from foo
 
 \begin{frame}[fragile]{Package subdirectories}
   \begin{block}{R}
-    Contains \Rfunction{source()}able \R~source code to be installed. 
+    Contains \Rfunction{source()}able \R source code to be installed. 
     Files must start with an ASCII (lower or upper case) letter or digit and have one of the extensions 
     \texttt{.R} (recommended), \texttt{.S}, \texttt{.q}, \texttt{.r}, or \texttt{.s}.
     File order is important if code relies on \textit{earlier} code -- order use \texttt{Collate} filed in \texttt{DESCRIPTION} file.
