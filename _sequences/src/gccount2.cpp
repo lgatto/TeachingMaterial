@@ -8,9 +8,6 @@ RcppExport SEXP gccount2(SEXP inseq)
   Rcpp::NumericVector ans(4);
   std::string s = Rcpp::as<std::string>(dnaseq);
 
-  for (int i = 0; i < 4; i++) 
-    ans[i] = 0;
-
   for (int i = 0; i < s.size(); i++) {
     char p = s[i];
     if (p=='A') 

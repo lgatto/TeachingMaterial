@@ -1,31 +1,31 @@
 #include <R.h> 
 #include <Rdefines.h>
 
-SEXP gccount(SEXP inseq)
-{
-  int i, l;
-  SEXP ans, dnaseq;    
-  PROTECT(dnaseq = STRING_ELT(inseq, 0)); 
-  l = LENGTH(dnaseq); 
-  printf("length %d\n",l);
-  PROTECT(ans = NEW_NUMERIC(4));
+SEXP gccount(SEXP inseq) {
+  int i, l; 
+  char p;
+  SEXP ans, dnaseq; 
 
-  for (i = 0; i < 4; i++) 
-    REAL(ans)[i] = 0;
+  PROTECT(dnaseq = STRING_ELT(inseq, 0)); // a CHARSXP
+  l = length(dnaseq);
+  
+  PROTECT(ans = allocVector(INTSXP, 4));
+  memset(INTEGER(ans), 0, 4 * sizeof(int));
 
   for (i = 0; i < l; i++) {
-    char p = CHAR(dnaseq)[i];
-    if (p=='A') 
-      REAL(ans)[0]++;
-    else if (p=='C') 
-      REAL(ans)[1]++;
-    else if (p=='G') 
-      REAL(ans)[2]++;
-    else if (p=='T') 
-      REAL(ans)[3]++;
-    else 
+    p = CHAR(dnaseq)[i];
+    if (p == 'A')
+      INTEGER(ans)[0]++;
+    else if (p == 'C')
+      INTEGER(ans)[1]++;
+    else if (p == 'G')
+      INTEGER(ans)[2]++;
+    else if (p == 'T')
+      INTEGER(ans)[3]++;
+    else
       error("Wrong alphabet");
   }
   UNPROTECT(2);
   return(ans);
 }
+

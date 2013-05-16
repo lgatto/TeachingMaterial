@@ -1,6 +1,18 @@
+CHANGES IN VERSION 0.5.6
+------------------------
+ o updated gccount2.cpp <2013-05-15 Wed>
+ o typo Author[s]@R <2013-05-15 Wed>
+ o using ./vignettes <2013-05-15 Wed>
+ o added URL <2013-05-16 Thu>
+
+CHANGES IN VERSION 0.5.5
+------------------------
+ o updated gccount.c <2013-05-15 Wed>
+ o updates Description of package <2013-05-15 Wed>
+
 CHANGES IN VERSION 0.5.4
 ------------------------
-o added seqinr package reference in vignette <2012-02-10 Fri>
+ o added seqinr package reference in vignette <2012-02-10 Fri>
 
 CHANGES IN VERSION 0.5.3
 ------------------------
