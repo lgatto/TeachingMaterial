@@ -162,7 +162,7 @@ opts_chunk$set(tidy.opts =
                comment = NA,
                prompt = TRUE)
 options(width = 60)
-@ 
+@ %$
 
 \section*{Before we start}
 
@@ -196,7 +196,6 @@ options(width = 60)
   \tableofcontents
 \end{frame}
 
-
 \input{intro.tex}
 
 \input{revision.tex}
@@ -222,26 +221,26 @@ options(width = 60)
   \end{block}
 \end{frame}
 
+\section*{References}
 
-%% % Lunch break!
-%% \begin{frame}[fragile]{Lunch break}
-%%   \begin{center}
-%%     {\Large It is time for lunch...}
-%%     \bigskip
-%%     {\large resume at 1:30pm~~~}
-%%   \end{center}
-%% \end{frame}
+\begin{frame}
+  \begin{itemize}
+  \item Writing R Extensions, R Core team. 
+  \item \texttt{devtools} wiki.
+  \item Robert Gentleman, R Programming for Bioinformatics, 2008.
+  \end{itemize}
+\end{frame}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Last slide                                                  %% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%\vspace{5cm}
-%% \begin{frame}
-%% \begin{block}{}
-%%  \centering
-%%  End of Day 1.
-%% \end{block}
-%% \end{frame}
+\begin{frame}
+  \vspace{2cm}
+  \begin{itemize}
+  \item This work is licensed under a CC BY-SA 3.0 License 
+  \item Slides and other material: \url{https://github.com/lgatto/TeachingMaterial}
+  \end{itemize}
+  \vspace{.7cm}
+  \begin{center}
+    Thank you for you attention.
+  \end{center}
+\end{frame}
 
 \end{document}
