@@ -13,3 +13,11 @@ test_that("readFasta", {
   xx <- readFasta(f)
   expect_true(all.equal(xx, dnaseq))
 })
+
+test_that("ccpp code", {
+  gccountr <-
+    function(x) tabulate(factor(strsplit(x, "")[[1]]))
+  x <- "AACGACTACAGCATACTAC"
+  expect_true(identical(gccount(x), gccountr(x)))
+  expect_true(identical(gccount2(x), gccountr(x)))
+})

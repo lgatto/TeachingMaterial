@@ -1,3 +1,9 @@
+CHANGES IN VERSION 0.5.7
+------------------------
+ o better gccount2.cpp <2013-05-17 Fri>
+ o test that gccount c/cpp/r prodice 
+   identical results <2013-05-17 Fri>
+
 CHANGES IN VERSION 0.5.6
 ------------------------
  o updated gccount2.cpp <2013-05-15 Wed>

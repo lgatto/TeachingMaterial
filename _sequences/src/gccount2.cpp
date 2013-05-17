@@ -4,9 +4,9 @@ using namespace Rcpp;
 
 RcppExport SEXP gccount2(SEXP inseq)
 {
+  Rcpp::IntegerVector ans(4);
   Rcpp::CharacterVector dnaseq(inseq);
-  Rcpp::NumericVector ans(4);
-  std::string s = Rcpp::as<std::string>(dnaseq);
+  std::string s = Rcpp::as<std::string>(dnaseq[0]);
 
   for (int i = 0; i < s.size(); i++) {
     char p = s[i];
