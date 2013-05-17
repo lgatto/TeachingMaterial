@@ -15,7 +15,7 @@ if you do redistribute it, do so under the same license.
 
 If you like this material and/or this initiative, 
 do not hesitate to let us know by starring the repo, 
-tweeting about it and sharing it to your colleagues. 
+tweeting about it and sharing it with your colleagues. 
 
 ## Material
 
