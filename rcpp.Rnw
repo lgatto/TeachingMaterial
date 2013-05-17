@@ -9,7 +9,7 @@ x <- "ACCGGGTTTT"
   \begin{block}{The \Rpackage{Rcpp} package}
     \begin{itemize}
     \item Dirk Eddelbuettel and Romain Francois, with contributions by Douglas Bates, John Chambers and JJ Allaire.
-    \item \R functions as well as a \Cpp library which facilitate the integration of \R and \Cpp (and \texttt{C}).
+    \item A flexible framework that facilitates the integration of \R and \texttt{C}/\Cpp.
     \item \url{http://www.rcpp.org/}
     \end{itemize}    
     \begin{itemize}
@@ -43,7 +43,8 @@ x <- "ACCGGGTTTT"
         \texttt{bool}   & \texttt{LogicalVector}   & \texttt{LogicalMatrix}   \\
       \end{tabular}
     \end{center}
-    And \texttt{Function}, \texttt{List}, \texttt{DataFrame} \ldots
+    And \texttt{Function}, \texttt{List}, \texttt{DataFrame} \ldots \\
+    Automatic conversions from \R (\texttt{C}) to \Cpp (\texttt{R}) using \texttt{as} (\texttt{wrap}).
   \end{block}  
   \note{
   \texttt{RObject} is the main object. 
@@ -68,7 +69,8 @@ x <- "ACCGGGTTTT"
 \lstset{
   language=C++,
   emph={IntegerVector,CharacterVector}, emphstyle=\color{red},
-  emph={[2]as,string}, emphstyle={[2]\color{blue}},
+  emph={[2]as}, emphstyle={[2]\color{green}},
+  emph={[3]as,wrap}, emphstyle={[3]\color{blue}},
   emph={[3]size}, emphstyle={[3]\color{cyan}}
 }
 
@@ -256,7 +258,8 @@ print(res[,1:4])
     Using S4 Reference Classes to reflect \Cpp classes and methods 
     (see the \href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-modules.pdf}{Rcpp-modules} vignette).
   \end{block}
-  \begin{block}{Standard template library}     
+  \begin{block}{Interface to the Standard template library}     
+    \Cpp library with data structure and algorithms: vectors, arrays, stacks, iterators, accumulators, \ldots
   \end{block}
 \end{frame}
 

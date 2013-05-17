@@ -24,7 +24,7 @@ gccountr <- function(x) table(strsplit(x, "")[1])
   \end{block}
   \begin{block}{\texttt{.Call}}
     \begin{itemize}
-    \item Accepts any \R data structures as arguments and return values as \texttt{SEXP} (no type checking is done though). 
+    \item Accepts any \R data structures as arguments and return values as \texttt{SEXP}.
     \item Manual memory management: allocate memory, 
       protect objects to avoid them being garbage collected
       and subsequently unprotect them.
@@ -227,7 +227,7 @@ although
 gccountC(123)
 @ 
 and type checking could easily be done at the \R level.
-There is also \Rfunction{isRead(x)}, \Rfunction{isInteger(x)}, \ldots for atomics vectors.
+There is also \Rfunction{isReal(x)}, \Rfunction{isInteger(x)}, \ldots for atomics vectors.
 \end{frame}
 
 
