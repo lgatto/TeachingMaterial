@@ -6,7 +6,7 @@
     Or how to make sure that changes in your code do not break existing functionality?
     \begin{itemize}
       \item Implicitely, documentation examples and a vignette do some tests.
-      \item Using \R's build-in testing, that runs some code and compares the output to a saved template.
+      \item Using \R's built-in testing, that runs some code and compares the output to a saved template.
       \item Specific packages for unit testing: 
         \Rpackage{RUnit}\footnote{\url{http://cran.r-project.org/web/packages/RUnit/index.html}} or 
         \Rpackage{testthat}\footnote{\url{http://cran.r-project.org/web/packages/testthat/index.html}}.
