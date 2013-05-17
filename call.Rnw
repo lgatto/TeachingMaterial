@@ -1,13 +1,17 @@
-\section{Build-in \C interface}
+<<echo = FALSE>>=
+x <- "ACCGGGTTTT"
+gccountr <- function(x) table(strsplit(x, "")[1])
+@ 
+
+\section{Built-in \C interface}
 
 \begin{frame}
   \begin{block}{The \R \C API}
     \begin{itemize}
-    \item Very frequent in \R but with its quirks. 
+    \item Very frequent in \R but has its quirks. 
     \item Better know how to program in \texttt{C}.
     \item Documentation is not always easy to follow: R-Ext, R Internals as well as \R and other package's code.
     \end{itemize}
-    We need a \C implementation and an \R function that calls the \R code.
   \end{block}
 \end{frame}
 
@@ -20,7 +24,7 @@
   \end{block}
   \begin{block}{\texttt{.Call}}
     \begin{itemize}
-    \item Accepts any \R data structures as arguments and return values (no type checking is done though).      
+    \item Accepts any \R data structures as arguments and return values as \texttt{SEXP} (no type checking is done though). 
     \item Manual memory management: allocate memory, 
       protect objects to avoid them being garbage collected
       and subsequently unprotect them.
@@ -29,8 +33,9 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \begin{block}{S-expression}
-    \texttt{SEXP} is a super-type that matches all \R data structures.         
+  \begin{block}{S (or symbolic) expression}
+    \texttt{SEXP} is a super-type that matches all \R data structures.  
+\note{SEXPs are pointers to the SEXPRECs typedef. his structure is quite flexible and can represent almost all language structures and data structures.}    
     Each data type has its own \texttt{SEXP} sub-type. 
     \begin{itemize}
     \item \texttt{REALSXP} and \texttt{INTSXP} for double and integer vectors
@@ -81,7 +86,7 @@ SEXP x;
 PROTECT(x = ... )
 ## do stuff
 UNPROTECT(1)
-return(y)
+return(x)
 @   
 \note{If the number of PROTECT and UNPROTECT don't match, R will warn about a ``stack imbalance in .Call''.}
 \end{frame}
@@ -100,7 +105,7 @@ PROTECT(x = allocVector(INTSXP, 10) )
 memset(INTEGER(x), 0, 10 * sizeof(int))
 ## do stuff
 UNPROTECT(1)
-return(y)
+return(x)
 @   
 \end{frame}
 
@@ -114,24 +119,26 @@ return(y)
     \end{itemize}
     \begin{itemize}
     \item \Rfunction{STRING_ELT(x, i)} to access individual \texttt{CHARSXP} elements of a \texttt{STRSXP}
-    \item \Rfunction{VECTOR_ELT(x, i)} to access individual \texttt{SXP} elements of a \texttt{VECSXP}
+    \item \Rfunction{VECTOR_ELT(x, i)} to access individual elements of a \texttt{VECSXP}
     \end{itemize}
     \begin{itemize}
-    \item \Rfunction{SET_STRING_ELT(out, 0, x))} to set an element in a string.
-    \item \Rfunction{SET_VECTOR_ELT(out, 0, x))} to set an element in a list.
+    \item \Rfunction{SET_STRING_ELT(str, i, x))} to set an element in a string.
+    \item \Rfunction{SET_VECTOR_ELT(vec, i, x))} to set an element in a list.
     \end{itemize}
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-  \begin{example}
-    We have a DNA sequence, represented by a string of A, C, G and T and we want to compute the GC content.
-  \end{example}
-<<gcr>>=
-x <- "ACCGGGTTTT"
-gccountr <- function(x) table(strsplit(x, "")[1])
-gccountr(x)
-@   
+
+\lstset{language=C,
+  emph={SEXP}, emphstyle=\color{blue},
+  emph={[2]PROTECT,UNPROTECT}, emphstyle={[2]\color{red}},
+  emph={[3]allocVector,memset}, emphstyle={[3]\color{purple}},
+  emph={[4]INTEGER}, emphstyle={[4]\color{green}},
+  emph={[5]STRING_ELT}, emphstyle={[5]\color{cyan}}
+}
+
+\begin{frame}
+\lstinputlisting[firstline = 4]{src/gccount.c}  
 \end{frame}
 
 \begin{frame}
@@ -145,7 +152,7 @@ gccountr(x)
 
 \begin{frame}{\url{./src/ingccount.R}}
   \tiny
-  \verbatiminput{src/ingccount.R}
+  \verbatiminput{src/ingccount.R} 
 \end{frame}
 
 \begin{frame}[fragile]
@@ -198,7 +205,7 @@ gccount <- function(inseq)
 \end{frame}
 
 \begin{frame}[fragile]
-  \begin{block}{Using the \Rpackage{sequences} package}
+  \begin{block}{}
     \small
 <<gccount, echo=TRUE, message = FALSE>>=
 library(sequences)
@@ -239,8 +246,8 @@ library("sequences")
 <<bench, cache = TRUE, tidy = FALSE>>=
 library(microbenchmark)
 microbenchmark(gccountr(x),
-               ingccount(x), ## inline
-               gccount(x),   ## sequences
+               ingccount(x), 
+               gccountC(x),  
                times = 1e4)
 @     
   \end{block}  
@@ -259,8 +266,8 @@ gccountr2 <-
 <<bench2, cache = TRUE, tidy = FALSE>>=
 microbenchmark(gccountr(x),
                gccountr2(x),
-               ingccount(x),  ## inline
-               gccount(x),    ## sequences
+               ingccount(x), 
+               gccountC(x),  
                times = 1e4)
 @     
 \end{frame}

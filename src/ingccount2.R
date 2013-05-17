@@ -18,5 +18,6 @@ IntegerVector ingccount2(CharacterVector inseq) {
       Rf_error(\"Wrong alphabet\");
   }
   return(ans);
-}")
+}
+")
 

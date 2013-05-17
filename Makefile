@@ -46,3 +46,4 @@ clean:
 	rm -f src/*~
 	rm -f src/*.o
 	rm -f src/*.so
+	rm -rf mypackage

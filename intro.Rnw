@@ -19,20 +19,22 @@
 
 
 \begin{frame}
-  Robert Gentleman, in \R Programming for Bioinformatics, 2008.
+  Robert Gentleman, in \textit{R Programming for Bioinformatics}, 2008, 
+  about \texttt{R}'s built-in \C interfaces
   \begin{quote}
     Since R is not compiled,
     in some situations its performance can be substantially improved by writing
     code in a compiled language. There are also reasons not to write code in other
-    languages, and in particular we caution against premature optimization, pro-
-    totyping in R is often cost effective. And in our experience very few routines
+    languages, and in particular we caution against \emph{premature optimization}, 
+    prototyping in R is often cost effective. And in our experience very few routines
     need to be implemented in other languages for efficiency reasons. Another
     substantial reason not to use an implementation in some other language is
-    increased complexity. The use of another language almost always results in
+    \emph{increased complexity}. The use of another language almost always results in
     higher maintenance costs and less stability. In addition, any extensions or
-    enhancements of the code will require someone that is proficient in both R
-    and the other language.
+    enhancements of the code will require someone that is 
+    \emph{proficient in both R and the other language}.
   \end{quote}
+  \Rpackage{Rcpp} and its documentation does make some of the above caution statements slightly less critical.
   %% Donald Knuth
   %%   \begin{quote}
   %%     We should forget about small efficiencies, say about 97\% of the time: 
@@ -73,3 +75,24 @@
   \end{block}
 \end{frame}
 
+\begin{frame}
+  We will be using the following packages:
+  \begin{itemize}
+  \item \Rpackage{inline} and the \Rfunction{cfunction} to write inline \C code that is compiled on the fly.
+    (There is also a \Rfunction{cxxfunction} for \Cpp code).
+  \item \Rpackage{Rcpp}, illustrating some of its functionality as well as the \Rfunction{cppFunction} 
+    for inline/on the fly compilation of \Cpp code.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{example}
+    We have a DNA sequence, represented by a string of A, C, G and T and we want to compute the GC content.
+  \end{example}
+<<gcr>>=
+x <- "ACCGGGTTTT"
+gccountr <- function(x) table(strsplit(x, "")[1])
+gccountr(x)
+@   
+\end{frame}

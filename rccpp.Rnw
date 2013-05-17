@@ -22,15 +22,31 @@
 \usecolortheme{default}
 % Standard packages
 % \usepackage[english]{babel}
-% \usepackage[latin1]{inputenc}
+\usepackage[latin1]{inputenc}
 % \usepackage{times}
 % \usepackage[T1]{fontenc}
+\usepackage{fontenc}
 \usepackage{pgfpages}
 \usepackage{underscore}
 \usepackage{ulem}
 \usepackage{colortbl}
 \usepackage{verbatim}
 \usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{upquote}
+\usepackage{textcomp}
+
+\definecolor{light-gray}{gray}{0.98}
+
+\lstset{
+  numbers=left, 
+  backgroundcolor=\color{light-gray},
+  showstringspaces=false,
+  basicstyle=\ttfamily \tiny,
+  keywordstyle=\bfseries
+}
+
+
 % Setup TikZ
 \usepackage{tikz}
 \usetikzlibrary{arrows}
@@ -47,7 +63,7 @@
 \newcommand{\R}{\texttt{R}~}
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
-\newcommand{\Rpackage}[1]{{\textit{#1}}}
+\newcommand{\Rpackage}[1]{{\texttt{#1}}}
 
 \newcommand{\comments}[1]{}
 
@@ -183,7 +199,7 @@
   \begin{block}{}
     \begin{itemize}
     \item This work is licensed under a CC BY-SA 3.0 License.
-    \item Course (and more) web page: \url{https://github.com/lgatto/TeachingMaterial}
+    \item Course web page and more material: \url{https://github.com/lgatto/TeachingMaterial}
     \end{itemize}
     \vspace{.7cm}
     \centering
