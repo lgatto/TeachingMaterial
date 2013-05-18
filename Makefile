@@ -47,3 +47,4 @@ clean:
 	rm -f src/*.o
 	rm -f src/*.so
 	rm -rf mypackage
+	rm -f src/.Rhistory
