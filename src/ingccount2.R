@@ -3,7 +3,7 @@ library("Rcpp")
 cppFunction("
 IntegerVector ingccount2(CharacterVector inseq) {
   IntegerVector ans(4);
-  std::string s = Rcpp::as<std::string>(inseq(0));
+  std::string s = Rcpp::as<std::string>(inseq[0]);
   int n = inseq(0).size();
   for (int i = 0; i < n; i++) {
     if (s[i] == 'A') 

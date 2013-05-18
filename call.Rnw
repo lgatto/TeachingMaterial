@@ -162,7 +162,7 @@ ingccount(x)
 @   
 \end{frame}
 
-\begin{frame}{\url{text/gccount.c}}
+\begin{frame}{\url{src/gccount.c}}
   \tiny
   \verbatiminput{src/gccount.c}
 \end{frame}

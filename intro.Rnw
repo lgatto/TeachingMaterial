@@ -34,7 +34,7 @@
     enhancements of the code will require someone that is 
     \emph{proficient in both R and the other language}.
   \end{quote}
-  \Rpackage{Rcpp} and its documentation does make some of the above caution statements slightly less critical.
+  \Rpackage{Rcpp} does make some of the above caution statements slightly less critical.
   %% Donald Knuth
   %%   \begin{quote}
   %%     We should forget about small efficiencies, say about 97\% of the time: 

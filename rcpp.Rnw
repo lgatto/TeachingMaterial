@@ -181,7 +181,10 @@ y <- runif(n, -r, r)
 inside <- (x^2 + y^2) <= r^2
 points(x, y, pch = ifelse(inside, 19, 1))
 rect(-r, -r, r, r)
-text(r/2, 0, "r", pos = 3)
+segments(0, 0, 1, 0, col = "steelblue")
+text(r/2, 0, "r", pos = 1, col = "steelblue")
+i <- 4
+segments(0, 0, x[i], y[i], lty = "dotted")
 @   
     \end{column}
     \begin{column}{0.42\textwidth}
@@ -212,7 +215,7 @@ piR <- function(N) {
 }
 @   
 \pause
-<<picpp, eval=FALSE>>=
+<<picpp, eval=FALSE, tidy=FALSE>>=
 #include <Rcpp.h>
 using namespace Rcpp;
 // [[Rcpp::export]]
@@ -252,6 +255,14 @@ print(res[,1:4])
 @   
 \end{frame}
 
+\begin{frame}[fragile]
+  \begin{exercise}{Translate these \R functions into \C or \Cpp}
+<<ex1>>=
+pdistR <- function(x, ys)
+  sqrt( (x - ys) ^ 2 )
+@ 
+  \end{exercise}
+\end{frame}
 
 \begin{frame}
   \begin{block}{Rcpp modules}
@@ -259,7 +270,8 @@ print(res[,1:4])
     (see the \href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-modules.pdf}{Rcpp-modules} vignette).
   \end{block}
   \begin{block}{Interface to the Standard template library}     
-    \Cpp library with data structure and algorithms: vectors, arrays, stacks, iterators, accumulators, \ldots
+    \Cpp library with data structure and algorithms: vectors, arrays, stacks, iterators, accumulators, \ldots \\
+    add \url{link}.
   \end{block}
 \end{frame}
 
