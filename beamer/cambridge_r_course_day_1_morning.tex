@@ -62,4 +62,426 @@
     \end{itemize}
 \end{frame}
 
+\begin{frame}{The environment and basics}
+\end{frame}
+
+\begin{frame}{Screenshot}
+\end{frame}
+
+
+\begin{frame}{Various platforms supported}
+    \begin{itemize}
+        \item Release 2.15.0 (March 2012)
+        \begin{itemize}
+            \item Base package
+            \item Contributed packages (general purpose extras)
+            \item  Over 4000 packages available
+        \end{itemize}
+        \item Windows
+        \begin{itemize}
+            \item \url{http://www.stats.bris.ac.uk/R/bin/windows/base/R-2.11.1-win32.exe}
+        \end{itemize}
+        \item Mac OS (10.2+)
+            \begin{itemize}
+                \item \url{http://cran.r-project.org/bin/macosx/}
+            \end{itemize}
+        \item Linux
+            \begin{itemize}
+                \item \url{http://cran.r-project.org/bin/linux/}
+            \end{itemize}
+        \item Executed using command line, or a graphical user interface
+        \begin{itemize}
+            \item Will demonstrate both, and use all-platform GUI, RStudio
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Getting Started}
+    \begin{itemize}
+        \item R is a program which, once installed on your system, can be launched and is immediately ready to take input directly from the user
+        \item There are two ways to launch R:
+        \begin{enumerate}
+            \item From the command line (particularly useful if you're quite familiar with Linux)
+            \item As an application called RStudio (very good for beginners)
+        \end{enumerate}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Prepare to launch R}
+    \framesubtitle{From command line}
+    \begin{itemize}
+        \item To start R in Linux we need to enter the Linux console (also called Linux terminal and Linux shell)
+        \item To start R, at the prompt simply type:
+        \begin{verbatim}
+$ R\end{verbatim}
+        \item If R doesn't print the welcome message, call us to help!
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Prepare to launch R}
+    \framesubtitle{Using RStudio}
+    \begin{itemize}
+        \item To launch RStudio, find the Rstudio icon in the menu bar on the left of the screen and double-click
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{The Working Directory (wd)}
+    \begin{itemize}
+        \item Like many programs R has a concept of a working directory (wd)
+        \item It is the place where R will look for files to execute and where it will save files, by default
+        \item For this course we need to set the working directory to the location of the course scripts
+        \item At the command prompt in the terminal or in RStudio console type:
+        \begin{verbatim}
+> setwd("R_course/Day_1_scripts")\end{verbatim}
+        \item Alternatively in RStudio use the mouse and browse to the directory location
+        \item Tools - Set Working Directory - Choose Directory...
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Basic concepts in R}
+    \framesubtitle{command line calculation}
+    \begin{itemize}
+        \item The command line can be used as a calculator. Type:
+        \begin{verbatim}
+> 2 + 2
+[1] 4
+
+> 20/5 - sqrt(25) + 3^2
+[1] 8
+
+>sin(pi/2)
+[1] 1\end{verbatim}
+        \item Note: The number in the square brackets is an indicator of the position in the output. In this case the output is a vector of length 1 (i.e. a single number). More on vectors coming up...
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Basic concepts in R}
+    \framesubtitle{variables}
+    \begin{itemize}
+        \item A variable is a letter or word which takes (or contains) a value. We use the assignment `operator', {\tt <-}
+        \begin{verbatim}
+> x <- 10
+> x
+[1] 10
+> myNumber <- 25
+> myNumber
+[1] 25 \end{verbatim}
+\item We can perform arithmetic on variables:
+\begin{verbatim}
+> sqrt(myNumber)
+[1] 5\end{verbatim}
+\item We can add variables together:
+\begin{verbatim}
+> x + myNumber
+[1] 35\end{verbatim}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Basic concepts in R}
+    \framesubtitle{variables}
+    \begin{itemize}
+        \item We can change the value of an existing variable:
+        \begin{verbatim}
+> x <- 21
+> x
+[1] 21\end{verbatim}
+        \item We can modify the contents of a variable:
+\begin{verbatim}
+> myNumber <- myNumber + sqrt(16)
+[1] 29\end{verbatim}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Basic concepts in R}
+    \framesubtitle{functions}
+    \begin{itemize}
+        \item \textbf{Functions} in R perform operations on \textbf{arguments} (the input(s) to the function). We have already used \textbf{sin(x)} which returns the sine of \textbf{x}. In this case the function has one argument, \textbf{x}. Arguments are \emph{always} contained in parentheses, i.e. curved brackets \textbf{()}, separated by commas.
+        \item Some other common functions: \textbf{floor()}, \textbf{sum()}, \textbf{max()}, \textbf{mean()}
+        \item Try these:
+        \begin{verbatim}
+> floor(3.142)
+[1] 3
+> sum(3, 4, 5, 6)
+[1] 18
+> max(3, 4, 5, 6)
+[1] 6
+> mean(3, 4, 5, 6)
+[1] 3\end{verbatim}
+        \item Something has gone wrong with the last function. We need to understand more about vectors...
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Basic concepts in R}
+    \framesubtitle{vectors}
+    \begin{itemize}
+        \item The function \textbf{c()} \emph{combines} its arguments into a \textbf{vector}
+        \begin{verbatim}
+> x <- c(3, 4, 5, 6)
+> x
+[1] 3 4 5 6\end{verbatim}
+        \item As mentioned, the square brackets \textbf{[]} indicate position within the vector. We can extract individual elements by using the \textbf{[]} notation.
+        \begin{verbatim}
+> x[1]
+[1] 3
+> x[4]
+[1] 6
+        \end{verbatim}
+        \item We can even put a vector inside the square brackets.
+        \begin{verbatim}
+> y <- c(2, 3)
+> x[y]
+[1] 4 5\end{verbatim}
+        \item We can now solve the problem from the previous slide:
+        \begin{verbatim}
+> mean(x)
+[1] 4.5\end{verbatim}
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile,shrink]{Basic concepts in R}
+    \framesubtitle{vectors}
+    \begin{itemize}
+        \item There are a number of shortcuts to create a vector. Instead of:
+        \begin{verbatim}
+> x <- c(3, 4, 5, 6, 7, 8, 9, 10, 11, 12)\end{verbatim}
+        \item write
+        \begin{verbatim}
+> x <- 3:12\end{verbatim}
+        \item Using the \textbf{seq()} function...
+        \begin{verbatim}
+> x <- seq(2, 10, 2)
+> x
+[1] 2 4 6 8 10
+> x <- seq(2, 10, length.out=7)
+> x
+[1] 2.00000 3.33333 4.66667 6.00000 7.33333 8.66667 10.00000\end{verbatim}
+        \item or the \textbf{rep()} function
+        \begin{verbatim}
+> y <- rep(3, 5)
+> y
+[1] 3 3 3 3 3
+> y <- rep(1:3, 5)
+> y
+[1] 1 2 3 1 2 3 1 2 3 1 2 3 1 2 3\end{verbatim}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Basic concepts in R}
+    \framesubtitle{vectors}
+    \begin{itemize}
+        \item We have seen some ways of extracting elements of a vector. We can use these shortcuts to make things easier (or more complex!)
+        \begin{verbatim}
+> x <- 3:12
+> x[3:7]
+[1] 5 6 7 8 9
+> x[seq(2, 6, 2)]
+[1] 4 6 8 
+> x[rep(3, 2)]
+[1] 5 5\end{verbatim}
+        \item We can add an element to a vector
+        \begin{verbatim}
+> y <- c(x, 1)
+> y
+[1] 3 4 5 6 7 8 9 10 11 12 1\end{verbatim}
+        \item We can glue vectors together
+        \begin{verbatim}
+> z <- c(x, y)
+> z
+[1] 3 4 5 6 7 8 9 10 11 12 3 4 5 6 7 8 9 10 11 12 1\end{verbatim}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Basic concepts in R}
+    \framesubtitle{vectors}
+    \begin{itemize}
+        \item We can remove element(s) from a vector
+        \begin{verbatim}
+> x <- 3:12
+> x[-3]
+[1] 3 4 6 7 8 9 10 11 12
+> x[-(5:7)]
+[1] 3 4 5 6 10 11 12
+> x[-seq(2, 6, 2)]
+[1] 3 5 7 9 10 11 12\end{verbatim}
+        \item Finally, we can modify the contents of a vector
+        \begin{verbatim}
+> x[6] <- 4
+> x
+[1] 3 4 5 6 7 4 9 10 11 12
+> x[3:5] <- 1
+> x
+[1] 3 4 1 1 1 4 9 10 11 12\end{verbatim}
+    \item Remember! \textbf{Square} brackets for indexing \textbf{[]}, \textbf{parentheses} for function arguments \textbf{()}.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Basic concepts in R}
+    \framesubtitle{vector arithmetic}
+    \begin{itemize}
+        \item When applying all standard arithmetic operations to vectors, application is element-wise.
+        \begin{verbatim}
+> x <- 1:10
+> y <- x*2
+> y
+[1] 2 4 6 8 10 12 14 16 18 20
+> z <- x^2
+> z
+[1] 1 4 9 16 25 36 49 64 81 100\end{verbatim}
+        \item Adding two vectors
+        \begin{verbatim}
+> y + z
+[1] 3 8 15 24 35 48 63 80 99 120\end{verbatim}
+        \item Vectors don't have to be the same length (what's this?)...
+        \begin{verbatim}
+> x + 1:2
+[1] 2 4 4 6 6 8 8 10 10 12\end{verbatim}
+        \item but that doesn't always work:
+        \begin{verbatim}
+> x + 1:3 (...?)\end{verbatim}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Writing scripts with Rstudio}
+Typing lots of commands directly to R can be tedious. A better way is to write the command to a file and then load it into R.
+        \begin{itemize}
+            \item Click on \textbf{File - New} in RStudio
+            \item Type in some R code, e.g.
+        \begin{verbatim}
+    x <- 2 + 2
+    print(x)\end{verbatim}
+        \item Click on \textbf{Run} to execute the \textbf{current line}, and \textbf{Source} to execute the \textbf{whole script}.
+        \item Sourcing can also be performed manually with {\tt source("myScript.R")}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Getting Help}
+    \begin{itemize}
+        \item To get help on any R function, type {\tt ?} followed by the function name. For example:
+        \begin{verbatim}
+> ?seq
+        \end{verbatim}
+        \item This retrieves the syntax and arguments for the function. It also tells you which \textbf{package} it belongs to. There will typically be example usage.
+        \item If you can't remember the exact name type {\tt ??} followed by your guess. R will return a list of possibles.
+        \begin{verbatim}
+> ??rint
+        \end{verbatim}
+
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Interacting with the R console}
+    \begin{itemize}
+        \item R console symbols
+        \begin{itemize}
+            \item {\tt \;} end of line
+            \begin{itemize}
+                \item Enables multiple commands to be placed on one line of text
+            \end{itemize}
+            \item {\tt \#} comment
+            \begin{itemize}
+                \item indicates text is a comment and not executed
+            \end{itemize}
+            \item {\tt +} command line wrap
+            \begin{itemize}
+                \item R is waiting for you to complete an expression
+            \end{itemize}        \end{itemize}
+
+        \item \textbf{Ctrl-c} or \textbf{escape} to clear input and try again
+        \item \textbf{Ctrl-l} to clear window
+        \item Press {\tt q} to leave help (using R from the terminal)
+        \item Use the \textbf{TAB key} for command auto completion
+        \item Use \textbf{up and down arrows} to scroll through the command history
+
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{R packages}
+    \begin{itemize}
+        \item R comes ready loaded with various libraries of functions called \textbf{packages}, e.g. the function \textbf{sum()} is in the \textbf{base} package and \textbf{sd()}, which calculates the standard deviation of a vector, is in the \textbf{stats} package
+        \item There are 1000s of additional packages provided by third parties, and the packages can be found in numerous server locations on the web called \textbf{repositories}
+        \item The two repositories you will come across the most are
+        \begin{itemize}
+            \item \textbf{The Comprehensive R Archive Network (CRAN)}
+            \item Bioconductor
+        \end{itemize}
+        \item CRAN is mirrored in many locations. Set your local mirror in RStudio using Tools - Options, and choose a CRAN mirror
+        \item Set the Bioconductor package download tool by typing:
+        \begin{verbatim}
+> source ("http://bioconductor.org/biocLite.R")\end{verbatim}
+        \item Bioconductor packages are then loaded with the \textbf{biocLite()} function:
+        \begin{verbatim}
+> biocLite("PackageName")
+        \end{verbatim}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{R packages}
+    \begin{itemize}
+        \item 3900+ packages on CRAN:
+        \begin{itemize}
+            \item Use CRAN search to find functionality you need:\\
+            \url{http://cran.r-project.org/search.html}
+            \item Or, look for packages by theme:\\
+            \url{http://cran.r-project.org/web/views/}
+        \end{itemize}
+        \item 550+ packages in Bioconductor:
+        \begin{itemize}
+            \item Specialised in genomics:\\
+            \url{http://www.bioconductor.org/packages/release/bioc/}
+        \end{itemize}
+        \item \textbf{Other repositories:}
+        \item 1000+ projects on R-forge:\\
+        \url{http://r-forge.r-project.org/}
+        \item R graphical manual:\\
+        \url{http://bg9.imslab.co.jp/Rhelp/}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Exercise: Install Packages Matrix and aCGH}
+    \begin{itemize}
+        \item Matrix is a CRAN extras package
+        \begin{itemize}
+            \item Use \textbf{install.packages()} function...
+            \begin{verbatim}
+install.packages("Matrix")\end{verbatim}
+\item or in RStudio goto Tools - Install Packages... and type the package name
+        \end{itemize}
+        \item aCGH is a Bioconductor package (\url{www.bioconductor.org})
+        \begin{itemize}
+            \item Use \textbf{biocLite()} function
+            \begin{verbatim}
+biocLite("aCGH")\end{verbatim}
+        \end{itemize}
+        \item R needs to be told to use the new functions from the installed packages
+        \begin{itemize}
+            \item Use \textbf{library()} function to load the newly installed features
+            \begin{verbatim}library("Matrix") # loads matrix functions\end{verbatim}
+            \begin{verbatim}library("aCGH") # loads aCGH functions\end{verbatim}
+            \item {\tt library()}
+            \begin{itemize}
+                \item Lists all the packages you've got installed locally
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{MORNING COFFEE}
+Morning coffee
+\end{frame}
+
+\begin{frame}[fragile,shrink]{OBJECTS}
+Objects
+\end{frame}
+
+
+
+\begin{frame}[fragile,shrink]{}
+    \begin{itemize}
+        \item
+        \begin{verbatim}
+        \end{verbatim}
+    \end{itemize}
+\end{frame}
+
 \end{document}
