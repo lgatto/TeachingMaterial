@@ -71,7 +71,8 @@ x <- "ACCGGGTTTT"
   emph={IntegerVector,CharacterVector}, emphstyle=\color{red},
   emph={[2]as}, emphstyle={[2]\color{green}},
   emph={[3]as,wrap}, emphstyle={[3]\color{blue}},
-  emph={[3]size}, emphstyle={[3]\color{cyan}}
+  emph={[3]size}, emphstyle={[3]\color{cyan}},
+  basicstyle=\ttfamily \scriptsize,
 }
 
 \begin{frame}{\url{./src/ingccount2.R}}
@@ -162,6 +163,23 @@ gccountX(x)
     \item Functions: \texttt{seq_len}, \texttt{all}, \texttt{any}, \texttt{sapply}, \texttt{rnorm}, \texttt{abs}, ...
     \end{itemize}    
   \end{block}
+\end{frame}
+
+
+\lstset{
+  language=C++,
+  emph={NumericVector,CharacterVector}, emphstyle=\color{red},
+  emph={[2]size, begin, end}, emphstyle={[2]\color{cyan}},
+  emph={[3]cumsum}, emphstyle={[3]\color{blue}},
+  emph={[4]partial_sum}, emphstyle={[4]\color{green}},
+  basicstyle=\ttfamily \small,
+}
+
+
+\begin{frame}{\url{./src/cumsum.cpp}}
+  \lstinputlisting[firstline=7, lastline=17]{src/cumsum.cpp}     
+  \pause
+  \lstinputlisting[firstline=20, lastline=22]{src/cumsum.cpp}     
 \end{frame}
 
 \begin{frame}[fragile]
@@ -277,9 +295,15 @@ grY <- function(x, y) x[x > y]
     Using S4 Reference Classes to reflect \Cpp classes and methods 
     (see the \href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-modules.pdf}{Rcpp-modules} vignette).
   \end{block}
+\end{frame}
+
+\begin{frame}
   \begin{block}{Interface to the Standard template library} 
     \Cpp library with data structure and algorithms: vectors, arrays, stacks, iterators, accumulators, \ldots 
+    (see the \href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-sugar.pdf}{Rcpp-sugar} vignette).
   \end{block}
+  \scriptsize
+  \lstinputlisting[firstline=26, lastline=30]{src/cumsum.cpp}     
 \end{frame}
 
 \begin{frame}[fragile]{Using \Rpackage{Rcpp} in packages}  
