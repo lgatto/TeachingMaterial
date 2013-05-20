@@ -275,6 +275,7 @@ print(res[,1:4])
 
 \begin{frame}[fragile]
   \begin{exercise}{Translate these \R functions into \C or \Cpp}
+    \tiny
 <<ex1, tidy = FALSE, eval = FALSE>>=
 sum 
 rowSums
@@ -285,7 +286,13 @@ sety <- function(x, y) {
     x[x < 0] <- -y
     x    
 }    
-grY <- function(x, y) x[x > y]
+biggery <- function(x, y) x[x > y]
+foo <- function(x, y) ifelse(x < y, x*x, -(y*y))
+fr <- function(n) {
+    if (n < 2) return(n)
+    return(fr(n-1) + fr(n-2))
+}
+## examples of sapply, calling functions
 @ 
   \end{exercise}
 \end{frame}
