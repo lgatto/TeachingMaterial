@@ -180,7 +180,7 @@
     \begin{itemize}
     \item Writing R Extensions, R Core team. 
     \item Robert Gentleman, \R Programming for Bioinformatics, 2008.
-    \item \Rpackage{Rcpp} documentation.
+    \item \Rpackage{Rcpp} documentation and \url{Rcpp.org}.
     \item Dirk Eddelbuettel, Seamless \R and \Cpp Integration with \Rpackage{Rcpp}, Springer, 2013.
     \item Dirk Eddelbuettel and Romain Francois, 
       \textit{Rcpp: Seamless R and C++ Integration}, 

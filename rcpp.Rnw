@@ -257,9 +257,17 @@ print(res[,1:4])
 
 \begin{frame}[fragile]
   \begin{exercise}{Translate these \R functions into \C or \Cpp}
-<<ex1>>=
+<<ex1, tidy = FALSE, eval = FALSE>>=
+sum 
+rowSums
 pdistR <- function(x, ys)
   sqrt( (x - ys) ^ 2 )
+sety <- function(x, y) {
+    x[x > 0] <- y
+    x[x < 0] <- -y
+    x    
+}    
+grY <- function(x, y) x[x > y]
 @ 
   \end{exercise}
 \end{frame}
@@ -269,9 +277,8 @@ pdistR <- function(x, ys)
     Using S4 Reference Classes to reflect \Cpp classes and methods 
     (see the \href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-modules.pdf}{Rcpp-modules} vignette).
   \end{block}
-  \begin{block}{Interface to the Standard template library}     
-    \Cpp library with data structure and algorithms: vectors, arrays, stacks, iterators, accumulators, \ldots \\
-    add \url{link}.
+  \begin{block}{Interface to the Standard template library} 
+    \Cpp library with data structure and algorithms: vectors, arrays, stacks, iterators, accumulators, \ldots 
   \end{block}
 \end{frame}
 
