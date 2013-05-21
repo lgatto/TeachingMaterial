@@ -167,10 +167,11 @@ gccountX(x)
 
 \lstset{
   language=C++,
-  emph={NumericVector,CharacterVector}, emphstyle=\color{red},
+  emph={IntegerVector, NumericVector,CharacterVector}, emphstyle=\color{red},
   emph={[2]size, begin, end}, emphstyle={[2]\color{cyan}},
   emph={[3]cumsum}, emphstyle={[3]\color{blue}},
   emph={[4]partial_sum}, emphstyle={[4]\color{green}},
+  emph={[5]clone}, emphstyle={[5]\color{gray}},
   basicstyle=\ttfamily \small,
 }
 
@@ -206,6 +207,28 @@ foo <- function(x, y) ifelse(x < y, x*x, -(y*y))
 
     Benchmark the \R and \Cpp implementations.
   \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Modification of the function arguments!}    
+    \lstinputlisting[firstline=5, lastline=12]{src/modify.cpp}       
+  \end{block}  
+\end{frame}
+
+\begin{frame}[fragile]
+<<modX>>=
+sourceCpp("src/modify.cpp")
+(x <- 3:1)
+modifyX(x)
+x
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Cloning}    
+    \lstinputlisting[firstline=15, lastline=22]{src/modify.cpp}       
+  \end{block}  
 \end{frame}
 
 
@@ -346,26 +369,17 @@ callFunction(x, summary)
 \begin{frame}[fragile]
   \begin{block}{sapply in \Cpp}
 <<exsapply, eval = FALSE, tidy = FALSE>>=
+double square( double x ){
+  return x*x ;
+}
+
 // [[Rcpp::export]]
 NumericVector applyC(NumericVector xx){
   return sapply(xx, square);
 }
-
-// [[Rcpp::export]]
-NumericVector callFunction(NumericVector x,
-			   Function f) {
-  NumericVector res = f(x);
-  return res;
-}
-
-## in R
-callFunction(x, summary)
 @ 
   \end{block}
 \end{frame}
-
-
-
 
 
 \begin{frame}
