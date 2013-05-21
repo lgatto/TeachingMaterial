@@ -174,6 +174,8 @@ int fC(int n) {
   else return(fC(n-1) + fC(n-2));
 }
 
+// Calling a function
+
 double square( double x ){
   return x*x ;
 }
