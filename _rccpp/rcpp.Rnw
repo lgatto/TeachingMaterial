@@ -1,0 +1,422 @@
+<<recache, echo=FALSE, message = FALSE>>=
+library("sequences")
+x <- "ACCGGGTTTT"
+@ 
+
+\section{The \texttt{Rcpp} package}
+
+\begin{frame}
+  \begin{block}{The \Rpackage{Rcpp} package}
+    \begin{itemize}
+    \item Dirk Eddelbuettel and Romain Francois, with contributions by Douglas Bates, John Chambers and JJ Allaire.
+    \item A flexible framework that facilitates the integration of \R and \texttt{C}/\Cpp.
+    \item \url{http://www.rcpp.org/}
+    \end{itemize}    
+    \begin{itemize}
+    \item It comes with \textbf{loads} of documentation and examples: \Rfunction{vignette(package = "Rcpp")}.
+    \item All basic \R types are implemented as \Cpp classes.
+    \item No need to worry about garbage collection. 
+    \end{itemize}
+  \end{block}  
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Associated packages}
+    \begin{itemize}
+    \item \Rpackage{RcppArmadillo} -- Armadillo templated \Cpp library for linear algebra. 
+    \item \Rpackage{RcppEigen} -- high-performance Eigen linear algebra library.
+    \item \Rpackage{RInside} -- use \R from inside another \Cpp by wrapping the existing \R embedding API 
+      in an easy-to-use \Cpp class.
+    \end{itemize}    
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{\Cpp classes}    
+    \begin{center}
+      \begin{tabular}{lll}
+        \texttt{Scalar} & \texttt{Vector}          & \texttt{Matrix}          \\ \hline
+        \texttt{double} & \texttt{NumericVector}   & \texttt{NumericMatrix}   \\
+        \texttt{int}    & \texttt{IntegerVector}   & \texttt{IntegerMatrix}   \\
+        \texttt{string} & \texttt{CharacterVector} & \texttt{CharacterMatrix} \\
+        \texttt{bool}   & \texttt{LogicalVector}   & \texttt{LogicalMatrix}   \\
+      \end{tabular}
+    \end{center}
+    And \texttt{Function}, \texttt{List}, \texttt{DataFrame} \ldots \\
+    Automatic conversions from \R (\texttt{C}) to \Cpp (\texttt{R}) using \texttt{as} (\texttt{wrap}).
+  \end{block}  
+  \note{
+  \texttt{RObject} is the main object. 
+  It is a thin wrapper around \texttt{SEXP} and deals transparently with manages memory.
+  The RObject class defines a set of member functions applicable to any R object, regardless of its type.
+  Derived class: see table
+  }
+\end{frame}
+
+\begin{frame}
+  \begin{block}{}
+    \begin{enumerate}
+    \item \Rfunction{ingccount2}: embedding the \Cpp directly in \R 
+      using the \Rfunction{Rcpp::cppFunction} package. 
+    \item \Rfunction{gccount2}: in a package, writing the \Cpp into its own code file and using \Rfunction{.Call}.
+    \item \Rfunction{gccountX}: using \Rfunction{sourceCpp} to source the \Cpp file and export the function to \R.
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+
+\lstset{
+  language=C++,
+  emph={IntegerVector,CharacterVector}, emphstyle=\color{red},
+  emph={[2]as, wrap}, emphstyle={[2]\color{blue}},
+  emph={[3]size}, emphstyle={[3]\color{cyan}},
+  basicstyle=\ttfamily \scriptsize
+}
+
+\begin{frame}{\url{./src/ingccount2.R}}
+  \tiny
+  \lstinputlisting[firstline=4, lastline=21]{src/ingccount2.R}     
+\note{
+  \begin{itemize}
+  \item Automatic SEXP conversion to/from \Cpp classes, that provide standardised interfaces
+  \end{itemize}
+}
+\end{frame}
+
+\begin{frame}{\url{./src/ingccount2.R}}
+  \tiny
+  \verbatiminput{src/ingccount2.R}
+\end{frame}
+
+
+\begin{frame}[fragile]
+<<ingccount2>>=
+x <- "ACCGGGTTTT"
+source("src/ingccount2.R")
+ingccount2(x)
+@   
+\end{frame}
+
+
+\begin{frame}{\url{./src/gccount2.cpp}}
+  \tiny
+  \verbatiminput{src/gccount2.cpp}
+\note{
+  \begin{itemize}
+  \item Single Rcpp.h header
+  \item RcppExport macro
+  \item Automatic SEXP conversion to/from \Cpp classes, that provide standardised interfaces
+  \end{itemize}
+}  
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{In a package}
+    \begin{enumerate}
+      \item You will need a \texttt{Makevars} file in the \code{src} directory.
+      \item Modify \texttt{DESCRIPTION} file: \\
+      	\code{Depends: Rcpp (>= 0.10.1)} \\
+      	\code{LinkingTo: Rcpp}
+      \item Create an \R function that uses it
+<<gccount2r, tidy = FALSE, eval = FALSE>>=
+gccount2 <- function(inseq) 
+  .Call("gccount2", inseq, PACKAGE = "mypackage")
+@         
+      \item Document the \R function
+      \item Export the \R function and \texttt{useDynLib(mypackge)} in the \texttt{NAMESPACE}
+    \end{enumerate}
+  \end{block}
+  Check the \Rpackage{sequences} package.
+  But see \Rfunction{Rcpp.package.skeleton} below.
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Using \Rfunction{sourceCpp}}    
+    \begin{itemize}
+    \item Write the \Cpp code into a \texttt{cpp} file, including headers and dedicated export statement (see next slide).
+    \item Source it and use the \R function.
+<<sourcercpp>>=
+sourceCpp("src/gccountX.cpp")
+gccountX(x)
+@       
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}{\url{./src/gccountX.R}}
+  \tiny
+  \verbatiminput{src/gccountX.cpp}
+\end{frame}
+
+
+
+\begin{frame}
+  \begin{block}{sugar}
+    \textit{sugar} (for \textit{syntactic sugar}) is a set of \Cpp functions that (mostly) work and look like their \R couterparts. 
+    Allows for example compact vectorised expression. Looks like \R with the \Cpp efficiency.     
+    (\href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-sugar.pdf}{Rcpp-sugar} vignette/paper)
+    \begin{itemize}
+    \item Vectorised arithmetic and logical operators: \texttt{+}, \texttt{>}, \texttt{!}, ...
+    \item Functions: \texttt{seq_len}, \texttt{seq}, \texttt{sapply}, \texttt{rnorm}, \texttt{abs}, \texttt{sum}, ...
+    \end{itemize}    
+  \end{block}
+\end{frame}
+
+
+\lstset{
+  language=C++,
+  emph={NumericVector,CharacterVector}, emphstyle=\color{red},
+  emph={[2]size, begin, end}, emphstyle={[2]\color{cyan}},
+  emph={[3]cumsum}, emphstyle={[3]\color{blue}},
+  emph={[4]partial_sum}, emphstyle={[4]\color{green}},
+  basicstyle=\ttfamily \small,
+}
+
+
+\begin{frame}{\url{./src/cumsum.cpp}}
+  \lstinputlisting[firstline=7, lastline=17]{src/cumsum.cpp}     
+  \pause
+  \lstinputlisting[firstline=20, lastline=22]{src/cumsum.cpp}     
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Translate these \R functions into \C or \Cpp}  
+  \small 
+<<ex1, tidy = FALSE, eval = FALSE>>=
+sum 
+rowSums
+pdistR <- function(x, ys)
+  sqrt( (x - ys) ^ 2 )
+sety <- function(x, y) {
+    x[x > 0] <- y
+    x[x < 0] <- -y
+    x    
+}
+lgl_biggerY <- function(x, y) x > y
+biggerY <- function(x, y) x[x > y]
+foo <- function(x, y) ifelse(x < y, x*x, -(y*y))
+@ 
+    When possible, write two versions; one with an explicit \texttt{for} loop and another using sugar vectorised functions.
+
+    Hints: The \texttt{nrow} and \texttt{ncol} functions can be used to extract matrix dimensions. 
+    The matrix subsetting operator is \texttt{()} (instead of \texttt{[]}). To specify all indices, 
+    use the underscore.
+
+    Benchmark the \R and \Cpp implementations.
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{columns}[c]
+    \begin{column}{0.58\textwidth}
+<<piestimate, fig='pdf', echo=FALSE>>=
+set.seed(10)
+r <- 1
+n <- 70
+par(las = 1)
+plot(NA, xlim = c(-r, r), ylim = c(-r, r), asp = 1,
+     bty = "n", xaxt = "n", yaxt = "n", xlab = "", ylab = "")
+segments(c(-1,0 ), c(0, -1), c(1,0 ), c(0, 1), lty = "dotted")
+symbols(x = 0, y = 0, circles = r, inch = FALSE, add = TRUE)
+x <- runif(n, -r, r)
+y <- runif(n, -r, r)
+inside <- (x^2 + y^2) <= r^2
+points(x, y, pch = ifelse(inside, 19, 1))
+rect(-r, -r, r, r)
+segments(0, 0, 1, 0, col = "steelblue")
+text(r/2, 0, "r", pos = 1, col = "steelblue")
+i <- 4
+segments(0, 0, x[i], y[i], lty = "dotted")
+@   
+    \end{column}
+    \begin{column}{0.42\textwidth}
+      $\frac{d}{n} = \frac{\pi r^2}{4r^2} = \pi/4$
+      
+      $\pi \approx \frac{4d}{n}$
+      \pause
+      \small
+<<pir0, tidy=FALSE>>=
+piR <- function(N) {
+    x <- runif(N)
+    y <- runif(N)
+    d <- sqrt(x^2 + y^2)
+    4 * sum(d < 1.0) / N
+}
+@      
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[fragile]
+<<pir, tidy=FALSE>>=
+piR <- function(N) {
+    x <- runif(N)
+    y <- runif(N)
+    d <- sqrt(x^2 + y^2)
+    return(4 * sum(d < 1.0) / N)
+}
+@   
+\pause
+<<picpp, eval=FALSE, tidy=FALSE>>=
+#include <Rcpp.h>
+using namespace Rcpp;
+// [[Rcpp::export]]
+double piSugar(const int N) {
+    RNGScope scope; // ensure RNG gets set/reset
+    NumericVector x = runif(N);
+    NumericVector y = runif(N);
+    NumericVector d = sqrt(x*x + y*y);
+    return 4.0 * sum(d < 1.0) / N;
+}
+@ 
+\end{frame}
+
+\begin{frame}[fragile]{src/sugar.R}
+<<sugar, eval=TRUE>>=
+source("src/pi.R")
+
+library("Rcpp")
+sourceCpp("src/pi.cpp")
+
+N <- 1e6
+set.seed(42)
+resR <- piR(N)
+
+set.seed(42)
+resCpp <- piSugar(N)
+stopifnot(identical(resR, resCpp))
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+<<pibench, tidy=FALSE, cache=TRUE>>=
+library(rbenchmark)
+res <- benchmark(piR(N), piSugar(N),
+                 order="relative")
+print(res[,1:4])
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Missing values}  
+    There are type specific \texttt{NA_REAL}, \texttt{NA_INTEGER}, \texttt{NA_STRING}, \texttt{NA_LOGICAL}. 
+    A vector can be tested with \texttt{is_na}. To test a scalar, use \texttt{R_IsNA}.
+    
+    Sugar also provides \texttt{all} and \texttt{any}. 
+    %% The results must be converted to a logical with \texttt{is_true} (or \texttt{is_false}).
+  \end{block}
+<<ex2, tidy = FALSE, eval = FALSE>>=
+is.na
+foo <- function(x, y) ifelse(x < y, x*x, -(y*y))
+@ 
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Recursion}
+<<ex3, tidy = FALSE, eval = FALSE>>=
+fr <- function(n) {
+    if (n < 2) return(n)
+    return(fr(n-1) + fr(n-2))
+}
+@ 
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Calling a function}
+<<exfun, eval = FALSE, tidy = FALSE>>=
+// [[Rcpp::export]]
+NumericVector callFunction(NumericVector x,
+			   Function f) {
+  NumericVector res = f(x);
+  return res;
+}
+
+## in R
+callFunction(x, summary)
+@ 
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{sapply in \Cpp}
+<<exsapply, eval = FALSE, tidy = FALSE>>=
+// [[Rcpp::export]]
+NumericVector applyC(NumericVector xx){
+  return sapply(xx, square);
+}
+
+// [[Rcpp::export]]
+NumericVector callFunction(NumericVector x,
+			   Function f) {
+  NumericVector res = f(x);
+  return res;
+}
+
+## in R
+callFunction(x, summary)
+@ 
+  \end{block}
+\end{frame}
+
+
+
+
+
+\begin{frame}
+  \begin{block}{Rcpp modules}
+    Using S4 Reference Classes to reflect \Cpp classes and methods 
+    (see the \href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-modules.pdf}{Rcpp-modules} vignette).
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Interface to the Standard template library} 
+    \Cpp library with data structure and algorithms: vectors, arrays, stacks, iterators, accumulators, \ldots 
+    (see the \href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-sugar.pdf}{Rcpp-sugar} vignette).
+  \end{block}
+  \scriptsize
+  \lstinputlisting[firstline=26, lastline=30]{src/cumsum.cpp}     
+\end{frame}
+
+\begin{frame}[fragile]{Using \Rpackage{Rcpp} in packages}  
+  \scriptsize
+<<cpppack, eval = FALSE, message = FALSE>>=
+Rcpp.package.skeleton("mypackage")
+@ 
+\begin{verbatim}
+mypackage
+|-- DESCRIPTION
+|-- man
+|   |-- mypackage-package.Rd
+|    -- rcpp_hello_world.Rd
+|-- NAMESPACE
+|-- R
+|    -- rcpp_hello_world.R
+|-- Read-and-delete-me
+ -- src
+    |-- Makevars
+    |-- Makevars.win
+    |-- rcpp_hello_world.cpp
+     -- rcpp_hello_world.h
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{}
+<<cpppack2, eval = FALSE, tidy = FALSE>>=
+Rcpp.package.skeleton("mypackage", attribute = TRUE)
+Rcpp.package.skeleton("mypackage", module = TRUE)
+Rcpp.package.skeleton("mypackage", 
+                      cpp_files = c("convolve.cpp"))
+@   
+  \end{block}
+\end{frame}
+
+
+

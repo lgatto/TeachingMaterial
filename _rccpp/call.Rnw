@@ -1,0 +1,274 @@
+<<echo = FALSE>>=
+x <- "ACCGGGTTTT"
+gccountr <- function(x) table(strsplit(x, "")[1])
+@ 
+
+\section{Built-in \C interface}
+
+\begin{frame}
+  \begin{block}{The \R \C API}
+    \begin{itemize}
+    \item Very frequent in \R but has its quirks. 
+    \item Better know how to program in \texttt{C}.
+    \item Documentation is not always easy to follow: R-Ext, R Internals as well as \R and other package's code.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{\texttt{.C}}
+    \begin{itemize}
+    \item Not recommended.
+    \item Arguments and return values must be \textit{primitives} (vectors of doubles or integers).
+    \end{itemize}
+  \end{block}
+  \begin{block}{\texttt{.Call}}
+    \begin{itemize}
+    \item Accepts any \R data structures as arguments and return values as \texttt{SEXP}.
+    \item Manual memory management: allocate memory, 
+      protect objects to avoid them being garbage collected
+      and subsequently unprotect them.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{S (or symbolic) expression}
+    \texttt{SEXP} is a super-type that matches all \R data structures.  
+\note{SEXPs are pointers to the SEXPRECs typedef. his structure is quite flexible and can represent almost all language structures and data structures.}    
+    Each data type has its own \texttt{SEXP} sub-type. 
+    \begin{itemize}
+    \item \texttt{REALSXP} and \texttt{INTSXP} for double and integer vectors
+    \item \texttt{LGLSXP} and \texttt{STRSXP} for logical and character vectors
+    \item \texttt{VECSXP} for a list (NB: \R list are called vectors at the \C level)
+    \item \ldots
+    \end{itemize} 
+    Function input and outputs are always \texttt{SEXP} and will have to be coerced to the appropriate \texttt{SXP} sub-type. \\
+    \texttt{Rinternals.h} defines all \C functions, data types and macros.
+<<>>=
+file.path(R.home(), "include", "Rinternals.h")
+@         
+  \end{block}
+  \note{A macro is a fragment of code which has been given a name. Whenever the name is used, it is replaced by the contents of the macro.}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{columns}[t]
+    \begin{column}{0.63\textwidth}      
+      \tiny
+      \verbatiminput{src/sexp.R}  
+    \end{column}
+    \begin{column}{0.37\textwidth}      
+      \tiny
+<<sexp>>=
+source("src/sexp.R")
+sexp_type(1:3)
+sexp_type(10L)
+sexp_type(TRUE)
+sexp_type(letters)
+sexp_type(list(a = 1, b = letters))
+sexp_type(ls)
+@  
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \begin{block}{Garbage collection}
+    Every \R object that is created at the \C level (not function arguments, that \R is already aware of)
+    must be \texttt{PROTECT}ed to avoid being garbage collected. 
+    Before the return statement, these must be explicitely \texttt{UNPROTECT}ed.    
+  \end{block}
+<<eval=FALSE>>=
+SEXP x;
+PROTECT(x = ... )
+## do stuff
+UNPROTECT(1)
+return(x)
+@   
+\note{If the number of PROTECT and UNPROTECT don't match, R will warn about a ``stack imbalance in .Call''.}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Object creation}
+    \begin{enumerate}
+    \item Allocate memory: \Rfunction{allocVector}, \Rfunction{allocMatrix}, \Rfunction{alloc3DArray}
+    \item Initialise objects: \Rfunction{memset}
+    \end{enumerate}
+  \end{block}  
+<<eval=FALSE>>=
+SEXP x;
+PROTECT(x = allocVector(INTSXP, 10) )
+memset(INTEGER(x), 0, 10 * sizeof(int))
+## do stuff
+UNPROTECT(1)
+return(x)
+@   
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Accessing/setting \texttt{SXP} elements}
+    \begin{itemize}
+    \item \Rfunction{REAL(x)[i]} if \texttt{x} is a \Rfunction{REALSXP}
+    \item \Rfunction{INTEGER(x)[i]} if \texttt{x} is a \Rfunction{INTSXP}
+    \item \Rfunction{LOGICAL(x)[i]} if \texttt{x} is a \Rfunction{LGLSXP}
+    \item \ldots
+    \end{itemize}
+    \begin{itemize}
+    \item \Rfunction{STRING_ELT(x, i)} to access individual \texttt{CHARSXP} elements of a \texttt{STRSXP}
+    \item \Rfunction{VECTOR_ELT(x, i)} to access individual elements of a \texttt{VECSXP}
+    \end{itemize}
+    \begin{itemize}
+    \item \Rfunction{SET_STRING_ELT(str, i, x))} to set an element in a string.
+    \item \Rfunction{SET_VECTOR_ELT(vec, i, x))} to set an element in a list.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\lstset{language=C,
+  emph={SEXP}, emphstyle=\color{blue},
+  emph={[2]PROTECT,UNPROTECT}, emphstyle={[2]\color{red}},
+  emph={[3]allocVector,memset}, emphstyle={[3]\color{purple}},
+  emph={[4]INTEGER}, emphstyle={[4]\color{green}},
+  emph={[5]STRING_ELT}, emphstyle={[5]\color{cyan}}
+}
+
+\begin{frame}
+\lstinputlisting[firstline = 4]{src/gccount.c}  
+\end{frame}
+
+\begin{frame}
+  \begin{block}{}
+    \begin{enumerate}
+    \item \Rfunction{ingccount}: embedding the \C directly in \R  using the \Rpackage{inline} package.
+    \item \Rfunction{gccount}: writing the \C into its own code file and using \Rfunction{.Call}.
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}{\url{./src/ingccount.R}}
+  \tiny
+  \verbatiminput{src/ingccount.R} 
+\end{frame}
+
+\begin{frame}[fragile]
+<<ingccount, message = FALSE>>=
+source("./src/ingccount.R")
+ingccount(x)
+@   
+\end{frame}
+
+\begin{frame}{\url{src/gccount.c}}
+  \tiny
+  \verbatiminput{src/gccount.c}
+\end{frame}
+
+\begin{frame}[fragile]
+<<shlib, echo=FALSE>>=
+system("R CMD SHLIB src/gccount.c")
+dyn.load("src/gccount.so")
+@   
+  \begin{block}{Use directly}
+    \begin{enumerate}
+      \item Create a shared library: \texttt{R CMD SHLIB gccount.c}
+      \item Load the shared object: \texttt{dyn.load("gccount.so")}
+      \item Create an \R function that uses it: 
+<<gccountr0, tidy = FALSE>>=
+gccountC <- 
+  function(inseq) .Call("gccount", inseq)
+@
+      \item Use you \C code: 
+<<gccountC>>=
+gccountC(x)
+@         
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{In a package}
+    \begin{itemize}
+    \item The \C code comes in the \texttt{src} directory.
+    \item The \R wrapper will be
+<<gccountr, eval = FALSE, tidy = FALSE>>=
+gccount <- function(inseq) 
+  .Call("gccount", inseq, PACKAGE = "mypackage")
+@       
+    \item Document the \R function
+    \item Export the \R function and \texttt{useDynLib(mypackge)} in the \texttt{NAMESPACE}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{}
+    \small
+<<gccount, echo=TRUE, message = FALSE>>=
+library(sequences)
+gccount
+gccount(x)
+@ 
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  We could check that 
+<<eval=FALSE, tidy=FALSE>>=
+if (TYPEOF(inseq) != STRSXP) 
+  error("Need a character vector!");
+@   
+although
+<<>>=
+gccountC(123)
+@ 
+and type checking could easily be done at the \R level.
+There is also \Rfunction{isReal(x)}, \Rfunction{isInteger(x)}, \ldots for atomics vectors.
+\end{frame}
+
+
+\begin{frame}
+  \centering
+  There is of course much more to this \ldots see references at the end.
+\end{frame}
+
+<<echo=FALSE>>=
+library("sequences")
+@ 
+
+\begin{frame}[fragile]
+  \begin{block}{Benchmarking}
+\scriptsize    
+<<bench, cache = TRUE, tidy = FALSE>>=
+library(microbenchmark)
+microbenchmark(gccountr(x),
+               ingccount(x), 
+               gccountC(x),  
+               times = 1e4)
+@     
+  \end{block}  
+\end{frame}
+
+
+\begin{frame}[fragile]
+  Could we do better in \R? (should be asked first, really)
+  \pause
+\scriptsize    
+<<usetabulate, tidy = FALSE>>=
+gccountr2 <- 
+  function(x) tabulate(factor(strsplit(x, "")[[1]]))
+@ 
+\pause
+<<bench2, cache = TRUE, tidy = FALSE>>=
+microbenchmark(gccountr(x),
+               gccountr2(x),
+               ingccount(x), 
+               gccountC(x),  
+               times = 1e4)
+@
+But, obviously, \Rfunction{table} and \Rfunction{tabular} do much more than \Rfunction{gccount}.
+\end{frame}

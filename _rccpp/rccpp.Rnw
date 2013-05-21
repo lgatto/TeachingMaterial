@@ -1,0 +1,211 @@
+\documentclass{beamer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FOR HANDOUTS UNCOMMENT:
+% \documentclass[handout]{beamer}
+%% FOR HANDOUTS UNCOMMENT:
+%\usepackage{handoutWithNotes}
+%\pgfpagesuselayout{3 on 1 with notes}[a4paper,border shrink=5mm]
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% Setup appearance:
+% \usetheme{Darmstadt}
+% \usetheme{Copenhagen}
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+%% \setbeamertemplate{navigation symbols}{}
+
+%% \setbeameroption{hide notes}
+%% \setbeameroption{show notes}
+%% \setbeameroption{notes on second screen}
+%% \setbeameroption{show only notes}
+
+\usecolortheme{default}
+% Standard packages
+% \usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+% \usepackage{times}
+% \usepackage[T1]{fontenc}
+\usepackage{fontenc}
+\usepackage{pgfpages}
+\usepackage{underscore}
+\usepackage{ulem}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{upquote}
+\usepackage{textcomp}
+
+\definecolor{light-gray}{gray}{0.98}
+
+\lstset{
+  numbers=left, 
+  backgroundcolor=\color{light-gray},
+  showstringspaces=false,
+  basicstyle=\ttfamily \tiny,
+  keywordstyle=\bfseries
+}
+
+
+% Setup TikZ
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
+% \usecolortheme{seagull}
+\usecolortheme{seahorse}
+
+%% new commande
+\let\code=\texttt
+\let\proglang=\textsf
+
+\newcommand{\C}{\texttt{C}~}
+\newcommand{\Cpp}{\texttt{C++}~}
+\newcommand{\R}{\texttt{R}~}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\texttt{#1}}}
+
+\newcommand{\comments}[1]{}
+
+\newenvironment<>{varblock}[2][\textwidth]{%
+  \setlength{\textwidth}{#1}
+  \begin{actionenv}#3%
+    \def\insertblocktitle{#2}%
+    \par%
+    \usebeamertemplate{block begin}}
+  {\par%
+    \usebeamertemplate{block end}%
+  \end{actionenv}}
+
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\hypersetup{%
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+%% Exercise counter
+\newcounter{exerciseCounter}
+\newcommand{\exerciseCount}{%
+  \stepcounter{exerciseCounter}%
+  \theexerciseCounter}
+
+\newcommand{\exercise}{\textbf{Exercise \exerciseCount:}~}
+
+% Author, Title, etc.
+\title[RCCPP] 
+{
+  Using \C and \Cpp with \R
+}
+
+\author[L. Gatto]
+{
+  Laurent~Gatto \url{lg390@cam.ac.uk}
+}
+
+\institute[]
+{
+  University of Cambridge
+}
+
+%% \date[28-29/11/2011]
+%% {
+%%   28 - 29 November 2011
+%% }
+
+%% \pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
+%% \pgfdeclareimage[height=.7cm]{ebi-logo}{./Figures/EMBLEBIlogo}
+%% \pgfdeclareimage[width=5.5cm]{uml-diagram}{./Figures/uml-diagram}
+%% \logo{\pgfuseimage{uc-logo}}
+
+
+\AtBeginSection[] % Do nothing for \section*
+{
+\begin{frame}<beamer>
+\frametitle{Plan}
+\tableofcontents[currentsection]
+\end{frame}
+}
+
+
+% The main document
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Title frame                                                 %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Table of contents                                           %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Plan}
+  \footnotesize
+  \tableofcontents
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{intro.tex}
+
+\input{call.tex}
+
+\input{rcpp.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{References}
+
+\begin{frame}{References}
+  \begin{block}{Further reading}
+    \begin{itemize}
+    \item Writing R Extensions, R Core team. 
+    \item Robert Gentleman, \R Programming for Bioinformatics, 2008.
+    \item \Rpackage{Rcpp} documentation and \url{Rcpp.org}.
+    \item Dirk Eddelbuettel, Seamless \R and \Cpp Integration with \Rpackage{Rcpp}, Springer, 2013.
+    \item Dirk Eddelbuettel and Romain Francois, 
+      \textit{Rcpp: Seamless R and C++ Integration}, 
+      Journal of Statistical Software, Vol. 40, Issue 8, Apr 2011, 
+      \url{http://www.jstatsoft.org/v40/i08/}.
+    \item Relevant \texttt{devtools} sections: \textit{C interface} and \textit{Rcpp}.      
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Last slide                                                  %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \begin{block}{}
+    \begin{itemize}
+    \item This work is licensed under a CC BY-SA 3.0 License.
+    \item Course web page and more material: \url{https://github.com/lgatto/TeachingMaterial}
+    \end{itemize}
+    \vspace{.7cm}
+    \centering
+    \textbf{Thank you for you attention}
+  \end{block}
+\end{frame}
+
+
+\end{document}

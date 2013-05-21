@@ -1,0 +1,98 @@
+\section{Calling foreign languages}
+
+\begin{frame}
+      \begin{block}{Foreign languages}
+        \begin{itemize}
+        \item \C, \Cpp
+        \item \texttt{Fortran} 
+        \item \texttt{Java}\footnote{\url{http://www.rforge.net/rJava/}}.
+        \end{itemize}
+      \end{block}
+      \begin{block}{Other scripting languages}
+        \begin{itemize}
+        \item R/Perl\footnote{\url{http://www.omegahat.org/RSPerl/}} and 
+          R/Python\footnote{\url{http://www.omegahat.org/RSPython/}} bidirectional interfaces.
+        \item There is also the \Rfunction{system()} function for direct access to OS functions.
+        \end{itemize}
+      \end{block}
+\end{frame}
+
+
+\begin{frame}
+  Robert Gentleman, in \textit{R Programming for Bioinformatics}, 2008, 
+  about \texttt{R}'s built-in \C interfaces
+  \begin{quote}
+    Since R is not compiled,
+    in some situations its performance can be substantially improved by writing
+    code in a compiled language. There are also reasons not to write code in other
+    languages, and in particular we caution against \emph{premature optimization}, 
+    prototyping in R is often cost effective. And in our experience very few routines
+    need to be implemented in other languages for efficiency reasons. Another
+    substantial reason not to use an implementation in some other language is
+    \emph{increased complexity}. The use of another language almost always results in
+    higher maintenance costs and less stability. In addition, any extensions or
+    enhancements of the code will require someone that is 
+    \emph{proficient in both R and the other language}.
+  \end{quote}
+  \Rpackage{Rcpp} does make some of the above caution statements slightly less critical.
+  %% Donald Knuth
+  %%   \begin{quote}
+  %%     We should forget about small efficiencies, say about 97\% of the time: 
+  %%     \emph{premature optimization is the root of all evil}. 
+  %%     Yet we should not pass up our opportunities in that critical 3\%.
+  %%   \end{quote}
+\end{frame}
+  
+\begin{frame}
+  \begin{block}{}
+    \begin{itemize}
+    \item \textbf{Why?} \R is getting slow or is not doing well in terms of memory management: 
+      for example \texttt{for} loops that can't be vectorised, recursion, \ldots
+    \item \textbf{When?} \R can't do better \textbf{and} the slow code has been identified $\rightarrow$ \Rfunction{Rprof}
+    \end{itemize} 
+  \end{block}  
+  \pause
+  \begin{block}{}  
+    \begin{itemize}
+    \item \textbf{Why?} Re-using existing infrastructure 
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}
+  \begin{block}{Requirement for \texttt{C/C++}}
+    \bigskip
+    Working compilers. On Windows, \texttt{Rtools}$^{1, 2}$. On Mac, \texttt{Xcode}$^{3, 4}$.
+    \bigskip
+    \tiny
+    \begin{enumerate}
+    \item \url{http://cran.r-project.org/bin/windows/Rtools/}
+    \item \url{http://cran.r-project.org/doc/manuals/R-admin.html\#The-Windows-toolset}
+    \item \url{http://cran.r-project.org/doc/manuals/R-admin.html\#Installing-R-under-\_0028Mac\_0029-OS-X}
+    \item \url{http://cran.r-project.org/doc/manuals/R-admin.html\#Mac-OS-X}
+    \end{enumerate}    
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  We will be using the following packages:
+  \begin{itemize}
+  \item \Rpackage{inline} and the \Rfunction{cfunction} to write inline \C code that is compiled on the fly.
+    (There is also a \Rfunction{cxxfunction} for \Cpp code).
+  \item \Rpackage{Rcpp}, illustrating some of its functionality as well as the \Rfunction{cppFunction} 
+    for inline/on the fly compilation of \Cpp code.
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{example}
+    We have a DNA sequence, represented by a string of A, C, G and T and we want to compute the GC content.
+  \end{example}
+<<gcr>>=
+x <- "ACCGGGTTTT"
+gccountr <- function(x) table(strsplit(x, "")[[1]])
+gccountr(x)
+@   
+\end{frame}
