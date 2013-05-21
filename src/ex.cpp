@@ -108,12 +108,21 @@ NumericVector biggerYC(NumericVector x, double y) {
 }
 
 
-// From rcpp mailing list
+// StackOverflow: subset a vector and sort it
 
 // [[Rcpp::export]]
 NumericVector rollP3(NumericVector A, int start, int end) {
   NumericVector B = A[seq(start-1, end-1)] ;
   return B.sort() ;
+}
+
+// Rcpp gallery: revert a vector
+
+// [[Rcpp::export]]
+NumericVector rcppRev(NumericVector x) {
+  NumericVector revX = clone<NumericVector>(x);
+  std::reverse(revX.begin(), revX.end());
+  return revX;
 }
 
 ////////////////////////////
@@ -156,7 +165,7 @@ NumericVector foo(NumericVector xx, NumericVector yy) {
   }
   return(res1);
 }
-
+-
 // [[Rcpp::export]]
 NumericVector foov(NumericVector xx, NumericVector yy) {
   NumericVector res1 = ifelse(xx < yy, xx * xx, -(yy * yy));
