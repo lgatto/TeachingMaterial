@@ -165,7 +165,7 @@ NumericVector foo(NumericVector xx, NumericVector yy) {
   }
   return(res1);
 }
--
+
 // [[Rcpp::export]]
 NumericVector foov(NumericVector xx, NumericVector yy) {
   NumericVector res1 = ifelse(xx < yy, xx * xx, -(yy * yy));
