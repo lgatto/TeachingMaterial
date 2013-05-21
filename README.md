@@ -79,6 +79,14 @@ tweeting about it and sharing it with your colleagues.
 - Original repository: https://github.com/lgatto/RPackageDevelopment
 - More details: https://github.com/lgatto/RPackageDevelopment#readme
 
+### R and C/C++
+- Description: Writing and calling `C`/`C++` code for/from `R`
+- Author:  [Laurent Gatto](https://github.com/lgatto) 
+- Many examples from the [Rcpp gallery](http://gallery.rcpp.org/) and 
+  from [Dirk's slides](http://dirk.eddelbuettel.com/bio/presentations.html).
+- Original repository: https://github.com/lgatto/rccpp
+- More details: https://github.com/lgatto/rccpp#readme
+
 ### sequences
 - Description: Educational package used in `R` to illustrate OO programming and package development
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
