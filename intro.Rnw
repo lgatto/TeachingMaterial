@@ -92,7 +92,7 @@
   \end{example}
 <<gcr>>=
 x <- "ACCGGGTTTT"
-gccountr <- function(x) table(strsplit(x, "")[1])
+gccountr <- function(x) table(strsplit(x, "")[[1]])
 gccountr(x)
 @   
 \end{frame}

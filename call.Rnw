@@ -269,5 +269,6 @@ microbenchmark(gccountr(x),
                ingccount(x), 
                gccountC(x),  
                times = 1e4)
-@     
+@
+But, obviously, \Rfunction{table} and \Rfunction{tabular} do much more than \Rfunction{gccount}.
 \end{frame}

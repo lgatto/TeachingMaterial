@@ -21,7 +21,7 @@ ingccount <- cfunction(
     else if (p == \'T\')
       INTEGER(ans)[3]++;
     else
-      error(\"Wrong alphabet\");
+      Rf_error(\"Wrong alphabet\");
   }
   UNPROTECT(2);
   return(ans);

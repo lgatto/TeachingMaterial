@@ -69,10 +69,9 @@ x <- "ACCGGGTTTT"
 \lstset{
   language=C++,
   emph={IntegerVector,CharacterVector}, emphstyle=\color{red},
-  emph={[2]as}, emphstyle={[2]\color{green}},
-  emph={[3]as,wrap}, emphstyle={[3]\color{blue}},
+  emph={[2]as, wrap}, emphstyle={[2]\color{blue}},
   emph={[3]size}, emphstyle={[3]\color{cyan}},
-  basicstyle=\ttfamily \scriptsize,
+  basicstyle=\ttfamily \scriptsize
 }
 
 \begin{frame}{\url{./src/ingccount2.R}}
@@ -160,7 +159,7 @@ gccountX(x)
     (\href{http://dirk.eddelbuettel.com/code/rcpp/Rcpp-sugar.pdf}{Rcpp-sugar} vignette/paper)
     \begin{itemize}
     \item Vectorised arithmetic and logical operators: \texttt{+}, \texttt{>}, \texttt{!}, ...
-    \item Functions: \texttt{seq_len}, \texttt{all}, \texttt{any}, \texttt{sapply}, \texttt{rnorm}, \texttt{abs}, ...
+    \item Functions: \texttt{seq_len}, \texttt{seq}, \texttt{sapply}, \texttt{rnorm}, \texttt{abs}, \texttt{sum}, ...
     \end{itemize}    
   \end{block}
 \end{frame}
@@ -181,6 +180,34 @@ gccountX(x)
   \pause
   \lstinputlisting[firstline=20, lastline=22]{src/cumsum.cpp}     
 \end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Translate these \R functions into \C or \Cpp}  
+  \small 
+<<ex1, tidy = FALSE, eval = FALSE>>=
+sum 
+rowSums
+pdistR <- function(x, ys)
+  sqrt( (x - ys) ^ 2 )
+sety <- function(x, y) {
+    x[x > 0] <- y
+    x[x < 0] <- -y
+    x    
+}
+lgl_biggerY <- function(x, y) x > y
+biggerY <- function(x, y) x[x > y]
+foo <- function(x, y) ifelse(x < y, x*x, -(y*y))
+@ 
+    When possible, write two versions; one with an explicit \texttt{for} loop and another using sugar vectorised functions.
+
+    Hints: The \texttt{nrow} and \texttt{ncol} functions can be used to extract matrix dimensions. 
+    The matrix subsetting operator is \texttt{()} (instead of \texttt{[]}). To specify all indices, 
+    use the underscore.
+
+    Benchmark the \R and \Cpp implementations.
+  \end{block}
+\end{frame}
+
 
 \begin{frame}[fragile]
   \begin{columns}[c]
@@ -274,28 +301,72 @@ print(res[,1:4])
 \end{frame}
 
 \begin{frame}[fragile]
-  \begin{exercise}{Translate these \R functions into \C or \Cpp}
-    \tiny
-<<ex1, tidy = FALSE, eval = FALSE>>=
-sum 
-rowSums
-pdistR <- function(x, ys)
-  sqrt( (x - ys) ^ 2 )
-sety <- function(x, y) {
-    x[x > 0] <- y
-    x[x < 0] <- -y
-    x    
-}    
-biggery <- function(x, y) x[x > y]
+  \begin{block}{Missing values}  
+    There are type specific \texttt{NA_REAL}, \texttt{NA_INTEGER}, \texttt{NA_STRING}, \texttt{NA_LOGICAL}. 
+    A vector can be tested with \texttt{is_na}. To test a scalar, use \texttt{R_IsNA}.
+    
+    Sugar also provides \texttt{all} and \texttt{any}. 
+    %% The results must be converted to a logical with \texttt{is_true} (or \texttt{is_false}).
+  \end{block}
+<<ex2, tidy = FALSE, eval = FALSE>>=
+is.na
 foo <- function(x, y) ifelse(x < y, x*x, -(y*y))
+@ 
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{Recursion}
+<<ex3, tidy = FALSE, eval = FALSE>>=
 fr <- function(n) {
     if (n < 2) return(n)
     return(fr(n-1) + fr(n-2))
 }
-## examples of sapply, calling functions
 @ 
-  \end{exercise}
+  \end{block}
 \end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Calling a function}
+<<exfun, eval = FALSE, tidy = FALSE>>=
+// [[Rcpp::export]]
+NumericVector callFunction(NumericVector x,
+			   Function f) {
+  NumericVector res = f(x);
+  return res;
+}
+
+## in R
+callFunction(x, summary)
+@ 
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \begin{block}{sapply in \Cpp}
+<<exsapply, eval = FALSE, tidy = FALSE>>=
+// [[Rcpp::export]]
+NumericVector applyC(NumericVector xx){
+  return sapply(xx, square);
+}
+
+// [[Rcpp::export]]
+NumericVector callFunction(NumericVector x,
+			   Function f) {
+  NumericVector res = f(x);
+  return res;
+}
+
+## in R
+callFunction(x, summary)
+@ 
+  \end{block}
+\end{frame}
+
+
+
+
 
 \begin{frame}
   \begin{block}{Rcpp modules}
