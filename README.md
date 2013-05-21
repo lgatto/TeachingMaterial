@@ -5,6 +5,10 @@ The working examples are inherited from the original course working example,
 DNA/RNA class system that allows to read sequence data in fasta format, transcribe DNA into RNA, 
 reverse, complement sequences, etc and illustrate DNA sequence GC counting. 
 
+These slides have been used for the RSS 
+[Practical statistical computing: A workshop on advanced R](http://www.lancs.ac.uk/fas/maths/events/001138/rss-local-group-practical-statistical-computing-a-workshop-on-advanced-r), organised by the Lancaster RSS group 
+(see `2013-05-21_AdvancedRWorkshop_Lancaster` tag).
+
 See also the educational [`sequences`](https://github.com/lgatto/sequences/) package for inclusion
 of the example into a package.
 
