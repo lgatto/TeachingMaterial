@@ -474,6 +474,398 @@ Morning coffee
 Objects
 \end{frame}
 
+\begin{frame}[fragile,shrink]{R stores different types of data}
+    \begin{itemize}
+        \item Types of data
+        \begin{itemize}
+            \item Logical, integer, character, floating point
+        \end{itemize}
+        \item Data is stored in objects
+        \begin{itemize}
+            \item Vectors, data frames, matrices, arrays, lists
+            \item Vector is the most basic object
+        \end{itemize}
+        \item Most appropriate type and value is determined by R syntax
+        \begin{verbatim}
+a <- 10    # takes the value of number 10
+a <- "10"  # takes the value of characters "10"
+a <- b     # takes the value of variable b
+a <- "b"   # takes the value of character "b"\end{verbatim}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Data types and storage modes}
+    \begin{itemize}
+        \item R creates appropriately sized object variables to hold data
+        \item Objects are vectors ... they have a length dimension ...
+        \begin{itemize}
+            \item Vectors support vector arithmetic, which is R's big thing
+        \end{itemize}
+        \item The `mode of storage' used is determined by the `data type'
+        \item \emph{Mode} is one of
+        \begin{itemize}
+            \item logical, numeric, or character
+        \end{itemize}
+        \item Standard data \emph{types}
+        \begin{itemize}
+            \item \textbf{Logical}
+            \begin{itemize}
+                \item (TRUE or FALSE)
+            \end{itemize}
+            \item \textbf{Integer}
+            \begin{itemize}
+                \item (e.g. whole numbers -2 / +2 Billion)
+            \end{itemize}
+            \item \textbf{Double / floating point}
+            \begin{itemize}
+                \item (e.g. fractions, scientific expressions)
+            \end{itemize}
+            \item \textbf{Character string - always in quotes!}
+            \begin{itemize}
+                \item (e.g. 4 is a number, "4" or "abc" are characters)
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+    
+    \textbf{ADD BOX}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Exercise}
+    \framesubtitle{Data types \& storage modes}
+    \begin{itemize}
+        \item Create vectors {\tt i}, {\tt l}, {\tt s} and {\tt d} of length 20 for each \emph{data type} integer, logical, character and double
+        \item Examine their storage mode \& confirm data type
+        \begin{itemize}
+            \item {\tt mode(...)}
+            \item {\tt typeof(...)}
+        \end{itemize}
+        \item Tips:
+        \begin{itemize}
+            \item you can do this by manually assigning values, or by generating them (see the functions below)
+            \item {\tt sample(20)} will create a vector of 20 random integer values
+            \item R special character object {\tt letters} is `builtin', you can subset it
+            \item {\tt runif(20)} will generate 20 random uniformly distributed `double' values between 0 and 1
+            \item relationshps are `tests' and return logical values (e.g. $2>1$ is TRUE, but $5<1$ is FALSE)
+            \begin{itemize}
+                \item {\tt 1 <- i >= 10 \# test if 'i' is greater or equal to 10}
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Solution}
+\begin{verbatim}
+> i <- sample(20)‏
+> i
+[1]  6  1 14  8  5 10 18 12  2 11 16  3  4 20  9  7 19 13 15 17
+> s <- letters[i]]
+> s
+[1] "f" "a" "n" "h" "e" "j" "r" "l" "b" "k" "p" "c" "d" "t" "i" "g" "s" "m" "o"
+[20] "q"
+> l <- i >= 10
+> l
+[1] FALSE FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE FALSE  TRUE  TRUE FALSE
+[13] FALSE  TRUE FALSE FALSE  TRUE  TRUE  TRUE  TRUE
+> d <- runif(20)‏
+> d
+ [1] 0.292480127 0.586057481 0.812791710 0.189530051 0.634724719 0.882981055
+ [7] 0.358151866 0.003088843 0.900198085 0.905947217 0.032231749 0.330297215
+[13] 0.398237377 0.832774598 0.048503020 0.965920822 0.357567181 0.688554482
+[19] 0.728918707 0.477420883
+> mode(i)‏
+[1] "numeric“
+> typeof(i)‏
+[1] "integer"
+> mode(l)‏
+[1] "logical"
+> typeof(l)‏
+[1] "logical"
+> mode(s)‏
+[1] "character"
+> typeof(s)‏
+[1] "character"
+> mode(d)‏
+[1] "numeric"
+> typeof(d)‏
+[1] "double"\end{verbatim}
+\textbf{ADD COMMENTS}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Storage modes \& data types}
+    \begin{itemize}
+        \item Data types - why care?
+        \begin{itemize}
+            \item May get an undesired result if calculations are between numbers stored as different types
+            \item R will coerce data types when calculations between differing types are forced
+            \begin{itemize}
+                \item If the operation is inappropriate, the calculation will fail:\\
+                {\tt > 2 + "2"}\\
+                will fail as we cannot add a character string to an integer!
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{R Objects - vectors}
+    \framesubtitle{{\tt c(...)} or {\tt vector(..., mode=...,length=...)}}
+    \begin{itemize}
+        \item Vectors
+        \begin{itemize}
+            \item one-dimensional sequence of data items of only one data type
+        \end{itemize}
+        \begin{verbatim}
+> a <- c(1, 2, 3, 4, 5)
+> typeof(a)‏
+[1] "double"
+> aa <- c(1, "2", 3)‏
+> typeof(aa)
+
+[1] "character"\end{verbatim}
+
+        \item Vector arithmetic is a fundamental R concept 
+        \begin{verbatim}
+> a <- 1:10 ; b <- 101:110 ; c <- a + b
+> a
+[1]  1  2  3  4  5  6  7  8  9 10
+> b
+[1] 101 102 103 104 105 106 107 108 109 110
+> c
+[1] 102 104 106 108 110 112 114 116 118 120\end{verbatim}
+        \item Arithmetic operation occurs between corresponding items of the two vectors. If vectors are different lengths, shortest is recycled.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{R Objects}
+    \framesubtitle{{\tt data.frame(var1=..., var2=..., etc.)}}
+    \begin{itemize}
+        \item Data frames
+        \begin{itemize}
+            \item multiple columns of vectors that form a table
+            \item columns can be of different data types
+        \end{itemize}
+        \begin{verbatim}
+> a <- 1:10 				# shortcut for numbers 1 to 10
+> b <- letters[1:10] 		# shortcut for letters
+> c <- month.name[1:10]	# shortcut for month names
+> d <- data.frame(a, b, c, stringsAsFactors=FALSE)‏	# data frame assignment
+> d
+	   a    b   c		
+1     1    a   January
+2     2    b  February
+3     3    c     March
+4     4    d     April
+5     5    e       May
+6     6    f      June
+7     7    g      July
+8     8    h    August
+9     9    i September
+10    10   j   October\end{verbatim}
+        \item Column names can be changed\\
+        {\tt colnames(d) <- c("a", "b", "c")}
+        \item Address columns with \$ notation \\
+        {\tt d\$a \# returns only the column a (as a vector)}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{R Objects}
+    \framesubtitle{{\tt matrix(..., ncol=..., nrow=...)}}
+    \begin{itemize}
+        \item Matrices
+        \begin{itemize}
+            \item Like data frames, but for a single data type
+        \begin{verbatim}
+> e <- matrix(1:10, nrow=5, ncol=2)
+> e
+     [,1] [,2]
+[1,]    1    6
+[2,]    2    7
+[3,]    3    8
+[4,]    4    9
+[5,]    5   10\end{verbatim}
+        \item Matrices are usually associated with numeric data, and usual operations $+$, $-$, $*$, ... work on whole matrices as well
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Indexing data frames, matrices \& arrays}
+    \begin{itemize}
+        \item Works just like vectors, only in 2 dimensions \\
+        {\tt object [ rows , columns ]}
+    \end{itemize}
+    \begin{verbatim}
+a <- data.frame(1:10, letters[1:10], month.name[1:10], stringsAsFactors=FALSE)
+names(a) <- c("numbers","letters","months")‏
+a
+   numbers letters    months
+1        1       a   January
+2        2       b  February
+3        3       c     March
+4        4       d     April
+5        5       e       May
+6        6       f      June
+7        7       g      July
+8        8       h    August
+9        9       i September
+10      10       j   October\end{verbatim}
+
+\textbf{ADD BOX, FIX WRAP}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{R Objects}
+    \framesubtitle{{\tt list(name1=obj1,name2=obj2,...)}}
+    \begin{itemize}
+        \item Lists
+        \begin{itemize}
+            \item Store collections of R objects
+            \begin{itemize}
+                \item List members (items) can be of any R object, or data type.
+        \begin{verbatim}
+a <- 1:10
+b <- matrix(runif(100),ncol=10,nrow=10)
+c <- data.frame(a,month.name[1:10])
+
+myList<-list( ls.obj.1=a, ls.obj.2=b, ls.obj.3=c)
+summary(myList)
+names(myList)\end{verbatim}
+            \end{itemize}
+            \item Using dollar notation(\$), we can address list items directly, by name, as with columns of a data frame
+            {\tt myList\$ls.obj.1}
+            \item Alternatively, {\tt myList[[1]]} to get first item in the list
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{R Objects}
+    \framesubtitle{factor(obj, levels=..., labels=...)}
+    \begin{itemize}
+        \item Factors
+        \begin{itemize}
+            \item Factors store categorical data
+            \item categorical data is usually expressed in levels
+            \begin{itemize}
+                \item They are especially useful where repetition is found
+                \item Exercise may take place on any day of the week \\
+                {\tt The factor is exercise, and levels are week day names}
+                \item A gene may be deleted, lost, normal, gained or amplified \\
+                {\tt The factor is gene copy number, and levels are -2, -1, 0, 1, 2}
+            \end{itemize}
+            \item Factors require a good understanding of data dependency
+            \item Experiments often have multiple explanatory variables, and it is interesting to observe interactions between them
+            \item Factors are similar to `enumerated data types' in other languages
+        \end{itemize}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Operators}
+    \begin{itemize}
+        \item arithmetic \\
+        {\tt +, -, *, /, } 
+        \item comparison \\
+        {\tt <, >, =<, >=, ==, !=}
+        \item logical \\
+        {\tt !, \&, |, xor} \\
+        (not, and, or, exclusive or)
+    \end{itemize}
+    \textbf{ADD POWER SYMBOL}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Advanced indexing / subscripting vectors}
+    \begin{itemize}
+        \item Indexing / subscripting
+        \begin{itemize}
+            \item The process of referencing a particular data value stored in an R object
+        \end{itemize}
+        \item Indexing can be achieved either with numbers or logicals, e.g.:
+        \begin{verbatim}
+> s <- letters[1:5]
+> s[c(1,3)]
+[1] "a" "c"
+> s[c(TRUE, FALSE, TRUE, FALSE, FALSE)]
+[1] "a" "c"\end{verbatim}
+    \item Or, with expression resulting in either numbers or logicals:
+    \begin{verbatim}
+> a <- 1:5
+> s[a[1:4]] # range expression, answer is a to d
+> s[a<3] # first 2 items, returns a, b
+> s[a>1 & a<3] # answer is 2, returns b\end{verbatim}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{Exercise: objects \& indexing}
+    \textbf{FIX OVERFLOW}
+    \begin{columns}[t]
+        \begin{column}{5cm}
+            Construct your phonebook from 5 vectors (make up the data). \\
+            First name \\
+            Character vector: {\tt firstName} \\
+            Second name \\
+            Character vector: {\tt secondName} \\
+            Telephone number \\
+            Numeric vector: {\tt telNumber} \\
+            Listed in directory \\
+            Logical vector: {\tt notListed} \\
+            {\tt    i.e. TRUE or FALSE} \\
+            Full name \\
+            Character vector: {\tt fullName} \\
+            {\tt fullName <- paste(firstName,secondName)} \\
+            Combine vectors into a single {\tt phoneBook} dataframe
+        \end{column}
+        \begin{column}{5cm}
+            Use your phonebook to extract the following data items
+            \begin{enumerate}
+                \item Telephone numbers of people with second names beginning with letters below M
+                {\tt  phoneBook\$secondName < "M"}
+                \item Telephone numbers of people not listed in a directory
+                {\tt  phoneBook\$notListed == TRUE}
+                \item Telephone numbers of all odd row people
+                {\tt  seq(1,10,2)}
+            \end{enumerate}
+            Some tips for the indexing expression are given.
+        \end{column}
+    \end{columns}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{One solution}
+\begin{verbatim}
+> firstName<-c("Adam","Eve","John","Mary","Peter","Paul","Luke",
++	"Matthew","David","Sally")‏
+> length(firstName)‏
+[1] 10
+> secondName<-c("Tiny","Large","Small","Davis","Thumb","Daniels",
++	"Edwards","Smith","Howkins","Dutch")‏
+> length(secondName)‏
+[1] 10
+> telNumber<-c(111111,222222,333333,444444,555555,666666,777777,888888,121212,232323)‏
+> length(telNumber)‏
+[1] 10
+> notListed<-c(TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE,TRUE,FALSE)‏
+> length(notListed)‏
+[1] 10
+> phoneBook<-data.frame(firstName,secondName,paste(firstName,secondName),telNumber,notListed, 
+                        stringsAsFactors=FALSE)‏
+> names(phoneBook)<-c("First_Name","Second_Name","Full_Name","Tel_Number","Not_Listed")‏
+> phoneBook
+   First_Name Second_Name     Full_Name Tel_Number Listed
+1        Adam        Tiny     Adam Tiny     111111   TRUE
+2         Eve       Large     Eve Large     222222  FALSE
+3        John       Small    John Small     333333   TRUE
+4        Mary       Davis    Mary Davis     444444  FALSE
+5       Peter       Thumb   Peter Thumb     555555   TRUE
+6        Paul     Daniels  Paul Daniels     666666  FALSE
+7        Luke     Edwards  Luke Edwards     777777   TRUE
+8     Matthew       Smith Matthew Smith     888888  FALSE
+9       David     Howkins David Howkins     121212   TRUE
+10      Sally       Dutch   Sally Dutch     232323  FALSE\end{verbatim}
+\textbf{ADD BOXES}
+\end{frame}
+
+\begin{frame}[fragile,shrink]{LUNCH}
+Lunch
+\end{frame}
+
+\begin{frame}[fragile,shrink]{R Commands \& flow control}
+Commands
+\end{frame}
 
 
 \begin{frame}[fragile,shrink]{}
