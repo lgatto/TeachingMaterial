@@ -111,4 +111,6 @@ Here are some of my own examples:
 
 - [Software carpentry](http://software-carpentry.org/)'s [make tutorial](http://software-carpentry.org/4_0/make/index.html)
 
+- [Mike Bostock](http://bost.ocks.org/mike/)'s &ldquo;[Why Use Make](http://bost.ocks.org/mike/make/)&rdquo;
+
 Also see my [git/github guide](http://kbroman.github.io/github_tutorial).
