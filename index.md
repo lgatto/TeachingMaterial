@@ -99,6 +99,14 @@ Here are some of my own examples:
 - [Makefile](https://github.com/kbroman/Talk_FunQTL/blob/master/Makefile)
   for a [talk on QTL mapping for function-valued traits](http://www.biostat.wisc.edu/~kbroman/talks/FunQTL/).
 
+And here are two of [Mike Bostock](http://bost.ocks.org/mike/)'s examples:
+
+- [Makefile](https://github.com/mbostock/world-atlas/blob/master/Makefile)
+  for his [World Atlas](https://github.com/mbostock/world-atlas)
+
+- [Makefile](https://github.com/mbostock/us-atlas/blob/master/Makefile)
+  for his [U.S. Atlas](https://github.com/mbostock/us-atlas)
+
 ### Resources
 
 - [GNU make webpage](http://www.gnu.org/software/make)
