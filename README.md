@@ -31,6 +31,12 @@ tweeting about it and sharing it with your colleagues.
 - Original repository: https://github.com/lgatto/QuickPackage
 - More details: https://github.com/lgatto/QuickPackage#readme
 
+### R package development
+- Description: Developing, documenting and testing an `R` package
+- Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
+- Original repository: https://github.com/lgatto/RPackageDevelopment
+- More details: https://github.com/lgatto/RPackageDevelopment#readme
+
 ### RBasics
 - Description: A introduction to `R` for knowledgeable bioinformaticians. Used as `R` intro lecture for the [CSAMA](http://marray.economia.unimi.it/) workshop.
 - Author: [Laurent Gatto](https://github.com/lgatto)
@@ -72,12 +78,6 @@ tweeting about it and sharing it with your colleagues.
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
 - Original repository: https://github.com/lgatto/roo
 - More details: https://github.com/lgatto/roo#readme
-
-### R package development
-- Description: Developing. documenting and testing an `R` package
-- Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
-- Original repository: https://github.com/lgatto/RPackageDevelopment
-- More details: https://github.com/lgatto/RPackageDevelopment#readme
 
 ### R and C/C++
 - Description: Writing and calling `C`/`C++` code for/from `R`
