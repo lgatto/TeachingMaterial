@@ -10,3 +10,6 @@ It is used in various advanced programming and developement courses by Laurent G
 in Cambridge and at the EMBL.
 
 See the [TeachingMaterial](https://github.com/lgatto/TeachingMaterial) repository for more material.
+
+This material is licensed under the 
+[Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/). 
