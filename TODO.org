@@ -1,0 +1,4 @@
+* Refactoring the basic R course/slides
+
+- Identify independent parts of the course
+- Decide which ones should be kept as is, updated, re-written from scratch, dropped
