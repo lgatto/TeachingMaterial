@@ -8,3 +8,6 @@ It has been used in [2012](http://marray.economia.unimi.it/2012/) and [2013](htt
 The respective slides are also available on [the relevant Bioconductor page](http://www.bioconductor.org/help/course-materials/2012/Bressanone2012/). 
 
 See the [TeachingMaterial](https://github.com/lgatto/TeachingMaterial) repository for more material.
+
+This material is licensed under the 
+[Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/). 
