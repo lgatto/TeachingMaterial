@@ -7,3 +7,6 @@ Laurent Gatto and Robert Stojnić in Cambridge and at the EMBL.
 The educational [`sequences`](https://github.com/lgatto/sequences/) package is used as reference material for the course.
 
 See the [TeachingMaterial](https://github.com/lgatto/TeachingMaterial) repository for more material.
+
+This material is licensed under the 
+[Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/). 
