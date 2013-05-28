@@ -2,3 +2,13 @@
 
 - Identify independent parts of the course
 - Decide which ones should be kept as is, updated, re-written from scratch, dropped
+
+LG: The stats bit at the end of day 1 could be dropped, or at least heavily reduced.
+
+LG: The graphics part (end od day 2) should be imporved, IMHO. They learn some intuitive plotting through the exercises. I would suggest to build uppon that throughout the coures, use the plotting part to summerise/formalise and possibly illustrate a bit of ggplot2 (and/or lattice). There is every now and then somebody that comes and asks about ggplot2, and base graphics, at least how it is taught now, does not give proper credit to plotting using R. I don't mean to teach the ggplot2 dialect, but at least mention it and produce nice plots using base graphics.
+
+Missing from the plotting part: 
+- (good usage of) legends, smoothscatter, identify
+
+LG: In general, the exercises are good and useful, but I'm quite unhappy with some of the solutions. Some of the code is not beautiful - the code must be understandable for beginners, of course, but we should make sure that we show clean straight-to-the-point code.
+
