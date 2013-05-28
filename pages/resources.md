@@ -24,6 +24,10 @@ Here are some examples.
 
 - [git - the simple guide](http://rogerdudler.github.io/git-guide/)
 
+- [Karthik Ram](http://karthikram.github.io)'s
+  [Git for scientists](http://karthikram.github.io/git_intro) and his
+  [review paper on git](https://github.com/karthikram/smb_git)
+
 - [Google](http://bit.ly/13lFEmG)
 
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/git)
