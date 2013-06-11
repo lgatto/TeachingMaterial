@@ -64,11 +64,11 @@
 %%   University of Cambridge \\
 %% }
 
-%% \date[2/07/2012]
-%% {
-%%   Computational Statistics for Genome Biology\\
-%%   2$^{nd}$ July 2012
-%% }
+\date[2/07/2012]
+{
+  Computational Statistics for Genome Biology\\
+  28$^{th}$ June 2013
+}
 
 
 \pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
@@ -239,6 +239,8 @@ qpf()
       \url{http://www.training.cam.ac.uk/gsls/event/413639} \\
     \item Writing R Extensions,  R Development Core Team, 
       (get it with \Rfunction{help.start()})
+    \item This work is licensed under a CC BY-SA 3.0 License.
+    \item Course web page and more material: \url{https://github.com/lgatto/TeachingMaterial}
     \end{itemize}    
   \end{block}
 \end{frame}
