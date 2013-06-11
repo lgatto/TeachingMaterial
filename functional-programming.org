@@ -266,3 +266,8 @@ although their purpose in the MapReduce framework is not the same as their origi
 - =?Map=, or any other of the higher order functions
 - Blog post, /Higher Order Functions in R/, John Myles White 
   http://www.johnmyleswhite.com/notebook/2010/09/23/higher-order-functions-in-r/
+
+\bigskip
+
+- This work is licensed under a CC BY-SA 3.0 License.
+- Course web page and more material: [[https://github.com/lgatto/TeachingMaterial]]
