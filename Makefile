@@ -30,7 +30,7 @@ endif
 pdf: R-Basics.tex
 	pdflatex R-Basics.tex
 
-R-Basics.tex: Sec-Intro.tex Sec-DataTypes.tex Sec-Programming.tex Sec-RBioc.tex Sec-Packages.tex Sec-Manip.tex Sec-Useful.tex Sec-Plotting.tex 
+R-Basics.tex: Sec-Intro.tex Sec-DataTypes.tex Sec-Programming.tex Sec-RBioc.tex Sec-Packages.tex Sec-Manip.tex Sec-Useful.tex Sec-Plotting.tex R-Basics.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('R-Basics.Rnw');"
 
 Sec-Intro.tex:
