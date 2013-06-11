@@ -4,9 +4,12 @@
   \begin{block}{Flow control}
 <<flowctrl, eval = FALSE, tidy = FALSE>>=
 for (var in seq) expr
+
 while (cond) expr
+
 repeat expr
 break
+
 @
   \end{block}
 \end{frame}
@@ -65,7 +68,9 @@ replicate(2, rnorm(3))
   \begin{block}{Conditionals}
 <<flow, eval = FALSE, tidy = FALSE>>=
 if (cond) expr1 else expr2
+
 ifelse(cond, expr1, expr2)
+
 switch
 @
   \end{block}

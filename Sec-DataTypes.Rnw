@@ -292,6 +292,10 @@ class?ExpressionSet
   \end{description}
 \end{frame}
 
+\begin{frame}
+  \centering
+  \includegraphics[width=.8\linewidth]{./Figures/msnset.png}
+\end{frame}
 
 \begin{frame}[fragile]
   \begin{block}{The \Robject{assayData} slot}
