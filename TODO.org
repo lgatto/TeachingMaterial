@@ -12,6 +12,7 @@ Missing from the plotting part:
 
 LG: In general, the exercises are good and useful, but I'm quite unhappy with some of the solutions. Some of the code is not beautiful - the code must be understandable for beginners, of course, but we should make sure that we show clean straight-to-the-point code.
 
+RF: I think in the first morning, the number of different objects coomes too thick and fast to be understood by a significant number. I think a couple of exercises in which students are encouraged to manipulate, say, vectors and matrices, should then be followed by the discussion on, and perhaps an exercise on data frames. After this perhaps reading in data and a more natural discussion of factors with a good example.
 
 RS: I think we need to go through all the sides and agree what is the core set of things we are trying to teach people. I would remove everything that is not conveying one of the core messages. Here is what I think we should teach:
 
@@ -29,5 +30,4 @@ Suggested topics could be:
 * Functions - not sure this is worth our time. Also, it is somewhat confusing that our example doesn't really return any value IMHO
 * Advanced analysis - I would leave this as there is always someone who wants to get a bit more out of the course
 * Plotting - needs almost complete restructuring. I would delete all the slides and start from scratch. First few slides are OK to introduce the basic concepts (painters model, plotting arbitrary things not just "data", etc), but later on it just goes all over the place. I'm usually not teaching this part so I don't have much input on how to structure it. DEFINITIELY needs more exercises. Execises could be like, here is some data, now visualise it somehow, or, create this plot (using tools that are gradually introduced). 
-
 
