@@ -12,3 +12,4 @@ Missing from the plotting part:
 
 LG: In general, the exercises are good and useful, but I'm quite unhappy with some of the solutions. Some of the code is not beautiful - the code must be understandable for beginners, of course, but we should make sure that we show clean straight-to-the-point code.
 
+RF: I think in the first morning, the number of different objects coomes too thick and fast to be understood by a significant number. I think a couple of exercises in which students are encouraged to manipulate, say, vectors and matrices, should then be followed by the discussion on, and perhaps an exercise on data frames. After this perhaps reading in data and a more natural discussion of factors with a good example.
