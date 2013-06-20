@@ -12,22 +12,12 @@ Missing from the plotting part:
 
 LG: In general, the exercises are good and useful, but I'm quite unhappy with some of the solutions. Some of the code is not beautiful - the code must be understandable for beginners, of course, but we should make sure that we show clean straight-to-the-point code.
 
-RF: I think in the first morning, the number of different objects coomes too thick and fast to be understood by a significant number. I think a couple of exercises in which students are encouraged to manipulate, say, vectors and matrices, should then be followed by the discussion on, and perhaps an exercise on data frames. After this perhaps reading in data and a more natural discussion of factors with a good example.
+RF: I think in the first morning, the number of different objects comes too thick and fast to be understood by a significant number. I think a couple of exercises in which students are encouraged to manipulate, say, vectors and matrices, should then be followed by the discussion on, and perhaps an exercise on data frames. After this perhaps reading in data and a more natural discussion of factors with a good example.
 
-RS: I think we need to go through all the sides and agree what is the core set of things we are trying to teach people. I would remove everything that is not conveying one of the core messages. Here is what I think we should teach:
+RF: The storage types and methods is too involved. Could be done with a quick discussion of data types and point to the is. functions.
 
-RS: Day 1
-- Basic concepts - vectors, matrices, data frames, etc. I think the introduction is good (up to lunch) if we manage to remove the remaining "noise" from the slides. 
-- If/else/loops - after lunch is a bit disconnected from the morning. Need serious rearrangment
-- Simple complete analysis - the example with patients at risk (nmyc amplification) is good and should be kept
-- Basic stats - I would leave this, but simplify the slides (we already skip most of it anyways)
+RF: I agree that the stats bit at the end of Day 1 should be slimmed down, but not dropped.
 
-RS: Day 2
-I'm most unhappy with this day, the structure feels disconnected and without any particular goals
-First exercise in the morning is too difficult to understand. We need something simpler, but it's difficult to come up with a replacement. Need to think hard about this one. 
-Suggested topics could be:
-- More complex analysis - main goal to review all the points from Day 1, leave more time for them to do it... Not 100% sure we should introduce factors at all.. 
-- Functions - not sure this is worth our time. Also, it is somewhat confusing that our example doesn't really return any value IMHO
-- Advanced analysis - I would leave this as there is always someone who wants to get a bit more out of the course
-- Plotting - needs almost complete restructuring. I would delete all the slides and start from scratch. First few slides are OK to introduce the basic concepts (painters model, plotting arbitrary things not just "data", etc), but later on it just goes all over the place. I'm usually not teaching this part so I don't have much input on how to structure it. DEFINITIELY needs more exercises. Execises could be like, here is some data, now visualise it somehow, or, create this plot (using tools that are gradually introduced). 
+RF: The Day 2 colonies example, I have always felt, gets lost in the convoluted set up of the 'experiment'. Perhaps this, or a similar example could be built up more gradually.
 
+RF: I agree with LG that the graphics afternoon is really a kind of lecture, and a bit boring. Perhaps keep one or two of the examples (I think the 2nd axis example covers a lot). I was actually asked on Tuesday by two people who wanted to know about ggplot, so maybe a brief example about building up such a plot would be worthwhile. 
