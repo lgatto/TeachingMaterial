@@ -1,0 +1,189 @@
+\documentclass[12pt,a4paper,english]{scrartcl}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage[auth-sc]{authblk}
+\usepackage{setspace}
+\onehalfspacing
+
+%% Exercise counter
+\newcounter{exerciseCounter}
+\newcommand{\exerciseCount}{%
+  \stepcounter{exerciseCounter}%
+  \theexerciseCounter}
+
+\newcommand{\exercise}{\textbf{Exercise \exerciseCount:}~}
+
+% caption formatting
+\setcapindent{0em}
+\setkomafont{captionlabel}{\sffamily\bfseries}
+\setkomafont{caption}{\sffamily}
+
+\renewcommand\Authands{ and }
+
+\newcommand{\R}{\texttt{R} }
+\newcommand{\code}[1]{{\texttt{#1}}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
+%% colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\usepackage{geometry}
+\geometry{verbose,
+  tmargin = 2.5cm,
+  bmargin = 2.5cm,
+  lmargin = 3.0cm,
+  rmargin = 3.0cm}
+
+\usepackage{hyperref}
+\usepackage{breakurl}
+\hypersetup{%
+  pdfusetitle,
+  bookmarks = {true},
+  bookmarksnumbered = {true},
+  bookmarksopen = {true},
+  bookmarksopenlevel = 2,
+  unicode = {true},
+  breaklinks = {false},
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+
+\author{
+  Laurent Gatto\thanks{\email{lg390@cam.ac.uk}}
+}
+
+\affil{
+  Cambridge Center for Proteomics\\
+  University of Cambridge
+}
+
+\begin{document}
+
+\title{A pratical tutorial to S4 programming}
+
+\maketitle
+
+%% %% Abstract and keywords %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \vskip 0.3in minus 0.1in
+%% \hrule
+%% \begin{abstract}
+%% \end{abstract}
+%% \textit{Keywords}: object-oriented programming, microarry
+%% \vskip 0.1in minus 0.05in
+%% \hrule
+%% \vskip 0.2in minus 0.1in
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+
+\tableofcontents
+
+<<env, include=FALSE, echo=FALSE, cache=FALSE>>=
+library("knitr")
+opts_chunk$set(fig.align = 'center', 
+               fig.show = 'hold', 
+               par = TRUE,
+               prompt = TRUE,
+               eval = TRUE,
+               stop_on_error = 1L,
+               comment = NA)
+options(replace.assign = TRUE, 
+        width = 55)
+set.seed(1)
+@ 
+%%$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Introduction}\label{sec:intro}
+
+This document introduces the \R object-oriented programming paradigm 
+using the microarray as a use case. The introduction is purely practical 
+and does not aim for an exhaustive guide to \R object-oriented programming.
+We will concentrate on the S4 system and only mention the older S3 system 
+and the recent S4 reference class infrastructure. 
+See the appropriate literature, \Rfunction{?ReferenceClasses} or our more 
+thorough introduction to OO programming\footnote{\url{https://github.com/lgatto/roo}} 
+and references therein for mote details.
+
+In section \ref{sec:ma}, we present a solution on how to represent microarray data 
+in \R using simple data types and conclude with some issues with this implementation. 
+In section \ref{sec:oo}, we introduce fundamental concepts of OO programming 
+and introduce how OO programming is implemented in S4 (and S3) system.  
+
+\section{The microarray example}\label{sec:ma}
+
+We assume the reader is familiar with the concept of microarrays and 
+the type of data that is obtained from such an experiment. 
+Before embarking in any serious programming task, in particular when 
+modelling data and defining data structures (using a OO class or not), 
+to carefully think about how to best represent and store the data. 
+
+\exercise Based on your understanding of microarrays and the kind of 
+data that is to be used to computational analysis, think of what is going 
+to be needed to describe the experiment and what the types of data structures 
+available in \R (\Robject{data.frame}, \Robject{matrix}, \Robject{vector}, \ldots) 
+are most appropriate. Ideally, one would want everything (data, meta-data, \ldots) 
+to be stored together as a single variables.
+
+There are of course multiple valid solutions to the above question. 
+Below are three pieces of information that consider essential along 
+with their respective \R data structure.
+
+\begin{itemize}
+\item We choose to represent the microarray probes 
+\end{itemize}
+
+\section{Using OO programming}\label{sec:oo}
+
+Object-oriented programming is based on two important concepts, abstraction and encapsulation.
+
+\section{The \Robject{MArray} class}\label{sec:class}
+
+\section{\Robject{MArray} methods}\label{sec:methods}
+
+
+
+
+%% \begin{figure}[!hbt]
+%% \centering
+%%     \includegraphics[width=0.5\textwidth]{./Figures/msnset.png}
+%% \caption{Dimension requirements for the respective expression, feature and sample meta-data slots. }
+%% \label{fig:msnset}
+%% \end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Session information}\label{sec:sessionInfo} 
+
+All software and respective versions used to produce this document are listed below.
+
+<<sessioninfo, results='asis', echo=FALSE>>=
+toLatex(sessionInfo())
+@
+
+%% \bibliographystyle{plainnat}
+%% \bibliography{}
+
+\end{document}
+
