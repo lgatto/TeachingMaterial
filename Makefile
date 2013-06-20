@@ -39,9 +39,3 @@ clean:
 	rm -f .Rhistory
 	rm -f *~
 	rm -f */*~
-
-
-allclean: clean
-	rm -f  S4-tutorial.pdf
-	rm -rf figure/
-	rm -rf cache/
