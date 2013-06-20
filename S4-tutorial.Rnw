@@ -73,7 +73,7 @@
 
 \begin{document}
 
-\title{A pratical tutorial to S4 programming}
+\title{A pratical tutorial on S4 programming}
 
 \maketitle
 
@@ -138,7 +138,7 @@ to carefully think about how to best represent and store the data.
 
 \exercise Based on your understanding of microarrays and the kind of 
 data that is to be used to computational analysis, think of what is going 
-to be needed to describe the experiment and what the types of data structures 
+to be needed to describe an experiment and what the types of data structures 
 available in \R (\Robject{data.frame}, \Robject{matrix}, \Robject{vector}, \ldots) 
 are most appropriate. Ideally, one would want everything (data, meta-data, \ldots) 
 to be stored together as a single variables.
@@ -148,19 +148,181 @@ Below are three pieces of information that consider essential along
 with their respective \R data structure.
 
 \begin{itemize}
-\item We choose to represent the microarray probes 
+\item We choose to represent the microarray results as a \Robject{matrix} of size $n \times m$,  
+  where $n$ is the number of probes on the microarray and $m$ is the number of samples. 
+  The matrix is named \Robject{marray}.
+\item The sample annotation (meta-data) is described using a \Robject{data.frame} with exactly $m$ rows 
+  and any number of columns. It is named \Robject{pmeta}.
+\item The feature (probe) annotation (meta-data) is described using a \Robject{data.frame} 
+  with exactly $n$ rows and any number of columns. Let's call it \Robject{fmeta}.
 \end{itemize}
+
+<<makedata1, tidy = FALSE>>=
+n <- 10
+m <- 6
+marray <- matrix(rnorm(n * m), ncol = m)
+pmeta <- data.frame(sampleId = 1:m, 
+                    condition = rep(c("WT", "MUT"), each = 3))
+@ 
+
+We will manually use the same names for intensity matrix columns and the sample meta-data rows 
+as well as the matrix rows and feature meta-data row. Finally, to keep these pieces of information 
+together, they will all be combined into a \Robject{list} that will represent our microarray experiment.
+
+<<makedata2, tidy= FALSE>>=
+rownames(pmeta) <- colnames(marray) <- LETTERS[1:m]
+fmeta <- data.frame(geneId = 1:n, 
+                    pathway = sample(LETTERS, n, replace = TRUE))
+rownames(fmeta) <- 
+    rownames(marray) <- paste0("probe", 1:n)
+maexp <- list(marray = marray,
+              fmeta = fmeta,
+              pmeta = pmeta)
+rm(marray, fmeta, pmeta)
+str(maexp)
+@ 
+
+We can access the respective elements of our microarray experiment with the \Rfunction{\$} operator.
+
+<<access>>=
+maexp$pmeta
+summary(maexp$marray[, "A"])
+wt <- maexp$pmeta[, "condition"] == "WT"
+maexp$marray["probe8", wt]
+maexp[["marray"]]["probe3", !wt]
+@ 
+
+\begin{figure}[!htb]
+<<bw1, dev='pdf', echo=TRUE>>=
+boxplot(maexp$marray)
+@ 
+\caption{Boxplot representing the intensity distributions of the \Sexpr{n} probes for the \Sexpr{m} samples.}
+\label{fig:bw1}
+\end{figure}
+
+\exercise But what if we want to subset the experiment. How would we extract the 10 first probes for the 3 first samples?
+
+We have to manually subset the individual elements of our list, making sure that the 
+number of rows of the \Robject{marray} and \Robject{fmeta} elements remain identical as well as
+the number of columns of \Robject{marray} and the number of columns of \Robject{pmeta}.
+
+<<subset>>=
+x <- 1:5
+y <- 1:3
+marray2 <- maexp$marray[x, y]
+fmeta2 <- maexp$fmeta[x, ]
+pmeta2 <- maexp$pmeta[y, ]
+maexp2 <- list(marray = marray2,
+               fmeta = fmeta2,
+               pmeta = pmeta2)
+rm(marray2, fmeta2, pmeta2)
+str(maexp2)
+@ 
+
+The above solution does not provide a clean syntax. 
+As a user, we have to know the names or positions of the respective elements of the 
+microarray list elements to directly access the parts of interest. 
+Finally, a simple operation like subsetting the microarray experiment is very cumbersome 
+and prone to errors.
 
 \section{Using OO programming}\label{sec:oo}
 
-Object-oriented programming is based on two important concepts, abstraction and encapsulation.
+Object-oriented programming is based on two important concepts, abstraction and encapsulation. 
+We want to represent the microarray concept in a way that makes most sense to the users 
+without distracting them with unnecessary technicalities. These technicalities refer to the 
+underlying implementation. Do the users really need to know that we used a list and 
+that the first element, called \Robject{marray} is the matrix? 
+We want the users to comprehend microarrays in \R like they know them in real life, 
+i.e. manipulate the abstract concept microarray while keeping all the 
+underlying technical details, the implementation, hidden, or encapsulated.
+
+These goals are achieved in two steps. First, we defined a class that represents (abstracts) 
+the concept of a microarray. This is very similar to what we have done with the \Robject{list} 
+above (the S3 system does use list), but we will use a more elaborated approach that, 
+although more verbose, provides numerious benefits that will be described in the next sections. 
+The class represents a data container and is defined on its own. 
+An instance of a specific class, that contains data arranged in the specific container, is called an object.
+
+Once we have created a class, we will want to defined a set of specific behaviours, that make 
+sense in the eyes of the users. These behaviours will be implemented by special functions, 
+called methods. Methods are functions that tune their befaviour based on the class of their input. 
+You have already obseved this in your every day usage of \R: whether we ask to produce the boxplot 
+of a \Robject{matrix} (for example \Rfunction{boxplot(maexp[[1]])}) or provide a \Robject{data.frame} 
+and a \Robject{formula} like \Rfunction{boxplot(sampleId \~{} condition, data = maexp[[3]])}, 
+\R automatically does the right thing.
+
+It now becomes obvious that we have two different kind of roles. 
+The \textit{developer} is the one that creates the class and knows the implementation and
+the \textit{user} is the one that uses the class without knowing, or needing to know, its actual underlying representation.
 
 \section{The \Robject{MArray} class}\label{sec:class}
 
+We can define a class with the \Rfunction{setClass} function. Our class is defined by a name, 
+\Robject{MArray}, and a content. The different elements of an S4 class are called slots\footnote{%
+  Note that the usage of \Robject{slots} to define the representation of the class is the preferred 
+  way to define a class; the \Rfunction{representation} function is deprecated from version 3.0.0 
+  and should be avoided.
+}.
+
+<<makeclass, tidy = FALSE>>=
+MArray <- setClass("MArray",
+                   slots = c(marray = "matrix",
+                       fmeta = "data.frame",
+                       pmeta = "data.frame"))
+@ 
+
+The \Rfunction{setClass} function returns a special function called a constructor, 
+that can be used to create an instance of the class.
+
+<<makeobject, tidy = FALSE>>=
+## an empty object
+MArray()
+ma <- MArray(marray = maexp[[1]],
+             pmeta = maexp[["pmeta"]],
+             fmeta = maexp[["fmeta"]])       
+class(ma)
+ma
+@ 
+
+To access individual slots, we need to use the \Rfunction{@}. 
+This is equivalent of using the \Rfunction{\$} for a list.
+
+<<accesswithat>>=
+ma@pmeta
+@ 
+
+But this is something we do not want a user to do. To access a slot like this, 
+one needs to know its name, i.e. the underlying plumbing of the class. This breaks 
+the notion of encapsulation. Instead, the developer will provide the user with 
+specific accessor methods to extract (or update using a replace method) specific slots. 
+
+
 \section{\Robject{MArray} methods}\label{sec:methods}
 
+Before proceeding, we need to explain the concept of generic function. 
+A generic function, or generic for short, is a function that dispatches 
+methods to the appropriate class-specific implementation. 
+A method \Rfunction{do} will implement behaviour for a specific class \Robject{A}, 
+while another implementation of \Rfunction{do}, will define another behavior 
+for class \Robject{B}. The generic \Rfunction{do} is the link between the class 
+and its dedicated implementation. If we have \Rfunction{do(a)} 
+(where \Robject{a} is of class \Robject{A}), than the generic will make sure that 
+the \Robject{A}-specific code of \Rfunction{do} will be executed. 
 
+Before we define a method with \Rfunction{setMethod}, we will always want to first check 
+if such a method does not exists (in which case there is already a generic function). 
+If it is the case, we write our new methods. If not, we first create the generic with 
+\Rfunction{setGeneric} and then proceed with the method.
 
+\subsection{Accessors}
+
+\subsection{The \Rfunction{show} method}
+
+\subsection{The \Rfunction{dim} method}
+
+\subsection{The subsetting operation}
+
+\subsection{The \Rfunction{validity} method}
 
 %% \begin{figure}[!hbt]
 %% \centering
@@ -168,6 +330,8 @@ Object-oriented programming is based on two important concepts, abstraction and 
 %% \caption{Dimension requirements for the respective expression, feature and sample meta-data slots. }
 %% \label{fig:msnset}
 %% \end{figure}
+
+\subsection{A \Rfunction{replace} method}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

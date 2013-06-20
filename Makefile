@@ -37,5 +37,6 @@ s4:
 clean:	
 	rm -f $(LATEXFILES)
 	rm -f .Rhistory
+	rm -rf figure
 	rm -f *~
 	rm -f */*~
