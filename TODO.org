@@ -38,3 +38,22 @@ Suggested topics could be:
 - Functions - not sure this is worth our time. Also, it is somewhat confusing that our example doesn't really return any value IMHO
 - Advanced analysis - I would leave this as there is always someone who wants to get a bit more out of the course
 - Plotting - needs almost complete restructuring. I would delete all the slides and start from scratch. First few slides are OK to introduce the basic concepts (painters model, plotting arbitrary things not just "data", etc), but later on it just goes all over the place. I'm usually not teaching this part so I don't have much input on how to structure it. DEFINITIELY needs more exercises. Execises could be like, here is some data, now visualise it somehow, or, create this plot (using tools that are gradually introduced). 
+
+* Modules
+
+** Day 1
+- Introduction to R and R studio, and other basic concepts
+- Data structures and manipulation, with exercise [*]
+- Programming: looping/apply/vectorisation, if/else, functions
+- NMYC FISH exercise
+- Stats, posibly reusing the data frame created earlier
+
+There are many misc slides that list many functions - not sure if we still want to have them scattered around. In other beginners courses I teach, I provide an R reference sheet [https://github.com/lgatto/RBasics/tree/master/RefCards] with all these functions - this sheet could be distributed and introduced in the first module.
+
+[*] We discussed about replacing the phone book examples. What about creating something about patients, with sex, height, weight, identifier, ... that would be re-used for the stats, explaining factors, plotting, ... we would provide a csv file for the latter, but student would create a small verion manually.
+
+** Day 2
+- CFA exercise. part 1 - simplified example, they do on their one. part 2 with all covariates, as a demonstation.
+- Writing functions (temp conversion)
+- Gene clustering exercise
+- Plotting: base with an exercise re-using one of the previously used daat. Intro to ggplot2 (and lattice?). 
