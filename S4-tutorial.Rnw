@@ -342,12 +342,12 @@ To do so we need a few things. First, we need to know for what class we
 implement the specific \Rfunction{show} method; this is the \Robject{MArray} class and will 
 be passed as the \Robject{signature} argument in \Rfunction{setMethod}.
 We also need to know the argument names that are defined in the generic. 
-These must match exactly, as we write a method for that sepcific generic. 
+These must match exactly, as we write a method for that specific generic. 
 The arguments can be found by just typing the name of the generic (as in the previous) 
 code chunk, look at its documentation or directly ask for the arguments with 
 \Rfunction{args(show)}. We see that there is only one argument, \Robject{object} 
 (naming the first argument of a generic \Robject{object} is a widely applied convention). 
-This is the same name that we will have to use when writing the \Robject{defintion} 
+This is the same name that we will have to use when writing the \Robject{definition} 
 of our method.
 
 <<showmethod, tidy = FALSE>>=
@@ -392,7 +392,7 @@ marray(ma)
 @ 
 
 If we change the underlying implementation by changing the name of the slot or 
-using an environement instead of a matrix, the \Robject{ma@marray} is going 
+using an environment instead of a matrix, the \Robject{ma@marray} is going 
 to break. However, when providing accessors, we can echo the changes in the 
 accessor implementation without affecting the users' behaviour or existing 
 scripts.
@@ -401,9 +401,40 @@ scripts.
 
 Let's now encapsulate the sub-setting of an \Robject{MArray} object 
 in a proper method so facilitate this simple operation. In \R, the 
-default subsetting operator is \Rfunction{[}.
+default subsetting operator is \Rfunction{[}. 
+Although its syntax looks like it is special, the operator is just 
+a normal function with a bit of extra syntactic sugar.
+
+<<syntaticsugar>>=
+letters[1:3]
+`[`(letters, 1:3)
+@ 
+
+If you type \Rfunction{`[`} in you \R console, you will see that this is a primitive function. 
+These internally implemented functions have a special property that, although not explicitly 
+generic functions, they get automatically promoted to generics when a method of the same name 
+is defined. In other words, must not create a generic (this would break \Rfunction{[} is all the other cases) 
+and can directly proceed with the method definition.
+
+When can thus implement a specific behaviour of \Rfunction{[} for the \Robject{MArray} class. 
+The documentation \Rfunction{help("[")} shows that, in addition to \Robject{x}, the object to be subset, 
+we also have to take the \Rfunction{i} and \Rfunction{j} indices into account and the 
+\Robject{drop} argument. When an argument is not relevant, we specify this by declaring that it is 
+\Robject{"missing"}.
 
 
+<<subsetma>>=
+setMethod("[", "MArray",
+          function(x,i,j,drop="missing") {              
+              .marray <- x@marray[i, j]
+              .pmeta <- x@pmeta[j, ]
+              .fmeta <- x@fmeta[i, ]
+              MArray(marray = .marray,
+                     fmeta = .fmeta,
+                     pmeta = .pmeta)
+          })
+ma[1:5, 1:3]
+@ 
 
 \subsection{The \Rfunction{validity} method}
 
@@ -416,15 +447,15 @@ default subsetting operator is \Rfunction{[}.
 
 \subsection{A \Rfunction{replace} method}\label{sec:replace}
 
-\subsection{The \Rfunction{dim} method}
+%% \subsection{The \Rfunction{dim} method}
 
-Let's also implement a \Rfunction{dim} method that will tell us the 
-dimensions of the \Robject{marray} matrix. Let's start by looking at 
-\Rfunction{dim} to see if it is a method at all.
-
-<<whatisdim>>=
-dim
-@ 
+%% Let's also implement a \Rfunction{dim} method that will tell us the 
+%% dimensions of the \Robject{marray} matrix. Let's start by looking at 
+%% \Rfunction{dim} to see if it is a method at all.
+%%
+%% <<whatisdim>>=
+%% dim
+%% @ 
 
 \section{Introspection}
 
