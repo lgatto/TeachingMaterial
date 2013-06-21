@@ -397,6 +397,15 @@ to break. However, when providing accessors, we can echo the changes in the
 accessor implementation without affecting the users' behaviour or existing 
 scripts.
 
+\exercise Implement the \Rfunction{fmeta} and \Rfunction{pmeta} accessors.
+
+<<otheraccess, echo = FALSE>>=
+setGeneric("pmeta", function(object) standardGeneric("pmeta"))
+setGeneric("fmeta", function(object) standardGeneric("fmeta"))
+setMethod("pmeta", "MArray", function(object) object@pmeta)
+setMethod("fmeta", "MArray", function(object) object@fmeta)
+@ 
+
 \subsection{The sub-setting operation}
 
 Let's now encapsulate the sub-setting of an \Robject{MArray} object 
@@ -438,12 +447,70 @@ ma[1:5, 1:3]
 
 \subsection{The \Rfunction{validity} method}
 
-%% \begin{figure}[!hbt]
-%% \centering
-%%     \includegraphics[width=0.5\textwidth]{./Figures/msnset.png}
-%% \caption{Dimension requirements for the respective expression, feature and sample meta-data slots. }
-%% \label{fig:msnset}
-%% \end{figure}
+While discussing the design of our microarray data structure in section \ref{sec:ma}, 
+we have implicitely stated the following validity constrains, schematically represented 
+in figure \ref{fig:msnset}.
+
+In terms of dimensions, the number of rows of the expression matrix \textbf{must} be equal to 
+the number of rows in the feature meta-data data frame and the number of columns in the expression 
+matrix \textbf{must} be equal to the number of rows in the sample meta-data data frame.
+In terms of column and row names, we have also implied that the row names of the expression matrix 
+and feature meta-data data frame were identical and that the column names of the expression matrix 
+and the row names of the sample meta-data data frame were identical. 
+The latter is a good check to make sure that the order in these respective data structures are the same.
+
+\begin{figure}[!hbt]
+\centering
+    \includegraphics[width=0.5\textwidth]{./Figures/msnset.png}
+\caption{Dimension requirements for the respective expression, feature and sample meta-data slots. 
+  (Figure from the \Rpackage{pRoloc} package vignette.)}
+\label{fig:msnset}
+\end{figure}
+
+It is possible to create a validity method for S4 classes to check that the assumptions about 
+the data are met. This validtity method is created using the \Rfunction{setValidity} function 
+and the validity of an object can be checked with \Rfunction{validObject}.
+
+<<setval, tidy = FALSE>>=
+setValidity("MArray", function(object) {
+    msg <- NULL
+    valid <- TRUE
+    if (nrow(marray(object)) != nrow(fmeta(object))) {
+        valid <- FALSE
+        msg <- c(msg, 
+                 "Number of data and feature meta-data rows must be identical.")
+    }
+    if (ncol(marray(object)) != nrow(pmeta(object))) {
+        valid <- FALSE
+        msg <- c(msg, 
+                 "Number of data rows and sample meta-data columns must be identical.")
+    }
+    if (!identical(rownames(marray(object)), rownames(fmeta(object)))) {
+        valid <- FALSE
+        msg <- c(msg, 
+                 "Data and feature meta-data row names must be identical.")        
+    }
+    if (!identical(colnames(marray(object)), rownames(pmeta(object)))) {
+        valid <- FALSE
+        msg <- c(msg, 
+                 "Data row names and sample meta-data columns names must be identical.")        
+    }
+    if (valid) TRUE else msg 
+})
+validObject(ma)
+@ 
+
+\exercise Try to create a new \textbf{invalid} \Robject{MArray} object using the constructor \Rfunction{MArray}. 
+  
+<<notvalid>>=
+x <- marray(ma)
+y2 <- y <- fmeta(ma)
+z2 <- z <- pmeta(ma)
+rownames(y) <- 1:nrow(y)
+rownames(z) <- letters[1:6]
+MArray(marray = x, fmeta = y, pmeta = z)
+MArray(marray = x, fmeta = y2, pmeta = z2) 
+@ 
 
 \subsection{A \Rfunction{replace} method}\label{sec:replace}
 
