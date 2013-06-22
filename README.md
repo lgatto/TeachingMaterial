@@ -79,6 +79,12 @@ tweeting about it and sharing it with your colleagues.
 - Original repository: https://github.com/lgatto/roo
 - More details: https://github.com/lgatto/roo#readme
 
+### Short S4 tutorial
+- Description: A practical S4 object-oriented programming tutorial using microarrays as a working example.
+- Author: [Laurent Gatto](https://github.com/lgatto) 
+- Original repository: https://github.com/lgatto/S4-tutorial
+- More details: https://github.com/lgatto/S4-tutorial#readme
+
 ### R and C/C++
 - Description: Writing and calling `C`/`C++` code for/from `R`
 - Author:  [Laurent Gatto](https://github.com/lgatto) 
