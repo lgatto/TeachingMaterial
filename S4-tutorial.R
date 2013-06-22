@@ -102,6 +102,10 @@ ma
 setGeneric("marray", function(object) standardGeneric("marray"))
 
 
+## @knitr makegen2
+setGeneric("marray", function(object, ...) standardGeneric("marray"))
+
+
 ## @knitr makemeth, tidy = FALSE
 setMethod("marray", "MArray", 
           function(object) object@marray)
@@ -163,13 +167,60 @@ validObject(ma)
 
 
 ## @knitr notvalid
-x <- marray(ma)
-y2 <- y <- fmeta(ma)
-z2 <- z <- pmeta(ma)
-rownames(y) <- 1:nrow(y)
-rownames(z) <- letters[1:6]
+x <- matrix(1:12, ncol = 3)
+y <- fmeta(ma)
+z <- pmeta(ma)
 MArray(marray = x, fmeta = y, pmeta = z)
-MArray(marray = x, fmeta = y2, pmeta = z2) 
+
+
+## @knitr replacedirect
+ma@marray <- 1
+(broken <- ma)
+broken@marray <- matrix(1:9, 3)
+broken
+validObject(broken)
+
+
+## @knitr replacement, tidy = FALSE
+setGeneric("marray<-", function(object, value) standardGeneric("marray<-"))
+setMethod("marray<-", "MArray", 
+          function(object, value) {
+              object@marray <- value
+              if (validObject(object))
+                  return(object)
+})
+
+
+## @knitr replacement2, tidy = FALSE
+tmp <- matrix(rnorm(n*m, 10, 5), ncol = m)
+marray(ma) <- tmp
+colnames(tmp) <- LETTERS[1:m]
+rownames(tmp) <- paste0("probe", 1:n)
+head(marray(ma), n = 2)
+marray(ma) <- tmp
+head(marray(ma), n = 2)
+
+
+## @knitr replacementex, echo = FALSE
+setGeneric("fmeta<-", function(object, value) standardGeneric("fmeta<-"))
+setMethod("fmeta<-", "MArray", 
+          function(object, value) {
+              object@fmeta <- value
+              if (validObject(object))
+                  return(object)
+})
+setGeneric("pmeta<-", function(object, value) standardGeneric("pmeta<-"))
+setMethod("pmeta<-", "MArray", 
+          function(object, value) {
+              object@pmeta <- value
+              if (validObject(object))
+                  return(object)
+})
+
+
+## @knitr replacepmeta
+pmeta(ma)$sex <- rep(c("M", "F"), 3)
+pmeta(ma)
 
 
 ## @knitr introspec

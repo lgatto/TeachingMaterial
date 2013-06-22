@@ -308,7 +308,7 @@ specific accessor methods (see section \ref{sec:access}) to extract
 \section{\Robject{MArray} methods}\label{sec:methods}
 
 Before proceeding, we need to explain the concept of generic function. 
-A generic function, or generic for short, is a function that dispatches 
+A generic function, or generic for short, is a function that \emph{dispatches} 
 methods to the appropriate class-specific implementation. 
 A method \Rfunction{do} will implement behaviour for a specific class \Robject{A}, 
 while another implementation of \Rfunction{do}, will define another behaviour 
@@ -381,6 +381,14 @@ argument(s) that will have to be re-used when defining our class-specific method
 setGeneric("marray", function(object) standardGeneric("marray"))
 @ 
 
+In general, it is considered good practice to add a \Rfunction{...} in the 
+signature of a generic function. It provides the flexibility for other methods 
+to use more arguments.
+
+<<makegen2>>=
+setGeneric("marray", function(object, ...) standardGeneric("marray"))
+@ 
+
 We now proceed in the same way as previously, using \Rfunction{setMethod}.
 The definition of our method (i.e. the actual code that will be executed) 
 is very basic and of course uses the \Rfunction{@}. 
@@ -400,10 +408,10 @@ scripts.
 \exercise Implement the \Rfunction{fmeta} and \Rfunction{pmeta} accessors.
 
 <<otheraccess, echo = FALSE>>=
-setGeneric("pmeta", function(object) standardGeneric("pmeta"))
-setGeneric("fmeta", function(object) standardGeneric("fmeta"))
-setMethod("pmeta", "MArray", function(object) object@pmeta)
-setMethod("fmeta", "MArray", function(object) object@fmeta)
+.silent <- setGeneric("pmeta", function(object) standardGeneric("pmeta"))
+.silent <- setGeneric("fmeta", function(object) standardGeneric("fmeta"))
+.silent <- setMethod("pmeta", "MArray", function(object) object@pmeta)
+.silent <- setMethod("fmeta", "MArray", function(object) object@fmeta)
 @ 
 
 \subsection{The sub-setting operation}
@@ -503,16 +511,97 @@ validObject(ma)
 \exercise Try to create a new \textbf{invalid} \Robject{MArray} object using the constructor \Rfunction{MArray}. 
   
 <<notvalid>>=
-x <- marray(ma)
-y2 <- y <- fmeta(ma)
-z2 <- z <- pmeta(ma)
-rownames(y) <- 1:nrow(y)
-rownames(z) <- letters[1:6]
+x <- matrix(1:12, ncol = 3)
+y <- fmeta(ma)
+z <- pmeta(ma)
 MArray(marray = x, fmeta = y, pmeta = z)
-MArray(marray = x, fmeta = y2, pmeta = z2) 
 @ 
 
-\subsection{A \Rfunction{replace} method}\label{sec:replace}
+\subsection{A replacement method}\label{sec:replace}
+
+The following section describes how to write a method that is dedicated to the 
+replacement or update of the content of a slots. It is of course possible to 
+perform such an operation by accessing the slot content directly, as illustrated below, 
+although this is not advised as it breaks the encapsulation of our data 
+and makes it possible to easily breaks the validity of our object.
+Note also that it is not possible to overwrite any slot with data that is not 
+of the expected class.
+
+<<replacedirect>>=
+ma@marray <- 1
+(broken <- ma)
+broken@marray <- matrix(1:9, 3)
+broken
+validObject(broken)
+@ 
+
+There is a special type of method, called replacement methods, that can be implemented to 
+obtain the desired behaviour in a clean and controlled way. The replacement method 
+provides the convenient \Rfunction{slot(object)<-} syntax. 
+
+Replacement method are always names by concatanating the name of the method and the arrow 
+assigment operator. If we wish to write a replacement method to replace the slot that can 
+be accessed with the \Rfunction{marray} accessor (again, the slot itself is called 
+\Robject{marray}, but that does not need to be the case), the corresponding replacement 
+method would be called \Rfunction{marray<-}\footnote{It could actually be called anything followed 
+by \Rfunction{<-}, but that would be confusing for the user.}. 
+Another important specificity of replacement method is that they always have (at least) two arguments; 
+the object to be updated, that we will name \Robject{object} and the replacing data, 
+always called \Robject{value}.
+Finally, as \Rfunction{marray<-} is going to be a method (and there is no existing generic), 
+we first need to define a generics. 
+
+<<replacement, tidy = FALSE>>=
+setGeneric("marray<-", 
+           function(object, value) standardGeneric("marray<-"))
+
+setMethod("marray<-", "MArray", 
+          function(object, value) {
+              object@marray <- value
+              if (validObject(object))
+                  return(object)
+})
+@ 
+
+To use our replacement function, we need to make sure that the new \Robject{value} will 
+not break the validity of our object, as we explicitely test the validity of our updated 
+\Robject{object} inside the replacement method.
+
+<<replacement2, tidy = FALSE>>=
+tmp <- matrix(rnorm(n*m, 10, 5), ncol = m)
+marray(ma) <- tmp
+colnames(tmp) <- LETTERS[1:m]
+rownames(tmp) <- paste0("probe", 1:n)
+head(marray(ma), n = 2)
+marray(ma) <- tmp
+head(marray(ma), n = 2)
+@ 
+
+
+\exercise Implement the \Rfunction{fmeta} and \Rfunction{pmeta} replacement methods and 
+show that it works with the following replacement.
+
+<<replacementex, echo = FALSE>>=
+.silent <- setGeneric("fmeta<-", function(object, value) standardGeneric("fmeta<-"))
+.silent <- setMethod("fmeta<-", "MArray", 
+          function(object, value) {
+              object@fmeta <- value
+              if (validObject(object))
+                  return(object)
+})
+.silent <- setGeneric("pmeta<-", function(object, value) standardGeneric("pmeta<-"))
+.silent <- setMethod("pmeta<-", "MArray", 
+          function(object, value) {
+              object@pmeta <- value
+              if (validObject(object))
+                  return(object)
+})
+@ 
+
+<<replacepmeta>>=
+pmeta(ma)$sex <- rep(c("M", "F"), 3)
+pmeta(ma)
+@ 
 
 %% \subsection{The \Rfunction{dim} method}
 
