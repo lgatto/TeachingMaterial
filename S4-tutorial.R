@@ -19,18 +19,18 @@ m <- 6
 marray <- matrix(rnorm(n * m, 10, 5), ncol = m)
 pmeta <- data.frame(sampleId = 1:m, 
                     condition = rep(c("WT", "MUT"), each = 3))
-
-
-## @knitr makedata2, tidy= FALSE
 rownames(pmeta) <- colnames(marray) <- LETTERS[1:m]
 fmeta <- data.frame(geneId = 1:n, 
                     pathway = sample(LETTERS, n, replace = TRUE))
 rownames(fmeta) <- 
     rownames(marray) <- paste0("probe", 1:n)
+
+
+## @knitr makedata2, tidy= FALSE
 maexp <- list(marray = marray,
               fmeta = fmeta,
               pmeta = pmeta)
-rm(marray, fmeta, pmeta)
+rm(marray, fmeta, pmeta) ## clean
 str(maexp)
 
 
@@ -39,7 +39,7 @@ maexp$pmeta
 summary(maexp$marray[, "A"])
 wt <- maexp$pmeta[, "condition"] == "WT"
 maexp$marray["probe8", wt]
-maexp[["marray"]]["probe3", !wt]
+maexp[["marray"]]["probe3", !wt] ## different syntax
 
 
 ## @knitr bw1, dev='pdf', echo=TRUE
@@ -67,8 +67,7 @@ MArray <- setClass("MArray",
 
 
 ## @knitr makeobject, tidy = FALSE
-## an empty object
-MArray()
+MArray() ## an empty object
 ma <- MArray(marray = maexp[[1]],
              pmeta = maexp[["pmeta"]],
              fmeta = maexp[["fmeta"]])       
@@ -119,12 +118,12 @@ marray(ma)
 .silent <- setMethod("fmeta", "MArray", function(object) object@fmeta)
 
 
-## @knitr syntaticsugar
+## @knitr syntaticsugar, tidy = FALSE
 letters[1:3]
 `[`(letters, 1:3)
 
 
-## @knitr subsetma
+## @knitr subsetma, tidy = FALSE
 setMethod("[", "MArray",
           function(x,i,j,drop="missing") {              
               .marray <- x@marray[i, j]
