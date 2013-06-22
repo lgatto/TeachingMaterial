@@ -1,0 +1,700 @@
+\documentclass[12pt,a4paper,english]{scrartcl}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage[auth-sc]{authblk}
+\usepackage{setspace}
+\onehalfspacing
+
+%% Exercise counter
+\newcounter{exerciseCounter}
+\newcommand{\exerciseCount}{%
+  \stepcounter{exerciseCounter}%
+  \theexerciseCounter}
+
+\newcommand{\exercise}{\bigskip \textbf{Exercise \exerciseCount:}~}
+
+% caption formatting
+\setcapindent{0em}
+\setkomafont{captionlabel}{\sffamily\bfseries}
+\setkomafont{caption}{\sffamily}
+
+\renewcommand\Authands{ and }
+
+\newcommand{\R}{\texttt{R} }
+\newcommand{\code}[1]{{\texttt{#1}}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
+%% colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\usepackage{geometry}
+\geometry{verbose,
+  tmargin = 2.5cm,
+  bmargin = 2.5cm,
+  lmargin = 3.0cm,
+  rmargin = 3.0cm}
+
+\usepackage{hyperref}
+\usepackage{breakurl}
+\hypersetup{%
+  pdfusetitle,
+  bookmarks = {true},
+  bookmarksnumbered = {true},
+  bookmarksopen = {true},
+  bookmarksopenlevel = 2,
+  unicode = {true},
+  breaklinks = {false},
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+
+\author{
+  Laurent Gatto\thanks{\email{lg390@cam.ac.uk}}
+}
+
+%% \affil{
+%%   Cambridge Center for Proteomics\\
+%%   University of Cambridge
+%% }
+
+\begin{document}
+
+\title{A practical tutorial on S4 programming}
+
+\maketitle
+
+%% %% Abstract and keywords %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% \vskip 0.3in minus 0.1in
+%% \hrule
+%% \begin{abstract}
+%% \end{abstract}
+%% \textit{Keywords}: object-oriented programming, microarry
+%% \vskip 0.1in minus 0.05in
+%% \hrule
+%% \vskip 0.2in minus 0.1in
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\tableofcontents
+
+\vspace{1cm}
+
+\begin{center}
+  This document is distributed under a CC BY-SA 3.0 License\footnote{\url{http://creativecommons.org/licenses/by-sa/3.0/}}. \\
+  More material is available at \url{https://github.com/lgatto/TeachingMaterial}.
+\end{center}
+
+\newpage
+
+<<env, include=FALSE, echo=FALSE, cache=FALSE>>=
+library("knitr")
+opts_chunk$set(fig.align = 'center', 
+               fig.show = 'hold', 
+               par = TRUE,
+               prompt = TRUE,
+               eval = TRUE,
+               stop_on_error = 1L,
+               comment = NA)
+options(replace.assign = TRUE, 
+        width = 55)
+set.seed(1)
+@ 
+%%$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Introduction}\label{sec:intro}
+
+This document\footnote{%
+  The latest version is available on the github 
+  repository \url{https://github.com/lgatto/S4-tutorial}. 
+} introduces \R object-oriented (OO) programming using microarrays as a use case. 
+The introduction is purely practical 
+and does not aim for an exhaustive guide to \R object-oriented programming.
+We will concentrate on the S4 system and only mention the older S3 system 
+and the recent S4 reference class infrastructure here. 
+See the appropriate literature, \Rfunction{?ReferenceClasses} or our more 
+thorough introduction to OO programming\footnote{\url{https://github.com/lgatto/roo}} 
+and references therein for mote details.
+
+\bigskip 
+
+In section \ref{sec:ma}, we present a solution on how to represent microarray data 
+in \R using basic data types and conclude with some issues and limitations of this implementation. 
+In section \ref{sec:oo}, we introduce fundamental concepts of OO programming 
+and present how OO programming is implemented in the S4 system.  
+In sections \ref{sec:class} and \ref{sec:methods}, we implement the S4 class and methods 
+of our microarray example. 
+Section \ref{sec:introspec} briefly shows how to learn about existing classes and methods.
+
+\section{The microarray example}\label{sec:ma}
+
+We assume the reader is familiar with microarrays and 
+the type of data that is obtained from such experiments. 
+Before embarking in any serious programming task, in particular when 
+modelling data and defining data structures (using an OO class system or not), 
+one should carefully think about how to best represent and store the data. 
+
+\exercise Based on your understanding of microarrays, the nature of data their produce 
+and the kind of computational analysis the data fill undergo, think of what is going 
+to be needed to describe an experiment and what the type(s) of data structure 
+available in \R (\Robject{data.frame}, \Robject{matrix}, \Robject{vector}, \ldots) 
+are most appropriate. Ideally, one would want everything (data, meta-data, \ldots) 
+to be stored together as a single variables.
+
+\bigskip 
+
+There are of course multiple valid solutions to the above question. 
+Below are three pieces of information that we consider essential along 
+with their respective \R data structure.
+
+\begin{itemize}
+\item We choose to represent the microarray results as a \Robject{matrix} of size $n \times m$,  
+  where $n$ is the number of probes on the microarray and $m$ is the number of samples. 
+  The matrix that stores the intensities (these could also be fold-changes) 
+  is named \Robject{marray}.
+\item The sample annotation (meta-data) is described using a \Robject{data.frame} with exactly $m$ rows 
+  and any number of columns. It is named \Robject{pmeta}.
+\item The feature (probe) annotation (meta-data) is described using a \Robject{data.frame} 
+  with exactly $n$ rows and any number of columns. Let's call it \Robject{fmeta}.
+\end{itemize}
+
+We will also use the same names for the \Robject{marray} columns and the \Robject{pmeta} rows 
+as well as the \Robject{marray} and \Robject{fmeta} rows. 
+
+<<makedata1, tidy = FALSE>>=
+n <- 10
+m <- 6
+marray <- matrix(rnorm(n * m, 10, 5), ncol = m)
+pmeta <- data.frame(sampleId = 1:m, 
+                    condition = rep(c("WT", "MUT"), each = 3))
+rownames(pmeta) <- colnames(marray) <- LETTERS[1:m]
+fmeta <- data.frame(geneId = 1:n, 
+                    pathway = sample(LETTERS, n, replace = TRUE))
+rownames(fmeta) <- 
+    rownames(marray) <- paste0("probe", 1:n)
+@ 
+
+Finally, to link these related pieces of information together, 
+\Robject{marray}, \Robject{pmeta} and \Robject{fmeta} 
+will all be combined into a \Robject{list} that will represent our microarray experiment.
+
+<<makedata2, tidy= FALSE>>=
+maexp <- list(marray = marray,
+              fmeta = fmeta,
+              pmeta = pmeta)
+rm(marray, fmeta, pmeta) ## clean up
+str(maexp)
+@ 
+
+We can access and manipulate the respective elements of our microarray experiment with the \Rfunction{\$} operator.
+
+<<access>>=
+maexp$pmeta
+summary(maexp$marray[, "A"])
+wt <- maexp$pmeta[, "condition"] == "WT"
+maexp$marray["probe8", wt]
+maexp[["marray"]]["probe3", !wt] ## different syntax
+@ 
+
+The above solution does not provide a clean syntax. 
+As a user, we have to know the names or positions of the respective elements of the 
+microarray list elements to directly access the parts of interest. 
+
+\begin{figure}[!htb]
+<<bw1, dev='pdf', echo=TRUE>>=
+boxplot(maexp$marray)
+@ 
+\caption{Boxplot representing the intensity distributions of the \Sexpr{n} probes for the \Sexpr{m} samples.}
+\label{fig:bw1}
+\end{figure}
+
+\clearpage
+
+\exercise But what if we want to subset the experiment. How would we extract the 10 first probes for the 3 first samples?
+
+\bigskip 
+
+We have to manually subset the individual elements of our list, making sure that the 
+number of rows of the \Robject{marray} and \Robject{fmeta} elements remain identical as well as
+the number of columns of \Robject{marray} and the number of columns of \Robject{pmeta}.
+
+<<subset>>=
+x <- 1:5
+y <- 1:3
+marray2 <- maexp$marray[x, y]
+fmeta2 <- maexp$fmeta[x, ]
+pmeta2 <- maexp$pmeta[y, ]
+maexp2 <- list(marray = marray2,
+               fmeta = fmeta2,
+               pmeta = pmeta2)
+rm(marray2, fmeta2, pmeta2) ## clean up
+str(maexp2)
+@ 
+
+A simple operation like sub-setting the microarray experiment is very cumbersome 
+and prone to errors. If we were to use this implementation for further work, we 
+would of course want to write a custom function to perform the above.
+
+\section{Object-oriented programming}\label{sec:oo}
+
+Object-oriented programming is based on two important concepts, \emph{abstraction} and \emph{encapsulation}. 
+We want to represent the microarray concept in a way that makes most sense to the users 
+without distracting them with unnecessary technicalities. These technicalities refer to the 
+underlying implementation. Do users really need to know that we used a list and 
+that the first element, called \Robject{marray} is the matrix? 
+We want the users to comprehend microarrays in \R like they know them in real life, 
+i.e. manipulate the abstract concept microarray while keeping all the 
+underlying technical details, the implementation, hidden, or encapsulated.
+
+\bigskip
+
+These goals are achieved in two steps. First, we defined a \emph{class} that represents (abstracts) 
+the concept of a microarray. This is very similar to what we have done with the \Robject{list} 
+above (the S3 system does use lists), but we will use a more elaborated approach that, 
+although more verbose, provides numerous benefits that will be described in the next sections. 
+The class represents a data container and is defined on its own. 
+An instance of a specific class, that contains data arranged in the specific container, is called an object.
+
+Once we have created a class, we will want to define a set of specific behaviours, that make 
+sense in the eyes of the users. These behaviours will be implemented by special functions, 
+called \emph{methods}. Methods are functions that tune their behaviour based on the class of their input. 
+You have already observed this in your every day usage of \R: whether we ask to produce the boxplot 
+of a \Robject{matrix} (for example \Rfunction{boxplot(maexp[[1]])}) or provide a \Robject{data.frame} 
+and a \Robject{formula} like \Rfunction{boxplot(sampleId \~{} condition, data = maexp[[3]])}, 
+\R automatically does the right thing.
+
+\bigskip
+
+From the above, it transpires that we have now two different kind of roles. 
+The \textit{developer} is the person who creates the class and knows the implementation while
+the \textit{user} is the one who uses the class without knowing, or needing to know, the actual underlying representation.
+
+\section{The \Robject{MArray} class}\label{sec:class}
+
+We can define a class with the \Rfunction{setClass} function. Our class is defined by a name, 
+\Robject{MArray}, and a content structure. The different elements/fields of an S4 class are 
+called slots\footnote{%
+  Note that the usage of \Robject{slots} to define the representation of the class is the preferred 
+  way to define a class; the \Rfunction{representation} function is deprecated from version 3.0.0 
+  and should be avoided.
+}. When defining the slots, we provide their respective names and classes as a 
+(named) \Robject{vector} or \Robject{list}. It will only be possible to create objects  
+with exactly these types of slots.
+
+<<makeclass, tidy = FALSE>>=
+MArray <- setClass("MArray",
+                   slots = c(marray = "matrix",
+                       fmeta = "data.frame",
+                       pmeta = "data.frame"))
+@ 
+
+The \Rfunction{setClass} function returns a special function called a constructor, 
+that can be used to create an instance of the class.
+
+<<makeobject, tidy = FALSE>>=
+MArray() ## an empty object
+MArray(marray = 1:2) ## not allowed
+ma <- MArray(marray = maexp[[1]],
+             pmeta = maexp[["pmeta"]],
+             fmeta = maexp[["fmeta"]])       
+class(ma)
+ma
+@ 
+
+To access individual slots, we need to use the \Rfunction{@}. 
+This is equivalent to using the \Rfunction{\$} for a list.
+
+<<accesswithat>>=
+ma@pmeta
+@ 
+
+But this is something we do not want a user to do. To access a slot like this, 
+one needs to know its name, i.e. the underlying plumbing of the class. This breaks 
+the notion of encapsulation. Instead, the developer will provide the user with 
+specific accessor methods (see section \ref{sec:access}) to extract 
+(or update using a replace method, section \ref{sec:replace}) specific slots. 
+
+
+\section{\Robject{MArray} methods}\label{sec:methods}
+
+Before proceeding, we need to explain the concept of generic function. 
+A generic function, or generic for short, is a function that \emph{dispatches} 
+methods to their appropriate class-specific implementation. 
+A method \Rfunction{do} will implement behaviour for a specific class \Robject{A}, 
+while another implementation of \Rfunction{do}, will define another behaviour 
+for class \Robject{B}. The generic \Rfunction{do} is the link between the class 
+and its dedicated implementation. If we have \Rfunction{do(a)} 
+(where \Robject{a} is of class \Robject{A}), than the generic will make sure that 
+the \Robject{A}-specific code of \Rfunction{do} will be executed. 
+
+Before we define a method with \Rfunction{setMethod}, we will always want to first check 
+if such a method does not exists (in which case there is already a generic function), 
+as illustrated with the \Rfunction{show} method in section \ref{sec:show}.
+If it is the case, we write our new methods. If not, we first create the generic 
+and then proceed with the method.
+
+\subsection{The \Rfunction{show} method}\label{sec:show}
+
+The \Rfunction{show} method (it is a method, as it exhibits custom behaviour depending on 
+the class of its argument) is a very helpful one. It allows to define custom summary view 
+of an object when we type its name in the console, instead of having all its (possibly very 
+long content) displayed. 
+
+<<showmeth>>=
+show
+isGeneric("show")
+hasMethod("show")
+@ 
+
+As there is already a \Rfunction{show} generic function, we can immediately proceed with the 
+method definition using the \Rfunction{setMethod} function . 
+To do so we need a few things. First, we need to know for what class we 
+implement the specific \Rfunction{show} method; this is the \Robject{MArray} class and will 
+be passed as the \Robject{signature} argument in \Rfunction{setMethod}.
+We also need to know the argument names that are defined in the generic. 
+These must match exactly, as we write a method for that specific generic. 
+The arguments can be found by just typing the name of the generic (as in the previous) 
+code chunk, look at its documentation or directly ask for the arguments with 
+\Rfunction{args(show)}. We see that there is only one argument, \Robject{object} 
+(naming the first argument of a generic \Robject{object} is a widely applied convention). 
+This is the same name that we will have to use when writing the \Robject{definition} 
+of our method.
+
+<<showmethod, tidy = FALSE>>=
+setMethod("show", 
+          signature = "MArray", 
+          definition = function(object) {
+              cat("An object of class ", class(object), "\n", sep = "")
+              cat(" ", nrow(object@marray), " features by ", 
+                  ncol(object@marray), " samples.\n", sep = "")
+              invisible(NULL)
+          })
+ma 
+@ 
+
+
+\subsection{Accessors}\label{sec:access}
+
+As mentioned above, we want to provide customised and controlled access to the 
+class slots. This does not prevent us, as developers, to use the \Rfunction{@} 
+accessor, but does not force others to know the implementation details. 
+
+Let's create an accessor for the \Robject{marray} slot and call the accessor 
+\Rfunction{marray}. There is no harm in naming the slot and its accessor with the same name 
+but there is no constrain in doing so. There is no such method or generic; just 
+typing \Rfunction{marray} with tell you that no such object is found. 
+Below, we create a new generic function with \Rfunction{setGeneric}. 
+We define the name of our new generic as well as the name of the 
+argument(s) that will have to be re-used when defining class-specific method. 
+
+<<makegen>>=
+setGeneric("marray", function(object) standardGeneric("marray"))
+@ 
+
+In general, it is considered good practice to add a \Rfunction{...} in the 
+signature of a generic function. It provides the flexibility for other methods 
+to use more arguments.
+
+<<makegen2>>=
+setGeneric("marray", function(object, ...) standardGeneric("marray"))
+@ 
+
+We now proceed in the same way as above, using \Rfunction{setMethod}.
+The definition of our method (i.e. the actual code that will be executed) 
+is very short and of course uses \Rfunction{@} to access (and return) the slot content. 
+
+<<makemeth, tidy = FALSE>>=
+setMethod("marray", "MArray", 
+          function(object) object@marray)
+marray(ma)
+@ 
+
+If we change the underlying implementation by changing the name of the slot or 
+using an environment instead of a matrix, the \Robject{ma@marray} is going 
+to break. However, when providing accessors, we can echo the changes in the 
+accessor implementation without affecting the users' behaviour or existing 
+scripts.
+
+\exercise Implement the \Rfunction{fmeta} and \Rfunction{pmeta} accessors.
+
+<<otheraccess, echo = FALSE>>=
+.silent <- setGeneric("pmeta", function(object) standardGeneric("pmeta"))
+.silent <- setGeneric("fmeta", function(object) standardGeneric("fmeta"))
+.silent <- setMethod("pmeta", "MArray", function(object) object@pmeta)
+.silent <- setMethod("fmeta", "MArray", function(object) object@fmeta)
+@ 
+
+\subsection{The sub-setting operation}
+
+Let's now encapsulate the sub-setting of an \Robject{MArray} object 
+in a proper method to facilitate this simple operation. In \R, the 
+default subsetting operator is \Rfunction{[}. 
+Although its syntax looks like it is special, the operator is just 
+a normal function with a bit of extra syntactic sugar.
+
+<<syntaticsugar, tidy = FALSE>>=
+letters[1:3]
+`[`(letters, 1:3)
+@ 
+
+If you type \Rfunction{`[`} in you \R console, you will see that this is a primitive function. 
+These internally implemented functions have a special property that, although not explicitly 
+generic functions, they get automatically promoted to generics when a method of the same name 
+is defined. In other words, we we must not create a generic 
+(this would break \Rfunction{[} is all the other cases) 
+and can directly proceed with implementing a specific behaviour of \Rfunction{[} for the \Robject{MArray} class. 
+  
+The documentation \Rfunction{help("[")} shows that, in addition to \Robject{x}, the object to be subset, 
+we also have to take the \Rfunction{i} and \Rfunction{j} indices into account and the 
+\Robject{drop} argument. When an argument is not relevant, we specify this by declaring that it is 
+\Robject{"missing"}.
+
+
+<<subsetma, tidy = FALSE>>=
+setMethod("[", "MArray",
+          function(x,i,j,drop="missing") {              
+              .marray <- x@marray[i, j]
+              .pmeta <- x@pmeta[j, ]
+              .fmeta <- x@fmeta[i, ]
+              MArray(marray = .marray,
+                     fmeta = .fmeta,
+                     pmeta = .pmeta)
+          })
+ma[1:5, 1:3]
+@ 
+
+\subsection{The \Rfunction{validity} method}\label{sec:valid}
+
+While discussing the design of our microarray data structure in section \ref{sec:ma}, 
+we have implicitly stated the following validity constrains, schematically represented 
+in figure \ref{fig:msnset}.
+In terms of dimensions, the number of rows of the expression matrix must be equal to 
+the number of rows in the feature meta-data data frame and the number of columns in the expression 
+matrix must be equal to the number of rows in the sample meta-data data frame.
+In terms of names, we have also implied that the row names of the expression matrix 
+and feature meta-data data frame were identical and that the column names of the expression matrix 
+and the row names of the sample meta-data data frame were identical. 
+The latter is a good check to make sure that the order in these respective data structures are the same.
+
+\begin{figure}[!hbt]
+\centering
+    \includegraphics[width=0.5\textwidth]{./Figures/msnset.png}
+\caption{Dimension requirements for the respective expression, feature and sample meta-data slots. 
+  (Figure from the \Rpackage{pRoloc} package vignette.)}
+\label{fig:msnset}
+\end{figure}
+
+It is possible to create a validity method for S4 classes to check that the assumptions about 
+the data are met. This validity method is created using the \Rfunction{setValidity} function 
+and the validity of an object can be checked with \Rfunction{validObject}.
+
+<<setval, tidy = FALSE>>=
+setValidity("MArray", function(object) {
+    msg <- NULL
+    valid <- TRUE
+    if (nrow(marray(object)) != nrow(fmeta(object))) {
+        valid <- FALSE
+        msg <- c(msg, 
+                 "Number of data and feature meta-data rows must be identical.")
+    }
+    if (ncol(marray(object)) != nrow(pmeta(object))) {
+        valid <- FALSE
+        msg <- c(msg, 
+                 "Number of data rows and sample meta-data columns must be identical.")
+    }
+    if (!identical(rownames(marray(object)), rownames(fmeta(object)))) {
+        valid <- FALSE
+        msg <- c(msg, 
+                 "Data and feature meta-data row names must be identical.")        
+    }
+    if (!identical(colnames(marray(object)), rownames(pmeta(object)))) {
+        valid <- FALSE
+        msg <- c(msg, 
+                 "Data row names and sample meta-data columns names must be identical.")        
+    }
+    if (valid) TRUE else msg 
+})
+validObject(ma)
+@ 
+
+\exercise Try to create a new \textbf{invalid} \Robject{MArray} object using the constructor \Rfunction{MArray}. 
+  
+<<notvalid>>=
+x <- matrix(1:12, ncol = 3)
+y <- fmeta(ma)
+z <- pmeta(ma)
+MArray(marray = x, fmeta = y, pmeta = z)
+@ 
+
+\subsection{A replacement method}\label{sec:replace}
+
+The following section describes how to write a method that is dedicated to the 
+replacement or update of the content of slots. It is of course possible to 
+perform such an operation by accessing the slot content directly, as illustrated below.
+As discussed in previous sections, this is not advised as it violates the encapsulation of our data 
+and makes it possible to break the validity of an object.
+Note also that it is not possible to overwrite any slot with data that is not 
+of the expected class.
+
+<<replacedirect>>=
+ma@marray <- 1
+(broken <- ma)
+broken@marray <- matrix(1:9, 3)
+broken
+validObject(broken)
+@ 
+
+There is a special type of method, called a \emph{replacement method}, that can be implemented to 
+obtain the desired behaviour in a clean and controlled way. A replacement method 
+provides the convenient \Rfunction{slot(object)<-} syntax. 
+
+Replacement method are always named by concatenating the name of the method and the arrow 
+assignment operator. If we wish to write a  method to replace the slot that can 
+be accessed with the \Rfunction{marray} accessor (again, the slot itself is called 
+\Robject{marray}, but that does not need to be the case), the corresponding replacement 
+method would be called \Rfunction{marray<-}\footnote{It could actually be called anything followed 
+by \Rfunction{<-}, but that would be confusing for the user.}. 
+Another important specificity of replacement methods is that they always take (at least) two arguments; 
+the object to be updated, that we will name \Robject{object} and the replacement data, 
+always called \Robject{value}.
+Finally, as \Rfunction{marray<-} is going to be a method (and there is no existing generic), 
+we first need to define a generics. 
+
+<<genreplacement, tidy = FALSE>>=
+setGeneric("marray<-", 
+           function(object, value) standardGeneric("marray<-"))
+@ 
+
+
+In the definition of the replacement method, we check that the user-provided \Robject{value} 
+does not break the validity of \Robject{object} with the \Rfunction{validObject} method
+(see section \ref{sec:valid}) before returning it.
+
+<<replacement, tidy = FALSE>>=
+setMethod("marray<-", "MArray", 
+          function(object, value) {
+              object@marray <- value
+              if (validObject(object))
+                  return(object)
+})
+@ 
+
+Below, we firs try to replace the expression matrix with an invalid  value 
+and then test out new replacement method with a valid matrix.
+
+<<replacement2, tidy = FALSE>>=
+tmp <- matrix(rnorm(n*m, 10, 5), ncol = m)
+marray(ma) <- tmp
+colnames(tmp) <- LETTERS[1:m]
+rownames(tmp) <- paste0("probe", 1:n)
+head(marray(ma), n = 2)
+marray(ma) <- tmp
+head(marray(ma), n = 2)
+@ 
+
+
+\exercise Implement the \Rfunction{fmeta} and \Rfunction{pmeta} replacement methods and 
+show that it works with the following replacement.
+
+<<replacementex, echo = FALSE>>=
+.silent <- setGeneric("fmeta<-", function(object, value) standardGeneric("fmeta<-"))
+.silent <- setMethod("fmeta<-", "MArray", 
+          function(object, value) {
+              object@fmeta <- value
+              if (validObject(object))
+                  return(object)
+})
+.silent <- setGeneric("pmeta<-", function(object, value) standardGeneric("pmeta<-"))
+.silent <- setMethod("pmeta<-", "MArray", 
+          function(object, value) {
+              object@pmeta <- value
+              if (validObject(object))
+                  return(object)
+})
+@ 
+
+<<replacepmeta>>=
+pmeta(ma)$sex <- rep(c("M", "F"), 3)
+pmeta(ma)
+@ 
+
+%% \subsection{The \Rfunction{dim} method}
+
+%% Let's also implement a \Rfunction{dim} method that will tell us the 
+%% dimensions of the \Robject{marray} matrix. Let's start by looking at 
+%% \Rfunction{dim} to see if it is a method at all.
+%%
+%% <<whatisdim>>=
+%% dim
+%% @ 
+
+\section{Introspection}\label{sec:introspec}
+
+To find out more about a class you are using without reading its source code, 
+one can use the following functions to get the slot names and the complete class 
+definition.
+
+<<introspec>>=
+slotNames(ma)
+getClass("MArray")
+@ 
+
+To obtain all the methods that are available for a given function name of for 
+a given class class, one can use \Rfunction{showMethods}.
+
+<<introspec2>>=
+showMethods("marray")
+showMethods(classes = "MArray")
+@ 
+
+To obtain the code for a specific method, one can use \Rfunction{getMethod} 
+with the name of the method and the name of the class.
+
+<<introspec3>>=
+getMethod("marray", "MArray")
+@ 
+
+
+\section{Conclusion}\label{sec:ccl}
+
+Although the verbosity of the S4 system might seem like a little overhead in the beginning, 
+it provides improved stability and usability for the future. 
+The design and usage of an efficient class system requires one to think about 
+the needs of the user role before writing code, as it involves some commitment in the design decisions 
+and the resulting interface. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Session information}\label{sec:sessionInfo} 
+
+All software and respective versions used to produce this document are listed below.
+
+<<sessioninfo, results='asis', echo=FALSE>>=
+toLatex(sessionInfo())
+@
+
+%% \bibliographystyle{plainnat}
+%% \bibliography{}
+
+\end{document}
+
