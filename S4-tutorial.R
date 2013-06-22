@@ -180,10 +180,12 @@ broken
 validObject(broken)
 
 
-## @knitr replacement, tidy = FALSE
+## @knitr genreplacement, tidy = FALSE
 setGeneric("marray<-", 
            function(object, value) standardGeneric("marray<-"))
 
+
+## @knitr replacement, tidy = FALSE
 setMethod("marray<-", "MArray", 
           function(object, value) {
               object@marray <- value

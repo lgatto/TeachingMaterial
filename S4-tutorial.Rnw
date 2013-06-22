@@ -474,7 +474,7 @@ setMethod("[", "MArray",
 ma[1:5, 1:3]
 @ 
 
-\subsection{The \Rfunction{validity} method}
+\subsection{The \Rfunction{validity} method}\label{sec:valid}
 
 While discussing the design of our microarray data structure in section \ref{sec:ma}, 
 we have implicitly stated the following validity constrains, schematically represented 
@@ -571,10 +571,17 @@ always called \Robject{value}.
 Finally, as \Rfunction{marray<-} is going to be a method (and there is no existing generic), 
 we first need to define a generics. 
 
-<<replacement, tidy = FALSE>>=
+<<genreplacement, tidy = FALSE>>=
 setGeneric("marray<-", 
            function(object, value) standardGeneric("marray<-"))
+@ 
 
+
+In the definition of the replacement method, we check that the user-provided \Robject{value} 
+does not break the validity of \Robject{object} with the \Rfunction{validObject} method
+(see section \ref{sec:valid}) before returning it.
+
+<<replacement, tidy = FALSE>>=
 setMethod("marray<-", "MArray", 
           function(object, value) {
               object@marray <- value
@@ -583,9 +590,8 @@ setMethod("marray<-", "MArray",
 })
 @ 
 
-To use our replacement function, we need to make sure that the new \Robject{value} will 
-not break the validity of our object, as we explicitly test the validity of our updated 
-\Robject{object} inside the replacement method.
+Below, we firs try to replace the expression matrix with an invalid replacement value 
+and then test out new replacement method with a valid matrix.
 
 <<replacement2, tidy = FALSE>>=
 tmp <- matrix(rnorm(n*m, 10, 5), ncol = m)
@@ -635,7 +641,7 @@ pmeta(ma)
 
 \section{Introspection}\label{sec:introspec}
 
-To find out more about a class you are using with tout reading its source code, 
+To find out more about a class you are using without reading its source code, 
 one can use the following functions to get the slot names and the complete class 
 definition.
 
@@ -663,9 +669,9 @@ getMethod("marray", "MArray")
 \section{Conclusion}\label{sec:ccl}
 
 Although the verbosity of the S4 system might seem like a little overhead in the beginning, 
-it guarantees improved stability and usability in the future.
+it the S4 system provides improved stability and usability in the future. 
 The design and usage of an efficient class system however implies to think about 
-the needs of the user role before code.
+the needs of the user role before code, as it involves some commitment in the design decisions. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
