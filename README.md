@@ -4,7 +4,7 @@ TeachingMaterial
 This repository is an aggregator for various [R](http://www.r-project.org/) teaching material.
 Most of the courses are taught at the University of Cambridge, UK, and some have been adapted and exported outside. 
 Each material subdirectory has its own repository; `TeachingMaterial` aggregates a snapshot as a central entry point. 
-Aggregation is done using `git-subtree` and will be documented soon. 
+Aggregation is done using `git-subtree` (see the [administration page](https://github.com/lgatto/TeachingMaterial/wiki/TM-Administration) for details). 
 The local copies linking to external repositories are prefixed with an underscore. 
 
 Unless otherwise stated, all material is licensed under a 
