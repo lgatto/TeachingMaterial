@@ -113,10 +113,10 @@ marray(ma)
 
 
 ## @knitr otheraccess, echo = FALSE
-setGeneric("pmeta", function(object) standardGeneric("pmeta"))
-setGeneric("fmeta", function(object) standardGeneric("fmeta"))
-setMethod("pmeta", "MArray", function(object) object@pmeta)
-setMethod("fmeta", "MArray", function(object) object@fmeta)
+.silent <- setGeneric("pmeta", function(object) standardGeneric("pmeta"))
+.silent <- setGeneric("fmeta", function(object) standardGeneric("fmeta"))
+.silent <- setMethod("pmeta", "MArray", function(object) object@pmeta)
+.silent <- setMethod("fmeta", "MArray", function(object) object@fmeta)
 
 
 ## @knitr syntaticsugar
@@ -182,7 +182,9 @@ validObject(broken)
 
 
 ## @knitr replacement, tidy = FALSE
-setGeneric("marray<-", function(object, value) standardGeneric("marray<-"))
+setGeneric("marray<-", 
+           function(object, value) standardGeneric("marray<-"))
+
 setMethod("marray<-", "MArray", 
           function(object, value) {
               object@marray <- value
@@ -202,15 +204,15 @@ head(marray(ma), n = 2)
 
 
 ## @knitr replacementex, echo = FALSE
-setGeneric("fmeta<-", function(object, value) standardGeneric("fmeta<-"))
-setMethod("fmeta<-", "MArray", 
+.silent <- setGeneric("fmeta<-", function(object, value) standardGeneric("fmeta<-"))
+.silent <- setMethod("fmeta<-", "MArray", 
           function(object, value) {
               object@fmeta <- value
               if (validObject(object))
                   return(object)
 })
-setGeneric("pmeta<-", function(object, value) standardGeneric("pmeta<-"))
-setMethod("pmeta<-", "MArray", 
+.silent <- setGeneric("pmeta<-", function(object, value) standardGeneric("pmeta<-"))
+.silent <- setMethod("pmeta<-", "MArray", 
           function(object, value) {
               object@pmeta <- value
               if (validObject(object))
@@ -226,6 +228,15 @@ pmeta(ma)
 ## @knitr introspec
 slotNames(ma)
 getClass("MArray")
+
+
+## @knitr introspec2
+showMethods("marray")
+showMethods(classes = "MArray")
+
+
+## @knitr introspec3
+getMethod("marray", "MArray")
 
 
 ## @knitr sessioninfo, results='asis', echo=FALSE

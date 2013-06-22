@@ -615,17 +615,37 @@ pmeta(ma)
 
 \section{Introspection}
 
+To find out more about a class you are using withtout reading its source code, 
+one can use the following functions to get the slot names and the complete class 
+definition.
+
 <<introspec>>=
 slotNames(ma)
 getClass("MArray")
 @ 
 
-Finding stuff with \Rfunction{showMethods}, \Rfunction{getMethod()}.
+To obtian all the methods that are available for a given function name of for 
+a given class class, one can use \Rfunction{showMethods}.
+
+<<introspec2>>=
+showMethods("marray")
+showMethods(classes = "MArray")
+@ 
+
+To obtain the code for a specific method, one can use \Rfunction{getMethod} 
+with the name of the method and the name of the class.
+
+<<introspec3>>=
+getMethod("marray", "MArray")
+@ 
+
 
 \section{Conclusion}
 
-A little overhead in the beginning for improved stability and usability in the future. 
-This however implied to think about the needs of the users role before you write code.
+Although the verbosity of the S4 system might seem like a little overhead in the beginning, 
+it guarantees improved stability and usability in the future.
+The design and usage of an efficient class system however implies to think about 
+the needs of the user role before code.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
