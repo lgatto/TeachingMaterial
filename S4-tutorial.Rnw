@@ -540,10 +540,10 @@ MArray(marray = x, fmeta = y, pmeta = z)
 \subsection{A replacement method}\label{sec:replace}
 
 The following section describes how to write a method that is dedicated to the 
-replacement or update of the content of a slots. It is of course possible to 
-perform such an operation by accessing the slot content directly, as illustrated below, 
-although this is not advised as it breaks the encapsulation of our data 
-and makes it possible to easily break the validity of our object.
+replacement or update of the content of slots. It is of course possible to 
+perform such an operation by accessing the slot content directly, as illustrated below.
+As discussed in previous sections, this is not advised as it violates the encapsulation of our data 
+and makes it possible to break the validity of an object.
 Note also that it is not possible to overwrite any slot with data that is not 
 of the expected class.
 
@@ -555,17 +555,17 @@ broken
 validObject(broken)
 @ 
 
-There is a special type of methods, called replacement methods, that can be implemented to 
+There is a special type of method, called a \emph{replacement method}, that can be implemented to 
 obtain the desired behaviour in a clean and controlled way. A replacement method 
 provides the convenient \Rfunction{slot(object)<-} syntax. 
 
 Replacement method are always named by concatenating the name of the method and the arrow 
-assignment operator. If we wish to write a replacement method to replace the slot that can 
+assignment operator. If we wish to write a  method to replace the slot that can 
 be accessed with the \Rfunction{marray} accessor (again, the slot itself is called 
 \Robject{marray}, but that does not need to be the case), the corresponding replacement 
 method would be called \Rfunction{marray<-}\footnote{It could actually be called anything followed 
 by \Rfunction{<-}, but that would be confusing for the user.}. 
-Another important specificity of replacement method is that they always have (at least) two arguments; 
+Another important specificity of replacement methods is that they always take (at least) two arguments; 
 the object to be updated, that we will name \Robject{object} and the replacement data, 
 always called \Robject{value}.
 Finally, as \Rfunction{marray<-} is going to be a method (and there is no existing generic), 
@@ -590,7 +590,7 @@ setMethod("marray<-", "MArray",
 })
 @ 
 
-Below, we firs try to replace the expression matrix with an invalid replacement value 
+Below, we firs try to replace the expression matrix with an invalid  value 
 and then test out new replacement method with a valid matrix.
 
 <<replacement2, tidy = FALSE>>=
@@ -669,9 +669,11 @@ getMethod("marray", "MArray")
 \section{Conclusion}\label{sec:ccl}
 
 Although the verbosity of the S4 system might seem like a little overhead in the beginning, 
-it the S4 system provides improved stability and usability in the future. 
-The design and usage of an efficient class system however implies to think about 
-the needs of the user role before code, as it involves some commitment in the design decisions. 
+it provides improved stability and usability for the future. 
+The design and usage of an efficient class system requires one to think about 
+the needs of the user role before writing code, as it involves some commitment in the design decisions 
+and the resulting interface. 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
