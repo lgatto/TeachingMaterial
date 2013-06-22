@@ -124,7 +124,7 @@ set.seed(1)
 This document\footnote{%
   The latest version is available on the github 
   repository \url{https://github.com/lgatto/S4-tutorial}. 
-} introduces \R object-oriented programming using microarrays as a use case. 
+} introduces \R object-oriented (OO) programming using microarrays as a use case. 
 The introduction is purely practical 
 and does not aim for an exhaustive guide to \R object-oriented programming.
 We will concentrate on the S4 system and only mention the older S3 system 
@@ -145,15 +145,15 @@ Section \ref{sec:introspec} briefly shows how to learn about existing classes an
 
 \section{The microarray example}\label{sec:ma}
 
-We assume the reader is familiar with the concept of microarrays and 
-the type of data that is obtained from such an experiment. 
+We assume the reader is familiar with microarrays and 
+the type of data that is obtained from such experiments. 
 Before embarking in any serious programming task, in particular when 
 modelling data and defining data structures (using an OO class system or not), 
 one should carefully think about how to best represent and store the data. 
 
-\exercise Based on your understanding of microarrays and the kind of 
-data that is to be used for subsequent computational analysis, think of what is going 
-to be needed to describe an experiment and what the types of data structures 
+\exercise Based on your understanding of microarrays, the nature of data their produce 
+and the kind of computational analysis the data fill undergo, think of what is going 
+to be needed to describe an experiment and what the type(s) of data structure 
 available in \R (\Robject{data.frame}, \Robject{matrix}, \Robject{vector}, \ldots) 
 are most appropriate. Ideally, one would want everything (data, meta-data, \ldots) 
 to be stored together as a single variables.
@@ -167,7 +167,7 @@ with their respective \R data structure.
 \begin{itemize}
 \item We choose to represent the microarray results as a \Robject{matrix} of size $n \times m$,  
   where $n$ is the number of probes on the microarray and $m$ is the number of samples. 
-  The matrix that stores the intensities (these could also represent fold-changes) 
+  The matrix that stores the intensities (these could also be fold-changes) 
   is named \Robject{marray}.
 \item The sample annotation (meta-data) is described using a \Robject{data.frame} with exactly $m$ rows 
   and any number of columns. It is named \Robject{pmeta}.
@@ -175,8 +175,8 @@ with their respective \R data structure.
   with exactly $n$ rows and any number of columns. Let's call it \Robject{fmeta}.
 \end{itemize}
 
-We will also set the same names for the intensity matrix columns and the sample meta-data rows 
-as well as the matrix rows and feature meta-data row. 
+We will also use the same names for the \Robject{marray} columns and the \Robject{pmeta} rows 
+as well as the \Robject{marray} and \Robject{fmeta} rows. 
 
 <<makedata1, tidy = FALSE>>=
 n <- 10
@@ -199,11 +199,11 @@ will all be combined into a \Robject{list} that will represent our microarray ex
 maexp <- list(marray = marray,
               fmeta = fmeta,
               pmeta = pmeta)
-rm(marray, fmeta, pmeta) ## clean
+rm(marray, fmeta, pmeta) ## clean up
 str(maexp)
 @ 
 
-We can access the respective elements of our microarray experiment with the \Rfunction{\$} operator.
+We can access and manipulate the respective elements of our microarray experiment with the \Rfunction{\$} operator.
 
 <<access>>=
 maexp$pmeta
@@ -212,6 +212,10 @@ wt <- maexp$pmeta[, "condition"] == "WT"
 maexp$marray["probe8", wt]
 maexp[["marray"]]["probe3", !wt] ## different syntax
 @ 
+
+The above solution does not provide a clean syntax. 
+As a user, we have to know the names or positions of the respective elements of the 
+microarray list elements to directly access the parts of interest. 
 
 \begin{figure}[!htb]
 <<bw1, dev='pdf', echo=TRUE>>=
@@ -240,17 +244,15 @@ pmeta2 <- maexp$pmeta[y, ]
 maexp2 <- list(marray = marray2,
                fmeta = fmeta2,
                pmeta = pmeta2)
-rm(marray2, fmeta2, pmeta2)
+rm(marray2, fmeta2, pmeta2) ## clean up
 str(maexp2)
 @ 
 
-The above solution does not provide a clean syntax. 
-As a user, we have to know the names or positions of the respective elements of the 
-microarray list elements to directly access the parts of interest. 
-Finally, a simple operation like sub-setting the microarray experiment is very cumbersome 
-and prone to errors.
+A simple operation like sub-setting the microarray experiment is very cumbersome 
+and prone to errors. If we were to use this implementation for further work, we 
+would of course want to write a custom function to perform the above.
 
-\section{Using OO programming}\label{sec:oo}
+\section{Object-oriented programming}\label{sec:oo}
 
 Object-oriented programming is based on two important concepts, \emph{abstraction} and \emph{encapsulation}. 
 We want to represent the microarray concept in a way that makes most sense to the users 
@@ -280,18 +282,21 @@ and a \Robject{formula} like \Rfunction{boxplot(sampleId \~{} condition, data = 
 
 \bigskip
 
-It now becomes clear that we have two different kind of roles. 
-The \textit{developer} is the one who creates the class and knows the implementation and
+From the above, it transpires that we have now two different kind of roles. 
+The \textit{developer} is the person who creates the class and knows the implementation while
 the \textit{user} is the one who uses the class without knowing, or needing to know, the actual underlying representation.
 
 \section{The \Robject{MArray} class}\label{sec:class}
 
 We can define a class with the \Rfunction{setClass} function. Our class is defined by a name, 
-\Robject{MArray}, and a content. The different elements of an S4 class are called slots\footnote{%
+\Robject{MArray}, and a content structure. The different elements/fields of an S4 class are 
+called slots\footnote{%
   Note that the usage of \Robject{slots} to define the representation of the class is the preferred 
   way to define a class; the \Rfunction{representation} function is deprecated from version 3.0.0 
   and should be avoided.
-}.
+}. When defining the slots, we provide their respective names and classes as a 
+(named) \Robject{vector} or \Robject{list}. It will only be possible to create objects  
+with exactly these types of slots.
 
 <<makeclass, tidy = FALSE>>=
 MArray <- setClass("MArray",
@@ -305,6 +310,7 @@ that can be used to create an instance of the class.
 
 <<makeobject, tidy = FALSE>>=
 MArray() ## an empty object
+MArray(marray = 1:2) ## not allowed
 ma <- MArray(marray = maexp[[1]],
              pmeta = maexp[["pmeta"]],
              fmeta = maexp[["fmeta"]])       

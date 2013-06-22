@@ -30,7 +30,7 @@ rownames(fmeta) <-
 maexp <- list(marray = marray,
               fmeta = fmeta,
               pmeta = pmeta)
-rm(marray, fmeta, pmeta) ## clean
+rm(marray, fmeta, pmeta) ## clean up
 str(maexp)
 
 
@@ -55,7 +55,7 @@ pmeta2 <- maexp$pmeta[y, ]
 maexp2 <- list(marray = marray2,
                fmeta = fmeta2,
                pmeta = pmeta2)
-rm(marray2, fmeta2, pmeta2)
+rm(marray2, fmeta2, pmeta2) ## clean up
 str(maexp2)
 
 
@@ -68,6 +68,7 @@ MArray <- setClass("MArray",
 
 ## @knitr makeobject, tidy = FALSE
 MArray() ## an empty object
+MArray(marray = 1:2) ## not allowed
 ma <- MArray(marray = maexp[[1]],
              pmeta = maexp[["pmeta"]],
              fmeta = maexp[["fmeta"]])       
