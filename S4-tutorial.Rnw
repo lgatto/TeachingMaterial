@@ -555,18 +555,18 @@ broken
 validObject(broken)
 @ 
 
-There is a special type of method, called replacement methods, that can be implemented to 
-obtain the desired behaviour in a clean and controlled way. The replacement method 
+There is a special type of methods, called replacement methods, that can be implemented to 
+obtain the desired behaviour in a clean and controlled way. A replacement method 
 provides the convenient \Rfunction{slot(object)<-} syntax. 
 
-Replacement method are always names by concatenating the name of the method and the arrow 
+Replacement method are always named by concatenating the name of the method and the arrow 
 assignment operator. If we wish to write a replacement method to replace the slot that can 
 be accessed with the \Rfunction{marray} accessor (again, the slot itself is called 
 \Robject{marray}, but that does not need to be the case), the corresponding replacement 
 method would be called \Rfunction{marray<-}\footnote{It could actually be called anything followed 
 by \Rfunction{<-}, but that would be confusing for the user.}. 
 Another important specificity of replacement method is that they always have (at least) two arguments; 
-the object to be updated, that we will name \Robject{object} and the replacing data, 
+the object to be updated, that we will name \Robject{object} and the replacement data, 
 always called \Robject{value}.
 Finally, as \Rfunction{marray<-} is going to be a method (and there is no existing generic), 
 we first need to define a generics. 
