@@ -2,6 +2,7 @@
 ## @knitr env0, echo=FALSE, message = FALSE
 library(Biobase)
 data(sample.ExpressionSet)
+options(width = 50)
 
 
 ## @knitr vec0
@@ -81,7 +82,7 @@ dim(m)
 
 
 ## @knitr mat2
-matrix(1:11, 4, 3)
+matrix(1:11, 4, 3) ## recycling
 matrix(1:12, 3, 3)
 
 
@@ -99,10 +100,14 @@ array(1:16, dim = c(2, 4, 2))
 
 
 ## @knitr list
-ll <- list(a = 1:3, c = length)
+(ll <- list(a = 1:3, f = length))
+ll[1] ## a list of length 1
+ll[[1]] ## or ll$a - first element
+
+
+## @knitr list2
 ll
-ll[[1]]
-ll$c(ll)
+ll$f(ll)
 
 
 ## @knitr dfr, tidy = FALSE
@@ -143,7 +148,7 @@ dimnames(M) <- list(year =
 M
 
 
-## @knitr 
+## @knitr factor
 sample.ExpressionSet$type
 
 

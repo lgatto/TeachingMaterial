@@ -133,6 +133,13 @@ data(sample.ExpressionSet)
 %% section                                                     %% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\begin{frame}[fragile]
+<<sessioninfo, results='asis'>>=
+toLatex(sessionInfo())
+@   
+\end{frame}
+
+
 \begin{frame}
   \begin{block}{References}
     \begin{itemize}
@@ -143,12 +150,6 @@ data(sample.ExpressionSet)
   \end{block}
 \end{frame}
 
-%%\vspace{5cm}
-\begin{frame}[fragile]
-<<sessioninfo, results='asis'>>=
-toLatex(sessionInfo())
-@   
-\end{frame}
 
 \begin{frame}
   \begin{itemize}

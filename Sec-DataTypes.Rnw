@@ -3,6 +3,7 @@
 <<env0, echo=FALSE, message = FALSE>>=
 library(Biobase)
 data(sample.ExpressionSet)
+options(width = 50)
 @ 
 
 \subsection{Basic data types}
@@ -134,18 +135,20 @@ m
 dim(m)
 @
 \end{block}
+What if I don't get the data or dimensions right?
 \end{frame}
 
 \begin{frame}[fragile]
 What if I don't get the data or dimensions right?
 <<mat2>>=
-matrix(1:11, 4, 3)
+matrix(1:11, 4, 3) ## recycling
 matrix(1:12, 3, 3)
 @   
 \end{frame}
 
 
 \begin{frame}[fragile]
+  \begin{small}
 <<mat3>>=
 x <- 1:12
 class(x)
@@ -154,6 +157,7 @@ dim(x) <- c(4, 3)
 x
 class(x)
 @     
+  \end{small}
 \end{frame}
 
 \subsection*{Arrays}
@@ -171,20 +175,32 @@ array(1:16, dim = c(2, 4, 2))
 \subsection*{Lists, data frames and evironments}
 
 \begin{frame}[fragile]
-  \begin{block}{list}
-is an ordered set of elements that can be arbitrary \R objects.
+  \begin{block}{Lists}
+are ordered collections of elements that can be arbitrary \R objects.
+\begin{small}
 <<list>>=
-ll <- list(a = 1:3, c = length)
-ll
-ll[[1]]
-ll$c(ll)
+(ll <- list(a = 1:3, f = length))
+ll[1] ## a list of length 1
+ll[[1]] ## or ll$a - first element
 @     
+\end{small}
   \end{block}
 \end{frame}
 
 \begin{frame}[fragile]
-  \begin{block}{data.frame}  
-    is a 2-dimensional \Rfunction{list}.
+  \begin{block}{}
+<<list2>>=
+ll
+ll$f(ll)
+@     
+  \end{block}
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+  \begin{block}{Data.frames}  
+    are 2-dimensional \Rfunction{lists} (with elements of same length!).
 <<dfr, tidy = FALSE>>=
 dfr <- data.frame(type = c(
                     rep("case", 2), 
@@ -204,8 +220,8 @@ dfr$time
 \end{frame}
 
 \begin{frame}[fragile]
-  \begin{block}{environment}
-    is an unordered collection of objects.
+  \begin{block}{Environments}
+    are unordered sets of objects.
 <<env>>=
 e <- new.env()
 e[["a"]] <- 1:3
@@ -241,15 +257,27 @@ M
 
 
 \begin{frame}[fragile]
-  \begin{block}{factor}
+  \begin{block}{Factors}
     for categorical data
-<<>>=
+<<factor>>=
 sample.ExpressionSet$type
 @     
   \end{block}
 \end{frame}
 
 
+\begin{frame}{Data types summary}
+  \begin{center}
+    \begin{tabular}{r|ccc}
+                 &  1 dim     & 2 dims           & $n$ dims \\ \hline
+      same type  & \Robject{vector} & \Robject{matrix} & \Robject{array} \\
+      diff types & \Robject{list}   & \Robject{data.frame}$^*$ & \Robject{list} \\        
+  \end{tabular}
+  \end{center}
+  \vspace{1cm}
+  ($^*$elements of same length)
+\end{frame}
+  
 \subsection{Higher order objects}
 
 \begin{frame}

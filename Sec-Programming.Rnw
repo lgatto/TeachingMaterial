@@ -34,19 +34,21 @@ for (i in 1:4) { ## bad
 \end{frame}
 
 \begin{frame}[fragile]
-<<apply>>=
-M <- matrix(1:9, ncol = 3)
-M
-apply(M, 1, max)
-apply(M, 2, max)
-2
-@
-\end{frame}
-
-\begin{frame}[fragile]
 <<slapply>>=
 sapply(month.name[1:2], paste0, "_2012")
 lapply(month.name[1:2], paste0, "_2012")
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]
+<<apply>>=
+M <- matrix(1:9, ncol = 3)
+M
+apply(M, 1, sum) ## better rowSums
+apply(M, 2, sum) ## better colSums
+2
 @
 \end{frame}
 
@@ -152,14 +154,14 @@ x
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-  \begin{block}{Anonymous function}    
-<<anonymfun>>=
-M <- matrix(rnorm(50), ncol = 5)
-M[sample(50, 10)] <- NA
-sum(is.na(M))
-apply(M, 1, function(x) sum(is.na(x)))
-apply(M, 2, function(x) sum(is.na(x)))
-@       
-\end{block}
-\end{frame}
+%% \begin{frame}[fragile]
+%%   \begin{block}{Anonymous function}    
+%% <<anonymfun>>=
+%% M <- matrix(rnorm(50), ncol = 5)
+%% M[sample(50, 10)] <- NA
+%% sum(is.na(M))
+%% apply(M, 1, function(x) sum(is.na(x)))
+%% apply(M, 2, function(x) sum(is.na(x)))
+%% @       
+%% \end{block}
+%% \end{frame}

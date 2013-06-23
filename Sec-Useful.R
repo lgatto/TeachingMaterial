@@ -1,3 +1,6 @@
+## @knitr env, echo=FALSE, message = FALSE
+options(width = 50)
+
 
 ## @knitr read.csv0, tidy = FALSE
 read.table("./Data/data.csv", sep = ",",
@@ -38,6 +41,10 @@ nchar(month.name[1])
 strsplit("abc-def", "-")
 
 
+## @knitr str4b
+strsplit(c("abc-def", "ghi-jkl"), "-")
+
+
 ## @knitr comp
 set.seed(1)
 x <- sample(letters[1:10], 6)
@@ -69,7 +76,7 @@ runif(5)
 rnorm(5)
 
 
-## @knitr aboutdata
+## @knitr aboutdata, size="scriptsize"
 table(sample(letters, 100, replace = TRUE))
 summary(rnorm(100))
 head(x)
