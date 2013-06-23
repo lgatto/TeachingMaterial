@@ -64,5 +64,5 @@ clean:
 	rm -f Data/data.rda
 
 StangleAll:
-	"$(R_HOME)/bin/R" --vanilla -e "sapply(dir(pattern = 'Rnw'), Stangle)"
-	cat Sec-Intro.R Sec-DataTypes.R Sec-Manip.R Sec-Useful.R Sec-Plotting.R Sec-Programming.R Sec-Packages.R Sec-RBioc.R > R-Basics_LG_2012.R
+	"$(R_HOME)/bin/R" --vanilla -e "sapply(dir(pattern = 'Rnw'), knitr::purl)"
+	cat Sec-Intro.R Sec-DataTypes.R Sec-Manip.R Sec-Useful.R Sec-Plotting.R Sec-Programming.R Sec-Packages.R Sec-RBioc.R > R-Basics.R
