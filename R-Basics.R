@@ -174,8 +174,8 @@ class(sample.ExpressionSet)
 slotNames(sample.ExpressionSet)
 
 
-## @knitr eset2b, eval=FALSE
-## class?ExpressionSet
+## @knitr eset2b, eval=FALSE, tidy=FALSE
+## ?ExpressionSet
 
 
 ## @knitr eset3

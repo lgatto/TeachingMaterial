@@ -276,8 +276,8 @@ sample.ExpressionSet
 class(sample.ExpressionSet)
 slotNames(sample.ExpressionSet)
 @ 
-<<eset2b, eval=FALSE>>=
-class?ExpressionSet
+<<eset2b, eval=FALSE, tidy=FALSE>>=
+?ExpressionSet
 @ 
 \end{frame}
 
