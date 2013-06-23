@@ -36,11 +36,7 @@ pairs(log2(exprs(sample.ExpressionSet)[, 1:3]),
       col = "#0000FF20")
 
 
-## @knitr plotcode1, eval = FALSE
-## boxplot(log2(exprs(sample.ExpressionSet)))
-
-
-## @knitr label=plotfig3,echo=FALSE,fig.width=5,fig.height=4,tidy=FALSE
+## @knitr label=plotfig3,echo=TRUE,fig.width=5,fig.height=4,tidy=FALSE
 boxplot(log2(exprs(sample.ExpressionSet)))
 
 

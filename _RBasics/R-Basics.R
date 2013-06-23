@@ -18,6 +18,7 @@ ls()
 ## @knitr env0, echo=FALSE, message = FALSE
 library(Biobase)
 data(sample.ExpressionSet)
+options(width = 50)
 
 
 ## @knitr vec0
@@ -97,7 +98,7 @@ dim(m)
 
 
 ## @knitr mat2
-matrix(1:11, 4, 3)
+matrix(1:11, 4, 3) ## recycling
 matrix(1:12, 3, 3)
 
 
@@ -115,10 +116,14 @@ array(1:16, dim = c(2, 4, 2))
 
 
 ## @knitr list
-ll <- list(a = 1:3, c = length)
+(ll <- list(a = 1:3, f = length))
+ll[1] ## a list of length 1
+ll[[1]] ## or ll$a - first element
+
+
+## @knitr list2
 ll
-ll[[1]]
-ll$c(ll)
+ll$f(ll)
 
 
 ## @knitr dfr, tidy = FALSE
@@ -159,7 +164,7 @@ dimnames(M) <- list(year =
 M
 
 
-## @knitr 
+## @knitr factor
 sample.ExpressionSet$type
 
 
@@ -199,6 +204,7 @@ head(pData(sample.ExpressionSet))
 ## @knitr env, echo=FALSE, message = FALSE
 library(Biobase)
 data(sample.ExpressionSet)
+options(width = 50)
 
 
 ## @knitr sub1
@@ -212,11 +218,19 @@ x[c(1, 7, 2, NA)]
 ## @knitr sub2
 x[2] <- 20
 x[4:5] <- x[4:5] * 100
+## x[1:6] ?
+
+
+## @knitr sub2res
 x[1:6]
 
 
 ## @knitr sub3
 x <- 1:10
+## x[-c(3:7)] ?
+
+
+## @knitr sub3res
 x[-c(3:7)]
 
 
@@ -224,6 +238,13 @@ x[-c(3:7)]
 x[c(TRUE, TRUE, rep(FALSE, 8))]
 x > 5
 x[x > 5]
+
+
+## @knitr sub4b
+## x[c(TRUE, FALSE)] ? 
+
+
+## @knitr sub4bres
 x[c(TRUE, FALSE)] ## recycled
 
 
@@ -235,6 +256,8 @@ x[c("a", "d")]
 
 ## @knitr submat0
 M <- matrix(1:12, 3)
+M[1, ] ## row -> vector (or drop = FALSE)
+M[, 1] ## column -> vector (or drop = FALSE)
 M[2,3] <- 0
 M
 
@@ -247,13 +270,16 @@ M
 
 ## @knitr sublist
 ll <- list(a = 1:3, b = "CSAMA", c = length)
-ll[1] ## still a list
+ll[1] ## still a list, but of length 1 
 ll[[1]] ## first element of the list
 
 
 ## @knitr subexprs
 sample.ExpressionSet[1:10, 1:2]
 
+
+## @knitr env, echo=FALSE, message = FALSE
+options(width = 50)
 
 
 ## @knitr read.csv0, tidy = FALSE
@@ -295,6 +321,10 @@ nchar(month.name[1])
 strsplit("abc-def", "-")
 
 
+## @knitr str4b
+strsplit(c("abc-def", "ghi-jkl"), "-")
+
+
 ## @knitr comp
 set.seed(1)
 x <- sample(letters[1:10], 6)
@@ -326,7 +356,7 @@ runif(5)
 rnorm(5)
 
 
-## @knitr aboutdata
+## @knitr aboutdata, size="scriptsize"
 table(sample(letters, 100, replace = TRUE))
 summary(rnorm(100))
 head(x)
@@ -376,11 +406,7 @@ pairs(log2(exprs(sample.ExpressionSet)[, 1:3]),
       col = "#0000FF20")
 
 
-## @knitr plotcode1, eval = FALSE
-## boxplot(log2(exprs(sample.ExpressionSet)))
-
-
-## @knitr label=plotfig3,echo=FALSE,fig.width=5,fig.height=4,tidy=FALSE
+## @knitr label=plotfig3,echo=TRUE,fig.width=5,fig.height=4,tidy=FALSE
 boxplot(log2(exprs(sample.ExpressionSet)))
 
 
@@ -406,17 +432,17 @@ for (i in 1:4) { ## bad
 (1:4)^2 ## good
 
 
-## @knitr apply
-M <- matrix(1:9, ncol = 3)
-M
-apply(M, 1, max)
-apply(M, 2, max)
-2
-
-
 ## @knitr slapply
 sapply(month.name[1:2], paste0, "_2012")
 lapply(month.name[1:2], paste0, "_2012")
+
+
+## @knitr apply
+M <- matrix(1:9, ncol = 3)
+M
+apply(M, 1, sum) ## better rowSums
+apply(M, 2, sum) ## better colSums
+2
 
 
 ## @knitr replicate
@@ -464,14 +490,6 @@ x <- 1
 f <- function() { x <- x + 10; x }
 f()
 x
-
-
-## @knitr anonymfun
-M <- matrix(rnorm(50), ncol = 5)
-M[sample(50, 10)] <- NA
-sum(is.na(M))
-apply(M, 1, function(x) sum(is.na(x)))
-apply(M, 2, function(x) sum(is.na(x)))
 
 
 

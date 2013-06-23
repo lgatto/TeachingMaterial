@@ -64,7 +64,7 @@ packageDescription("Biobase")
 \begin{frame}[fragile]
   \begin{block}{Package versions}
     \begin{itemize}
-    \item New Bioconductor releases appear twice a year. Bioconductor versions are tied to \R versions.
+    \item New Bioconductor releases appear twice a year. Bioconductor versions are \textbf{tied} to \R versions.
     \item Stable packages versions are \texttt{x.y.z} where \texttt{x} $>=$ 1 and \texttt{y} is even
     \item Devel packages have \texttt{y} odd. 
 %%    \item New (devel) packages have \texttt{0.y.z}; if \texttt{y} == 99, then the package will become \texttt{1.0.0} in the next release.

@@ -1,3 +1,7 @@
+<<env, echo=FALSE, message = FALSE>>=
+options(width = 50)
+@ 
+
 \section{Useful functions}
 
 \begin{frame}
@@ -72,8 +76,13 @@ nchar(month.name[1])
 <<str4>>=
 strsplit("abc-def", "-")
 @     
+\pause
+<<str4b>>=
+strsplit(c("abc-def", "ghi-jkl"), "-")
+@     
 \end{block}
 \end{frame}
+
 
 \begin{frame}[fragile]
   \begin{block}{Comparing and matching (1)}
@@ -129,7 +138,7 @@ rnorm(5)
 
 \begin{frame}[fragile]
   \begin{block}{About the data}
-<<aboutdata>>=
+<<aboutdata, size="scriptsize">>=
 table(sample(letters, 100, replace = TRUE))
 summary(rnorm(100))
 head(x)

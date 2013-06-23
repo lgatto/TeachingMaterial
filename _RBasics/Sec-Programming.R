@@ -16,17 +16,17 @@ for (i in 1:4) { ## bad
 (1:4)^2 ## good
 
 
-## @knitr apply
-M <- matrix(1:9, ncol = 3)
-M
-apply(M, 1, max)
-apply(M, 2, max)
-2
-
-
 ## @knitr slapply
 sapply(month.name[1:2], paste0, "_2012")
 lapply(month.name[1:2], paste0, "_2012")
+
+
+## @knitr apply
+M <- matrix(1:9, ncol = 3)
+M
+apply(M, 1, sum) ## better rowSums
+apply(M, 2, sum) ## better colSums
+2
 
 
 ## @knitr replicate
@@ -74,13 +74,5 @@ x <- 1
 f <- function() { x <- x + 10; x }
 f()
 x
-
-
-## @knitr anonymfun
-M <- matrix(rnorm(50), ncol = 5)
-M[sample(50, 10)] <- NA
-sum(is.na(M))
-apply(M, 1, function(x) sum(is.na(x)))
-apply(M, 2, function(x) sum(is.na(x)))
 
 
