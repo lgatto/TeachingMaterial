@@ -21,3 +21,5 @@ clean:
 	rm -f *~
 	rm -f Rplots.pdf
 	rm -f fig-*pdf
+	rm -f .Rhistory
+	rm -f src/.Rhistory
