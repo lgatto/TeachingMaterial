@@ -63,7 +63,7 @@
 \date[]
 {
   Computational Statistics for Genome Biology\\
-  2$^{nd}$ July 2012
+  24$^{th}$ June 2013
 }
 
 
@@ -151,9 +151,13 @@ toLatex(sessionInfo())
 \end{frame}
 
 \begin{frame}
-  \vspace{2cm}
+  \begin{itemize}
+  \item This work is licensed under a CC BY-SA 3.0 License.
+  \item Course web page and more material: \url{https://github.com/lgatto/TeachingMaterial}
+  \end{itemize}
+  \vspace{.7cm}
   \begin{center}
-  Thank you for your attention    
+    Thank you for your attention    
   \end{center}
 \end{frame}
 

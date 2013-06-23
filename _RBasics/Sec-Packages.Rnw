@@ -66,8 +66,8 @@ packageDescription("Biobase")
     \begin{itemize}
     \item New Bioconductor releases appear twice a year. Bioconductor versions are tied to \R versions.
     \item Stable packages versions are \texttt{x.y.z} where \texttt{x} $>=$ 1 and \texttt{y} is even
-    \item Devel packages have \texttt{z} odd. 
-    \item New (devel) packages have \texttt{0.y.z} (\texttt{y} odd); if \texttt{y} == 99, then the package will become \texttt{1.0.0} in the next release.
+    \item Devel packages have \texttt{y} odd. 
+%%    \item New (devel) packages have \texttt{0.y.z}; if \texttt{y} == 99, then the package will become \texttt{1.0.0} in the next release.
     \end{itemize}
   \end{block}
 \end{frame}

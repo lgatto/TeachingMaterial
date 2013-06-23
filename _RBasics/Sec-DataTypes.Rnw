@@ -276,8 +276,8 @@ sample.ExpressionSet
 class(sample.ExpressionSet)
 slotNames(sample.ExpressionSet)
 @ 
-<<eset2b, eval=FALSE>>=
-class?ExpressionSet
+<<eset2b, eval=FALSE, tidy=FALSE>>=
+?ExpressionSet
 @ 
 \end{frame}
 
@@ -292,6 +292,10 @@ class?ExpressionSet
   \end{description}
 \end{frame}
 
+\begin{frame}
+  \centering
+  \includegraphics[width=.8\linewidth]{./Figures/msnset.png}
+\end{frame}
 
 \begin{frame}[fragile]
   \begin{block}{The \Robject{assayData} slot}

@@ -1,36 +1,28 @@
-### R code from vignette source 'Sec-Packages.Rnw'
 
-###################################################
-### code chunk number 1: bioclite (eval = FALSE)
-###################################################
+## @knitr bioclite, echo=TRUE, eval=FALSE
 ## source("http://www.bioconductor.org/biocLite.R")
 ## ## or, if you have already done so in the past
 ## library("BiocInstaller")
-## biocLite("packageName")  
+## biocLite("packageName")
 
 
-###################################################
-### code chunk number 2: pckhelp (eval = FALSE)
-###################################################
+## @knitr pckhelp, eval = FALSE
 ## help(package = "Biobase")
 
 
-###################################################
-### code chunk number 3: pckvig (eval = FALSE)
-###################################################
+## @knitr pckvig0, eval = FALSE, tidy = FALSE
 ## vignette(package = "Biobase")
+
+
+## @knitr pckvig1, eval = FALSE, tidy = FALSE
 ## vignette("Bioconductor", package = "Biobase")
 
 
-###################################################
-### code chunk number 4: pckdemo (eval = FALSE)
-###################################################
+## @knitr pckdemo, eval = FALSE
 ## demo("lattice", package = "lattice")
 
 
-###################################################
-### code chunk number 5: pkgversion
-###################################################
+## @knitr pkgversion
 packageDescription("Biobase")
 
 

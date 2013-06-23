@@ -30,31 +30,31 @@ endif
 pdf: R-Basics.tex
 	pdflatex R-Basics.tex
 
-R-Basics.tex: Sec-Intro.tex Sec-DataTypes.tex Sec-Programming.tex Sec-RBioc.tex Sec-Packages.tex Sec-Manip.tex Sec-Useful.tex Sec-Plotting.tex 
+R-Basics.tex: Sec-Intro.tex Sec-DataTypes.tex Sec-Programming.tex Sec-RBioc.tex Sec-Packages.tex Sec-Manip.tex Sec-Useful.tex Sec-Plotting.tex R-Basics.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('R-Basics.Rnw');"
 
-Sec-Intro.tex:
+Sec-Intro.tex: Sec-Intro.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-Intro.Rnw');"
 
-Sec-DataTypes.tex:
+Sec-DataTypes.tex: Sec-DataTypes.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-DataTypes.Rnw');"
 
-Sec-Programming.tex:
+Sec-Programming.tex: Sec-Programming.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-Programming.Rnw');"
 
-Sec-RBioc.tex:
+Sec-RBioc.tex: Sec-RBioc.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-RBioc.Rnw');"
 
-Sec-Packages.tex:
+Sec-Packages.tex: Sec-Packages.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-Packages.Rnw');"
 
-Sec-Manip.tex:
+Sec-Manip.tex: Sec-Manip.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-Manip.Rnw');"
 
-Sec-Useful.tex:
+Sec-Useful.tex: Sec-Useful.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-Useful.Rnw');"
 
-Sec-Plotting.tex:
+Sec-Plotting.tex: Sec-Plotting.Rnw
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-Plotting.Rnw');"
 
 clean:
@@ -64,5 +64,5 @@ clean:
 	rm -f Data/data.rda
 
 StangleAll:
-	"$(R_HOME)/bin/R" --vanilla -e "sapply(dir(pattern = 'Rnw'), Stangle)"
-	cat Sec-Intro.R Sec-DataTypes.R Sec-Manip.R Sec-Useful.R Sec-Plotting.R Sec-Programming.R Sec-Packages.R Sec-RBioc.R > R-Basics_LG_2012.R
+	"$(R_HOME)/bin/R" --vanilla -e "sapply(dir(pattern = 'Rnw'), knitr::purl)"
+	cat Sec-Intro.R Sec-DataTypes.R Sec-Manip.R Sec-Useful.R Sec-Plotting.R Sec-Programming.R Sec-Packages.R Sec-RBioc.R > R-Basics.R

@@ -88,7 +88,7 @@ smoothScatter(log2(exprs(sample.ExpressionSet)[, 1:2]))
 \end{frame}
 
 \begin{frame}
-  \begin{block}{References}
+  \begin{block}{}
     We have not covered \Rpackage{lattice} and \Rpackage{ggplot2}.
   \end{block}
   \begin{block}{References}
