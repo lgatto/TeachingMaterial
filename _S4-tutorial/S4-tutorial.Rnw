@@ -674,6 +674,36 @@ getMethod("marray", "MArray")
 
 \section{Conclusion}\label{sec:ccl}
 
+The Bioconductor project provides S4 implementations for microarray data. 
+As a conclusion to our exercise, let's use the class introspection tools seen in section \ref{sec:introspec} 
+to study the \Robject{ExpressionSet} implementation available in the \Rpackage{Biobase} package. 
+
+<<bioenv, echo=FALSE>>=
+suppressPackageStartupMessages(library("Biobase"))
+@ 
+
+<<biob>>=
+library("Biobase")
+getClass("ExpressionSet")
+@ 
+
+There are of course many more slots, to support description of the 
+experiment itself as well as the microarray platform. 
+The expression data is stored in the \Robject{assayData} slot 
+and is of class \Robject{AssayData}. In practice, this generally 
+equates to an environment that contains one or multiple expression matrices. 
+The feature and sample annotations are stored in the \Robject{featureData} 
+and \Robject{phenoData} slots, both of class \Robject{AnnotatedDataFrame}. 
+An \Robject{AnnotatedDataFrame} is a \Robject{data.frame} that supports 
+additional variable annotation. Each of these S4 classes can in turn be 
+inspected with \Rfunction{getClass} or, better, by reading the respective documentation. 
+
+We also see that the \Robject{ExpressionSet} class extends the \Robject{eSet} 
+class, i.e. \Robject{ExpressionSet} is a sub-class of the \Robject{eSet}. 
+See the \Robject{contains} field in \Rfunction{?setClass} to read more about 
+sub/super-class hierarchies.
+
+\bigskip
 Although the verbosity of the S4 system might seem like a little overhead in the beginning, 
 it provides improved stability and usability for the future. 
 The design and usage of an efficient class system requires one to think about 

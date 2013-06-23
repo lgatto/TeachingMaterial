@@ -241,6 +241,15 @@ showMethods(classes = "MArray")
 getMethod("marray", "MArray")
 
 
+## @knitr bioenv, echo=FALSE
+suppressPackageStartupMessages(library("Biobase"))
+
+
+## @knitr biob
+library("Biobase")
+getClass("ExpressionSet")
+
+
 ## @knitr sessioninfo, results='asis', echo=FALSE
 toLatex(sessionInfo())
 
