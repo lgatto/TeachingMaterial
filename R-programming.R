@@ -206,6 +206,34 @@ stopifnot(x * x == 2)
 stopifnot(all.equal(x * x, 2))
 
 
+## @knitr pvec
+library("parallel")
+detectCores()
+mclapply(1:3, function(x) Sys.getpid(), mc.cores = 3)
+mclapply(1:3, function(x) Sys.getpid(), mc.cores = 2)
+
+
+## @knitr solpar, cache = TRUE
+solmc <- function(x)
+    mclapply(x, f)
+solpar <- function(x, cl)
+    parLapply(cl, x, f)
+sol3 <- function(x)
+    lapply(x, f)
+cl <- makeCluster(4)
+stopifnot(identical3(sol3(ll), solmc(ll), solpar(ll, cl)))
+stopCluster(cl)
+
+
+## @knitr pbench
+cat(scan('pbench.R', what = "", strip.white = FALSE, sep = "\n"), sep = "\n")
+
+
+## @knitr printpbench, echo=FALSE
+load("pbench.rda")
+microbenchmark:::print.microbenchmark(pbench)
+
+
 ## @knitr sessioninfo, results='asis', echo=FALSE
 toLatex(sessionInfo())
 
