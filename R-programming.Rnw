@@ -1,0 +1,534 @@
+\documentclass[12pt,a4paper,english]{scrartcl}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{tikz}
+\usepackage{hyperref}
+\usepackage[authoryear,round]{natbib}
+\usepackage[auth-sc]{authblk}
+\usepackage{setspace}
+\onehalfspacing
+
+%% Exercise counter
+\newcounter{exerciseCounter}
+\newcommand{\exerciseCount}{%
+  \stepcounter{exerciseCounter}%
+  \theexerciseCounter}
+
+\newcommand{\exercise}{\bigskip \textbf{Exercise \exerciseCount:}~}
+
+% caption formatting
+\setcapindent{0em}
+\setkomafont{captionlabel}{\sffamily\bfseries}
+\setkomafont{caption}{\sffamily}
+
+\renewcommand\Authands{ and }
+
+\newcommand{\R}{\texttt{R} }
+\newcommand{\code}[1]{{\texttt{#1}}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
+%% colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\usepackage{geometry}
+\geometry{verbose,
+  tmargin = 2.5cm,
+  bmargin = 2.5cm,
+  lmargin = 3.0cm,
+  rmargin = 3.0cm}
+
+\usepackage{hyperref}
+\usepackage{breakurl}
+\hypersetup{%
+  pdfusetitle,
+  bookmarks = {true},
+  bookmarksnumbered = {true},
+  bookmarksopen = {true},
+  bookmarksopenlevel = 2,
+  unicode = {true},
+  breaklinks = {false},
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+
+\author{
+  Laurent Gatto\thanks{\email{lg390@cam.ac.uk}}
+}
+
+%% \affil{
+%%   Cambridge Center for Proteomics\\
+%%   University of Cambridge
+%% }
+
+\begin{document}
+
+\title{Writing better R code}
+
+\maketitle
+
+
+\tableofcontents
+
+\vspace{1cm}
+
+\begin{center}
+  This document is distributed under a CC BY-SA 3.0 License\footnote{\url{http://creativecommons.org/licenses/by-sa/3.0/}}. \\
+  More material is available at \url{https://github.com/lgatto/TeachingMaterial}.
+\end{center}
+
+\newpage
+
+<<env, include=FALSE, echo=FALSE, cache=FALSE>>=
+library("knitr")
+opts_chunk$set(fig.align = 'center', 
+               fig.show = 'hold', 
+               tidy = FALSE,
+               par = TRUE,
+               prompt = TRUE,
+               eval = TRUE,
+               stop_on_error = 1L,
+               comment = NA)
+options(replace.assign = TRUE, 
+        width = 55)
+set.seed(1)
+@ 
+%%$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Section
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Introduction}\label{sec:into}
+
+This section focuses on better \R programming in terms of cleaner 
+and elegant syntax and performance improvements in terms of identifying 
+regions that deserve optimisation as well as simple parallelisation. 
+
+The \R language is in many ways a \emph{functional programming} language, although 
+other programming paradigms are also available. Functions are essential parts 
+of the language that can be passed as arguments to other functions or returned 
+as function output. 
+Writing functions is very simple and represents a very accessible way of 
+abstraction.
+
+\section{Programming}
+
+\subsection*{Writing functions}\label{sec:fun}
+
+An \R function is composed by 
+
+\begin{itemize}
+\item A \textbf{name} that will be used to call the function (but see anonymous functions later in section \ref{sec:anonymf}); 
+  in the code chunk below, we call our function \Rfunction{myFun}.
+
+\item A set on input formal \textbf{arguments}, that are defined in the parenthesis of the \Rfunction{function} constructor. 
+  The \Rfunction{myFun} example has two arguments, called \Robject{i} and \Robject{j}. It is possible to provide default values 
+  to arguments, as illustrated for \Robject{j}.
+
+\item A function \textbf{body}, with curly brackets (only the body is composed or a single expression).
+
+\item A \textbf{return} statement, that represents the output of the function. 
+  If no explicit \Rfunction{return} statement is provided, the last statement of the function is return by default. 
+  Functions only support single value, i.e. \Rfunction{return(i, j)} is an error. To return multiple values 
+  one needs to return a \Robject{list} of the respective return variables like \Rfunction{return(list(i, j))}.
+\end{itemize}
+
+<<fun, tidy = FALSE>>=
+myFun <- function(i, j = 1) {
+    mn <- min(i, j)
+    mx <- max(i, j)    
+    k <- rnorm(ceiling(i * j))
+    return(k[k > mn/mx])
+}
+myFun(1.75, 4.45)
+myFun(1.75) ## j = 1 by default
+@
+
+The example below illustrate pass-by-copy semantics and scoping in \texttt{R}.
+\Rfunction{f1} shows that functions act on copies of their arguments, leaving the original variables intact. 
+
+<<scoping>>=
+x <- 1
+f1 <- function(x) {
+    x <- x + 10
+    x
+}
+
+f1(x)
+x ## unchanged
+@
+
+\Rfunction{f2} demonstrates that functions however have access the variables defined outside of their body (global variables), 
+while still keeping then unmodified.
+
+<<scoping2>>=
+f2 <- function() {
+    x <- x + 10
+    x
+}
+
+f2()
+x ## still unchanged
+@
+
+\subsection*{Function to create functions}
+
+Functions can also be written that generate new functions. 
+
+<<fun2fun>>=
+make.power <- function(n)
+    function(x) x^n
+square <- make.power(2)
+cube <- make.power(3)
+@ 
+<<fun2funexplore>>=
+square
+get("n", environment(square))
+square(2)
+cube(2)
+@
+
+Another interesting example is the \Rfunction{colorRampPalette} function that, 
+given a vector of valid colour characters as input, returns a function 
+that will create a colour palette along the initial colours.
+
+<<fun2fun2>>=
+(rbramp <- colorRampPalette(c("red", "blue")))
+rbramp(3)
+rbramp(7)
+@
+
+\subsection*{The \Robject{...}  arguments}
+
+When an arbitrary number of arguments is to be passed to a function or 
+of some arguments need to be passed down to an inner function, one 
+can use the \Robject{...} special arguments.
+
+<<plt>>=
+plt <- function(n, ...)
+    plot(1:n, ...)
+@ 
+
+<<pltex, dev='pdf', fig.width = 8, fig.height = 4>>=
+par(mfrow = c(1, 2))
+plt(5, pch = 19, type = "b")
+plt(10, col = rbramp(10), pch = 15)
+@
+
+<<args>>=
+args(cat)
+args(rm)
+@
+
+\subsection*{Functions as arguments}
+
+Using functions to generate input to other function is quite natural in \R: 
+\Rfunction{sort(rnorm(5))} or \Rfunction{x[x > 0]}\footnote{%%
+  \Rfunction{x > 0} is syntactic sugar for \Rfunction{`>`(x, 0)} and 
+  \Rfunction{x[i]} is in fact \Rfunction{`\lbrack`(x, i)}. 
+  As such, \Rfunction{x[x > 0]} can be rewritten 
+  \Rfunction{`\lbrack`(x, `>`(x, 0))}, where the \Rfunction{>} function 
+  is used as an argument to the \Rfunction{\lbrack} function.
+}. 
+There is however a family of functions, the \Rfunction{*apply} functions, 
+that are systematically called with other functions as arguments.
+
+The general usage of three of the most apply members is as follows
+
+\begin{itemize}
+\item \Rfunction{lapply(X, FUN, ...)} iterates over each element of the \Robject{vector} 
+  or \Robject{list} \Robject{X} and applies function \Rfunction{FUN} to return a 
+  \Rfunction{list} of same length than \Robject{X}. Each element of the 
+  returned list is the return value of \Rfunction{FUN} for that respective element of \Robject{X}. 
+  Additional arguments can be passed to \Robject{FUN} through \Robject{...}.
+<<lapply>>=
+lapply(1:2, rnorm)
+lapply(1:2, rnorm, 10, 2)
+@ 
+\item \Rfunction{sapply(X, FUN, ..., simplify = TRUE, USE.NAMES = TRUE)} is a wrapper 
+  around \Rfunction{lapply} and returns an \Robject{vector}, \Robject{matrix} 
+  or \Robject{array} (if possible).
+<<sapply>>=
+library(fortunes)
+lapply(sample(315, 1), fortune)
+sapply(sample(315, 1), fortune)
+@   
+\item \Rfunction{apply(X, MARGIN, FUN, ...)} iterates of \Robject{MARGIN} 
+  of \Robject{array} \Robject{X}, apply function \Rfunction{FUN} and
+  return the corresponding \Robject{vector}, \Robject{array} or \Robject{list}, 
+  depending on the return value of \Rfunction{FUN}.
+<<apply>>=
+set.seed(10)
+m <- matrix(rnorm(10), ncol = 2)
+apply(m, 1, myFun)
+apply(m, 1, myFun)
+apply(m, 1, max) ## Biobase::rowMax
+apply(m, 2, min) ## Biobse::rowMin
+@ 
+\item \Rfunction{mapply(FUN, ...)} applies \Rfunction{FUN} to the first elements 
+  of each \Robject{...} argument, then the second elements, and so on.
+<<mapply>>=
+mapply(rep, 1:4, 4:1)
+@   
+\end{itemize}
+
+The \Rfunction{replicate} function is a wrapper around \Rfunction{sapply} and allows repeated 
+evaluation of a function call. See section \ref{sec:performance} for an example.
+
+%% - aggregate
+%% - by
+%% - split
+%% - sweep
+
+\subsection*{Anonymous functions}\label{sec:anonymf}
+
+Sometimes, when using \Rfunction{apply} for example, there is not save function to plug-in directly available 
+and the operation to be performed is a one off. Instead of explicitly creating a function as shown in section 
+\ref{sec:fun}, one tends to create an \emph{anonymous} function, i.e. create a function on the fly without 
+explicitly assigning it to a name.
+
+<<anon>>=
+m
+apply(m, 1, function(x) ifelse(mean(x) > 0, mean(x), max(x)))
+@ 
+
+\section{Performance}\label{sec:performance}
+
+When performance becomes critical or the code becomes remarkably slow and it 
+becomes necessary to improve performance, it is essential to start by assessing 
+what portions of the code are to be optimised. It is also often useful to compare 
+timings of two approaches and compare implementations.
+
+\subsection*{Measuring execution time}
+
+<<N, echo = FALSE>>=
+N <- 1e4
+@ 
+
+We will be using the \Rfunction{system.time} function to compare \Rfunction{for} loops 
+with and without initialisation and the \Rfunction{apply} functions while iterating over 
+the elements of a \Robject{list} of length \Robject{N} \texttt{=} \Sexpr{N}. 
+We will then compute the mean of each element of the list and multiply it by its length 
+as implemented in function \Rfunction{f}.
+
+<<ll, cache = TRUE>>=
+ll <- lapply(sample(N), rnorm)
+f <- function(x) mean(x) * length(x)
+@ 
+
+The first approach we want to test is to use a \Rfunction{for} loop and append the results  
+at the end if a vector \Robject{res1}. The important point in the first example is that 
+\Robject{res1} is grown dynamically at each iteration.
+
+<<time1, cache = TRUE>>=
+res1 <- c()
+system.time({
+    for (i in 1:length(ll))
+        res1[i] <- f(ll[[i]])
+})
+@ 
+
+In the second example, we will use the same for loop but the result vector \Robject{res2} 
+is initialised and the respective element set throughout the iterations.
+
+<<time2, cache = TRUE>>=
+res2 <- numeric(length(ll))
+system.time({
+    for (i in 1:length(ll))
+        res2[i] <- f(ll[[i]])
+})
+@ 
+
+The last approach uses the \Rfunction{sapply} idiom to apply \Rfunction{f} over each element of the list 
+to generate the resulting \Robject{res3} vector.
+
+<<time3, cache = TRUE>>=
+system.time(res3 <- sapply(ll, f))
+@ 
+
+
+The first approach is the slowest one, and the difference would become more substantially more pronounced 
+for increasing values of \Robject{N}. This is because at each $i^{th}$ iteration, when a new result of \Rfunction{f} 
+is appended to \Robject{res1}, a copy of \Rfunction{res1} of length $i-1$ is generated to be appended the $i^{th}$ 
+results, essentially resulting in the duplication of long (and longer) temporary lists. This can be easily avoided 
+by properly initialising the result vector \Robject{res2} or by using the \Rfunction{sapply} function, that will 
+take care of the housekeeping for us. 
+
+Note that in general, using \Rfunction{apply} is not faster than a for loop with proper initialisation.
+It is however important to appreciate the conciseness and elegance of the last solution.
+
+\bigskip
+
+From the example above, we can hardly conclude that any of solutions 2 or 3 are faster than the other one, 
+as we do not have any estimate of the variability of the timing (which is rather sad, using an environment for statistical computing). 
+It is very easy to obtain such an estimation 
+by replicating the call, which is elegantly done using the \Rfunction{replicate} function.
+
+<<replicatetime, cache = TRUE>>=
+summary(replicate(50, system.time(res3 <- sapply(ll, f))["elapsed"]))
+@ 
+
+At this stage, we can't actually conclude anything as we have not verified that our three solutions 
+produce identical results. This will be the topic of section \ref{sec:testing}.
+
+\subsection*{Benchmarking}
+
+A more thorough benchmarking can be done using one the the \Rpackage{rbenchmark} or \Rpackage{microbenchmark} packages.
+Let's embed solutions 2 and 3 in two functions \Rfunction{sol2} and \Rfunction{sol3} to facilitate the direct comparisons.
+
+<<benchmarkfun>>=
+sol2 <- function(x) {
+    n <- length(x)
+    ans <- numeric(n)
+    for (i in 1:n) {
+        ans[i] <- f(x[[i]])
+    }
+    ans
+}
+sol3 <- function(x)
+    sapply(x, f)    
+@ 
+
+<<benmark, cache = TRUE>>=
+library("microbenchmark")
+microbenchmark(sol2(ll), sol3(ll), times = 200)
+@ 
+
+Based on the benchmarking above, we can now conclude that solution 3 using \Rfunction{sapply} is, 
+under these conditions, faster. This can however not be generalised for all for (with initialisation) 
+and \Rfunction{*apply} comparisons. 
+
+\subsection*{Profiling}
+
+To conclude this section on measuring performance, we introduce the \Rfunction{Rprof} function, 
+that allows a detailed and complete time profiling. Its usage is simple. The user initiated the 
+profiling by calling \Rfunction{Rprof()} (optionally passing a custom file name as input). 
+From now on, every function call is going to be timed until profiling is switched of with 
+\Rfunction{Rprof(NULL)}.
+
+<<profiling, cache = TRUE>>=
+Rprof()
+tmp <- replicate(10, sol3(ll))
+Rprof(NULL)
+@ 
+
+The detailed report can now be produced using the \Rfunction{summaryRprof} function 
+(optionally specifying the file storing the profiling timings).
+
+<<opts0, echo=FALSE>>=
+oldwidth <- options()$width
+options(width = 100)
+@ 
+
+<<smryprof, size = 'small'>>=
+summaryRprof()
+@ 
+
+<<opts1, echo=FALSE>>=
+options(width = oldwidth)
+@ 
+
+\section{Testing}\label{sec:testing}
+
+As mentioned above when comparing for and \Rfunction{sapply} timings, for our comparison to make sense, 
+we must first verify that our results are correct, i.e. in this case that our alternative implementations 
+produce identical results. 
+
+The best way to verity exact equality between two arbitrary objects is to use the \Rfunction{identical} 
+comparator. 
+
+<<id1>>=
+identical(res1, res2)
+@ 
+
+To test for identity of 3 objects, we propose function \Rfunction{identical3}, taken from the \Rpackage{Matrix} 
+package\footnote{See in the \texttt{"test-tools-1.R"} from the \Rpackage{Matrix} package for other similar clever testing functions.}.
+
+<<id3>>=
+identical3 <- 
+    function(x,y,z) identical(x,y) && identical (y,z)
+identical3(res1, res2, res3)
+@ 
+
+Sometimes, exact identity is not desired. A well known example 
+(see R FAQ 7.31\footnote{Why doesn't R think these numbers are equal? \url{http://www.hep.by/gnu/r-patched/r-faq/R-FAQ_82.html}} for details)
+is the following.
+
+<<sqrtx>>=
+x <- sqrt(2)
+x * x == 2
+identical(x*x, 2)
+@ 
+
+Because floating numbers can not be represented exactly in a computer, one needs to limit the precision of the comparison. 
+Instead of manually rounding the values to be compared, one can use the hardware specific tolerance \Robject{.Machine\$double.eps} 
+for this, and in particular the \Rfunction{all.equal} function.
+
+<<alleqsqrt>>=
+all.equal(x * x, 2)
+@ 
+
+The above illustrate that when specific expectations are to be met (whether on results or directly on function inputs), 
+it is advisable to explicitly test them using the appropriate comparison operator. 
+In particular, the \Rfunction{stopifnot} function provides a simple idiom for such testing.
+
+<<stopifnot>>=
+stopifnot(x * x == 2)
+stopifnot(all.equal(x * x, 2))
+@ 
+
+\Rpackage{RUnit} and \Rpackage{testthat} package are two packages that 
+provide a more general framework for testing, in particular for unit testing 
+in the frame of package development. 
+
+\section{Parallelisation}
+
+The \Rpackage{parallel} package.
+
+Other considerations: load balancing.
+
+\section{Debugging}
+
+An example illustrating 
+- traceback
+- debug/undebug
+- fix
+- options(error = recover)
+
+Cite R. Peng's debugging tutorial.
+
+\section{Further reading}\label{sec:ccl}
+
+This document presents an overview of certain useful idioms that are used in \texttt{R}. 
+Other interesting topics related to \R programming and suggested reading are 
+package development (see for example \href{https://github.com/lgatto/QuickPackage}{QuickPackage} 
+or \href{https://github.com/lgatto/RPackageDevelopment}{R package development})
+and object-oriented (see for example \href{https://github.com/lgatto/S4-tutorial}{Short S4 tutorial} 
+or \href{https://github.com/lgatto/roo}{R object oriented programming}),
+available on the \href{https://github.com/lgatto/TeachingMaterial} repository.
+
+\section*{Session information}\label{sec:sessionInfo} 
+
+All software and respective versions used to produce this document are listed below.
+
+<<sessioninfo, results='asis', echo=FALSE>>=
+toLatex(sessionInfo())
+@
+
+%% \bibliographystyle{plainnat}
+%% \bibliography{}
+
+\end{document}
+
