@@ -113,8 +113,11 @@ set.seed(1)
 \section{Introduction}\label{sec:into}
 
 This section focuses on better \R programming in terms of cleaner 
-and elegant syntax and performance improvements in terms of identifying 
-regions that deserve optimisation as well as simple parallelisation. 
+and elegant syntax, code profling and testing, performance improvements via parallelisation 
+and debugging. These topics are not covered in details but are presented as 
+practical use-cases.
+
+\section{Programming}
 
 The \R language is in many ways a \emph{functional programming} language, although 
 other programming paradigms are also available. Functions are essential parts 
@@ -123,7 +126,6 @@ as function output.
 Writing functions is very simple and represents a very accessible way of 
 abstraction.
 
-\section{Programming}
 
 \subsection*{Writing functions}\label{sec:fun}
 
@@ -244,31 +246,33 @@ Using functions to generate input to other function is quite natural in \R:
 }. 
 There is however a family of functions, the \Rfunction{*apply} functions, 
 that are systematically called with other functions as arguments.
+The general usage of three of the most apply members is illustrated below.
 
-The general usage of three of the most apply members is as follows
+\bigskip
 
-\begin{itemize}
-\item \Rfunction{lapply(X, FUN, ...)} iterates over each element of the \Robject{vector} 
-  or \Robject{list} \Robject{X} and applies function \Rfunction{FUN} to return a 
-  \Rfunction{list} of same length than \Robject{X}. Each element of the 
-  returned list is the return value of \Rfunction{FUN} for that respective element of \Robject{X}. 
-  Additional arguments can be passed to \Robject{FUN} through \Robject{...}.
+\Rfunction{lapply(X, FUN, ...)} iterates over each element of the \Robject{vector} 
+or \Robject{list} \Robject{X} and applies function \Rfunction{FUN} to return a 
+\Rfunction{list} of same length than \Robject{X}. Each element of the 
+returned list is the return value of \Rfunction{FUN} for that respective element of \Robject{X}. 
+Additional arguments can be passed to \Robject{FUN} through \Robject{...}.
 <<lapply>>=
 lapply(1:2, rnorm)
 lapply(1:2, rnorm, 10, 2)
 @ 
-\item \Rfunction{sapply(X, FUN, ..., simplify = TRUE, USE.NAMES = TRUE)} is a wrapper 
-  around \Rfunction{lapply} and returns an \Robject{vector}, \Robject{matrix} 
-  or \Robject{array} (if possible).
+
+\Rfunction{sapply(X, FUN, ..., simplify = TRUE, USE.NAMES = TRUE)} is a wrapper 
+around \Rfunction{lapply} and returns an \Robject{vector}, \Robject{matrix} 
+or \Robject{array} (if possible).
 <<sapply>>=
 library(fortunes)
 lapply(sample(315, 1), fortune)
 sapply(sample(315, 1), fortune)
 @   
-\item \Rfunction{apply(X, MARGIN, FUN, ...)} iterates of \Robject{MARGIN} 
-  of \Robject{array} \Robject{X}, apply function \Rfunction{FUN} and
-  return the corresponding \Robject{vector}, \Robject{array} or \Robject{list}, 
-  depending on the return value of \Rfunction{FUN}.
+
+\Rfunction{apply(X, MARGIN, FUN, ...)} iterates of \Robject{MARGIN} 
+of \Robject{array} \Robject{X}, apply function \Rfunction{FUN} and
+return the corresponding \Robject{vector}, \Robject{array} or \Robject{list}, 
+depending on the return value of \Rfunction{FUN}.
 <<apply>>=
 set.seed(10)
 m <- matrix(rnorm(10), ncol = 2)
@@ -277,15 +281,27 @@ apply(m, 1, myFun)
 apply(m, 1, max) ## Biobase::rowMax
 apply(m, 2, min) ## Biobse::rowMin
 @ 
-\item \Rfunction{mapply(FUN, ...)} applies \Rfunction{FUN} to the first elements 
-  of each \Robject{...} argument, then the second elements, and so on.
+
+\Rfunction{mapply(FUN, ...)} applies \Rfunction{FUN} to the first elements 
+of each \Robject{...} argument, then the second elements, and so on.
 <<mapply>>=
 mapply(rep, 1:4, 4:1)
 @   
 
-\item \Rfunction{tapply(X, INDEX, FUN = NULL, ..., simplify = TRUE)} \ldots
-  See also \Rfunction{by} or \Rfunction{split} for simimlar behaviours.
-\end{itemize}
+\Rfunction{tapply(X, INDEX, FUN = NULL, ..., simplify = TRUE)} applies function 
+\Rfunction{FUN} to each group of values of the atomic object \Robject{X}; 
+the groups \Robject{INDEX} are defined as a list of one or more factors.
+<<tapply>>=
+dfr <- data.frame(f1 = sample(LETTERS[1:2], 10, replace = TRUE),
+                  f2 = sample(LETTERS[3:4], 10, replace = TRUE),
+                  x = rnorm(10))
+tapply(dfr$x, dfr$f1, mean)
+tapply(dfr$x, dfr$f2, mean)
+tapply(dfr$x, list(dfr$f1, dfr$f2), mean)
+@ 
+See also \Rfunction{by} or \Rfunction{split} for similar behaviours.
+
+\bigskip
 
 The \Rfunction{replicate} function is a wrapper around \Rfunction{sapply} and allows repeated 
 evaluation of a function call. See section \ref{sec:performance} for an example.
@@ -437,6 +453,9 @@ options(width = 100)
 summaryRprof()
 @ 
 
+Note that many of the functions shown above are not part of our benchmarking but 
+result in the compilation of this reproducible vignette.
+
 <<opts1, echo=FALSE>>=
 options(width = oldwidth)
 @ 
@@ -448,7 +467,7 @@ we must first verify that our results are correct, i.e. in this case that our al
 produce identical results. 
 
 The best way to verity exact equality between two arbitrary objects is to use the \Rfunction{identical} 
-comparator. 
+compactor. 
 
 <<id1>>=
 identical(res1, res2)
@@ -516,7 +535,7 @@ mclapply(1:3, function(x) Sys.getpid(), mc.cores = 2)
 @ 
 
 We see that when specifying 3 computations on 3 cores (out of 4 possible), our construct returns 3 different 
-process identifiers. When parallelising the same task on 2 available cores, on process execites two of the 
+process identifiers. When parallelising the same task on 2 available cores, one process executes two of the 
 computations. 
 
 \bigskip
@@ -531,9 +550,9 @@ In this section, we consider two frameworks.
   generate multiple workers listening to the master; 
   these workers are new processes that can run on the current machine or on
   similar ones with an identical \R installation. This framework should work on 
-  all \R~plateforms. 
+  all \R platforms. 
   
-  This approach needs to explicitely create the cluster nodes using the 
+  This approach needs to explicitly create the cluster nodes using the 
   \Rfunction{makeCluster} function. The cluster of nodes can be stopped
   with the \Rfunction{stopCluster} functions.
   An important aspect of this solution is that all symbols used within the 
@@ -541,7 +560,7 @@ In this section, we consider two frameworks.
   This is achieved with the \Rfunction{clusterExport}.
   
 \item The \R~process is \textit{forked} to create new \R~processes by taking a 
-  complete copy of the masters process, including workspace 
+  complete copy of the masters process, including the workspace 
   (pioneered by package \Rpackage{multicore}). This does not work on Windows though 
   and the parallel function will fall back in serialised execution (\Robject{mc.cores = 1}).
 \end{itemize}
@@ -586,22 +605,100 @@ load("pbench.rda")
 microbenchmark:::print.microbenchmark(pbench)
 @ 
 
+Other considerations that need to be taken into account when several of the 
+jobs to be run in parallel take different times to be completed is load balancing.
+Finally, other frameworks exists, like the \Rpackage{foreach} package and 
+Bioconductor's \Rpackage{BiocParallel} package (currently still in development).
 
-Other considerations: load balancing.
-
-Other frameworks: \Rpackage{foreach} and \Rpackage{BiocParallel}
+\paragraph{Further reading} The \textit{Parallel R} book by McCallum and Weston, O'Reilly (2011), 
+the \Rpackage{parallel} and \Rpackage{foreach} vignettes and the 
+\textit{High Performance Computing} CRAN task view\footnote{\url{http://cran.r-project.org/web/views/HighPerformanceComputing.html}}.
 
 \section{Debugging}
 
-An example illustrating 
-- traceback
-- debug/undebug
-- fix
-- options(error = recover)
+<<oops, echo=FALSE>>=
+e <- function(i) {
+  x <- 1:4
+  if (i < 5) x[1:2]
+  else x[-1:2]
+}
+f <- function() sapply(1:10, e)
+g <- function() f()
+@ 
 
-Cite R. Peng's debugging tutorial.
+Let's consider the following case\footnote{%%
+Example taken from slides by Martin Morgan and Robert Gentleman.}
+where executing function \Rfunction{g} produces and error 
+which is not directly results from \Rfunction{g}'s code, but from another function called, 
+possibly indirectly, inside \Rfunction{g}.
 
-\section{Further reading}\label{sec:ccl}
+<<error, eval=FALSE, prompt = FALSE>>=
+> g()
+Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+> g
+function() f()
+@ 
+
+The first step is to isolate the function in which the error is thrown. This can be achieved 
+with the \Rfunction{traceback} function, that will print the call stack of the last call error.
+
+<<traceback, eval=FALSE, prompt = FALSE>>=
+> traceback()
+5: FUN(1:10[[5L]], ...)
+4: lapply(X = X, FUN = FUN, ...)
+3: sapply(1:10, e) at #1
+2: f() at #1
+1: g()
+@ 
+
+We see that after calling \Rfunction{g} manually, \Rfunction{f} was called, then 
+\Rfunction{sapply} iterated over \Robject{1:10}, called function \Rfunction{e} at each 
+iteration. \Rfunction{sapply} is a wrapper around \Rfunction{lapply}, which we see in 
+position 4 and \Rfunction{FUN}, i.e. \Rfunction{e} fails at the fifth iteration with the 
+error
+
+<<erroronly, eval=FALSE>>=
+Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+@ 
+
+From here on, one can display the code the the offending function \Rfunction{e} 
+and even reproduce the error directly.
+
+<<showe, eval=FALSE>>=
+e
+function(i) {
+  x <- 1:4
+  if (i < 5) x[1:2]
+  else x[-1:2]
+}
+e(5)
+Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+@ 
+
+The next step is typically to the fault function for debugging using with \Rfunction{debug{e}},
+so that \Rfunction{browser()} will be called on entry. In \Rfunction{browser} mode, the execution 
+of an expression is interrupted and it is possible to inspect the state of the environment and the 
+content of the respective variables. Stepping to the next line is done by pressing 
+\texttt{enter} of \texttt{n}. Typing \texttt{Q} can be used to exit debugging. 
+To unregister the faulty function from debugger mode, use \Rfunction{undebug(e)}. 
+
+Finally, once the error has been identified, it is possible to fix the bug immediately with
+\Rfunction{fix(e)}, which will open the default editor for the user to made the necessary changes.
+After saving and closing, a new copy of the function will be available in the global environment.
+
+Other tools of interest are \Rfunction{trace()} to insert code into functions.
+It is also possible to set \Rfunction{options(error=recover)} to get the call stack and 
+enter into browser mode in any of the function calls.
+
+\paragraph{Further reading} \textit{An Introduction to the Interactive Debugging Tools in R}\footnote{%%
+      \url{http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf}} by Roger Peng, the 
+\textit{Debugging \R code} slides\footnote{\url{https://github.com/lgatto/R-debugging}} by Gatto and  Stojni\'c
+and the \textit{Debugging} section\footnote{\url{http://cran.r-project.org/doc/manuals/r-release/R-exts.html\#Debugging}} 
+of the \textit{Writing R Extensions} manual. Several editor have debugging facilities, including the 
+\texttt{StaET} eclipse plugin\footnote{\url{http://www.walware.de/goto/statet}} and 
+\texttt{emacs}' \texttt{ess} \texttt{tracebug}\footnote{\url{http://ess.r-project.org/Manual/ess.html\#ESS-tracebug}}.
+
+\section{Other topics of interest}\label{sec:ccl}
 
 This document presents an overview of certain useful idioms that are used in \texttt{R}. 
 Other interesting topics related to \R programming and suggested reading are 
