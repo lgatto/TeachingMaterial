@@ -232,7 +232,7 @@ args(cat)
 args(rm)
 @
 
-\subsection*{Functions as arguments}
+\subsection*{Functions as arguments}\label{sec:apply}
 
 Using functions to generate input to other function is quite natural in \R: 
 \Rfunction{sort(rnorm(5))} or \Rfunction{x[x > 0]}\footnote{%%
@@ -282,14 +282,15 @@ apply(m, 2, min) ## Biobse::rowMin
 <<mapply>>=
 mapply(rep, 1:4, 4:1)
 @   
+
+\item \Rfunction{tapply(X, INDEX, FUN = NULL, ..., simplify = TRUE)} \ldots
+  See also \Rfunction{by} or \Rfunction{split} for simimlar behaviours.
 \end{itemize}
 
 The \Rfunction{replicate} function is a wrapper around \Rfunction{sapply} and allows repeated 
 evaluation of a function call. See section \ref{sec:performance} for an example.
 
 %% - aggregate
-%% - by
-%% - split
 %% - sweep
 
 \subsection*{Anonymous functions}\label{sec:anonymf}
@@ -383,7 +384,7 @@ summary(replicate(50, system.time(res3 <- sapply(ll, f))["elapsed"]))
 At this stage, we can't actually conclude anything as we have not verified that our three solutions 
 produce identical results. This will be the topic of section \ref{sec:testing}.
 
-\subsection*{Benchmarking}
+\subsection*{Benchmarking}\label{sec:bench}
 
 A more thorough benchmarking can be done using one the the \Rpackage{rbenchmark} or \Rpackage{microbenchmark} packages.
 Let's embed solutions 2 and 3 in two functions \Rfunction{sol2} and \Rfunction{sol3} to facilitate the direct comparisons.
@@ -464,7 +465,7 @@ identical3(res1, res2, res3)
 
 Sometimes, exact identity is not desired. A well known example 
 (see R FAQ 7.31\footnote{Why doesn't R think these numbers are equal? \url{http://www.hep.by/gnu/r-patched/r-faq/R-FAQ_82.html}} for details)
-is the following.
+is 
 
 <<sqrtx>>=
 x <- sqrt(2)
@@ -495,9 +496,100 @@ in the frame of package development.
 
 \section{Parallelisation}
 
-The \Rpackage{parallel} package.
+In addition to the elegant syntax of the \Rfunction{apply} family of functions, an additional 
+advantage is that due their underlying iterative nature, where the same function is called 
+independently on each element of the list/vector/array, it is an obvious candidate for parallelisation. 
+The parallelisation support is provided by the \Rpackage{parallel},that is one of the recommended 
+packages that are shipped with \R since version 2.14.
+
+Let's first illustrate the parallelisation using the \Rfunction{mclapply} function; 
+it is a parallel version of \Rfunction{lapply} (see section \ref{sec:apply}).
+We pass it an anonymous function that returns the process id using \Rfunction{} and 
+specify the number of cores to use with the \Robject{mc.cores} argument.
+The \Rfunction{detectCores} function attempts to detect the number pf CPU cores on the host.
+
+<<pvec>>=
+library("parallel")
+detectCores()
+mclapply(1:3, function(x) Sys.getpid(), mc.cores = 3)
+mclapply(1:3, function(x) Sys.getpid(), mc.cores = 2)
+@ 
+
+We see that when specifying 3 computations on 3 cores (out of 4 possible), our construct returns 3 different 
+process identifiers. When parallelising the same task on 2 available cores, on process execites two of the 
+computations. 
+
+\bigskip
+
+The application of such parallelisation first tasks where 
+\textit{independent} computations are repeated certain number of times; 
+results just need to be combined after parallel executions are done. 
+In this section, we consider two frameworks.
+  
+\begin{itemize}
+\item A cluster of nodes (as in package \Rpackage{snow}): 
+  generate multiple workers listening to the master; 
+  these workers are new processes that can run on the current machine or on
+  similar ones with an identical \R installation. This framework should work on 
+  all \R~plateforms. 
+  
+  This approach needs to explicitely create the cluster nodes using the 
+  \Rfunction{makeCluster} function. The cluster of nodes can be stopped
+  with the \Rfunction{stopCluster} functions.
+  An important aspect of this solution is that all symbols used within the 
+  parallelised functions must be exported to each node of the cluster. 
+  This is achieved with the \Rfunction{clusterExport}.
+  
+\item The \R~process is \textit{forked} to create new \R~processes by taking a 
+  complete copy of the masters process, including workspace 
+  (pioneered by package \Rpackage{multicore}). This does not work on Windows though 
+  and the parallel function will fall back in serialised execution (\Robject{mc.cores = 1}).
+\end{itemize}
+
+
+Let now build a parallelised solution for the example of section \ref{sec:bench}.
+
+<<solpar, cache = TRUE>>=
+solmc <- function(x)
+    mclapply(x, f)
+solpar <- function(x, cl)
+    parLapply(cl, x, f)
+sol3 <- function(x)
+    lapply(x, f)
+cl <- makeCluster(4)
+stopifnot(identical3(sol3(ll), solmc(ll), solpar(ll, cl)))
+stopCluster(cl)
+@ 
+
+
+If we were to compare the speed to these 3 implementations, 
+we would observe that the parallelised version would hardly 
+beat the serialised implementation, and most likely be slower
+due to the overhead of the parallelisation 
+and the light computing task of the example.
+Instead, we have benchmarked the following code.
+
+<<pbench, echo = FALSE>>=
+cat(scan('pbench.R', what = "", strip.white = FALSE, sep = "\n"), sep = "\n")
+@ 
+
+%% <<plotbench, echo=FALSE, message = FALSE, fig.width = 6, fig.height = 5>>=
+%% load("pbench.rda")
+%% suppressPackageStartupMessages(require("ggplot2"))
+%% plt <- ggplot2::qplot(y=time, data=pbench, colour=expr)
+%% plt <- plt + opts(legend.position = "top")
+%% print(plt)
+%% @ 
+
+<<printpbench, echo=FALSE>>=
+load("pbench.rda")
+microbenchmark:::print.microbenchmark(pbench)
+@ 
+
 
 Other considerations: load balancing.
+
+Other frameworks: \Rpackage{foreach} and \Rpackage{BiocParallel}
 
 \section{Debugging}
 
