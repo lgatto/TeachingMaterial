@@ -567,10 +567,9 @@ we would observe that the parallelised version would hardly
 beat the serialised implementation, and most likely be slower
 due to the overhead of the parallelisation 
 and the light computing task of the example.
+Instead, we have benchmarked the following code.
 
-Instead, we have benchmarked the following code on a server with 32 cores. 
-
-<<pbench>>=
+<<pbench, echo = FALSE>>=
 cat(scan('pbench.R', what = "", strip.white = FALSE, sep = "\n"), sep = "\n")
 @ 
 

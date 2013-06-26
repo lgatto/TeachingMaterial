@@ -225,7 +225,7 @@ stopifnot(identical3(sol3(ll), solmc(ll), solpar(ll, cl)))
 stopCluster(cl)
 
 
-## @knitr pbench
+## @knitr pbench, echo = FALSE
 cat(scan('pbench.R', what = "", strip.white = FALSE, sep = "\n"), sep = "\n")
 
 
