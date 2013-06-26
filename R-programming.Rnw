@@ -464,7 +464,7 @@ identical3(res1, res2, res3)
 
 Sometimes, exact identity is not desired. A well known example 
 (see R FAQ 7.31\footnote{Why doesn't R think these numbers are equal? \url{http://www.hep.by/gnu/r-patched/r-faq/R-FAQ_82.html}} for details)
-is the following.
+is 
 
 <<sqrtx>>=
 x <- sqrt(2)
