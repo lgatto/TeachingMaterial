@@ -85,6 +85,13 @@ tweeting about it and sharing it with your colleagues.
 - Original repository: https://github.com/lgatto/S4-tutorial
 - More details: https://github.com/lgatto/S4-tutorial#readme
 
+### R programming tutorial
+- Description: A tutorial on R programming of intermediate level, focusing on some aspects of functional programming, profiling, testing, debugging and parallelisation. Used as more advanced `R` programming lecture during the [CSAMA](http://marray.economia.unimi.it/) workshop.
+- Author: [Laurent Gatto](https://github.com/lgatto) 
+- Original repository: https://github.com/lgatto/R-programming
+- More details: https://github.com/lgatto/R-programming#readme
+
+
 ### R and C/C++
 - Description: Writing and calling `C`/`C++` code for/from `R`
 - Author:  [Laurent Gatto](https://github.com/lgatto) 
