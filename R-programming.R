@@ -106,6 +106,15 @@ apply(m, 2, min) ## Biobse::rowMin
 mapply(rep, 1:4, 4:1)
 
 
+## @knitr tapply
+dfr <- data.frame(f1 = sample(LETTERS[1:2], 10, replace = TRUE),
+                  f2 = sample(LETTERS[3:4], 10, replace = TRUE),
+                  x = rnorm(10))
+tapply(dfr$x, dfr$f1, mean)
+tapply(dfr$x, dfr$f2, mean)
+tapply(dfr$x, list(dfr$f1, dfr$f2), mean)
+
+
 ## @knitr anon
 m
 apply(m, 1, function(x) ifelse(mean(x) > 0, mean(x), max(x)))
@@ -232,6 +241,47 @@ cat(scan('pbench.R', what = "", strip.white = FALSE, sep = "\n"), sep = "\n")
 ## @knitr printpbench, echo=FALSE
 load("pbench.rda")
 microbenchmark:::print.microbenchmark(pbench)
+
+
+## @knitr oops, echo=FALSE
+e <- function(i) {
+  x <- 1:4
+  if (i < 5) x[1:2]
+  else x[-1:2]
+}
+f <- function() sapply(1:10, e)
+g <- function() f()
+
+
+## @knitr error, eval=FALSE, prompt = FALSE
+## > g()
+## Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+## > g
+## function() f()
+
+
+## @knitr traceback, eval=FALSE, prompt = FALSE
+## > traceback()
+## 5: FUN(1:10[[5L]], ...)
+## 4: lapply(X = X, FUN = FUN, ...)
+## 3: sapply(1:10, e) at #1
+## 2: f() at #1
+## 1: g()
+
+
+## @knitr erroronly, eval=FALSE
+## Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+
+
+## @knitr showe, eval=FALSE
+## e
+## function(i) {
+##   x <- 1:4
+##   if (i < 5) x[1:2]
+##   else x[-1:2]
+## }
+## e(5)
+## Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
 
 
 ## @knitr sessioninfo, results='asis', echo=FALSE
