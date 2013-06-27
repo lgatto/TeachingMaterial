@@ -171,10 +171,10 @@ library("microbenchmark")
 microbenchmark(sol2(ll), sol3(ll), times = 200)
 
 
-## @knitr profiling, cache = TRUE
-Rprof()
-tmp <- replicate(10, sol3(ll))
-Rprof(NULL)
+## @knitr profiling, eval=FALSE
+## Rprof("sol3.Rprof")
+## tmp <- replicate(10, sol3(ll))
+## Rprof(NULL)
 
 
 ## @knitr opts0, echo=FALSE
@@ -183,7 +183,7 @@ options(width = 100)
 
 
 ## @knitr smryprof, size = 'small'
-summaryRprof()
+summaryRprof("sol3.Rprof")
 
 
 ## @knitr opts1, echo=FALSE
