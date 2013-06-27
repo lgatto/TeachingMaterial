@@ -273,7 +273,7 @@ g <- function() f()
 ## Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
 
 
-## @knitr showe, eval=FALSE
+## @knitr showe, eval=FALSE, prompt = FALSE
 ## e
 ## function(i) {
 ##   x <- 1:4
@@ -282,6 +282,37 @@ g <- function() f()
 ## }
 ## e(5)
 ## Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+
+
+## @knitr debugmode, eval=FALSE, prompt = FALSE
+## > debug(e)
+## > e(5)
+## debugging in: e(5)
+## debug at #1: {
+##     x <- 1:4
+##     if (i < 5)
+##         x[1:2]
+##     else x[-1:2]
+## }
+## Browse[2]>
+## debug at #2: x <- 1:4
+## Browse[2]>
+## debug at #3: if (i < 5) x[1:2] else x[-1:2]
+## Browse[2]> ls()
+## [1] "i" "x"
+## Browse[2]> i
+## [1] 5
+## Browse[2]> x
+## [1] 1 2 3 4
+## Browse[2]>
+## debug at #3: x[-1:2]
+## Browse[2]> x[-1:2]
+## Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+## Browse[2]> x[-(1:2)]
+## [1] 3 4
+## Browse[2]> Q
+## > undebug(e)
+## > fix(e)
 
 
 ## @knitr sessioninfo, results='asis', echo=FALSE
