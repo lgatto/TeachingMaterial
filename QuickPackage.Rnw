@@ -235,8 +235,8 @@ qpf()
 \begin{frame}
   \begin{block}{References}
     \begin{itemize}
-    \item Advanced R Programming, Robert Stojnic and Laurent Gatto
-      \url{http://www.training.cam.ac.uk/gsls/event/413639} \\
+    \item \R package devlopment, Robert Stojnic and Laurent Gatto
+      \url{https://github.com/lgatto/RPackageDevelopment} \\
     \item Writing R Extensions,  R Development Core Team, 
       (get it with \Rfunction{help.start()})
     \item This work is licensed under a CC BY-SA 3.0 License.
