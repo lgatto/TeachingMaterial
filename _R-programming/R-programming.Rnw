@@ -435,8 +435,8 @@ profiling by calling \Rfunction{Rprof()} (optionally passing a custom file name 
 From now on, every function call is going to be timed until profiling is switched of with 
 \Rfunction{Rprof(NULL)}.
 
-<<profiling, cache = TRUE>>=
-Rprof()
+<<profiling, eval=FALSE>>=
+Rprof("sol3.Rprof")
 tmp <- replicate(10, sol3(ll))
 Rprof(NULL)
 @ 
@@ -450,11 +450,11 @@ options(width = 100)
 @ 
 
 <<smryprof, size = 'small'>>=
-summaryRprof()
+summaryRprof("sol3.Rprof")
 @ 
 
-Note that many of the functions shown above are not part of our benchmarking but 
-result in the compilation of this reproducible vignette.
+%% Note that many of the functions shown above are not part of our benchmarking but 
+%% result in the compilation of this reproducible vignette.
 
 <<opts1, echo=FALSE>>=
 options(width = oldwidth)
@@ -559,7 +559,7 @@ In this section, we consider two frameworks.
   parallelised functions must be exported to each node of the cluster. 
   This is achieved with the \Rfunction{clusterExport}.
   
-\item The \R~process is \textit{forked} to create new \R~processes by taking a 
+\item The \R process is \textit{forked} to create new \R processes by taking a 
   complete copy of the masters process, including the workspace 
   (pioneered by package \Rpackage{multicore}). This does not work on Windows though 
   and the parallel function will fall back in serialised execution (\Robject{mc.cores = 1}).
