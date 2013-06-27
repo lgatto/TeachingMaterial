@@ -605,8 +605,12 @@ load("pbench.rda")
 microbenchmark:::print.microbenchmark(pbench)
 @ 
 
-Other considerations that need to be taken into account when several of the 
-jobs to be run in parallel take different times to be completed is load balancing.
+
+Several parameters will influence how much can be gained by parallelising code 
+as illustrated above, including number of cores and overhead of the parallelisation,
+speed of individual calculations, possibly other limiting factors like disk access 
+or load balancing (when when several of the jobs to be run in parallel take different times).
+
 Finally, other frameworks exists, like the \Rpackage{foreach} package and 
 Bioconductor's \Rpackage{BiocParallel} package (currently still in development).
 
