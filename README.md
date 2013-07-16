@@ -30,67 +30,77 @@ tweeting about it and sharing it with your colleagues.
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/QuickPackage
 - More details: https://github.com/lgatto/QuickPackage#readme
+- Download the [pdf](https://github.com/lgatto/QuickPackage/blob/master/QuickPackage.pdf?raw=true)
 
 ### R package development
 - Description: Developing, documenting and testing an `R` package
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
 - Original repository: https://github.com/lgatto/RPackageDevelopment
 - More details: https://github.com/lgatto/RPackageDevelopment#readme
+- Download the [pdf](https://github.com/lgatto/RPackageDevelopment/blob/master/rpd.pdf?raw=true)
 
 ### RBasics
 - Description: A introduction to `R` for knowledgeable bioinformaticians. Used as `R` intro lecture for the [CSAMA](http://marray.economia.unimi.it/) workshop.
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/RBasics
 - More details: https://github.com/lgatto/RBasics#readme
+- Download the [pdf](https://github.com/lgatto/RBasics/blob/master/R-Basics.pdf?raw=true)
 
 ### RIntro
 - Description: A 1 day introductionary course, developed specifically for Microarray Analysis using `R` and Bioconductor.
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/RIntro
 - More details: https://github.com/lgatto/RIntro#readme
+- Download the [pdf](https://github.com/lgatto/RIntro/blob/master/RIntro.pdf?raw=true)
 
 ### R functional programming
 - Description: A short topic section on functional programming in `R`
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/R-functional-programming
 - More details: https://github.com/lgatto/R-functional-programming#readme
+- Download the [pdf](https://github.com/lgatto/R-functional-programming/blob/master/functional-programming.pdf?raw=true)
 
 ### R vectorisation
 - Description: A short topic section on vectorisation in `R`
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/R-vectorisation
 - More details: https://github.com/lgatto/R-vectorisation#readme
+- Download the [pdf](https://github.com/lgatto/R-vectorisation/blob/master/vectorisation.pdf?raw=true)
 
 ### R debugging
 - Description: A short topic section on debugging in `R`
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
 - Original repository: https://github.com/lgatto/R-debugging
 - More details: https://github.com/lgatto/R-debugging#readme
+- Download the [pdf](https://github.com/lgatto/R-debugging/blob/master/debugging.pdf?raw=true)
 
 ### R parallel
 - Description: A short topic section on parallal computing in `R`
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
 - Original repository: https://github.com/lgatto/R-parallel
 - More details: https://github.com/lgatto/R-parallel#readme
+- Download the [pdf](https://github.com/lgatto/R-parallel/blob/master/parallel.pdf?raw=true)
 
 ### R object oriented programming
 - Description: Covers S3, S4 and S4 Reference Classes OO programming using DNA/RNA sequence data manipulation as a working example.
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
 - Original repository: https://github.com/lgatto/roo
 - More details: https://github.com/lgatto/roo#readme
+- Download the [pdf](https://github.com/lgatto/roo/blob/master/roo.pdf?raw=true)
 
 ### Short S4 tutorial
 - Description: A practical S4 object-oriented programming tutorial using microarrays as a working example.
 - Author: [Laurent Gatto](https://github.com/lgatto) 
 - Original repository: https://github.com/lgatto/S4-tutorial
 - More details: https://github.com/lgatto/S4-tutorial#readme
+- Download the [pdf](https://github.com/lgatto/S4-tutorial/blob/master/S4-tutorial.pdf?raw=true)
 
 ### R programming tutorial
 - Description: A tutorial on R programming of intermediate level, focusing on some aspects of functional programming, profiling, testing, debugging and parallelisation. Used as more advanced `R` programming lecture during the [CSAMA](http://marray.economia.unimi.it/) workshop.
 - Author: [Laurent Gatto](https://github.com/lgatto) 
 - Original repository: https://github.com/lgatto/R-programming
 - More details: https://github.com/lgatto/R-programming#readme
-
+- Download the [pdf](https://github.com/lgatto/R-programming/blob/master/R-programming.pdf?raw=true)
 
 ### R and C/C++
 - Description: Writing and calling `C`/`C++` code for/from `R`
@@ -99,6 +109,7 @@ tweeting about it and sharing it with your colleagues.
   from [Dirk's slides](http://dirk.eddelbuettel.com/bio/presentations.html).
 - Original repository: https://github.com/lgatto/rccpp
 - More details: https://github.com/lgatto/rccpp#readme
+- Download the [pdf](https://github.com/lgatto/rccpp/blob/master/rccpp.pdf?raw=true)
 
 ### sequences
 - Description: Educational package used in `R` to illustrate OO programming and package development
