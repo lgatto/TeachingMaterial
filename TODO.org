@@ -1,0 +1,59 @@
+* Refactoring the basic R course/slides
+
+- Identify independent parts of the course
+- Decide which ones should be kept as is, updated, re-written from scratch, dropped
+
+LG: The stats bit at the end of day 1 could be dropped, or at least heavily reduced.
+
+LG: The graphics part (end od day 2) should be imporved, IMHO. They learn some intuitive plotting through the exercises. I would suggest to build uppon that throughout the coures, use the plotting part to summerise/formalise and possibly illustrate a bit of ggplot2 (and/or lattice). There is every now and then somebody that comes and asks about ggplot2, and base graphics, at least how it is taught now, does not give proper credit to plotting using R. I don't mean to teach the ggplot2 dialect, but at least mention it and produce nice plots using base graphics.
+
+Missing from the plotting part: 
+- (good usage of) legends, smoothscatter, identify
+
+LG: In general, the exercises are good and useful, but I'm quite unhappy with some of the solutions. Some of the code is not beautiful - the code must be understandable for beginners, of course, but we should make sure that we show clean straight-to-the-point code.
+
+RF: I think in the first morning, the number of different objects comes too thick and fast to be understood by a significant number. I think a couple of exercises in which students are encouraged to manipulate, say, vectors and matrices, should then be followed by the discussion on, and perhaps an exercise on data frames. After this perhaps reading in data and a more natural discussion of factors with a good example.
+
+RF: The storage types and methods is too involved. Could be done with a quick discussion of data types and point to the is. functions.
+
+RF: I agree that the stats bit at the end of Day 1 should be slimmed down, but not dropped.
+
+RF: The Day 2 colonies example, I have always felt, gets lost in the convoluted set up of the 'experiment'. Perhaps this, or a similar example could be built up more gradually.
+
+RF: I agree with LG that the graphics afternoon is really a kind of lecture, and a bit boring. Perhaps keep one or two of the examples (I think the 2nd axis example covers a lot). I was actually asked on Tuesday by two people who wanted to know about ggplot, so maybe a brief example about building up such a plot would be worthwhile. 
+
+RS: I think we need to go through all the sides and agree what is the core set of things we are trying to teach people. I would remove everything that is not conveying one of the core messages. Here is what I think we should teach:
+
+RS: Day 1
+- Basic concepts - vectors, matrices, data frames, etc. I think the introduction is good (up to lunch) if we manage to remove the remaining "noise" from the slides. 
+- If/else/loops - after lunch is a bit disconnected from the morning. Need serious rearrangment
+- Simple complete analysis - the example with patients at risk (nmyc amplification) is good and should be kept
+- Basic stats - I would leave this, but simplify the slides (we already skip most of it anyways)
+
+RS: Day 2
+I'm most unhappy with this day, the structure feels disconnected and without any particular goals
+First exercise in the morning is too difficult to understand. We need something simpler, but it's difficult to come up with a replacement. Need to think hard about this one. 
+Suggested topics could be:
+- More complex analysis - main goal to review all the points from Day 1, leave more time for them to do it... Not 100% sure we should introduce factors at all.. 
+- Functions - not sure this is worth our time. Also, it is somewhat confusing that our example doesn't really return any value IMHO
+- Advanced analysis - I would leave this as there is always someone who wants to get a bit more out of the course
+- Plotting - needs almost complete restructuring. I would delete all the slides and start from scratch. First few slides are OK to introduce the basic concepts (painters model, plotting arbitrary things not just "data", etc), but later on it just goes all over the place. I'm usually not teaching this part so I don't have much input on how to structure it. DEFINITIELY needs more exercises. Execises could be like, here is some data, now visualise it somehow, or, create this plot (using tools that are gradually introduced). 
+
+* Modules
+
+** Day 1
+- Introduction to R and R studio, and other basic concepts
+- Data structures and manipulation, with exercise [*]
+- Programming: looping/apply/vectorisation, if/else, functions
+- NMYC FISH exercise
+- Stats, posibly reusing the data frame created earlier
+
+There are many misc slides that list many functions - not sure if we still want to have them scattered around. In other beginners courses I teach, I provide an R reference sheet [https://github.com/lgatto/RBasics/tree/master/RefCards] with all these functions - this sheet could be distributed and introduced in the first module.
+
+[*] We discussed about replacing the phone book examples. What about creating something about patients, with sex, height, weight, identifier, ... that would be re-used for the stats, explaining factors, plotting, ... we would provide a csv file for the latter, but student would create a small verion manually.
+
+** Day 2
+- CFA exercise. part 1 - simplified example, they do on their one. part 2 with all covariates, as a demonstation.
+- Writing functions (temp conversion)
+- Gene clustering exercise
+- Plotting: base with an exercise re-using one of the previously used daat. Intro to ggplot2 (and lattice?). 
