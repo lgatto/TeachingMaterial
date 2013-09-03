@@ -32,8 +32,15 @@ R_HOME=	$(shell R RHOME)
 endif
 
 QuickPackage:
+	rm -rf QuickPackage
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('QuickPackage.Rnw');"
 	pdflatex QuickPackage.tex
+
+QuickPackageAndMore:
+	rm -rf QuickPackage
+	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('QuickPackageAndMore.Rnw');"
+	pdflatex QuickPackageAndMore.tex
+
 
 QuickPackage.R:
 	R --vanilla -e 'Stangle("QuickPackage.Rnw")'
