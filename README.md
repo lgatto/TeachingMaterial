@@ -26,11 +26,11 @@ tweeting about it and sharing it with your colleagues.
 - More details: https://github.com/lgatto/spr#readme
 
 ### QuickPackage
-- Description: A very brief overview of `R` package creation
+- Description: Twobrief overviews of `R` package creation
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/QuickPackage
 - More details: https://github.com/lgatto/QuickPackage#readme
-- Download the [pdf](https://github.com/lgatto/QuickPackage/blob/master/QuickPackage.pdf?raw=true)
+- Download the [QuickPackage](https://github.com/lgatto/QuickPackage/blob/master/QuickPackage.pdf?raw=true) and [QuickPackageAndMore](https://github.com/lgatto/QuickPackage/blob/master/QuickPackageAndMore.pdf?raw=true) slides (pdf)
 
 ### R package development
 - Description: Developing, documenting and testing an `R` package
