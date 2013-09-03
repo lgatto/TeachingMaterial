@@ -7,7 +7,7 @@
         Upload your \alert{\texttt{--as-cran} checked} \texttt{myPackage\_x.y.z.tar.gz} to 
         \url{ftp://cran.R-project.org/incoming} or using \url{http://CRAN.R-project.org/submit.html}.
         Your package will be installable with \Rfunction{install.packages("myRpackage")}.
-      \item[R-forge] Log in, regitser a project and wait for acceptance. 
+      \item[R-forge] Log in, register a project and wait for acceptance. 
         Then commit you code to the svn repository. Your package will be installable with 
         \Rfunction{install.packages} using \texttt{repos="http://R-Forge.R-project.org"}.
     \end{description}
@@ -23,6 +23,10 @@
         and submit by email. Your package will then be reviewed before acceptance. 
         A svn account will then be created. Package will be installable with 
         \Rfunction{biocLite("myPackage")}.
+
+      \item[Other] popular un-official repositories are github, bitbucket, \ldots and packages can be installed with \Rfunction{devtools::install\_github}, \Rfunction{devtools::install\_bitbucket}. 
+
+
     \end{description}
   \end{block}
 \end{frame}
