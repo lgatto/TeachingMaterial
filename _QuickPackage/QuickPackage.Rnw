@@ -235,7 +235,7 @@ qpf()
 \begin{frame}
   \begin{block}{References}
     \begin{itemize}
-    \item \R package devlopment, Robert Stojnic and Laurent Gatto
+    \item \R package development, Robert Stojnic and Laurent Gatto
       \url{https://github.com/lgatto/RPackageDevelopment} \\
     \item Writing R Extensions,  R Development Core Team, 
       (get it with \Rfunction{help.start()})

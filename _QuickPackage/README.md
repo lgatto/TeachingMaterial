@@ -1,5 +1,6 @@
-A very briefly illustration of the process of creating an [R](http://www.r-project.org/) package. 
-I generally use it to give people a feeling about the process, without actually teaching it explicitely. 
+`QuickPackage` is a very briefly illustration of the process of creating an [R](http://www.r-project.org/) package. 
+I generally use it to give people a feeling about the process, without actually teaching it explicitely.
+`QuickPackageAndMore` is a slightly longer version that briefly introduces other points of interests. 
 All the details are presented in a more substantial R development course referenced in the slides.
 
 See the [TeachingMaterial](https://github.com/lgatto/TeachingMaterial) repository for more material.

@@ -1,0 +1,422 @@
+\documentclass{beamer}
+% Setup appearance:
+% \usetheme{Darmstadt}
+\usefonttheme[onlylarge]{structurebold}
+
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+% Standard packages
+% \usepackage[english]{babel}
+% \usepackage[latin1]{inputenc}
+% \usepackage{times}
+% \usepackage[T1]{fontenc}
+\usepackage{ulem}
+\usepackage{colortbl}
+% Setup TikZ
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
+% \usecolortheme{seagull}
+\usecolortheme{default}
+
+\usepackage{ragged2e}
+
+%% new commande
+\let\code=\texttt
+\let\proglang=\textsf
+
+\newcommand{\R}{\texttt{R} }
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+\newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
+%% colors
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\hypersetup{%
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+% Author, Title, etc.
+\title%%[] 
+{%
+  Quick \R Package,\\
+  And more
+}
+
+\author[L. Gatto]
+{
+  Laurent Gatto \\
+  \scriptsize \url{lg390@cam.ac.uk}
+}
+
+%% \institute[CCP]
+%% {
+%% %   \inst{1}%
+%%   Cambridge System Biology Centre\\
+%%   University of Cambridge \\
+%% }
+
+\date[4 Sept 2013]
+{
+  RSS conference\\
+  4$^{th}$ Sept 2013
+}
+
+
+\pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
+\pgfdeclareimage[height=.7cm]{ebi-logo}{./Figures/EMBLEBIlogo}
+% \logo{\pgfuseimage{uc-logo}}
+
+
+\AtBeginSection[] % Do nothing for \section*
+{
+\begin{frame}<beamer>
+\frametitle{Plan}
+\tableofcontents[currentsection]
+\end{frame}
+}
+
+
+% The main document
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Title frame                                                 %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Table of contents                                           %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% \begin{frame}{Plan}
+%%   \footnotesize
+%%   \tableofcontents
+%% \end{frame}
+
+<<knitr, cache=FALSE, echo=FALSE>>=
+library("knitr")
+options(width = 60)
+opts_chunk$set(prompt = TRUE,
+               comment = '',
+               fig.align = 'center')
+@ %% $
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{A minimal example}
+
+\begin{frame}
+  \begin{block}{Overview}
+    We are about to create the \Rpackage{QuickPackage} \R package:
+    \begin{enumerate}
+    \item Create a dummy function to come into the package
+    \item Create the package structure
+    \item Update the package content
+    \item Build/check/install
+    \item Enjoy!
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+<<dummy, tidy=FALSE>>=
+## This is the dummy function that will return
+## information about our 'QuickPackage'
+qpf <- function() 
+  packageDescription("QuickPackage")
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+<<pgkskel>>=
+## This creates the package template
+package.skeleton("QuickPackage", list = c("qpf"))
+@ 
+\end{frame}
+
+\begin{frame}[fragile]
+  \Rpackage{QuickPackage} structure:
+\begin{verbatim}
+QuickPackage/
+|-- DESCRIPTION
+|-- man
+|   |-- qpf.Rd
+|   `-- QuickPackage-package.Rd
+|-- NAMESPACE
+|-- R
+|   `-- qfd.R
+`-- Read-and-delete-me
+\end{verbatim}
+\end{frame}
+
+\begin{frame}
+  \begin{itemize}
+  \item Read and delete \texttt{Read-and-delete-me}
+  \item Update \texttt{DESCRIPTION}
+  \item Write a proper package documentation file or delete it (this is the only optional documentation) and 
+    update the man page for \Rfunction{qpf} (see next slide)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{small}  
+<<rd, cache=FALSE, echo=FALSE>>=
+writeLines(readLines("./files/qpf.Rd"))
+@
+  \end{small}
+\end{frame}
+
+
+\begin{frame}
+  In a terminal:
+  \begin{enumerate}
+  \item Build the package with \\
+    \Rfunction{R CMD build QuickPackage}
+  \item Check the package with \\
+    \Rfunction{R CMD check QuickPackage\_1.0.tar.gz}
+  \item If any, fix errors and warnings and repeat steps 1 and 2.
+  \item Install the package with \\
+    \Rfunction{R CMD INSTALL QuickPackage\_1.0.tar.gz}
+  \end{enumerate}
+\end{frame}
+
+<<clean, echo=FALSE>>=
+rm(list=ls())
+system("rm ./QuickPackage_1.0.tar.gz")
+system("rm ./QuickPackage/Read-and-delete-me")
+system("rm ./QuickPackage/man/QuickPackage-package.Rd")
+system("cp files/qpf.Rd QuickPackage/man/.")
+system("cp files/DESCRIPTION QuickPackage/.")
+system("R CMD build QuickPackage")
+system("R CMD check QuickPackage_1.0.tar.gz")
+system("R CMD INSTALL QuickPackage_1.0.tar.gz")
+@ 
+
+\begin{frame}[fragile]
+<<enjoy>>=
+library("QuickPackage")
+qpf()
+@   
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Distributing packages}
+\label{sec:distr-pack}
+
+\begin{frame}{Submission}
+  \begin{block}{}
+    \begin{description}
+      \item[CRAN] Read the CRAN Repository Policy\footnote{\url{http://cran.r-project.org/web/packages/policies.html}}.
+        Upload your \alert{\texttt{--as-cran} checked} \texttt{myPackage\_x.y.z.tar.gz} to 
+        \url{ftp://cran.R-project.org/incoming} or using \url{http://CRAN.R-project.org/submit.html}.
+        Upon acceptance, your package will be installable with \Rfunction{install.packages("myRpackage")}.
+
+      \item[R-forge] Log in, register a project and wait for acceptance. 
+        Then commit you code to the svn repository. Your package will be installable with 
+        \Rfunction{install.packages} using \texttt{repos="http://R-Forge.R-project.org"}.
+    \end{description}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Submission}
+  \begin{block}{}  
+    \begin{description}
+    \item[Bioconductor] Make sure to satisfy submission criteria (pass \texttt{check}, 
+      have a vignette, use S4 if OO, make use of appropriate existing 
+      infrastructure, include a NEWS file, must \textbf{not} already be on CRAN, \ldots) 
+      and submit by email. Your package will then be reviewed before acceptance. 
+      Upon acceptance, an svn account will be created. Package will be installable with 
+      \Rfunction{biocLite("myPackage")}.
+      
+    \item[Other] popular un-official repositories are github, bitbucket, \ldots and packages can be  
+      installed with \Rfunction{devtools::install\_github}, \Rfunction{devtools::install\_bitbucket}. 
+
+    \end{description}
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{More}
+
+\subsection*{Terminology}
+\label{sec:terminology}
+
+\begin{frame}
+  \begin{block}{Terminology}   
+    A \textbf{package} is loaded from a \textbf{library} by the functions \Rfunction{library} or \Rfunction{require}. 
+    A library is a directory containing installed packages.
+
+    \bigskip
+    
+    Calling \Rfunction{library("foo", lib.loc = "/path/to/bar")} loads the package (book) foo from the library bar located at \texttt{/path/to/bar}.
+  \end{block}
+\end{frame}
+
+
+
+\subsection{Dependencies}
+\begin{frame}
+  \begin{block}{Dependencies}
+    In the \texttt{DESCRIPTION} file, should one add the package to the \texttt{Depends} and \texttt{Imports} field?
+
+    \bigskip
+
+    Is your user expected to use all/most of the functionality of the dependency? 
+    Would she anyway load it with \Rfunction{library} and add it to the search path? 
+  \end{block}
+
+  \begin{block}{Imports specifications}
+    Specify the imported symbols in the \texttt{NAMESPACE} with \texttt{import(package)}, \texttt{importFrom(package, function, class, method)}. 
+  \end{block}
+
+\end{frame}
+
+
+\subsection{Documentation}
+\label{sec:documentation}
+
+\begin{frame}
+  \begin{block}{Rd}
+    Different \R objects must be documented with specific sections. All the details are available in the \texttt{R-Ext} reference.
+    
+    \bigskip
+
+    Templates can be generated automatically using \Rfunction{prompt}, \Rfunction{promptData}, \Rfunction{promptClass}, \Rfunction{promptMethod} and, optionally, \Rfunction{promptPackage}.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{Inline documentation with the \Rpackage{roxygen2} package.}      
+\small
+<<roxy, cache=FALSE, echo=FALSE>>=
+writeLines(readLines("./files/qpf.R"))
+@
+
+<<roxy2, cache=FALSE, echo=TRUE, message = FALSE>>=
+library("roxygen2")
+roxygenize("QuickPackage", roclets="rd");
+@
+Other \texttt{roclets}: \texttt{namespace} and \texttt{collate}.
+\end{block}
+\end{frame}
+
+
+\subsection{The build/chec/install cycle}
+\label{sec:buildch-cycle}
+\begin{frame}
+  \begin{block}{Package development}    
+    Building/checking/installing a package to test every changes is not practical.
+  \begin{itemize}
+  \item Source the updated code in your \R session. But the global environment does not correspond to the package namespace.
+  \item Load the new code directly into the package namespace using
+    \begin{itemize}
+    \item The \Rpackage{devtools} package
+    \item \texttt{ESS} developer mode
+    \item Possibly other solutions (RStudio?)
+    \end{itemize}
+  \end{itemize}  
+  \end{block}
+\end{frame}
+
+\subsection{Vignettes}
+\label{sec:vignettes}
+
+\begin{frame}[fragile]
+  \begin{block}{Reproducible research}
+    \justifying
+    \textbf{Vignettes} are documents that combine text and \R code. When compiled, the \R code is executed and the output (text, figures, data.frame/tables) is inserted in the original document source and a pdf (or html) is generated. The syntax is originally \LaTeX. Recent support for markdown has been added. See \Rfunction{?Sweave} and the \Rpackage{knitr} package for more information.
+
+\bigskip
+
+In packages, Sweave documents (\texttt{.Rnw}) are provided in the \texttt{inst/doc} or \texttt{vignettes} directories.
+
+\bigskip
+
+These slides are written as a Sweave document and processed using \Rpackage{knitr}.
+\end{block}
+\end{frame}
+
+\subsection{Even more}
+\label{sec:even-more}
+
+\begin{frame}
+  \begin{block}{Even more}
+    \begin{itemize}
+    \item CITATION and NEWS files.      
+    \item Distributing data in the \texttt{./data} or \texttt{inst/extdata} directories.
+    \item \texttt{C}/\texttt{C++}/\texttt{Fortran} code in the \texttt{./src} directory.
+    \item Vignettes and reproducible research
+    \item Unit testing in the \texttt{./tests} and \texttt{inst/tests} directories.      
+    \end{itemize}    
+  \end{block}
+\end{frame}
+
+% Packages provide a mechanism for loading optional code and attached documentation as needed.
+% There is more to it – packages are a means to
+% - logically group your own functions
+% - keep code and documentation together and consistent
+% - keep code and data together
+% - keep track of changes in code
+% - summarise all packages used for a analysis (see sessionInfo())
+% - make a reproducible research compendium (container for code, text, data as a means for distributing, managing and updating) optionally test your code
+% - ... project managment
+% even if you do not plan to distribute them
+
+% So many packages, and growing
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{References}
+
+\begin{frame}
+  \begin{block}{References}
+    \begin{itemize}
+    \item \R package development, Robert Stojnic and Laurent Gatto
+      \url{https://github.com/lgatto/RPackageDevelopment} \\
+    \item Writing R Extensions,  R Development Core Team, 
+      (get it with \Rfunction{help.start()})
+    \item This work is licensed under a CC BY-SA 3.0 License.
+    \item Course web page and more material: \url{https://github.com/lgatto/TeachingMaterial}
+    \end{itemize}    
+  \end{block}
+\end{frame}
+
+%%\vspace{5cm}
+\begin{frame}[fragile]
+<<sessioninfo, results='asis'>>=
+toLatex(sessionInfo())
+@   
+\end{frame}
+
+<<echo=FALSE>>=
+system("R CMD REMOVE QuickPackage")
+@ 
+
+\end{document}
