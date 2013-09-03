@@ -48,7 +48,7 @@
 }
 
 % Author, Title, etc.
-\title%%[CSAMA 2012 -- Brixen] 
+\title%%[] 
 {%
   Quick \R Package,\\
   And more
@@ -178,23 +178,9 @@ QuickPackage/
 
 \begin{frame}[fragile]
   \begin{small}  
-\begin{verbatim}
-\name{qpf}
-\alias{qpf}
-\title{ A test function }
-\description{
-  Returns package information.
-}
-\usage{
-qpf()
-}
-\value{
-An object of class \code{packageDescription}.
-}
-\examples{
-qpf()
-}
-\end{verbatim}
+<<rd, cache=FALSE, echo=FALSE>>=
+writeLines(readLines("./files/qpf.Rd"))
+@
   \end{small}
 \end{frame}
 
@@ -245,8 +231,9 @@ qpf()
       \item[CRAN] Read the CRAN Repository Policy\footnote{\url{http://cran.r-project.org/web/packages/policies.html}}.
         Upload your \alert{\texttt{--as-cran} checked} \texttt{myPackage\_x.y.z.tar.gz} to 
         \url{ftp://cran.R-project.org/incoming} or using \url{http://CRAN.R-project.org/submit.html}.
-        Your package will be installable with \Rfunction{install.packages("myRpackage")}.
-      \item[R-forge] Log in, regitser a project and wait for acceptance. 
+        Upon acceptance, your package will be installable with \Rfunction{install.packages("myRpackage")}.
+
+      \item[R-forge] Log in, register a project and wait for acceptance. 
         Then commit you code to the svn repository. Your package will be installable with 
         \Rfunction{install.packages} using \texttt{repos="http://R-Forge.R-project.org"}.
     \end{description}
@@ -345,7 +332,7 @@ Other \texttt{roclets}: \texttt{namespace} and \texttt{collate}.
   \begin{block}{Package development}    
     Building/checking/installing a package to test every changes is not practical.
   \begin{itemize}
-  \item Source the updated code in your \R session. But the global environment does not corresond to the package namespace.
+  \item Source the updated code in your \R session. But the global environment does not correspond to the package namespace.
   \item Load the new code directly into the package namespace using
     \begin{itemize}
     \item The \Rpackage{devtools} package
@@ -381,7 +368,7 @@ These slides are written as a Sweave document and processed using \Rpackage{knit
   \begin{block}{Even more}
     \begin{itemize}
     \item CITATION and NEWS files.      
-    \item Distributing data in the \texttt{./data} or \texttt{inst/extdata} direcories.
+    \item Distributing data in the \texttt{./data} or \texttt{inst/extdata} directories.
     \item \texttt{C}/\texttt{C++}/\texttt{Fortran} code in the \texttt{./src} directory.
     \item Vignettes and reproducible research
     \item Unit testing in the \texttt{./tests} and \texttt{inst/tests} directories.      
@@ -411,7 +398,7 @@ These slides are written as a Sweave document and processed using \Rpackage{knit
 \begin{frame}
   \begin{block}{References}
     \begin{itemize}
-    \item \R package devlopment, Robert Stojnic and Laurent Gatto
+    \item \R package development, Robert Stojnic and Laurent Gatto
       \url{https://github.com/lgatto/RPackageDevelopment} \\
     \item Writing R Extensions,  R Development Core Team, 
       (get it with \Rfunction{help.start()})
@@ -431,6 +418,5 @@ toLatex(sessionInfo())
 <<echo=FALSE>>=
 system("R CMD REMOVE QuickPackage")
 @ 
-
 
 \end{document}
