@@ -34,10 +34,7 @@
 \author{Laurent Gatto\\
   \email{lg390@cam.ac.uk}\\
   Cambridge Center for Proteomics\\
-  University of Cambridge\\
-  \small{and}\\
-  PRIDE team\\
-  European Bioinformatics Institute
+  University of Cambridge
 }
 
 
