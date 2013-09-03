@@ -23,6 +23,10 @@
         and submit by email. Your package will then be reviewed before acceptance. 
         A svn account will then be created. Package will be installable with 
         \Rfunction{biocLite("myPackage")}.
+
+      \item[Other] popular un-official repositories are github, bitbucket, \ldots and packages can be installed with \Rfunction{devtools::install\_github}, \Rfunction{devtools::install\_bitbucket}. 
+
+
     \end{description}
   \end{block}
 \end{frame}
