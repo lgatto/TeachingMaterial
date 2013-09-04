@@ -222,45 +222,6 @@ qpf()
 %% section                                                     %% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Distributing packages}
-\label{sec:distr-pack}
-
-\begin{frame}{Submission}
-  \begin{block}{}
-    \begin{description}
-      \item[CRAN] Read the CRAN Repository Policy\footnote{\url{http://cran.r-project.org/web/packages/policies.html}}.
-        Upload your \alert{\texttt{--as-cran} checked} \texttt{myPackage\_x.y.z.tar.gz} to 
-        \url{ftp://cran.R-project.org/incoming} or using \url{http://CRAN.R-project.org/submit.html}.
-        Upon acceptance, your package will be installable with \Rfunction{install.packages("myRpackage")}.
-
-      \item[R-forge] Log in, register a project and wait for acceptance. 
-        Then commit you code to the svn repository. Your package will be installable with 
-        \Rfunction{install.packages} using \texttt{repos="http://R-Forge.R-project.org"}.
-    \end{description}
-  \end{block}
-\end{frame}
-
-\begin{frame}{Submission}
-  \begin{block}{}  
-    \begin{description}
-    \item[Bioconductor] Make sure to satisfy submission criteria (pass \texttt{check}, 
-      have a vignette, use S4 if OO, make use of appropriate existing 
-      infrastructure, include a NEWS file, must \textbf{not} already be on CRAN, \ldots) 
-      and submit by email. Your package will then be reviewed before acceptance. 
-      Upon acceptance, an svn account will be created. Package will be installable with 
-      \Rfunction{biocLite("myPackage")}.
-      
-    \item[Other] popular un-official repositories are github, bitbucket, \ldots and packages can be  
-      installed with \Rfunction{devtools::install\_github}, \Rfunction{devtools::install\_bitbucket}. 
-
-    \end{description}
-  \end{block}
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% section                                                     %% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \section{More}
 
 \subsection*{Terminology}
@@ -375,6 +336,48 @@ These slides are written as a Sweave document and processed using \Rpackage{knit
     \end{itemize}    
   \end{block}
 \end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Distributing packages}
+\label{sec:distr-pack}
+
+\begin{frame}{Submission}
+  \begin{block}{}
+    \begin{description}
+      \item[CRAN] Read the CRAN Repository Policy\footnote{\url{http://cran.r-project.org/web/packages/policies.html}}.
+        Upload your \alert{\texttt{--as-cran} checked} \texttt{myPackage\_x.y.z.tar.gz} to 
+        \url{ftp://cran.R-project.org/incoming} or using \url{http://CRAN.R-project.org/submit.html}.
+        Upon acceptance, your package will be installable with \Rfunction{install.packages("myRpackage")}.
+
+      \item[R-forge] Log in, register a project and wait for acceptance. 
+        Then commit you code to the svn repository. Your package will be installable with 
+        \Rfunction{install.packages} using \texttt{repos="http://R-Forge.R-project.org"}.
+    \end{description}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Submission}
+  \begin{block}{}  
+    \begin{description}
+    \item[Bioconductor] Make sure to satisfy submission criteria (pass \texttt{check}, 
+      have a vignette, use S4 if OO, make use of appropriate existing 
+      infrastructure, include a NEWS file, must \textbf{not} already be on CRAN, \ldots) 
+      and submit by email. Your package will then be reviewed before acceptance. 
+      Upon acceptance, an svn account will be created. Package will be installable with 
+      \Rfunction{biocLite("myPackage")}.
+      
+    \item[Other] popular un-official repositories are github, bitbucket, \ldots and packages can be  
+      installed with \Rfunction{devtools::install\_github}, \Rfunction{devtools::install\_bitbucket}. 
+
+    \end{description}
+  \end{block}
+\end{frame}
+
 
 % Packages provide a mechanism for loading optional code and attached documentation as needed.
 % There is more to it – packages are a means to
