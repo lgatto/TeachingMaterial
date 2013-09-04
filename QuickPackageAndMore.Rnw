@@ -255,6 +255,10 @@ qpf()
     Specify the imported symbols in the \texttt{NAMESPACE} with \texttt{import(package)}, \texttt{importFrom(package, function, class, method)}. 
   \end{block}
 
+  \begin{block}{}
+    Also \texttt{Suggests} and \texttt{Enhances}.
+  \end{block}
+
 \end{frame}
 
 
@@ -298,7 +302,7 @@ Other \texttt{roclets}: \texttt{namespace} and \texttt{collate}.
     \begin{itemize}
     \item The \Rpackage{devtools} package
     \item \texttt{ESS} developer mode
-    \item Possibly other solutions (RStudio?)
+    \item RStudio
     \end{itemize}
   \end{itemize}  
   \end{block}
