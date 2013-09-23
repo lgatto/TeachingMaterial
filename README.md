@@ -53,6 +53,13 @@ tweeting about it and sharing it with your colleagues.
 - More details: https://github.com/lgatto/RIntro#readme
 - Download the [pdf](https://github.com/lgatto/RIntro/blob/master/RIntro.pdf?raw=true)
 
+### basicr
+- Description: Material for the 2-day `R` introduction taught at Cambridge's [Graduate School of Life Sciences Training](http://www.training.cam.ac.uk/gsls/course/gsls-rintro).
+- Authors: Robert Stojnic, [Laurent Gatto](https://github.com/lgatto), Rob Foy, David Molnar and John Davey, based on original slides by Ian Roberts and Robert Stojnic.
+- Original repository: https://github.com/johnomics/basicr/
+- Course page: http://logic.sysbiol.cam.ac.uk/teaching/Rcourse/
+- Download the slides for [day 1](https://github.com/johnomics/basicr/raw/master/Basic_R_Day_1_slides.pdf) and [day 2](https://github.com/johnomics/basicr/raw/master/Basic_R_Day_2_slides.pdf) in pdf.
+
 ### R functional programming
 - Description: A short topic section on functional programming in `R`
 - Author: [Laurent Gatto](https://github.com/lgatto)
