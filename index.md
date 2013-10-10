@@ -18,7 +18,7 @@ file for the references.
 
 Compiling the final PDF is a bit of work: 
 
-- Run each R script through R to produce the relevant
+- Run each R script through R to produce the relevant figure
 - Run latex and then bibtex and then latex a couple of more times.
 
 And the R scripts need to be run before latex is, and only if they've
