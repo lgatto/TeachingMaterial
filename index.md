@@ -124,3 +124,4 @@ And here are some examples from [Mike Bostock](http://bost.ocks.org/mike/):
 - [Mike Bostock](http://bost.ocks.org/mike/)'s &ldquo;[Why Use Make](http://bost.ocks.org/mike/make/)&rdquo;
 
 Also see my [git/github guide](http://kbroman.github.io/github_tutorial).
+
