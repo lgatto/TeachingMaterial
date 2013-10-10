@@ -35,7 +35,8 @@ but repeated here for completeness.
     $ ssh-keygen -t rsa -C "your_email@example.com"
     ````
 
-  - Copy your public key into your clipboard.  On a Mac, in the terminal/shell, type:
+  - Copy your public key (the contents of the newly-created
+    `id_rsa.pub` file) into your clipboard.  On a Mac, in the terminal/shell, type:
   
     ````
     $ pbcopy < ~/.ssh/id_rsa.pub
