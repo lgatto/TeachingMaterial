@@ -24,6 +24,7 @@ minimal guide to get started.
 - [Exploring the code and its history](pages/exploring_code.html):
   tag, diff
 - [Branching and merging](pages/branching.html).
+- [Git/github with RStudio](pages/rstudio.html)
 - [Other (much more thorough) resources](pages/resources.html).
 
 I love git and github.  I use both for keeping track of programming
