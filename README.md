@@ -8,7 +8,7 @@ This is a minimal tutorial to get started.
 
 View the thing [here](http://kbroman.github.io/minimal_make).
 
-<hr/>
+---
 
 My parts of this web site is licensed under
 [CC BY](http://creativecommons.org/licenses/by/3.0/).
