@@ -1,0 +1,311 @@
+% this is a simplified version of 
+% https://github.com/yihui/knitr/blob/master/inst/examples/knitr-beamer.Rnw
+\documentclass{beamer}
+\ifdefined\knitrout
+  \renewenvironment{knitrout}{\begin{footnotesize}}{\end{footnotesize}}
+\else
+\fi
+\begin{document}
+
+\title{Introduction to ggplot2}
+\author{Mark Dunning}
+
+\maketitle
+
+\begin{frame}[fragile]
+Package by Hadley Wickham
+\begin{itemize}
+\item \textbf{G}rammar of \textbf{G}raphics approach
+\item \textbf{'Base graphics are good for drawing pictures. ggplot2 graphics are good for understanding the data'} - Hadley Wickham
+\item Extensive online help, videos, and \textbf{google}
+\end{itemize}
+<<>>=
+library(ggplot2)
+@
+\end{frame}
+
+\begin{frame}{The ggplot2 ethos}
+\begin{itemize}
+\item A plot is made up of multiple layers
+\item A layer consists of \textit{data}, a set of \textit{mappings} between variables and aesthetics, a \textit{geom}etric object and a \textit{statistical} transformation
+\item \textit{Scales} control the details of the mapping
+\item All components are independant and reusable
+\item Carefully chosen defaults
+\item Less time spent on making plot look good, more time for interpreting the data
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Load the data}
+<<echo=FALSE>>=
+options(width=50)
+
+@
+
+%%Guardian article; http://www.theguardian.com/football/datablog/interactive/2012/oct/26/bbc-price-football-mapped
+%%data downloaded from https://docs.google.com/spreadsheet/ccc?key=0Aox8knJZwgFBdHdKV3NvcVhtSnlob2hkeWtMWnVMN0E
+
+
+<<>>=
+prices <- read.csv("data/priceData.txt",sep="\t")
+
+head(prices,2)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Lets explore the data}
+Suppose we are interested in the relationship between the price of tea, and the price of pies
+
+<<fig.height=5,fig.width=10>>=
+plot(prices$Pie, prices$Tea)
+@
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Lets try in ggplot2}
+
+The equivalent of {\tt plot} is {\tt ggplot} which requires {\tt data} and {\tt aes} arguments
+<<eval=TRUE,echo=FALSE>>=
+err <- try(ggplot(data = prices, aes(x = Pie, y = Tea)),silent=T)
+@
+{\tt aes} defines the aesthetic mappings to pass to the plot. {\tt data} must be a data frame
+<<eval=FALSE>>=
+ggplot(data = prices, aes(x = Pie, y = Tea))
+@
+
+<<echo=FALSE>>=
+options(width=30)
+err
+@
+We haven't specified a \textit{geom}
+\end{frame}
+
+
+\begin{frame}[fragile]{Pick a geom, any geom}
+
+We have to 'add' a layer to the plot
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie, y= Tea) 
+)+ geom_point()
+@
+\end{frame}
+
+\begin{frame}[fragile]{The command in detail}
+<<eval=FALSE>>=
+ggplot(prices, aes(x = Pie, y= Tea) )+ geom_point()
+@
+\begin{itemize}
+\item Specify data and variable inside ggplot function
+\item Add layers of geometric objects, statistical models and panels
+\item {\tt geom\_point} knows about the data and aesthetics (it inherits them)
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Adding color}
+{\tt geom\_point} can have it's own set of aesthetics
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie, y= Tea))+ geom_point(color="orange", size=3)
+@
+\end{frame}
+
+
+\begin{frame}[fragile]{Adding color}
+Other aesthetics can be set in the {\tt ggplot} call such as {\tt colour}, {\tt shape}, {\tt size}. Legend is set automatically.
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie, y= Tea,color=as.factor(League)))+ geom_point()
+@
+\end{frame}
+
+
+\begin{frame}[fragile]{Adding color}
+Note that legend is automatically re-drawn
+<<fig.height=5,fig.width=10>>=
+sub <- prices$League <6
+ggplot(prices[sub,], aes(x = Pie, y= Tea,color=factor(League)))+ geom_point()
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Changing colours and legend}
+But we can specify colours and legend manually
+<<fig.height=5,fig.width=10>>=
+sub <- prices$League <6
+library(RColorBrewer)
+ggplot(prices[sub,], aes(x = Pie, y= Tea,color=factor(League)))+ geom_point() + scale_color_manual(name="Division",values=brewer.pal(5,"Set1")) 
+@
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Adding size}
+
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie, y= Tea,color=factor(League),size=Most.expensive.season.ticket))+ geom_point()
+@
+\end{frame}
+
+
+\begin{frame}[fragile]{Adding labels}
+For labels we need to add another 'layer' using {\tt geom\_text}. This requires a label aesthetic to be defined
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie, y= Tea,color=factor(League),label=Club))+ geom_point() + geom_text()
+@
+\end{frame}
+
+\begin{frame}[fragile]{Adding labels}
+Can have more control over the labels
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie, y= Tea,color=factor(League),label=Club))+ geom_point() + geom_text(angle=45,vjust=0,hjust=0,color="steelblue",alpha=0.3)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Annotating}
+
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie, y= Tea,color=factor(League),label=Club))+ geom_point() + geom_text(angle=45,vjust=0,hjust=0,color="steelblue",alpha=0.3) + annotate("text", 2,0.2,label="Hello")
+@
+
+
+\end{frame}
+
+\begin{frame}[fragile]{Annotating}
+
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie, y= Tea,color=factor(League),label=Club))+ geom_point() + geom_text(angle=45,vjust=0,hjust=0,color="steelblue",alpha=0.3) + annotate("rect", xmin=0.9,xmax=1.2,ymin=0.4,ymax=1.2,alpha=0.2)
+@
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Faceting}
+Faceting is an important tool to break the data into subsets for plotting.
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie, y= Tea,color=factor(League)))+ geom_point() + facet_wrap(~League)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Faceting}
+Lines and smoothing
+<<fig.height=5,fig.width=10,warning=FALSE,message=FALSE>>=
+ggplot(prices, aes(x = Pie, y= Tea,color=factor(League)))+ geom_point() + geom_line()+geom_smooth()+facet_wrap(~League)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Jittering}
+<<fig.height=5,fig.width=10>>=
+ggplot(prices[sub,], aes(x = Pie, y= Tea,color=factor(League)))+ geom_jitter()
+@
+\end{frame}
+
+\begin{frame}[fragile]{Boxplots}
+
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = as.factor(League), y = Pie)) + geom_boxplot()
+@
+\end{frame}
+
+\begin{frame}[fragile]{Histogram}
+
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie)) + geom_histogram()
+@
+\end{frame}
+
+\begin{frame}[fragile]{Density}
+
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie,fill=factor(League)) ) + geom_density()
+@
+\end{frame}
+
+
+\begin{frame}[fragile]{Density}
+Can alter the transparency
+<<fig.height=5,fig.width=10>>=
+ggplot(prices, aes(x = Pie,fill=factor(League)) ) + geom_density(alpha=0.5)
+@
+\end{frame}
+\begin{frame}[fragile]{The shape of the data}
+<<echo=FALSE>>=
+suppressPackageStartupMessages(library(reshape))
+@
+ggplot prefers data to be in long format. We can 'melt' the data using the reshape library
+<<>>=
+library(reshape)
+
+mPrices <- melt(prices[,-2])
+mPrices <- data.frame(mPrices, Pie=prices$Pie[match(mPrices[,1],prices[,1])])
+head(mPrices,2)
+table(mPrices$variable)
+@
+\end{frame}
+
+\begin{frame}[fragile]{Getting really fancy}
+<<fig.height=5,fig.width=10,warning=FALSE>>=
+ggplot(mPrices, aes(x = Pie, y = value)) + geom_point() + facet_wrap(~variable,scales="free_y")
+@
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+<<fig.height=5,fig.width=10,warning=FALSE>>=
+prem <- prices$League==1
+mPrices2 <- melt(prices[prem,c(1,8,9,10)])
+ggplot(mPrices2, aes(x =variable,y=Club,fill=value)) + geom_tile() 
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Modification of plots}
+First command creates the plot, but doesn't display
+<<fig.height=5,fig.width=10,warning=FALSE>>=
+p <- ggplot(prices, aes(x = Pie, y= Tea,color=as.factor(League)))+ geom_point()
+
+p + ylab("Prices of tea") + xlab("Price of Pies") + xlim(2,5) + scale_color_manual(name="Division",values=rainbow(10)) + annotate("text", 4,1,label="My annotation")
+@
+\end{frame}
+
+\begin{frame}[fragile]{Finally...}
+<<>>=
+uk <- map_data("world",region="uk",xlim=c(-11,3), ylim=c(51,60))
+p <- ggplot()
+p <- p + geom_polygon(data=uk, aes(x=long, y=lat, group = group),colour="white", fill="grey10" )
+@
+\end{frame}
+
+\begin{frame}[fragile]
+
+<<fig.height=5,fig.width=5,warning=FALSE,echo=FALSE>>=
+p + geom_point(data =prices,aes(x=lon,y=lat,size=Pie,color=factor(League)))
+
+@
+\end{frame}
+%%%http://blenditbayes.blogspot.co.uk/2013/06/visualising-crime-hotspots-in-england_25.html
+%%%http://spatial.ly/2012/02/great-maps-ggplot2/
+\begin{frame}[fragile]{ggmap}
+Examples from the web
+\begin{columns}
+\column{0.5\textwidth}
+\includegraphics[height=5cm,width=5cm]{figs/londoneye.png}
+\column{0.5\textwidth}
+\includegraphics[height=5cm,width=5cm]{figs/cyclejourneys.png}
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{ggbio}
+http://www.tengfei.name/ggbio/
+
+Bioconductor package for genomic visualisation based on ggplot2
+\begin{itemize}
+\item Manhatten plots
+\item Coverage plots
+\item Gene-models
+\item circos
+\item +many more
+\end{itemize}
+\end{frame}
+\end{document}
