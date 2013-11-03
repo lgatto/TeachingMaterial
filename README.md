@@ -118,6 +118,12 @@ tweeting about it and sharing it with your colleagues.
 - More details: https://github.com/lgatto/rccpp#readme
 - Download the [pdf](https://github.com/lgatto/rccpp/blob/master/rccpp.pdf?raw=true)
 
+### visualisation
+- Description: visualising data using `ggplot2` (more to come soon)
+- Author: Mark Dunning
+- Original repository: https://github.com/lgatto/visualisation
+- Download the [pdf](https://github.com/lgatto/visualisation/blob/master/ggplot2_cambr28oct2013.pdf)
+
 ### sequences
 - Description: Educational package used in `R` to illustrate OO programming and package development
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
