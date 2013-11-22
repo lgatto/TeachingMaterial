@@ -11,6 +11,10 @@ If you need to contact me, please email me at <rgottard@fhcrc.org>.
 
 **Prerequisite:** BIOSTAT 511/12 or permission of the instructor. Please email me if you're unsure.
 
+**Grading scheme (Tentative):** HW (40%), Midterm (30%), Final project (30%)
+
+**Important dates:** Midterm (TBD), Final project presentations: last 2 weeks of class
+
 **Scope:** This practical “hands-on” course in Bioinformatics for high dimensional omics will emphasize on how to use statistical methods, as well as the R programming language and the Bioconductor project, as tools to manipulate, visualize and analyze real world omics datasets. The course will be organized around the following topics:
 - Introduction to computing for Bioinformatics using R: Introduction to R/RStudio, review of main data structures and tools for efficient and reproducible research, data manipulation and visualization
 - Managing “big omics data” using relational databases: Overview of main database management systems (MySQL, Postgres, SQLite), and review of the Structured Query Language and main operations
