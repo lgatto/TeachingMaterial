@@ -18,4 +18,3 @@ Suggests: testthat
 License: GPL-3
 biocViews: Bioinformatics, Infrastructure, DataRepresentation, DataImport
 URL: https://github.com/lgatto/sequences/
-
