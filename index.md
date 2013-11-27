@@ -123,5 +123,7 @@ And here are some examples from [Mike Bostock](http://bost.ocks.org/mike/):
 
 - [Mike Bostock](http://bost.ocks.org/mike/)'s &ldquo;[Why Use Make](http://bost.ocks.org/mike/make/)&rdquo;
 
+- [GNU Make for reproducible data analysis](http://zmjones.com/make.html) by [Zachary Jones](http://zmjones.com/)
+
 Also see my [git/github guide](http://kbroman.github.io/github_tutorial).
 
