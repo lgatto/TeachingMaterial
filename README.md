@@ -122,7 +122,7 @@ tweeting about it and sharing it with your colleagues.
 - Description: visualising data using `ggplot2` (more to come soon)
 - Author: Mark Dunning
 - Original repository: https://github.com/lgatto/visualisation
-- Download the [pdf](https://github.com/lgatto/visualisation/blob/master/ggplot2_cambr28oct2013.pdf)
+- Download the [pdf](https://github.com/lgatto/visualisation/blob/master/ggplot2_cambr28oct2013.pdf?raw=true)
 
 ### sequences
 - Description: Educational package used in `R` to illustrate OO programming and package development
