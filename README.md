@@ -9,9 +9,9 @@ More details: http://sje30.github.io/2014-01-07-cam/
 
 # Schedule
 
+### Day 1
+
 |  When | What               | Who |
-|-------|--------------------|-----|
-| Day 1 |                    |     |
 |-------|--------------------|-----|
 | 08:30 | Setup              | LG  |
 | 09:00 | Welcome            | SJE |
@@ -23,8 +23,10 @@ More details: http://sje30.github.io/2014-01-07-cam/
 | 14:15 | Break              |     |
 | 14:30 | Shell, make        | SJE |
 | 16:30 | Wrapup             |     |
-|-------|--------------------|-----|
-| Day 2 |                    |     |
+
+### Day 2
+
+|  When | What               | Who |
 |-------|--------------------|-----|
 | 09:00 | Version Control    | AP  |
 | 10:30 | Break              |     |
