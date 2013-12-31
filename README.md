@@ -1,13 +1,11 @@
 R boot-camp
 ===
 
-# Misc
+- When: 07 and 08 Jan 2014
+- Where: Centre for Mathematical Sciences, University of Cambridge
+- More details: http://sje30.github.io/2014-01-07-cam/
 
-When: 07 and 08 Jan 2014
-Where: Centre for Mathematical Sciences, University of Cambridge
-More details: http://sje30.github.io/2014-01-07-cam/
-
-# Schedule
+## Schedule
 
 ### Day 1
 
