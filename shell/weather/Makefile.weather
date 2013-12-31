@@ -1,0 +1,74 @@
+# Makefile.weather
+# Example makefile to be worked through in steps.
+# ln -s Makefile.weather Makefile
+# Work through this step by step adding new entries as you go.
+# You don't need to add the comments!
+# Ensure you have TABS though.
+#2013_04_01-temp.pdf: 2013_04_01-temp
+#	./make_temp.R 2013_04_01-temp
+
+# Make our lives easier... let's be lazy.
+#2013_04_01-temp.pdf: 2013_04_01-temp
+#	./make_temp.R $^
+
+## next: try to write a generic rule, called one by one:
+
+2013_%-temp.pdf: 2013_%-temp
+	./make_temp.R $^
+
+## okay, this works for "make 2013_04_01-temp.pdf", but what about for
+## > make 2013_04_02-temp.pdf
+## This won't work yet, as we have not got the file 2013_04_02-temp
+## so we need another rule to make those.  These are called
+## 'SECONDARY' files in the language of make.
+
+2013_%-temp: 2013_%
+	tail -n +9 $^ | cut -f1,2 | sed 's/:/./' > $@
+
+
+## Now, how can we get "make all" to do something sensible?
+
+## What are variables?
+## READ http://www.gnu.org/software/make/manual/html_node/Using-Variables.ht\ml
+
+DAYS = 2013_07_02.pdf 2013_07_03.pdf 2013_07_04.pdf 2013_07_05.pdf
+
+## > make DAYS
+## to make these four pdfs.
+
+## Let's introduce some variables; not a bullet-proof wildcard here.
+## Plot everything in August, rather than whole year.
+##
+RAWFILES := $(shell ls 2013_08_[0-9][0-9])
+PDFS := $(RAWFILES:=-temp.pdf)	#add suffix to every variable.
+
+
+## note: @ to just show the output of the command.
+test1:
+	@ls -lh $(RAWFILES)
+	@echo $(PDFS)
+
+## now we make a special target:
+all-pdf: $(PDFS)
+all: all-pdf
+##
+## make clean
+## make -j2 all (or "make -j2")
+##
+## EX: what does -j do?
+
+## EX: what are the problems with this Makefile?
+
+
+.PHONY: all clean
+
+clean: 
+	rm -f *.pdf *-temp
+
+# EX: why have -f in the call to rm.
+
+# But note that these are secondary files unless we preserve them.
+# with a .SECONDARY call.
+# Empty dependency means keep all secondary targets. 
+# EX: what happens if that is removed?  
+.SECONDARY: 
