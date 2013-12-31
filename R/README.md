@@ -21,6 +21,13 @@ Introduce data structures and manipulation
 - special values: `NULL`, `NA`, `NaN`
 - objects
 
+## IO
+
+- `readLines`, `writeLines`
+- `scan`
+- `read.table`, `write.table`
+- `load`, `save` (maybe also `RDS` versions)
+
 ## Iteration and flow control 
 
 - `for` and `while`
@@ -28,13 +35,18 @@ Introduce data structures and manipulation
 - `parallel`
 - `if`, `else`
 
-
 ## Writing function
 - `function`
 - pass by value (vs by reference)
-- environments
+- `environment`
 - scoping
 
+## Misc
+
+- string processing: `strsplit`, `sub`, `gsub`, `paste`, `cat`
+- `message`, `warning`, `error`
+- timing, benchmarking
+- debugging
 
 ## Data visualisation
 
