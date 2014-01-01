@@ -6,7 +6,7 @@ infile <- args[1]
 outfile <- sub('.dat$', '.png', infile)
 
 data <- scan(infile, quiet=TRUE)
-main <- sprintf('Histogram of %s (%d samples)',
+main <- sprintf('Histogrm of %s (%d samples)',
                 infile, length(data))
 png(file=outfile)
 par(las=1, bty='n')
