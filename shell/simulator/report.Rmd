@@ -27,13 +27,13 @@ This is an example of the histogram of the Normal distribution:
 
 # Exercises
 
+* Compile the document for yourself.
 * Change N to e.g. 1000 to see what happens when you "make".
 * What happens when you change the plotting function (e.g. add
   xlab='...' to the hist call) -- what should be regenerated?
 * Silence the first block of code by changing eval keyword to
   something obvious
 * See the effect of caching:
-
 	1. Set n to 1e6 in `params.R`
 	2. "make"
 	3. "touch report.Rmd"
