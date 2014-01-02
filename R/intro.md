@@ -242,7 +242,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##   0.000   0.000   3.003
+##   0.000   0.000   3.004
 ```
 
 
@@ -254,7 +254,7 @@ with multiple frameworks: S3, S4 and S4 reference classes
 
 ## Data structures
 
-|        | dimensions | content types |
+|        | dimensions/length | content types |
 |--------|------------|---------------|
 | vector | 1          | 1             |
 | matrix | 2          | 1             |
