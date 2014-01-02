@@ -1,0 +1,77 @@
+# Introduction
+
+## Pre-requisites
+
+
+## `R` is
+
+### a dynamic language
+
+```{r}
+a <- 1L
+mode(a)
+typeof(a)
+
+b <- 1
+mode(b)
+typeof(b)
+
+x <- "1"
+mode(x)
+typeof(x)
+
+paste(a, x)
+```
+### a functional programming language 
+
+Functions are *first class citizens*. Use function (outputs) as inputs
+to other variables, to create other variables, ... we will make use of
+this throughout the workshop. More details
+[here](https://github.com/lgatto/R-functional-programming#readme).
+
+### lazy
+
+Calling a function with argument *wait for 3 seconds* takes no time to return
+```{r}
+f <- function(x) { 10 }
+system.time(f(Sys.sleep(3)))
+```
+
+unless we *force* evaluation
+
+```{r}
+f <- function(x) { force(x); 10 }
+system.time(f(Sys.sleep(3)))
+```
+
+(Example originally from Hadley Wickham's devtools page)
+
+### object-oriented
+
+with multiple frameworks: S3, S4 and S4 reference classes
+
+## Data structures
+
+Introduce data structures and manipulation 
+
+- vectors
+- numerics, characters, logicals, factors
+- matrix
+- array
+- list
+- data.frame
+- special values: `NULL`, `NA`, `NaN`
+
+### Objects
+
+As in OO programming:
+
+```{r}
+class(x <- rnorm(100))
+y <- rnorm(100)
+class(1L)
+class("123")
+class(sum)
+class(lm(y ~ x))
+```
+

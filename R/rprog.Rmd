@@ -1,27 +1,5 @@
 # R programming
 
-## Introduction
-
-`R` is 
-- a dynamic language
-- a functional programming language 
-- lazy
-- object-oriented (multiple frameworks)
-
-
-## Data structures
-
-Introduce data structures and manipulation 
-
-- vectors
-- numerics, characters, logicals, factors
-- matrix
-- array
-- list
-- data.frame
-- special values: `NULL`, `NA`, `NaN`
-- objects
-
 ## IO
 
 - `readLines`, `writeLines`
@@ -56,11 +34,3 @@ Introduce data structures and manipulation
 - `message`, `warning`, `error`
 - timing, benchmarking
 - debugging
-
-## Data visualisation
-
-- base graphics
-- lattice
-- ggplot2
-
-- interactive visualisation: `shiny`, `googleVis`, `rCharts`
