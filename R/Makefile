@@ -6,7 +6,8 @@
 
 .PHONY: all clean
 
-all: intro.md ressources.md rprog.md viz.md
+all: intro.md resources.md rprog.md viz.md
 
 clean:
 	rm -f *~
+	rm -f *txt
