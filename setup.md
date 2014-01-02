@@ -31,3 +31,5 @@ Other
 - git
 
 # General comments
+- good points
+- improvemets
