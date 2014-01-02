@@ -10,3 +10,4 @@ all: intro.md ressources.md rprog.md viz.md
 
 clean:
 	rm -f *~
+	rm -f *txt
