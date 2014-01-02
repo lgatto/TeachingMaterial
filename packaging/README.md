@@ -1,7 +1,7 @@
 R packaging
 ===
 
-- QuickPackage slides
-- devtools
-- where?
+- [QuickPackage slides](https://github.com/lgatto/QuickPackage)
+- `devtools`
+- Distributing packages
 - `devtools::install_github`

@@ -1,4 +1,5 @@
-# Introduction
+Introduction
+===
 
 ```{r, echo=FALSE}
 opts_chunk$set(eval=FALSE)
