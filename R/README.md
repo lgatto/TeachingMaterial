@@ -8,6 +8,7 @@
 - lazy
 - object-oriented (multiple frameworks)
 
+
 ## Data structures
 
 Introduce data structures and manipulation 
@@ -28,6 +29,13 @@ Introduce data structures and manipulation
 - `read.table`, `write.table`
 - `load`, `save` (maybe also `RDS` versions)
 
+### Other formats/data
+
+- database: `RMySQL`, `RMongoDB`, `ROracle`
+- `rhdf5`, `ncdf`, `XML`, `RJSONIO`, `jsonlite`
+- web: `RCurl`, `httr`
+
+
 ## Iteration and flow control 
 
 - `for` and `while`
@@ -44,6 +52,7 @@ Introduce data structures and manipulation
 ## Misc
 
 - string processing: `strsplit`, `sub`, `gsub`, `paste`, `cat`
+- more regexp: `stringr`, `tm`
 - `message`, `warning`, `error`
 - timing, benchmarking
 - debugging
@@ -54,4 +63,4 @@ Introduce data structures and manipulation
 - lattice
 - ggplot2
 
-- interactive visualisation: `shiny`, `googleVis`
+- interactive visualisation: `shiny`, `googleVis`, `rCharts`
