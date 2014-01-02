@@ -11,3 +11,4 @@ all: intro.md resources.md rprog.md viz.md
 clean:
 	rm -f *~
 	rm -f *txt
+	rm -f *html
