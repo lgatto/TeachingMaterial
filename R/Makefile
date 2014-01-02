@@ -1,8 +1,8 @@
 %.md: %.Rmd
 	Rscript -e 'require(knitr); knit("$^")'
 
-# rprog.md: rprog.Rmd
-# 	Rscript -e 'require(knitr); knit("rprog.Rmd")'
+%.html: %.md
+	Rscript -e 'require(knitr); knit2html("$^")'
 
 .PHONY: all clean
 
