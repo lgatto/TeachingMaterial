@@ -1,11 +1,11 @@
-## Introduction: [intro.Rmd](intro.Rmd)
+## [Introduction](intro.Rmd)
 - a few prerequisites
 - data structures: vectors, matrices, lists, data.frames, ...
 
-## R programming: [rprog.Rmd]
+## [R programming](rprog.md)
 
-## Visualisation: [viz.Rmd]
+## [Visualisation](viz.md)
 
-## Resources: [resources.Rmd]
+## [Resources](resources.md)
 
 
