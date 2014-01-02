@@ -52,7 +52,7 @@ summary(w)
 ```
 
 
-## Plotting
+## Basic plotting
 
 
 ```r
@@ -68,6 +68,52 @@ plot(w$Time, w[, "Press [mBar]"], type = "b", xlab = "Time", ylab = "Pressure")
 ```r
 boxplot(w[, "WindSp [knots]"] ~ factor(w$WindDr))
 pairs(w[, c(2, 5, 6, 9)])
+```
+
+
+## More plotting
+
+While using two axes can be very misleading when the scales are
+different (as in the example below) and the differences are not
+properly accounted for, let's illustrate such an example to learn how
+to set different elements of a base plot. 
+
+- Data rescaling
+
+
+```r
+temp0 <- w[, "Temp [degC]"]
+temp <- temp0 - min(temp0)  ## min is 0
+temp <- temp/max(temp)  ## max is 1
+
+press0 <- w[, "Press [mBar]"]
+press <- press0 - min(press0)
+press <- press/max(press)
+```
+
+
+- Plot with minimal decoration
+
+
+```r
+par(mar = c(5, 4, 2, 4))
+plot(w$Time, temp, type = "l", xlab = "Time", ylab = "Temp [deg C]", yaxt = "n", 
+    col = "steelblue")
+lines(w$Time, press, col = "red")
+```
+
+
+- Axis, title and legends
+
+
+```r
+axis(2, at = seq(0, 1, length = 11), labels = seq(min(temp0), max(temp0), length = 11))
+axis(4, at = seq(0, 1, length = 11), labels = seq(min(press0), max(press0), 
+    length = 11))
+mtext("Pressure [mBar]", 4, line = 3)
+title(f)
+legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1, 
+    bty = "n")
 ```
 
 
