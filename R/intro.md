@@ -4,7 +4,7 @@ Introduction
 
 
 
-## Pre-requisites
+# Pre-requisites
 
 **Variables** are used to store values: they bind a value to a name. The
 content of a variable can be accessed by typing its name on the R
@@ -95,9 +95,22 @@ help(package = "devtools)"
 ```
 
 
-## `R` is
+## Comments
 
-### a dynamic language
+Using the `#` character.
+
+## Session information
+
+
+```r
+sessionInfo()
+version
+```
+
+
+# `R` is
+
+## a dynamic language
 
 
 ```r
@@ -114,7 +127,7 @@ class(b)
 a + b
 ```
 
-### a functional programming language 
+## a functional programming language 
 
 Functions are *first class citizens*. Use function (outputs) as inputs
 to other functions (see the `rm(list = ls())` example above), to
@@ -122,7 +135,7 @@ create other variables, ... we will make use of this throughout the
 workshop. More details
 [here](https://github.com/lgatto/R-functional-programming#readme).
 
-### lazy
+## lazy
 
 Calling a function with argument *wait for 3 seconds* takes no time to return
 
@@ -149,11 +162,11 @@ system.time(f(Sys.sleep(3)))
 
 (Example originally from Hadley Wickham's devtools page)
 
-### object-oriented
+## object-oriented
 
 with multiple frameworks: S3, S4 and S4 reference classes
 
-## Data structures
+# Data structures
 
 |        | dimensions/length | content types |
 |--------|------------|---------------|
@@ -163,7 +176,7 @@ with multiple frameworks: S3, S4 and S4 reference classes
 | list   | 1          | `length(l)`   |
 | data.frame | 2      | `ncol(dfr)`   |
 
-### Vectors
+## Vectors
 
 The basic type in `R` is a vector. Vectors have a specific length
 (queried with the `length()` function) and have optional names
@@ -207,7 +220,7 @@ y
 ```
 
 
-### Numerics, characters, logicals, factors
+## Numerics, characters, logicals, factors
 
 Vectors are of one unique type:
 
@@ -224,7 +237,7 @@ class(gender)
 typeof(gender)
 ```
 
-### Vectorised operations
+## Vectorised operations
 
 
 ```r
@@ -245,7 +258,7 @@ paste(x, 1, sep = ".")
 ```
 
 
-#### Recycling
+### Recycling
 
 
 ```r
@@ -256,18 +269,18 @@ z <- c(1, 2, 3)
 x + z
 ```
 
-### Generating vectors
+## Generating vectors
 
 - `seq` and **argument matching**
 - `:`
 
-#### Exercise:
+### Exercise:
 
 Using `rep`, how to generate 
 - 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
 - repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
 
-### Matrix
+## Matrix
 
 A vector with 2 dimensions
 
@@ -305,7 +318,7 @@ m["A", "c"]
 ```
 
 
-### Simplification/dropping of dimensions
+## Simplification/dropping of dimensions
 
 
 ```r
@@ -316,11 +329,11 @@ m[, -(1:2), drop = FALSE]  ## remains a matrix
 ```
 
 
-### Array
+## Array
 
 Like a matrix with > 2 dimensions.
 
-### List
+## List
 
 A `list` is a generic vector that can store elements of different
 types. Lists can also have names (same syntax as vectors) and accessed
@@ -335,7 +348,7 @@ l$F(l$M)  ## same as sum(1:10)
 ```
 
 
-#### Difference between `[` and ``[``
+### Difference between `[` and ``[``
 
 The former returns a sub-set of the list, the latter an individual elements
 
@@ -355,14 +368,14 @@ class(l[[2:3]])
 ```
 
 
-### Data.frame
+## Data.frame
 
 A `data.frame` is a list whose elements are all of the same lengths
 and that is represented as a table. Matrix-like subsetting `[,]` using
 `names` (by definition `colnames`) and `rownames` or indices can be
 used.
 
-#### Exercise
+### Exercise
 
 Generate a `data.frame` of patient data, including their first names,
 surnames, age, gender, weights and whether they give consent for their
@@ -396,7 +409,7 @@ By default, `character`s are converted to `factor`s when generating
 `data.frame`s; use `stringsAsFactors = FALSE` to keep the `characters`
 as is and convert to `factor`s explicitly.
 
-### Special values: `NULL`, `NA`, `NaN`
+## Special values: `NULL`, `NA`, `NaN`
 
 
 ```r
@@ -420,7 +433,7 @@ sum(1, 2, NA, na.rm = TRUE)
 ```
 
 
-### Coercing
+## Coercing
 
 The convert from one type to another, use `as.*`. To test whether a
 variable is of a certain type, use `is*`. Type `as.TAB` and `is.TAB`
@@ -435,7 +448,7 @@ as.numeric("1a")
 ```
 
 
-### Objects
+## Objects
 
 As in OO programming:
 
