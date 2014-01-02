@@ -66,12 +66,6 @@ stopifnot(all.equal(pi, 3.1415927), 2 < 2, all(1:10 < 12), "a" < "b")
 
 
 
-# "testthat" package
-
-How to install.
-
-# Examples
-
 # Floating point issues to be aware of
 
 R FAQ 7.31?
@@ -136,6 +130,11 @@ system.file("test-tools-1.R", package = "Matrix")
 Good overview:
 
 http://adv-r.had.co.nz/Testing.html
+
+## Simple test file
+
+See the file `testthat_examples.R`.
+
 
 
 # Running test_that() on leapyear problem.
