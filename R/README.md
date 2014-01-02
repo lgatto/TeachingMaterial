@@ -1,4 +1,4 @@
-## Introduction: [intro.Rmd]
+## Introduction: [intro.Rmd](intro.Rmd)
 - a few prerequisites
 - data structures: vectors, matrices, lists, data.frames, ...
 
