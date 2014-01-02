@@ -237,6 +237,11 @@ Advanced: can you reproduce this graph
 http://www.mathsisfun.com/images/leap-year-graph.gif
 
 
+# Putting your tests in your R package
+
+Follow the advice on
+[http://adv-r.had.co.nz/Testing.html#r-cmd-check](http://adv-r.had.co.nz/Testing.html#r-cmd-check)
+
 # Compile this document.
 
 ```r
