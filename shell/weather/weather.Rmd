@@ -215,19 +215,6 @@ Error handling: what if file is not available?
 Testing: valid dates?  valid times?  Leap years...
 
 
-    Leap Years are any year that can be evenly divided by 4 (such as 2012, 2016, etc)
- 		except if it can can be evenly divided by 100, then it isn't (such as 2100, 2200, etc)
-  	  		except if it can be evenly divided by 400, then it is (such as 2000, 2400)
-
-
-What's the rule?
-[http://www.mathsisfun.com/leap-years.html](http://www.mathsisfun.com/leap-years.html)
-
-
-
-Write a function to check leap years.  Can you reproduce this grap
-http://www.mathsisfun.com/images/leap-year-graph.gif
-
 
 For sake of package, load in data file directly and then just extract
 the relevant column rather than using a temp file to extract one
@@ -245,5 +232,7 @@ Carefully delineate what must be kept vs what can be regenerated.
 ## End: how to compile.
 ```{r eval=FALSE, compiling}
 require(knitr)
+knit2pdf('weather.Rmd')
+knit2html('weather.Rmd')
 pandoc(knit('weather.Rmd'), format='latex')
 ```
