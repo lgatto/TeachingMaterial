@@ -4,6 +4,7 @@
 
 ## [R programming](rprog.md)
 - input/ouput
+- basic plotting
 
 ## [Visualisation](viz.md)
 
