@@ -113,7 +113,7 @@ set.seed(1)
 \section{Introduction}\label{sec:into}
 
 This section focuses on better \R programming in terms of cleaner 
-and elegant syntax, code profling and testing, performance improvements via parallelisation 
+and elegant syntax, code profiling and testing, performance improvements via parallelisation 
 and debugging. These topics are not covered in details but are presented as 
 practical use-cases.
 
@@ -135,16 +135,16 @@ An \R function is composed by
 \item A \textbf{name} that will be used to call the function (but see anonymous functions later in section \ref{sec:anonymf}); 
   in the code chunk below, we call our function \Rfunction{myFun}.
 
-\item A set on input formal \textbf{arguments}, that are defined in the parenthesis of the \Rfunction{function} constructor. 
+\item A set of input formal \textbf{arguments}, that are defined in the parenthesis of the \Rfunction{function} constructor. 
   The \Rfunction{myFun} example has two arguments, called \Robject{i} and \Robject{j}. It is possible to provide default values 
   to arguments, as illustrated for \Robject{j}.
 
-\item A function \textbf{body}, with curly brackets (only the body is composed or a single expression).
+\item A function \textbf{body}, with curly brackets (required only the body is composed of multiple expressions).
 
 \item A \textbf{return} statement, that represents the output of the function. 
   If no explicit \Rfunction{return} statement is provided, the last statement of the function is return by default. 
-  Functions only support single value, i.e. \Rfunction{return(i, j)} is an error. To return multiple values 
-  one needs to return a \Robject{list} of the respective return variables like \Rfunction{return(list(i, j))}.
+  Functions only support single return value, i.e. \Rfunction{return(i, j)} is an error. To return multiple values 
+  one needs to return a \Robject{list} of the respective variables like \Rfunction{return(list(i, j))}.
 \end{itemize}
 
 <<fun, tidy = FALSE>>=
@@ -215,7 +215,7 @@ rbramp(7)
 \subsection*{The \Robject{...}  arguments}
 
 When an arbitrary number of arguments is to be passed to a function or 
-of some arguments need to be passed down to an inner function, one 
+if some arguments need to be passed down to an inner function, one 
 can use the \Robject{...} special arguments.
 
 <<plt>>=
@@ -255,6 +255,7 @@ or \Robject{list} \Robject{X} and applies function \Rfunction{FUN} to return a
 \Rfunction{list} of same length than \Robject{X}. Each element of the 
 returned list is the return value of \Rfunction{FUN} for that respective element of \Robject{X}. 
 Additional arguments can be passed to \Robject{FUN} through \Robject{...}.
+
 <<lapply>>=
 lapply(1:2, rnorm)
 lapply(1:2, rnorm, 10, 2)
@@ -336,7 +337,7 @@ N <- 1e4
 
 We will be using the \Rfunction{system.time} function to compare \Rfunction{for} loops 
 with and without initialisation and the \Rfunction{apply} functions while iterating over 
-the elements of a \Robject{list} of length \Robject{N} \texttt{=} \Sexpr{N}. 
+the elements of a \Robject{list} of length \Robject{N} \texttt{=} $\Sexpr{N}$. 
 We will then compute the mean of each element of the list and multiply it by its length 
 as implemented in function \Rfunction{f}.
 
@@ -661,14 +662,14 @@ iteration. \Rfunction{sapply} is a wrapper around \Rfunction{lapply}, which we s
 position 4 and \Rfunction{FUN}, i.e. \Rfunction{e} fails at the fifth position on the 
 stack with the error
 
-<<erroronly, eval=FALSE>>=
+<<erroronly, eval=FALSE, prompt=FALSE>>=
 Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
 @ 
 
 From here on, one can display the code the the offending function \Rfunction{e} 
 and even reproduce the error directly.
 
-<<showe, eval=FALSE, prompt = FALSE>>=
+<<showe, eval=FALSE, prompt=FALSE>>=
 e
 function(i) {
   x <- 1:4
@@ -686,7 +687,7 @@ content of the respective variables. Stepping to the next line is done by pressi
 \texttt{enter} of \texttt{n}. Typing \texttt{Q} can be used to exit debugging. 
 To unregister the faulty function from debugger mode, use \Rfunction{undebug(e)}. 
 
-<<debugmode, eval=FALSE, prompt = FALSE>>=
+<<debugmode, eval=FALSE, prompt=FALSE>>=
 > debug(e)
 > e(5)
 debugging in: e(5)
