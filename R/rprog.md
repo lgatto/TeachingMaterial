@@ -452,7 +452,7 @@ abstraction. To create a new function, one needs to define:
 1. A **name** that will be used to call the function (but see
    anonymous functions later); in the code chunk below, we call our
    function `myfun`.
-2. A set on input formal **arguments**, that are defined in the
+2. A set of input formal **arguments**, that are defined in the
    parenthesis of the function constructor. The `myfun` example has
    two arguments, called `x` and `y`.
 3. A function **body** (its code), defined between `{` and `}` below.
@@ -602,6 +602,79 @@ g()
 
 # Misc
 
-- `message`, `warning`, `error`
-- timing, benchmarking
-- debugging
+## Timing and benchmarking
+
+To sample the execution time of a function, it is convenient to use
+use `system.time` in conjunction with `replicate` and compute a
+summary of the timings.
+
+
+```r
+X <- rnorm(1e+06)
+f <- function(x, k = 0.8) mean(x, trim = k)
+f(X)
+system.time(f(X))
+summary(replicate(10, system.time(f(X))["elapsed"]))
+```
+
+
+Alternatively, the
+[`rbenchmark`](http://cran.r-project.org/web/packages/rbenchmark/index.html)
+and
+[`microbanchmark`](http://cran.r-project.org/web/packages/microbenchmark/)
+provide more formal benchmarking infrastructure. Let compare three
+functions that create a list of length `n` composed of `1`, `1:2`, ..., `1:n`.
+
+1. `f1` uses a for `loop` and grows the list dynamically at each
+   iteration.
+2. `f2` initialises the list and uses a `for` loop.
+3. `f3` uses `lapply`.
+
+
+```r
+n <- 1000
+f1 <- function(n) {
+    l <- list()
+    for (i in seq_len(n)) l[[i]] <- seq(i)
+    return(l)
+}
+
+f2 <- function(n) {
+    l <- vector("list", length = n)
+    for (i in seq_len(n)) l[[i]] <- seq(i)
+    return(l)
+}
+
+f3 <- function(n) lapply(seq_len(n), seq)
+```
+
+
+Let's use the `rbenchmark` package to compare the respective timings:
+
+
+```r
+library("rbenchmark")
+benchmark(f1(n), f2(n), f3(n), columns = c("test", "replications", "elapsed", 
+    "relative"), replications = 5)
+```
+
+
+We see that the `for` with initialisation and `lapply` implementations
+have comparable timings. The first function, however, takes much more
+time. This overhead is the result of repeated copies of the list at
+each iteration: before creating `l` of length `i`, the list of length
+`i-1` is copied and deleted upon creation of the longer copy.
+
+Exercise: write a parallel version of `f3` using `mclapply` using 2
+cores. Do you see a 2-fold increase in speed?
+
+For more extensive code profiling, see `?Rprof`.
+
+## Debugging
+
+To debug a function `f`, register is with `debug(f)`. Next time it is
+called, it will be executed in `browser` mode: expressions of the body
+can be executed one by one and at each step, the variables and their
+values can be inspected.
+
+<!-- ## `message`, `warning`, `error` -->
