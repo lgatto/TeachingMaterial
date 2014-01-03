@@ -373,9 +373,31 @@ later for details.
 
 ## Other `apply` functions
 
-- `vapply`
-- `mapply`
-- `rapply`
+- `vapply`: same as `sapply`, but with pre-specified type of the
+  return value.
+- `mapply`: a multivariate version of `sapply` that applies a function
+  `FUN` using the set of arguments passed to `apply` as function
+  arguments to `FUN`.
+
+
+```r
+mapply(rep, 1:4, 4:1)
+```
+
+- `tapply`: applies a function to each cell of a ragged array. Below,
+  sums the values of `x` after sub-setting them based on grouping
+  defined in `k`. (See also `by` below).
+
+
+```r
+x <- 1:12
+k <- rep(letters[1:3], 4)
+tapply(x, k, sum)
+```
+
+
+- `rapply`: recursive version of `lapply`.
+
 
 ## Similar functions
 
