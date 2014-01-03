@@ -181,8 +181,6 @@ where
 - `var` is a variable that takes the values of `seq` throughout the
   iterations and can be used in `expr`.
 
-
-
 Examples:
 
 ```{r}
@@ -238,8 +236,56 @@ repeat {
 }
 ```
 
-- vectorised `ifelse`
+## `ifelse`
 
+The vectorised `ifelse` function takes three expressions as arguments:
+`test`, `yes` and `no`. All values of the `test` expression that
+evaluate to `TRUE` are replaced by the corresponding value of `yes`
+(possibly repeated) or the corresponding value of `no` otherwise.
+
+```{r}
+x <- 1:5
+ifelse(x < 3, 1, 2)
+ifelse(x < 3, 10:15, 20:25)
+ifelse(x < 3, 10:15, -1)
+```
+If `test` has dimensions, there will be retained in the output:
+
+```{r}
+m <- matrix(1:6, ncol = 2)
+m
+ifelse(m < 2, m, c(10, 11, 12))
+```
+
+## `switch`
+
+`switch`'s first argument is an expression, followed by any number of
+additional arguments.
+
+- If the first expression is evaluated to a numeric, the corresponding
+  following argument is evaluated and returned.
+
+```{r}
+switch(1+0, 1, 2, 3)
+switch(1+1, 1, 2, 3)
+```
+
+- If the expression evaluates to a character, the matching name of the
+  following arguments is evaluated and returned.
+
+```{r}
+switch(letters[1+0], a = 1, b = 2, c = 3)
+switch(letters[1+2], a = 1, b = 2, c = 3)
+```
+
+See `?switch` for details about mixing named and unnamed supplementary
+arguments and partial matching.
+
+We will see another `switch` example below, in the section about
+functions.
+
+
+## TODO
 
 - `*apply`
 - `plyr`, `reshape2`
@@ -249,6 +295,22 @@ repeat {
 
 # Writing function
 - `function`
+
+
+```{r}
+centre <- function(x, type) {
+       switch(type,
+              mean = mean(x),
+              median = median(x),
+              trimmed = mean(x, trim = .1))
+     }
+x <- rcauchy(10)
+centre(x, "mean")
+centre(x, "median")
+centre(x, "trimmed")
+```
+
+
 - pass by value (vs by reference)
 - `environment`
 - scoping
