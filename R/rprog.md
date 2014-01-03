@@ -121,6 +121,12 @@ legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1
 
 `write.table` and `writeLines` to write tables and lines to files.
 
+
+```r
+write.csv(w, file = "w.csv")
+```
+
+
 ## Saving and loading R data
 
 Once data has been loaded an properly formatted into `R`, the easiest
@@ -167,8 +173,89 @@ cat("Best editor ever is ", choices[mychoice], "\n")
 
 # Iteration and flow control 
 
-- `for` and `while`
-- `if`, `else`
+## Iteration
+
+Iteration works as in other procedural languages
+
+- `for (var in seq) expr`
+- `while (cond) expr`
+- `repeat expr`
+
+where
+
+- `expr` is a valid R expression, contained in `{` `}` if composed by
+  multiple expressions.
+- `cond` is a `logical` of length, or an expression that is evaluated
+  to a logical. (It is also possible to use a `numeric` of length 1,
+  where 0 corresponds to `FALSE` and any other number to `TRUE`).
+- `seq` is a `vector` or a `list`.
+- `var` is a variable that takes the values of `seq` throughout the
+  iterations and can be used in `expr`.
+
+
+
+Examples:
+
+
+```r
+for (i in 1:3) print(i + 1)
+
+k <- 3
+while (k > 0) {
+    print(k^2)
+    k <- k - 1
+}
+```
+
+
+A common use of `for` is `for (i in 1:n)`, where `n` is the length of
+a `vector` or a `list`. In such situations, it is safer to use
+`seq_len(n)`:
+
+
+```r
+x <- numeric()
+n <- length(x)
+
+for (i in 1:n) print(i)
+
+for (i in seq_len(n)) print(i)
+```
+
+
+## Conditions
+
+`if (cond) expr1 else expr2`, with `cond` and `expr[1|2]` as defined above. The else clause is optional.
+
+It is also possible to nest `else/if` conditions:
+
+```
+if (cond1) {
+	do1
+} else if (cond2) {
+	do2
+} else {
+	do3
+}
+```
+
+Example:
+
+
+```r
+k <- 3
+repeat {
+    print(k)
+    if (k == 0) 
+        break
+    k <- k - 1
+}
+```
+
+
+- vectorised `ifelse`
+
+
 - `*apply`
 - `plyr`, `reshape2`
 - `parallel`
