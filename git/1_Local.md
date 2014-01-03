@@ -189,7 +189,17 @@ Using our commit identifiers we can set our working directory to contain the sta
     $ git checkout COMMITID
     
 We will get something like this:
+	
+	Note: checking out 'c4354a9c578aa5b81d354d8b3330fda7b9b23d3e'.
 
+	You are in 'detached HEAD' state. You can look around, make experimental changes and commit them, and you can discard any commits you make in this state without impacting any branches by performing another checkout.
+
+	If you want to create a new branch to retain commits you create, you may	do so (now or later) by using -b with the checkout command again. Example:
+		git checkout -b new_branch_name
+
+	HEAD is now at c4354a9... Stub of the t-test
+
+HEAD is essentially a pointer which points to the branch where you currently are. We said previously that `master` is the default branch. But `master` is essentially a pointer - that points to the tip of the master branch (the sequence of commits that is created by default by Git). When we checked out one of the past commits HEAD is pointing to that commit but does not point to the same thing as `master` any more. That is why git says `You are in 'detached HEAD' state.` and advises us that if we want to make a commit now, we should create a new branch to retain these commits. If we created a new commit without creating a new branch Git would not know what to do with it (since there is already a commit in master branch from the current state which we checked out c4354a9…). We will get back to branches and HEAD pointer later in this tutorial.
 
 If we look at `add_numb.py` we'll see it's our very first version. And if we look at our directory,
 
@@ -277,38 +287,40 @@ and when we wanted to get back to our most recent version of the repository, we 
 
     $ git checkout master
 
-Not only can our repository store the changes made to files and directories, it can store multiple sets of these, which we can use and edit and update in parallel. Each of these sets, or parallel instances, is termed a *branch* and `master` is Git's default branch. 
+Not only can our repository store the changes made to files and directories, it can store multiple sets of these, which we can use and edit and update in parallel. Each of these sets, or parallel instances, is termed a *branch* and `master` is Git's default branch, as mentioned earlier. 
 
 A new branch can be created from any commit. Branches can also be *merged* together. 
+You can think of the branches as lists of subsequent commits and the branch names as pointers to the tip of the respective list (as mentioned before there is also a HEAD pointer which points to the current commit in the branch which is checked out at the given moment). 
 
 Why is this useful? 
 Suppose we've developed some software and now we want to add some new features to it but we're not sure yet whether we'll keep them. We can then create a branch 'feature1' and keep our master branch clean. When we're done developing the feature and we are sure that we want to include it in our program, we can merge the feature branch with the master branch.
 
 We create our branch for the new feature. 
 
-    -o---o---o                               master
-              \
-               o                             feature1
+    -c1---c2---c3                               master
+              	\
+               	 c4                             feature1
 
 We can then continue developing our software in our default, or master, branch,
 
-    -o---o---o---o---o---o                   master
-              \
-               o                             feature1
+    -c1---c2---c3---c5---c6---c7                   master
+                \
+                 c4                             feature1
 
 And, we can work on the new feature in the feature1 branch
 
-    -o---o---o---o---o                       master
-              \
-               o---o---o                     feature1
+    -c1---c2---c3---c5---c6---c7                   master
+                \
+                 c4---c8---c9                      feature1
 
 We can then merge the feature1 branch adding new feature to our master branch (main program):
 
-    -o---o---o---o---o---M                   master
-              \         /
-               o---o---o                     feature1
+     -c1---c2---c3---c5---c6---c7--c10              master
+                \                   /
+                 c4---c8---c9------                 feature1
 
-And continue developing,
+When we merge our feature1 branch with master git creates a new commit which contains merged files from master and feature1. 
+After the merge we can continue developing. The merged branch is **not** deleted. We can continue developing (and making commits) in feature1 as well.
 
     -o---o---o---o---o---M---o---o           master
               \         /
