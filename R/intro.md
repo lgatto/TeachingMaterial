@@ -336,12 +336,9 @@ x + z
 
 - `seq` and **argument matching**
 - `:`
-
-### Exercise:
-
-Using `rep`, how to generate 
-- 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
-- repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
+- Exercise: Using `rep`, how to generate 
+  - 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
+  - repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
 
 ## Matrix
 
@@ -452,7 +449,7 @@ and that is represented as a table. Matrix-like subsetting `[,]` using
 `names` (by definition `colnames`) and `rownames` or indices can be
 used.
 
-### Exercise
+### Example
 
 Generate a `data.frame` of patient data, including their first names,
 surnames, age, gender, weights and whether they give consent for their
@@ -511,6 +508,21 @@ patients[patients$weight < avgw, ]
 patients[order(patients$age), ]
 ```
 
+
+### Exercise
+
+Using the `weatherdata()` function from the `camweather` package,
+download a weather data frame of your choice.
+- What weather data is available? See `?weatherdata` and inspect the
+  data frame's column names.
+- What were the highest and lowest temperatures on that day? Hint: see
+  `min`, `max` and/or `range` functions.
+- The `Sun` and `Rain` values are cumulative from `Start`. What is the
+  average rainfall per hours for that day? Hint: see `diff` for to
+  calculate differences between successive values and `mean`.
+- In what direction has the wind blown most on that day? Hint:
+  `table`.
+  
 
 ## Special values: `NULL`, `NA`, `NaN`
 
