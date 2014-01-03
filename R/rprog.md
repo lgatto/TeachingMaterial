@@ -47,6 +47,7 @@ we convert it into a time format/date.
 ```r
 class(w$Time)
 w$Time <- strptime(paste(f, w$Time), "%Y_%m_%d %H:%M")
+w$Day <- as.Date(f, "%Y_%m_%d")
 class(w$Time)
 summary(w)
 ```
@@ -78,7 +79,7 @@ different (as in the example below) and the differences are not
 properly accounted for, let's illustrate such an example to learn how
 to set different elements of a base plot. 
 
-- Data rescaling
+- Data re-scaling
 
 
 ```r
@@ -318,7 +319,7 @@ object:
 | lapply   | list/vector  | list   |
 | apply    | matrix/array | vector/matrix [*] |
 
-[*] will acually depend on the subscripts the function will applied
+[*] will actually depend on the subscripts the function will applied
 over.
 
 
@@ -498,7 +499,7 @@ myfun2(4)
 
 
 Note that the functions above are vectorised (they work with vectors
-of arbitraty lengths), as their body is composed entirely if
+of arbitrary lengths), as their body is composed entirely if
 vectorised functions.
 
 
