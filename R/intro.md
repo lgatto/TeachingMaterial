@@ -522,7 +522,27 @@ download a weather data frame of your choice.
   calculate differences between successive values and `mean`.
 - In what direction has the wind blown most on that day? Hint:
   `table`.
-  
+
+### A note of accessor speed
+
+There are multiple ways to access elements in various `R` objects that
+have different advantages. Using names, for instance, is very
+convenient and avoids off-index errors, at the cost of accessor
+timing. Below, we compare accessor timings (measured with
+`system.time` and summed over 100 replications using the `replicate`
+function).
+
+
+```r
+sum(replicate(100, system.time(mtcars["Volvo 142E", "carb"])["elapsed"]))
+sum(replicate(100, system.time(mtcars[32, 11])["elapsed"]))
+sum(replicate(100, system.time(mtcars[[11]][32])["elapsed"]))
+sum(replicate(100, system.time(mtcars$carb[32])["elapsed"]))
+```
+
+
+See [here](https://gist.github.com/hadley/8150051) for a more detailed
+comparison.
 
 ## Special values: `NULL`, `NA`, `NaN`
 
