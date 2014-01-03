@@ -599,9 +599,26 @@ g()
 
 # Documentation
 
-- `roxygen2` package syntax for in-line documentation
+`R` features a dedicated documentation format (`Rd` files) that is
+used when developing packages. It is extremely useful to document
+code, even when the development of a package is not (yet) on the
+agenda.
 
-# Misc
+Comments are of course the first way to include context and additional
+information to code. Code comments should describe why some code is
+written and requirement for its correct execution and not what the
+code does (which should be self-explanatory when reading it). 
+
+The
+[`roxygen2`]http://cran.r-project.org/web/packages/roxygen2/index.html()
+package allows in-line documentation, i.e. documentation of `R` code
+directly next (actually on top) to its source. This makes maintenance
+of the code and the documentation reasonably easy and will allow to
+automatically generate the `Rd` files at a later stage. 
+
+**TODO** show a `roxygen` example. 
+
+# R development
 
 ## Timing and benchmarking
 
@@ -666,7 +683,7 @@ time. This overhead is the result of repeated copies of the list at
 each iteration: before creating `l` of length `i`, the list of length
 `i-1` is copied and deleted upon creation of the longer copy.
 
-Exercise: write a parallel version of `f3` using `mclapply` using 2
+**Exercise:** write a parallel version of `f3` using `mclapply` using 2
 cores. Do you see a 2-fold increase in speed?
 
 For more extensive code profiling, see `?Rprof`.
