@@ -418,11 +418,25 @@ class(NaN)
 class(NULL)
 ```
 
+The `NULL` object:
 
 
 ```r
 l[[2]] <- NULL
 l
+length(NULL)
+c(1, NULL)
+list(1, NULL)
+```
+
+
+But, `NA` can take different specific values for different atomic types:
+
+
+```r
+class(as.integer(NA))
+class(as.numeric(NA))
+class(as.character(NA))
 ```
 
 
