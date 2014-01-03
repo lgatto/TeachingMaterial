@@ -59,7 +59,7 @@ We can now preview (and edit, if necessary) Git's global configuration (such as 
         name = Your Name
        	email = yourname@yourplace.org
     [core]
-     	editor = nano
+     	editor = emacs
 
 This file holds global configuration that is applied to any Git repository in your file system.
 
@@ -113,11 +113,13 @@ Now, if we look at its status,
 
 `nothing to commit` means that our file is now in the repository, our working directory is up-to-date and we have no uncommitted changes in our staging area.
 
+Git also tells us that we are `on branch master`. A `branch` can be viewed as the sequence of commits - a bit like a tree branch. By default, when we initialize the repository and make commits git puts them all into a `master` branch. We can create new branches, give them names we want (the names must be unique) and commit code in these branches. We will look at this in the next section. 
+
 Let's add some more information to our Python code.
 
     """ This short program just adds numbers. """
 
-f we now run,
+If we now run,
 
     $ git status add_numb.py
 
@@ -155,27 +157,12 @@ Typically we use version control to save anything that we create manually e.g. s
 In order to add all tracked files to the staging area (which may be very useful when you edited, let's say, 10 files and now you want to commit all of them):
 
     $ git commit -a
+    
+Similarily to other commands we can combine the options (flags) and type:
+
+	$ git commit -am "Fixed the t-test function"
 
 
-### Discarding changes
-
-Let us suppose we've made a change to our file and not yet committed it. We can see the changes that we've made:
-
-    $ git diff add_numb.py
-
-This shows the difference between the latest copy in the repository and the changes we've made. 
-
-* `-` means a line was deleted. 
-* `+` means a line was added. 
-* Note that, a line that has been edited is shown as a removal of the old line and an addition of the updated line.
-
-Maybe we made our change just to see how something looks, or, for code, to quickly try something out. But we may be unhappy with our changes. If so, we can just throw them away and return our file to the most recent version we committed to the repository by using:
-
-    $ git checkout -- add_numb.py
-
-and we can see that our file has *reverted* to being the most up-to-date one in the repository:
-
-    $ git status add_numb.py
 
 ### Looking at our history
 
@@ -200,6 +187,9 @@ Using our commit identifiers we can set our working directory to contain the sta
 
     $ git log
     $ git checkout COMMITID
+    
+We will get something like this:
+
 
 If we look at `add_numb.py` we'll see it's our very first version. And if we look at our directory,
 
@@ -222,6 +212,27 @@ So we can get any version of our files from any point in time. In other words, w
 In the same way that it is wise to frequently save a document that you are working on, so too is it wise to save numerous revisions of your files. More frequent commits increase the granularity of your "undo" button.
 
 While DropBox and GoogleDrive also preserve every version, they delete old versions after 30 days, or, for GoogleDrive, 100 revisions. DropBox allows for old versions to be stored for longer but you have to pay for this. Using revision control the only bound is how much space you have!
+
+### Discarding changes
+
+Let us suppose we've made a change to our file and not yet committed it. We can see the changes that we've made:
+
+    $ git diff add_numb.py
+
+This shows the difference between the latest copy in the repository and the changes we've made. 
+
+* `-` means a line was deleted. 
+* `+` means a line was added. 
+* Note that, a line that has been edited is shown as a removal of the old line and an addition of the updated line.
+
+Maybe we made our change just to see how something looks, or, for code, to quickly try something out. But we may be unhappy with our changes. If so, we can just throw them away and return our file to the most recent version we committed to the repository by using:
+
+    $ git checkout -- add_numb.py
+
+and we can see that our file has *reverted* to being the most up-to-date one in the repository:
+
+    $ git status add_numb.py
+
 
 ### Using tags as nicknames for commit identifiers
 

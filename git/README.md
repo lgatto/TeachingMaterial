@@ -20,6 +20,9 @@ Version control, also known as revision control, helps with all of these problem
 * Data files.
 * User documentation, manuals, conference papers, journal papers, book chapters, whether they be plain-text, LaTeX, XML, or whatever.
 
+There are different types of version control. They may be divided into two types: centralized and distributed version control. An example of the former is [Subversion (SVN)](http://subversion.tigris.org/) and of the latter is [Git](http://git-scm.com/). Centralized version control has one main repository (on a server) whilst in the case of distributed version control everyone has their own (local) repository.
+
+
 For this session, we'll be using [Git](http://git-scm.com/), a popular version control system and [GitHub](http://github.com), a web-based service providing remote repositories.
 
 ## Contents:
