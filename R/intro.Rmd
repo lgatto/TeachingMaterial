@@ -28,7 +28,7 @@ the parenthesis following the function's name. Functions have optional
 inputs, termed arguments, that are passed to the function through by
 specifying then inside the parentheses. Functions also return output
 values (that are generally computed based on the input values) and
-sometimes also side effects, when they produce somthing else that
+sometimes also side effects, when they produce something else that
 returning a value.
 
 ```{r}
@@ -74,9 +74,9 @@ the new working directory.
 
 ## Packages
 
-`R` comes with a *limited* functionality. Thousands of third-pary
-**packages** can be downloaded from on-line repositories (like CRAN)
-and automatically installed with
+`R` comes with a *limited* functionality. Thousands of third-party
+**packages** can be downloaded from dedicated on-line repositories
+(like CRAN) and automatically installed with
 `install.packages("newpackage")`. Packages are installed in specific
 directories called **libraries** and can be loaded using
 `library("newpackage")`.
@@ -85,6 +85,26 @@ directories called **libraries** and can be loaded using
 install.packages("devtools")
 library("devtools")
 ```
+
+It is of course possible to download and install packages using the
+same `install.packages` function. However, this will force you to
+handle all dependencies (and there can be many) manually too. 
+
+
+It is also possible to install packages from
+[github](https://github.com/) using functionality from the package we
+have just installed. We first need to load the package with the
+`library` function to be able to use the functions that it
+provides. Below, we install the `camweather` package (that provides
+data about the weather in Cambridge) from the `lgatto` github
+repository.
+
+```{r}
+library("devtools")
+install_github("lgatto/camweather")
+```
+
+
 
 To see what packages are available, one can use `installed.packages()`.
 
