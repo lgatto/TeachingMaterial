@@ -7,10 +7,11 @@ opts_chunk$set(eval=FALSE)
 
 # Pre-requisites
 
+## Basic tools
+
 **Variables** are used to store values: they bind a value to a name. The
 content of a variable can be accessed by typing its name on the R
 console prompt. Its content can also be overwritten.
-
 
 ```{r}
 x
@@ -21,6 +22,23 @@ x
 x <- 2
 x
 ```
+
+**Functions** are used to perform actions. They can be recognised by
+the parenthesis following the function's name. Functions have optional
+inputs, termed arguments, that are passed to the function through by
+specifying then inside the parentheses. Functions also return output
+values (that are generally computed based on the input values) and
+sometimes also side effects, when they produce somthing else that
+returning a value.
+
+```{r}
+sum(1, 2, 3)
+sqrt(2)
+x <- 2
+x^2
+```
+
+## Workspace
 
 All these variables live in your works the global environment. They
 can be listed with `ls()`. Variables can be deleted with
@@ -36,6 +54,25 @@ ls()
 rm(x)
 ls()
 ```
+
+## Working directory
+
+`R` is running in a directory, called the working directory. That's
+where `R` expects to find and save files. The working directory can be
+queried with the `getwd()` function. It does not take any inputs
+(there is nothing inside the `()` and returns the name the current
+working directory).
+
+```{r}
+getwd()
+```
+
+The working directory can also by updated with
+`setwd("path/to/workingdir")`, where `"path/to/workingdir"` points to
+the new working directory.
+
+
+## Packages
 
 `R` comes with a *limited* functionality. Thousands of third-pary
 **packages** can be downloaded from on-line repositories (like CRAN)
@@ -95,7 +132,7 @@ version
 
 # `R` is
 
-## a dynamic language
+## A dynamic language
 
 ```{r}
 a <- 1L
@@ -110,7 +147,7 @@ class(b)
 
 a+b
 ```
-## a functional programming language 
+## A functional programming language 
 
 Functions are *first class citizens*. Use function (outputs) as inputs
 to other functions (see the `rm(list = ls())` example above), to
@@ -118,7 +155,7 @@ create other variables, ... we will make use of this throughout the
 workshop. More details
 [here](https://github.com/lgatto/R-functional-programming#readme).
 
-## lazy
+## Lazy
 
 Calling a function with argument *wait for 3 seconds* takes no time to return
 
@@ -136,9 +173,9 @@ system.time(f(Sys.sleep(3)))
 
 (Example originally from Hadley Wickham's devtools page)
 
-## object-oriented
+## Object-oriented
 
-with multiple frameworks: S3, S4 and S4 reference classes
+With multiple frameworks: S3, S4 and S4 reference classes.
 
 # Data structures
 
@@ -251,6 +288,18 @@ class(m) ## a matrix
 mode(m)  ## of numerics
 ```
 
+Or, using the appropriate constructor and defining the number of columns and/or of rows:
+
+```{r}
+m <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
+m <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 3)
+m <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2, nrow = 3)
+```
+
+What happens if
+- the number elements does not match?
+- the number of cols/rows don't match the number of elements?
+
 Accessing/subsetting is the same as vectors, keeping in mind that we have 2 dimensions:
 
 ```{r}
@@ -345,11 +394,31 @@ patients <- data.frame(firstName, secondName,
                        gender = factor(gender),
                        age, weight, consent,
                        stringsAsFactors=FALSE)
+rm(age, consent, firstName, gender, secondName, weight)
 ```
 
 By default, `character`s are converted to `factor`s when generating
 `data.frame`s; use `stringsAsFactors = FALSE` to keep the `characters`
 as is and convert to `factor`s explicitly.
+
+Extract subsets of interest: patients that have given consent, male
+patients, males that have given consent, those that are below the
+average weight, order the `data.frame` by patient age, ...
+
+```{r}
+patients[patients$consent, ]
+patients[patients$gender == "Male", ]
+patients[patients$gender == "Male" & patients$consent, ]
+```
+
+```{r}
+avgw <- mean(patients$weight)
+patients[patients$weight < avgw, ]
+```
+
+```{r}
+patients[order(patients$age), ]
+```
 
 ## Special values: `NULL`, `NA`, `NaN`
 
@@ -393,6 +462,25 @@ as.character(1+2)
 as.integer(1.9) ## see also floor and ceiling
 as.numeric("1a")
 ```
+## Environments
+
+An `environment` is and un-ordered collection of symbols, or
+associative arrays. They are implemented as hash tables.
+
+```{r}
+e <- new.env()
+e
+e$a <- 1
+e$a
+ls() ## list content of global environment
+ls(e) ## list content of e
+a <- 10 ## a different variable a
+e$a
+e[["a"]]
+```
+
+Values from specific environments can also be retrieved with `get` or
+`mget` for multiple values or assigned with `assign`.
 
 ## Objects
 
