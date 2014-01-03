@@ -398,12 +398,16 @@ tapply(x, k, sum)
 
 - `rapply`: recursive version of `lapply`.
 
-
 ## Similar functions
 
-- `replicate`
-- `aggregate`
-- `by`
+- `replicate`: repeats the evaluation of an expression. 
+- `aggregate`: splits the data into subsets, computes summary
+  statistics for each, and returns the result in a convenient form.
+- `by`: similar that `tapply` for data frames.
+
+Reference:
+[R Grouping functions](http://stackoverflow.com/questions/3505701/r-grouping-functions-sapply-vs-lapply-vs-apply-vs-tapply-vs-by-vs-aggrega)
+on Stack Overflow.
 
 ## The `plyr` package
 
@@ -417,15 +421,71 @@ Good reference: [The Split-Apply-Combine Strategy for Data Analysis](http://www.
 
 ## `for` or `apply`
 
+The `apply` family of functions are not faster than for loops as long
+as initialisation is accounted for (see section on benchmaking for
+details). Their main benefits are conciseness and straightforward
+parallelisation (next section).
+
+Reference: [R Help Desk article (May 2008)](http://cran.r-project.org/doc/Rnews/Rnews_2008-1.pdf)
+
 ## Parallel `apply`
 
+The `parallel` package provides a direct parallel alternatives for
+`apply` functions with `mclapply`, `mcmapply`, `parLapply`,
+`parSapply`, `parApply`, ...
 
-## TODO
-- `melt`, `reshape2` (?)
-- `with`
+Reference:
+- `parallel` vignette: `vignette("parallel")`
+- CRAN Task View: [High-Performance and Parallel Computing with R](http://cran.r-project.org/web/views/HighPerformanceComputing.html)
+- Book: [Parallel R](http://shop.oreilly.com/product/0636920021421.do)
+- The [`foreach`](http://cran.r-project.org/web/packages/foreach/index.html) package
+
+<!-- ## TODO -->
+<!-- - `melt`, `reshape2` -->
+<!-- - `with` -->
 
 # Writing function
-- `function`
+
+Writing functions is very easy and a recommended way for code
+abstraction. To create a new function, one needs to define:
+
+1. a name: `myfun` below.
+2. arguments (optional inputs): `x` and `y` below.
+3. a body (its code): between `{` and `}` below.
+4. a return value (output): explicitely using `return` or, implicitly,
+   the last expression in the function body.
+
+
+```r
+myfun <- function(x, y) {
+    a <- x^2
+    b <- sqrt(y)
+    res <- a/b
+    return(res)
+}
+
+myfun(2, 1)
+myfun(4, 2)
+```
+
+
+Calling `myfun(1)` would fail because argument `y` is not assigned a
+value. One can assign default argument values when defining the function.
+
+
+
+```r
+myfun2 <- function(x, y = 2) {
+    a <- x^2
+    b <- sqrt(y)
+    res <- a/b
+    return(res)
+}
+
+myfun2(4, 2)
+myfun2(4)
+```
+
 
 ## A example with `switch`
 
@@ -442,6 +502,7 @@ centre(x, "trimmed")
 
 
 ## Anonymous functions
+
 
 
 ## pass by value (vs by reference)
