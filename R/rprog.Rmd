@@ -284,18 +284,97 @@ arguments and partial matching.
 We will see another `switch` example below, in the section about
 functions.
 
+## `*apply` and friends
+
+When one wants to apply a function over the elements/dimensions of an
+object:
+
+| function | input | output | 
+|----------|-------|--------|
+| sapply   | list/vector  | vector | 
+| lapply   | list/vector  | list   |
+| apply    | matrix/array | vector/matrix [*] |
+
+[*] will acually depend on the subscripts the function will applied
+over.
+
+
+
+- Retrieve the length of each element of a `list`: `sapply` the function `length` on each element of the list.
+
+```{r}
+l <- list(1:4, letters, month.name)
+sapply(l, length)
+```
+- Same as above, but returning a list.
+
+```{r}
+lapply(l, length)
+```
+
+- Lets generate 3 sequences from 1 to 3, 4, and 5: apply function
+  `seq_len` along the vector `c(3, 4, 5)`, to call `seq_len(3)`,
+  `seq_len(4)` and `seq_len(5)`. Below, as the output can not be
+  returned as a simple vector, the output is a `list`, even when using
+  `sapply`.
+
+
+```{r}
+lapply(c(3, 4, 5), seq_len)
+sapply(c(3, 4, 5), seq_len)
+```
+
+- Let's calculate the median of the rows and columns of a matrix:
+  `apply` the function `median` over the rows (margin 1) and columns
+  (margin 2) of `m`. Below, we generate a matrix of dimensions 6 by 5
+  for 30 values sampled from a normal distribution `N(0, 1)` (see
+  `?rnorm` for details).
+
+```{r}
+m <- matrix(rnorm(30), nrow = 6)
+apply(m, 1, median)
+apply(m, 2, median)
+```
+
+If we wanted to do the same thing with the `mean`, we would rather
+want to use `rowMeans` and `colMeans`, which are much faster. See
+later for details.
+
+## Other `apply` functions
+
+- `vapply`
+- `mapply`
+- `rapply`
+
+## Similar functions
+
+- `replicate`
+- `aggregate`
+- `by`
+
+## The `plyr` package
+
+The [`plyr`](http://plyr.had.co.nz/) package provides its own set of
+apply like functions. The `plyr` functions follows a simple naming
+convention: `XYply` where `X` and `Y` describe the input and output
+structures respectively, and can replaced by `a` (for an `array`), `l`
+(for a `list`) or `d` (for a `data.frame`).
+
+Good reference: [The Split-Apply-Combine Strategy for Data Analysis](http://www.jstatsoft.org/v40/i01).
+
+## `for` or `apply`
+
+## Parallel `apply`
+
 
 ## TODO
-
-- `*apply`
-- `plyr`, `reshape2`
-- `parallel`
-- `replicate`
+- `melt`, `reshape2` (?)
 - `with`
 
 # Writing function
 - `function`
 
+## A example with `switch`
 
 ```{r}
 centre <- function(x, type) {
@@ -310,10 +389,12 @@ centre(x, "median")
 centre(x, "trimmed")
 ```
 
+## Anonymous functions
 
-- pass by value (vs by reference)
-- `environment`
-- scoping
+
+## pass by value (vs by reference)
+
+## Scoping
 
 # Documentation
 
