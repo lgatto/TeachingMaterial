@@ -162,7 +162,7 @@ QuickPackage/
 |   `-- QuickPackage-package.Rd
 |-- NAMESPACE
 |-- R
-|   `-- qfd.R
+|   `-- qpf.R
 `-- Read-and-delete-me
 \end{verbatim}
 \end{frame}
@@ -291,11 +291,11 @@ Other \texttt{roclets}: \texttt{namespace} and \texttt{collate}.
 \end{frame}
 
 
-\subsection{The build/chec/install cycle}
+\subsection{The build/check/install cycle}
 \label{sec:buildch-cycle}
 \begin{frame}
   \begin{block}{Package development}    
-    Building/checking/installing a package to test every changes is not practical.
+    Building/checking/installing a package to test every change is not practical.
   \begin{itemize}
   \item Source the updated code in your \R session. But the global environment does not correspond to the package namespace.
   \item Load the new code directly into the package namespace using

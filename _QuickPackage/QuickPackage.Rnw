@@ -158,7 +158,7 @@ QuickPackage/
 |   `-- QuickPackage-package.Rd
 |-- NAMESPACE
 |-- R
-|   `-- qfd.R
+|   `-- qpf.R
 `-- Read-and-delete-me
 \end{verbatim}
 \end{frame}
