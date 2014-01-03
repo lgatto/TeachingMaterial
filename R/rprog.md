@@ -449,11 +449,16 @@ Reference:
 Writing functions is very easy and a recommended way for code
 abstraction. To create a new function, one needs to define:
 
-1. a name: `myfun` below.
-2. arguments (optional inputs): `x` and `y` below.
-3. a body (its code): between `{` and `}` below.
-4. a return value (output): explicitely using `return` or, implicitly,
-   the last expression in the function body.
+1. A **name** that will be used to call the function (but see
+   anonymous functions later); in the code chunk below, we call our
+   function `myfun`.
+2. A set on input formal **arguments**, that are defined in the
+   parenthesis of the function constructor. The `myfun` example has
+   two arguments, called `x` and `y`.
+3. A function **body** (its code), defined between `{` and `}` below.
+4. A **return** statement, that represents the output of the
+   function. If no explicit return statement is provided, the last
+   statement of the function is return by default.
 
 
 ```r
@@ -467,6 +472,11 @@ myfun <- function(x, y) {
 myfun(2, 1)
 myfun(4, 2)
 ```
+
+
+Note that functions only support single value returns, i.e. `return(x,
+y)` is an error.  To return multiple values, one needs to return a
+`list` with the respective return variables like `return(list(x, y))`.
 
 
 Calling `myfun(1)` would fail because argument `y` is not assigned a
@@ -487,6 +497,16 @@ myfun2(4)
 ```
 
 
+Note that the functions above are vectorised (they work with vectors
+of arbitraty lengths), as their body is composed entirely if
+vectorised functions.
+
+
+```r
+myfun(c(4, 4), c(1, 2))
+```
+
+
 ## A example with `switch`
 
 
@@ -501,13 +521,80 @@ centre(x, "trimmed")
 ```
 
 
+## The `...` argument
+
+
+When an arbitrary number of arguments is to be passed to a function
+(see `?cat` or `?rm` for examples) or if some arguments need to be
+passed down to an inner function, one can use the special `...`
+arguments.
+
+
+```r
+plot1toN <- function(n, ...) plot(1, n, ...)
+```
+
+
 ## Anonymous functions
 
+It is often handy to define functions on the fly, without binding them
+to specific names (item 1. above missing). These are called anonymous
+functions and are generally used as one-time arguments to `apply`
+functions.
 
 
-## pass by value (vs by reference)
+```r
+m <- matrix(rnorm(12), ncol = 4)
+apply(m, 1, function(x) sum(x^2))
+```
+
+
+## Exercise
+
+Write a function that does something with the weather data.
 
 ## Scoping
+
+In addition to what we have seen above, a function has also its very
+own environment, in which it arguments a stored and its body is
+evaluated. The functions arguments are copies of the initial
+variables, so that the original ones stay unchanged.
+
+
+```r
+x <- 1
+f <- function(x) {
+    x <- x + 1
+    return(x)
+}
+f(x)
+x  ## unchanged
+```
+
+
+A functions however can access variables defined outside of their
+environment, for instance variables in the global environment.
+
+
+```r
+g <- function() {
+    x <- x + 1
+    return(x)
+}
+x <- 1
+g()
+x  ## unchanged
+```
+
+
+In this case, if `x` does not exists
+
+
+```r
+rm(x)
+g()
+```
+
 
 # Documentation
 
@@ -515,8 +602,6 @@ centre(x, "trimmed")
 
 # Misc
 
-- string processing: `strsplit`, `sub`, `gsub`, `paste`, `cat`
-- more regexp: `stringr`, `tm`
 - `message`, `warning`, `error`
 - timing, benchmarking
 - debugging
