@@ -336,7 +336,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##       0       0       0
+##   0.000   0.000   0.001
 ```
 
 
@@ -353,7 +353,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##       0       0       3
+##   0.000   0.000   3.004
 ```
 
 
@@ -363,11 +363,9 @@ system.time(f(Sys.sleep(3)))
 
 With multiple frameworks: S3, S4 and S4 reference classes. See
 [R object oriented programming](https://github.com/lgatto/roo),
-[Short S4 tutorial](https://github.com/lgatto/S4-tutorial) or
-[Quick Package](https://github.com/lgatto/QuickPackage) and a
+[Short S4 tutorial](https://github.com/lgatto/S4-tutorial) and a
 [A (Not So) Short Introduction to S4](http://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf)
 for more details.
-
 
 # Data structures
 
