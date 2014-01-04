@@ -99,9 +99,9 @@ library("devtools")
 ```
 
 
-It is of course possible to download and install packages using the
-same `install.packages` function. However, this will force you to
-handle all dependencies (and there can be many) manually too. 
+It is of course possible to download and install packages using
+`install.packages(, repo = NULL)`. However, this will force you to
+handle all dependencies (and there can be many) manually too.
 
 
 It is also possible to install packages from
@@ -119,8 +119,6 @@ install_github("lgatto/camweather")
 ```
 
 
-
-
 To see what packages are available, one can use `installed.packages()`.
 
 
@@ -135,6 +133,8 @@ nrow(allpkgs)
 head(allpkgs)
 ```
 
+
+## Help
 
 `R` comes with a extensive help system. Type `helps.start()` to start
 the HTML version of `R`'s online documentation. Each function comes
@@ -161,6 +161,20 @@ packageDescription("devtools")
 help(package = "devtools)"
 ```
 
+
+Some packages provide an additional piece of documentation called a
+`vignette`. It is generally displayed as a `pdf` file or, more
+recently, as `html` pages. Vignettes are written as `LaTeX` (or
+`markdown`) documents with interleaved code chunks. These are
+evaluated and replaced by their output. These documents generally
+present a high-level overview of the package's functionality, as
+opposed to individual manual pages, that provide detailed information
+about a single object.
+
+To find out if a package has vignettes, use `vignette(package =
+"packagename")`. To load a specific vignette, use
+`vignette("vignettename", package = "packagename")` or
+`vignette("vignettename")`.
 
 ## Comments
 
