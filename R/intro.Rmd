@@ -13,7 +13,7 @@ opts_chunk$set(eval=FALSE)
 content of a variable can be accessed by typing its name on the R
 console prompt. Its content can also be overwritten.
 
-```{r}
+```{r, eval = TRUE}
 x
 x <- 1
 y <- 1:10

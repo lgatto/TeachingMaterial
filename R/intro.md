@@ -15,12 +15,30 @@ console prompt. Its content can also be overwritten.
 
 ```r
 x
+```
+
+```
+## Error: object 'x' not found
+```
+
+```r
 x <- 1
 y <- 1:10
 z <- "foo"
 x
+```
+
+```
+## [1] 1
+```
+
+```r
 x <- 2
 x
+```
+
+```
+## [1] 2
 ```
 
 
@@ -65,23 +83,16 @@ ls()
 ```
 
 ```
-## character(0)
+## [1] "x" "y" "z"
 ```
 
 ```r
 rm(x)
-```
-
-```
-## Warning: object 'x' not found
-```
-
-```r
 ls()
 ```
 
 ```
-## character(0)
+## [1] "y" "z"
 ```
 
 
