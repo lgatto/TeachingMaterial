@@ -24,7 +24,7 @@ abline(0, 1, col = "red")
 High level plotting functions produce an appropriate chart based on
 the input.
 
-- `plot`: generic plotting function. By default produces scatterplots
+- `plot`: generic plotting function. By default produces scatter plots
   but other `type`s can be set.
 - `barbplot`.
 - `boxplot`.
@@ -150,7 +150,7 @@ display.brewer.all()
 
 ## Other
 - `locator` to obtain the `x` and `y` from a mouse click.
-- `identify` to identify index of label of the clostest point to a mouse click.
+- `identify` to identify index of label of the closest point to a mouse click.
 
 # `ggplot2`
 
@@ -160,7 +160,7 @@ Based on the **Grammar of Graphics**
   *mappings* between variables and *aesthetics* (`aes`), a *geometric
   object* (`geom`) and a *statistical transformation*
 - Scales control the details of the mapping
-- All components are independant and reusable
+- All components are independent and reusable
 
 
 ```r
@@ -214,7 +214,6 @@ xyplot(Temp ~ Press | WindDr, data = d)
 
 # Interactive visualisation
 
-- `svg` device
 - [`shiny`](http://www.rstudio.com/shiny/)
 - [`googleVis`](http://code.google.com/p/google-motion-charts-with-r/)
 - [`rCharts`](http://rcharts.io/)
