@@ -15,9 +15,10 @@ or `as.is=TRUE`.
 
 
 ```r
-f <- "2014_01_01"
-lf <- file.path("../data/daily-text", f)
-w <- read.table(lf, header = FALSE, comment.char = "#", sep = "\t")
+library("camweather")
+f <- weatherfile("2014-01-01")
+f
+w <- read.table(f, header = FALSE, comment.char = "#", sep = "\t")
 dim(w)
 head(w)
 ```
@@ -28,7 +29,7 @@ extract the header data manually.
 
 
 ```r
-hd <- readLines("../data/daily-text/2014_01_01")
+hd <- readLines(f)
 hd <- hd[grep("#", hd)]
 hd <- sub("#", "", hd)
 hd <- hd[7:8]
@@ -46,8 +47,8 @@ we convert it into a time format/date.
 
 ```r
 class(w$Time)
-w$Time <- strptime(paste(f, w$Time), "%Y_%m_%d %H:%M")
-w$Day <- as.Date(f, "%Y_%m_%d")
+w$Time <- strptime(paste(basename(f), w$Time), "%Y_%m_%d %H:%M")
+w$Day <- as.Date(basename(f), "%Y_%m_%d")
 class(w$Time)
 summary(w)
 ```
@@ -120,9 +121,15 @@ legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1
 
 ### Exercise
 
-Using a weather data frame as input, generate a plot of the
-temperature throughout the day.
+Using a weather data frame as input, generate a plot showing the
+hourly (or half-hourly) rainfall for the 3rd Jan 2014.
 
+<!-- ```{r} -->
+<!-- x <- weatherdata("2014-01-03") -->
+<!-- rain <- x$'Rain [mm]' -->
+<!-- plot(x$Time[-1], diff(rain), type = "l", -->
+<!--      ) -->
+<!-- ``` -->
 
 ## Writing text spreadsheets
 
@@ -570,7 +577,9 @@ apply(m, 1, function(x) sum(x^2))
   files.
 
 <!-- ```{r} -->
+<!-- fls <- weatherfiles() -->
 <!-- f <- grep("2013_06", fls, value = TRUE) -->
+<!-- length(f) -->
 <!-- ``` -->
 
 - Load the 30 data frames into a convenient data structure. Check the
@@ -578,6 +587,7 @@ apply(m, 1, function(x) sum(x^2))
 
 <!-- ```{r} -->
 <!-- xx <- lapply(f, weatherdata) -->
+<!-- sapply(xx, nrow) -->
 <!-- ``` -->
 
 - Calculate the average day temperatures for that month.
@@ -587,6 +597,38 @@ apply(m, 1, function(x) sum(x^2))
 <!-- ## or -->
 <!-- dd <- do.call(rbind, xx) -->
 <!-- tapply(dd[, 2], dd$Day, mean) -->
+<!-- ``` -->
+
+- Plot the temperature over the full month and the daily
+  temperature curves for June 2013.
+
+<!-- ```{r} -->
+<!-- plot(dd[, 1], dd[, 2], type = "l", -->
+<!--      xlab = "Time", ylab = "Temp", main = "June 2013") -->
+
+<!-- updateday <- function(x) -->
+<!--     as.POSIXct(strftime(x, "%H:%M"), format = "%H:%M") -->
+
+<!-- library("RColorBrewer") -->
+<!-- col <- brewer.pal(10, "Set3") -->
+<!-- col[2] <- "#555555" -->
+<!-- col <- rep(col, each = 3) -->
+<!-- lty <- rep(1:3, 30) -->
+
+<!-- trng <- range(lapply(xx, function(x) x[, "Temp [degC]"])) -->
+<!-- plot(updateday(xx[[1]][, 1]), -->
+<!--      xx[[1]][, 2], ylim = trng, type = "l", -->
+<!--      col = col[1], lty = lty[1], lwd = 2, -->
+<!--      xlab = "Time", ylab = "Temp") -->
+
+<!-- for (i in 2:length(xx))  -->
+<!--     lines(updateday(xx[[i]][, 1]), xx[[i]][, 2], -->
+<!--           col = col[i], lty = lty[i], lwd = 2) -->
+
+<!-- legend("bottomright", legend = 1:30, -->
+<!--        col = col, lty = lty, lwd = 2, -->
+<!--        bty = "n", cex = .8, -->
+<!--        ncol = 5) -->
 <!-- ``` -->
 
 ## Scoping
