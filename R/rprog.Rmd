@@ -53,7 +53,12 @@ summary(w)
 
 ## Basic plotting
 
-```{r}
+```{r, echo=FALSE, eval=TRUE}
+library("camweather")
+w <- weatherdata("2014-01-01")
+```
+
+```{r, eval=TRUE}
 par(mfrow = c(2, 2))
 plot(w$Time, w[, "Temp [degC]"], type = "b", xlab = "Time", ylab = "Temp")
 plot(w$Time, w[, "WindSp [knots]"], type = "b", xlab = "Time", ylab = "Wind speed")
@@ -61,7 +66,7 @@ plot(w$Time, w[, "Rain [mm]"], type = "b", xlab = "Time", ylab = "Rain")
 plot(w$Time, w[, "Press [mBar]"], type = "b", xlab = "Time", ylab = "Pressure")
 ```
 
-```{r}
+```{r, eval = TRUE}
 boxplot(w[, "WindSp [knots]"] ~ factor(w$WindDr))
 pairs(w[, c(2, 5, 6, 9)])
 ```
@@ -75,7 +80,7 @@ to set different elements of a base plot.
 
 - Data re-scaling
 
-```{r}
+```{r, eval = TRUE}
 temp0 <- w[, "Temp [degC]"]
 temp <- temp0 - min(temp0) ## min is 0
 temp <- temp/max(temp) ## max is 1
@@ -87,7 +92,7 @@ press <- press/max(press)
 
 - Plot with minimal decoration
 
-```{r}
+```{r, eval=TRUE}
 par(mar = c(5, 4, 2, 4))
 plot(w$Time,  temp , type = "l",
      xlab = "Time", ylab = "Temp [deg C]",
@@ -97,7 +102,7 @@ lines(w$Time, press, col = "red")
 
 - Axis, title and legends
 
-```{r}
+```{r, eval=TRUE}
 axis(2, at = seq(0, 1, length = 11),
      labels = seq(min(temp0),
          max(temp0),

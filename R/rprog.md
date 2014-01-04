@@ -57,6 +57,9 @@ summary(w)
 ## Basic plotting
 
 
+
+
+
 ```r
 par(mfrow = c(2, 2))
 plot(w$Time, w[, "Temp [degC]"], type = "b", xlab = "Time", ylab = "Temp")
@@ -65,12 +68,21 @@ plot(w$Time, w[, "Rain [mm]"], type = "b", xlab = "Time", ylab = "Rain")
 plot(w$Time, w[, "Press [mBar]"], type = "b", xlab = "Time", ylab = "Pressure")
 ```
 
+![plot of chunk rprog.Rmd-6](figure/rprog_Rmd-6.png) 
+
 
 
 ```r
 boxplot(w[, "WindSp [knots]"] ~ factor(w$WindDr))
+```
+
+![plot of chunk rprog.Rmd-7](figure/rprog_Rmd-71.png) 
+
+```r
 pairs(w[, c(2, 5, 6, 9)])
 ```
+
+![plot of chunk rprog.Rmd-7](figure/rprog_Rmd-72.png) 
 
 
 ## More plotting
@@ -104,18 +116,52 @@ plot(w$Time, temp, type = "l", xlab = "Time", ylab = "Temp [deg C]", yaxt = "n",
 lines(w$Time, press, col = "red")
 ```
 
+![plot of chunk rprog.Rmd-9](figure/rprog_Rmd-9.png) 
+
 
 - Axis, title and legends
 
 
 ```r
 axis(2, at = seq(0, 1, length = 11), labels = seq(min(temp0), max(temp0), length = 11))
+```
+
+```
+## Error: plot.new has not been called yet
+```
+
+```r
 axis(4, at = seq(0, 1, length = 11), labels = seq(min(press0), max(press0), 
     length = 11))
+```
+
+```
+## Error: plot.new has not been called yet
+```
+
+```r
 mtext("Pressure [mBar]", 4, line = 3)
+```
+
+```
+## Error: plot.new has not been called yet
+```
+
+```r
 title(f)
+```
+
+```
+## Error: object 'f' not found
+```
+
+```r
 legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1, 
     bty = "n")
+```
+
+```
+## Error: plot.new has not been called yet
 ```
 
 
