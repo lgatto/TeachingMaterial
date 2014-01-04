@@ -205,7 +205,7 @@ To get all the details about a package and its documentation:
 
 ```r
 packageDescription("devtools")
-help(package = "devtools)"
+help(package = "devtools")
 ```
 
 

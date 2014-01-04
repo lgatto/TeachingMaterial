@@ -140,7 +140,7 @@ To get all the details about a package and its documentation:
 
 ```{r, eval=FALSE}
 packageDescription("devtools")
-help(package = "devtools)"
+help(package = "devtools")
 ```
 
 Some packages provide an additional piece of documentation called a
