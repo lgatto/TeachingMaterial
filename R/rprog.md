@@ -578,7 +578,7 @@ apply(m, 1, function(x) sum(x^2))
 - Write a function that takes a date character of the for
   `"YYYY-MM-DD"` as input and produces a plot of temperature over
   time. Make sure that it remains possible to fully customise the
-  plot.
+  figure as would be with `plot`.
 
 - Select all the weather files from June 2013. All file names are
   available with the `weatherfiles()` function. You can use the `grep`
