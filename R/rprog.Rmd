@@ -400,7 +400,7 @@ convention: `XYply` where `X` and `Y` describe the input and output
 structures respectively, and can replaced by `a` (for an `array`), `l`
 (for a `list`) or `d` (for a `data.frame`).
 
-Good reference: [The Split-Apply-Combine Strategy for Data Analysis](http://www.jstatsoft.org/v40/i01).
+Good reference: Hadley Wickham, [The Split-Apply-Combine Strategy for Data Analysis](http://www.jstatsoft.org/v40/i01), JSS, 40(1) pp. 1-29 (2011).
 
 ## `for` or `apply`
 
