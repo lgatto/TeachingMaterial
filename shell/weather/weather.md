@@ -45,9 +45,9 @@ or a [daily graph](https://www.cl.cam.ac.uk/research/dtg/weather/daily-graph.cgi
 Can we do something like this ourselves with the data?
 
 
-## get the daily files.
+## Get the daily files.
 
-We could also work from the raw CSV, but let's go with this file for
+We could also work from the raw CSV, but let's use these 'daily' files for
 now.
 
 
@@ -110,12 +110,25 @@ cut -f1,2 tmp | sed 's/:/./' > 2013_04_01-temp # EX: shorten
 
 # Running R in BATCH.
 
-TODO Is Laurent going to do this?
+(Did Laurent cover this?)
 
-Show how to do R CMD BATCH, and where output goes.  Why is this
+
+Ex: Show how to do R CMD BATCH, and where output goes.  Why is this
 useful?
+<!-- ```{r prelim, engine='cat', engine.opts=list(file='trig.R')} -->
 
-
+```r
+## Example script file, to generate a little plot.
+## Demonstrate trigonometric functions.
+## Sept 2007
+x <- seq(from=0, to=2*pi, length=100)
+y <- sin(x)
+z <- cos(2*x)
+z                               ## will not appear
+print(y[1:10])                        ## should use print()
+plot(x, y, type='l')
+lines(x, z, type='l', col='red')
+```
 
 
 - At the command line, type `R CMD BATCH trig.R`.  R will start up,
@@ -148,7 +161,7 @@ Rscript -e 'round(runif(10))'
 ## [17] 4.123106 4.242641 4.358899 4.472136 4.582576 4.690416 4.795832 4.898979
 ## [25] 5.000000 5.099020 5.196152 5.291503 5.385165 5.477226 5.567764 5.656854
 ## [33] 5.744563 5.830952 5.916080 6.000000 6.082763 6.164414 6.244998 6.324555
-##  [1] 0 1 0 1 0 1 1 1 0 1
+##  [1] 0 1 1 1 1 0 1 0 0 0
 ```
 
 
@@ -156,7 +169,6 @@ Rscript -e 'round(runif(10))'
 
 Ex: Create a new file simple_rnorm.R, with contents:
 
-TODO show contents  (or put in file, like a here document)
 
 
 
@@ -175,14 +187,31 @@ if not given on command line.
 ## Now let's create our weather pdf.
 
 Save this to `maketemp.R` in the same folder as the data.
+<!--   ```{r, engine='cat', engine.opts=list(file='maketemp.R'), echo=TRUE} -->
+
+
+```r
+#!/usr/bin/env Rscript
+# maketemp.R (master in weather.Rmd)
+args <- commandArgs(TRUE)
+stopifnot(length(args)==1)
+file <- args[1]
+dat <- read.table(file)
+
+
+## Create an output file name based on the input file name
+pdfname <- paste0(file, ".pdf")
+pdf(file=pdfname)
+plot(dat, ylim=c(-10, 30), xlab='Time (h)', ylab='Temp (C)',
+     type='l', col='red')
+abline(h=0, col='grey')
+title(file)
+dev.off()
+```
 
 
 
-
-## Now go through and 
-
-
-# Exercises
+# Spare Exercises
 
 Find the hottest (or coldest) temp recorded in the archive.  Can you
 do this with unix calls?
@@ -197,39 +226,10 @@ difference?  When was there the biggest "spike" (e.g. one day there
 was a sudden change in temperature)?
 
 Can you write a general script to plot all the variables in the
-database?
+database?  Our all graphs on one page?  (hint: `par(mfrow=c(3,2)`)).
 
-
-Inject some bad dates into the mix.  Or ask people to find what is
-invalid?  (e.g. times of day).  I could delete some of the times and
-then ask people to fix it!
-
-Put data into package as a backup, but then allow people to download
-new file from the web.
-
-Error handling: what if file is not available?
-
-Testing: valid dates?  valid times?  Leap years...
-
-
-    Leap Years are any year that can be evenly divided by 4 (such as 2012, 2016, etc)
- 		except if it can can be evenly divided by 100, then it isn't (such as 2100, 2200, etc)
-  	  		except if it can be evenly divided by 400, then it is (such as 2000, 2400)
-
-
-What's the rule?
-[http://www.mathsisfun.com/leap-years.html](http://www.mathsisfun.com/leap-years.html)
-
-
-
-Write a function to check leap years.  Can you reproduce this grap
-http://www.mathsisfun.com/images/leap-year-graph.gif
-
-
-For sake of package, load in data file directly and then just extract
-the relevant column rather than using a temp file to extract one
-column.
-
+Are there differences between the content in the daily files and
+the raw.csv file?
 
 # Principles
 Separate computation from plotting
@@ -243,6 +243,9 @@ Carefully delineate what must be kept vs what can be regenerated.
 
 ```r
 require(knitr)
+knit2pdf("weather.Rmd")
+knit2html("weather.Rmd")
+browseURL("weather.html")
 pandoc(knit("weather.Rmd"), format = "latex")
 ```
 

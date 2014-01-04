@@ -45,9 +45,9 @@ or a [daily graph](https://www.cl.cam.ac.uk/research/dtg/weather/daily-graph.cgi
 Can we do something like this ourselves with the data?
 
 
-## get the daily files.
+## Get the daily files.
 
-We could also work from the raw CSV, but let's go with this file for
+We could also work from the raw CSV, but let's use these 'daily' files for
 now.
 
 ```{r, engine='bash',eval=FALSE}
@@ -105,8 +105,8 @@ cut -f1,2 tmp | sed 's/:/./' > 2013_04_01-temp # EX: shorten
 
 Ex: Show how to do R CMD BATCH, and where output goes.  Why is this
 useful?
-
-```{r prelim, engine='cat', engine.opts=list(file='trig.R')}
+<!-- ```{r prelim, engine='cat', engine.opts=list(file='trig.R')} -->
+```{r, eval=FALSE, tidy=FALSE}
 ## Example script file, to generate a little plot.
 ## Demonstrate trigonometric functions.
 ## Sept 2007
@@ -146,7 +146,7 @@ Rscript -e 'round(runif(10))'
 
 Ex: Create a new file simple_rnorm.R, with contents:
 
-```{r prelim, engine='cat', engine.opts=list(file='simple_rnorm.R')}
+```{r, engine='cat', engine.opts=list(file='simple_rnorm.R')}
 #!/usr/bin/env Rscript
 args <- commandArgs(TRUE)
 
@@ -169,8 +169,9 @@ if not given on command line.
 ## Now let's create our weather pdf.
 
 Save this to `maketemp.R` in the same folder as the data.
+<!--   ```{r, engine='cat', engine.opts=list(file='maketemp.R'), echo=TRUE} -->
 
-```{r, engine='cat', engine.opts=list(file='maketemp.R')}
+```{r, eval=FALSE, tidy=FALSE}
 #!/usr/bin/env Rscript
 # maketemp.R (master in weather.Rmd)
 args <- commandArgs(TRUE)
@@ -205,9 +206,10 @@ difference?  When was there the biggest "spike" (e.g. one day there
 was a sudden change in temperature)?
 
 Can you write a general script to plot all the variables in the
-database?
+database?  Our all graphs on one page?  (hint: `par(mfrow=c(3,2)`)).
 
-Error handling: what if file is not available?
+Are there differences between the content in the daily files and
+the raw.csv file?
 
 # Principles
 Separate computation from plotting
@@ -222,5 +224,6 @@ Carefully delineate what must be kept vs what can be regenerated.
 require(knitr)
 knit2pdf('weather.Rmd')
 knit2html('weather.Rmd')
+browseURL('weather.html')
 pandoc(knit('weather.Rmd'), format='latex')
 ```
