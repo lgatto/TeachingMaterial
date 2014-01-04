@@ -1,11 +1,26 @@
 # Data visualisation
 
-- base graphics: colours, `RColorBrewer`, smoothScatter
-- lattice
-- ggplot2
+## `base graphics`
 
-## Interactive visualisation
+- painters model
+- colours, alpha
+- `RColorBrewer`
+- `smoothScatter` 
 
-- `shiny`
-- `googleVis`
-- `rCharts`
+## `lattice`
+
+## `ggplot2`
+
+# Interactive visualisation
+
+- [`shiny`](http://www.rstudio.com/shiny/)
+- [`googleVis`](http://code.google.com/p/google-motion-charts-with-r/)
+- [`rCharts`](http://rcharts.io/)
+
+# Resources
+
+- `ggplot2` [web page](http://ggplot2.org/) and [book](http://www.amazon.com/dp/0387981403) (slightly outdated though).
+- [R Graphics Cookbook](http://www.amazon.com/dp/1449316956).
+- [R Graphics](https://www.stat.auckland.ac.nz/~paul/RG2e/) book.
+- [Lattice: Multivariate Data Visualization with R](http://lmdvr.r-forge.r-project.org/figures/figures.html) book.
+- [R Graphical Manual](http://rgm3.lab.nig.ac.jp/RGM/)
