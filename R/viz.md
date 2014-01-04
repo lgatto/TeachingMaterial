@@ -151,9 +151,45 @@ display.brewer.all()
 - `locator` to obtain the `x` and `y` from a mouse click.
 - `identify` to identify index of label of the clostest point to a mouse click.
 
-# `lattice`
-
 # `ggplot2`
+
+Based on the **Grammar of Graphics**
+- A plot is made up of multiple layers
+- A layer consists of *data*, a set of *mappings* between variables
+  and *aesthetics* (`aes`), a *geometric object* (`geom`) and a
+  *statistical transformation*
+- Scales control the details of the mapping
+- All components are independant and reusable
+
+
+```r
+library("camweather")
+d <- nounits(weatherdata("2013-06-01"))
+library("ggplot2")
+p <- ggplot(data = d, aes(x = Time, y = Temp))
+p + geom_point()  ## add a layer of points 
+```
+
+![plot of chunk viz.Rmd-7](figure/viz_Rmd-71.png) 
+
+```r
+p <- ggplot(data = d, aes(x = Time, y = Temp, colour = WindDr))
+p + geom_point(size = 3)
+```
+
+![plot of chunk viz.Rmd-7](figure/viz_Rmd-72.png) 
+
+```r
+p <- ggplot(data = d, aes(x = Time, y = Temp, colour = WindDr, size = WindSp))
+p + geom_point()
+```
+
+![plot of chunk viz.Rmd-7](figure/viz_Rmd-73.png) 
+
+
+See also [these `ggplot2` slides](https://github.com/lgatto/visualisation).
+
+# `lattice`
 
 # Interactive visualisation
 
