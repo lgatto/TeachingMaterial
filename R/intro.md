@@ -542,7 +542,9 @@ sum(replicate(100, system.time(mtcars$carb[32])["elapsed"]))
 
 
 See [here](https://gist.github.com/hadley/8150051) for a more detailed
-comparison.
+comparison of the above example and
+[here](https://gist.github.com/lgatto/8249301) for an example with
+(named) lists.
 
 ## Special values: `NULL`, `NA`, `NaN`
 
