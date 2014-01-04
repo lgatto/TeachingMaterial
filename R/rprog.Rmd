@@ -735,7 +735,7 @@ functions that create a list of length `n` composed of `1`, `1:2`, ..., `1:n`.
 3. `f3` uses `lapply`.
 
 ```{r, eval=TRUE}
-n <- 1e3
+n <- 1e4
 f1 <- function(n) {
     l <- list()
     for (i in seq_len(n))
@@ -756,18 +756,19 @@ f3 <- function(n)
 
 Let's use the `rbenchmark` package to compare the respective timings:
 
-```{r, tidy=FALSE, eval=TRUE}
+```{r, tidy=FALSE, eval=TRUE, cache=TRUE}
 library("rbenchmark")
 benchmark(f1(n), f2(n), f3(n),
           columns = c("test", "replications", "elapsed", "relative"),
-          replications = 5)
+          replications = 10)
 ```
 
 We see that the `for` with initialisation and `lapply` implementations
 have comparable timings. The first function, however, takes much more
 time. This overhead is the result of repeated copies of the list at
 each iteration: before creating `l` of length `i`, the list of length
-`i-1` is copied and deleted upon creation of the longer copy.
+`i-1` is copied and deleted upon creation of the longer copy. The
+delay would become even more pronounced with increasing `n`.
 
 **Exercise:** write a parallel version of `f3` using `mclapply` using 2
 cores. Do you see a 2-fold increase in speed?

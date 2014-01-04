@@ -858,7 +858,7 @@ f(X)
 ```
 
 ```
-## [1] 0.0005194
+## [1] -0.0007686
 ```
 
 ```r
@@ -867,7 +867,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.236   0.008   0.245
+##   0.336   0.012   0.349
 ```
 
 ```r
@@ -876,7 +876,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.247   0.247   0.247   0.250   0.251   0.257
+##   0.351   0.352   0.352   0.352   0.352   0.353
 ```
 
 
@@ -894,7 +894,7 @@ functions that create a list of length `n` composed of `1`, `1:2`, ..., `1:n`.
 
 
 ```r
-n <- 1000
+n <- 10000
 f1 <- function(n) {
     l <- list()
     for (i in seq_len(n)) l[[i]] <- seq(i)
@@ -918,14 +918,14 @@ Let's use the `rbenchmark` package to compare the respective timings:
 library("rbenchmark")
 benchmark(f1(n), f2(n), f3(n),
           columns = c("test", "replications", "elapsed", "relative"),
-          replications = 5)
+          replications = 10)
 ```
 
 ```
 ##    test replications elapsed relative
-## 1 f1(n)            5   0.275    1.335
-## 2 f2(n)            5   0.206    1.000
-## 3 f3(n)            5   0.210    1.019
+## 1 f1(n)           10  17.072    2.776
+## 2 f2(n)           10   6.149    1.000
+## 3 f3(n)           10   8.970    1.459
 ```
 
 
@@ -933,7 +933,8 @@ We see that the `for` with initialisation and `lapply` implementations
 have comparable timings. The first function, however, takes much more
 time. This overhead is the result of repeated copies of the list at
 each iteration: before creating `l` of length `i`, the list of length
-`i-1` is copied and deleted upon creation of the longer copy.
+`i-1` is copied and deleted upon creation of the longer copy. The
+delay would become even more pronounced with increasing `n`.
 
 **Exercise:** write a parallel version of `f3` using `mclapply` using 2
 cores. Do you see a 2-fold increase in speed?
