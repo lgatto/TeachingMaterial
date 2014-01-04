@@ -597,7 +597,7 @@ written and requirement for its correct execution and not what the
 code does (which should be self-explanatory when reading it). 
 
 The
-[`roxygen2`]http://cran.r-project.org/web/packages/roxygen2/index.html()
+[`roxygen2`](http://cran.r-project.org/web/packages/roxygen2/index.html)
 package allows in-line documentation, i.e. documentation of `R` code
 directly next (actually on top) to its source. This makes maintenance
 of the code and the documentation reasonably easy and will allow to
