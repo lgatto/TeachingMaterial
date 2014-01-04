@@ -26,7 +26,7 @@ head(w)
 ```
 
 We are missing header information. Let's use `readLines` to parse and
-extract the header data manually. 
+extract the header lines manually. 
 
 ```{r}
 hd <- readLines(f)
@@ -144,7 +144,7 @@ workspace (see `save.image`).
 To save and restore single object to a file, see also `saveRDS` and
 `readRDS`.
 
-### Exercise
+### Exercise 
 
 Use one of the `save`/`load` or `saveRDS`/`readRDS` above to serialise
 the weather `data.frame`, rename the variable in your workspace,
@@ -224,7 +224,8 @@ for (i in seq_len(n))
 
 ## Conditions
 
-`if (cond) expr1 else expr2`, with `cond` and `expr[1|2]` as defined above. The else clause is optional.
+`if (cond) expr1 else expr2`, with `cond` and `expr[1|2]` as defined
+above. The else clause is optional.
 
 It is also possible to nest `else/if` conditions:
 
@@ -524,6 +525,11 @@ apply(m, 1, function(x) sum(x^2))
 
 ## Exercise
 
+- Write your own `weatherdata` function that takes a date character as
+  input, locates the file in the `camweather` package directory, loads
+  it and returns an appropriate data structure. See section on reading
+  data for help.
+
 - Write a function that takes a date character of the for
   `"YYYY-MM-DD"` as input and produces a plot of temperature over
   time. Make sure that it remains possible to fully customise the
@@ -645,26 +651,54 @@ The
 package allows in-line documentation, i.e. documentation of `R` code
 directly next (actually on top) to its source. This makes maintenance
 of the code and the documentation reasonably easy and will allow to
-automatically generate the `Rd` files at a later stage. 
+automatically generate the `Rd` files at a later stage. Below is the
+corresponding source code and documentation for the `weatherdata`
+function.
 
 ```{r}
-##' A short description of the function. Computes the ratio between
-##' the square of \code{x} and the square-root of \code{y}. 
+##' Get the weather data for a day.
 ##'
-##' Optional details section.
-##' @title A simple function
-##' @param x A vector of numerics.
-##' @param y A vector of numerics.
-##' @return A vector of numeric of length max(length(x), length(y)).
+##' Data are immediate at \code{Time} except wind speed (average since
+##' previous \code{Time}) and wind direction (most frequent since
+##' previous \code{Time}.)  Sun and rain values are cumulative from
+##' code{Start}. \code{MxWSpd} gives max wind speed since previous
+##' \code{Time}.
+##' 
+##' @title Weather data
+##' @param date A character describing a date with format
+##' \code{"YYYY-MM-DD"}.
+##' @return A \code{data.frame} with the weather data for the
+##' corresponding \code{date}.
 ##' @author Laurent Gatto <lg390@@cam.ac.uk>
+##' @seealso \code{\link{nounits}} to remove the units from the
+##' \code{data.frame}'s names.
 ##' @examples
-##' myfun(8, 3)
-##' myfun(c(8, 4), c(3, 1))
-myfun <- function(x, y) {
-    a <- x^2
-    b <- sqrt(y)
-    res <- a/b
-    return(res)
+##' x <- weatherdata("2012-12-25")
+##' dim(x)
+##' head(x)
+##' plot(x$Time, x[, "Temp [degC]"], type = "b")
+weatherdata <- function(date) {
+    f <- weatherfile(date)
+    if (length(f) > 1) {
+        warning("Found ", length(f), " files. Using first one ",
+                basename(f[1]))
+        f <- f[1]
+    }
+    w <- read.table(f, header = FALSE,
+                    comment.char = "#",
+                    sep = "\t")
+    hd <- readLines(f)
+    hd <- hd[grep("#", hd)]
+    hd <- sub("#", "", hd)
+    hd <- hd[7:8]
+    hd <- gsub(" ", "", hd)
+    hd <- strsplit(hd, "\t")
+    hd <- paste0(hd[[1]], " [", hd[[2]], "]")
+    hd <- sub(" \\[\\]", "", hd)
+    names(w) <- hd
+    w$Time <- strptime(paste(basename(f), w$Time), "%Y_%m_%d %H:%M")
+    w$Day <- as.Date(basename(f), "%Y_%m_%d")
+    return(w)
 }
 ```
 
