@@ -335,8 +335,6 @@ object:
 [*] will actually depend on the subscripts the function will applied
 over.
 
-
-
 - Retrieve the length of each element of a `list`: `sapply` the function `length` on each element of the list.
 
 
@@ -417,7 +415,14 @@ tapply(x, k, sum)
 - `replicate`: repeats the evaluation of an expression. 
 - `aggregate`: splits the data into subsets, computes summary
   statistics for each, and returns the result in a convenient form.
+- `split`: splits data into groups defined by a `factor`.
 - `by`: similar that `tapply` for data frames.
+
+| to apply over | of objects | use function |
+|---------------|------------|--------------|
+| rows, cols    | matrices, arrays, data frames| `apply` |
+| elements      | vector or list | `sapply` or `lapply`  |
+| subsets defined by factors | vectors, lists, data frames | `tapply`, `by`, `split`  + `apply`, `aggregate` |
 
 Reference:
 [R Grouping functions](http://stackoverflow.com/questions/3505701/r-grouping-functions-sapply-vs-lapply-vs-apply-vs-tapply-vs-by-vs-aggrega)
@@ -431,7 +436,7 @@ convention: `XYply` where `X` and `Y` describe the input and output
 structures respectively, and can replaced by `a` (for an `array`), `l`
 (for a `list`) or `d` (for a `data.frame`).
 
-Good reference: [The Split-Apply-Combine Strategy for Data Analysis](http://www.jstatsoft.org/v40/i01).
+Good reference: Hadley Wickham, [The Split-Apply-Combine Strategy for Data Analysis](http://www.jstatsoft.org/v40/i01), JSS, 40(1) pp. 1-29 (2011).
 
 ## `for` or `apply`
 
