@@ -48,7 +48,7 @@ either return a value (`ls()` returns the names of all existing
 variables) or have side effects (`rm(x)` deletes the variable `x`).
 
 
-```{r}
+```{r, eval=TRUE}
 environment()
 ls()
 rm(x)
@@ -163,7 +163,7 @@ Using the `#` character.
 
 ## Session information
 
-```{r}
+```{r, eval=TRUE}
 sessionInfo()
 version
 ```

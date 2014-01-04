@@ -54,9 +54,34 @@ variables) or have side effects (`rm(x)` deletes the variable `x`).
 
 ```r
 environment()
+```
+
+```
+## <environment: R_GlobalEnv>
+```
+
+```r
 ls()
+```
+
+```
+## character(0)
+```
+
+```r
 rm(x)
+```
+
+```
+## Warning: object 'x' not found
+```
+
+```r
 ls()
+```
+
+```
+## character(0)
 ```
 
 
@@ -185,7 +210,50 @@ Using the `#` character.
 
 ```r
 sessionInfo()
+```
+
+```
+## R Under development (unstable) (2013-10-16 r64064)
+## Platform: x86_64-unknown-linux-gnu (64-bit)
+## 
+## locale:
+##  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
+##  [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   
+##  [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  base     
+## 
+## other attached packages:
+## [1] knitr_1.5
+## 
+## loaded via a namespace (and not attached):
+## [1] evaluate_0.5.1 formatR_0.10   stringr_0.6.2  tools_3.1.0
+```
+
+```r
 version
+```
+
+```
+##                _                                                 
+## platform       x86_64-unknown-linux-gnu                          
+## arch           x86_64                                            
+## os             linux-gnu                                         
+## system         x86_64, linux-gnu                                 
+## status         Under development (unstable)                      
+## major          3                                                 
+## minor          1.0                                               
+## year           2013                                              
+## month          10                                                
+## day            16                                                
+## svn rev        64064                                             
+## language       R                                                 
+## version.string R Under development (unstable) (2013-10-16 r64064)
+## nickname       Unsuffered Consequences
 ```
 
 
