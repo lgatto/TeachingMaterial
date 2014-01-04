@@ -1,10 +1,10 @@
 # Data visualisation
 
-- base graphics
+- base graphics: colours, `RColorBrewer`, smoothScatter
 - lattice
 - ggplot2
 
-## interactive visualisation:
+## Interactive visualisation
 
 - `shiny`
 - `googleVis`
