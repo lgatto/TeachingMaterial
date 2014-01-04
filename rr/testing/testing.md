@@ -19,24 +19,6 @@ inversion along x axis noted.
 * easy to run
 * easy to summarise
 
-# Forms of testing in R
-
-stopifnot()
-
-# Handling errors
-
-
-```r
-safelog <- function(x) {
-    tryCatch(log(x), error = function(e) "an error", warning = function(e) "a warning")
-}
-
-safelog(3)
-safelog(-5)
-safelog("string")
-```
-
-
 # stop() vs warning()
 
 * A warning is softer than an error; if a warning is generated
@@ -70,6 +52,19 @@ stopifnot(all.equal(pi, 3.1415927), 2 < 2, all(1:10 < 12), "a" < "b")
 ```
 
 
+# Catching errors and warnings
+
+
+```r
+safelog <- function(x) {
+    tryCatch(log(x), error = function(e) "an error", warning = function(e) "a warning")
+}
+
+safelog(3)
+safelog(-5)
+safelog("string")
+```
+
 
 
 # Floating point issues to be aware of
@@ -85,7 +80,7 @@ http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-doesn_0027t-R-think-these-numbe
 
 # Floating point exercise.  What does the following code do?
 
-Ex: type this in and work out what is going on.
+EX: type this in and work out what is going on.
 
 ```r
 eps <- 1
@@ -127,66 +122,6 @@ isTRUE(all.equal(0.1 + 0.2, 3))  #when you just want TRUE/FALSE
 ## [1] FALSE
 ```
 
-
-
-# EX: write some unit testing for the leap year function,
-
-or for isvaliddate("2002-09-30")
-
-e.g. check you can extract all three dates.
-e.g. check months of the year (feb 29)
-
-solve the leap year problem.
-
-## Example: simple table
-
-I prefer xtable but this is simple and works nice enough:
-
-```r
-kable(head(iris[, 1:3]), format = "html")
-```
-
-<table>
- <thead>
-  <tr>
-   <th> Sepal.Length </th>
-   <th> Sepal.Width </th>
-   <th> Petal.Length </th>
-  </tr>
- </thead>
-<tbody>
-  <tr>
-   <td> 5.1 </td>
-   <td> 3.5 </td>
-   <td> 1.4 </td>
-  </tr>
-  <tr>
-   <td> 4.9 </td>
-   <td> 3.0 </td>
-   <td> 1.4 </td>
-  </tr>
-  <tr>
-   <td> 4.7 </td>
-   <td> 3.2 </td>
-   <td> 1.3 </td>
-  </tr>
-  <tr>
-   <td> 4.6 </td>
-   <td> 3.1 </td>
-   <td> 1.5 </td>
-  </tr>
-  <tr>
-   <td> 5.0 </td>
-   <td> 3.6 </td>
-   <td> 1.4 </td>
-  </tr>
-  <tr>
-   <td> 5.4 </td>
-   <td> 3.9 </td>
-   <td> 1.7 </td>
-  </tr>
-</tbody>
-</table>
 
 
 # The "testthat" package
@@ -233,7 +168,9 @@ and sometimes deliberately [left broken](http://support.microsoft.com/kb/214326)
 Write a function to check leap years.  See `leapyear.R`
 
 
-Advanced: can you reproduce this graph
+Advanced: can you reproduce this graph that compares the days in the
+year against the average (365.242375)
+
 http://www.mathsisfun.com/images/leap-year-graph.gif
 
 
