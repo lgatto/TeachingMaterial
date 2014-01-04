@@ -449,7 +449,7 @@ l$F(l$M)  ## same as sum(1:10)
 ```
 
 
-### Difference between `[` and ``[``
+### Difference between `[` and `[[`
 
 The former returns a sub-set of the list, the latter an individual elements
 
