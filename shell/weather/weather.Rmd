@@ -100,9 +100,10 @@ cut -f1,2 tmp | sed 's/:/./' > 2013_04_01-temp # EX: shorten
 
 # Running R in BATCH.
 
-TODO Is Laurent going to do this?
+(Did Laurent cover this?)
 
-Show how to do R CMD BATCH, and where output goes.  Why is this
+
+Ex: Show how to do R CMD BATCH, and where output goes.  Why is this
 useful?
 
 ```{r prelim, engine='cat', engine.opts=list(file='trig.R')}
@@ -145,9 +146,15 @@ Rscript -e 'round(runif(10))'
 
 Ex: Create a new file simple_rnorm.R, with contents:
 
-TODO show contents  (or put in file, like a here document)
+```{r prelim, engine='cat', engine.opts=list(file='simple_rnorm.R')}
+#!/usr/bin/env Rscript
+args <- commandArgs(TRUE)
 
-
+stopifnot(length(args)==3)
+args = as.numeric(args)
+n = args[1]; mean = args[2]; sd = args[3]
+rnorm(n, mean, sd)
+```
 
 ```{r, engine='bash',eval=FALSE}
 chmod +x simple_rnorm.R
@@ -182,10 +189,8 @@ title(file)
 dev.off()
 ```
 
-## Now go through and 
 
-
-# Exercises
+# Spare Exercises
 
 Find the hottest (or coldest) temp recorded in the archive.  Can you
 do this with unix calls?
@@ -202,24 +207,7 @@ was a sudden change in temperature)?
 Can you write a general script to plot all the variables in the
 database?
 
-
-Inject some bad dates into the mix.  Or ask people to find what is
-invalid?  (e.g. times of day).  I could delete some of the times and
-then ask people to fix it!
-
-Put data into package as a backup, but then allow people to download
-new file from the web.
-
 Error handling: what if file is not available?
-
-Testing: valid dates?  valid times?  Leap years...
-
-
-
-For sake of package, load in data file directly and then just extract
-the relevant column rather than using a temp file to extract one
-column.
-
 
 # Principles
 Separate computation from plotting
