@@ -29,7 +29,7 @@
 ## Now, how can we get "make all" to do something sensible?
 
 ## What are variables?
-## READ http://www.gnu.org/software/make/manual/html_node/Using-Variables.ht\ml
+## READ http://www.gnu.org/software/make/manual/html_node/Using-Variables.html
 
 DAYS = 2013_07_02.pdf 2013_07_03.pdf 2013_07_04.pdf 2013_07_05.pdf
 

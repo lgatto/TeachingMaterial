@@ -4,12 +4,13 @@ Introduction
 
 
 
-## Pre-requisites
+# Pre-requisites
+
+## Basic tools
 
 **Variables** are used to store values: they bind a value to a name. The
 content of a variable can be accessed by typing its name on the R
 console prompt. Its content can also be overwritten.
-
 
 
 ```r
@@ -22,6 +23,25 @@ x <- 2
 x
 ```
 
+
+**Functions** are used to perform actions. They can be recognised by
+the parenthesis following the function's name. Functions have optional
+inputs, termed arguments, that are passed to the function through by
+specifying then inside the parentheses. Functions also return output
+values (that are generally computed based on the input values) and
+sometimes also side effects, when they produce something else that
+returning a value.
+
+
+```r
+sum(1, 2, 3)
+sqrt(2)
+x <- 2
+x^2
+```
+
+
+## Workspace
 
 All these variables live in your works the global environment. They
 can be listed with `ls()`. Variables can be deleted with
@@ -40,9 +60,30 @@ ls()
 ```
 
 
-`R` comes with a *limited* functionality. Thousands of third-pary
-**packages** can be downloaded from on-line repositories (like CRAN)
-and automatically installed with
+## Working directory
+
+`R` is running in a directory, called the working directory. That's
+where `R` expects to find and save files. The working directory can be
+queried with the `getwd()` function. It does not take any inputs
+(there is nothing inside the `()` and returns the name the current
+working directory).
+
+
+```r
+getwd()
+```
+
+
+The working directory can also by updated with
+`setwd("path/to/workingdir")`, where `"path/to/workingdir"` points to
+the new working directory.
+
+
+## Packages
+
+`R` comes with a *limited* functionality. Thousands of third-party
+**packages** can be downloaded from dedicated on-line repositories
+(like CRAN) and automatically installed with
 `install.packages("newpackage")`. Packages are installed in specific
 directories called **libraries** and can be loaded using
 `library("newpackage")`.
@@ -52,6 +93,28 @@ directories called **libraries** and can be loaded using
 install.packages("devtools")
 library("devtools")
 ```
+
+
+It is of course possible to download and install packages using the
+same `install.packages` function. However, this will force you to
+handle all dependencies (and there can be many) manually too. 
+
+
+It is also possible to install packages from
+[github](https://github.com/) using functionality from the package we
+have just installed. We first need to load the package with the
+`library` function to be able to use the functions that it
+provides. Below, we install the `camweather` package (that provides
+data about the weather in Cambridge) from the `lgatto` github
+repository.
+
+
+```r
+library("devtools")
+install_github("lgatto/camweather")
+```
+
+
 
 
 To see what packages are available, one can use `installed.packages()`.
@@ -95,9 +158,22 @@ help(package = "devtools)"
 ```
 
 
-## `R` is
+## Comments
 
-### a dynamic language
+Using the `#` character.
+
+## Session information
+
+
+```r
+sessionInfo()
+version
+```
+
+
+# `R` is
+
+## A dynamic language
 
 
 ```r
@@ -114,7 +190,7 @@ class(b)
 a + b
 ```
 
-### a functional programming language 
+## A functional programming language 
 
 Functions are *first class citizens*. Use function (outputs) as inputs
 to other functions (see the `rm(list = ls())` example above), to
@@ -122,7 +198,7 @@ create other variables, ... we will make use of this throughout the
 workshop. More details
 [here](https://github.com/lgatto/R-functional-programming#readme).
 
-### lazy
+## Lazy
 
 Calling a function with argument *wait for 3 seconds* takes no time to return
 
@@ -149,11 +225,11 @@ system.time(f(Sys.sleep(3)))
 
 (Example originally from Hadley Wickham's devtools page)
 
-### object-oriented
+## Object-oriented
 
-with multiple frameworks: S3, S4 and S4 reference classes
+With multiple frameworks: S3, S4 and S4 reference classes.
 
-## Data structures
+# Data structures
 
 |        | dimensions/length | content types |
 |--------|------------|---------------|
@@ -163,7 +239,7 @@ with multiple frameworks: S3, S4 and S4 reference classes
 | list   | 1          | `length(l)`   |
 | data.frame | 2      | `ncol(dfr)`   |
 
-### Vectors
+## Vectors
 
 The basic type in `R` is a vector. Vectors have a specific length
 (queried with the `length()` function) and have optional names
@@ -207,7 +283,7 @@ y
 ```
 
 
-### Numerics, characters, logicals, factors
+## Numerics, characters, logicals, factors
 
 Vectors are of one unique type:
 
@@ -224,7 +300,7 @@ class(gender)
 typeof(gender)
 ```
 
-### Vectorised operations
+## Vectorised operations
 
 
 ```r
@@ -245,7 +321,7 @@ paste(x, 1, sep = ".")
 ```
 
 
-#### Recycling
+### Recycling
 
 
 ```r
@@ -256,18 +332,15 @@ z <- c(1, 2, 3)
 x + z
 ```
 
-### Generating vectors
+## Generating vectors
 
 - `seq` and **argument matching**
 - `:`
+- Exercise: Using `rep`, how to generate 
+  - 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
+  - repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
 
-#### Exercise:
-
-Using `rep`, how to generate 
-- 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
-- repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
-
-### Matrix
+## Matrix
 
 A vector with 2 dimensions
 
@@ -281,6 +354,20 @@ class(m)  ## a matrix
 mode(m)  ## of numerics
 ```
 
+
+Or, using the appropriate constructor and defining the number of columns and/or of rows:
+
+
+```r
+m <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2)
+m <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 3)
+m <- matrix(c(1, 2, 3, 4, 5, 6), ncol = 2, nrow = 3)
+```
+
+
+What happens if
+- the number elements does not match?
+- the number of cols/rows don't match the number of elements?
 
 Accessing/subsetting is the same as vectors, keeping in mind that we have 2 dimensions:
 
@@ -305,7 +392,7 @@ m["A", "c"]
 ```
 
 
-### Simplification/dropping of dimensions
+## Simplification/dropping of dimensions
 
 
 ```r
@@ -316,11 +403,11 @@ m[, -(1:2), drop = FALSE]  ## remains a matrix
 ```
 
 
-### Array
+## Array
 
 Like a matrix with > 2 dimensions.
 
-### List
+## List
 
 A `list` is a generic vector that can store elements of different
 types. Lists can also have names (same syntax as vectors) and accessed
@@ -335,7 +422,7 @@ l$F(l$M)  ## same as sum(1:10)
 ```
 
 
-#### Difference between `[` and ``[``
+### Difference between `[` and ``[``
 
 The former returns a sub-set of the list, the latter an individual elements
 
@@ -355,14 +442,14 @@ class(l[[2:3]])
 ```
 
 
-### Data.frame
+## Data.frame
 
 A `data.frame` is a list whose elements are all of the same lengths
 and that is represented as a table. Matrix-like subsetting `[,]` using
 `names` (by definition `colnames`) and `rownames` or indices can be
 used.
 
-#### Exercise
+### Example
 
 Generate a `data.frame` of patient data, including their first names,
 surnames, age, gender, weights and whether they give consent for their
@@ -389,6 +476,7 @@ patients <- data.frame(firstName, secondName,
                        gender = factor(gender),
                        age, weight, consent,
                        stringsAsFactors=FALSE)
+rm(age, consent, firstName, gender, secondName, weight)
 ```
 
 
@@ -396,7 +484,93 @@ By default, `character`s are converted to `factor`s when generating
 `data.frame`s; use `stringsAsFactors = FALSE` to keep the `characters`
 as is and convert to `factor`s explicitly.
 
-### Special values: `NULL`, `NA`, `NaN`
+Extract subsets of interest: patients that have given consent, male
+patients, males that have given consent, those that are below the
+average weight, order the `data.frame` by patient age, ...
+
+
+```r
+patients[patients$consent, ]
+patients[patients$gender == "Male", ]
+patients[patients$gender == "Male" & patients$consent, ]
+```
+
+
+
+```r
+avgw <- mean(patients$weight)
+patients[patients$weight < avgw, ]
+```
+
+
+
+```r
+patients[order(patients$age), ]
+```
+
+
+### Exercise
+
+Using the `weatherdata()` function from the `camweather` package,
+download a weather data frame of your choice.
+- What weather data is available? See `?weatherdata` and inspect the
+  data frame's column names.
+- What were the highest and lowest temperatures on that day? Hint: see
+  `min`, `max` and/or `range` functions.
+- The `Sun` and `Rain` values are cumulative from `Start`. What is the
+  average rainfall per hours for that day? Hint: see `diff` for to
+  calculate differences between successive values and `mean`.
+- In what direction has the wind blown most on that day? Hint:
+  `table`.
+
+### A note of accessor speed
+
+There are multiple ways to access elements in various `R` objects that
+have different advantages. Using names, for instance, is very
+convenient and avoids off-index errors, at the cost of accessor
+timing. Below, we compare accessor timings (measured with
+`system.time` and summed over 100 replications using the `replicate`
+function).
+
+
+```r
+sum(replicate(100, system.time(mtcars["Volvo 142E", "carb"])["elapsed"]))
+sum(replicate(100, system.time(mtcars[32, 11])["elapsed"]))
+sum(replicate(100, system.time(mtcars[[11]][32])["elapsed"]))
+sum(replicate(100, system.time(mtcars$carb[32])["elapsed"]))
+```
+
+
+See [here](https://gist.github.com/hadley/8150051) for a more detailed
+comparison of the above example and
+[here](https://gist.github.com/lgatto/8249301) for an example with
+(named) lists.
+
+## Collating matrices and data frames
+
+It is easy to collate compatible matrices and data frames along their
+columns or rows using `cbind` and `rbind`.
+
+
+```r
+m1 <- matrix(1:12, ncol = 3)
+m2 <- matrix(1:9, ncol = 3)
+m3 <- matrix(1:16, ncol = 4)
+cbind(m1, m3)
+rbind(m1, m2)
+```
+
+
+But
+
+
+```r
+cbind(m1, m2)
+rbind(m1, m3)
+```
+
+
+## Special values: `NULL`, `NA`, `NaN`
 
 
 ```r
@@ -405,11 +579,25 @@ class(NaN)
 class(NULL)
 ```
 
+The `NULL` object:
 
 
 ```r
 l[[2]] <- NULL
 l
+length(NULL)
+c(1, NULL)
+list(1, NULL)
+```
+
+
+But, `NA` can take different specific values for different atomic types:
+
+
+```r
+class(as.integer(NA))
+class(as.numeric(NA))
+class(as.character(NA))
 ```
 
 
@@ -420,7 +608,7 @@ sum(1, 2, NA, na.rm = TRUE)
 ```
 
 
-### Coercing
+## Coercing
 
 The convert from one type to another, use `as.*`. To test whether a
 variable is of a certain type, use `is*`. Type `as.TAB` and `is.TAB`
@@ -434,8 +622,29 @@ as.integer(1.9)  ## see also floor and ceiling
 as.numeric("1a")
 ```
 
+## Environments
 
-### Objects
+An `environment` is and un-ordered collection of symbols, or
+associative arrays. They are implemented as hash tables.
+
+
+```r
+e <- new.env()
+e
+e$a <- 1
+e$a
+ls()  ## list content of global environment
+ls(e)  ## list content of e
+a <- 10  ## a different variable a
+e$a
+e[["a"]]
+```
+
+
+Values from specific environments can also be retrieved with `get` or
+`mget` for multiple values or assigned with `assign`.
+
+## Objects
 
 As in OO programming:
 
