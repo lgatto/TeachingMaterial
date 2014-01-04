@@ -170,20 +170,18 @@ version
 
 # `R` is
 
+<!-- TODO: write intro paragraph -->
+
 ## A dynamic language
 
-```{r}
+```{r, eval = TRUE}
 a <- 1L
-mode(a)
 typeof(a)
-class(a)
 
 b <- 1
-mode(b)
 typeof(b)
-class(b)
 
-a+b
+typeof(a + b)
 ```
 ## A functional programming language 
 
@@ -197,14 +195,14 @@ workshop. More details
 
 Calling a function with argument *wait for 3 seconds* takes no time to return
 
-```{r}
+```{r, eval = TRUE}
 f <- function(x) { 10 }
 system.time(f(Sys.sleep(3)))
 ```
 
 unless we *force* evaluation
 
-```{r}
+```{r, eval = TRUE}
 f <- function(x) { force(x); 10 }
 system.time(f(Sys.sleep(3)))
 ```
@@ -213,7 +211,13 @@ system.time(f(Sys.sleep(3)))
 
 ## Object-oriented
 
-With multiple frameworks: S3, S4 and S4 reference classes.
+With multiple frameworks: S3, S4 and S4 reference classes. See
+[R object oriented programming](https://github.com/lgatto/roo),
+[Short S4 tutorial](https://github.com/lgatto/S4-tutorial) or
+[Quick Package](https://github.com/lgatto/QuickPackage) and a
+[A (Not So) Short Introduction to S4](http://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf)
+for more details.
+
 
 # Data structures
 

@@ -281,21 +281,37 @@ version
 
 # `R` is
 
+<!-- TODO: write intro paragraph -->
+
 ## A dynamic language
 
 
 ```r
 a <- 1L
-mode(a)
 typeof(a)
-class(a)
+```
+
+```
+## [1] "integer"
+```
+
+```r
 
 b <- 1
-mode(b)
 typeof(b)
-class(b)
+```
 
-a + b
+```
+## [1] "double"
+```
+
+```r
+
+typeof(a + b)
+```
+
+```
+## [1] "double"
 ```
 
 ## A functional programming language 
@@ -318,6 +334,11 @@ f <- function(x) {
 system.time(f(Sys.sleep(3)))
 ```
 
+```
+##    user  system elapsed 
+##       0       0       0
+```
+
 
 unless we *force* evaluation
 
@@ -330,12 +351,23 @@ f <- function(x) {
 system.time(f(Sys.sleep(3)))
 ```
 
+```
+##    user  system elapsed 
+##       0       0       3
+```
+
 
 (Example originally from Hadley Wickham's devtools page)
 
 ## Object-oriented
 
-With multiple frameworks: S3, S4 and S4 reference classes.
+With multiple frameworks: S3, S4 and S4 reference classes. See
+[R object oriented programming](https://github.com/lgatto/roo),
+[Short S4 tutorial](https://github.com/lgatto/S4-tutorial) or
+[Quick Package](https://github.com/lgatto/QuickPackage) and a
+[A (Not So) Short Introduction to S4](http://cran.r-project.org/doc/contrib/Genolini-S4tutorialV0-5en.pdf)
+for more details.
+
 
 # Data structures
 
