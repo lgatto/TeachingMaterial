@@ -106,48 +106,21 @@ press <- press/max(press)
 ```
 
 
-- Plot with minimal decoration
+- Plotting
 
 
 ```r
+## Plot with minimal decoration
 par(mar = c(5, 4, 2, 4))
 plot(w$Time, temp, type = "l", xlab = "Time", ylab = "Temp [deg C]", yaxt = "n", 
     col = "steelblue")
 lines(w$Time, press, col = "red")
-```
 
-![plot of chunk rprog.Rmd-9](figure/rprog_Rmd-9.png) 
-
-
-- Axis, title and legends
-
-
-```r
+## Axis, title and legends
 axis(2, at = seq(0, 1, length = 11), labels = seq(min(temp0), max(temp0), length = 11))
-```
-
-```
-## Error: plot.new has not been called yet
-```
-
-```r
 axis(4, at = seq(0, 1, length = 11), labels = seq(min(press0), max(press0), 
     length = 11))
-```
-
-```
-## Error: plot.new has not been called yet
-```
-
-```r
 mtext("Pressure [mBar]", 4, line = 3)
-```
-
-```
-## Error: plot.new has not been called yet
-```
-
-```r
 title(f)
 ```
 
@@ -160,9 +133,7 @@ legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1
     bty = "n")
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk rprog.Rmd-9](figure/rprog_Rmd-9.png) 
 
 
 ### Exercise
