@@ -1,12 +1,13 @@
 ## 1. [Introduction](intro.md)
-- a few prerequisites
-- data structures: vectors, matrices, lists, data.frames, ...
+- A few prerequisites
+- Data structures: vectors, matrices, lists, data.frames, ...
 
 ## 2. [R programming](rprog.md)
-- input/ouput
-- basic plotting
+- Input/ouput
+- Basic plotting
 - Iterations and flow control
-- Wrinting functions
+- Writing functions
+- Exercise
 - Benchmarking
 
 ## 3. [Visualisation](viz.md)
