@@ -632,7 +632,9 @@ g()
 ```
 
 
-# Documentation
+# R development
+
+## Documentation
 
 `R` features a dedicated documentation format (`Rd` files) that is
 used when developing packages. It is extremely useful to document
@@ -651,9 +653,28 @@ directly next (actually on top) to its source. This makes maintenance
 of the code and the documentation reasonably easy and will allow to
 automatically generate the `Rd` files at a later stage. 
 
-**TODO** show a `roxygen` example. 
 
-# R development
+```r
+##' A short description of the function. Computes the ratio between
+##' the square of \code{x} and the square-root of \code{y}. 
+##'
+##' Optional details section.
+##' @title A simple function
+##' @param x A vector of numerics.
+##' @param y A vector of numerics.
+##' @return A vector of numeric of length max(length(x), length(y)).
+##' @author Laurent Gatto <lg390@@cam.ac.uk>
+##' @examples
+##' myfun(8, 3)
+##' myfun(c(8, 4), c(3, 1))
+myfun <- function(x, y) {
+    a <- x^2
+    b <- sqrt(y)
+    res <- a/b
+    return(res)
+}
+```
+
 
 ## Timing and benchmarking
 
