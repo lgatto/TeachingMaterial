@@ -400,7 +400,7 @@ convention: `XYply` where `X` and `Y` describe the input and output
 structures respectively, and can replaced by `a` (for an `array`), `l`
 (for a `list`) or `d` (for a `data.frame`).
 
-Good reference: Hadley Wickham, [The Split-Apply-Combine Strategy for Data Analysis](http://www.jstatsoft.org/v40/i01), JSS, 40(1) pp. 1-29 (2011).
+Good reference: [The Split-Apply-Combine Strategy for Data Analysis](http://www.jstatsoft.org/v40/i01), JSS, 40(1) pp. 1-29 (2011).
 
 ## `for` or `apply`
 
@@ -510,13 +510,6 @@ arguments.
 plot1toN <- function(n, ...) plot(1, n, ...)
 ```
 
-### Exercise
-
-- Write a function that takes a date character of the for
-  `"YYYY-MM-DD"` as input and produces a plot of temperature over
-  time. Make sure that it remains possible to fully customise the
-  plot.
-
 ## Anonymous functions
 
 It is often handy to define functions on the fly, without binding them
@@ -529,7 +522,12 @@ m <- matrix(rnorm(12), ncol = 4)
 apply(m, 1, function(x) sum(x^2))
 ```
 
-### Exercise
+## Exercise
+
+- Write a function that takes a date character of the for
+  `"YYYY-MM-DD"` as input and produces a plot of temperature over
+  time. Make sure that it remains possible to fully customise the
+  plot.
 
 - Select all the weather files from June 2013. All file names are
   available with the `weatherfiles()` function. You can use the `grep`
