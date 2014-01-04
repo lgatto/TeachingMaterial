@@ -14,6 +14,7 @@ levels, allowing for blending, masking and overlaying of objects.
 plot(1:10, 1:10)
 rect(2, 2, 8, 8, col = "black")
 rect(3, 3, 7, 7, col = "white")
+abline(0, 1, col = "red")
 ```
 
 ![plot of chunk viz.Rmd-1](figure/viz_Rmd-1.png) 
@@ -155,9 +156,9 @@ display.brewer.all()
 
 Based on the **Grammar of Graphics**
 - A plot is made up of multiple layers
-- A layer consists of *data*, a set of *mappings* between variables
-  and *aesthetics* (`aes`), a *geometric object* (`geom`) and a
-  *statistical transformation*
+- A layer consists of *data* (must be a `data.frame`), a set of
+  *mappings* between variables and *aesthetics* (`aes`), a *geometric
+  object* (`geom`) and a *statistical transformation*
 - Scales control the details of the mapping
 - All components are independant and reusable
 
@@ -193,9 +194,23 @@ p + geom_point() + facet_wrap(~WindDr)
 ![plot of chunk viz.Rmd-7](figure/viz_Rmd-74.png) 
 
 
-See also [these `ggplot2` slides](https://github.com/lgatto/visualisation).
+See also these [`ggplot2` slides](https://github.com/lgatto/visualisation).
 
 # `lattice`
+
+The `lattice` package provides its own set of high-level plotting
+functions for `data.frames`, with an emphasis on multivariate data
+visualisation. It makes heavily use of the `formula` interface to
+produce effective data visualisations.
+
+
+```r
+library("lattice")
+xyplot(Temp ~ Press | WindDr, data = d)
+```
+
+![plot of chunk viz.Rmd-8](figure/viz_Rmd-8.png) 
+
 
 # Interactive visualisation
 
