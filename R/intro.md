@@ -567,7 +567,7 @@ x
   - 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
   - repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
 - `rnorm`, `runif`, ... to draw values from specific distributions.
-- `sample` to create permutations of vectors.
+- `sample` to create permutations of vectors. 
 
 ## Matrix
 
