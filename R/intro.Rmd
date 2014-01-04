@@ -130,7 +130,7 @@ removed*. Below, we generate this list of variable (object) names with
 `ls()` and pass it directly as input to `rm()` to get a clean
 workspace.
 
-```{r}
+```{r, eval = TRUE}
 ls()
 rm(list=ls())
 ls()

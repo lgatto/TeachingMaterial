@@ -184,8 +184,19 @@ workspace.
 
 ```r
 ls()
+```
+
+```
+## [1] "y" "z"
+```
+
+```r
 rm(list = ls())
 ls()
+```
+
+```
+## character(0)
 ```
 
 
