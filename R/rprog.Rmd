@@ -156,12 +156,15 @@ reload the saved object and compare it to the original file. Hint: use
 
 ### Bonus
 
-```{r}
+```{r, eval = TRUE}
 x <- sqrt(2)
 x^2 == 2
-all.equal(x^2, 2)
 ```
 See [Why doesn’t R think these numbers are equal?](http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-doesn_0027t-R-think-these-numbers-are-equal_003f).
+
+```{r, eval = TRUE}
+all.equal(x^2, 2)
+```
 
 ## See also
 - `scan`: Read data into a vector or list from the console or file.
@@ -214,7 +217,7 @@ A common use of `for` is `for (i in 1:n)`, where `n` is the length of
 a `vector` or a `list`. In such situations, it is safer to use
 `seq_len(n)`:
 
-```{r}
+```{r, eval = TRUE}
 x <- numeric()
 n <- length(x)
 
@@ -260,7 +263,7 @@ The vectorised `ifelse` function takes three expressions as arguments:
 evaluate to `TRUE` are replaced by the corresponding value of `yes`
 (possibly repeated) or the corresponding value of `no` otherwise.
 
-```{r}
+```{r, eval=TRUE}
 x <- 1:5
 ifelse(x < 3, 1, 2)
 ifelse(x < 3, 10:15, 20:25)
@@ -268,7 +271,7 @@ ifelse(x < 3, 10:15, -1)
 ```
 If `test` has dimensions, there will be retained in the output:
 
-```{r}
+```{r, eval=TRUE}
 m <- matrix(1:6, ncol = 2)
 m
 ifelse(m < 2, m, c(10, 11, 12))
@@ -605,7 +608,7 @@ own environment, in which it arguments a stored and its body is
 evaluated. The functions arguments are copies of the initial
 variables, so that the original ones stay unchanged.
 
-```{r}
+```{r, eval=TRUE}
 x <- 1
 f <- function(x) {
     x <- x + 1
@@ -618,7 +621,7 @@ x ## unchanged
 A functions however can access variables defined outside of their
 environment, for instance variables in the global environment.
 
-```{r}
+```{r, eval = TRUE}
 g <- function() {
     x <- x + 1
     return(x)
@@ -630,7 +633,7 @@ x ## unchanged
 
 In this case, if `x` does not exists
 
-```{r}
+```{r, eval=TRUE}
 rm(x)
 g()
 ```
@@ -711,7 +714,7 @@ To sample the execution time of a function, it is convenient to use
 use `system.time` in conjunction with `replicate` and compute a
 summary of the timings.
 
-```{r}
+```{r, eval = TRUE}
 X <- rnorm(1e6)
 f <- function(x, k = .8) mean(x, trim = k)
 f(X)
@@ -731,7 +734,7 @@ functions that create a list of length `n` composed of `1`, `1:2`, ..., `1:n`.
 2. `f2` initialises the list and uses a `for` loop.
 3. `f3` uses `lapply`.
 
-```{r}
+```{r, eval=TRUE}
 n <- 1e3
 f1 <- function(n) {
     l <- list()
@@ -753,7 +756,7 @@ f3 <- function(n)
 
 Let's use the `rbenchmark` package to compare the respective timings:
 
-```{r}
+```{r, tidy=FALSE, eval=TRUE}
 library("rbenchmark")
 benchmark(f1(n), f2(n), f3(n),
           columns = c("test", "replications", "elapsed", "relative"),

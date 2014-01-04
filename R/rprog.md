@@ -175,10 +175,23 @@ reload the saved object and compare it to the original file. Hint: use
 ```r
 x <- sqrt(2)
 x^2 == 2
-all.equal(x^2, 2)
+```
+
+```
+## [1] FALSE
 ```
 
 See [Why doesn’t R think these numbers are equal?](http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-doesn_0027t-R-think-these-numbers-are-equal_003f).
+
+
+```r
+all.equal(x^2, 2)
+```
+
+```
+## [1] TRUE
+```
+
 
 ## See also
 - `scan`: Read data into a vector or list from the console or file.
@@ -240,6 +253,14 @@ x <- numeric()
 n <- length(x)
 
 for (i in 1:n) print(i)
+```
+
+```
+## [1] 1
+## [1] 0
+```
+
+```r
 
 for (i in seq_len(n)) print(i)
 ```
@@ -287,8 +308,26 @@ evaluate to `TRUE` are replaced by the corresponding value of `yes`
 ```r
 x <- 1:5
 ifelse(x < 3, 1, 2)
+```
+
+```
+## [1] 1 1 2 2 2
+```
+
+```r
 ifelse(x < 3, 10:15, 20:25)
+```
+
+```
+## [1] 10 11 22 23 24
+```
+
+```r
 ifelse(x < 3, 10:15, -1)
+```
+
+```
+## [1] 10 11 -1 -1 -1
 ```
 
 If `test` has dimensions, there will be retained in the output:
@@ -297,7 +336,24 @@ If `test` has dimensions, there will be retained in the output:
 ```r
 m <- matrix(1:6, ncol = 2)
 m
+```
+
+```
+##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6
+```
+
+```r
 ifelse(m < 2, m, c(10, 11, 12))
+```
+
+```
+##      [,1] [,2]
+## [1,]    1   10
+## [2,]   11   11
+## [3,]   12   12
 ```
 
 
@@ -665,7 +721,18 @@ f <- function(x) {
     return(x)
 }
 f(x)
+```
+
+```
+## [1] 2
+```
+
+```r
 x  ## unchanged
+```
+
+```
+## [1] 1
 ```
 
 
@@ -680,7 +747,18 @@ g <- function() {
 }
 x <- 1
 g()
+```
+
+```
+## [1] 2
+```
+
+```r
 x  ## unchanged
+```
+
+```
+## [1] 1
 ```
 
 
@@ -690,6 +768,10 @@ In this case, if `x` does not exists
 ```r
 rm(x)
 g()
+```
+
+```
+## Error: object 'x' not found
 ```
 
 
@@ -773,8 +855,28 @@ summary of the timings.
 X <- rnorm(1e+06)
 f <- function(x, k = 0.8) mean(x, trim = k)
 f(X)
+```
+
+```
+## [1] 0.0005194
+```
+
+```r
 system.time(f(X))
+```
+
+```
+##    user  system elapsed 
+##   0.236   0.008   0.245
+```
+
+```r
 summary(replicate(10, system.time(f(X))["elapsed"]))
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   0.247   0.247   0.247   0.250   0.251   0.257
 ```
 
 
@@ -814,8 +916,16 @@ Let's use the `rbenchmark` package to compare the respective timings:
 
 ```r
 library("rbenchmark")
-benchmark(f1(n), f2(n), f3(n), columns = c("test", "replications", "elapsed", 
-    "relative"), replications = 5)
+benchmark(f1(n), f2(n), f3(n),
+          columns = c("test", "replications", "elapsed", "relative"),
+          replications = 5)
+```
+
+```
+##    test replications elapsed relative
+## 1 f1(n)            5   0.275    1.335
+## 2 f2(n)            5   0.206    1.000
+## 3 f3(n)            5   0.210    1.019
 ```
 
 
