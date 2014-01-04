@@ -74,10 +74,14 @@ getwd()
 ```
 
 
-The working directory can also by updated with
+The working directory can also be updated with
 `setwd("path/to/workingdir")`, where `"path/to/workingdir"` points to
-the new working directory.
+the new working directory. The working directory is typically your
+current project dorectory, where input data, source code, result
+files, figures, ... are stored.
 
+It is of course possible to access and store files in other
+directories by specifying the full path. 
 
 ## Packages
 
@@ -231,13 +235,21 @@ With multiple frameworks: S3, S4 and S4 reference classes.
 
 # Data structures
 
-|        | dimensions/length | content types |
-|--------|------------|---------------|
-| vector | 1          | 1             |
-| matrix | 2          | 1             |
-| array  | n          | 1             |
-| list   | 1          | `length(l)`   |
-| data.frame | 2      | `ncol(dfr)`   |
+|          | dimensions  | content types |
+|----------|-------------|---------------|
+| `vector` | 1: `lenght` | 1             |
+| `matrix` | 2: `dim`    | 1             |
+| `array`  | n: `dim`    | 1             |
+| `list`   | 1: `length` | `length()`    |
+| `data.frame` | 2: `dim`| `ncol()`      |
+
+Is the data a collection of scalars of same *type* (defined later)?
+ - yes:
+   - linear?
+     - yes `vector`
+	 - no `matrix` or `array` (if > 2 dimensions)
+ - no: `list`
+   - elements of same length (and generally `vectors`): `data.frame`
 
 ## Vectors
 
@@ -283,9 +295,17 @@ y
 ```
 
 
-## Numerics, characters, logicals, factors
+## Vector modes: numerics, character, logical, factor
 
 Vectors are of one unique type:
+
+          | mode | class  | typeof |
+----------|------|--------|--------| 
+character | character | character | character |
+logical   | logical | logical | logical |
+numeric   | numeric | integer or numeric | integer of double | 
+factor    | numeric | factor | integer | 
+
 
 
 ```r
@@ -294,11 +314,18 @@ typeof(c(1L, 10L, 1L))
 typeof(c(1L, 10, 1))
 typeof(letters)
 typeof(c(TRUE, FALSE))  ## TRUE and FALSE are reserved words
+```
+
+## Factors
+
+
+```r
 gender <- factor(c("male", "female", "male"))
 gender
 class(gender)
 typeof(gender)
 ```
+
 
 ## Vectorised operations
 
@@ -422,7 +449,7 @@ l$F(l$M)  ## same as sum(1:10)
 ```
 
 
-### Difference between `[` and ``[``
+### Difference between `[` and `[[`
 
 The former returns a sub-set of the list, the latter an individual elements
 
@@ -509,7 +536,19 @@ patients[order(patients$age), ]
 ```
 
 
-### Exercise
+## Inspecting data
+
+- structure: `str()`
+- `n` first elements or rows: `head()`
+- `n` last elements or rows: `tail()`
+- element names: `names()`, `colnames()`, `rownames()`
+- size: `length()`, `dim()`, `nrow()`, `ncol()`
+- `summary()`
+- plotting!
+- ...
+
+
+## Exercise
 
 Using the `weatherdata()` function from the `camweather` package,
 download a weather data frame of your choice.
@@ -523,7 +562,7 @@ download a weather data frame of your choice.
 - In what direction has the wind blown most on that day? Hint:
   `table`.
 
-### A note of accessor speed
+## A note of accessor speed
 
 There are multiple ways to access elements in various `R` objects that
 have different advantages. Using names, for instance, is very
