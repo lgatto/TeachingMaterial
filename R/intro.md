@@ -546,6 +546,30 @@ comparison of the above example and
 [here](https://gist.github.com/lgatto/8249301) for an example with
 (named) lists.
 
+## Collating matrices and data frames
+
+It is easy to collate compatible matrices and data frames along their
+columns or rows using `cbind` and `rbind`.
+
+
+```r
+m1 <- matrix(1:12, ncol = 3)
+m2 <- matrix(1:9, ncol = 3)
+m3 <- matrix(1:16, ncol = 4)
+cbind(m1, m3)
+rbind(m1, m2)
+```
+
+
+But
+
+
+```r
+cbind(m1, m2)
+rbind(m1, m3)
+```
+
+
 ## Special values: `NULL`, `NA`, `NaN`
 
 
