@@ -6,7 +6,7 @@
 ## test_file('leapyear.R')
 ##
 ## You will need to fix the function to get perfect results!
-## There are three sets of 
+## There are three sets of tests to work through.
 
 ## Simple version.
 isleapyear <- function(year) {
@@ -42,9 +42,11 @@ test_that("Centuries are handled correctly", {
 
 context("Handling floating point numbers")
 test_that("Floating point years", {
-  expect_warning( isleapyear(2016.4))
-  expect_true   ( isleapyear(2016.4))
+  expect_warning( x <- isleapyear(2016.4))
+  expect_true   ( x )
 })
+# Ex: why have we written the previous two tests using the variable x?
+# Hint: try and rewrite the tests without the variable.
 
 ## Problem 3.
 ## Some strings can be converted to numbers.  See if we can cope with those
@@ -53,7 +55,9 @@ test_that("Floating point years", {
 
 context("Strings can be numbers")
 test_that("Strings as years", {
-  #expect_error( isleapyear("Nonsense"))
-  #expect_true   ( isleapyear("2016.4"))
-  #expect_warning( isleapyear("2016"))
+  expect_error( isleapyear("Nonsense"))
+  expect_warning( x <- isleapyear("2012.4"))
+  #Add following test only when you are working on it, else the
+  #output from testing can be quite noisy.
+  #expect_true( x )
 })
