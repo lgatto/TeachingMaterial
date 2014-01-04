@@ -118,6 +118,12 @@ legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1
 ```
 
 
+### Exercise
+
+Using a weather data frame as input, generate a plot of the
+temperature throughout the day.
+
+
 ## Writing text spreadsheets
 
 `write.table` and `writeLines` to write tables and lines to files.
@@ -524,7 +530,6 @@ centre(x, "trimmed")
 
 ## The `...` argument
 
-
 When an arbitrary number of arguments is to be passed to a function
 (see `?cat` or `?rm` for examples) or if some arguments need to be
 passed down to an inner function, one can use the special `...`
@@ -535,6 +540,13 @@ arguments.
 plot1toN <- function(n, ...) plot(1, n, ...)
 ```
 
+
+### Exercise
+
+- Write a function that takes a date character of the for
+  `"YYYY-MM-DD"` as input and produces a plot of temperature over
+  time. Make sure that it remains possible to fully customise the
+  plot.
 
 ## Anonymous functions
 
@@ -550,9 +562,32 @@ apply(m, 1, function(x) sum(x^2))
 ```
 
 
-## Exercise
+### Exercise
 
-Write a function that does something with the weather data.
+- Select all the weather files from June 2013. All file names are
+  available with the `weatherfiles()` function. You can use the `grep`
+  function to select the relevant file names. Check that you obtain 30
+  files.
+
+<!-- ```{r} -->
+<!-- f <- grep("2013_06", fls, value = TRUE) -->
+<!-- ``` -->
+
+- Load the 30 data frames into a convenient data structure. Check the
+  number of data points that are available for each weather data set.
+
+<!-- ```{r} -->
+<!-- xx <- lapply(f, weatherdata) -->
+<!-- ``` -->
+
+- Calculate the average day temperatures for that month.
+
+<!-- ```{r} -->
+<!-- sapply(xx, function(x) mean(x[, "Temp [degC]"])) -->
+<!-- ## or -->
+<!-- dd <- do.call(rbind, xx) -->
+<!-- tapply(dd[, 2], dd$Day, mean) -->
+<!-- ``` -->
 
 ## Scoping
 
