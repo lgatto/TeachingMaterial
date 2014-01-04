@@ -152,7 +152,9 @@ produce effective data visualisations.
 
 ```{r}
 library("lattice")
-xyplot(Temp ~ Press | WindDr, data = d)
+xyplot(Temp ~ as.POSIXct(Time), data = d, col = d$WindDr, pch = 19)
+xyplot(Temp ~ Press | WindDr, data = d, pch = 19)
+splom(d[, c("Temp", "Press", "WindSp", "Humid")])
 ```
 
 # Interactive visualisation
@@ -168,3 +170,7 @@ xyplot(Temp ~ Press | WindDr, data = d)
 - [R Graphics](https://www.stat.auckland.ac.nz/~paul/RG2e/) book.
 - [Lattice: Multivariate Data Visualization with R](http://lmdvr.r-forge.r-project.org/figures/figures.html) book.
 - [R Graphical Manual](http://rgm3.lab.nig.ac.jp/RGM/)
+
+
+
+
