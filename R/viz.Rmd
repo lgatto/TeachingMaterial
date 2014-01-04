@@ -137,9 +137,8 @@ p <- ggplot(data = d, aes(x = Time, y = Temp, colour = WindDr))
 p + geom_point(size = 3) 
 p <- ggplot(data = d, aes(x = Time, y = Temp, colour = WindDr, size = WindSp))
 p + geom_point() 
+p + geom_point() + facet_wrap(~WindDr)
 ```
-
-
 
 See also [these `ggplot2` slides](https://github.com/lgatto/visualisation).
 

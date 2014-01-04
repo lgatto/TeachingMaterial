@@ -186,6 +186,12 @@ p + geom_point()
 
 ![plot of chunk viz.Rmd-7](figure/viz_Rmd-73.png) 
 
+```r
+p + geom_point() + facet_wrap(~WindDr)
+```
+
+![plot of chunk viz.Rmd-7](figure/viz_Rmd-74.png) 
+
 
 See also [these `ggplot2` slides](https://github.com/lgatto/visualisation).
 
