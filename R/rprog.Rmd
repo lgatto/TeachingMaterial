@@ -110,7 +110,7 @@ axis(4, at = seq(0, 1, length = 11),
          max(press0),
          length = 11))
 mtext("Pressure [mBar]", 4, line = 3)
-title(f)
+title("2014-01-01")
 legend("top", c("Temperature", "Pressure"),
        col = c("steelblue", "red"), lty = 1,
        bty = "n")

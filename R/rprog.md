@@ -121,14 +121,7 @@ axis(2, at = seq(0, 1, length = 11), labels = seq(min(temp0), max(temp0), length
 axis(4, at = seq(0, 1, length = 11), labels = seq(min(press0), max(press0), 
     length = 11))
 mtext("Pressure [mBar]", 4, line = 3)
-title(f)
-```
-
-```
-## Error: object 'f' not found
-```
-
-```r
+title("2014-01-01")
 legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1, 
     bty = "n")
 ```
