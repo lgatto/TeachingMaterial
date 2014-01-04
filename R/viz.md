@@ -12,7 +12,7 @@ levels, allowing for blending, masking and overlaying of objects.
 
 ```r
 plot(1:10, 1:10)
-rect(2, 2, 8, 8)
+rect(2, 2, 8, 8, col = "black")
 rect(3, 3, 7, 7, col = "white")
 ```
 
