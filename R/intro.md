@@ -336,7 +336,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##   0.000   0.000   0.001
+##       0       0       0
 ```
 
 
@@ -353,7 +353,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##   0.000   0.000   3.004
+##   0.000   0.000   3.003
 ```
 
 
@@ -450,6 +450,7 @@ typeof(letters)
 typeof(c(TRUE, FALSE))  ## TRUE and FALSE are reserved words
 ```
 
+
 ## Factors
 
 
@@ -468,10 +469,42 @@ typeof(gender)
 x <- c(1, 2, 3)
 y <- c(3, 2, 1)
 x
+```
+
+```
+## [1] 1 2 3
+```
+
+```r
 y
+```
+
+```
+## [1] 3 2 1
+```
+
+```r
 x + y
+```
+
+```
+## [1] 4 4 4
+```
+
+```r
 x^2
+```
+
+```
+## [1] 1 4 9
+```
+
+```r
 sqrt(x)
+```
+
+```
+## [1] 1.000 1.414 1.732
 ```
 
 
@@ -479,6 +512,10 @@ sqrt(x)
 ```r
 x <- c("a", "b", "c")
 paste(x, 1, sep = ".")
+```
+
+```
+## [1] "a.1" "b.1" "c.1"
 ```
 
 
@@ -489,17 +526,48 @@ paste(x, 1, sep = ".")
 x <- c(1, 2, 3, 4)
 y <- c(1, 2)
 x + y
+```
+
+```
+## [1] 2 4 4 6
+```
+
+```r
 z <- c(1, 2, 3)
 x + z
 ```
 
+```
+## Warning: longer object length is not a multiple of shorter object length
+```
+
+```
+## [1] 2 4 6 5
+```
+
+
+
+```r
+x <- c(1, 2, 3, 4)
+x[2:3] <- 10
+x
+```
+
+```
+## [1]  1 10 10  4
+```
+
+
+
 ## Generating vectors
 
-- `seq` and **argument matching**
+- `seq` and **argument matching by position and name**
 - `:`
-- Exercise: Using `rep`, how to generate 
+- **Exercise**: Using `rep`, how to generate 
   - 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
   - repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
+- `rnorm`, `runif`, ... to draw values from specific distributions.
+- `sample` to create permutations of vectors.
 
 ## Matrix
 
