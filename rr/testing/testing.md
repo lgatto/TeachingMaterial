@@ -146,7 +146,7 @@ http://adv-r.had.co.nz/Testing.html
 
 ## Simple test file
 
-See the file `testthat_examples.R`.
+See the file [testthat_examples.R](testthat_examples.R).
 
 
 
@@ -165,7 +165,7 @@ and sometimes deliberately [left broken](http://support.microsoft.com/kb/214326)
 
 
 
-Write a function to check leap years.  See `leapyear.R`
+Write a function to check leap years.  See [leapyear.R](leapyear.R).
 
 
 Advanced: can you reproduce this graph that compares the days in the
