@@ -1,10 +1,13 @@
 # The simulator
 
 The script simulator.R will generate N samples drawn from some random
-distribution.  The value of N is given in the file `params.R` which
-simply sets N as:
+distribution.  The value of N is given in the file `params.R`.
 
-<!-- Show the contents of a params.R file here -->
+<!-- TODO: insert file contents of params.R here. -->
+
+<!-- ```{r, code=capture.output(dump('fivenum', ''))} -->
+<!-- ``` -->
+
 
 For example, here we run the script to genarate samples from the
 uniform distribution.
