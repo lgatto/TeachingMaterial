@@ -146,7 +146,9 @@ Rscript -e 'round(runif(10))'
 
 Ex: Create a new file simple_rnorm.R, with contents:
 
-```{r, engine='cat', engine.opts=list(file='simple_rnorm.R')}
+<!-- ```{r, engine='cat', engine.opts=list(file='simple_rnorm.R')} -->
+
+```{r eval=FALSE}
 #!/usr/bin/env Rscript
 args <- commandArgs(TRUE)
 
@@ -222,8 +224,6 @@ Carefully delineate what must be kept vs what can be regenerated.
 ## End: how to compile.
 ```{r eval=FALSE, compiling}
 require(knitr)
-knit2pdf('weather.Rmd')
-knit2html('weather.Rmd')
-browseURL('weather.html')
-pandoc(knit('weather.Rmd'), format='latex')
+knit('weather.Rmd')
+knit2html('weather.Rmd'); browseURL('weather.html')
 ```
