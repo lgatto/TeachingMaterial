@@ -2,9 +2,9 @@ shell and make lessons:
 
 1. [weather/weather.Rmd](weather/weather.Rmd)
 
-2. [simulator](simulator)
+2. [shell/make-nodes.md](shell/make-nodes.md)
 
-3. [weather/Makefile.weather]([weather/Makefile.weather])
+3. [simulator](simulator)
 
+4. [weather/Makefile.weather](weather/Makefile.weather)
 
-TODO: where are the slides on Makefile introduction?
