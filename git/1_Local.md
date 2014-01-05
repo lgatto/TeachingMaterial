@@ -322,9 +322,9 @@ We can then merge the feature1 branch adding new feature to our master branch (m
 When we merge our feature1 branch with master git creates a new commit which contains merged files from master and feature1. 
 After the merge we can continue developing. The merged branch is **not** deleted. We can continue developing (and making commits) in feature1 as well.
 
-    -o---o---o---o---o---M---o---o           master
-              \         /
-               o---o---o                     feature1
+    -c1---c2---c3---c5---c6---c7--c10---c11--c12     master
+                \                /
+                 c4---c8---c9-------c13              feature1
 
 One popular model is to have,
 
@@ -386,21 +386,13 @@ The module which we added in our feature branch is not in our master:
     $ ls
     add_numb.py doc
 
-To list all (local) branches:
+We can see the most recent commits in the branches:
 
-    $ git branch
-    feature1
-    * master
+    $ git branch -v
+    feature1 22e0567 "Adding three numbers in new module"
+    * master 16da6d5 "Fixed typo"
 
-Git is very powerful and comes with countless number of commands. For example, if you want to see all branches with their commits use:
-
-    $ git show-branch
-    * [feature1] Moved add_two to the module
-    ! [master] Added files
-    --
-    *  [feature1] Moved add_two to the module
-    *  [feature1^] Adding module with functions
-    *+ [master] Added files
+####Merging and resolving conflicts
 
 Let's change the add_two function by adding a printing statement and commit our changes (remember: we're working now in the master branch!).
 Now let's switch back to feature1 and move now our add_two function to the module and commit the changes. Looks like our feature is ready to be merged. To do that we need to switch to the master branch:
@@ -455,10 +447,101 @@ Now we need to let Git know that we resolved out conflict by adding the file to 
 
 Now we have our feature in our master branch.
 
-Our feature1 branch still exists and we could keep on working with it. But let's suppose we actually would prefer to delete it. 
+Our feature1 branch still exists and we could keep on working with it. To actually delete the merged branch:
 
     $ git branch -d feature1
     Deleted branch feature1 (was 2bce0f2).
+ 
+Note that the above will work if the branch has been merged (and there have not been any further commits in the branch since the last merge).
+
+####Branching - a bit more in depth
+
+Let's have a closer look at branching. If you remember, earlier on, when we were working only with the master branch and checked out one of the previous commits, git told us that:
+
+
+	You are in 'detached HEAD' state. You can look around, make experimental changes and commit them, and you can discard any commits you make in this state without impacting any branches by performing another checkout.
+
+	If you want to create a new branch to retain commits you create, you may	do so (now or later) by using -b with the checkout command again. Example:
+		git checkout -b new_branch_name
+
+	HEAD is now at c4354a9... Stub of the t-test
+
+Let's checkout one of the past commits from the master branch once again and explore what happens when we make a commit from there.
+
+	git checkout 0cf8e7b096f8d91728375512c62b0bb5da0680e1
+	
+Make some changes to one of the files, add it to the staging area and make a commit (not following git's hint to create a new branch).
+
+	git commit -m "Commiting from the detached head state"
+	[detached HEAD d780033] Commiting from the detached head state
+ 	1 file changed, 2 insertions(+)
+ 	
+What happens when we run `git branch`?
+
+	* (no branch)
+    master	
+
+We are at `no branch`. If we checkout the master branch now and then run `git branch` we will only see `master`. However, the commit which we made in the "detached head" state will not be lost. Anything that you commited into the git repository, including branches that were deleted, **can be recovered** using git! 
+
+But first, let's see what we can do when we are at `no branch`. If we don't want to "lose" the commit we just made, we can create a branch (without checking it out yet).
+
+	$ git branch Commit-from-detached
+	
+Now when we run `git branch`:
+
+	* (no branch)
+	Commit-from-detached
+    master	
+
+We're still at `no branch` but our commit is now saved in the new branch. We can check it by running:
+
+	$ git show Commit-from-detached
+	
+	commit d78003375df172658ab146c298e21a67bc1cbb6d
+	Author: Aleksandra Pawlik <aleksandra.n.pawlik@gmail.com>
+	Date:   Sat Jan 4 15:51:11 2014 +0100
+
+    Commiting from the detached head state
+    ………….
+
+Let's create another branch now, with a different name and run the `show` command on it as well. 
+
+	$ git branch Commit-from-detached2
+	$ git branch
+	
+	* (no branch)
+	Commit-from-detached2
+	Commit-from-detached
+    master
+    
+    $ git show Commit-from-detached2
+	
+	commit d78003375df172658ab146c298e21a67bc1cbb6d
+	Author: Aleksandra Pawlik <aleksandra.n.pawlik@gmail.com>
+	Date:   Sat Jan 4 15:55:17 2014 +0100
+
+    Commiting from the detached head state
+    
+Both branches *Commit-from-detached2* and *Commit-from-detached* point to the same commit *d78003375df172658ab146c298e21a67bc1cbb6d* . Branch name is in fact a pointer, just like HEAD. When we created *Commit-from-detached2* and *Commit-from-detached*  we actually created two pointers which point to the same commit. Now when we checkout one of them:
+
+	$ git checkout Commit-from-detached
+
+…and make a new commit, *Commit-from-detached2* and *Commit-from-detached*  will be pointing to a different commit. 
+
+	$ git show Commit-from-detached2
+	
+	commit d78003375df172658ab146c298e21a67bc1cbb6d
+	Author: Aleksandra Pawlik <aleksandra.n.pawlik@gmail.com>
+	Date:   Sat Jan 4 15:55:17 2014 +0100
+	
+	
+	$ git show Commit-from-detached
+	
+	commit fa0d5dc4ebb613eafb3463324c227c2047b70a25
+	Author: Aleksandra Pawlik <aleksandra.n.pawlik@gmail.com>
+	Date:   Sat Jan 4 16:15:34 2014 +0100
+
+
 
 
 ## The story so far...
