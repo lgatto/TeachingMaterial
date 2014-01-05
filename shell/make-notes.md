@@ -16,7 +16,7 @@
 			simulation param1.dat param2.dat > res1.dat
 			post-process res1.dat > res.txt
 
-- Commands to be run should be indented with a TAB.  (CHeck your
+- Commands to be run should be indented with a TAB.  (Check your
   editor settings, esp R studio.)
 
 
