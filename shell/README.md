@@ -2,7 +2,7 @@ shell and make lessons:
 
 1. [weather/weather.Rmd](weather/weather.Rmd)
 
-2. [shell/make-nodes.md](shell/make-nodes.md)
+2. [make-notes.md](make-notes.md)
 
 3. [simulator](simulator)
 
