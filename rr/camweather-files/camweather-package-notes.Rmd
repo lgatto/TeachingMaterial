@@ -1,0 +1,38 @@
+
+* Creating the Data file
+
+1Mb rather than 16Mb raw.
+
+Added a header myself to the .cxv.gz file.
+camweatherraw <- read.csv('camweather/data/camweatherraw.csv.gz', header=TRUE)
+save(camweatherraw, file='camweatherraw.rda', compress="xz")
+
+
+* Create the skeleton from the camtemp definition.
+
+
+
+	package.skeleton("camweather1", list=c('camtemp'))
+
+
+* Update the .Rd files
+
+* Move .rda file into `camweather1/data` folder (that folder must be
+  created first).
+
+* Build, test, install
+
+	R CMD build camweather1
+	R CMD check camweather1_1.0.tar.gz
+
+	R CMD INSTALL camweather1_1.0.tar.gz 
+
+
+* Try it out:
+
+	require(camweather1)
+	data(camweatherraw)
+	tail(camweatherraw)
+	camtemp("2013-04-01")
+	camtemp("2013-08-30")
+	camtemp("2013-12-25")
