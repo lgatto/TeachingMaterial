@@ -15,20 +15,21 @@ or `as.is=TRUE`.
 
 
 ```r
-f <- "2014_01_01"
-lf <- file.path("../data/daily-text", f)
-w <- read.table(lf, header = FALSE, comment.char = "#", sep = "\t")
+library("camweather")
+f <- weatherfile("2014-01-01")
+f
+w <- read.table(f, header = FALSE, comment.char = "#", sep = "\t")
 dim(w)
 head(w)
 ```
 
 
 We are missing header information. Let's use `readLines` to parse and
-extract the header data manually. 
+extract the header lines manually. 
 
 
 ```r
-hd <- readLines("../data/daily-text/2014_01_01")
+hd <- readLines(f)
 hd <- hd[grep("#", hd)]
 hd <- sub("#", "", hd)
 hd <- hd[7:8]
@@ -46,13 +47,17 @@ we convert it into a time format/date.
 
 ```r
 class(w$Time)
-w$Time <- strptime(paste(f, w$Time), "%Y_%m_%d %H:%M")
+w$Time <- strptime(paste(basename(f), w$Time), "%Y_%m_%d %H:%M")
+w$Day <- as.Date(basename(f), "%Y_%m_%d")
 class(w$Time)
 summary(w)
 ```
 
 
 ## Basic plotting
+
+
+
 
 
 ```r
@@ -63,12 +68,21 @@ plot(w$Time, w[, "Rain [mm]"], type = "b", xlab = "Time", ylab = "Rain")
 plot(w$Time, w[, "Press [mBar]"], type = "b", xlab = "Time", ylab = "Pressure")
 ```
 
+![plot of chunk rprog.Rmd-6](figure/rprog_Rmd-6.png) 
+
 
 
 ```r
 boxplot(w[, "WindSp [knots]"] ~ factor(w$WindDr))
+```
+
+![plot of chunk rprog.Rmd-7](figure/rprog_Rmd-71.png) 
+
+```r
 pairs(w[, c(2, 5, 6, 9)])
 ```
+
+![plot of chunk rprog.Rmd-7](figure/rprog_Rmd-72.png) 
 
 
 ## More plotting
@@ -78,7 +92,7 @@ different (as in the example below) and the differences are not
 properly accounted for, let's illustrate such an example to learn how
 to set different elements of a base plot. 
 
-- Data rescaling
+- Data re-scaling
 
 
 ```r
@@ -92,34 +106,50 @@ press <- press/max(press)
 ```
 
 
-- Plot with minimal decoration
+- Plotting
 
 
 ```r
+## Plot with minimal decoration
 par(mar = c(5, 4, 2, 4))
 plot(w$Time, temp, type = "l", xlab = "Time", ylab = "Temp [deg C]", yaxt = "n", 
     col = "steelblue")
 lines(w$Time, press, col = "red")
-```
 
-
-- Axis, title and legends
-
-
-```r
+## Axis, title and legends
 axis(2, at = seq(0, 1, length = 11), labels = seq(min(temp0), max(temp0), length = 11))
 axis(4, at = seq(0, 1, length = 11), labels = seq(min(press0), max(press0), 
     length = 11))
 mtext("Pressure [mBar]", 4, line = 3)
-title(f)
+title("2014-01-01")
 legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1, 
     bty = "n")
 ```
 
+![plot of chunk rprog.Rmd-9](figure/rprog_Rmd-9.png) 
+
+
+### Exercise
+
+Using a weather data frame as input, generate a plot showing the
+hourly (or half-hourly) rainfall for the 3rd Jan 2014.
+
+<!-- ```{r} -->
+<!-- x <- weatherdata("2014-01-03") -->
+<!-- rain <- x$'Rain [mm]' -->
+<!-- plot(x$Time[-1], diff(rain), type = "l", -->
+<!--      ) -->
+<!-- ``` -->
 
 ## Writing text spreadsheets
 
 `write.table` and `writeLines` to write tables and lines to files.
+
+
+```r
+write.csv(w, file = "w.csv")
+```
+
 
 ## Saving and loading R data
 
@@ -132,7 +162,7 @@ workspace (see `save.image`).
 To save and restore single object to a file, see also `saveRDS` and
 `readRDS`.
 
-### Exercise
+### Exercise 
 
 Use one of the `save`/`load` or `saveRDS`/`readRDS` above to serialise
 the weather `data.frame`, rename the variable in your workspace,
@@ -145,10 +175,23 @@ reload the saved object and compare it to the original file. Hint: use
 ```r
 x <- sqrt(2)
 x^2 == 2
-all.equal(x^2, 2)
+```
+
+```
+## [1] FALSE
 ```
 
 See [Why doesn’t R think these numbers are equal?](http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-doesn_0027t-R-think-these-numbers-are-equal_003f).
+
+
+```r
+all.equal(x^2, 2)
+```
+
+```
+## [1] TRUE
+```
+
 
 ## See also
 - `scan`: Read data into a vector or list from the console or file.
@@ -167,28 +210,742 @@ cat("Best editor ever is ", choices[mychoice], "\n")
 
 # Iteration and flow control 
 
-- `for` and `while`
-- `if`, `else`
-- `*apply`
-- `plyr`, `reshape2`
-- `parallel`
-- `replicate`
-- `with`
+## Iteration
+
+Iteration works as in other procedural languages
+
+- `for (var in seq) expr`
+- `while (cond) expr`
+- `repeat expr`
+
+where
+
+- `expr` is a valid R expression, contained in `{` `}` if composed by
+  multiple expressions.
+- `cond` is a `logical` of length, or an expression that is evaluated
+  to a logical. (It is also possible to use a `numeric` of length 1,
+  where 0 corresponds to `FALSE` and any other number to `TRUE`).
+- `seq` is a `vector` or a `list`.
+- `var` is a variable that takes the values of `seq` throughout the
+  iterations and can be used in `expr`.
+
+Examples:
+
+
+```r
+for (i in 1:3) print(i + 1)
+
+k <- 3
+while (k > 0) {
+    print(k^2)
+    k <- k - 1
+}
+```
+
+
+A common use of `for` is `for (i in 1:n)`, where `n` is the length of
+a `vector` or a `list`. In such situations, it is safer to use
+`seq_len(n)`:
+
+
+```r
+x <- numeric()
+n <- length(x)
+
+for (i in 1:n) print(i)
+```
+
+```
+## [1] 1
+## [1] 0
+```
+
+```r
+
+for (i in seq_len(n)) print(i)
+```
+
+
+## Conditions
+
+`if (cond) expr1 else expr2`, with `cond` and `expr[1|2]` as defined
+above. The else clause is optional.
+
+It is also possible to nest `else/if` conditions:
+
+```
+if (cond1) {
+	do1
+} else if (cond2) {
+	do2
+} else {
+	do3
+}
+```
+
+Example:
+
+
+```r
+k <- 3
+repeat {
+    print(k)
+    if (k == 0) 
+        break
+    k <- k - 1
+}
+```
+
+
+## `ifelse`
+
+The vectorised `ifelse` function takes three expressions as arguments:
+`test`, `yes` and `no`. All values of the `test` expression that
+evaluate to `TRUE` are replaced by the corresponding value of `yes`
+(possibly repeated) or the corresponding value of `no` otherwise.
+
+
+```r
+x <- 1:5
+ifelse(x < 3, 1, 2)
+```
+
+```
+## [1] 1 1 2 2 2
+```
+
+```r
+ifelse(x < 3, 10:15, 20:25)
+```
+
+```
+## [1] 10 11 22 23 24
+```
+
+```r
+ifelse(x < 3, 10:15, -1)
+```
+
+```
+## [1] 10 11 -1 -1 -1
+```
+
+If `test` has dimensions, there will be retained in the output:
+
+
+```r
+m <- matrix(1:6, ncol = 2)
+m
+```
+
+```
+##      [,1] [,2]
+## [1,]    1    4
+## [2,]    2    5
+## [3,]    3    6
+```
+
+```r
+ifelse(m < 2, m, c(10, 11, 12))
+```
+
+```
+##      [,1] [,2]
+## [1,]    1   10
+## [2,]   11   11
+## [3,]   12   12
+```
+
+
+## `switch`
+
+`switch`'s first argument is an expression, followed by any number of
+additional arguments.
+
+- If the first expression is evaluated to a numeric, the corresponding
+  following argument is evaluated and returned.
+
+
+```r
+switch(1 + 0, 1, 2, 3)
+switch(1 + 1, 1, 2, 3)
+```
+
+
+- If the expression evaluates to a character, the matching name of the
+  following arguments is evaluated and returned.
+
+
+```r
+switch(letters[1 + 0], a = 1, b = 2, c = 3)
+switch(letters[1 + 2], a = 1, b = 2, c = 3)
+```
+
+
+See `?switch` for details about mixing named and unnamed supplementary
+arguments and partial matching.
+
+We will see another `switch` example below, in the section about
+functions.
+
+## `*apply` and friends
+
+When one wants to apply a function over the elements/dimensions of an
+object:
+
+| function | input | output | 
+|----------|-------|--------|
+| sapply   | list/vector  | vector | 
+| lapply   | list/vector  | list   |
+| apply    | matrix/array | vector/matrix [*] |
+
+[*] will actually depend on the subscripts the function will applied
+over.
+
+- Retrieve the length of each element of a `list`: `sapply` the function `length` on each element of the list.
+
+
+```r
+l <- list(1:4, letters, month.name)
+sapply(l, length)
+```
+
+- Same as above, but returning a list.
+
+
+```r
+lapply(l, length)
+```
+
+
+- Lets generate 3 sequences from 1 to 3, 4, and 5: apply function
+  `seq_len` along the vector `c(3, 4, 5)`, to call `seq_len(3)`,
+  `seq_len(4)` and `seq_len(5)`. Below, as the output can not be
+  returned as a simple vector, the output is a `list`, even when using
+  `sapply`.
+
+
+
+```r
+lapply(c(3, 4, 5), seq_len)
+sapply(c(3, 4, 5), seq_len)
+```
+
+
+- Let's calculate the median of the rows and columns of a matrix:
+  `apply` the function `median` over the rows (margin 1) and columns
+  (margin 2) of `m`. Below, we generate a matrix of dimensions 6 by 5
+  for 30 values sampled from a normal distribution `N(0, 1)` (see
+  `?rnorm` for details).
+
+
+```r
+m <- matrix(rnorm(30), nrow = 6)
+apply(m, 1, median)
+apply(m, 2, median)
+```
+
+
+If we wanted to do the same thing with the `mean`, we would rather
+want to use `rowMeans` and `colMeans`, which are much faster. See
+later for details.
+
+## Other `apply` functions
+
+- `vapply`: same as `sapply`, but with pre-specified type of the
+  return value.
+- `mapply`: a multivariate version of `sapply` that applies a function
+  `FUN` using the set of arguments passed to `apply` as function
+  arguments to `FUN`.
+
+
+```r
+mapply(rep, 1:4, 4:1)
+```
+
+- `tapply`: applies a function to each cell of a ragged array. Below,
+  sums the values of `x` after sub-setting them based on grouping
+  defined in `k`. (See also `by` below).
+
+
+```r
+x <- 1:12
+k <- rep(letters[1:3], 4)
+tapply(x, k, sum)
+```
+
+
+- `rapply`: recursive version of `lapply`.
+
+## Similar functions
+
+- `replicate`: repeats the evaluation of an expression. 
+- `aggregate`: splits the data into subsets, computes summary
+  statistics for each, and returns the result in a convenient form.
+- `split`: splits data into groups defined by a `factor`.
+- `by`: similar that `tapply` for data frames.
+
+| to apply over | of objects | use function |
+|---------------|------------|--------------|
+| rows, cols    | matrices, arrays, data frames| `apply` |
+| elements      | vector or list | `sapply` or `lapply`  |
+| subsets defined by factors | vectors, lists, data frames | `tapply`, `by`, `split`  + `apply`, `aggregate` |
+
+Reference:
+[R Grouping functions](http://stackoverflow.com/questions/3505701/r-grouping-functions-sapply-vs-lapply-vs-apply-vs-tapply-vs-by-vs-aggrega)
+on Stack Overflow.
+
+## The `plyr` package
+
+The [`plyr`](http://plyr.had.co.nz/) package provides its own set of
+apply like functions. The `plyr` functions follows a simple naming
+convention: `XYply` where `X` and `Y` describe the input and output
+structures respectively, and can replaced by `a` (for an `array`), `l`
+(for a `list`) or `d` (for a `data.frame`).
+
+Good reference: [The Split-Apply-Combine Strategy for Data Analysis](http://www.jstatsoft.org/v40/i01), JSS, 40(1) pp. 1-29 (2011).
+
+## `for` or `apply`
+
+The `apply` family of functions are not faster than for loops as long
+as initialisation is accounted for (see section on benchmaking for
+details). Their main benefits are conciseness and straightforward
+parallelisation (next section).
+
+Reference: [R Help Desk article (May 2008)](http://cran.r-project.org/doc/Rnews/Rnews_2008-1.pdf)
+
+## Parallel `apply`
+
+The `parallel` package provides a direct parallel alternatives for
+`apply` functions with `mclapply`, `mcmapply`, `parLapply`,
+`parSapply`, `parApply`, ...
+
+Reference:
+- `parallel` vignette: `vignette("parallel")`
+- CRAN Task View: [High-Performance and Parallel Computing with R](http://cran.r-project.org/web/views/HighPerformanceComputing.html)
+- Book: [Parallel R](http://shop.oreilly.com/product/0636920021421.do)
+- The [`foreach`](http://cran.r-project.org/web/packages/foreach/index.html) package
+
+<!-- ## TODO -->
+<!-- - `melt`, `reshape2` -->
+<!-- - `with` -->
 
 # Writing function
-- `function`
-- pass by value (vs by reference)
-- `environment`
-- scoping
 
-# Documentation
+Writing functions is very easy and a recommended way for code
+abstraction. To create a new function, one needs to define:
 
-- `roxygen2` package syntax for in-line documentation
+1. A **name** that will be used to call the function (but see
+   anonymous functions later); in the code chunk below, we call our
+   function `myfun`.
+2. A set of input formal **arguments**, that are defined in the
+   parenthesis of the function constructor. The `myfun` example has
+   two arguments, called `x` and `y`.
+3. A function **body** (its code), defined between `{` and `}` below.
+4. A **return** statement, that represents the output of the
+   function. If no explicit return statement is provided, the last
+   statement of the function is return by default.
 
-# Misc
 
-- string processing: `strsplit`, `sub`, `gsub`, `paste`, `cat`
-- more regexp: `stringr`, `tm`
-- `message`, `warning`, `error`
-- timing, benchmarking
-- debugging
+```r
+myfun <- function(x, y) {
+    a <- x^2
+    b <- sqrt(y)
+    res <- a/b
+    return(res)
+}
+
+myfun(2, 1)
+myfun(4, 2)
+```
+
+
+Note that functions only support single value returns, i.e. `return(x,
+y)` is an error.  To return multiple values, one needs to return a
+`list` with the respective return variables like `return(list(x, y))`.
+
+
+Calling `myfun(1)` would fail because argument `y` is not assigned a
+value. One can assign default argument values when defining the function.
+
+
+
+```r
+myfun2 <- function(x, y = 2) {
+    a <- x^2
+    b <- sqrt(y)
+    res <- a/b
+    return(res)
+}
+
+myfun2(4, 2)
+myfun2(4)
+```
+
+
+Note that the functions above are vectorised (they work with vectors
+of arbitrary lengths), as their body is composed entirely if
+vectorised functions.
+
+
+```r
+myfun(c(4, 4), c(1, 2))
+```
+
+
+## A example with `switch`
+
+
+```r
+centre <- function(x, type) {
+    switch(type, mean = mean(x), median = median(x), trimmed = mean(x, trim = 0.1))
+}
+x <- rcauchy(10)
+centre(x, "mean")
+centre(x, "median")
+centre(x, "trimmed")
+```
+
+
+## The `...` argument
+
+When an arbitrary number of arguments is to be passed to a function
+(see `?cat` or `?rm` for examples) or if some arguments need to be
+passed down to an inner function, one can use the special `...`
+arguments.
+
+
+```r
+plot1toN <- function(n, ...) plot(1, n, ...)
+```
+
+
+## Anonymous functions
+
+It is often handy to define functions on the fly, without binding them
+to specific names (item 1. above missing). These are called anonymous
+functions and are generally used as one-time arguments to `apply`
+functions.
+
+
+```r
+m <- matrix(rnorm(12), ncol = 4)
+apply(m, 1, function(x) sum(x^2))
+```
+
+
+## Exercise
+
+- Write your own `weatherdata` function that takes a date character as
+  input, locates the file in the `camweather` package directory, loads
+  it and returns an appropriate data structure. See section on reading
+  data for help.
+
+- Write a function that takes a date character of the for
+  `"YYYY-MM-DD"` as input and produces a plot of temperature over
+  time. Make sure that it remains possible to fully customise the
+  figure as would be with `plot`.
+
+- Select all the weather files from June 2013. All file names are
+  available with the `weatherfiles()` function. You can use the `grep`
+  function to select the relevant file names. Check that you obtain 30
+  files.
+
+<!-- ```{r} -->
+<!-- fls <- weatherfiles() -->
+<!-- f <- grep("2013_06", fls, value = TRUE) -->
+<!-- length(f) -->
+<!-- ``` -->
+
+- Load the 30 data frames into a convenient data structure. Check the
+  number of data points that are available for each weather data set.
+
+<!-- ```{r} -->
+<!-- xx <- lapply(f, weatherdata) -->
+<!-- sapply(xx, nrow) -->
+<!-- ``` -->
+
+- Calculate the average day temperatures for that month.
+
+<!-- ```{r} -->
+<!-- sapply(xx, function(x) mean(x[, "Temp [degC]"])) -->
+<!-- ## or -->
+<!-- dd <- do.call(rbind, xx) -->
+<!-- tapply(dd[, 2], dd$Day, mean) -->
+<!-- ``` -->
+
+- Plot the temperature over the full month and the daily
+  temperature curves for June 2013.
+
+<!-- ```{r} -->
+<!-- plot(dd[, 1], dd[, 2], type = "l", -->
+<!--      xlab = "Time", ylab = "Temp", main = "June 2013") -->
+
+<!-- updateday <- function(x) -->
+<!--     as.POSIXct(strftime(x, "%H:%M"), format = "%H:%M") -->
+
+<!-- library("RColorBrewer") -->
+<!-- col <- brewer.pal(10, "Set3") -->
+<!-- col[2] <- "#555555" -->
+<!-- col <- rep(col, each = 3) -->
+<!-- lty <- rep(1:3, 30) -->
+
+<!-- trng <- range(lapply(xx, function(x) x[, "Temp [degC]"])) -->
+<!-- plot(updateday(xx[[1]][, 1]), -->
+<!--      xx[[1]][, 2], ylim = trng, type = "l", -->
+<!--      col = col[1], lty = lty[1], lwd = 2, -->
+<!--      xlab = "Time", ylab = "Temp") -->
+
+<!-- for (i in 2:length(xx))  -->
+<!--     lines(updateday(xx[[i]][, 1]), xx[[i]][, 2], -->
+<!--           col = col[i], lty = lty[i], lwd = 2) -->
+
+<!-- legend("bottomright", legend = 1:30, -->
+<!--        col = col, lty = lty, lwd = 2, -->
+<!--        bty = "n", cex = .8, -->
+<!--        ncol = 5) -->
+<!-- ``` -->
+
+## Scoping
+
+In addition to what we have seen above, a function has also its very
+own environment, in which it arguments a stored and its body is
+evaluated. The functions arguments are copies of the initial
+variables, so that the original ones stay unchanged.
+
+
+```r
+x <- 1
+f <- function(x) {
+    x <- x + 1
+    return(x)
+}
+f(x)
+```
+
+```
+## [1] 2
+```
+
+```r
+x  ## unchanged
+```
+
+```
+## [1] 1
+```
+
+
+A functions however can access variables defined outside of their
+environment, for instance variables in the global environment.
+
+
+```r
+g <- function() {
+    x <- x + 1
+    return(x)
+}
+x <- 1
+g()
+```
+
+```
+## [1] 2
+```
+
+```r
+x  ## unchanged
+```
+
+```
+## [1] 1
+```
+
+
+In this case, if `x` does not exists
+
+
+```r
+rm(x)
+g()
+```
+
+```
+## Error: object 'x' not found
+```
+
+
+# R development
+
+## Documentation
+
+`R` features a dedicated documentation format (`Rd` files) that is
+used when developing packages. It is extremely useful to document
+code, even when the development of a package is not (yet) on the
+agenda.
+
+Comments are of course the first way to include context and additional
+information to code. Code comments should describe why some code is
+written and requirement for its correct execution and not what the
+code does (which should be self-explanatory when reading it). 
+
+The
+[`roxygen2`](http://cran.r-project.org/web/packages/roxygen2/index.html)
+package allows in-line documentation, i.e. documentation of `R` code
+directly next (actually on top) to its source. This makes maintenance
+of the code and the documentation reasonably easy and will allow to
+automatically generate the `Rd` files at a later stage. Below is the
+corresponding source code and documentation for the `weatherdata`
+function.
+
+
+```r
+##' Get the weather data for a day.
+##'
+##' Data are immediate at \code{Time} except wind speed (average since
+##' previous \code{Time}) and wind direction (most frequent since
+##' previous \code{Time}.)  Sun and rain values are cumulative from
+##' code{Start}. \code{MxWSpd} gives max wind speed since previous
+##' \code{Time}.
+##' 
+##' @title Weather data
+##' @param date A character describing a date with format
+##' \code{'YYYY-MM-DD'}.
+##' @return A \code{data.frame} with the weather data for the
+##' corresponding \code{date}.
+##' @author Laurent Gatto <lg390@@cam.ac.uk>
+##' @seealso \code{\link{nounits}} to remove the units from the
+##' \code{data.frame}'s names.
+##' @examples
+##' x <- weatherdata('2012-12-25')
+##' dim(x)
+##' head(x)
+##' plot(x$Time, x[, 'Temp [degC]'], type = 'b')
+weatherdata <- function(date) {
+    f <- weatherfile(date)
+    if (length(f) > 1) {
+        warning("Found ", length(f), " files. Using first one ", basename(f[1]))
+        f <- f[1]
+    }
+    w <- read.table(f, header = FALSE, comment.char = "#", sep = "\t")
+    hd <- readLines(f)
+    hd <- hd[grep("#", hd)]
+    hd <- sub("#", "", hd)
+    hd <- hd[7:8]
+    hd <- gsub(" ", "", hd)
+    hd <- strsplit(hd, "\t")
+    hd <- paste0(hd[[1]], " [", hd[[2]], "]")
+    hd <- sub(" \\[\\]", "", hd)
+    names(w) <- hd
+    w$Time <- strptime(paste(basename(f), w$Time), "%Y_%m_%d %H:%M")
+    w$Day <- as.Date(basename(f), "%Y_%m_%d")
+    return(w)
+}
+```
+
+
+## Timing and benchmarking
+
+To sample the execution time of a function, it is convenient to use
+use `system.time` in conjunction with `replicate` and compute a
+summary of the timings.
+
+
+```r
+X <- rnorm(1e+06)
+f <- function(x, k = 0.8) mean(x, trim = k)
+f(X)
+```
+
+```
+## [1] -0.0007686
+```
+
+```r
+system.time(f(X))
+```
+
+```
+##    user  system elapsed 
+##   0.336   0.012   0.349
+```
+
+```r
+summary(replicate(10, system.time(f(X))["elapsed"]))
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   0.351   0.352   0.352   0.352   0.352   0.353
+```
+
+
+Alternatively, the
+[`rbenchmark`](http://cran.r-project.org/web/packages/rbenchmark/index.html)
+and
+[`microbanchmark`](http://cran.r-project.org/web/packages/microbenchmark/)
+provide more formal benchmarking infrastructure. Let compare three
+functions that create a list of length `n` composed of `1`, `1:2`, ..., `1:n`.
+
+1. `f1` uses a for `loop` and grows the list dynamically at each
+   iteration.
+2. `f2` initialises the list and uses a `for` loop.
+3. `f3` uses `lapply`.
+
+
+```r
+n <- 10000
+f1 <- function(n) {
+    l <- list()
+    for (i in seq_len(n)) l[[i]] <- seq(i)
+    return(l)
+}
+
+f2 <- function(n) {
+    l <- vector("list", length = n)
+    for (i in seq_len(n)) l[[i]] <- seq(i)
+    return(l)
+}
+
+f3 <- function(n) lapply(seq_len(n), seq)
+```
+
+
+Let's use the `rbenchmark` package to compare the respective timings:
+
+
+```r
+library("rbenchmark")
+benchmark(f1(n), f2(n), f3(n),
+          columns = c("test", "replications", "elapsed", "relative"),
+          replications = 10)
+```
+
+```
+##    test replications elapsed relative
+## 1 f1(n)           10  17.072    2.776
+## 2 f2(n)           10   6.149    1.000
+## 3 f3(n)           10   8.970    1.459
+```
+
+
+We see that the `for` with initialisation and `lapply` implementations
+have comparable timings. The first function, however, takes much more
+time. This overhead is the result of repeated copies of the list at
+each iteration: before creating `l` of length `i`, the list of length
+`i-1` is copied and deleted upon creation of the longer copy. The
+delay would become even more pronounced with increasing `n`.
+
+**Exercise:** write a parallel version of `f3` using `mclapply` using 2
+cores. Do you see a 2-fold increase in speed?
+
+For more extensive code profiling, see `?Rprof`.
+
+## Debugging
+
+To debug a function `f`, register is with `debug(f)`. Next time it is
+called, it will be executed in `browser` mode: expressions of the body
+can be executed one by one and at each step, the variables and their
+values can be inspected.
+
+<!-- ## `message`, `warning`, `error` -->

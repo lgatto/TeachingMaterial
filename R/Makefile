@@ -1,12 +1,12 @@
 %.md: %.Rmd
-	Rscript -e 'require(knitr); knit("$^")'
+	Rscript -e 'require(knitr); options(knitr.unnamed.chunk.label = "$^"); knit("$^")'
 
 %.html: %.md
-	Rscript -e 'require(knitr); knit2html("$^")'
+	Rscript -e 'require(knitr); options(knitr.unnamed.chunk.label = "$^"); knit2html("$^")'
 
 .PHONY: all clean
 
-all: intro.md resources.md rprog.md viz.md
+all: intro.md rprog.md viz.md
 
 clean:
 	rm -f *~
