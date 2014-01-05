@@ -16,7 +16,10 @@ Well, knitr is like Sweave, only better!
 * caching
 * "modern"
 
-# A simple example
+Many of the notes in Rmd are supplied on the github pages for this
+bootcamp.  We convert them to .md which github renders.
+
+## A simple example
 
 Let's get R to do some simple maths.
 
@@ -25,16 +28,20 @@ x <- 1:3
 y <- 4:6
 outer(x, y)
 ```
+As well as having chunks in separate paragaphs, you can have some
+inline computation.  For example, the mean of x is `r mean(x)` and
+the sum of x and y is `r x+y`.  Chunks can be named and then
+referred to later.
 
-# Plotting is easy too
+## Plotting is easy too
 
-```{r}
+```{r plot-chunk}
 x <- seq(from=0, to=2*pi, length=1000)
 y <- cos(3*x)
 plot(x, y, type='l', col='blue')
 ```
 
-# Tables are not so straightforward (in markdown)
+## Tables are not so straightforward (in markdown)
 
 See the
 [xtable](http://cran.r-project.org/web/packages/xtable/vignettes/xtableGallery.pdf)
@@ -60,9 +67,15 @@ of throwing darts at a dartboard.
 
 [Estimating PI](http://www.damtp.cam.ac.uk/user/eglen/rguide/estimate.pdf)
 
-Can you generate something similar
-with an .Rmd document?  Work on the basics of estimating pi and
-attempt the last figure only if you have time.
+Can you generate something similar with an .Rmd document?  Work on the
+basics of estimating pi and attempt the last figure only if you have
+time.
+
+# What are vignettes?
+
+Vignettes are self-contained documents that typically describe in
+detail how a package works.  See a list of them with `vignette()`.
+*knitr* has many vignettes, e.g. `vignette('knitr-refcard')`.
 
 # Installing vignettes into a package.
 
@@ -94,6 +107,7 @@ following may not work for you (especially on Windows):
 
 ```{r, eval=FALSE}
 require(knitr)
+knit2html('simple.Rmd'); browseURL('simple.html')
 knit2pdf("simple.Rmd")
 ```
 
