@@ -363,7 +363,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##   0.004   0.000   3.003
+##   0.000   0.000   3.003
 ```
 
 
@@ -719,7 +719,6 @@ dimnames(M) <- list(year =
                     c(2005, 2006, 2007),
                     "mode of transport" =
                     c("plane", "bus", "boat"))
-M
 ```
 
 
@@ -1011,7 +1010,7 @@ e
 ```
 
 ```
-## <environment: 0x106bf30>
+## <environment: 0x27aace0>
 ```
 
 ```r
@@ -1138,14 +1137,14 @@ str(model)
 
 ```
 ## List of 12
-##  $ coefficients : Named num [1:2] 0.1584 -0.0711
+##  $ coefficients : Named num [1:2] -0.0141 -0.0786
 ##   ..- attr(*, "names")= chr [1:2] "(Intercept)" "x"
-##  $ residuals    : Named num [1:100] -0.22 -1.962 0.403 -1.024 -2.036 ...
+##  $ residuals    : Named num [1:100] -1.627 -1.116 -1.384 -0.161 0.916 ...
 ##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
-##  $ effects      : Named num [1:100] -1.625 -0.79 0.564 -0.91 -1.557 ...
+##  $ effects      : Named num [1:100] 0.0766 -0.7296 -1.1812 0.0721 1.2025 ...
 ##   ..- attr(*, "names")= chr [1:100] "(Intercept)" "x" "" "" ...
 ##  $ rank         : int 2
-##  $ fitted.values: Named num [1:100] 0.0871 0.2423 0.2194 0.1979 0.3629 ...
+##  $ fitted.values: Named num [1:100] -0.0835 0.0926 0.0329 0.0592 0.1048 ...
 ##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
 ##  $ assign       : int [1:2] 0 1
 ##  $ qr           :List of 5
@@ -1154,7 +1153,7 @@ str(model)
 ##   .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
 ##   .. .. ..$ : chr [1:2] "(Intercept)" "x"
 ##   .. ..- attr(*, "assign")= int [1:2] 0 1
-##   ..$ qraux: num [1:2] 1.1 1.11
+##   ..$ qraux: num [1:2] 1.1 1.15
 ##   ..$ pivot: int [1:2] 1 2
 ##   ..$ tol  : num 1e-07
 ##   ..$ rank : int 2
@@ -1177,8 +1176,8 @@ str(model)
 ##   .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
 ##   .. .. ..- attr(*, "names")= chr [1:2] "y" "x"
 ##  $ model        :'data.frame':	100 obs. of  2 variables:
-##   ..$ y: num [1:100] -0.133 -1.72 0.622 -0.826 -1.673 ...
-##   ..$ x: num [1:100] 1.004 -1.18 -0.858 -0.555 -2.876 ...
+##   ..$ y: num [1:100] -1.71 -1.023 -1.351 -0.102 1.021 ...
+##   ..$ x: num [1:100] 0.883 -1.358 -0.598 -0.934 -1.514 ...
 ##   ..- attr(*, "terms")=Classes 'terms', 'formula' length 3 y ~ x
 ##   .. .. ..- attr(*, "variables")= language list(y, x)
 ##   .. .. ..- attr(*, "factors")= int [1:2, 1] 0 1
