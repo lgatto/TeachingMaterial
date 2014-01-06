@@ -520,9 +520,25 @@ Reference: [R Help Desk article (May 2008)](http://cran.r-project.org/doc/Rnews/
 
 ## Parallel `apply`
 
+- Applicable when repeating independent computations a certain number
+  of times; results just need to be combined after parallel executions
+  are done.
+- A cluster of nodes: generate multiple workers listening to the
+  master; these workers are new processes that can run on the current
+  machine or a similar one with an identical R installation. Should
+  work on all `R` platforms (as in package `snow`).
+- The R process is forked to create new R processes by taking a
+  complete copy of the masters process, including workspace (pioneered
+  by package `multicore`). Does not work on Windows.
+- Package `parallel`, first included in R 2.14.0 builds on CRAN
+  packages `multicore` and `snow`.
+
 The `parallel` package provides a direct parallel alternatives for
-`apply` functions with `mclapply`, `mcmapply`, `parLapply`,
-`parSapply`, `parApply`, ...
+`apply` functions with `mclapply`, `mcmapply`, ... (`mutlicore`) and
+`parLapply`, `parSapply`, `parApply`, ... (`snow`)
+
+More examples: [R-parallel](https://github.com/lgatto/R-parallel/)
+slides.
 
 Reference:
 - `parallel` vignette: `vignette("parallel")`
@@ -817,7 +833,7 @@ f(X)
 ```
 
 ```
-## [1] 0.001646
+## [1] -2.084e-05
 ```
 
 ```r
@@ -826,7 +842,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.188   0.008   0.197
+##   0.252   0.008   0.261
 ```
 
 ```r
@@ -835,7 +851,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.199   0.199   0.200   0.200   0.200   0.200
+##   0.263   0.264   0.264   0.264   0.264   0.265
 ```
 
 
@@ -897,6 +913,8 @@ delay would become even more pronounced with increasing `n`.
 
 **Exercise:** write a parallel version of `f3` using `mclapply` using 2
 cores. Do you see a 2-fold increase in speed?
+
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weatherplot.md)
 
 For more extensive code profiling, see `?Rprof`.
 
