@@ -143,6 +143,8 @@ legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1
 Using a weather data frame as input, generate a plot showing the
 hourly (or half-hourly) rainfall for the 3rd Jan 2014.
 
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weatherplot.md)
+
 ## Writing text spreadsheets
 
 `write.table` and `writeLines` to write tables and lines to files.
@@ -860,7 +862,7 @@ f(X)
 ```
 
 ```
-## [1] 0.00207
+## [1] 0.001246
 ```
 
 ```r
@@ -869,7 +871,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.200   0.004   0.205
+##   0.256   0.000   0.257
 ```
 
 ```r
@@ -878,7 +880,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.208   0.208   0.208   0.208   0.208   0.210
+##   0.260   0.260   0.261   0.261   0.261   0.263
 ```
 
 
