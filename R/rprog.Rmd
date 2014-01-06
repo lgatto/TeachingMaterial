@@ -60,18 +60,20 @@ part.
 ```{r, echo=FALSE, eval=TRUE}
 library("camweather")
 w <- weatherdata("2014-01-01")
+w <- nounits(w)
 ```
 
 ```{r, eval=TRUE}
 par(mfrow = c(2, 2))
-plot(w$Time, w[, "Temp [degC]"], type = "b", xlab = "Time", ylab = "Temp")
-plot(w$Time, w[, "WindSp [knots]"], type = "b", xlab = "Time", ylab = "Wind speed")
-plot(w$Time, w[, "Rain [mm]"], type = "b", xlab = "Time", ylab = "Rain")
-plot(w$Time, w[, "Press [mBar]"], type = "b", xlab = "Time", ylab = "Pressure")
+plot(w$Time, w[, "Temp"], type = "b", xlab = "Time", ylab = "Temp")
+plot(w$Time, w[, "WindSp"], type = "b", xlab = "Time", ylab = "Wind speed")
+plot(w$Time, w[, "Rain"], type = "b", xlab = "Time", ylab = "Rain")
+plot(w$Time, w[, "Press"], type = "b", xlab = "Time", ylab = "Pressure")
 ```
 
 ```{r, eval = TRUE}
-boxplot(w[, "WindSp [knots]"] ~ factor(w$WindDr))
+boxplot(w$WindSp ~ w$WindDr)
+## NOT boxplot(w$WindDr, w[, "WindSp"])
 pairs(w[, c(2, 5, 6, 9)])
 ```
 
@@ -85,11 +87,11 @@ to set different elements of a base plot.
 - Data re-scaling
 
 ```{r, eval = TRUE}
-temp0 <- w[, "Temp [degC]"]
+temp0 <- w[, "Temp"]
 temp <- temp0 - min(temp0) ## min is 0
 temp <- temp/max(temp) ## max is 1
 
-press0 <- w[, "Press [mBar]"]
+press0 <- w[, "Press"]
 press <- press0 - min(press0)
 press <- press/max(press)
 ```

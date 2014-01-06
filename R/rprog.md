@@ -66,10 +66,10 @@ part.
 
 ```r
 par(mfrow = c(2, 2))
-plot(w$Time, w[, "Temp [degC]"], type = "b", xlab = "Time", ylab = "Temp")
-plot(w$Time, w[, "WindSp [knots]"], type = "b", xlab = "Time", ylab = "Wind speed")
-plot(w$Time, w[, "Rain [mm]"], type = "b", xlab = "Time", ylab = "Rain")
-plot(w$Time, w[, "Press [mBar]"], type = "b", xlab = "Time", ylab = "Pressure")
+plot(w$Time, w[, "Temp"], type = "b", xlab = "Time", ylab = "Temp")
+plot(w$Time, w[, "WindSp"], type = "b", xlab = "Time", ylab = "Wind speed")
+plot(w$Time, w[, "Rain"], type = "b", xlab = "Time", ylab = "Rain")
+plot(w$Time, w[, "Press"], type = "b", xlab = "Time", ylab = "Pressure")
 ```
 
 ![plot of chunk rprog.Rmd-6](figure/rprog_Rmd-6.png) 
@@ -77,12 +77,13 @@ plot(w$Time, w[, "Press [mBar]"], type = "b", xlab = "Time", ylab = "Pressure")
 
 
 ```r
-boxplot(w[, "WindSp [knots]"] ~ factor(w$WindDr))
+boxplot(w$WindSp ~ w$WindDr)
 ```
 
 ![plot of chunk rprog.Rmd-7](figure/rprog_Rmd-71.png) 
 
 ```r
+## NOT boxplot(w$WindDr, w[, 'WindSp'])
 pairs(w[, c(2, 5, 6, 9)])
 ```
 
@@ -100,11 +101,11 @@ to set different elements of a base plot.
 
 
 ```r
-temp0 <- w[, "Temp [degC]"]
+temp0 <- w[, "Temp"]
 temp <- temp0 - min(temp0)  ## min is 0
 temp <- temp/max(temp)  ## max is 1
 
-press0 <- w[, "Press [mBar]"]
+press0 <- w[, "Press"]
 press <- press0 - min(press0)
 press <- press/max(press)
 ```
@@ -862,7 +863,7 @@ f(X)
 ```
 
 ```
-## [1] -0.001312
+## [1] 0.0001244
 ```
 
 ```r
@@ -871,7 +872,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.184   0.008   0.194
+##   0.288   0.008   0.296
 ```
 
 ```r
@@ -880,7 +881,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.196   0.196   0.197   0.197   0.197   0.198
+##   0.293   0.293   0.294   0.294   0.294   0.297
 ```
 
 
