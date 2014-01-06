@@ -685,7 +685,7 @@ apply(m, 1, function(x) sum(x^2))
 ## Scoping
 
 In addition to what we have seen above, a function has also its very
-own environment, in which it arguments a stored and its body is
+own environment, in which its arguments are stored and its body is
 evaluated. The functions arguments are copies of the initial
 variables, so that the original ones stay unchanged.
 
@@ -750,6 +750,35 @@ g()
 ## Error: object 'x' not found
 ```
 
+
+The general `R` semantic is a *pass-by-value*: it is the value of a
+variable input, i.e. a copy that is manipulated and potentially
+modified in the functions itself. As such, an `R` function will never
+modify the global variables (unless explicitely specifed). This
+differs from other programming language that have a
+*pass-by-reference* semantic, where it is the actual variable that is
+passed as input to the function, and any manipulation and update of
+the variable is persisten after the function exits.
+
+The latter behaviour can be emulated in `R` by using
+`environments`. Indeed, `environments` are not copied and modified in
+place:
+
+
+
+```r
+myenv <- new.env()
+myenv$x <- 1
+updatex <- function(e, newx) assign("x", newx, envir = e)
+myenv$x
+updatex(myenv, 10)
+myenv$x
+```
+
+
+This can be useful to avoid multiple copies when very large objects
+are manipulated. Note however that this is an unexpected in terms of
+normal behaviour.
 
 # R development
 
@@ -834,7 +863,7 @@ f(X)
 ```
 
 ```
-## [1] -0.0009365
+## [1] -0.001046
 ```
 
 ```r
@@ -843,7 +872,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.200   0.012   0.212
+##   0.188   0.004   0.192
 ```
 
 ```r
@@ -852,7 +881,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.215   0.215   0.215   0.215   0.216   0.216
+##   0.196   0.196   0.196   0.196   0.196   0.198
 ```
 
 
@@ -899,9 +928,9 @@ benchmark(f1(n), f2(n), f3(n),
 
 ```
 ##    test replications elapsed relative
-## 1 f1(n)           10  17.072    2.776
-## 2 f2(n)           10   6.149    1.000
-## 3 f3(n)           10   8.970    1.459
+## 1 f1(n)           10  16.487    2.545
+## 2 f2(n)           10   6.478    1.000
+## 3 f3(n)           10   9.159    1.414
 ```
 
 

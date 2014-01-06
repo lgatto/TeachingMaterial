@@ -955,18 +955,82 @@ associative arrays. They are implemented as hash tables.
 ```r
 e <- new.env()
 e
+```
+
+```
+## <environment: 0x2eb1a10>
+```
+
+```r
 e$a <- 1
 e$a
+```
+
+```
+## [1] 1
+```
+
+```r
 ls()  ## list content of global environment
+```
+
+```
+## [1] "a" "b" "e" "f" "x" "y" "z"
+```
+
+```r
 ls(e)  ## list content of e
+```
+
+```
+## [1] "a"
+```
+
+```r
 a <- 10  ## a different variable a
 e$a
+```
+
+```
+## [1] 1
+```
+
+```r
 e[["a"]]
+```
+
+```
+## [1] 1
 ```
 
 
 Values from specific environments can also be retrieved with `get` or
 `mget` for multiple values or assigned with `assign`.
+
+Environments can also be locked with `lockEnvrionement`, to avoid
+assignment of new variables and update of existing variables can be
+locked with `lockBindings`. 
+
+
+```r
+lockEnvironment(e)
+e$b <- 10
+```
+
+```
+## Error: cannot add bindings to a locked environment
+```
+
+```r
+e$a <- 10
+lockBinding("a", e)
+e$a <- 100
+```
+
+```
+## Error: cannot change value of locked binding for 'a'
+```
+
 
 ## Objects
 

@@ -672,7 +672,7 @@ as.numeric("1a")
 An `environment` is and un-ordered collection of symbols, or
 associative arrays. They are implemented as hash tables.
 
-```{r}
+```{r, eval = TRUE}
 e <- new.env()
 e
 e$a <- 1
@@ -686,6 +686,18 @@ e[["a"]]
 
 Values from specific environments can also be retrieved with `get` or
 `mget` for multiple values or assigned with `assign`.
+
+Environments can also be locked with `lockEnvrionement`, to avoid
+assignment of new variables and update of existing variables can be
+locked with `lockBindings`. 
+
+```{r, eval = TRUE}
+lockEnvironment(e)
+e$b <- 10
+e$a <- 10
+lockBinding("a", e)
+e$a <- 100
+```
 
 ## Objects
 

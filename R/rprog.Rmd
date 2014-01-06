@@ -576,7 +576,7 @@ apply(m, 1, function(x) sum(x^2))
 ## Scoping
 
 In addition to what we have seen above, a function has also its very
-own environment, in which it arguments a stored and its body is
+own environment, in which its arguments are stored and its body is
 evaluated. The functions arguments are copies of the initial
 variables, so that the original ones stay unchanged.
 
@@ -609,6 +609,34 @@ In this case, if `x` does not exists
 rm(x)
 g()
 ```
+
+The general `R` semantic is a *pass-by-value*: it is the value of a
+variable input, i.e. a copy that is manipulated and potentially
+modified in the functions itself. As such, an `R` function will never
+modify the global variables (unless explicitely specifed). This
+differs from other programming language that have a
+*pass-by-reference* semantic, where it is the actual variable that is
+passed as input to the function, and any manipulation and update of
+the variable is persisten after the function exits.
+
+The latter behaviour can be emulated in `R` by using
+`environments`. Indeed, `environments` are not copied and modified in
+place:
+
+
+```{r}
+myenv <- new.env()
+myenv$x <- 1
+updatex <- function(e, newx)
+    assign("x", newx, envir = e)
+myenv$x
+updatex(myenv, 10)
+myenv$x
+```
+
+This can be useful to avoid multiple copies when very large objects
+are manipulated. Note however that this is an unexpected in terms of
+normal behaviour.
 
 # R development
 
