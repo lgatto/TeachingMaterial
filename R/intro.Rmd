@@ -571,6 +571,8 @@ download a weather data frame of your choice.
 - In what direction has the wind blown most on that day? Hint:
   `table`.
 
+([Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weatherdata.md))
+
 ## A note of accessor speed
 
 There are multiple ways to access elements in various `R` objects that

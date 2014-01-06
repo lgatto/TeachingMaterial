@@ -58,7 +58,7 @@ summary(w)
 
 See also the
 [visualisation](https://github.com/lgatto/rbc/blob/master/R/viz.md)
-part.
+part for a bit of more details.
 
 
 ```r
@@ -82,13 +82,12 @@ plot(w$Time, w[, "Press"], type = "b", xlab = "Time", ylab = "Pressure")
 
 
 ```r
-boxplot(w$WindSp ~ w$WindDr)
+boxplot(w$WindSp ~ w$WindDr) ## NOT boxplot(w$WindDr, w[, "WindSp"])
 ```
 
 ![plot of chunk rprog.Rmd-7](figure/rprog_Rmd-71.png) 
 
 ```r
-## NOT boxplot(w$WindDr, w[, 'WindSp'])
 pairs(w[, c(2, 5, 6, 9)])
 ```
 
@@ -143,13 +142,6 @@ legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1
 
 Using a weather data frame as input, generate a plot showing the
 hourly (or half-hourly) rainfall for the 3rd Jan 2014.
-
-<!-- ```{r} -->
-<!-- x <- weatherdata("2014-01-03") -->
-<!-- rain <- x$'Rain [mm]' -->
-<!-- plot(x$Time[-1], diff(rain), type = "l", -->
-<!--      ) -->
-<!-- ``` -->
 
 ## Writing text spreadsheets
 
@@ -868,7 +860,7 @@ f(X)
 ```
 
 ```
-## [1] -0.0009532
+## [1] 0.00207
 ```
 
 ```r
@@ -877,7 +869,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.220   0.008   0.231
+##   0.200   0.004   0.205
 ```
 
 ```r
@@ -886,7 +878,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.232   0.233   0.234   0.233   0.234   0.234
+##   0.208   0.208   0.208   0.208   0.208   0.210
 ```
 
 

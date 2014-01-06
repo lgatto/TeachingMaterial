@@ -55,7 +55,7 @@ summary(w)
 
 See also the
 [visualisation](https://github.com/lgatto/rbc/blob/master/R/viz.md)
-part.
+part for a bit of more details.
 
 ```{r, echo=TRUE, eval=TRUE}
 library("camweather")
@@ -71,9 +71,8 @@ plot(w$Time, w[, "Rain"], type = "b", xlab = "Time", ylab = "Rain")
 plot(w$Time, w[, "Press"], type = "b", xlab = "Time", ylab = "Pressure")
 ```
 
-```{r, eval = TRUE}
-boxplot(w$WindSp ~ w$WindDr)
-## NOT boxplot(w$WindDr, w[, "WindSp"])
+```{r, eval = TRUE, tidy = FALSE}
+boxplot(w$WindSp ~ w$WindDr) ## NOT boxplot(w$WindDr, w[, "WindSp"])
 pairs(w[, c(2, 5, 6, 9)])
 ```
 
@@ -126,13 +125,6 @@ legend("top", c("Temperature", "Pressure"),
 
 Using a weather data frame as input, generate a plot showing the
 hourly (or half-hourly) rainfall for the 3rd Jan 2014.
-
-<!-- ```{r} -->
-<!-- x <- weatherdata("2014-01-03") -->
-<!-- rain <- x$'Rain [mm]' -->
-<!-- plot(x$Time[-1], diff(rain), type = "l", -->
-<!--      ) -->
-<!-- ``` -->
 
 ## Writing text spreadsheets
 
