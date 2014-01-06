@@ -11,6 +11,9 @@
 - Benchmarking
 
 ## 3. [Visualisation](viz.md)
+- Base graphics
+- `ggplot2`
+- `lattice`
 
 ## 4. Resources
 

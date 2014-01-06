@@ -107,7 +107,7 @@ grid()
 
 ```{r}
 
-(m <- matrix(c(1, 1, 2, 3, 4, 4), ncol = 3))
+(m <- matrix(c(1, 1, 2, 3, 4, 4, 4, 4), nrow = 2))
 layout(m)
 plot(1:10, main = 1)
 curve(sin(x), from = -2, to = 2, main = 2)
