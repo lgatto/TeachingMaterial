@@ -65,7 +65,8 @@ dev.off()
 ```
 
 It is possible to open multiple devices and navigate them with
-`dev.prev()`, `dev.next()` and `dev.set(n)`. If a screen device is
+`dev.prev()`, `dev.next()` and set the active device (the one in which
+the graphics operation occur) with `dev.set(n)`. If a screen device is
 open, its content can be copied into another file device with
 `dev.copy()`, `dev.copy2pdf()`, ...
 
