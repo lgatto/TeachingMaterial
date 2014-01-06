@@ -56,6 +56,10 @@ summary(w)
 
 ## Basic plotting
 
+See also the
+[visualisation](https://github.com/lgatto/rbc/blob/master/R/viz.md)
+part.
+
 
 
 
@@ -858,7 +862,7 @@ f(X)
 ```
 
 ```
-## [1] -0.0007686
+## [1] -0.001312
 ```
 
 ```r
@@ -867,7 +871,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.336   0.012   0.349
+##   0.184   0.008   0.194
 ```
 
 ```r
@@ -876,7 +880,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.351   0.352   0.352   0.352   0.352   0.353
+##   0.196   0.196   0.197   0.197   0.197   0.198
 ```
 
 
