@@ -136,7 +136,7 @@ library("devtools")
 
 
 It is of course possible to download and install packages using
-`install.packages(, repo = NULL)`. However, this will force you to
+`install.packages(, repos = NULL)`. However, this will force you to
 handle all dependencies (and there can be many) manually too.
 
 
@@ -152,6 +152,18 @@ repository.
 ```r
 library("devtools")
 install_github("lgatto/camweather")
+```
+
+
+or, if you have downloaded the package source
+([`camweather_0.1.2.tar.gz`](http://proteome.sysbiol.cam.ac.uk/lgatto/files/camweather_0.1.2.tar.gz))
+or windows binary
+([`camweather_0.1.2.zip`](http://proteome.sysbiol.cam.ac.uk/lgatto/files/camweather_0.1.2.zip))
+
+
+```r
+install.packages("camweather_0.1.2.zip", repos = NULL)  ## on windows
+install.packages("camweather_0.1.2.tar.gz", repos = NULL)  ## elsewhere
 ```
 
 
