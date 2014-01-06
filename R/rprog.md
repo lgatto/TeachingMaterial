@@ -537,7 +537,8 @@ The `parallel` package provides a direct parallel alternatives for
 `apply` functions with `mclapply`, `mcmapply`, ... (`mutlicore`) and
 `parLapply`, `parSapply`, `parApply`, ... (`snow`)
 
-More examples: [R-parallel](https://github.com/lgatto/R-parallel/tree/master/src)
+Examples:
+[R-parallel](https://github.com/lgatto/R-parallel/tree/master/src)
 slides.
 
 Reference:
@@ -833,7 +834,7 @@ f(X)
 ```
 
 ```
-## [1] 0.001124
+## [1] -0.0003224
 ```
 
 ```r
@@ -842,7 +843,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.304   0.008   0.314
+##   0.268   0.016   0.283
 ```
 
 ```r
@@ -851,7 +852,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.313   0.314   0.315   0.315   0.316   0.320
+##   0.287   0.287   0.287   0.287   0.287   0.288
 ```
 
 
@@ -924,5 +925,7 @@ To debug a function `f`, register is with `debug(f)`. Next time it is
 called, it will be executed in `browser` mode: expressions of the body
 can be executed one by one and at each step, the variables and their
 values can be inspected.
+
+Try it out with one of your own functions.
 
 <!-- ## `message`, `warning`, `error` -->
