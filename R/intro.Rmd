@@ -1,11 +1,9 @@
-Introduction
-===
 
 ```{r, echo=FALSE}
 opts_chunk$set(eval=FALSE)
 ```
 
-# Pre-requisites
+# Prerequisites
 
 ## Basic tools
 

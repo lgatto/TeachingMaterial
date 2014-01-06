@@ -1,10 +1,8 @@
-Introduction
-===
 
 
 
 
-# Pre-requisites
+# Prerequisites
 
 ## Basic tools
 
@@ -958,7 +956,7 @@ e
 ```
 
 ```
-## <environment: 0x2eb1a10>
+## <environment: 0x3397ad8>
 ```
 
 ```r
