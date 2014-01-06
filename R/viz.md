@@ -27,10 +27,10 @@ the input.
 
 ```r
 par(mfrow = c(2, 2))
-plot(1:10)
-plot(1:10, type = "l")
-plot(1:10, 10:1, type = "b")
-plot(1:10, type = "h")
+plot(1:10, type = "p", main = "points (default)")
+plot(1:10, type = "l", main = "lines")
+plot(1:10, 10:1, type = "b", main = "both (points and lines)")
+plot(1:10, type = "h", main = "histogram")
 ```
 
 ![plot of chunk viz.Rmd-2](figure/viz_Rmd-2.png) 
@@ -68,8 +68,10 @@ boxplot(m, names = LETTERS[1:10])
 
 ```r
 par(mfrow = c(1, 2))
-hist(rnorm(10000))
-hist(rnorm(10000), breaks = 50)
+x <- rnorm(10000)
+hist(x)
+hist(x, breaks = 50, freq = FALSE)
+lines(density(x), col = "red")
 ```
 
 ![plot of chunk viz.Rmd-5](figure/viz_Rmd-5.png) 
@@ -101,17 +103,10 @@ curve(x^2, 0, 10)
 ```r
 m <- matrix(rnorm(30), ncol = 3)
 dimnames(m) <- list(genes = paste("Gene", 1:10), sample = LETTERS[1:3])
-par(mfrow = c(1, 2))
-heatmap(m)
-```
-
-![plot of chunk viz.Rmd-8](figure/viz_Rmd-81.png) 
-
-```r
 heatmap(m, col = cm.colors(256))
 ```
 
-![plot of chunk viz.Rmd-8](figure/viz_Rmd-82.png) 
+![plot of chunk viz.Rmd-8](figure/viz_Rmd-8.png) 
 
 
 

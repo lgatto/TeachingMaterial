@@ -22,10 +22,10 @@ the input.
 
 ```{r}
 par(mfrow = c(2, 2))
-plot(1:10)
-plot(1:10, type = "l")
-plot(1:10, 10:1, type = "b")
-plot(1:10, type = "h" )
+plot(1:10, type = "p", main = "points (default)")
+plot(1:10, type = "l", main = "lines")
+plot(1:10, 10:1, type = "b", main = "both (points and lines)")
+plot(1:10, type = "h", main = "histogram" )
 ```
 
 - `barbplot`
@@ -51,8 +51,10 @@ boxplot(m, names = LETTERS[1:10])
 
 ```{r}
 par(mfrow = c(1, 2))
-hist(rnorm(1e4))
-hist(rnorm(1e4), breaks = 50)
+x <- rnorm(1e4)
+hist(x)
+hist(x, breaks = 50, freq = FALSE)
+lines(density(x), col = "red")
 ```
 
 - `pie` (not recommended)
@@ -73,8 +75,6 @@ curve(x^2, 0, 10)
 m <- matrix(rnorm(30), ncol = 3)
 dimnames(m) <- list(genes = paste("Gene", 1:10),
                     sample = LETTERS[1:3])
-par(mfrow = c(1, 2))
-heatmap(m)
 heatmap(m, col = cm.colors(256))
 ```
 
