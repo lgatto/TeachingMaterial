@@ -688,14 +688,21 @@ x <- 1:6
 t(x)  ## becomes a matrix
 dim(t(x))
 dim(t(t(x)))
-
 ```
-
 
 
 ## Array
 
-Like a matrix with > 2 dimensions.
+Like a matrix with > 2 dimensions. 
+
+
+```r
+x <- 1:30
+dim(x) <- c(5, 3, 2)
+## or array(1:30, dim = c(5, 3, 2))
+x
+```
+
 
 ## List
 
@@ -736,7 +743,7 @@ class(l[[2:3]])
 
 A `data.frame` is a list whose elements are all of the same lengths
 and that is represented as a table. Matrix-like subsetting `[,]` using
-`names` (by definition `colnames`) and `rownames` or indices can be
+`names` (same as `colnames`) and `rownames` or indices can be
 used.
 
 ### Example
@@ -869,6 +876,19 @@ But
 ```r
 cbind(m1, m2)
 rbind(m1, m3)
+```
+
+
+### Example
+
+
+```r
+chrsms13 <- weatherdata("2013-12-25")
+chrsms12 <- weatherdata("2012-12-25")
+chrsms11 <- weatherdata("2011-12-25")
+chrsms <- rbind(chrsms11, chrsms12, chrsms13)
+nrow(chrsms11) + nrow(chrsms12) + nrow(chrsms13)
+nrow(chrsms)
 ```
 
 
