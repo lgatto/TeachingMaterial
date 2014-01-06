@@ -363,7 +363,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##   0.004   0.000   3.001
+##   0.000   0.000   3.003
 ```
 
 
@@ -956,7 +956,7 @@ e
 ```
 
 ```
-## <environment: 0x96b4e8>
+## <environment: 0x1022060>
 ```
 
 ```r
@@ -1069,11 +1069,75 @@ class(sum)
 ```
 
 ```r
-class(lm(y ~ x))
+class(model <- lm(y ~ x))
 ```
 
 ```
 ## [1] "lm"
+```
+
+```r
+str(model)
+```
+
+```
+## List of 12
+##  $ coefficients : Named num [1:2] 0.00835 -0.06201
+##   ..- attr(*, "names")= chr [1:2] "(Intercept)" "x"
+##  $ residuals    : Named num [1:100] -0.796 -1.399 1.05 -0.791 0.781 ...
+##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
+##  $ effects      : Named num [1:100] -0.0954 -0.6232 1.1642 -0.6665 0.7787 ...
+##   ..- attr(*, "names")= chr [1:100] "(Intercept)" "x" "" "" ...
+##  $ rank         : int 2
+##  $ fitted.values: Named num [1:100] 0.000803 0.066754 0.030252 0.035455 -0.029495 ...
+##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
+##  $ assign       : int [1:2] 0 1
+##  $ qr           :List of 5
+##   ..$ qr   : num [1:100, 1:2] -10 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 ...
+##   .. ..- attr(*, "dimnames")=List of 2
+##   .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
+##   .. .. ..$ : chr [1:2] "(Intercept)" "x"
+##   .. ..- attr(*, "assign")= int [1:2] 0 1
+##   ..$ qraux: num [1:2] 1.1 1.09
+##   ..$ pivot: int [1:2] 1 2
+##   ..$ tol  : num 1e-07
+##   ..$ rank : int 2
+##   ..- attr(*, "class")= chr "qr"
+##  $ df.residual  : int 98
+##  $ xlevels      : Named list()
+##  $ call         : language lm(formula = y ~ x)
+##  $ terms        :Classes 'terms', 'formula' length 3 y ~ x
+##   .. ..- attr(*, "variables")= language list(y, x)
+##   .. ..- attr(*, "factors")= int [1:2, 1] 0 1
+##   .. .. ..- attr(*, "dimnames")=List of 2
+##   .. .. .. ..$ : chr [1:2] "y" "x"
+##   .. .. .. ..$ : chr "x"
+##   .. ..- attr(*, "term.labels")= chr "x"
+##   .. ..- attr(*, "order")= int 1
+##   .. ..- attr(*, "intercept")= int 1
+##   .. ..- attr(*, "response")= int 1
+##   .. ..- attr(*, ".Environment")=<environment: R_GlobalEnv> 
+##   .. ..- attr(*, "predvars")= language list(y, x)
+##   .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
+##   .. .. ..- attr(*, "names")= chr [1:2] "y" "x"
+##  $ model        :'data.frame':	100 obs. of  2 variables:
+##   ..$ y: num [1:100] -0.796 -1.333 1.08 -0.755 0.751 ...
+##   ..$ x: num [1:100] 0.122 -0.942 -0.353 -0.437 0.61 ...
+##   ..- attr(*, "terms")=Classes 'terms', 'formula' length 3 y ~ x
+##   .. .. ..- attr(*, "variables")= language list(y, x)
+##   .. .. ..- attr(*, "factors")= int [1:2, 1] 0 1
+##   .. .. .. ..- attr(*, "dimnames")=List of 2
+##   .. .. .. .. ..$ : chr [1:2] "y" "x"
+##   .. .. .. .. ..$ : chr "x"
+##   .. .. ..- attr(*, "term.labels")= chr "x"
+##   .. .. ..- attr(*, "order")= int 1
+##   .. .. ..- attr(*, "intercept")= int 1
+##   .. .. ..- attr(*, "response")= int 1
+##   .. .. ..- attr(*, ".Environment")=<environment: R_GlobalEnv> 
+##   .. .. ..- attr(*, "predvars")= language list(y, x)
+##   .. .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
+##   .. .. .. ..- attr(*, "names")= chr [1:2] "y" "x"
+##  - attr(*, "class")= chr "lm"
 ```
 
 
@@ -1133,6 +1197,76 @@ class(Dilution)
 ## [1] "AffyBatch"
 ## attr(,"package")
 ## [1] "affy"
+```
+
+```r
+str(Dilution)
+```
+
+```
+## Formal class 'AffyBatch' [package "affy"] with 10 slots
+##   ..@ cdfName          : chr "HG_U95Av2"
+##   ..@ nrow             : int 640
+##   ..@ ncol             : int 640
+##   ..@ assayData        :List of 1
+##   .. ..$ exprs: num [1:409600, 1:4] 149 1154 142 1051 91 ...
+##   .. .. ..- attr(*, "dimnames")=List of 2
+##   .. .. .. ..$ : chr [1:409600] "1" "2" "3" "4" ...
+##   .. .. .. ..$ : chr [1:4] "20A" "20B" "10A" "10B"
+##   ..@ phenoData        :Formal class 'AnnotatedDataFrame' [package "Biobase"] with 4 slots
+##   .. .. ..@ varMetadata      :'data.frame':	3 obs. of  1 variable:
+##   .. .. .. ..$ labelDescription: chr [1:3] "amount of liver RNA hybridized to array in micrograms" "amount of central nervous system RNA hybridized to array in micrograms" "ID number of scanner used"
+##   .. .. ..@ data             :'data.frame':	4 obs. of  3 variables:
+##   .. .. .. ..$ liver  : Factor w/ 2 levels "10","20": 2 2 1 1
+##   .. .. .. .. ..- attr(*, "names")= chr [1:4] "94396hgu95v2a11" "94398hgu95v2a11" "94401hgu95v2a11" "94403hgu95v2a11"
+##   .. .. .. ..$ sn19   : Factor w/ 1 level "0": 1 1 1 1
+##   .. .. .. .. ..- attr(*, "names")= chr [1:4] "94396hgu95v2a11" "94398hgu95v2a11" "94401hgu95v2a11" "94403hgu95v2a11"
+##   .. .. .. ..$ scanner: Factor w/ 2 levels "1","2": 1 2 1 2
+##   .. .. .. .. ..- attr(*, "names")= chr [1:4] "94396hgu95v2a11" "94398hgu95v2a11" "94401hgu95v2a11" "94403hgu95v2a11"
+##   .. .. ..@ dimLabels        : chr [1:2] "sampleNames" "sampleColumns"
+##   .. .. ..@ .__classVersion__:Formal class 'Versions' [package "Biobase"] with 1 slots
+##   .. .. .. .. ..@ .Data:List of 1
+##   .. .. .. .. .. ..$ : int [1:3] 1 1 0
+##   ..@ featureData      :Formal class 'AnnotatedDataFrame' [package "Biobase"] with 4 slots
+##   .. .. ..@ varMetadata      :'data.frame':	0 obs. of  1 variable:
+##   .. .. .. ..$ labelDescription: chr(0) 
+##   .. .. ..@ data             :'data.frame':	409600 obs. of  0 variables
+##   .. .. ..@ dimLabels        : chr [1:2] "featureNames" "featureColumns"
+##   .. .. ..@ .__classVersion__:Formal class 'Versions' [package "Biobase"] with 1 slots
+##   .. .. .. .. ..@ .Data:List of 1
+##   .. .. .. .. .. ..$ : int [1:3] 1 1 0
+##   ..@ experimentData   :Formal class 'MIAME' [package "Biobase"] with 13 slots
+##   .. .. ..@ name             : chr "Gene Logic"
+##   .. .. ..@ lab              : chr "Gene Logic"
+##   .. .. ..@ contact          : chr "708 Quince Orchard Road\nGaithersburg, MD 20878\nTelephone: 1.301.987.1700\nToll Free: 1.800.GENELOGIC (US and Canada)\nFacsimi"| __truncated__
+##   .. .. ..@ title            : chr "Small part of dilution study"
+##   .. .. ..@ abstract         : chr "Gene Logic is making available two studies of Affymetrix GeneChip expression data. The first study consists of a dilution/mixtu"| __truncated__
+##   .. .. ..@ url              : chr "http://qolotus02.genelogic.com/datasets.nsf/"
+##   .. .. ..@ pubMedIds        : chr ""
+##   .. .. ..@ samples          : list()
+##   .. .. ..@ hybridizations   : list()
+##   .. .. ..@ normControls     : list()
+##   .. .. ..@ preprocessing    : list()
+##   .. .. ..@ other            :List of 1
+##   .. .. .. ..$ : chr ""
+##   .. .. ..@ .__classVersion__:Formal class 'Versions' [package "Biobase"] with 1 slots
+##   .. .. .. .. ..@ .Data:List of 1
+##   .. .. .. .. .. ..$ : int [1:3] 1 0 0
+##   ..@ annotation       : chr "hgu95av2"
+##   ..@ protocolData     :Formal class 'AnnotatedDataFrame' [package "Biobase"] with 4 slots
+##   .. .. ..@ varMetadata      :'data.frame':	0 obs. of  1 variable:
+##   .. .. .. ..$ labelDescription: chr(0) 
+##   .. .. ..@ data             :'data.frame':	4 obs. of  0 variables
+##   .. .. ..@ dimLabels        : chr [1:2] "sampleNames" "sampleColumns"
+##   .. .. ..@ .__classVersion__:Formal class 'Versions' [package "Biobase"] with 1 slots
+##   .. .. .. .. ..@ .Data:List of 1
+##   .. .. .. .. .. ..$ : int [1:3] 1 1 0
+##   ..@ .__classVersion__:Formal class 'Versions' [package "Biobase"] with 1 slots
+##   .. .. ..@ .Data:List of 4
+##   .. .. .. ..$ : int [1:3] 2 10 0
+##   .. .. .. ..$ : int [1:3] 2 5 5
+##   .. .. .. ..$ : int [1:3] 1 3 0
+##   .. .. .. ..$ : int [1:3] 1 2 0
 ```
 
  

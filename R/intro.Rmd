@@ -707,13 +707,15 @@ y <- rnorm(100)
 class(1L)
 class("123")
 class(sum)
-class(lm(y ~ x))
+class(model <- lm(y ~ x))
+str(model)
 ```
 
 ```{r, eval=TRUE}
 library("affydata")
 data("Dilution")
 class(Dilution)
+str(Dilution)
 ```
  
 [Back](https://github.com/lgatto/rbc/tree/master/R)
