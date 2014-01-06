@@ -312,14 +312,14 @@ typeof(c(TRUE, FALSE)) ## TRUE and FALSE are reserved words
 
 ### Factors
 
-```{r}
+```{r, eval=TRUE}
 gender <- factor(c("male", "female", "male"))
 gender
 class(gender)
 typeof(gender)
 ```
 
-These specific vector types can also be initialised specifically:
+These respective vector types can also be initialised specifically:
 
 ```{r}
 character()
@@ -332,8 +332,8 @@ factor()
 ## Vectorised operations
 
 ```{r, eval = TRUE}
-(x <- c(1, 2, 3))
-(y <- c(3, 2, 1))
+x <- c(1, 2, 3)
+y <- c(3, 2, 1)
 x + y
 x^2
 sqrt(x)
@@ -364,20 +364,42 @@ x
 ## Generating vectors
 
 - `seq` and **argument matching by position and name**
+
+```{r}
+seq(1, 10, 2)
+seq(1, 3, length = 7)
+```
+
 - `:`
+
+```{r}
+1:10
+```
+
 - **Exercise**: Using `rep`, how to generate 
   - 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
   - repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
+
 - `rnorm`, `runif`, ... to draw values from specific distributions.
+
+```{r}
+summary(rnorm(100))
+runif(10)
+```
+
 - `sample` to create permutations of vectors. 
+
+```{r}
+sample(LETTERS[1:5])
+sample(LETTERS[1:5], 10, replace = TRUE)
+```
 
 ## Matrix
 
 A vector with 2 dimensions
 
-```{r}
+```{r, eval=TRUE}
 m <- c(1, 2, 3, 4, 5, 6)
-m
 dim(m) <- c(2, 3) ## always rows first
 m
 class(m) ## a matrix

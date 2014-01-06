@@ -363,7 +363,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##   0.000   0.000   3.003
+##   0.004   0.000   3.003
 ```
 
 
@@ -480,12 +480,31 @@ typeof(c(TRUE, FALSE))  ## TRUE and FALSE are reserved words
 ```r
 gender <- factor(c("male", "female", "male"))
 gender
+```
+
+```
+## [1] male   female male  
+## Levels: female male
+```
+
+```r
 class(gender)
+```
+
+```
+## [1] "factor"
+```
+
+```r
 typeof(gender)
 ```
 
+```
+## [1] "integer"
+```
 
-These specific vector types can also be initialised specifically:
+
+These respective vector types can also be initialised specifically:
 
 
 ```r
@@ -501,22 +520,8 @@ factor()
 
 
 ```r
-(x <- c(1, 2, 3))
-```
-
-```
-## [1] 1 2 3
-```
-
-```r
-(y <- c(3, 2, 1))
-```
-
-```
-## [1] 3 2 1
-```
-
-```r
+x <- c(1, 2, 3)
+y <- c(3, 2, 1)
 x + y
 ```
 
@@ -595,12 +600,43 @@ x
 ## Generating vectors
 
 - `seq` and **argument matching by position and name**
+
+
+```r
+seq(1, 10, 2)
+seq(1, 3, length = 7)
+```
+
+
 - `:`
+
+
+```r
+1:10
+```
+
+
 - **Exercise**: Using `rep`, how to generate 
   - 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
   - repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
+
 - `rnorm`, `runif`, ... to draw values from specific distributions.
+
+
+```r
+summary(rnorm(100))
+runif(10)
+```
+
+
 - `sample` to create permutations of vectors. 
+
+
+```r
+sample(LETTERS[1:5])
+sample(LETTERS[1:5], 10, replace = TRUE)
+```
+
 
 ## Matrix
 
@@ -609,11 +645,30 @@ A vector with 2 dimensions
 
 ```r
 m <- c(1, 2, 3, 4, 5, 6)
-m
 dim(m) <- c(2, 3)  ## always rows first
 m
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    1    3    5
+## [2,]    2    4    6
+```
+
+```r
 class(m)  ## a matrix
+```
+
+```
+## [1] "matrix"
+```
+
+```r
 mode(m)  ## of numerics
+```
+
+```
+## [1] "numeric"
 ```
 
 
@@ -956,7 +1011,7 @@ e
 ```
 
 ```
-## <environment: 0x1022060>
+## <environment: 0x106bf30>
 ```
 
 ```r
@@ -973,7 +1028,8 @@ ls()  ## list content of global environment
 ```
 
 ```
-## [1] "a" "b" "e" "f" "x" "y" "z"
+## [1] "a"      "b"      "e"      "f"      "gender" "m"      "x"      "y"     
+## [9] "z"
 ```
 
 ```r
@@ -1082,14 +1138,14 @@ str(model)
 
 ```
 ## List of 12
-##  $ coefficients : Named num [1:2] 0.00835 -0.06201
+##  $ coefficients : Named num [1:2] 0.1584 -0.0711
 ##   ..- attr(*, "names")= chr [1:2] "(Intercept)" "x"
-##  $ residuals    : Named num [1:100] -0.796 -1.399 1.05 -0.791 0.781 ...
+##  $ residuals    : Named num [1:100] -0.22 -1.962 0.403 -1.024 -2.036 ...
 ##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
-##  $ effects      : Named num [1:100] -0.0954 -0.6232 1.1642 -0.6665 0.7787 ...
+##  $ effects      : Named num [1:100] -1.625 -0.79 0.564 -0.91 -1.557 ...
 ##   ..- attr(*, "names")= chr [1:100] "(Intercept)" "x" "" "" ...
 ##  $ rank         : int 2
-##  $ fitted.values: Named num [1:100] 0.000803 0.066754 0.030252 0.035455 -0.029495 ...
+##  $ fitted.values: Named num [1:100] 0.0871 0.2423 0.2194 0.1979 0.3629 ...
 ##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
 ##  $ assign       : int [1:2] 0 1
 ##  $ qr           :List of 5
@@ -1098,7 +1154,7 @@ str(model)
 ##   .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
 ##   .. .. ..$ : chr [1:2] "(Intercept)" "x"
 ##   .. ..- attr(*, "assign")= int [1:2] 0 1
-##   ..$ qraux: num [1:2] 1.1 1.09
+##   ..$ qraux: num [1:2] 1.1 1.11
 ##   ..$ pivot: int [1:2] 1 2
 ##   ..$ tol  : num 1e-07
 ##   ..$ rank : int 2
@@ -1121,8 +1177,8 @@ str(model)
 ##   .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
 ##   .. .. ..- attr(*, "names")= chr [1:2] "y" "x"
 ##  $ model        :'data.frame':	100 obs. of  2 variables:
-##   ..$ y: num [1:100] -0.796 -1.333 1.08 -0.755 0.751 ...
-##   ..$ x: num [1:100] 0.122 -0.942 -0.353 -0.437 0.61 ...
+##   ..$ y: num [1:100] -0.133 -1.72 0.622 -0.826 -1.673 ...
+##   ..$ x: num [1:100] 1.004 -1.18 -0.858 -0.555 -2.876 ...
 ##   ..- attr(*, "terms")=Classes 'terms', 'formula' length 3 y ~ x
 ##   .. .. ..- attr(*, "variables")= language list(y, x)
 ##   .. .. ..- attr(*, "factors")= int [1:2, 1] 0 1
