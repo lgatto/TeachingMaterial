@@ -46,8 +46,9 @@ e.g. use the .Rd files I provided.
 # Add a vignette to the package
 
 Name the vignette `mycamweather-intro.Rmd`.  The vignette should look
-something like [this example](mycamweather-intro.html) and be
-available when you type:
+something like [this example](
+http://htmlpreview.github.com/?https://github.com/lgatto/rbc/blob/master/rr/camweather-files/mycamweather-intro.html)
+and be available when you type:
 
 	require(mycamweather)
 	vignette("mycamweather-intro")
