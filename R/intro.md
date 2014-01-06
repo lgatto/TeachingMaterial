@@ -397,6 +397,19 @@ Is the data a collection of scalars of same *type* (defined later)?
  - no: `list`
    - elements of same length (and generally `vectors`): `data.frame`
 
+All these can be initialised with their respective constructor
+functions:
+
+
+```r
+vector()
+matrix()
+array()
+list()
+data.frame()
+```
+
+
 ## Vectors
 
 The basic type in `R` is a vector. Vectors have a specific length
@@ -463,7 +476,7 @@ typeof(c(TRUE, FALSE))  ## TRUE and FALSE are reserved words
 ```
 
 
-## Factors
+### Factors
 
 
 ```r
@@ -474,13 +487,23 @@ typeof(gender)
 ```
 
 
+These specific vector types can also be initialised specifically:
+
+
+```r
+character()
+logical()
+numeric()
+double()
+factor()
+```
+
+
 ## Vectorised operations
 
 
 ```r
-x <- c(1, 2, 3)
-y <- c(3, 2, 1)
-x
+(x <- c(1, 2, 3))
 ```
 
 ```
@@ -488,7 +511,7 @@ x
 ```
 
 ```r
-y
+(y <- c(3, 2, 1))
 ```
 
 ```
