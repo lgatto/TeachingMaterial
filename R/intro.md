@@ -1,10 +1,8 @@
-Introduction
-===
 
 
 
 
-# Pre-requisites
+# Prerequisites
 
 ## Basic tools
 
@@ -482,12 +480,31 @@ typeof(c(TRUE, FALSE))  ## TRUE and FALSE are reserved words
 ```r
 gender <- factor(c("male", "female", "male"))
 gender
+```
+
+```
+## [1] male   female male  
+## Levels: female male
+```
+
+```r
 class(gender)
+```
+
+```
+## [1] "factor"
+```
+
+```r
 typeof(gender)
 ```
 
+```
+## [1] "integer"
+```
 
-These specific vector types can also be initialised specifically:
+
+These respective vector types can also be initialised specifically:
 
 
 ```r
@@ -503,22 +520,8 @@ factor()
 
 
 ```r
-(x <- c(1, 2, 3))
-```
-
-```
-## [1] 1 2 3
-```
-
-```r
-(y <- c(3, 2, 1))
-```
-
-```
-## [1] 3 2 1
-```
-
-```r
+x <- c(1, 2, 3)
+y <- c(3, 2, 1)
 x + y
 ```
 
@@ -597,12 +600,43 @@ x
 ## Generating vectors
 
 - `seq` and **argument matching by position and name**
+
+
+```r
+seq(1, 10, 2)
+seq(1, 3, length = 7)
+```
+
+
 - `:`
+
+
+```r
+1:10
+```
+
+
 - **Exercise**: Using `rep`, how to generate 
   - 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
   - repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
+
 - `rnorm`, `runif`, ... to draw values from specific distributions.
+
+
+```r
+summary(rnorm(100))
+runif(10)
+```
+
+
 - `sample` to create permutations of vectors. 
+
+
+```r
+sample(LETTERS[1:5])
+sample(LETTERS[1:5], 10, replace = TRUE)
+```
+
 
 ## Matrix
 
@@ -611,11 +645,30 @@ A vector with 2 dimensions
 
 ```r
 m <- c(1, 2, 3, 4, 5, 6)
-m
 dim(m) <- c(2, 3)  ## always rows first
 m
+```
+
+```
+##      [,1] [,2] [,3]
+## [1,]    1    3    5
+## [2,]    2    4    6
+```
+
+```r
 class(m)  ## a matrix
+```
+
+```
+## [1] "matrix"
+```
+
+```r
 mode(m)  ## of numerics
+```
+
+```
+## [1] "numeric"
 ```
 
 
@@ -666,7 +719,6 @@ dimnames(M) <- list(year =
                     c(2005, 2006, 2007),
                     "mode of transport" =
                     c("plane", "bus", "boat"))
-M
 ```
 
 
@@ -688,14 +740,21 @@ x <- 1:6
 t(x)  ## becomes a matrix
 dim(t(x))
 dim(t(t(x)))
-
 ```
-
 
 
 ## Array
 
-Like a matrix with > 2 dimensions.
+Like a matrix with > 2 dimensions. 
+
+
+```r
+x <- 1:30
+dim(x) <- c(5, 3, 2)
+## or array(1:30, dim = c(5, 3, 2))
+x
+```
+
 
 ## List
 
@@ -736,7 +795,7 @@ class(l[[2:3]])
 
 A `data.frame` is a list whose elements are all of the same lengths
 and that is represented as a table. Matrix-like subsetting `[,]` using
-`names` (by definition `colnames`) and `rownames` or indices can be
+`names` (same as `colnames`) and `rownames` or indices can be
 used.
 
 ### Example
@@ -825,6 +884,8 @@ download a weather data frame of your choice.
 - In what direction has the wind blown most on that day? Hint:
   `table`.
 
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weatherdata.md)
+
 ## A note of accessor speed
 
 There are multiple ways to access elements in various `R` objects that
@@ -869,6 +930,19 @@ But
 ```r
 cbind(m1, m2)
 rbind(m1, m3)
+```
+
+
+### Example
+
+
+```r
+chrsms13 <- weatherdata("2013-12-25")
+chrsms12 <- weatherdata("2012-12-25")
+chrsms11 <- weatherdata("2011-12-25")
+chrsms <- rbind(chrsms11, chrsms12, chrsms13)
+nrow(chrsms11) + nrow(chrsms12) + nrow(chrsms13)
+nrow(chrsms)
 ```
 
 
@@ -933,18 +1007,83 @@ associative arrays. They are implemented as hash tables.
 ```r
 e <- new.env()
 e
+```
+
+```
+## <environment: 0x27aace0>
+```
+
+```r
 e$a <- 1
 e$a
+```
+
+```
+## [1] 1
+```
+
+```r
 ls()  ## list content of global environment
+```
+
+```
+## [1] "a"      "b"      "e"      "f"      "gender" "m"      "x"      "y"     
+## [9] "z"
+```
+
+```r
 ls(e)  ## list content of e
+```
+
+```
+## [1] "a"
+```
+
+```r
 a <- 10  ## a different variable a
 e$a
+```
+
+```
+## [1] 1
+```
+
+```r
 e[["a"]]
+```
+
+```
+## [1] 1
 ```
 
 
 Values from specific environments can also be retrieved with `get` or
 `mget` for multiple values or assigned with `assign`.
+
+Environments can also be locked with `lockEnvrionement`, to avoid
+assignment of new variables and update of existing variables can be
+locked with `lockBindings`. 
+
+
+```r
+lockEnvironment(e)
+e$b <- 10
+```
+
+```
+## Error: cannot add bindings to a locked environment
+```
+
+```r
+e$a <- 10
+lockBinding("a", e)
+e$a <- 100
+```
+
+```
+## Error: cannot change value of locked binding for 'a'
+```
+
 
 ## Objects
 
@@ -953,19 +1092,237 @@ As in OO programming:
 
 ```r
 class(x <- rnorm(100))
+```
+
+```
+## [1] "numeric"
+```
+
+```r
 y <- rnorm(100)
 class(1L)
+```
+
+```
+## [1] "integer"
+```
+
+```r
 class("123")
+```
+
+```
+## [1] "character"
+```
+
+```r
 class(sum)
-class(lm(y ~ x))
+```
+
+```
+## [1] "function"
+```
+
+```r
+class(model <- lm(y ~ x))
+```
+
+```
+## [1] "lm"
+```
+
+```r
+str(model)
+```
+
+```
+## List of 12
+##  $ coefficients : Named num [1:2] -0.0141 -0.0786
+##   ..- attr(*, "names")= chr [1:2] "(Intercept)" "x"
+##  $ residuals    : Named num [1:100] -1.627 -1.116 -1.384 -0.161 0.916 ...
+##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
+##  $ effects      : Named num [1:100] 0.0766 -0.7296 -1.1812 0.0721 1.2025 ...
+##   ..- attr(*, "names")= chr [1:100] "(Intercept)" "x" "" "" ...
+##  $ rank         : int 2
+##  $ fitted.values: Named num [1:100] -0.0835 0.0926 0.0329 0.0592 0.1048 ...
+##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
+##  $ assign       : int [1:2] 0 1
+##  $ qr           :List of 5
+##   ..$ qr   : num [1:100, 1:2] -10 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 ...
+##   .. ..- attr(*, "dimnames")=List of 2
+##   .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
+##   .. .. ..$ : chr [1:2] "(Intercept)" "x"
+##   .. ..- attr(*, "assign")= int [1:2] 0 1
+##   ..$ qraux: num [1:2] 1.1 1.15
+##   ..$ pivot: int [1:2] 1 2
+##   ..$ tol  : num 1e-07
+##   ..$ rank : int 2
+##   ..- attr(*, "class")= chr "qr"
+##  $ df.residual  : int 98
+##  $ xlevels      : Named list()
+##  $ call         : language lm(formula = y ~ x)
+##  $ terms        :Classes 'terms', 'formula' length 3 y ~ x
+##   .. ..- attr(*, "variables")= language list(y, x)
+##   .. ..- attr(*, "factors")= int [1:2, 1] 0 1
+##   .. .. ..- attr(*, "dimnames")=List of 2
+##   .. .. .. ..$ : chr [1:2] "y" "x"
+##   .. .. .. ..$ : chr "x"
+##   .. ..- attr(*, "term.labels")= chr "x"
+##   .. ..- attr(*, "order")= int 1
+##   .. ..- attr(*, "intercept")= int 1
+##   .. ..- attr(*, "response")= int 1
+##   .. ..- attr(*, ".Environment")=<environment: R_GlobalEnv> 
+##   .. ..- attr(*, "predvars")= language list(y, x)
+##   .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
+##   .. .. ..- attr(*, "names")= chr [1:2] "y" "x"
+##  $ model        :'data.frame':	100 obs. of  2 variables:
+##   ..$ y: num [1:100] -1.71 -1.023 -1.351 -0.102 1.021 ...
+##   ..$ x: num [1:100] 0.883 -1.358 -0.598 -0.934 -1.514 ...
+##   ..- attr(*, "terms")=Classes 'terms', 'formula' length 3 y ~ x
+##   .. .. ..- attr(*, "variables")= language list(y, x)
+##   .. .. ..- attr(*, "factors")= int [1:2, 1] 0 1
+##   .. .. .. ..- attr(*, "dimnames")=List of 2
+##   .. .. .. .. ..$ : chr [1:2] "y" "x"
+##   .. .. .. .. ..$ : chr "x"
+##   .. .. ..- attr(*, "term.labels")= chr "x"
+##   .. .. ..- attr(*, "order")= int 1
+##   .. .. ..- attr(*, "intercept")= int 1
+##   .. .. ..- attr(*, "response")= int 1
+##   .. .. ..- attr(*, ".Environment")=<environment: R_GlobalEnv> 
+##   .. .. ..- attr(*, "predvars")= language list(y, x)
+##   .. .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
+##   .. .. .. ..- attr(*, "names")= chr [1:2] "y" "x"
+##  - attr(*, "class")= chr "lm"
 ```
 
 
 
 ```r
 library("affydata")
+```
+
+```
+## Loading required package: affy
+## Loading required package: BiocGenerics
+## Loading required package: methods
+## Loading required package: parallel
+## 
+## Attaching package: 'BiocGenerics'
+## 
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+## 
+## The following object is masked from 'package:stats':
+## 
+##     xtabs
+## 
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist
+## 
+## Loading required package: Biobase
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     'browseVignettes()'. To cite Bioconductor, see
+##     'citation("Biobase")', and for packages 'citation("pkgname")'.
+```
+
+```
+##      Package    LibPath                                              
+## [1,] "affydata" "/home/lgatto/R/x86_64-unknown-linux-gnu-library/3.1"
+##      Item       Title                        
+## [1,] "Dilution" "AffyBatch instance Dilution"
+```
+
+```r
 data("Dilution")
 class(Dilution)
 ```
 
+```
+## [1] "AffyBatch"
+## attr(,"package")
+## [1] "affy"
+```
+
+```r
+str(Dilution)
+```
+
+```
+## Formal class 'AffyBatch' [package "affy"] with 10 slots
+##   ..@ cdfName          : chr "HG_U95Av2"
+##   ..@ nrow             : int 640
+##   ..@ ncol             : int 640
+##   ..@ assayData        :List of 1
+##   .. ..$ exprs: num [1:409600, 1:4] 149 1154 142 1051 91 ...
+##   .. .. ..- attr(*, "dimnames")=List of 2
+##   .. .. .. ..$ : chr [1:409600] "1" "2" "3" "4" ...
+##   .. .. .. ..$ : chr [1:4] "20A" "20B" "10A" "10B"
+##   ..@ phenoData        :Formal class 'AnnotatedDataFrame' [package "Biobase"] with 4 slots
+##   .. .. ..@ varMetadata      :'data.frame':	3 obs. of  1 variable:
+##   .. .. .. ..$ labelDescription: chr [1:3] "amount of liver RNA hybridized to array in micrograms" "amount of central nervous system RNA hybridized to array in micrograms" "ID number of scanner used"
+##   .. .. ..@ data             :'data.frame':	4 obs. of  3 variables:
+##   .. .. .. ..$ liver  : Factor w/ 2 levels "10","20": 2 2 1 1
+##   .. .. .. .. ..- attr(*, "names")= chr [1:4] "94396hgu95v2a11" "94398hgu95v2a11" "94401hgu95v2a11" "94403hgu95v2a11"
+##   .. .. .. ..$ sn19   : Factor w/ 1 level "0": 1 1 1 1
+##   .. .. .. .. ..- attr(*, "names")= chr [1:4] "94396hgu95v2a11" "94398hgu95v2a11" "94401hgu95v2a11" "94403hgu95v2a11"
+##   .. .. .. ..$ scanner: Factor w/ 2 levels "1","2": 1 2 1 2
+##   .. .. .. .. ..- attr(*, "names")= chr [1:4] "94396hgu95v2a11" "94398hgu95v2a11" "94401hgu95v2a11" "94403hgu95v2a11"
+##   .. .. ..@ dimLabels        : chr [1:2] "sampleNames" "sampleColumns"
+##   .. .. ..@ .__classVersion__:Formal class 'Versions' [package "Biobase"] with 1 slots
+##   .. .. .. .. ..@ .Data:List of 1
+##   .. .. .. .. .. ..$ : int [1:3] 1 1 0
+##   ..@ featureData      :Formal class 'AnnotatedDataFrame' [package "Biobase"] with 4 slots
+##   .. .. ..@ varMetadata      :'data.frame':	0 obs. of  1 variable:
+##   .. .. .. ..$ labelDescription: chr(0) 
+##   .. .. ..@ data             :'data.frame':	409600 obs. of  0 variables
+##   .. .. ..@ dimLabels        : chr [1:2] "featureNames" "featureColumns"
+##   .. .. ..@ .__classVersion__:Formal class 'Versions' [package "Biobase"] with 1 slots
+##   .. .. .. .. ..@ .Data:List of 1
+##   .. .. .. .. .. ..$ : int [1:3] 1 1 0
+##   ..@ experimentData   :Formal class 'MIAME' [package "Biobase"] with 13 slots
+##   .. .. ..@ name             : chr "Gene Logic"
+##   .. .. ..@ lab              : chr "Gene Logic"
+##   .. .. ..@ contact          : chr "708 Quince Orchard Road\nGaithersburg, MD 20878\nTelephone: 1.301.987.1700\nToll Free: 1.800.GENELOGIC (US and Canada)\nFacsimi"| __truncated__
+##   .. .. ..@ title            : chr "Small part of dilution study"
+##   .. .. ..@ abstract         : chr "Gene Logic is making available two studies of Affymetrix GeneChip expression data. The first study consists of a dilution/mixtu"| __truncated__
+##   .. .. ..@ url              : chr "http://qolotus02.genelogic.com/datasets.nsf/"
+##   .. .. ..@ pubMedIds        : chr ""
+##   .. .. ..@ samples          : list()
+##   .. .. ..@ hybridizations   : list()
+##   .. .. ..@ normControls     : list()
+##   .. .. ..@ preprocessing    : list()
+##   .. .. ..@ other            :List of 1
+##   .. .. .. ..$ : chr ""
+##   .. .. ..@ .__classVersion__:Formal class 'Versions' [package "Biobase"] with 1 slots
+##   .. .. .. .. ..@ .Data:List of 1
+##   .. .. .. .. .. ..$ : int [1:3] 1 0 0
+##   ..@ annotation       : chr "hgu95av2"
+##   ..@ protocolData     :Formal class 'AnnotatedDataFrame' [package "Biobase"] with 4 slots
+##   .. .. ..@ varMetadata      :'data.frame':	0 obs. of  1 variable:
+##   .. .. .. ..$ labelDescription: chr(0) 
+##   .. .. ..@ data             :'data.frame':	4 obs. of  0 variables
+##   .. .. ..@ dimLabels        : chr [1:2] "sampleNames" "sampleColumns"
+##   .. .. ..@ .__classVersion__:Formal class 'Versions' [package "Biobase"] with 1 slots
+##   .. .. .. .. ..@ .Data:List of 1
+##   .. .. .. .. .. ..$ : int [1:3] 1 1 0
+##   ..@ .__classVersion__:Formal class 'Versions' [package "Biobase"] with 1 slots
+##   .. .. ..@ .Data:List of 4
+##   .. .. .. ..$ : int [1:3] 2 10 0
+##   .. .. .. ..$ : int [1:3] 2 5 5
+##   .. .. .. ..$ : int [1:3] 1 3 0
+##   .. .. .. ..$ : int [1:3] 1 2 0
+```
+
  
+[Back](https://github.com/lgatto/rbc/tree/master/R)

@@ -11,6 +11,9 @@
 - Benchmarking
 
 ## 3. [Visualisation](viz.md)
+- Base graphics
+- `ggplot2`
+- `lattice`
 
 ## 4. Resources
 
@@ -27,7 +30,7 @@
 - [Why doesn’t R think these numbers are equal?](http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-doesn_0027t-R-think-these-numbers-are-equal_003f).
 - [R Grouping functions](http://stackoverflow.com/questions/3505701/r-grouping-functions-sapply-vs-lapply-vs-apply-vs-tapply-vs-by-vs-aggrega)
 on Stack Overflow.
-- [R Help Desk article (May 2008)](http://cran.r-project.org/doc/Rnews/Rnews_2008-1.pdf)
+- [R Help Desk article (May 2008)](http://cran.r-project.org/doc/Rnews/Rnews_2008-1.pdf) on `*apply`.
 - [High-Performance and Parallel Computing with R](http://cran.r-project.org/web/views/HighPerformanceComputing.html)
 
 ### Questions

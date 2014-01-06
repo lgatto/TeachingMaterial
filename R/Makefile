@@ -1,6 +1,9 @@
 %.md: %.Rmd
 	Rscript -e 'require(knitr); options(knitr.unnamed.chunk.label = "$^"); knit("$^")'
 
+%.R: %.Rmd
+	Rscript -e 'require(knitr); purl("$^")'
+
 %.html: %.md
 	Rscript -e 'require(knitr); options(knitr.unnamed.chunk.label = "$^"); knit2html("$^")'
 

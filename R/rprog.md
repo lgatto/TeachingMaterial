@@ -56,16 +56,25 @@ summary(w)
 
 ## Basic plotting
 
+See also the
+[visualisation](https://github.com/lgatto/rbc/blob/master/R/viz.md)
+part for a bit of more details.
 
+
+```r
+library("camweather")
+w <- weatherdata("2014-01-01")
+w <- nounits(w)
+```
 
 
 
 ```r
 par(mfrow = c(2, 2))
-plot(w$Time, w[, "Temp [degC]"], type = "b", xlab = "Time", ylab = "Temp")
-plot(w$Time, w[, "WindSp [knots]"], type = "b", xlab = "Time", ylab = "Wind speed")
-plot(w$Time, w[, "Rain [mm]"], type = "b", xlab = "Time", ylab = "Rain")
-plot(w$Time, w[, "Press [mBar]"], type = "b", xlab = "Time", ylab = "Pressure")
+plot(w$Time, w[, "Temp"], type = "b", xlab = "Time", ylab = "Temp")
+plot(w$Time, w[, "WindSp"], type = "b", xlab = "Time", ylab = "Wind speed")
+plot(w$Time, w[, "Rain"], type = "b", xlab = "Time", ylab = "Rain")
+plot(w$Time, w[, "Press"], type = "b", xlab = "Time", ylab = "Pressure")
 ```
 
 ![plot of chunk rprog.Rmd-6](figure/rprog_Rmd-6.png) 
@@ -73,7 +82,7 @@ plot(w$Time, w[, "Press [mBar]"], type = "b", xlab = "Time", ylab = "Pressure")
 
 
 ```r
-boxplot(w[, "WindSp [knots]"] ~ factor(w$WindDr))
+boxplot(w$WindSp ~ w$WindDr) ## NOT boxplot(w$WindDr, w[, "WindSp"])
 ```
 
 ![plot of chunk rprog.Rmd-7](figure/rprog_Rmd-71.png) 
@@ -96,11 +105,11 @@ to set different elements of a base plot.
 
 
 ```r
-temp0 <- w[, "Temp [degC]"]
+temp0 <- w[, "Temp"]
 temp <- temp0 - min(temp0)  ## min is 0
 temp <- temp/max(temp)  ## max is 1
 
-press0 <- w[, "Press [mBar]"]
+press0 <- w[, "Press"]
 press <- press0 - min(press0)
 press <- press/max(press)
 ```
@@ -134,12 +143,7 @@ legend("top", c("Temperature", "Pressure"), col = c("steelblue", "red"), lty = 1
 Using a weather data frame as input, generate a plot showing the
 hourly (or half-hourly) rainfall for the 3rd Jan 2014.
 
-<!-- ```{r} -->
-<!-- x <- weatherdata("2014-01-03") -->
-<!-- rain <- x$'Rain [mm]' -->
-<!-- plot(x$Time[-1], diff(rain), type = "l", -->
-<!--      ) -->
-<!-- ``` -->
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weatherplot.md)
 
 ## Writing text spreadsheets
 
@@ -516,9 +520,26 @@ Reference: [R Help Desk article (May 2008)](http://cran.r-project.org/doc/Rnews/
 
 ## Parallel `apply`
 
+- Applicable when repeating independent computations a certain number
+  of times; results just need to be combined after parallel executions
+  are done.
+- A cluster of nodes: generate multiple workers listening to the
+  master; these workers are new processes that can run on the current
+  machine or a similar one with an identical R installation. Should
+  work on all `R` platforms (as in package `snow`).
+- The R process is forked to create new R processes by taking a
+  complete copy of the masters process, including workspace (pioneered
+  by package `multicore`). Does not work on Windows.
+- Package `parallel`, first included in R 2.14.0 builds on CRAN
+  packages `multicore` and `snow`.
+
 The `parallel` package provides a direct parallel alternatives for
-`apply` functions with `mclapply`, `mcmapply`, `parLapply`,
-`parSapply`, `parApply`, ...
+`apply` functions with `mclapply`, `mcmapply`, ... (`mutlicore`) and
+`parLapply`, `parSapply`, `parApply`, ... (`snow`)
+
+Examples:
+[R-parallel](https://github.com/lgatto/R-parallel/tree/master/src)
+slides.
 
 Reference:
 - `parallel` vignette: `vignette("parallel")`
@@ -651,65 +672,20 @@ apply(m, 1, function(x) sum(x^2))
   function to select the relevant file names. Check that you obtain 30
   files.
 
-<!-- ```{r} -->
-<!-- fls <- weatherfiles() -->
-<!-- f <- grep("2013_06", fls, value = TRUE) -->
-<!-- length(f) -->
-<!-- ``` -->
-
 - Load the 30 data frames into a convenient data structure. Check the
   number of data points that are available for each weather data set.
 
-<!-- ```{r} -->
-<!-- xx <- lapply(f, weatherdata) -->
-<!-- sapply(xx, nrow) -->
-<!-- ``` -->
-
 - Calculate the average day temperatures for that month.
-
-<!-- ```{r} -->
-<!-- sapply(xx, function(x) mean(x[, "Temp [degC]"])) -->
-<!-- ## or -->
-<!-- dd <- do.call(rbind, xx) -->
-<!-- tapply(dd[, 2], dd$Day, mean) -->
-<!-- ``` -->
 
 - Plot the temperature over the full month and the daily
   temperature curves for June 2013.
 
-<!-- ```{r} -->
-<!-- plot(dd[, 1], dd[, 2], type = "l", -->
-<!--      xlab = "Time", ylab = "Temp", main = "June 2013") -->
-
-<!-- updateday <- function(x) -->
-<!--     as.POSIXct(strftime(x, "%H:%M"), format = "%H:%M") -->
-
-<!-- library("RColorBrewer") -->
-<!-- col <- brewer.pal(10, "Set3") -->
-<!-- col[2] <- "#555555" -->
-<!-- col <- rep(col, each = 3) -->
-<!-- lty <- rep(1:3, 30) -->
-
-<!-- trng <- range(lapply(xx, function(x) x[, "Temp [degC]"])) -->
-<!-- plot(updateday(xx[[1]][, 1]), -->
-<!--      xx[[1]][, 2], ylim = trng, type = "l", -->
-<!--      col = col[1], lty = lty[1], lwd = 2, -->
-<!--      xlab = "Time", ylab = "Temp") -->
-
-<!-- for (i in 2:length(xx))  -->
-<!--     lines(updateday(xx[[i]][, 1]), xx[[i]][, 2], -->
-<!--           col = col[i], lty = lty[i], lwd = 2) -->
-
-<!-- legend("bottomright", legend = 1:30, -->
-<!--        col = col, lty = lty, lwd = 2, -->
-<!--        bty = "n", cex = .8, -->
-<!--        ncol = 5) -->
-<!-- ``` -->
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weather-big.md)
 
 ## Scoping
 
 In addition to what we have seen above, a function has also its very
-own environment, in which it arguments a stored and its body is
+own environment, in which its arguments are stored and its body is
 evaluated. The functions arguments are copies of the initial
 variables, so that the original ones stay unchanged.
 
@@ -774,6 +750,35 @@ g()
 ## Error: object 'x' not found
 ```
 
+
+The general `R` semantic is a *pass-by-value*: it is the value of a
+variable input, i.e. a copy that is manipulated and potentially
+modified in the functions itself. As such, an `R` function will never
+modify the global variables (unless explicitly specified). This
+differs from other programming language that have a
+*pass-by-reference* semantic, where it is the actual variable that is
+passed as input to the function, and any manipulation and update of
+the variable is persistent after the function exits.
+
+The latter behaviour can be emulated in `R` by using
+`environments`. Indeed, `environments` are not copied and modified in
+place:
+
+
+
+```r
+myenv <- new.env()
+myenv$x <- 1
+updatex <- function(e, newx) assign("x", newx, envir = e)
+myenv$x
+updatex(myenv, 10)
+myenv$x
+```
+
+
+This can be useful to avoid multiple copies when very large objects
+are manipulated. Note however that this is an unexpected in terms of
+normal behaviour.
 
 # R development
 
@@ -858,7 +863,7 @@ f(X)
 ```
 
 ```
-## [1] -0.0007686
+## [1] 0.0001119
 ```
 
 ```r
@@ -867,7 +872,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.336   0.012   0.349
+##   0.220   0.004   0.226
 ```
 
 ```r
@@ -876,7 +881,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.351   0.352   0.352   0.352   0.352   0.353
+##   0.228   0.228   0.228   0.229   0.229   0.232
 ```
 
 
@@ -923,9 +928,9 @@ benchmark(f1(n), f2(n), f3(n),
 
 ```
 ##    test replications elapsed relative
-## 1 f1(n)           10  17.072    2.776
-## 2 f2(n)           10   6.149    1.000
-## 3 f3(n)           10   8.970    1.459
+## 1 f1(n)           10  16.487    2.545
+## 2 f2(n)           10   6.478    1.000
+## 3 f3(n)           10   9.159    1.414
 ```
 
 
@@ -939,6 +944,8 @@ delay would become even more pronounced with increasing `n`.
 **Exercise:** write a parallel version of `f3` using `mclapply` using 2
 cores. Do you see a 2-fold increase in speed?
 
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-par-apply.md)
+
 For more extensive code profiling, see `?Rprof`.
 
 ## Debugging
@@ -948,4 +955,8 @@ called, it will be executed in `browser` mode: expressions of the body
 can be executed one by one and at each step, the variables and their
 values can be inspected.
 
+Try it out with one of your own functions.
+
 <!-- ## `message`, `warning`, `error` -->
+
+[Back](https://github.com/lgatto/rbc/tree/master/R)
