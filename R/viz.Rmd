@@ -1,6 +1,3 @@
-Data visualisation
-===
-
 # Base graphics
 
 ## Painters model
