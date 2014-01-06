@@ -64,7 +64,7 @@ Our local repository is now available on GitHub. So, anywhere we can access GitH
 Now, let's do something drastic!
 
     $ cd ..
-    $ rm -rf add_nums
+    $ rm -rf weather_analysis
 
 We've just wiped our local repository! But, as we've a copy on GitHub we can just copy, or *clone* that,
 
@@ -87,7 +87,7 @@ and we can see our Git configuration files too,
 
     $ ls -A
 
-But where is the `add_nums` directory, you might ask? `add_nums` was the directory that held our local repository but was not a part of it.
+But where is the `weather_analysis` directory, you might ask? `weather_analysis` was the directory that held our local repository but was not a part of it.
 
 ### Push changes to a remote repository
 
@@ -99,11 +99,11 @@ Having done that, how do we send our changes back to the remote repository? We c
 
 If we now check our GitHub page we should be able to see our new changes under the Commit tab.
 
-If we created a new branch to develop a new feature and then we want to push it into GitHub:
+If we created a new branch to do some experimental analysis and then we want to push it into GitHub:
 
-	$ git push origin feature2 
+	$ git push origin analysis0.1
 
-This will work assumig that 'origin' is still an alias for our remote repository in GitHub. The feature2 branch should now be created in our GitHub repository.
+This will work assumig that 'origin' is still an alias for our remote repository in GitHub. The analysis0.1 branch should now be created in our GitHub repository.
 
 ### Collaboration: pulling changes from a remote repository
 
@@ -129,9 +129,9 @@ So we now have two clones of our repository,
 Let's pretend these clones are on two separate machines! So we have 3 versions of our repository - our two local versions, on our separate machines (we're still pretending!) and one on GitHub. So let's go into one of our clones, make some changes, commit these and push these to GitHub:
 
     $ cd bootcamp
-    $ nano add_numb.py
-    $ git add add_numb.py
-    $ git commit -m "Added some more comments" add_numb.py
+    $ emacs weatherbasic.R
+    $ git add weatherbasic.R
+    $ git commit -m "Added some more comments" weatherbasic.R
     $ git push
 
 Now let's change to our other repository and *fetch* the changes from our remote repository,
@@ -151,14 +151,14 @@ We can then *merge* these changes into our current repository, which merges the 
 
 And then we can check that we have our changes,
 
-    $ cat add_numb.py
+    $ cat weatherbasic.R
     $ git log
 
 As a short-hand, we can do a Git *pull* which does a *fetch* then a *merge*,
 
-    $ nano add_numb.py
-    $ git add add_numb.py
-    $ git commit -m "Added credits" add_numb.py
+    $ emacs weatherbasic.R
+    $ git add weatherbasic.R
+    $ git commit -m "Added credits" weatherbasic.R
     $ git push
     $ cd ..
     $ cd ../2014-01-Cambridge
@@ -166,24 +166,24 @@ As a short-hand, we can do a Git *pull* which does a *fetch* then a *merge*,
 
 And then check that we have our changes,
 
-    $ cat add_numb.py
+    $ cat weatherbasic.R
     $ git log
 
 ### Collaboration: conflicts and how to resolve them
 
 Let's continue to pretend that our two local, cloned, repositories are hosted on two different machines, and make some changes to our file, and push these to GitHub:
 
-    $ nano add_numb.py
-    $ git add add_numb.py
-    $ git commit -m "Credits - added our names" add_numb.py
+    $ emacs weatherbasic.R
+    $ git add weatherbasic.R
+    $ git commit -m "Credits - added our names" weatherbasic.R
     $ git push
 
 Now let us suppose, at a later, date, we use our other repository and we want to change the credits.
 
     $ cd ../bootcamp2
-    $ nano add_numb.py
-    $ git add add_numb.py
-    $ git commit -m "Changed the first author" add_numb.py
+    $ emacs weatherbasic.R
+    $ git add weatherbasic.R
+    $ git commit -m "Changed the first author" weatherbasic.R
     $ git push
 
 Our push fails, as we've not yet pulled down our changes from our remote repository. Before pushing we should always pull, so let's do that...
@@ -192,8 +192,8 @@ Our push fails, as we've not yet pulled down our changes from our remote reposit
 
 and we get:
 
-    Auto-merging add_numb.py
-    CONFLICT (content): Merge conflict in add_numb.py
+    Auto-merging weatherbasic.R
+    CONFLICT (content): Merge conflict in weatherbasic.R
     Automatic merge failed; fix conflicts and then commit the result.
 
 As we saw earlier, with the fetch and merge, a pull pulls down changes from the repository and tries to merge these. It does this on a file-by-file basis, merging files line by line. We get a *conflict* when if a file has changes that affect the same lines and those changes can't be seamlessly merged. If we look at the status,
@@ -203,9 +203,9 @@ As we saw earlier, with the fetch and merge, a pull pulls down changes from the 
 we can see that our file is listed as `Unmerged` and if we look at `add_numb.py`, we may see something like,
 
     <<<<<<< HEAD 
-    """ This short program just adds numbers. Developed by John and Aleksandra."""
+    # Authors: John and Aleksandra
     =======
-    """ This short program just adds numbers. Developed by Aleksandra and John."""
+    # Authors: Aleksandra and John
     >>>>>>> 71d34decd32124ea809e50cfbb7da8e3e354ac26 
 
 The mark-up shows us the parts of the file causing the conflict and the versions they come from. We now need to manually edit the file to *resolve* the conflict. Just like we did when we had to deal with the conflict when we were merging the branches.
@@ -220,11 +220,11 @@ This is where version control proves itself better than DropBox or GoogleDrive, 
 
 ### Remote repository and branching
 
-    $ git checkout -b feature2
+    $ git checkout -b analysis0.2
 
 To push that branch to the remote repository:
 
-    $ git push origin feature2
+    $ git push origin analysis0.2
 
 To list all branches (local and remote):
 
@@ -232,7 +232,7 @@ To list all branches (local and remote):
 
 To delete the remote branch:
 
-    $ git push origin :feature2 
+    $ git push origin :analysis0.2
 
 
 ## The story so far...
