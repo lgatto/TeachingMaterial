@@ -655,60 +655,15 @@ apply(m, 1, function(x) sum(x^2))
   function to select the relevant file names. Check that you obtain 30
   files.
 
-<!-- ```{r} -->
-<!-- fls <- weatherfiles() -->
-<!-- f <- grep("2013_06", fls, value = TRUE) -->
-<!-- length(f) -->
-<!-- ``` -->
-
 - Load the 30 data frames into a convenient data structure. Check the
   number of data points that are available for each weather data set.
 
-<!-- ```{r} -->
-<!-- xx <- lapply(f, weatherdata) -->
-<!-- sapply(xx, nrow) -->
-<!-- ``` -->
-
 - Calculate the average day temperatures for that month.
-
-<!-- ```{r} -->
-<!-- sapply(xx, function(x) mean(x[, "Temp [degC]"])) -->
-<!-- ## or -->
-<!-- dd <- do.call(rbind, xx) -->
-<!-- tapply(dd[, 2], dd$Day, mean) -->
-<!-- ``` -->
 
 - Plot the temperature over the full month and the daily
   temperature curves for June 2013.
 
-<!-- ```{r} -->
-<!-- plot(dd[, 1], dd[, 2], type = "l", -->
-<!--      xlab = "Time", ylab = "Temp", main = "June 2013") -->
-
-<!-- updateday <- function(x) -->
-<!--     as.POSIXct(strftime(x, "%H:%M"), format = "%H:%M") -->
-
-<!-- library("RColorBrewer") -->
-<!-- col <- brewer.pal(10, "Set3") -->
-<!-- col[2] <- "#555555" -->
-<!-- col <- rep(col, each = 3) -->
-<!-- lty <- rep(1:3, 30) -->
-
-<!-- trng <- range(lapply(xx, function(x) x[, "Temp [degC]"])) -->
-<!-- plot(updateday(xx[[1]][, 1]), -->
-<!--      xx[[1]][, 2], ylim = trng, type = "l", -->
-<!--      col = col[1], lty = lty[1], lwd = 2, -->
-<!--      xlab = "Time", ylab = "Temp") -->
-
-<!-- for (i in 2:length(xx))  -->
-<!--     lines(updateday(xx[[i]][, 1]), xx[[i]][, 2], -->
-<!--           col = col[i], lty = lty[i], lwd = 2) -->
-
-<!-- legend("bottomright", legend = 1:30, -->
-<!--        col = col, lty = lty, lwd = 2, -->
-<!--        bty = "n", cex = .8, -->
-<!--        ncol = 5) -->
-<!-- ``` -->
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weather-big.md)
 
 ## Scoping
 
@@ -862,7 +817,7 @@ f(X)
 ```
 
 ```
-## [1] 0.001246
+## [1] 0.001646
 ```
 
 ```r
@@ -871,7 +826,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.256   0.000   0.257
+##   0.188   0.008   0.197
 ```
 
 ```r
@@ -880,7 +835,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.260   0.260   0.261   0.261   0.261   0.263
+##   0.199   0.199   0.200   0.200   0.200   0.200
 ```
 
 
