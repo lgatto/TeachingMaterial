@@ -1,0 +1,49 @@
+# Weather data
+
+Using the `weatherdata()` function from the `camweather` package,
+download a weather data frame of your choice.
+
+```{r}
+library("camweather")
+camweather()
+x <- weatherdata("2013-03-13")
+```
+
+- What weather data is available? See `?weatherdata` and inspect the
+  data frame's column names.
+
+```{r}
+names(x)
+head(x)
+```
+
+```{r, eval=FALSE}
+?weatherdata
+```
+
+- What were the highest and lowest temperatures on that day? Hint: see
+  `min`, `max` and/or `range` functions.
+
+```{r}
+x <- nounits(x)
+range(x$Temp)
+min(x$Temp)
+max(x$Temp)
+summary(x$Temp)
+```
+
+- The `Sun` and `Rain` values are cumulative from `Start`. What is the
+  average rainfall per hours for that day? Hint: see `diff` for to
+  calculate differences between successive values and `mean`.
+
+```{r}
+mean(diff(x$Rain))
+mean(diff(x$Sun))
+```
+
+- In what direction has the wind blown most on that day? Hint:
+  `table`.
+
+```{r}
+table(x$WindDr)
+```
