@@ -1,4 +1,4 @@
-## Exercise
+## Weather exercise
 
 - Write your own `weatherdata` function that takes a date character as
   input, locates the file in the `camweather` package directory, loads
@@ -36,27 +36,14 @@ plotweather <- function(dt, ...) {
 
 
 ```r
+library("camweather")
 fls <- weatherfiles()
-```
-
-```
-## Error: could not find function "weatherfiles"
-```
-
-```r
 f <- grep("2013_06", fls, value = TRUE)
-```
-
-```
-## Error: object 'fls' not found
-```
-
-```r
 length(f)
 ```
 
 ```
-## Error: object 'f' not found
+## [1] 30
 ```
 
 
@@ -66,18 +53,12 @@ length(f)
 
 ```r
 xx <- lapply(f, weatherdata)
-```
-
-```
-## Error: object 'weatherdata' not found
-```
-
-```r
 sapply(xx, nrow)
 ```
 
 ```
-## Error: object 'xx' not found
+##  [1] 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 49 34 49 49
+## [24] 49 49 49 49 49 49 49
 ```
 
 ```r
@@ -85,7 +66,9 @@ table(sapply(xx, nrow))
 ```
 
 ```
-## Error: object 'xx' not found
+## 
+## 34 49 
+##  1 29
 ```
 
 
@@ -97,24 +80,28 @@ sapply(xx, function(x) mean(x[, "Temp [degC]"]))
 ```
 
 ```
-## Error: object 'xx' not found
+##  [1] 12.56 12.48 12.73 12.04 11.05 13.21 13.17 10.74 11.10 11.32 14.22
+## [12] 16.54 14.65 14.06 13.29 14.43 15.17 16.79 19.72 17.58 18.10 14.40
+## [23] 14.69 13.19 14.11 15.13 14.22 15.60 15.88 18.70
 ```
 
 ```r
 ## or
 dd <- do.call(rbind, xx)
-```
-
-```
-## Error: object 'xx' not found
-```
-
-```r
 tapply(dd[, 2], dd$Day, mean)
 ```
 
 ```
-## Error: object 'dd' not found
+## 2013-06-01 2013-06-02 2013-06-03 2013-06-04 2013-06-05 2013-06-06 
+##      12.56      12.48      12.73      12.04      11.05      13.21 
+## 2013-06-07 2013-06-08 2013-06-09 2013-06-10 2013-06-11 2013-06-12 
+##      13.17      10.74      11.10      11.32      14.22      16.54 
+## 2013-06-13 2013-06-14 2013-06-15 2013-06-16 2013-06-17 2013-06-18 
+##      14.65      14.06      13.29      14.43      15.17      16.79 
+## 2013-06-19 2013-06-20 2013-06-21 2013-06-22 2013-06-23 2013-06-24 
+##      19.72      17.58      18.10      14.40      14.69      13.19 
+## 2013-06-25 2013-06-26 2013-06-27 2013-06-28 2013-06-29 2013-06-30 
+##      14.11      15.13      14.22      15.60      15.88      18.70
 ```
 
 
@@ -128,9 +115,7 @@ plot(dd[, 1], dd[, 2], type = "l",
      main = "June 2013")
 ```
 
-```
-## Error: object 'dd' not found
-```
+![plot of chunk ex-weather-big.Rmd-6](figure/ex-weather-big_Rmd-6.png) 
 
 
 
@@ -145,35 +130,14 @@ col <- rep(col, each = 3)
 lty <- rep(1:3, 30)
 
 trng <- range(lapply(xx, function(x) x[, "Temp [degC]"]))
-```
-
-```
-## Error: object 'xx' not found
-```
-
-```r
 plot(updateday(xx[[1]][, 1]),
      xx[[1]][, 2], ylim = trng, type = "l",
      col = col[1], lty = lty[1], lwd = 2,
      xlab = "Time", ylab = "Temp")
-```
-
-```
-## Error: object 'xx' not found
-```
-
-```r
 
 for (i in 2:length(xx))
     lines(updateday(xx[[i]][, 1]), xx[[i]][, 2],
           col = col[i], lty = lty[i], lwd = 2)
-```
-
-```
-## Error: object 'xx' not found
-```
-
-```r
 
 legend("bottomright", legend = 1:30,
        col = col, lty = lty, lwd = 2,
@@ -181,7 +145,5 @@ legend("bottomright", legend = 1:30,
        ncol = 5)
 ```
 
-```
-## Error: plot.new has not been called yet
-```
+![plot of chunk ex-weather-big.Rmd-7](figure/ex-weather-big_Rmd-7.png) 
 

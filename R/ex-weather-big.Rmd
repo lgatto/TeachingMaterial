@@ -1,4 +1,4 @@
-## Exercise
+## Weather exercise
 
 - Write your own `weatherdata` function that takes a date character as
   input, locates the file in the `camweather` package directory, loads
@@ -31,6 +31,7 @@ plotweather <- function(dt, ...) {
   files.
 
 ```{r}
+library("camweather")
 fls <- weatherfiles()
 f <- grep("2013_06", fls, value = TRUE)
 length(f)
@@ -39,7 +40,7 @@ length(f)
 - Load the 30 data frames into a convenient data structure. Check the
   number of data points that are available for each weather data set.
 
-```{r}
+```{r, cache = TRUE}
 xx <- lapply(f, weatherdata)
 sapply(xx, nrow)
 table(sapply(xx, nrow))
@@ -47,7 +48,7 @@ table(sapply(xx, nrow))
 
 - Calculate the average day temperatures for that month.
 
-```{r, cache = TRUE}
+```{r}
 sapply(xx, function(x) mean(x[, "Temp [degC]"]))
 ## or
 dd <- do.call(rbind, xx)
