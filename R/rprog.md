@@ -61,6 +61,11 @@ See also the
 part.
 
 
+```r
+library("camweather")
+w <- weatherdata("2014-01-01")
+w <- nounits(w)
+```
 
 
 
@@ -863,7 +868,7 @@ f(X)
 ```
 
 ```
-## [1] 0.0001244
+## [1] -0.0009532
 ```
 
 ```r
@@ -872,7 +877,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.288   0.008   0.296
+##   0.220   0.008   0.231
 ```
 
 ```r
@@ -881,7 +886,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.293   0.293   0.294   0.294   0.294   0.297
+##   0.232   0.233   0.234   0.233   0.234   0.234
 ```
 
 

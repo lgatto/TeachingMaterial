@@ -57,7 +57,7 @@ See also the
 [visualisation](https://github.com/lgatto/rbc/blob/master/R/viz.md)
 part.
 
-```{r, echo=FALSE, eval=TRUE}
+```{r, echo=TRUE, eval=TRUE}
 library("camweather")
 w <- weatherdata("2014-01-01")
 w <- nounits(w)
