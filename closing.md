@@ -1,6 +1,8 @@
 # In closing
 
-R help, StackOverflow, rseek.org, www.cambr.org.uk
+[R help mailing list](https://stat.ethz.ch/mailman/listinfo/r-help),
+[StackOverflow](http://stackoverflow.com/questions/tagged/r),
+www.rseek.org, www.cambr.org.uk
 
 # Questionnaire
 
