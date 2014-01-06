@@ -363,7 +363,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##   0.000   0.000   3.003
+##   0.004   0.000   3.001
 ```
 
 
@@ -956,7 +956,7 @@ e
 ```
 
 ```
-## <environment: 0x3397ad8>
+## <environment: 0x96b4e8>
 ```
 
 ```r
@@ -1037,19 +1037,102 @@ As in OO programming:
 
 ```r
 class(x <- rnorm(100))
+```
+
+```
+## [1] "numeric"
+```
+
+```r
 y <- rnorm(100)
 class(1L)
+```
+
+```
+## [1] "integer"
+```
+
+```r
 class("123")
+```
+
+```
+## [1] "character"
+```
+
+```r
 class(sum)
+```
+
+```
+## [1] "function"
+```
+
+```r
 class(lm(y ~ x))
+```
+
+```
+## [1] "lm"
 ```
 
 
 
 ```r
 library("affydata")
+```
+
+```
+## Loading required package: affy
+## Loading required package: BiocGenerics
+## Loading required package: methods
+## Loading required package: parallel
+## 
+## Attaching package: 'BiocGenerics'
+## 
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+## 
+## The following object is masked from 'package:stats':
+## 
+##     xtabs
+## 
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist
+## 
+## Loading required package: Biobase
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     'browseVignettes()'. To cite Bioconductor, see
+##     'citation("Biobase")', and for packages 'citation("pkgname")'.
+```
+
+```
+##      Package    LibPath                                              
+## [1,] "affydata" "/home/lgatto/R/x86_64-unknown-linux-gnu-library/3.1"
+##      Item       Title                        
+## [1,] "Dilution" "AffyBatch instance Dilution"
+```
+
+```r
 data("Dilution")
 class(Dilution)
+```
+
+```
+## [1] "AffyBatch"
+## attr(,"package")
+## [1] "affy"
 ```
 
  

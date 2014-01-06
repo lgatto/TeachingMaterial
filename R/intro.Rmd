@@ -701,7 +701,7 @@ e$a <- 100
 
 As in OO programming:
 
-```{r}
+```{r, eval=TRUE}
 class(x <- rnorm(100))
 y <- rnorm(100)
 class(1L)
@@ -710,7 +710,7 @@ class(sum)
 class(lm(y ~ x))
 ```
 
-```{r}
+```{r, eval=TRUE}
 library("affydata")
 data("Dilution")
 class(Dilution)
