@@ -4,5 +4,5 @@ Testing and vignettes lesson
 
 2. [simple.md](simple.md)
 
-3. [camweather-files](camweather-files) Make your own package with
+3. [camweather-files/camweather-package-notes.md](camweather-files/camweather-package-notes.md) Make your own package with
    tests and a vignette.
