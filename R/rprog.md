@@ -537,7 +537,7 @@ The `parallel` package provides a direct parallel alternatives for
 `apply` functions with `mclapply`, `mcmapply`, ... (`mutlicore`) and
 `parLapply`, `parSapply`, `parApply`, ... (`snow`)
 
-More examples: [R-parallel](https://github.com/lgatto/R-parallel/)
+More examples: [R-parallel](https://github.com/lgatto/R-parallel/tree/master/src)
 slides.
 
 Reference:
@@ -833,7 +833,7 @@ f(X)
 ```
 
 ```
-## [1] -0.002091
+## [1] 0.001124
 ```
 
 ```r
@@ -842,7 +842,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.180   0.016   0.194
+##   0.304   0.008   0.314
 ```
 
 ```r
@@ -851,7 +851,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.190   0.191   0.192   0.192   0.194   0.196
+##   0.313   0.314   0.315   0.315   0.316   0.320
 ```
 
 
