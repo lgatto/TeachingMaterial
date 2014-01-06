@@ -833,7 +833,7 @@ f(X)
 ```
 
 ```
-## [1] -2.084e-05
+## [1] -0.002091
 ```
 
 ```r
@@ -842,7 +842,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.252   0.008   0.261
+##   0.180   0.016   0.194
 ```
 
 ```r
@@ -851,7 +851,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.263   0.264   0.264   0.264   0.264   0.265
+##   0.190   0.191   0.192   0.192   0.194   0.196
 ```
 
 
@@ -914,7 +914,7 @@ delay would become even more pronounced with increasing `n`.
 **Exercise:** write a parallel version of `f3` using `mclapply` using 2
 cores. Do you see a 2-fold increase in speed?
 
-[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weatherplot.md)
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-par-apply.md)
 
 For more extensive code profiling, see `?Rprof`.
 

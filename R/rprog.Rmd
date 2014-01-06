@@ -744,7 +744,7 @@ delay would become even more pronounced with increasing `n`.
 **Exercise:** write a parallel version of `f3` using `mclapply` using 2
 cores. Do you see a 2-fold increase in speed?
 
-[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weatherplot.md)
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-par-apply.md)
 
 For more extensive code profiling, see `?Rprof`.
 
