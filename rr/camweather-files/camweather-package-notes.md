@@ -60,7 +60,38 @@ e.g. when calling `camtemp(x)`, is x a valid date?  Write a function
 won't attempt to print temperature for invalid dates.  (Hint: an
 invalid date could be regarded as any date not in the database.)
 
+# Further ideas to build into package
+
+* Consider rebuilding the database when new data is available on
+  cl.cam, or default to reading latest datafile from the web if you
+  are online.
+
+* R does a good job on handling dates and times.  See
+  [R news 4/1 Help desk](http://www.r-project.org/doc/Rnews/Rnews_2004-1.pdf) e.g.
+
+	
+		as.Date("2009_03_20", "%Y_%m_%d") + 15
+
+		t1 = Sys.time()
+		t2 = Sys.time()
+
+		t2 - t1
+
+* Ask interesting questions with the data, e.g. how "normal" is today
+  compared to the seasonal average?  What is the hottest day of a
+  year?
+
+* How well does hours of sunshine (or temperature) correlate with
+  number of daylight hours in Cambrige?  Use a simple
+  [algorithm](http://quantitative-ecology.blogspot.co.uk/2007/10/approximate-sunrise-and-sunset-times.html)
+  to estimate sunrise and sunset times.  (Find lat/long of Computer
+  lab.)
+
+
+  
+
 # SJE Notes
+
 ## Creating the Data file
 
 Notes for SJE:
