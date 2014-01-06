@@ -754,11 +754,11 @@ g()
 The general `R` semantic is a *pass-by-value*: it is the value of a
 variable input, i.e. a copy that is manipulated and potentially
 modified in the functions itself. As such, an `R` function will never
-modify the global variables (unless explicitely specifed). This
+modify the global variables (unless explicitly specified). This
 differs from other programming language that have a
 *pass-by-reference* semantic, where it is the actual variable that is
 passed as input to the function, and any manipulation and update of
-the variable is persisten after the function exits.
+the variable is persistent after the function exits.
 
 The latter behaviour can be emulated in `R` by using
 `environments`. Indeed, `environments` are not copied and modified in
@@ -863,7 +863,7 @@ f(X)
 ```
 
 ```
-## [1] -0.001046
+## [1] 0.0001119
 ```
 
 ```r
@@ -872,7 +872,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.188   0.004   0.192
+##   0.220   0.004   0.226
 ```
 
 ```r
@@ -881,7 +881,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.196   0.196   0.196   0.196   0.196   0.198
+##   0.228   0.228   0.228   0.229   0.229   0.232
 ```
 
 
