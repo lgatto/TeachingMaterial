@@ -248,5 +248,4 @@ splom(d[, c("Temp", "Press", "WindSp", "Humid")])
 - [R Graphical Manual](http://rgm3.lab.nig.ac.jp/RGM/)
 
 
-
-
+[Back](https://github.com/lgatto/rbc/tree/master/R)

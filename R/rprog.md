@@ -834,7 +834,7 @@ f(X)
 ```
 
 ```
-## [1] -0.0003224
+## [1] -0.0009365
 ```
 
 ```r
@@ -843,7 +843,7 @@ system.time(f(X))
 
 ```
 ##    user  system elapsed 
-##   0.268   0.016   0.283
+##   0.200   0.012   0.212
 ```
 
 ```r
@@ -852,7 +852,7 @@ summary(replicate(10, system.time(f(X))["elapsed"]))
 
 ```
 ##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-##   0.287   0.287   0.287   0.287   0.287   0.288
+##   0.215   0.215   0.215   0.215   0.216   0.216
 ```
 
 
@@ -929,3 +929,5 @@ values can be inspected.
 Try it out with one of your own functions.
 
 <!-- ## `message`, `warning`, `error` -->
+
+[Back](https://github.com/lgatto/rbc/tree/master/R)

@@ -759,3 +759,5 @@ values can be inspected.
 Try it out with one of your own functions.
 
 <!-- ## `message`, `warning`, `error` -->
+
+[Back](https://github.com/lgatto/rbc/tree/master/R)
