@@ -60,13 +60,20 @@ e.g. when calling `camtemp(x)`, is x a valid date?  Write a function
 won't attempt to print temperature for invalid dates.  (Hint: an
 invalid date could be regarded as any date not in the database.)
 
+# SJE Notes
 ## Creating the Data file
 
 Notes for SJE:
 
-This is 1Mb rather than 16Mb raw.
+The Rda file is 1Mb rather than 16Mb raw.
 
-Added a header myself to the .csv.gz file.
+First, I added a header myself to the .csv.gz file, then re-saved it:
 
 	camweatherraw <- read.csv('camweather/data/camweatherraw.csv.gz', header=TRUE)
 	save(camweatherraw, file='camweatherraw.rda', compress="xz")
+
+## Updating the vignette output
+
+Copy the html file across from this location:
+
+	system.file("doc/mycamweather-intro.html", package="mycamweather")
