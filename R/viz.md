@@ -33,6 +33,8 @@ plot(1:10, 10:1, type = "b")
 plot(1:10, type = "h")
 ```
 
+![plot of chunk viz.Rmd-2](figure/viz_Rmd-2.png) 
+
 
 - `barbplot`
 

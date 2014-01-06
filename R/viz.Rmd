@@ -20,7 +20,7 @@ the input.
 - `plot`: generic plotting function. By default produces scatter plots
   but other `type`s can be set.
 
-```{r, eval = FALSE}
+```{r}
 par(mfrow = c(2, 2))
 plot(1:10)
 plot(1:10, type = "l")
