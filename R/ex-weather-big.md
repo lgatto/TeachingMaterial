@@ -147,3 +147,5 @@ legend("bottomright", legend = 1:30,
 
 ![plot of chunk ex-weather-big.Rmd-7](figure/ex-weather-big_Rmd-7.png) 
 
+
+[Back](https://github.com/lgatto/rbc/blob/master/R/rprog.md)

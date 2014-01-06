@@ -150,3 +150,5 @@ table(x$WindDr)
 ##  2 42  5
 ```
 
+
+[Back](https://github.com/lgatto/rbc/blob/master/R/intro.md)

@@ -365,7 +365,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##   0.000   0.000   3.001
+##   0.000   0.000   3.003
 ```
 
 
@@ -832,7 +832,7 @@ download a weather data frame of your choice.
 - In what direction has the wind blown most on that day? Hint:
   `table`.
 
-([Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weatherdata.md))
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weatherdata.md)
 
 ## A note of accessor speed
 

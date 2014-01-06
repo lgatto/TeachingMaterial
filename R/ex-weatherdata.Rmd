@@ -47,3 +47,5 @@ mean(diff(x$Sun))
 ```{r}
 table(x$WindDr)
 ```
+
+[Back](https://github.com/lgatto/rbc/blob/master/R/intro.md)

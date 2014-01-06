@@ -12,3 +12,5 @@ plot(x$Time[-1], diff(rain), type = "l",
      main = "2014-01-03",
      col = "blue")
 ```
+
+[Back](https://github.com/lgatto/rbc/blob/master/R/rprog.md)

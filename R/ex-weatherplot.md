@@ -16,3 +16,5 @@ plot(x$Time[-1], diff(rain), type = "l",
 
 ![plot of chunk ex-weatherplot.Rmd-1](figure/ex-weatherplot_Rmd-1.png) 
 
+
+[Back](https://github.com/lgatto/rbc/blob/master/R/rprog.md)
