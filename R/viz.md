@@ -1,6 +1,3 @@
-Data visualisation
-===
-
 # Base graphics
 
 ## Painters model
@@ -26,17 +23,115 @@ the input.
 
 - `plot`: generic plotting function. By default produces scatter plots
   but other `type`s can be set.
-- `barbplot`.
-- `boxplot`.
-- histograms: `hist`.
-- `pie` (not recommended).
-- `image` and `heatmap`.
+
+
+```r
+par(mfrow = c(2, 2))
+plot(1:10, type = "p", main = "points (default)")
+plot(1:10, type = "l", main = "lines")
+plot(1:10, 10:1, type = "b", main = "both (points and lines)")
+plot(1:10, type = "h", main = "histogram")
+```
+
+![plot of chunk viz.Rmd-2](figure/viz_Rmd-2.png) 
+
+
+- `barbplot`
+
+
+```r
+par(mfrow = c(1, 2))
+barplot(c(1, 2, 3, 4))
+s <- sample(letters, 1000, replace = TRUE)
+barplot(table(s))
+```
+
+![plot of chunk viz.Rmd-3](figure/viz_Rmd-3.png) 
+
+
+- `boxplot`
+
+
+```r
+par(mfrow = c(1, 2))
+l <- lapply(1:10, rnorm)
+boxplot(l)
+m <- matrix(rnorm(1000), ncol = 10)
+boxplot(m, names = LETTERS[1:10])
+```
+
+![plot of chunk viz.Rmd-4](figure/viz_Rmd-4.png) 
+
+
+- histograms: `hist`
+
+
+```r
+par(mfrow = c(1, 2))
+x <- rnorm(10000)
+hist(x)
+hist(x, breaks = 50, freq = FALSE)
+lines(density(x), col = "red")
+```
+
+![plot of chunk viz.Rmd-5](figure/viz_Rmd-5.png) 
+
+
+- `pie` (not recommended)
+
+
+```r
+pie(c(1, 2, 3, 4))
+```
+
+![plot of chunk viz.Rmd-6](figure/viz_Rmd-6.png) 
+
+
+- curve
+
+
+```r
+curve(x^2, 0, 10)
+```
+
+![plot of chunk viz.Rmd-7](figure/viz_Rmd-7.png) 
+
+
+- `image` and `heatmap`
+
+
+```r
+m <- matrix(rnorm(30), ncol = 3)
+dimnames(m) <- list(genes = paste("Gene", 1:10), sample = LETTERS[1:3])
+heatmap(m, col = cm.colors(256))
+```
+
+![plot of chunk viz.Rmd-8](figure/viz_Rmd-8.png) 
+
+
 
 ## Low level interaction
 
-Low level interaction with the drawing device to build up a figure piece by piece.
+Low level interaction with the drawing device to build up a figure
+piece by piece.
 
-- `points`, `lines`, `curves`, `rect`, `arrows`, `axis`, `abline`, ...
+- `points`, `lines`, `rect`, `arrows`, `axis`, `abline`, ...
+
+
+```r
+plot(1:10)
+points(1:3, 3:1, pch = 19, col = "red")
+lines(c(10, 1), c(1, 10))
+lines(c(9, 1), c(1, 9), lty = "dotted", lwd = 3)
+rect(8, 8, 10, 10, col = "black")
+arrows(5, 1, 5, 10)
+abline(v = 2, col = "blue")
+abline(h = 2, col = "steelblue")
+grid()
+```
+
+![plot of chunk viz.Rmd-9](figure/viz_Rmd-9.png) 
+
 
 ## Numerous parameters to be tuned.
 
@@ -44,6 +139,30 @@ Low level interaction with the drawing device to build up a figure piece by piec
   - margins (`mar`, ...), grid of figures (`mfrow` and `mfcol`), ...
   - `las`: axes label style
 - Arbitrary graph `layout`
+
+
+```r
+
+(m <- matrix(c(1, 1, 2, 3, 4, 4, 4, 4), nrow = 2))
+```
+
+```
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    4    4
+## [2,]    1    3    4    4
+```
+
+```r
+layout(m)
+plot(1:10, main = 1)
+curve(sin(x), from = -2, to = 2, main = 2)
+curve(cos(x), from = -2, to = 2, main = 3)
+image(t(m), main = 4)
+```
+
+![plot of chunk viz.Rmd-10](figure/viz_Rmd-10.png) 
+
+
 - Point symbols (plotting character): `pch`
 - Symbol sizes (character expansion): `cex`
 - ...
@@ -71,7 +190,8 @@ dev.off()
 
 
 It is possible to open multiple devices and navigate them with
-`dev.prev()`, `dev.next()` and `dev.set(n)`. If a screen device is
+`dev.prev()`, `dev.next()` and set the active device (the one in which
+the graphics operation occur) with `dev.set(n)`. If a screen device is
 open, its content can be copied into another file device with
 `dev.copy()`, `dev.copy2pdf()`, ...
 
@@ -100,7 +220,7 @@ y <- rnorm(3000)
 plot(x, y, pch = 19, col = cl, cex = 2)
 ```
 
-![plot of chunk viz.Rmd-3](figure/viz_Rmd-3.png) 
+![plot of chunk viz.Rmd-12](figure/viz_Rmd-12.png) 
 
 
 - The `smoothScatter` function can be used to use colour density to
@@ -116,7 +236,7 @@ smoothScatter(x, y)
 ## Copyright M. P. Wand 1997-2009
 ```
 
-![plot of chunk viz.Rmd-4](figure/viz_Rmd-4.png) 
+![plot of chunk viz.Rmd-13](figure/viz_Rmd-13.png) 
 
 
 - Colour palettes: `rainbow(n)`, `heat.colors(n)`,
@@ -133,7 +253,7 @@ plot(1:10, pch = 19, col = heat.colors(10), cex = 3)
 plot(1:10, pch = 19, col = brblramp(10), cex = 3)
 ```
 
-![plot of chunk viz.Rmd-5](figure/viz_Rmd-5.png) 
+![plot of chunk viz.Rmd-14](figure/viz_Rmd-14.png) 
 
 
 - The `RColorBrewer` package provides a series of well defined colour
@@ -145,7 +265,7 @@ library("RColorBrewer")
 display.brewer.all()
 ```
 
-![plot of chunk viz.Rmd-6](figure/viz_Rmd-6.png) 
+![plot of chunk viz.Rmd-15](figure/viz_Rmd-15.png) 
 
 
 ## Other
@@ -171,27 +291,27 @@ p <- ggplot(data = d, aes(x = Time, y = Temp))
 p + geom_point()  ## add a layer of points 
 ```
 
-![plot of chunk viz.Rmd-7](figure/viz_Rmd-71.png) 
+![plot of chunk viz.Rmd-16](figure/viz_Rmd-161.png) 
 
 ```r
 p <- ggplot(data = d, aes(x = Time, y = Temp, colour = WindDr))
 p + geom_point(size = 3)
 ```
 
-![plot of chunk viz.Rmd-7](figure/viz_Rmd-72.png) 
+![plot of chunk viz.Rmd-16](figure/viz_Rmd-162.png) 
 
 ```r
 p <- ggplot(data = d, aes(x = Time, y = Temp, colour = WindDr, size = WindSp))
 p + geom_point()
 ```
 
-![plot of chunk viz.Rmd-7](figure/viz_Rmd-73.png) 
+![plot of chunk viz.Rmd-16](figure/viz_Rmd-163.png) 
 
 ```r
 p + geom_point() + facet_wrap(~WindDr)
 ```
 
-![plot of chunk viz.Rmd-7](figure/viz_Rmd-74.png) 
+![plot of chunk viz.Rmd-16](figure/viz_Rmd-164.png) 
 
 
 See also these [`ggplot2` slides](https://github.com/lgatto/visualisation).
@@ -209,19 +329,19 @@ library("lattice")
 xyplot(Temp ~ as.POSIXct(Time), data = d, col = d$WindDr, pch = 19)
 ```
 
-![plot of chunk viz.Rmd-8](figure/viz_Rmd-81.png) 
+![plot of chunk viz.Rmd-17](figure/viz_Rmd-171.png) 
 
 ```r
 xyplot(Temp ~ Press | WindDr, data = d, pch = 19)
 ```
 
-![plot of chunk viz.Rmd-8](figure/viz_Rmd-82.png) 
+![plot of chunk viz.Rmd-17](figure/viz_Rmd-172.png) 
 
 ```r
 splom(d[, c("Temp", "Press", "WindSp", "Humid")])
 ```
 
-![plot of chunk viz.Rmd-8](figure/viz_Rmd-83.png) 
+![plot of chunk viz.Rmd-17](figure/viz_Rmd-173.png) 
 
 
 # Interactive visualisation
@@ -239,5 +359,4 @@ splom(d[, c("Temp", "Press", "WindSp", "Humid")])
 - [R Graphical Manual](http://rgm3.lab.nig.ac.jp/RGM/)
 
 
-
-
+[Back](https://github.com/lgatto/rbc/tree/master/R)

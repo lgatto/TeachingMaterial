@@ -1,11 +1,9 @@
-Introduction
-===
 
 ```{r, echo=FALSE}
 opts_chunk$set(eval=FALSE)
 ```
 
-# Pre-requisites
+# Prerequisites
 
 ## Basic tools
 
@@ -91,7 +89,7 @@ library("devtools")
 ```
 
 It is of course possible to download and install packages using
-`install.packages(, repo = NULL)`. However, this will force you to
+`install.packages(, repos = NULL)`. However, this will force you to
 handle all dependencies (and there can be many) manually too.
 
 
@@ -106,6 +104,16 @@ repository.
 ```{r}
 library("devtools")
 install_github("lgatto/camweather")
+```
+
+or, if you have downloaded the package source
+([`camweather_0.1.2.tar.gz`](http://proteome.sysbiol.cam.ac.uk/lgatto/files/camweather_0.1.2.tar.gz))
+or windows binary
+([`camweather_0.1.2.zip`](http://proteome.sysbiol.cam.ac.uk/lgatto/files/camweather_0.1.2.zip))
+
+```{r, eval=FALSE}
+install.packages("camweather_0.1.2.zip", repos = NULL)    ## on windows
+install.packages("camweather_0.1.2.tar.gz", repos = NULL) ## elsewhere
 ```
 
 To see what packages are available, one can use `installed.packages()`.
@@ -235,6 +243,17 @@ Is the data a collection of scalars of same *type* (defined later)?
  - no: `list`
    - elements of same length (and generally `vectors`): `data.frame`
 
+All these can be initialised with their respective constructor
+functions:
+
+```{r}
+vector()
+matrix()
+array()
+list()
+data.frame()
+```
+
 ## Vectors
 
 The basic type in `R` is a vector. Vectors have a specific length
@@ -291,13 +310,23 @@ typeof(letters)
 typeof(c(TRUE, FALSE)) ## TRUE and FALSE are reserved words
 ```
 
-## Factors
+### Factors
 
-```{r}
+```{r, eval=TRUE}
 gender <- factor(c("male", "female", "male"))
 gender
 class(gender)
 typeof(gender)
+```
+
+These respective vector types can also be initialised specifically:
+
+```{r}
+character()
+logical()
+numeric()
+double()
+factor()
 ```
 
 ## Vectorised operations
@@ -305,8 +334,6 @@ typeof(gender)
 ```{r, eval = TRUE}
 x <- c(1, 2, 3)
 y <- c(3, 2, 1)
-x
-y
 x + y
 x^2
 sqrt(x)
@@ -337,20 +364,42 @@ x
 ## Generating vectors
 
 - `seq` and **argument matching by position and name**
+
+```{r}
+seq(1, 10, 2)
+seq(1, 3, length = 7)
+```
+
 - `:`
+
+```{r}
+1:10
+```
+
 - **Exercise**: Using `rep`, how to generate 
   - 3 repetitions of 1 to 10: 1, 2, ..., 9, 10, 1, 2, ..., 9, 10, 1, 2, ..., 9, 10
   - repeating numbers 1 to 10 each 3 times: 1, 1, 1, 2, 2, 2, ..., 9, 9, 9, 10, 10, 10
+
 - `rnorm`, `runif`, ... to draw values from specific distributions.
+
+```{r}
+summary(rnorm(100))
+runif(10)
+```
+
 - `sample` to create permutations of vectors. 
+
+```{r}
+sample(LETTERS[1:5])
+sample(LETTERS[1:5], 10, replace = TRUE)
+```
 
 ## Matrix
 
 A vector with 2 dimensions
 
-```{r}
+```{r, eval=TRUE}
 m <- c(1, 2, 3, 4, 5, 6)
-m
 dim(m) <- c(2, 3) ## always rows first
 m
 class(m) ## a matrix
@@ -384,8 +433,19 @@ Naming matrices' rows and columns
 ```{r}
 colnames(m) <- letters[1:3]
 rownames(m) <- LETTERS[1:2]
+## or provideDimnames(m, base = list(letters, LETTERS))
 m
 m["A", "c"]
+```
+
+Dimensions can also have their own names:
+
+```{r, tidy=FALSE}
+M <- matrix(c(4, 8, 5, 6, 4, 2, 1, 5, 7), nrow=3)
+dimnames(M) <- list(year =
+                    c(2005, 2006, 2007),
+                    "mode of transport" =
+                    c("plane", "bus", "boat"))
 ```
 
 ## Simplification/dropping of dimensions
@@ -396,10 +456,25 @@ m[-1, , drop = FALSE] ## remains a matrix
 m[, -(1:2)] ## becomes a vector
 m[, -(1:2), drop = FALSE] ## remains a matrix
 ```
+In `R`, there is no such thing as a columns/row vector:
+
+```{r}
+x <- 1:6
+t(x) ## becomes a matrix
+dim(t(x)) 
+dim(t(t(x)))
+```
 
 ## Array
 
-Like a matrix with > 2 dimensions.
+Like a matrix with > 2 dimensions. 
+
+```{r}
+x <- 1:30
+dim(x) <- c(5, 3, 2)
+## or array(1:30, dim = c(5, 3, 2))
+x
+```
 
 ## List
 
@@ -434,7 +509,7 @@ class(l[[2:3]])
 
 A `data.frame` is a list whose elements are all of the same lengths
 and that is represented as a table. Matrix-like subsetting `[,]` using
-`names` (by definition `colnames`) and `rownames` or indices can be
+`names` (same as `colnames`) and `rownames` or indices can be
 used.
 
 ### Example
@@ -515,6 +590,8 @@ download a weather data frame of your choice.
 - In what direction has the wind blown most on that day? Hint:
   `table`.
 
+[Solution](https://github.com/lgatto/rbc/blob/master/R/ex-weatherdata.md)
+
 ## A note of accessor speed
 
 There are multiple ways to access elements in various `R` objects that
@@ -554,6 +631,17 @@ But
 ```{r}
 cbind(m1, m2)
 rbind(m1, m3)
+```
+
+### Example
+
+```{r, eval=FALSE}
+chrsms13 <- weatherdata("2013-12-25")
+chrsms12 <- weatherdata("2012-12-25")
+chrsms11 <- weatherdata("2011-12-25")
+chrsms <- rbind(chrsms11, chrsms12, chrsms13)
+nrow(chrsms11) + nrow(chrsms12) + nrow(chrsms13)
+nrow(chrsms)
 ```
 
 ## Special values: `NULL`, `NA`, `NaN`
@@ -603,7 +691,7 @@ as.numeric("1a")
 An `environment` is and un-ordered collection of symbols, or
 associative arrays. They are implemented as hash tables.
 
-```{r}
+```{r, eval = TRUE}
 e <- new.env()
 e
 e$a <- 1
@@ -618,22 +706,37 @@ e[["a"]]
 Values from specific environments can also be retrieved with `get` or
 `mget` for multiple values or assigned with `assign`.
 
+Environments can also be locked with `lockEnvrionement`, to avoid
+assignment of new variables and update of existing variables can be
+locked with `lockBindings`. 
+
+```{r, eval = TRUE}
+lockEnvironment(e)
+e$b <- 10
+e$a <- 10
+lockBinding("a", e)
+e$a <- 100
+```
+
 ## Objects
 
 As in OO programming:
 
-```{r}
+```{r, eval=TRUE}
 class(x <- rnorm(100))
 y <- rnorm(100)
 class(1L)
 class("123")
 class(sum)
-class(lm(y ~ x))
+class(model <- lm(y ~ x))
+str(model)
 ```
 
-```{r}
+```{r, eval=TRUE}
 library("affydata")
 data("Dilution")
 class(Dilution)
+str(Dilution)
 ```
  
+[Back](https://github.com/lgatto/rbc/tree/master/R)
