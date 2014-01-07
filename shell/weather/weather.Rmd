@@ -148,7 +148,7 @@ Ex: Create a new file simple_rnorm.R, with contents:
 
 <!-- ```{r, engine='cat', engine.opts=list(file='simple_rnorm.R')} -->
 
-```{r eval=FALSE}
+```{r eval=FALSE, tidy=FALSE}
 #!/usr/bin/env Rscript
 args <- commandArgs(TRUE)
 

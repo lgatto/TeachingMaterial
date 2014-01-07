@@ -161,7 +161,7 @@ Rscript -e 'round(runif(10))'
 ## [17] 4.123106 4.242641 4.358899 4.472136 4.582576 4.690416 4.795832 4.898979
 ## [25] 5.000000 5.099020 5.196152 5.291503 5.385165 5.477226 5.567764 5.656854
 ## [33] 5.744563 5.830952 5.916080 6.000000 6.082763 6.164414 6.244998 6.324555
-##  [1] 1 1 0 1 0 1 1 1 1 0
+##  [1] 1 1 1 1 1 0 1 1 1 1
 ```
 
 
@@ -173,14 +173,12 @@ Ex: Create a new file simple_rnorm.R, with contents:
 
 
 ```r
-# !/usr/bin/env Rscript
+#!/usr/bin/env Rscript
 args <- commandArgs(TRUE)
 
-stopifnot(length(args) == 3)
+stopifnot(length(args)==3)
 args = as.numeric(args)
-n = args[1]
-mean = args[2]
-sd = args[3]
+n = args[1]; mean = args[2]; sd = args[3]
 rnorm(n, mean, sd)
 ```
 
