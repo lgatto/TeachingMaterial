@@ -98,7 +98,7 @@ R in the NY Times
 
 See [NY Times](http://www.nytimes.com/2009/01/07/technology/business-computing/07program.html?pagewanted=all&_r=0) article
 
-![R in the NY Times](Introduction_to_R-figure/R_NY_times.png)
+![R in the NY Times](Introduction_to_R-figure/R_NY_Times.png)
 
 
 Some references
@@ -817,7 +817,7 @@ y[1:10]
 ```
 
 ```
- [1] 3.042 3.326 3.202 2.899 3.251 3.326 3.129 3.233 2.935 3.127
+ [1] 2.885 3.267 3.216 3.037 3.190 3.134 3.457 3.192 3.003 3.332
 ```
 
 ```r
@@ -833,7 +833,7 @@ y[1:10]
 ```
 
 ```
- [1] 3.042 3.326 3.202 2.899 3.251 3.326 3.129 3.233 2.935 3.127
+ [1] 2.885 3.267 3.216 3.037 3.190 3.134 3.457 3.192 3.003 3.332
 ```
 
 
@@ -886,12 +886,12 @@ microbenchmark(for(i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times=10)
 
 ```
 Unit: microseconds
-                              expr      min       lq   median       uq
- for (i in 1:n) y[i] <- sqrt(x[i]) 14812.27 15387.95 16343.37 16780.87
-                           sqrt(x)    44.19    49.15    68.46    77.83
-      max neval
- 17648.97    10
-    96.64    10
+                              expr   min       lq   median      uq     max
+ for (i in 1:n) y[i] <- sqrt(x[i]) 14972 15112.46 16364.22 16596.7 19582.7
+                           sqrt(x)    44    51.53    75.31    84.6   107.1
+ neval
+    10
+    10
 ```
 
 
@@ -929,8 +929,8 @@ microbenchmark(for(i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times=10)
 ```
 Unit: milliseconds
                                 expr    min    lq median    uq   max neval
- for (i in 1:n) y[i] <- MySqrt(x[i]) 105.17 106.9  107.8 116.8 123.1    10
-                   sapply(x, MySqrt)  96.95 100.2  107.7 112.9 125.7    10
+ for (i in 1:n) y[i] <- MySqrt(x[i]) 108.13 117.1  119.1 122.6 133.1    10
+                   sapply(x, MySqrt)  99.74 101.4  106.5 107.6 125.9    10
 ```
 
 
