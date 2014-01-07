@@ -5,6 +5,8 @@ R boot-camp
 - Where: Centre for Mathematical Sciences, University of Cambridge
 - More details: http://sje30.github.io/2014-01-07-cam/
 
+- twitter hashtag: `#rcamscw`
+
 ## Schedule
 
 ### Day 1
