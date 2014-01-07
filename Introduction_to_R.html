@@ -1131,7 +1131,7 @@ hljs.initHighlightingOnLoad();
   <div class="slides">
 
 <section data-state="section" data-transition="none" data-transition-speed="default">
-<h1>Bioinformatics for Big Omics Data: Introduction to R</h1><p>Raphael Gottardo, PhD<br/>January 06, 2014</p>
+<h1>Bioinformatics for Big Omics Data: Introduction to R</h1><p>Raphael Gottardo, PhD<br/>January 07, 2014</p>
 
 <div class="slideContent" >
 <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.</p>
@@ -1944,7 +1944,7 @@ for(i in 1:n) {
 y[1:10]
 </code></pre>
 
-<pre><code> [1] 3.231 3.201 3.088 3.124 3.140 3.171 3.092 3.071 2.955 3.199
+<pre><code> [1] 3.042 3.326 3.202 2.899 3.251 3.326 3.129 3.233 2.935 3.127
 </code></pre>
 
 <pre><code class="r">
@@ -1958,7 +1958,7 @@ while(counter&lt;=n) {
 y[1:10]
 </code></pre>
 
-<pre><code> [1] 3.231 3.201 3.088 3.124 3.140 3.171 3.092 3.071 2.955 3.199
+<pre><code> [1] 3.042 3.326 3.202 2.899 3.251 3.326 3.129 3.233 2.935 3.127
 </code></pre>
 
 </div>
@@ -2008,11 +2008,11 @@ microbenchmark(for(i in 1:n) y[i] &lt;- sqrt(x[i]), sqrt(x), times=10)
 
 <pre><code>Unit: microseconds
                               expr      min       lq   median       uq
- for (i in 1:n) y[i] &lt;- sqrt(x[i]) 17125.91 18508.19 19882.91 21173.91
-                           sqrt(x)    44.47    46.63    48.35    75.86
+ for (i in 1:n) y[i] &lt;- sqrt(x[i]) 14812.27 15387.95 16343.37 16780.87
+                           sqrt(x)    44.19    49.15    68.46    77.83
       max neval
- 23837.77    10
-    87.98    10
+ 17648.97    10
+    96.64    10
 </code></pre>
 
 <p>The for loop is increadibly slower! </p>
@@ -2052,9 +2052,9 @@ microbenchmark(for(i in 1:n) y[i] &lt;- MySqrt(x[i]), sapply(x, MySqrt), times=1
 </code></pre>
 
 <pre><code>Unit: milliseconds
-                                expr   min    lq median    uq   max neval
- for (i in 1:n) y[i] &lt;- MySqrt(x[i]) 114.4 116.6  122.9 127.3 136.6    10
-                   sapply(x, MySqrt) 106.5 116.7  123.7 130.2 157.2    10
+                                expr    min    lq median    uq   max neval
+ for (i in 1:n) y[i] &lt;- MySqrt(x[i]) 105.17 106.9  107.8 116.8 123.1    10
+                   sapply(x, MySqrt)  96.95 100.2  107.7 112.9 125.7    10
 </code></pre>
 
 <p><code>*apply</code> functions are not necessarily faster than <code>for</code> loops, but they can be very convenient and usually lead to more compact and more elegant code. </p>

@@ -6,7 +6,7 @@ transition: none
 font-family: 'Helvetica'
 css: my_style.css
 author: Raphael Gottardo, PhD
-date: January 06, 2014
+date: January 07, 2014
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
 
@@ -98,7 +98,7 @@ R in the NY Times
 
 See [NY Times](http://www.nytimes.com/2009/01/07/technology/business-computing/07program.html?pagewanted=all&_r=0) article
 
-![R in the NY Times](./Introduction_to_R-figure/R_NY_times.png)
+![R in the NY Times](Introduction_to_R-figure/R_NY_times.png)
 
 
 Some references
@@ -817,7 +817,7 @@ y[1:10]
 ```
 
 ```
- [1] 3.231 3.201 3.088 3.124 3.140 3.171 3.092 3.071 2.955 3.199
+ [1] 3.042 3.326 3.202 2.899 3.251 3.326 3.129 3.233 2.935 3.127
 ```
 
 ```r
@@ -833,7 +833,7 @@ y[1:10]
 ```
 
 ```
- [1] 3.231 3.201 3.088 3.124 3.140 3.171 3.092 3.071 2.955 3.199
+ [1] 3.042 3.326 3.202 2.899 3.251 3.326 3.129 3.233 2.935 3.127
 ```
 
 
@@ -887,11 +887,11 @@ microbenchmark(for(i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times=10)
 ```
 Unit: microseconds
                               expr      min       lq   median       uq
- for (i in 1:n) y[i] <- sqrt(x[i]) 17125.91 18508.19 19882.91 21173.91
-                           sqrt(x)    44.47    46.63    48.35    75.86
+ for (i in 1:n) y[i] <- sqrt(x[i]) 14812.27 15387.95 16343.37 16780.87
+                           sqrt(x)    44.19    49.15    68.46    77.83
       max neval
- 23837.77    10
-    87.98    10
+ 17648.97    10
+    96.64    10
 ```
 
 
@@ -928,9 +928,9 @@ microbenchmark(for(i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times=10)
 
 ```
 Unit: milliseconds
-                                expr   min    lq median    uq   max neval
- for (i in 1:n) y[i] <- MySqrt(x[i]) 114.4 116.6  122.9 127.3 136.6    10
-                   sapply(x, MySqrt) 106.5 116.7  123.7 130.2 157.2    10
+                                expr    min    lq median    uq   max neval
+ for (i in 1:n) y[i] <- MySqrt(x[i]) 105.17 106.9  107.8 116.8 123.1    10
+                   sapply(x, MySqrt)  96.95 100.2  107.7 112.9 125.7    10
 ```
 
 
