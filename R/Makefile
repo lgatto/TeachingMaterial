@@ -9,7 +9,7 @@
 
 .PHONY: all clean
 
-all: intro.md rprog.md viz.md
+all: intro.md rprog.md viz.md *.R
 
 clean:
 	rm -f *~

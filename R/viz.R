@@ -49,6 +49,10 @@ curve(x^2, 0, 10)
 m <- matrix(rnorm(30), ncol = 3)
 dimnames(m) <- list(genes = paste("Gene", 1:10),
                     sample = LETTERS[1:3])
+matplot(t(m), type = "b")
+
+
+## ------------------------------------------------------------------------
 heatmap(m, col = cm.colors(256))
 
 

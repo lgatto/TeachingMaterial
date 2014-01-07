@@ -97,17 +97,27 @@ curve(x^2, 0, 10)
 ![plot of chunk viz.Rmd-7](figure/viz_Rmd-7.png) 
 
 
-- `image` and `heatmap`
+- `matplot`
 
 
 ```r
 m <- matrix(rnorm(30), ncol = 3)
 dimnames(m) <- list(genes = paste("Gene", 1:10), sample = LETTERS[1:3])
-heatmap(m, col = cm.colors(256))
+matplot(t(m), type = "b")
 ```
 
 ![plot of chunk viz.Rmd-8](figure/viz_Rmd-8.png) 
 
+
+
+- `image` and `heatmap`
+
+
+```r
+heatmap(m, col = cm.colors(256))
+```
+
+![plot of chunk viz.Rmd-9](figure/viz_Rmd-9.png) 
 
 
 ## Low level interaction
@@ -130,7 +140,7 @@ abline(h = 2, col = "steelblue")
 grid()
 ```
 
-![plot of chunk viz.Rmd-9](figure/viz_Rmd-9.png) 
+![plot of chunk viz.Rmd-10](figure/viz_Rmd-10.png) 
 
 
 ## Numerous parameters to be tuned.
@@ -160,7 +170,7 @@ curve(cos(x), from = -2, to = 2, main = 3)
 image(t(m), main = 4)
 ```
 
-![plot of chunk viz.Rmd-10](figure/viz_Rmd-10.png) 
+![plot of chunk viz.Rmd-11](figure/viz_Rmd-11.png) 
 
 
 - Point symbols (plotting character): `pch`
@@ -220,7 +230,7 @@ y <- rnorm(3000)
 plot(x, y, pch = 19, col = cl, cex = 2)
 ```
 
-![plot of chunk viz.Rmd-12](figure/viz_Rmd-12.png) 
+![plot of chunk viz.Rmd-13](figure/viz_Rmd-13.png) 
 
 
 - The `smoothScatter` function can be used to use colour density to
@@ -236,7 +246,7 @@ smoothScatter(x, y)
 ## Copyright M. P. Wand 1997-2009
 ```
 
-![plot of chunk viz.Rmd-13](figure/viz_Rmd-13.png) 
+![plot of chunk viz.Rmd-14](figure/viz_Rmd-14.png) 
 
 
 - Colour palettes: `rainbow(n)`, `heat.colors(n)`,
@@ -253,7 +263,7 @@ plot(1:10, pch = 19, col = heat.colors(10), cex = 3)
 plot(1:10, pch = 19, col = brblramp(10), cex = 3)
 ```
 
-![plot of chunk viz.Rmd-14](figure/viz_Rmd-14.png) 
+![plot of chunk viz.Rmd-15](figure/viz_Rmd-15.png) 
 
 
 - The `RColorBrewer` package provides a series of well defined colour
@@ -265,7 +275,7 @@ library("RColorBrewer")
 display.brewer.all()
 ```
 
-![plot of chunk viz.Rmd-15](figure/viz_Rmd-15.png) 
+![plot of chunk viz.Rmd-16](figure/viz_Rmd-16.png) 
 
 
 ## Other
@@ -291,27 +301,27 @@ p <- ggplot(data = d, aes(x = Time, y = Temp))
 p + geom_point()  ## add a layer of points 
 ```
 
-![plot of chunk viz.Rmd-16](figure/viz_Rmd-161.png) 
+![plot of chunk viz.Rmd-17](figure/viz_Rmd-171.png) 
 
 ```r
 p <- ggplot(data = d, aes(x = Time, y = Temp, colour = WindDr))
 p + geom_point(size = 3)
 ```
 
-![plot of chunk viz.Rmd-16](figure/viz_Rmd-162.png) 
+![plot of chunk viz.Rmd-17](figure/viz_Rmd-172.png) 
 
 ```r
 p <- ggplot(data = d, aes(x = Time, y = Temp, colour = WindDr, size = WindSp))
 p + geom_point()
 ```
 
-![plot of chunk viz.Rmd-16](figure/viz_Rmd-163.png) 
+![plot of chunk viz.Rmd-17](figure/viz_Rmd-173.png) 
 
 ```r
 p + geom_point() + facet_wrap(~WindDr)
 ```
 
-![plot of chunk viz.Rmd-16](figure/viz_Rmd-164.png) 
+![plot of chunk viz.Rmd-17](figure/viz_Rmd-174.png) 
 
 
 See also these [`ggplot2` slides](https://github.com/lgatto/visualisation).
@@ -329,19 +339,19 @@ library("lattice")
 xyplot(Temp ~ as.POSIXct(Time), data = d, col = d$WindDr, pch = 19)
 ```
 
-![plot of chunk viz.Rmd-17](figure/viz_Rmd-171.png) 
+![plot of chunk viz.Rmd-18](figure/viz_Rmd-181.png) 
 
 ```r
 xyplot(Temp ~ Press | WindDr, data = d, pch = 19)
 ```
 
-![plot of chunk viz.Rmd-17](figure/viz_Rmd-172.png) 
+![plot of chunk viz.Rmd-18](figure/viz_Rmd-182.png) 
 
 ```r
 splom(d[, c("Temp", "Press", "WindSp", "Humid")])
 ```
 
-![plot of chunk viz.Rmd-17](figure/viz_Rmd-173.png) 
+![plot of chunk viz.Rmd-18](figure/viz_Rmd-183.png) 
 
 
 # Interactive visualisation
