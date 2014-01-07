@@ -162,6 +162,7 @@ or windows binary
 ```r
 install.packages("camweather_0.1.2.zip", repos = NULL)  ## on windows
 install.packages("camweather_0.1.2.tar.gz", repos = NULL)  ## elsewhere
+install.packages("camweather_0.1.2.tar.gz", repos = NULL, type = "src")  ## mac
 ```
 
 
@@ -363,7 +364,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##   0.000   0.000   3.004
+##   0.000   0.000   3.003
 ```
 
 
@@ -1020,7 +1021,7 @@ e
 ```
 
 ```
-## <environment: 0x33028f0>
+## <environment: 0x15f86e0>
 ```
 
 ```r
@@ -1147,14 +1148,14 @@ str(model)
 
 ```
 ## List of 12
-##  $ coefficients : Named num [1:2] -0.0121 0.0575
+##  $ coefficients : Named num [1:2] -0.09786 0.00956
 ##   ..- attr(*, "names")= chr [1:2] "(Intercept)" "x"
-##  $ residuals    : Named num [1:100] 1.275 -0.447 -1.89 0.72 0.645 ...
+##  $ residuals    : Named num [1:100] 0.8009 -0.9092 0.8792 -0.0578 1.6673 ...
 ##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
-##  $ effects      : Named num [1:100] 0.188 -0.514 -1.992 0.568 0.576 ...
+##  $ effects      : Named num [1:100] 0.9726 -0.0918 0.7914 -0.1163 1.501 ...
 ##   ..- attr(*, "names")= chr [1:100] "(Intercept)" "x" "" "" ...
 ##  $ rank         : int 2
-##  $ fitted.values: Named num [1:100] 0.00204 0.01183 -0.00372 -0.05162 0.02905 ...
+##  $ fitted.values: Named num [1:100] -0.1047 -0.0795 -0.0996 -0.0963 -0.1084 ...
 ##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
 ##  $ assign       : int [1:2] 0 1
 ##  $ qr           :List of 5
@@ -1163,7 +1164,7 @@ str(model)
 ##   .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
 ##   .. .. ..$ : chr [1:2] "(Intercept)" "x"
 ##   .. ..- attr(*, "assign")= int [1:2] 0 1
-##   ..$ qraux: num [1:2] 1.1 1.06
+##   ..$ qraux: num [1:2] 1.1 1.2
 ##   ..$ pivot: int [1:2] 1 2
 ##   ..$ tol  : num 1e-07
 ##   ..$ rank : int 2
@@ -1186,8 +1187,8 @@ str(model)
 ##   .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
 ##   .. .. ..- attr(*, "names")= chr [1:2] "y" "x"
 ##  $ model        :'data.frame':	100 obs. of  2 variables:
-##   ..$ y: num [1:100] 1.277 -0.435 -1.894 0.668 0.674 ...
-##   ..$ x: num [1:100] 0.247 0.417 0.147 -0.686 0.716 ...
+##   ..$ y: num [1:100] 0.696 -0.989 0.78 -0.154 1.559 ...
+##   ..$ x: num [1:100] -0.716 1.918 -0.185 0.16 -1.107 ...
 ##   ..- attr(*, "terms")=Classes 'terms', 'formula' length 3 y ~ x
 ##   .. .. ..- attr(*, "variables")= language list(y, x)
 ##   .. .. ..- attr(*, "factors")= int [1:2, 1] 0 1

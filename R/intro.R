@@ -44,6 +44,7 @@ install_github("lgatto/camweather")
 ## ----, eval=FALSE--------------------------------------------------------
 ## install.packages("camweather_0.1.2.zip", repos = NULL)    ## on windows
 ## install.packages("camweather_0.1.2.tar.gz", repos = NULL) ## elsewhere
+## install.packages("camweather_0.1.2.tar.gz", repos = NULL, type = "src") ## mac
 
 
 ## ------------------------------------------------------------------------
