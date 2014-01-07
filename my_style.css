@@ -1,0 +1,348 @@
+.reveal h1 { 
+  font-size: 2.5em; 
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6 { 
+  margin-bottom: .6em;    
+}
+
+.reveal p,
+.reveal table {
+  margin-bottom: 1em; 
+}
+
+.reveal li {
+  margin-bottom: .4em;
+}
+
+.reveal ul ul,
+.reveal ul ol,
+.reveal ol ol,
+.reveal ol ul {
+  margin-top: .4em;
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal small {
+  font-size: 0.85em;
+}
+
+.reveal tiny {
+  font-size: 0.5em;
+}
+
+.reveal pre {   
+  margin-top: 0;
+  max-width: 95%;
+  border: 1px solid #ccc;
+  white-space: pre-wrap;
+  margin-bottom: 1em; 
+}
+
+.reveal pre code {
+  display: block; padding: 0.2em;
+  font-size: 1.2em;
+  line-height: 1.1em;
+  background-color: white;
+  overflow: visible;
+  max-height: none;
+  word-wrap: normal;
+}
+
+.reveal code {
+  overflow: visible;
+  max-height: none;
+}
+
+.reveal code.r {
+  background-color: #F8F8F8;
+}
+
+.reveal code.cpp {
+  background-color: #F8F8F8;
+}
+
+.reveal section del {
+  text-decoration: none;
+  color: #AAB1BA;
+}
+
+.reveal section img {
+  border: none;
+}
+
+.reveal section .fieldError {
+  margin-bottom: 25px;
+}
+
+.reveal section .fieldError span {
+  color: red;
+}
+
+.prompt .reveal .state-background {
+  background: #C6D7DC;
+}
+
+.quiz-multichoice .reveal .state-background {
+  background: rgba(254,220,179,1);
+}
+
+.quiz-multichoice .reveal ul {
+  list-style-type: none;
+  margin-bottom: 30px;
+}
+
+.quiz-multichoice .reveal li {
+  margin-top: 15px;
+}
+
+.quiz-multichoice .reveal .quizFeedback {
+  margin-bottom: 30px;
+}
+
+.quiz-multichoice .reveal .quizFeedback img {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  float: left;
+  margin-top: -15px;
+}
+
+.quiz-multichoice .reveal .quizFeedback span {
+  font-size: 1.4em; 
+  margin-left: 12px;
+}
+
+.section .reveal .state-background {
+  background: #DEEBF7;
+}
+
+.section .reveal h1,
+.section .reveal h2,
+.section .reveal h3,
+.section .reveal strong,
+.section .reveal p {
+  color: #08306B;
+  margin-top: 50px;
+}
+
+.sub-section .reveal .state-background {
+  background: #F0F0F0
+}
+
+.sub-section .reveal h2,
+.sub-section .reveal p {
+  color: black;
+  margin-top: 50px;
+}
+
+.reveal strong {
+  color: #25679E;
+}
+
+.reveal .controls {
+  right: -20px;
+  bottom: 5px;
+}
+
+.reveal .controls div.navigate-left {
+  top: 75px;
+}
+
+.reveal .controls div.navigate-right {
+  left: 54px;
+  top: 75px;
+}
+
+
+.reveal .controls div.navigate-up {
+  display: none;
+}
+
+.reveal .controls div.navigate-down {
+  display: none;
+}
+
+/*********************************************
+  * NAVIGATION CONTROLS
+*********************************************/
+  
+.reveal .controls div.navigate-left,
+.reveal .controls div.navigate-left.enabled {
+  border-right-color: #08306B;
+}
+
+.reveal .controls div.navigate-right,
+.reveal .controls div.navigate-right.enabled {
+  border-left-color: #08306B;
+}
+
+.reveal .controls div.navigate-up,
+.reveal .controls div.navigate-up.enabled {
+  border-bottom-color: #08306B;
+}
+
+.reveal .controls div.navigate-down,
+.reveal .controls div.navigate-down.enabled {
+  border-top-color: #08306B;
+}
+
+.reveal .controls div.navigate-left.enabled:hover {
+  border-right-color: #6BAED6;
+}
+
+.reveal .controls div.navigate-right.enabled:hover {
+  border-left-color: #6BAED6;
+}
+
+.reveal .controls div.navigate-up.enabled:hover {
+  border-bottom-color: #6BAED6;
+}
+
+.reveal .controls div.navigate-down.enabled:hover {
+  border-top-color: #6BAED6;
+}
+
+.reveal .progress span {
+  background: #08306B;
+}
+
+.reveal .slides>section,
+.reveal .slides>section>section {
+  padding: 0px 0px;
+}
+
+
+.reveal table {
+  border-width: 1px;
+  border-spacing: 2px;
+  border-style: dotted;
+  border-color: gray;
+  border-collapse: collapse;
+  font-size: 0.7em;
+}
+
+.reveal table th {
+  border-width: 1px;
+  padding-left: 10px;
+  padding-right: 25px;
+  font-weight: bold;
+  border-style: dotted;
+  border-color: gray;
+}
+
+.reveal table td {
+  border-width: 1px;
+  padding-left: 10px;
+  padding-right: 25px;
+  border-style: dotted;
+  border-color: gray;
+}
+
+.reveal blockquote {
+  display: block;
+  position: relative;
+  width: 90%;
+  margin: 5px auto;
+  padding: 10px;
+  
+  font-style: italic;
+  background: #E7E7E7;
+    border: 1px solid #E7E7E7;
+  box-shadow: none;
+}
+
+.reveal blockquote p:first-child,
+.reveal blockquote p:last-child {
+  display: block;
+}
+
+.reveal blockquote:before {
+  content: '';
+}
+
+.reveal blockquote:after {
+  content: '';
+}
+
+
+.reveal ol,
+.reveal ul {
+  margin: 0 0 .5em 1.2em;
+}
+
+.reveal .slides section {
+  height: 100%;
+}
+
+.reveal .slides section .slideContent h2 {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.reveal .slides section .slideContent h3 {
+  font-size: 1.1em;
+  font-weight: bold;
+}
+
+.reveal .slides section .column {
+  position: fixed;
+  width: 48%;
+  top: 2.5em;
+  bottom: 0;
+}
+
+.reveal .slides section .column1 {
+  left: 0;
+}
+
+.reveal .slides section .column2 {
+  right: 0;
+}
+
+.reveal .slides section .column img {
+  max-width: 95%;
+  max-height: 95%;
+  height: auto;
+}
+
+.reveal .slides section .mediaOnly {
+  position: fixed;
+  width: 100%;
+  top: 2.5em;
+  bottom: 0;
+}
+
+.reveal .slides section .mediaOnly img {
+  max-width: 90%;
+  max-height: 90%;
+  height: auto;
+}
+
+.reveal .slides section .mediaInline img {
+  max-width: 90%;
+  max-height: 50%;
+  width: auto;
+}
+
+.reveal .slides section .mediaOnly video {
+  height: 90%;
+  width: 90%;
+}
+
+.reveal .slides section .mediaInline video {
+  height: 50%;
+  width: 90%;
+}
+
+.reveal .slides section .noTitle {
+  top: 0;
+}
