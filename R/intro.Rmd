@@ -129,10 +129,10 @@ head(allpkgs)
 
 ## Help
 
-`R` comes with a extensive help system. Type `helps.start()` to start
+`R` comes with a extensive help system. Type `help.start()` to start
 the HTML version of `R`'s online documentation. Each function comes
-with its dedicated manual that can be accessed using `help("ls")` or
-`?ls`. Reading the `ls` manual, we see that we can provide it with a
+with its dedicated manual that can be accessed using `help("rm")` or
+`?rm`. Reading the `rm` manual, we see that we can provide it with a
 `list` input, i.e. *a character vector naming objects to be
 removed*. Below, we generate this list of variable (object) names with
 `ls()` and pass it directly as input to `rm()` to get a clean
@@ -229,7 +229,7 @@ for more details.
 
 |          | dimensions  | content types |
 |----------|-------------|---------------|
-| `vector` | 1: `lenght` | 1             |
+| `vector` | 1: `length` | 1             |
 | `matrix` | 2: `dim`    | 1             |
 | `array`  | n: `dim`    | 1             |
 | `list`   | 1: `length` | `length()`    |
@@ -341,7 +341,7 @@ sqrt(x)
 
 ```{r, eval = TRUE}
 x <- c("a", "b", "c")
-paste(x, 1, sep = ".")
+paste(x, 1:3, sep = ".")
 ```
 
 ### Recycling
@@ -360,6 +360,10 @@ x[2:3] <- 10
 x
 ```
 
+```{r, eval = TRUE}
+x <- c("a", "b", "c")
+paste(x, 1, sep = ".")
+```
 
 ## Generating vectors
 

@@ -182,10 +182,10 @@ head(allpkgs)
 
 ## Help
 
-`R` comes with a extensive help system. Type `helps.start()` to start
+`R` comes with a extensive help system. Type `help.start()` to start
 the HTML version of `R`'s online documentation. Each function comes
-with its dedicated manual that can be accessed using `help("ls")` or
-`?ls`. Reading the `ls` manual, we see that we can provide it with a
+with its dedicated manual that can be accessed using `help("rm")` or
+`?rm`. Reading the `rm` manual, we see that we can provide it with a
 `list` input, i.e. *a character vector naming objects to be
 removed*. Below, we generate this list of variable (object) names with
 `ls()` and pass it directly as input to `rm()` to get a clean
@@ -363,7 +363,7 @@ system.time(f(Sys.sleep(3)))
 
 ```
 ##    user  system elapsed 
-##   0.000   0.000   3.003
+##   0.000   0.000   3.004
 ```
 
 
@@ -381,7 +381,7 @@ for more details.
 
 |          | dimensions  | content types |
 |----------|-------------|---------------|
-| `vector` | 1: `lenght` | 1             |
+| `vector` | 1: `length` | 1             |
 | `matrix` | 2: `dim`    | 1             |
 | `array`  | n: `dim`    | 1             |
 | `list`   | 1: `length` | `length()`    |
@@ -549,11 +549,11 @@ sqrt(x)
 
 ```r
 x <- c("a", "b", "c")
-paste(x, 1, sep = ".")
+paste(x, 1:3, sep = ".")
 ```
 
 ```
-## [1] "a.1" "b.1" "c.1"
+## [1] "a.1" "b.2" "c.3"
 ```
 
 
@@ -595,6 +595,16 @@ x
 ## [1]  1 10 10  4
 ```
 
+
+
+```r
+x <- c("a", "b", "c")
+paste(x, 1, sep = ".")
+```
+
+```
+## [1] "a.1" "b.1" "c.1"
+```
 
 
 ## Generating vectors
@@ -1010,7 +1020,7 @@ e
 ```
 
 ```
-## <environment: 0x27aace0>
+## <environment: 0x33028f0>
 ```
 
 ```r
@@ -1137,14 +1147,14 @@ str(model)
 
 ```
 ## List of 12
-##  $ coefficients : Named num [1:2] -0.0141 -0.0786
+##  $ coefficients : Named num [1:2] -0.0121 0.0575
 ##   ..- attr(*, "names")= chr [1:2] "(Intercept)" "x"
-##  $ residuals    : Named num [1:100] -1.627 -1.116 -1.384 -0.161 0.916 ...
+##  $ residuals    : Named num [1:100] 1.275 -0.447 -1.89 0.72 0.645 ...
 ##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
-##  $ effects      : Named num [1:100] 0.0766 -0.7296 -1.1812 0.0721 1.2025 ...
+##  $ effects      : Named num [1:100] 0.188 -0.514 -1.992 0.568 0.576 ...
 ##   ..- attr(*, "names")= chr [1:100] "(Intercept)" "x" "" "" ...
 ##  $ rank         : int 2
-##  $ fitted.values: Named num [1:100] -0.0835 0.0926 0.0329 0.0592 0.1048 ...
+##  $ fitted.values: Named num [1:100] 0.00204 0.01183 -0.00372 -0.05162 0.02905 ...
 ##   ..- attr(*, "names")= chr [1:100] "1" "2" "3" "4" ...
 ##  $ assign       : int [1:2] 0 1
 ##  $ qr           :List of 5
@@ -1153,7 +1163,7 @@ str(model)
 ##   .. .. ..$ : chr [1:100] "1" "2" "3" "4" ...
 ##   .. .. ..$ : chr [1:2] "(Intercept)" "x"
 ##   .. ..- attr(*, "assign")= int [1:2] 0 1
-##   ..$ qraux: num [1:2] 1.1 1.15
+##   ..$ qraux: num [1:2] 1.1 1.06
 ##   ..$ pivot: int [1:2] 1 2
 ##   ..$ tol  : num 1e-07
 ##   ..$ rank : int 2
@@ -1176,8 +1186,8 @@ str(model)
 ##   .. ..- attr(*, "dataClasses")= Named chr [1:2] "numeric" "numeric"
 ##   .. .. ..- attr(*, "names")= chr [1:2] "y" "x"
 ##  $ model        :'data.frame':	100 obs. of  2 variables:
-##   ..$ y: num [1:100] -1.71 -1.023 -1.351 -0.102 1.021 ...
-##   ..$ x: num [1:100] 0.883 -1.358 -0.598 -0.934 -1.514 ...
+##   ..$ y: num [1:100] 1.277 -0.435 -1.894 0.668 0.674 ...
+##   ..$ x: num [1:100] 0.247 0.417 0.147 -0.686 0.716 ...
 ##   ..- attr(*, "terms")=Classes 'terms', 'formula' length 3 y ~ x
 ##   .. .. ..- attr(*, "variables")= language list(y, x)
 ##   .. .. ..- attr(*, "factors")= int [1:2, 1] 0 1
