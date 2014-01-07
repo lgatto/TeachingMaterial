@@ -29,3 +29,11 @@ If you need to contact me, please email me at <rgottard@fhcrc.org>.
 - Drawbacks and limitations of high dimensional omics analysis (overfitting, inference)
 
 *Note that this is tentative ouline and minor modifications are likely to occur. Please watch this page regularly for updates.*
+
+**Lecture notes:**
+
+- 01/07/13 [Introduction_to_R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rpres) 
+- 01/08/13 Same as above and [Advanced_graphics_in_R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rpres)
+- 01/14/13 
+
+
