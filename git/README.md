@@ -6,6 +6,7 @@
 
 Version control is a piece of software which allows you to record and preserve  the history of changes made to directories and files.  If you're familiar with Track Changes in Microsoft Word, or the versions of files saved in DropBox or GoogleDrive, then you've already used a simple form of version control. 
 
+
 Think about the following situations:
 
 * Someone asks you, "Can I have the code you used to create the data that you graphed in your conference paper?". How easy would it be for you to get this code for them?
