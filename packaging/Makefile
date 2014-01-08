@@ -17,7 +17,7 @@ install:
 	"$(R_HOME)/bin/R" CMD INSTALL $(PKGTGZ)
 
 roxygen:
-        "$(R_HOME)/bin/R" --vanilla -e "library(roxygen2); roxygenize('"$(PKG)"', roclets=\"rd\")";
+	"$(R_HOME)/bin/R" --vanilla -e "library(roxygen2); roxygenize('"$(PKG)"', roclets=\"rd\")";
 
 all:
 	make roxygen
