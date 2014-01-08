@@ -105,118 +105,6 @@ If we created a new branch to do some experimental analysis and then we want to 
 
 This will work assumig that 'origin' is still an alias for our remote repository in GitHub. The analysis0.1 branch should now be created in our GitHub repository.
 
-### Collaboration: pulling changes from a remote repository
-
-Now when we have a remote repository, we can share it and collaborate with others (and we can also work from multiple locations: for example from a laptop and a desktorp in the lab). But how do we get the latest changes? One way is simply to clone the repository every time but this is inefficient, especially if our repository is very large. So, Git allows us to get the latest changes down from a repository. Let's assume that we work on our 
-
-First, let us leave our current local repository,
-
-    $ cd ..
-    $ ls
-    2014-01-Cambridge
-
-And let us clone our repository again, but this time specify the local directory name,
-
-    $ git clone https://github.com/USERNAME/2014-01-Cambridge.git bootcamp2
-    Cloning into 'bootcamp2'...
-
-
-So we now have two clones of our repository,
-
-    $ ls
-    $ bootcamp bootcamp2
-
-Let's pretend these clones are on two separate machines! So we have 3 versions of our repository - our two local versions, on our separate machines (we're still pretending!) and one on GitHub. So let's go into one of our clones, make some changes, commit these and push these to GitHub:
-
-    $ cd bootcamp
-    $ emacs weatherbasic.R
-    $ git add weatherbasic.R
-    $ git commit -m "Added some more comments" weatherbasic.R
-    $ git push
-
-Now let's change to our other repository and *fetch* the changes from our remote repository,
-
-    $ cd ../bootcamp2
-    $ git fetch
-
-We can now see what the differences are by doing,
-
-    $ git diff origin/master
-
-which compares our current, `master` branch, with an `origin/master` branch which is the name of the `master` branch in `origin` which is the alias for our cloned repository, the one on GitHub.
-
-We can then *merge* these changes into our current repository, which merges the branches together,
-
-    $ git merge origin/master
-
-And then we can check that we have our changes,
-
-    $ cat weatherbasic.R
-    $ git log
-
-As a short-hand, we can do a Git *pull* which does a *fetch* then a *merge*,
-
-    $ emacs weatherbasic.R
-    $ git add weatherbasic.R
-    $ git commit -m "Added credits" weatherbasic.R
-    $ git push
-    $ cd ..
-    $ cd ../2014-01-Cambridge
-    $ git pull
-
-And then check that we have our changes,
-
-    $ cat weatherbasic.R
-    $ git log
-
-### Collaboration: conflicts and how to resolve them
-
-Let's continue to pretend that our two local, cloned, repositories are hosted on two different machines, and make some changes to our file, and push these to GitHub:
-
-    $ emacs weatherbasic.R
-    $ git add weatherbasic.R
-    $ git commit -m "Credits - added our names" weatherbasic.R
-    $ git push
-
-Now let us suppose, at a later, date, we use our other repository and we want to change the credits.
-
-    $ cd ../bootcamp2
-    $ emacs weatherbasic.R
-    $ git add weatherbasic.R
-    $ git commit -m "Changed the first author" weatherbasic.R
-    $ git push
-
-Our push fails, as we've not yet pulled down our changes from our remote repository. Before pushing we should always pull, so let's do that...
-
-    $ git pull
-
-and we get:
-
-    Auto-merging weatherbasic.R
-    CONFLICT (content): Merge conflict in weatherbasic.R
-    Automatic merge failed; fix conflicts and then commit the result.
-
-As we saw earlier, with the fetch and merge, a pull pulls down changes from the repository and tries to merge these. It does this on a file-by-file basis, merging files line by line. We get a *conflict* when if a file has changes that affect the same lines and those changes can't be seamlessly merged. If we look at the status,
-
-    $ git status
-
-we can see that our file is listed as `Unmerged` and if we look at `add_numb.py`, we may see something like,
-
-    <<<<<<< HEAD 
-    # Authors: John and Aleksandra
-    =======
-    # Authors: Aleksandra and John
-    >>>>>>> 71d34decd32124ea809e50cfbb7da8e3e354ac26 
-
-The mark-up shows us the parts of the file causing the conflict and the versions they come from. We now need to manually edit the file to *resolve* the conflict. Just like we did when we had to deal with the conflict when we were merging the branches.
-
-We edit the file. Then commit our changes e.g. Now if we push,
-
-    $ git push
-
-All goes well. If we now go to GitHub and click on the Overview tab we can see where our repository diverged and came together again.
-
-This is where version control proves itself better than DropBox or GoogleDrive, this ability to merge text files line-by-line and highlight the conflicts between them, so no work is ever lost.
 
 ### Remote repository and branching
 
@@ -242,8 +130,6 @@ So far, we've now seen how we can,
 * Host our private repository on GitHub
 * Copy, or clone, our remote repository onto a local machine
 * Make changes in a local repository and push these to a remote repository
-* Fetch and merge, or pull, changes from a remote repository into our local repository
-* Identify and resolve conflicts when the same file is edited within two repositories
 * Create and delete remote branches
 
 For the next exercise, please pair up (or work in groups of 3) and work on a shared repository in GitHub.
