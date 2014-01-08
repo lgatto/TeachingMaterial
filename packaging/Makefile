@@ -1,6 +1,7 @@
-PKG=camweather
+PKG=mycamweather
 PkgVersion=$(shell grep Version $(PKG)/DESCRIPTION | sed -e 's/Version: //')
 PKGTGZ=$(PKG)_$(PkgVersion).tar.gz
+PKGCHK=$(PKG).Rcheck
 
 setvars:
 ifeq (${R_HOME},)
@@ -25,4 +26,8 @@ all:
 	make check
 	make install
 
-.PHONY: build check install roxygen
+clean: 
+	rm -f $(PKGTGZ)
+	rm -rf $(PKGCHK)
+
+.PHONY: build check install roxygen clean
