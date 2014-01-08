@@ -6,7 +6,7 @@ transition: none
 font-family: 'Helvetica'
 css: my_style.css
 author: Raphael Gottardo, PhD
-date: January 07, 2014
+date: January 08, 2014
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
 
@@ -235,7 +235,7 @@ Reshaping your data with reshape2
 ===================
 
 It is often necessary to reshape (e.g. pivot) your data before analysis. This can easily be done in R using the `reshape2` package.
-This package provides main functions `melt` and `cast`. `melt` basically "melts" a dataframe in wide format into a long format. `cast` goes in the other direction.
+This package provides main functions `melt` and `*cast`. `melt` basically "melts" a dataframe in wide format into a long format. `*cast` goes in the other direction.
 
 Let's revisite our `iris` dataset.
 
@@ -331,7 +331,7 @@ head(iris_cast)
 
 **Q:** Why are the elements of `flower_id` not properly ordered?
 
-`melt` and `*cast` are very powerful. These can also be used on data.tables. More on this latter.
+`melt` and `*cast` are very powerful. These can also be used on `data.tables`. More on this latter.
 
 **Exercise:** Try to reorder the variable names in the formula. What happens?
 
@@ -349,19 +349,26 @@ qplot(x=Width, y=Length, data=iris_cast, geom=c("point","smooth"), color=Species
 ![plot of chunk multi-facet](Advanced_graphics_in_R-figure/multi-facet.png) 
 
 
-It would be nice to see if we can have free scales for the panels, but before we explore this, let's talk about the `ggplot` API as an alternative to qplot. Can we also customize the look and feel?
+It would be nice to see if we could have free scales for the panels, but before we explore this, let's talk about the `ggplot` API as an alternative to qplot. Can we also customize the look and feel?
 
 
 ggplot2 and the grammar of graphics
 ===================================
 
-`ggplot2` provides another API via the `ggplot` command. This directly the implements  the idea of a "grammar of graphics". 
+`ggplot2` provides another API via the `ggplot` command, that directly implements the idea of a "grammar of graphics". 
+The grammar defines the components of a plot as:
+- a default dataset and set of mappings from variables to aesthetics,
+- one or more layers, with each layer having one geometric object, one statistical transformation, one position adjustment, and optionally, one dataset and set of aesthetic mappings,
+- one scale for each aesthetic mapping used,
+- a coordinate system,
+- the facet specification.
+
+-----------
 
 
 ```r
-ggplot(data=iris_cast, aes(x=Width, y=Length))+
-  # Add points
-  geom_point()+facet_grid(Species~flower_part)+
+ggplot(data=iris_cast, aes(x=Width, y=Length))+ # Add points and use free scales in the facet
+  geom_point()+facet_grid(Species~flower_part, scale="free")+
   # Add a regression line
   geom_smooth(method="lm")+
   # Use the black/white theme and increase the font size
@@ -370,8 +377,6 @@ ggplot(data=iris_cast, aes(x=Width, y=Length))+
 
 ![plot of chunk ggplot-iris](Advanced_graphics_in_R-figure/ggplot-iris.png) 
 
-
-Note: the `ggplot` API requires the use of a dataframe. Many different layers can be added to obtain the desired results. Different data can be used in the different layers.
 
 ggplot2 and the grammar of graphics (suite)
 ===================================
@@ -389,10 +394,17 @@ my_plot
 ![plot of chunk ggplot-iris-suite](Advanced_graphics_in_R-figure/ggplot-iris-suite.png) 
 
 
-**Exercise:** Your turn to try. Try to facet by `flower_part` and use Species as an aesthetic variable.
+------------------
+
+Note: the `ggplot` API requires the use of a dataframe. Many different layers can be added to obtain the desired results. Different data can be used in the different layers. 
+
+**Exercise:** Your turn to try! Try to facet by `flower_part` and use Species as an aesthetic variable. Try to use `facet_wrap` instead of `facet_grid`.
+
 
 Having some fun with ggplot2
 ===================================
+
+Excel theme
 
 
 ```r
@@ -405,12 +417,34 @@ my_plot+theme_excel(base_size=24)
 
 -----------------------------
 
+Wall Street Journal theme
+
 
 ```r
 my_plot+theme_wsj(base_size=18)
 ```
 
 ![plot of chunk ggthemes2](Advanced_graphics_in_R-figure/ggthemes2.png) 
+
+
+Having some fun with ggplot2 (suite)
+===================================
+
+With ggplot2 you can create your own theme, and save it if you want to reuse it later.
+
+
+```r
+my_plot+
+  # Polar coordinate!
+  coord_polar()+
+  theme(legend.background=element_rect(fill = "pink"), text=element_text(size=24))
+```
+
+![plot of chunk ggplot-themes](Advanced_graphics_in_R-figure/ggplot-themes.png) 
+
+
+Please look at the [documentation](http://docs.ggplot2.org/current/theme.html) for more details.
+You have no more excuses to create boring graphs!
 
 
 References
@@ -420,5 +454,13 @@ Here are some good references for mastering ggplot2
 
 - [R Graphics Cookbook](http://www.amazon.com/dp/1449316956/ref=cm_sw_su_dp?tag=ggplot2-20) by Winston Chang
 
+- [ggplot2 recipes](http://www.cookbook-r.com/Graphs/) by Winston Chang (Free online)
+
 - [ggplot2: Elegant Graphics for Data Analysis (Use R!)](http://www.amazon.com/dp/0387981403/ref=cm_sw_su_dp?tag=ggplot2-20) by Hadley Wickham
+
+Please pay attention to the fonts, fontsize and colors you use. You may want to look at:
+- [Colorbrewer](http://colorbrewer2.org/), palettes available through the `RColorBrewer` package. `ggplot2` provides options to use Colorbrewer palettes.
+
+- [Using your favorite fonts in R](http://blog.revolutionanalytics.com/2012/09/how-to-use-your-favorite-fonts-in-r-charts.html)
+
 
