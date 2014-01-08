@@ -6,7 +6,7 @@ transition: none
 font-family: 'Helvetica'
 css: my_style.css
 author: Raphael Gottardo, PhD
-date: January 06, 2014
+date: January 07, 2014
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
 
@@ -40,6 +40,7 @@ Graphics in R
 Generic function for plotting of objects in R is `plot`. The output will vary depending on the object type (e.g. scatter-plot, pair-plot, etc)
 
 ```r
+# Load the Iris data
 data(iris)
 plot(iris)
 ```
@@ -234,7 +235,7 @@ Reshaping your data with reshape2
 ===================
 
 It is often necessary to reshape (e.g. pivot) your data before analysis. This can easily be done in R using the `reshape2` package.
-This package provides two mains functions `melt` and `cast`. `melt` basically "melts" a dataframe in wide format into a long format. `cast` goes in the other direction.
+This package provides main functions `melt` and `cast`. `melt` basically "melts" a dataframe in wide format into a long format. `cast` goes in the other direction.
 
 Let's revisite our `iris` dataset.
 
@@ -261,7 +262,7 @@ We can see in the data above that we are measuring both width and length on two 
 reshape2 - melt
 ==============
 
-The `melt` function provides some good default option that will try to best guess how to "melt" the data.
+The `melt` function provides some good default options that will try to best guess how to "melt" the data.
 
 
 ```r
@@ -282,54 +283,28 @@ head(iris_melted)
 6  setosa         6 Sepal.Length   5.4
 ```
 
-but this is not quite what we want, let's try:
-
-```r
-# Let's customize some options
-iris_melted <- melt(iris, measure.vars=c(1, 3), value.name="length")
-iris_melted <- melt(iris_melted, measure.vars=c(1, 2), value.name="width")
-head(iris_melted)
-```
-
-```
-  Species flower_id     variable length    variable width
-1  setosa         1 Sepal.Length    5.1 Sepal.Width   3.5
-2  setosa         2 Sepal.Length    4.9 Sepal.Width   3.0
-3  setosa         3 Sepal.Length    4.7 Sepal.Width   3.2
-4  setosa         4 Sepal.Length    4.6 Sepal.Width   3.1
-5  setosa         5 Sepal.Length    5.0 Sepal.Width   3.6
-6  setosa         6 Sepal.Length    5.4 Sepal.Width   3.9
-```
-
-
-reshape2 - melt (suite)
-==============
-
-Now we can cleanup the output:
-
-
 ```r
 # We first split that variable to get the columns we need
 split_variable <- strsplit(as.character(iris_melted$variable),split="\\.")
 # Create two new variables
 iris_melted$flower_part <- sapply(split_variable, "[", 1)
-# Remove the columns we don't need
+iris_melted$measurement_type <- sapply(split_variable, "[", 2)
+# Remove the one we don't need anymore
 iris_melted$variable <- NULL
-iris_melted$variable <- NULL
-
 head(iris_melted)
 ```
 
 ```
-  Species flower_id length width flower_part
-1  setosa         1    5.1   3.5       Sepal
-2  setosa         2    4.9   3.0       Sepal
-3  setosa         3    4.7   3.2       Sepal
-4  setosa         4    4.6   3.1       Sepal
-5  setosa         5    5.0   3.6       Sepal
-6  setosa         6    5.4   3.9       Sepal
+  Species flower_id value flower_part measurement_type
+1  setosa         1   5.1       Sepal           Length
+2  setosa         2   4.9       Sepal           Length
+3  setosa         3   4.7       Sepal           Length
+4  setosa         4   4.6       Sepal           Length
+5  setosa         5   5.0       Sepal           Length
+6  setosa         6   5.4       Sepal           Length
 ```
 
+This is close but not quite what we want, let's see if cast can help us do what we need.
 
 reshape2 - cast
 ===============
@@ -338,24 +313,25 @@ Use `acast` or `dcast` depending on whether you want vector/matrix/array output 
 
 
 
-
 ```r
-iris_cast <- dcast(iris_melted, formula=Species+flower_id~flower_part, value.var="width")
+iris_cast <- dcast(iris_melted, formula=flower_id+Species+flower_part~measurement_type)
 head(iris_cast)
 ```
 
 ```
-  Species flower_id Petal Sepal
-1  setosa         1     2     2
-2  setosa        10     2     2
-3  setosa        11     2     2
-4  setosa        12     2     2
-5  setosa        13     2     2
-6  setosa        14     2     2
+  flower_id    Species flower_part Length Width
+1         1     setosa       Petal    1.4   0.2
+2         1     setosa       Sepal    5.1   3.5
+3        10     setosa       Petal    1.5   0.1
+4        10     setosa       Sepal    4.9   3.1
+5       100 versicolor       Petal    4.1   1.3
+6       100 versicolor       Sepal    5.7   2.8
 ```
 
 
 **Q:** Why are the elements of `flower_id` not properly ordered?
+
+`melt` and `*cast` are very powerful. These can also be used on data.tables. More on this latter.
 
 **Exercise:** Try to reorder the variable names in the formula. What happens?
 
@@ -367,12 +343,74 @@ Using our long format dataframe, we can further explore the iris dataset.
 
 ```r
 # We can now facet by Species and Petal/Sepal
-qplot(x=width, y=length, data=iris_melted, geom=c("point","smooth"), color=Species, method="lm", facets= flower_part~Species)
+qplot(x=Width, y=Length, data=iris_cast, geom=c("point","smooth"), color=Species, method="lm", facets= flower_part~Species)
 ```
 
 ![plot of chunk multi-facet](Advanced_graphics_in_R-figure/multi-facet.png) 
 
 
+It would be nice to see if we can have free scales for the panels, but before we explore this, let's talk about the `ggplot` API as an alternative to qplot. Can we also customize the look and feel?
+
+
+ggplot2 and the grammar of graphics
+===================================
+
+`ggplot2` provides another API via the `ggplot` command. This directly the implements  the idea of a "grammar of graphics". 
+
+
+```r
+ggplot(data=iris_cast, aes(x=Width, y=Length))+
+  # Add points
+  geom_point()+facet_grid(Species~flower_part)+
+  # Add a regression line
+  geom_smooth(method="lm")+
+  # Use the black/white theme and increase the font size
+  theme_bw(base_size=24)
+```
+
+![plot of chunk ggplot-iris](Advanced_graphics_in_R-figure/ggplot-iris.png) 
+
+
+Note: the `ggplot` API requires the use of a dataframe. Many different layers can be added to obtain the desired results. Different data can be used in the different layers.
+
+ggplot2 and the grammar of graphics (suite)
+===================================
+
+Let's try to map one of the variable to the shape
+
+
+```r
+my_plot <- ggplot(data=iris_cast, aes(x=Width, y=Length, shape=flower_part, color=flower_part))+
+  # Add points
+  geom_point()+facet_grid(~Species)+ geom_smooth(method="lm")
+my_plot
+```
+
+![plot of chunk ggplot-iris-suite](Advanced_graphics_in_R-figure/ggplot-iris-suite.png) 
+
+
+**Exercise:** Your turn to try. Try to facet by `flower_part` and use Species as an aesthetic variable.
+
+Having some fun with ggplot2
+===================================
+
+
+```r
+library(ggthemes)
+my_plot+theme_excel(base_size=24)
+```
+
+![plot of chunk ggthemes](Advanced_graphics_in_R-figure/ggthemes.png) 
+
+
+-----------------------------
+
+
+```r
+my_plot+theme_wsj(base_size=18)
+```
+
+![plot of chunk ggthemes2](Advanced_graphics_in_R-figure/ggthemes2.png) 
 
 
 References

@@ -817,7 +817,7 @@ y[1:10]
 ```
 
 ```
- [1] 2.885 3.267 3.216 3.037 3.190 3.134 3.457 3.192 3.003 3.332
+ [1] 3.089 3.230 3.307 3.537 3.347 3.211 2.821 3.157 2.946 2.969
 ```
 
 ```r
@@ -833,7 +833,7 @@ y[1:10]
 ```
 
 ```
- [1] 2.885 3.267 3.216 3.037 3.190 3.134 3.457 3.192 3.003 3.332
+ [1] 3.089 3.230 3.307 3.537 3.347 3.211 2.821 3.157 2.946 2.969
 ```
 
 
@@ -886,12 +886,12 @@ microbenchmark(for(i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times=10)
 
 ```
 Unit: microseconds
-                              expr   min       lq   median      uq     max
- for (i in 1:n) y[i] <- sqrt(x[i]) 14972 15112.46 16364.22 16596.7 19582.7
-                           sqrt(x)    44    51.53    75.31    84.6   107.1
- neval
-    10
-    10
+                              expr      min       lq   median      uq
+ for (i in 1:n) y[i] <- sqrt(x[i]) 15105.74 15137.55 16672.44 16908.3
+                           sqrt(x)    43.03    43.61    45.96    69.4
+      max neval
+ 18396.35    10
+    79.24    10
 ```
 
 
@@ -929,8 +929,8 @@ microbenchmark(for(i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times=10)
 ```
 Unit: milliseconds
                                 expr    min    lq median    uq   max neval
- for (i in 1:n) y[i] <- MySqrt(x[i]) 108.13 117.1  119.1 122.6 133.1    10
-                   sapply(x, MySqrt)  99.74 101.4  106.5 107.6 125.9    10
+ for (i in 1:n) y[i] <- MySqrt(x[i]) 108.95 111.5  116.6 122.1 124.4    10
+                   sapply(x, MySqrt)  97.81 102.6  106.1 110.4 138.4    10
 ```
 
 
