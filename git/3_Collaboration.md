@@ -41,16 +41,23 @@ As a short-hand, we can do a Git *pull* which does a *fetch* then a *merge*,
    
 ### Collaboration: conflicts and how to resolve them
 
-Let's do some further work on the Makefile. Try working independently on the same file (and possibly on the same part of the file) and push it to the remote repository. Inevitably, one of you will be the first one to push. When the other person tries to push
+Let's do some further work on the Makefile. Try working independently on the same file (and possibly on the same part of the file) and push it to the remote repository. Inevitably, one of you will be the first one to push. When the other person tries to push, they should get a message similar to the following:
 
     $ git push
+    To https://github.com/lgatto/rbc.git
+ 	! [rejected]        master -> master (non-fast-forward)
+	error: failed to push some refs to 'https://github.com/lgatto/rbc.git'
+	hint: Updates were rejected because the tip of your current branch is behind
+	hint: its remote counterpart. Merge the remote changes (e.g. 'git pull')
+	hint: before pushing again.
+	hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 
-Our push fails, as we've not yet pulled down our changes from our remote repository. Before pushing we should always pull, so let's do that...
+The push fails, as the other person needs to pull down the most recent changes in the repository. Before pushing we should always pull, so let's do that...
 
     $ git pull
 
-and we get:
+If you actually edited the same part of the Makefile, you may get a conflict:
 
     Auto-merging Makefile
     CONFLICT (content): Merge conflict in Makefile
