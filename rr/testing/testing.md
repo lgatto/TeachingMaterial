@@ -27,10 +27,8 @@ program.
 
 
 ```r
-log(c(2, 1, 0, -1, 2))
-print("end")  # warning 
-xor(c(TRUE, FALSE))
-print("end")  # error
+log(c(2, 1, 0, -1, 2)); print('end')  # warning 
+xor( c(TRUE, FALSE));  print ('end')  # error
 ```
 
 

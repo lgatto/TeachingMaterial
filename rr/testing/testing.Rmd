@@ -25,7 +25,7 @@ inversion along x axis noted.
 your program will still continue, whereas an error will stop the
 program.
 
-```{r eval=FALSE, }
+```{r eval=FALSE,tidy=FALSE}
 log(c(2, 1, 0, -1, 2)); print('end')  # warning 
 xor( c(TRUE, FALSE));  print ('end')  # error
 ```
