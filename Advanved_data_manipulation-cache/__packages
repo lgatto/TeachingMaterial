@@ -1,0 +1,10 @@
+AnnotationDbi
+base
+Biobase
+BiocGenerics
+data.table
+DBI
+knitr
+microbenchmark
+org.Hs.eg.db
+RSQLite
