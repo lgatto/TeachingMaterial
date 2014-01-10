@@ -35,5 +35,6 @@ If you need to contact me, please email me at <rgottard@fhcrc.org>.
 - 01/07/13 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rpres) 
 - 01/08/13 Same as above and [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rpres)
 - 01/14/13 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres)
+- 01/16/13 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres)
 
 
