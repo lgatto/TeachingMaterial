@@ -1,5 +1,5 @@
 report.html: report.Rmd sim1.png sim2.png
-	Rscript -e 'require(knitr); knit2html("report.Rmd")'
+	Rscript -e "require(knitr); knit2html('report.Rmd')"
 
 sim1.dat: params.R simulator.R
 	Rscript simulator.R rnorm > sim1.dat
