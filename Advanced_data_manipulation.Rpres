@@ -904,7 +904,7 @@ The `sqldf` package can even provide increased speed over pure R operations.
 Summary
 =======
 
-- R base `data.frames` are convenient but often not adapted to large dataset manipulation (e.g. genomics). 
+- R base `data.frame`s are convenient but often not adapted to large dataset manipulation (e.g. genomics). 
 
 - Thankfully, there are good alternatives. My recommendtion is:
     - Use `data.table` for your day-to-day operations
