@@ -46,7 +46,7 @@ Here we will review three R packages that can be used to provide efficient data 
 - `RSQLite`: Database Interface R driver for SQLite
 - `sqldf`: An R package for runing SQL statements on R data frames, optimized for convenience
 
-<small>Thank to Kevin Ushey for the `data.table` notes</small>
+<small>Thank to Kevin Ushey (@kevin_ushey) for the `data.table` notes</small>
 
 What is data.table?
 ===================
