@@ -15,11 +15,17 @@ Motivation
 
 Let's first turn on the cache for increased performance.
 ```{r, cache=FALSE}
+# Set some global knitr options
 opts_chunk$set(cache=TRUE)
 ```
 
 
-R has pass-by-value semantics, which minimizes accidental side effects. However, this can become a major bottleneck when dealing with large datasets. 
+- R has pass-by-value semantics, which minimizes accidental side effects. However, this can become a major bottleneck when dealing with large datasets. 
+
+- Fortunately, R provides some solution to this problems.
+
+
+---------
 
 ```{r}
 a <- rnorm(10^5)
@@ -30,7 +36,6 @@ a[1] <- 0
 gc()
 ```
 
-Fortunately, R provides some solution to this problems.
 
 Overview
 ========
@@ -38,7 +43,7 @@ Overview
 Here we will review three R packages that can be used to provide efficient data manipulation:
 
 - `data.table`: An package for efficient data storage and manipulation
-- `RSQLlite`: Database Interface R driver for SQLite
+- `RSQLite`: Database Interface R driver for SQLite
 - `sqldf`: An R package for runing SQL statements on R data frames, optimized for convenience
 
 <small>Thank to Kevin Ushey for the `data.table` notes</small>
@@ -54,11 +59,16 @@ different type.
 
 ```{r}
 library(data.table)
-data.table(x=1:3, y=c(4, 5, 6), z=letters[1:3])
+dt <- data.table(x=1:3, y=c(4, 5, 6), z=letters[1:3])
+dt
+class(dt)
 ```
 
 The extra functionality offered by `data.table` allows us to modify, reshape, 
-and merge `data.table`s much quicker than `data.frame`s.
+and merge `data.table`s much quicker than `data.frame`s. **See that `data.table` inherits from `data.frame`!**
+
+**Note:** The [development version (v1.8.11)](https://r-forge.r-project.org/scm/viewvc.php/pkg/NEWS?view=markup&root=datatable) of data.table includes a lot of new features including `melt` and `dcase` methods
+
 
 Installing data.table
 =====================
@@ -82,7 +92,9 @@ Most of your interactions with `data.table`s will be through the subset (`[`)
 operator, which behaves quite differently for `data.table`s. We'll examine
 a few of the common cases.
 
-Single Element Subsetting
+Visit [this stackoverflow question](http://stackoverflow.com/questions/13618488/what-you-can-do-with-data-frame-that-you-cant-in-data-table) for a summary of the differences between `data.frame`s and `data.table`s.
+
+Single element subsetting
 =========================
 
 ```{r}
@@ -97,7 +109,7 @@ DT[c(2,3)]
 By default, single-element subsetting in `data.table`s refers to rows, rather
 than columns.
 
-Row Subsetting
+Row subsetting
 ===============
 
 ```{r}
@@ -111,7 +123,7 @@ DT[c(2,3), ]
 
 Notice: row names are lost with `data.table`s. Otherwise, output is identical.
 
-Column Subsetting
+Column subsetting
 =================
 
 ```{r}
@@ -189,22 +201,6 @@ DT[, list(mean_x = mean(x), sum_y = sum(y), sumsq=sum(x^2+y^2))]
 Notice how the symbols `x` and `y` are looked up within the `data.table` `DT`.
 No more writing `DT$` everywhere!
 
-A More Complicated Example
-==========================
-
-We can form an expression for which the final statement is a `list` call. We'll
-also demonstrate how we can pre-construct an expression using `quote`, and then
-pass that into `j` using `eval`.
-
-```{r}
-library(data.table)
-DT <- data.table(x=1:5, y=1:5)
-expr <- quote({
-  tmp <- x + y
-  list(sqsum=sum(tmp)^2)
-})
-DT[, eval(expr)]
-```
 
 Using :=
 =========
@@ -233,7 +229,7 @@ DT2
 Notice that `DT2` has changed. This is something to be mindful of; if you want
 to explicitly copy a `data.table` do so with `DT2 <- copy(DT)`.
 
-A Slightly More Complicated Example
+A slightly more complicated example
 ===================================
 
 ```{r}
@@ -244,7 +240,7 @@ print(DT)
 ```
 
 
-Using an Expression in j
+Using an expression in j
 ========================
 
 Note that the right-hand side of a `:=` call can be an expression.
@@ -256,7 +252,7 @@ DT[, m := { tmp <- (x + 1) / (y + 1); log2(tmp) }]
 print(DT)
 ```
 
-Multiple Returns from an Expression in j
+Multiple returns from an expression in j
 ========================================
 
 The left hand side of a `:=` call can also be a character vector of names,
@@ -267,10 +263,11 @@ a list of the same length.
 library(data.table)
 DT <- data.table(x=1:5, y=6:10, z=11:15)
 DT[, c('m', 'n') := { tmp <- (x + 1) / (y + 1); list( log2(tmp), log10(tmp) ) }]
-print(DT)
+DT[, `:=`(a=x^2, b=y^2)]
+DT[, c("c","d"):=list(x^2, y^2)]
 ```
 
-I've Lied a Bit
+The j expression revisited 
 ===============
 
 So, we typically call `j` the `j expression`, but really, it's either:
@@ -289,7 +286,7 @@ looking somewhat like an operator.
 quote(a := b)
 ```
 
-Why Does it Matter?
+Why does it matter?
 ===================
 
 Whenever you sub-assign a `data.frame`, `R` is forced to copy the entire
@@ -307,7 +304,7 @@ effects.
 Unfortunately, it is prohibitively slow for large objects, and hence why
 `:=` can be very useful.
 
-Why Does it Matter?
+Why does it matter?
 ===================
 
 ```{r}
@@ -337,7 +334,7 @@ print(DT)
 Notice that since `mean(x+y)` returns a scalar (numeric vector of length 1),
 it is recycled to fill within each group.
 
-Generating a New data.table
+Generating a new data.table
 ============================
 
 What if, rather than modifying the current `data.table`, we wanted to generate
@@ -415,7 +412,7 @@ pulled from the parent `DT`.
 
 A counter telling you which group you're working with (1st, 2nd, 3rd...)
 
-Example Usage of .N - Counts
+Example usage of .N - Counts
 ============================
 
 Compute the counts, by group, using `data.table`...
@@ -423,11 +420,10 @@ Compute the counts, by group, using `data.table`...
 set.seed(123); library(data.table); library(microbenchmark)
 DT <- data.table(x=sample(letters[1:3], 1E5, TRUE))
 DT[, .N, by=x]
-cat('\n')
 table(DT$x)
 ```
 
-Example Usage of .N - Counts
+Example usage of .N - Counts
 ============================
 
 
@@ -438,7 +434,7 @@ DT <- data.table(x=factor(sample(letters[1:3], 1E5, TRUE)))
 microbenchmark( tbl=table(DT$x), DT=DT[, .N, by=x] )
 ```
 
-Example Usage of .SD - lapply-type calls
+Example usage of .SD - lapply-type calls
 ========================================
 
 ```{r}
@@ -448,7 +444,7 @@ DT[, sapply(.SD, mean), .SDcols=c('x', 'y', 'z')]
 sapply(DT[,1:3, with=FALSE], mean)
 ```
 
-Example Usage of .SD - lapply-type calls
+Example usage of .SD - lapply-type calls
 ========================================
 
 ```{r, cache=TRUE}
@@ -478,7 +474,7 @@ DT['a'] ## grabs rows corresponding to 'a'
 Note that this does a `binary search` rather than a `vector scan`, which is
 much faster!
 
-Key Performance
+Key performance
 ================
 
 ```{r, cache=TRUE}
@@ -508,7 +504,17 @@ setkey(DT2, x)
 merge(DT1, DT2)
 ```
 
-A Left Join
+Overview of joins
+=================
+
+Here is a quick summary of SQL joins, applicable to `data.table` too.
+
+
+<small>(Source: http://www.codeproject.com)</small>
+
+![SQL joins](http://www.codeproject.com/KB/database/Visual_SQL_Joins/Visual_SQL_JOINS_orig.jpg)
+
+A left join
 ===========
 
 ```{r}
@@ -520,7 +526,7 @@ setkey(DT2, x)
 merge(DT1, DT2, all.x=TRUE)
 ```
 
-A Right Join
+A right join
 =============
 
 ```{r}
@@ -532,7 +538,7 @@ setkey(DT2, x)
 merge(DT1, DT2, all.y=TRUE)
 ```
 
-An Outer Join
+An outer join
 ==============
 
 ```{r}
@@ -546,7 +552,7 @@ merge(DT1, DT2, all=TRUE) ## outer join
 
 ---
 
-Speed Example
+Speed example
 =============
 
 ```{r, cache=TRUE}
@@ -563,7 +569,7 @@ setkey(DT1, x); setkey(DT2, x)
 microbenchmark( DT=merge(DT1, DT2), DF=merge.data.frame(DF1, DF2), replications=5)
 ```
 
-Subset Joins
+Subset joins
 ============
 
 We can also perform joins of two keyed `data.table`s using the `[` operator.
@@ -628,6 +634,18 @@ necessary until you really feel like a `data.table` expert:
 
     DT[where,select|update,group by][having][order by][ ]...[ ]
 
+data.table and SQL - Joins
+===================
+
+Here is a quick summary table of joins in `data.table`.
+
+
+SQL | data.table
+ ---|---
+LEFT JOIN | x[y]
+RIGHT JOIN | y[x]
+INNER JOIN | x[y, nomatch=0]
+OUTER JOIN | merge(x,y)
 
 data.table and SQL
 ==================
@@ -643,7 +661,7 @@ DT[, lapply(.SD, mean), by=a]
 ```
 
 
-My Thoughts
+Some thoughts
 ============
 
 The primary use of `data.table` is for the fast split-apply-combine functionality.
@@ -656,6 +674,33 @@ microbenchmark( times=5,
   DF=with(DT, tapply(y, paste(gp1, gp2), mean))
 )
 ```
+
+Other interesting convenience functions
+===============
+
+- `like`
+
+```{r like}
+DT = data.table(Name=c("Mary","George","Martha"), Salary=c(2,3,4))
+# Use regular expressions
+DT[Name %like% "^Mar"]
+```
+
+- `set*` functions
+`set`, `setattr`, `setnames`, `setcolorder`, `setkey`, `setkeyv`
+
+```{r set}
+setcolorder(DT, c("Salary", "Name"))
+DT
+```
+
+
+- `DT[, (myvar):=NULL]` remove a column
+
+```{r NULL}
+DT[,Name:=NULL]
+```
+
 
 Bonuses: fread
 ===============
@@ -708,9 +753,6 @@ The Structured Query Language (SQL)
 
 Although SQL is an ANSI (American National Standards Institute) standard, there are different flavors of the SQL language.
 
-RDBMS stands for Relational Database Management System.
-
-RDBMS is the basis for SQL, and for all modern database systems such as MS SQL Server, IBM DB2, Oracle, MySQL, and Microsoft Access.
 
 The data in RDBMS is stored in database objects called tables.
 
@@ -721,7 +763,7 @@ Here we will use SQLite, which is a self contained relational database managemen
 Using RSQLite
 ===============================
 
-Here we will make use of the [Bioconductor](http://www.bioconductor.org) project to load and use a SQLite database.
+Here we will make use of the [Bioconductor](http://www.bioconductor.org) project to load and use an SQLite database.
 
 ```{r eval=FALSE}
 # You only need to run this once
@@ -735,7 +777,9 @@ library(org.Hs.eg.db)
 # Create a connection
 Hs_con <- org.Hs.eg_dbconn()
 # List tables
-dbListTables(Hs_con)
+head(dbListTables(Hs_con))
+# Or using an SQLite command (NOTE: This is specific to SQLite)
+head(dbGetQuery(Hs_con, "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;"))
 ```
 
 Using RSQLite (suite)
@@ -745,17 +789,25 @@ Using RSQLite (suite)
 # What columns are available?
 dbListFields(Hs_con, "gene_info")
 dbListFields(Hs_con, "alias")
+# Or using SQLite
+dbGetQuery(Hs_con, "PRAGMA table_info('gene_info');")
 ```
 
 ```{r select-all, cache=FALSE}
+gc()
 alias <- dbGetQuery(Hs_con, "SELECT * FROM alias;")
+gc()
 gene_info <- dbGetQuery(Hs_con, "SELECT * FROM gene_info;")
 chromosomes <- dbGetQuery(Hs_con, "SELECT * FROM chromosomes;")
 ```
 
+-------------
+
 ```{r join, cache=FALSE}
-dbGetQuery(Hs_con, "SELECT * FROM alias a JOIN gene_info g ON g._id = a._id WHERE a.alias_symbol LIKE 'CD154';")
-dbGetQuery(Hs_con, "SELECT * FROM alias a JOIN gene_info g ON g._id = a._id WHERE g.symbol LIKE 'CD40LG';")
+CD154_df <- dbGetQuery(Hs_con, "SELECT * FROM alias a JOIN gene_info g ON g._id = a._id WHERE a.alias_symbol LIKE 'CD154';")
+gc()
+CD40LG_alias_df <- dbGetQuery(Hs_con, "SELECT * FROM alias a JOIN gene_info g ON g._id = a._id WHERE g.symbol LIKE 'CD40LG';")
+gc()
 ```
 
 Some SQL Commands
@@ -784,7 +836,78 @@ The GROUP BY was added to SQL so that aggregate functions could return a result 
 
 SELECT col_name, function (col_name) FROM table_name GROUP BY col_name 
 
+A "GROUP BY" example
+==================
+
 ```{r join-chromosome, cache=FALSE}
-dbGetQuery(Hs_con, "SELECT c.chromosome, COUNT(g.gene_name) FROM chromosomes c JOIN gene_info g ON g._id = c._id WHERE c.chromosome IN (1,2,3,4,'X') GROUP BY c.chromosome;")
+dbGetQuery(Hs_con, "SELECT c.chromosome, COUNT(g.gene_name) AS count FROM chromosomes c JOIN gene_info g ON g._id = c._id WHERE c.chromosome IN (1,2,3,4,'X') GROUP BY c.chromosome ORDER BY count;")
 ```
 
+Some more SQL commands
+=======================
+
+Some other SQL statements that might be of used to you:
+
+### CREATE TABLE
+
+The CREATE TABLE statement is used to create a new table. 
+
+### DELETE
+
+The DELETE command can be used to remove a record(s) from a table. 
+
+### DROP
+
+To remove an entire table from the database use the DROP command.
+
+### CREATE VIEW
+
+A view is a virtual table that is a result of SQL SELECT statement. A view contains fields from one or more real tables in the database. This virtual table can then be queried as if it were a real table. 
+
+
+Creating your own SQLite database in R
+===================================
+
+```{r sqlite-ex, cache=FALSE}
+db <- dbConnect(SQLite(), dbname="./Data/SDY61/SDY61.sqlite")
+dbWriteTable(conn = db, name = "hai", value = "./Data/SDY61/hai_result.txt", row.names = FALSE, header = TRUE, sep="\t")
+dbWriteTable(conn = db, name = "cohort", value = "./Data/SDY61/arm_or_cohort.txt", row.names = FALSE, header = TRUE, sep="\t")
+```
+
+
+Creating your own SQLite database in R (suite)
+=============================================
+
+```{r some-queries, cache=FALSE}
+dbListFields(db, "hai")
+dbListFields(db, "cohort")
+
+dbGetQuery(db, "SELECT STUDY_TIME_COLLECTED, cohort.DESCRIPTION, MAX(VALUE_REPORTED) AS max_value FROM hai JOIN cohort ON hai.ARM_ACCESSION = cohort.ARM_ACCESSION WHERE cohort.DESCRIPTION LIKE '%TIV%' GROUP BY BIOSAMPLE_ACCESSION;")
+```
+
+The sqldf package
+=================
+
+Sometimes it can be convenient to use SQL statements on dataframes. This is exactly what the sqldf package does.
+
+
+```{r sqldf, eval=FALSE}
+library(sqldf)
+data(iris)
+sqldf("select * from iris limit 5")
+sqldf("select count(*) from iris")
+sqldf("select Species, count(*) from iris group by Species")
+```
+
+The `sqldf` package can even provide increased speed over pure R operations. 
+
+Summary
+=======
+
+- R base `data.frames` are convenient but often not adapted to large dataset manipulation (e.g. genomics). 
+
+- Thankfully, there are good alternatives. My recommendtion is:
+    - Use `data.table` for your day-to-day operations
+    - When you have many tables and a complex schema, use `sqlite`.
+    
+**Note:** There many other R packages for "big data" such the `bigmemory` suite, `biglm`, `ff`, `RNetcdf`, `rhdf5`, etc. 

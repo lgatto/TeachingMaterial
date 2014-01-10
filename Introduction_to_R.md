@@ -6,7 +6,7 @@ transition: none
 font-family: 'Helvetica'
 css: my_style.css
 author: Raphael Gottardo, PhD
-date: January 07, 2014
+date: January 09, 2014
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
 
@@ -817,7 +817,7 @@ y[1:10]
 ```
 
 ```
- [1] 3.089 3.230 3.307 3.537 3.347 3.211 2.821 3.157 2.946 2.969
+ [1] 3.234 3.515 3.110 3.215 3.031 3.292 3.426 3.405 3.356 2.993
 ```
 
 ```r
@@ -833,7 +833,7 @@ y[1:10]
 ```
 
 ```
- [1] 3.089 3.230 3.307 3.537 3.347 3.211 2.821 3.157 2.946 2.969
+ [1] 3.234 3.515 3.110 3.215 3.031 3.292 3.426 3.405 3.356 2.993
 ```
 
 
@@ -886,12 +886,12 @@ microbenchmark(for(i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times=10)
 
 ```
 Unit: microseconds
-                              expr      min       lq   median      uq
- for (i in 1:n) y[i] <- sqrt(x[i]) 15105.74 15137.55 16672.44 16908.3
-                           sqrt(x)    43.03    43.61    45.96    69.4
+                              expr      min       lq   median       uq
+ for (i in 1:n) y[i] <- sqrt(x[i]) 15533.27 15585.87 17164.36 17335.00
+                           sqrt(x)    43.64    44.23    45.97    47.03
       max neval
- 18396.35    10
-    79.24    10
+ 18099.32    10
+    49.01    10
 ```
 
 
@@ -928,9 +928,9 @@ microbenchmark(for(i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times=10)
 
 ```
 Unit: milliseconds
-                                expr    min    lq median    uq   max neval
- for (i in 1:n) y[i] <- MySqrt(x[i]) 108.95 111.5  116.6 122.1 124.4    10
-                   sapply(x, MySqrt)  97.81 102.6  106.1 110.4 138.4    10
+                                expr   min    lq median    uq   max neval
+ for (i in 1:n) y[i] <- MySqrt(x[i]) 103.5 112.0  119.8 123.8 135.9    10
+                   sapply(x, MySqrt) 101.8 104.4  110.0 114.9 122.0    10
 ```
 
 

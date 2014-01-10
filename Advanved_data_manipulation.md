@@ -6,7 +6,7 @@ transition: none
 font-family: 'Helvetica'
 css: my_style.css
 author: Raphael Gottardo, PhD
-date: January 08, 2014
+date: January 10, 2014
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
 
@@ -16,12 +16,18 @@ Motivation
 Let's first turn on the cache for increased performance.
 
 ```r
+# Set some global knitr options
 opts_chunk$set(cache=TRUE)
 ```
 
 
 
-R has pass-by-value semantics, which minimizes accidental side effects. However, this can become a major bottleneck when dealing with large datasets. 
+- R has pass-by-value semantics, which minimizes accidental side effects. However, this can become a major bottleneck when dealing with large datasets. 
+
+- Fortunately, R provides some solution to this problems.
+
+
+---------
 
 
 ```r
@@ -58,7 +64,6 @@ Vcells 664150  5.1    1162592  8.9   900303  6.9
 ```
 
 
-Fortunately, R provides some solution to this problems.
 
 Overview
 ========
@@ -66,7 +71,7 @@ Overview
 Here we will review three R packages that can be used to provide efficient data manipulation:
 
 - `data.table`: An package for efficient data storage and manipulation
-- `RSQLlite`: Database Interface R driver for SQLite
+- `RSQLite`: Database Interface R driver for SQLite
 - `sqldf`: An R package for runing SQL statements on R data frames, optimized for convenience
 
 <small>Thank to Kevin Ushey for the `data.table` notes</small>
@@ -83,7 +88,8 @@ different type.
 
 ```r
 library(data.table)
-data.table(x=1:3, y=c(4, 5, 6), z=letters[1:3])
+dt <- data.table(x=1:3, y=c(4, 5, 6), z=letters[1:3])
+dt
 ```
 
 ```
@@ -93,9 +99,20 @@ data.table(x=1:3, y=c(4, 5, 6), z=letters[1:3])
 3: 3 6 c
 ```
 
+```r
+class(dt)
+```
+
+```
+[1] "data.table" "data.frame"
+```
+
 
 The extra functionality offered by `data.table` allows us to modify, reshape, 
-and merge `data.table`s much quicker than `data.frame`s.
+and merge `data.table`s much quicker than `data.frame`s. **See that `data.table` inherits from `data.frame`!**
+
+**Note:** The [development version (v1.8.11)](https://r-forge.r-project.org/scm/viewvc.php/pkg/NEWS?view=markup&root=datatable) of data.table includes a lot of new features including `melt` and `dcase` methods
+
 
 Installing data.table
 =====================
@@ -123,7 +140,9 @@ Most of your interactions with `data.table`s will be through the subset (`[`)
 operator, which behaves quite differently for `data.table`s. We'll examine
 a few of the common cases.
 
-Single Element Subsetting
+Visit [this stackoverflow question](http://stackoverflow.com/questions/13618488/what-you-can-do-with-data-frame-that-you-cant-in-data-table) for a summary of the differences between `data.frame`s and `data.table`s.
+
+Single element subsetting
 =========================
 
 
@@ -159,7 +178,7 @@ DT[c(2,3)]
 By default, single-element subsetting in `data.table`s refers to rows, rather
 than columns.
 
-Row Subsetting
+Row subsetting
 ===============
 
 
@@ -193,7 +212,7 @@ DT[c(2,3), ]
 
 Notice: row names are lost with `data.table`s. Otherwise, output is identical.
 
-Column Subsetting
+Column subsetting
 =================
 
 
@@ -310,29 +329,6 @@ DT[, list(mean_x = mean(x), sum_y = sum(y), sumsq=sum(x^2+y^2))]
 Notice how the symbols `x` and `y` are looked up within the `data.table` `DT`.
 No more writing `DT$` everywhere!
 
-A More Complicated Example
-==========================
-
-We can form an expression for which the final statement is a `list` call. We'll
-also demonstrate how we can pre-construct an expression using `quote`, and then
-pass that into `j` using `eval`.
-
-
-```r
-library(data.table)
-DT <- data.table(x=1:5, y=1:5)
-expr <- quote({
-  tmp <- x + y
-  list(sqsum=sum(tmp)^2)
-})
-DT[, eval(expr)]
-```
-
-```
-   sqsum
-1:   900
-```
-
 
 Using :=
 =========
@@ -399,7 +395,7 @@ DT2
 Notice that `DT2` has changed. This is something to be mindful of; if you want
 to explicitly copy a `data.table` do so with `DT2 <- copy(DT)`.
 
-A Slightly More Complicated Example
+A slightly more complicated example
 ===================================
 
 
@@ -433,7 +429,7 @@ print(DT)
 
 
 
-Using an Expression in j
+Using an expression in j
 ========================
 
 Note that the right-hand side of a `:=` call can be an expression.
@@ -468,7 +464,7 @@ print(DT)
 ```
 
 
-Multiple Returns from an Expression in j
+Multiple returns from an expression in j
 ========================================
 
 The left hand side of a `:=` call can also be a character vector of names,
@@ -492,20 +488,33 @@ DT[, c('m', 'n') := { tmp <- (x + 1) / (y + 1); list( log2(tmp), log10(tmp) ) }]
 ```
 
 ```r
-print(DT)
+DT[, `:=`(a=x^2, b=y^2)]
 ```
 
 ```
-   x  y  z       m       n
-1: 1  6 11 -1.8074 -0.5441
-2: 2  7 12 -1.4150 -0.4260
-3: 3  8 13 -1.1699 -0.3522
-4: 4  9 14 -1.0000 -0.3010
-5: 5 10 15 -0.8745 -0.2632
+   x  y  z       m       n  a   b
+1: 1  6 11 -1.8074 -0.5441  1  36
+2: 2  7 12 -1.4150 -0.4260  4  49
+3: 3  8 13 -1.1699 -0.3522  9  64
+4: 4  9 14 -1.0000 -0.3010 16  81
+5: 5 10 15 -0.8745 -0.2632 25 100
+```
+
+```r
+DT[, c("c","d"):=list(x^2, y^2)]
+```
+
+```
+   x  y  z       m       n  a   b  c   d
+1: 1  6 11 -1.8074 -0.5441  1  36  1  36
+2: 2  7 12 -1.4150 -0.4260  4  49  4  49
+3: 3  8 13 -1.1699 -0.3522  9  64  9  64
+4: 4  9 14 -1.0000 -0.3010 16  81 16  81
+5: 5 10 15 -0.8745 -0.2632 25 100 25 100
 ```
 
 
-I've Lied a Bit
+The j expression revisited 
 ===============
 
 So, we typically call `j` the `j expression`, but really, it's either:
@@ -530,7 +539,7 @@ quote(a := b)
 ```
 
 
-Why Does it Matter?
+Why does it matter?
 ===================
 
 Whenever you sub-assign a `data.frame`, `R` is forced to copy the entire
@@ -548,7 +557,7 @@ effects.
 Unfortunately, it is prohibitively slow for large objects, and hence why
 `:=` can be very useful.
 
-Why Does it Matter?
+Why does it matter?
 ===================
 
 
@@ -561,9 +570,9 @@ microbenchmark( big_df$z <- 1, big_dt[, z := 1] )
 
 ```
 Unit: milliseconds
-                 expr    min     lq median     uq    max neval
-        big_df$z <- 1 20.017 47.012 48.139 50.754 201.97   100
- big_dt[, `:=`(z, 1)]  4.528  4.749  4.861  5.049  49.88   100
+                 expr   min      lq  median      uq     max neval
+        big_df$z <- 1 19.69 105.380 107.212 109.875 467.243   100
+ big_dt[, `:=`(z, 1)]  4.49   4.743   4.862   4.995   8.889   100
 ```
 
 
@@ -610,7 +619,7 @@ print(DT)
 Notice that since `mean(x+y)` returns a scalar (numeric vector of length 1),
 it is recycled to fill within each group.
 
-Generating a New data.table
+Generating a new data.table
 ============================
 
 What if, rather than modifying the current `data.table`, we wanted to generate
@@ -702,7 +711,7 @@ pulled from the parent `DT`.
 
 A counter telling you which group you're working with (1st, 2nd, 3rd...)
 
-Example Usage of .N - Counts
+Example usage of .N - Counts
 ============================
 
 Compute the counts, by group, using `data.table`...
@@ -721,10 +730,6 @@ DT[, .N, by=x]
 ```
 
 ```r
-cat('\n')
-```
-
-```r
 table(DT$x)
 ```
 
@@ -735,7 +740,7 @@ table(DT$x)
 ```
 
 
-Example Usage of .N - Counts
+Example usage of .N - Counts
 ============================
 
 
@@ -749,13 +754,13 @@ microbenchmark( tbl=table(DT$x), DT=DT[, .N, by=x] )
 
 ```
 Unit: milliseconds
- expr   min    lq median     uq    max neval
-  tbl 6.850 8.435  8.818 11.689 21.412   100
-   DT 2.381 3.179  3.405  4.521  8.708   100
+ expr   min    lq median     uq   max neval
+  tbl 6.897 8.980  9.620 13.224 21.41   100
+   DT 2.840 3.319  3.448  4.147 14.79   100
 ```
 
 
-Example Usage of .SD - lapply-type calls
+Example usage of .SD - lapply-type calls
 ========================================
 
 
@@ -780,7 +785,7 @@ sapply(DT[,1:3, with=FALSE], mean)
 ```
 
 
-Example Usage of .SD - lapply-type calls
+Example usage of .SD - lapply-type calls
 ========================================
 
 
@@ -796,8 +801,8 @@ microbenchmark(
 ```
 Unit: milliseconds
  expr   min    lq median    uq    max neval
-   DT 3.207 4.300  4.604 5.422 11.595   100
- base 2.347 2.411  2.507 2.701  3.944   100
+   DT 3.406 4.545  4.674 5.194 23.308   100
+ base 2.386 2.443  2.492 2.720  4.215   100
 ```
 
 
@@ -828,7 +833,7 @@ DT['a'] ## grabs rows corresponding to 'a'
 Note that this does a `binary search` rather than a `vector scan`, which is
 much faster!
 
-Key Performance
+Key performance
 ================
 
 
@@ -850,9 +855,9 @@ microbenchmark( DT=DT['a'], DF=DF[ DF$key == 'a', ], times=5 )
 
 ```
 Unit: milliseconds
- expr     min      lq  median     uq     max neval
-   DT   1.932   1.964   2.045   2.56   2.676     5
-   DF 139.866 140.538 145.933 155.38 177.688     5
+ expr     min      lq  median      uq     max neval
+   DT   1.805   1.998   2.189   2.226   2.582     5
+   DF 143.524 144.564 151.459 151.743 159.640     5
 ```
 
 
@@ -883,7 +888,17 @@ merge(DT1, DT2)
 ```
 
 
-A Left Join
+Overview of joins
+=================
+
+Here is a quick summary of SQL joins, applicable to `data.table` too.
+
+
+<small>(Source: http://www.codeproject.com)</small>
+
+![SQL joins](http://www.codeproject.com/KB/database/Visual_SQL_Joins/Visual_SQL_JOINS_orig.jpg)
+
+A left join
 ===========
 
 
@@ -905,7 +920,7 @@ merge(DT1, DT2, all.x=TRUE)
 ```
 
 
-A Right Join
+A right join
 =============
 
 
@@ -927,7 +942,7 @@ merge(DT1, DT2, all.y=TRUE)
 ```
 
 
-An Outer Join
+An outer join
 ==============
 
 
@@ -952,7 +967,7 @@ merge(DT1, DT2, all=TRUE) ## outer join
 
 ---
 
-Speed Example
+Speed example
 =============
 
 
@@ -973,13 +988,13 @@ microbenchmark( DT=merge(DT1, DT2), DF=merge.data.frame(DF1, DF2), replications=
 ```
 Unit: nanoseconds
          expr       min        lq    median        uq       max neval
-           DT 122830723 130166738 1.382e+08 1.601e+08 2.790e+08   100
-           DF 909167956 958116496 1.010e+09 1.067e+09 1.446e+09   100
- replications        18        53 2.465e+02 3.835e+02 7.210e+02   100
+           DT 122458615 126900331 1.298e+08 1.520e+08 3.512e+08   100
+           DF 858472417 931070468 9.856e+08 1.096e+09 1.227e+09   100
+ replications         9        46 2.295e+02 3.000e+02 5.370e+02   100
 ```
 
 
-Subset Joins
+Subset joins
 ============
 
 We can also perform joins of two keyed `data.table`s using the `[` operator.
@@ -1033,9 +1048,9 @@ microbenchmark( bracket=DT1[DT2], merge=merge(DT1, DT2, all.y=TRUE), times=5 )
 
 ```
 Unit: milliseconds
-    expr    min     lq median     uq    max neval
- bracket  41.57  43.32  47.09  47.78  73.48     5
-   merge 228.97 235.27 243.67 285.77 286.92     5
+    expr    min    lq median     uq    max neval
+ bracket  39.58  40.9  42.34  42.38  46.75     5
+   merge 220.40 221.0 248.67 287.39 308.82     5
 ```
 
 
@@ -1059,6 +1074,18 @@ necessary until you really feel like a `data.table` expert:
 
     DT[where,select|update,group by][having][order by][ ]...[ ]
 
+data.table and SQL - Joins
+===================
+
+Here is a quick summary table of joins in `data.table`.
+
+
+SQL | data.table
+ ---|---
+LEFT JOIN | x[y]
+RIGHT JOIN | y[x]
+INNER JOIN | x[y, nomatch=0]
+OUTER JOIN | merge(x,y)
 
 data.table and SQL
 ==================
@@ -1089,7 +1116,7 @@ Starting dogroups ... done dogroups in 0 secs
 
 
 
-My Thoughts
+Some thoughts
 ============
 
 The primary use of `data.table` is for the fast split-apply-combine functionality.
@@ -1105,34 +1132,87 @@ microbenchmark( times=5,
 ```
 
 ```
-Finding groups (bysameorder=FALSE) ... done in 0.094secs. bysameorder=FALSE and o__ is length 1000000
+Finding groups (bysameorder=FALSE) ... done in 0.072secs. bysameorder=FALSE and o__ is length 1000000
 Detected that j uses these columns: y 
 Optimized j from 'mean(y)' to '.External(Cfastmean, y, FALSE)'
-Starting dogroups ... done dogroups in 0.047 secs
-Finding groups (bysameorder=FALSE) ... done in 0.083secs. bysameorder=FALSE and o__ is length 1000000
+Starting dogroups ... done dogroups in 0.062 secs
+Finding groups (bysameorder=FALSE) ... done in 0.099secs. bysameorder=FALSE and o__ is length 1000000
 Detected that j uses these columns: y 
 Optimized j from 'mean(y)' to '.External(Cfastmean, y, FALSE)'
-Starting dogroups ... done dogroups in 0.047 secs
-Finding groups (bysameorder=FALSE) ... done in 0.251secs. bysameorder=FALSE and o__ is length 1000000
+Starting dogroups ... done dogroups in 0.075 secs
+Finding groups (bysameorder=FALSE) ... done in 0.081secs. bysameorder=FALSE and o__ is length 1000000
 Detected that j uses these columns: y 
 Optimized j from 'mean(y)' to '.External(Cfastmean, y, FALSE)'
-Starting dogroups ... done dogroups in 0.097 secs
-Finding groups (bysameorder=FALSE) ... done in 0.126secs. bysameorder=FALSE and o__ is length 1000000
+Starting dogroups ... done dogroups in 0.073 secs
+Finding groups (bysameorder=FALSE) ... done in 0.118secs. bysameorder=FALSE and o__ is length 1000000
 Detected that j uses these columns: y 
 Optimized j from 'mean(y)' to '.External(Cfastmean, y, FALSE)'
-Starting dogroups ... done dogroups in 0.08 secs
-Finding groups (bysameorder=FALSE) ... done in 0.139secs. bysameorder=FALSE and o__ is length 1000000
+Starting dogroups ... done dogroups in 0.055 secs
+Finding groups (bysameorder=FALSE) ... done in 0.104secs. bysameorder=FALSE and o__ is length 1000000
 Detected that j uses these columns: y 
 Optimized j from 'mean(y)' to '.External(Cfastmean, y, FALSE)'
-Starting dogroups ... done dogroups in 0.089 secs
+Starting dogroups ... done dogroups in 0.046 secs
 ```
 
 ```
 Unit: milliseconds
- expr   min    lq median    uq    max neval
-   DT 147.5 156.3  215.6 235.2  372.4     5
-   DF 707.6 755.5  783.4 875.2 1103.0     5
+ expr   min    lq median    uq   max neval
+   DT 155.4 180.6  181.4 188.5 359.0     5
+   DF 583.8 665.1  755.0 901.8 957.2     5
 ```
+
+
+Other interesting convenience functions
+===============
+
+- `like`
+
+
+```r
+DT = data.table(Name=c("Mary","George","Martha"), Salary=c(2,3,4))
+# Use regular expressions
+DT[Name %like% "^Mar"]
+```
+
+```
+     Name Salary
+1:   Mary      2
+2: Martha      4
+```
+
+
+- `set*` functions
+`set`, `setattr`, `setnames`, `setcolorder`, `setkey`, `setkeyv`
+
+
+```r
+setcolorder(DT, c("Salary", "Name"))
+DT
+```
+
+```
+   Salary   Name
+1:      2   Mary
+2:      3 George
+3:      4 Martha
+```
+
+
+
+- `DT[, (myvar):=NULL]` remove a column
+
+
+```r
+DT[,Name:=NULL]
+```
+
+```
+   Salary
+1:      2
+2:      3
+3:      4
+```
+
 
 
 Bonuses: fread
@@ -1152,8 +1232,8 @@ microbenchmark( fread=fread(file), r.t=read.table(file, header=TRUE, sep="\t"), 
 ```
 Unit: milliseconds
   expr     min      lq  median      uq     max neval
- fread   442.7   442.7   442.7   442.7   442.7     1
-   r.t 12699.5 12699.5 12699.5 12699.5 12699.5     1
+ fread   289.6   289.6   289.6   289.6   289.6     1
+   r.t 10120.0 10120.0 10120.0 10120.0 10120.0     1
 ```
 
 ```r
@@ -1183,9 +1263,9 @@ microbenchmark( DT=rbindlist(dfs), DF=do.call(rbind, dfs), times=5 )
 
 ```
 Unit: milliseconds
- expr     min      lq  median     uq   max neval
-   DT   3.409   7.328   9.218  23.51 167.3     5
-   DF 737.488 742.774 910.007 934.72 966.5     5
+ expr     min      lq   median       uq      max neval
+   DT   6.992   7.098    7.235    7.241    7.313     5
+   DF 994.886 999.373 1000.934 1060.417 1209.355     5
 ```
 
 
@@ -1214,9 +1294,6 @@ The Structured Query Language (SQL)
 
 Although SQL is an ANSI (American National Standards Institute) standard, there are different flavors of the SQL language.
 
-RDBMS stands for Relational Database Management System.
-
-RDBMS is the basis for SQL, and for all modern database systems such as MS SQL Server, IBM DB2, Oracle, MySQL, and Microsoft Access.
 
 The data in RDBMS is stored in database objects called tables.
 
@@ -1227,7 +1304,7 @@ Here we will use SQLite, which is a self contained relational database managemen
 Using RSQLite
 ===============================
 
-Here we will make use of the [Bioconductor](http://www.bioconductor.org) project to load and use a SQLite database.
+Here we will make use of the [Bioconductor](http://www.bioconductor.org) project to load and use an SQLite database.
 
 
 ```r
@@ -1244,28 +1321,27 @@ library(org.Hs.eg.db)
 # Create a connection
 Hs_con <- org.Hs.eg_dbconn()
 # List tables
-dbListTables(Hs_con)
+head(dbListTables(Hs_con))
 ```
 
 ```
- [1] "accessions"            "alias"                
- [3] "chrlengths"            "chromosome_locations" 
- [5] "chromosomes"           "cytogenetic_locations"
- [7] "ec"                    "ensembl"              
- [9] "ensembl2ncbi"          "ensembl_prot"         
-[11] "ensembl_trans"         "gene_info"            
-[13] "genes"                 "go"                   
-[15] "go_all"                "go_bp"                
-[17] "go_bp_all"             "go_cc"                
-[19] "go_cc_all"             "go_mf"                
-[21] "go_mf_all"             "kegg"                 
-[23] "map_counts"            "map_metadata"         
-[25] "metadata"              "ncbi2ensembl"         
-[27] "omim"                  "pfam"                 
-[29] "prosite"               "pubmed"               
-[31] "refseq"                "sqlite_stat1"         
-[33] "ucsc"                  "unigene"              
-[35] "uniprot"              
+[1] "accessions"            "alias"                 "chrlengths"           
+[4] "chromosome_locations"  "chromosomes"           "cytogenetic_locations"
+```
+
+```r
+# Or using an SQLite command (NOTE: This is specific to SQLite)
+head(dbGetQuery(Hs_con, "SELECT name FROM sqlite_master WHERE type='table' ORDER BY name;"))
+```
+
+```
+                   name
+1            accessions
+2                 alias
+3            chrlengths
+4  chromosome_locations
+5           chromosomes
+6 cytogenetic_locations
 ```
 
 
@@ -1290,42 +1366,70 @@ dbListFields(Hs_con, "alias")
 [1] "_id"          "alias_symbol"
 ```
 
+```r
+# Or using SQLite
+dbGetQuery(Hs_con, "PRAGMA table_info('gene_info');")
+```
+
+```
+  cid      name         type notnull dflt_value pk
+1   0       _id      INTEGER       1       <NA>  0
+2   1 gene_name VARCHAR(255)       1       <NA>  0
+3   2    symbol  VARCHAR(80)       1       <NA>  0
+```
+
 
 
 ```r
+gc()
+```
+
+```
+          used (Mb) gc trigger (Mb) max used (Mb)
+Ncells 1134968 60.7    1476915 78.9  1368491 73.1
+Vcells 1153087  8.8    1925843 14.7  1623758 12.4
+```
+
+```r
 alias <- dbGetQuery(Hs_con, "SELECT * FROM alias;")
+gc()
+```
+
+```
+          used (Mb) gc trigger (Mb) max used (Mb)
+Ncells 1234655 66.0    1710298 91.4  1368491 73.1
+Vcells 1504690 11.5    2287241 17.5  1883389 14.4
+```
+
+```r
 gene_info <- dbGetQuery(Hs_con, "SELECT * FROM gene_info;")
 chromosomes <- dbGetQuery(Hs_con, "SELECT * FROM chromosomes;")
 ```
 
 
+-------------
+
 
 ```r
-dbGetQuery(Hs_con, "SELECT * FROM alias a JOIN gene_info g ON g._id = a._id WHERE a.alias_symbol LIKE 'CD154';")
+CD154_df <- dbGetQuery(Hs_con, "SELECT * FROM alias a JOIN gene_info g ON g._id = a._id WHERE a.alias_symbol LIKE 'CD154';")
+gc()
 ```
 
 ```
-  _id alias_symbol _id   gene_name symbol
-1 796        CD154 796 CD40 ligand CD40LG
+          used (Mb) gc trigger  (Mb) max used (Mb)
+Ncells 1278724 68.3    1967602 105.1  1368491 73.1
+Vcells 1946078 14.9    2685683  20.5  2283449 17.5
 ```
 
 ```r
-dbGetQuery(Hs_con, "SELECT * FROM alias a JOIN gene_info g ON g._id = a._id WHERE g.symbol LIKE 'CD40LG';")
+CD40LG_alias_df <- dbGetQuery(Hs_con, "SELECT * FROM alias a JOIN gene_info g ON g._id = a._id WHERE g.symbol LIKE 'CD40LG';")
+gc()
 ```
 
 ```
-   _id alias_symbol _id   gene_name symbol
-1  796        CD154 796 CD40 ligand CD40LG
-2  796        CD40L 796 CD40 ligand CD40LG
-3  796       CD40LG 796 CD40 ligand CD40LG
-4  796        HIGM1 796 CD40 ligand CD40LG
-5  796          IGM 796 CD40 ligand CD40LG
-6  796         IMD3 796 CD40 ligand CD40LG
-7  796        T-BAM 796 CD40 ligand CD40LG
-8  796       TNFSF5 796 CD40 ligand CD40LG
-9  796         TRAP 796 CD40 ligand CD40LG
-10 796         gp39 796 CD40 ligand CD40LG
-11 796       hCD40L 796 CD40 ligand CD40LG
+          used (Mb) gc trigger  (Mb) max used (Mb)
+Ncells 1278756 68.3    1967602 105.1  1368491 73.1
+Vcells 1946189 14.9    2899967  22.2  2283449 17.5
 ```
 
 
@@ -1355,18 +1459,206 @@ The GROUP BY was added to SQL so that aggregate functions could return a result 
 
 SELECT col_name, function (col_name) FROM table_name GROUP BY col_name 
 
+A "GROUP BY" example
+==================
+
 
 ```r
-dbGetQuery(Hs_con, "SELECT c.chromosome, COUNT(g.gene_name) FROM chromosomes c JOIN gene_info g ON g._id = c._id WHERE c.chromosome IN (1,2,3,4,'X') GROUP BY c.chromosome;")
+dbGetQuery(Hs_con, "SELECT c.chromosome, COUNT(g.gene_name) AS count FROM chromosomes c JOIN gene_info g ON g._id = c._id WHERE c.chromosome IN (1,2,3,4,'X') GROUP BY c.chromosome ORDER BY count;")
 ```
 
 ```
-  chromosome COUNT(g.gene_name)
-1          1               4329
-2          2               3021
-3          3               2457
-4          4               1846
-5          X               2134
+  chromosome count
+1          4  1846
+2          X  2134
+3          3  2457
+4          2  3021
+5          1  4329
 ```
 
 
+Some more SQL commands
+=======================
+
+Some other SQL statements that might be of used to you:
+
+### CREATE TABLE
+
+The CREATE TABLE statement is used to create a new table. 
+
+### DELETE
+
+The DELETE command can be used to remove a record(s) from a table. 
+
+### DROP
+
+To remove an entire table from the database use the DROP command.
+
+### CREATE VIEW
+
+A view is a virtual table that is a result of SQL SELECT statement. A view contains fields from one or more real tables in the database. This virtual table can then be queried as if it were a real table. 
+
+
+Creating your own SQLite database in R
+===================================
+
+
+```r
+db <- dbConnect(SQLite(), dbname="./Data/SDY61/SDY61.sqlite")
+dbWriteTable(conn = db, name = "hai", value = "./Data/SDY61/hai_result.txt", row.names = FALSE, header = TRUE, sep="\t")
+```
+
+```
+[1] FALSE
+```
+
+```r
+dbWriteTable(conn = db, name = "cohort", value = "./Data/SDY61/arm_or_cohort.txt", row.names = FALSE, header = TRUE, sep="\t")
+```
+
+```
+[1] FALSE
+```
+
+
+
+Creating your own SQLite database in R (suite)
+=============================================
+
+
+```r
+dbListFields(db, "hai")
+```
+
+```
+ [1] "RESULT_ID"                 "ARM_ACCESSION"            
+ [3] "BIOSAMPLE_ACCESSION"       "EXPSAMPLE_ACCESSION"      
+ [5] "EXPERIMENT_ACCESSION"      "STUDY_ACCESSION"          
+ [7] "STUDY_TIME_COLLECTED"      "STUDY_TIME_COLLECTED_UNIT"
+ [9] "SUBJECT_ACCESSION"         "VALUE_REPORTED"           
+[11] "VIRUS_STRAIN"              "WORKSPACE_ID"             
+```
+
+```r
+dbListFields(db, "cohort")
+```
+
+```
+[1] "ARM_ACCESSION"             "DESCRIPTION"              
+[3] "NAME"                      "POPULATION_SELECTION_RULE"
+[5] "SORT_ORDER"                "STUDY_ACCESSION"          
+[7] "TYPE"                      "WORKSPACE_ID"             
+```
+
+```r
+
+dbGetQuery(db, "SELECT STUDY_TIME_COLLECTED, cohort.DESCRIPTION, MAX(VALUE_REPORTED) AS max_value FROM hai JOIN cohort ON hai.ARM_ACCESSION = cohort.ARM_ACCESSION WHERE cohort.DESCRIPTION LIKE '%TIV%' GROUP BY BIOSAMPLE_ACCESSION;")
+```
+
+```
+   STUDY_TIME_COLLECTED                      DESCRIPTION max_value
+1                     0 Healthy adults given TIV vaccine        80
+2                     0 Healthy adults given TIV vaccine        40
+3                     0 Healthy adults given TIV vaccine       160
+4                     0 Healthy adults given TIV vaccine       160
+5                     0 Healthy adults given TIV vaccine         5
+6                     0 Healthy adults given TIV vaccine        40
+7                     0 Healthy adults given TIV vaccine        40
+8                     0 Healthy adults given TIV vaccine        40
+9                     0 Healthy adults given TIV vaccine      2560
+10                   28 Healthy adults given TIV vaccine       640
+11                   28 Healthy adults given TIV vaccine       640
+12                   28 Healthy adults given TIV vaccine       160
+13                   28 Healthy adults given TIV vaccine       640
+14                   28 Healthy adults given TIV vaccine      2560
+15                   28 Healthy adults given TIV vaccine       160
+16                   28 Healthy adults given TIV vaccine      2560
+17                   28 Healthy adults given TIV vaccine       640
+18                   28 Healthy adults given TIV vaccine      2560
+19                    0 Healthy adults given TIV vaccine         5
+20                    0 Healthy adults given TIV vaccine       160
+21                    0 Healthy adults given TIV vaccine       640
+22                    0 Healthy adults given TIV vaccine        20
+23                    0 Healthy adults given TIV vaccine        20
+24                    0 Healthy adults given TIV vaccine       320
+25                    0 Healthy adults given TIV vaccine         5
+26                    0 Healthy adults given TIV vaccine        20
+27                    0 Healthy adults given TIV vaccine       320
+28                    0 Healthy adults given TIV vaccine         5
+29                    0 Healthy adults given TIV vaccine        40
+30                    0 Healthy adults given TIV vaccine       160
+31                    0 Healthy adults given TIV vaccine       320
+32                    0 Healthy adults given TIV vaccine       640
+33                    0 Healthy adults given TIV vaccine       640
+34                    0 Healthy adults given TIV vaccine        80
+35                    0 Healthy adults given TIV vaccine        40
+36                    0 Healthy adults given TIV vaccine         5
+37                    0 Healthy adults given TIV vaccine        20
+38                    0 Healthy adults given TIV vaccine         5
+39                    0 Healthy adults given TIV vaccine         5
+40                    0 Healthy adults given TIV vaccine         5
+41                    0 Healthy adults given TIV vaccine         5
+42                    0 Healthy adults given TIV vaccine         5
+43                    0 Healthy adults given TIV vaccine        20
+44                    0 Healthy adults given TIV vaccine        80
+45                    0 Healthy adults given TIV vaccine        10
+46                    0 Healthy adults given TIV vaccine       320
+47                   28 Healthy adults given TIV vaccine       160
+48                   28 Healthy adults given TIV vaccine       160
+49                   28 Healthy adults given TIV vaccine       640
+50                   28 Healthy adults given TIV vaccine        20
+51                   28 Healthy adults given TIV vaccine       640
+52                   28 Healthy adults given TIV vaccine       320
+53                   28 Healthy adults given TIV vaccine        20
+54                   28 Healthy adults given TIV vaccine        20
+55                   28 Healthy adults given TIV vaccine       320
+56                   28 Healthy adults given TIV vaccine         5
+57                   28 Healthy adults given TIV vaccine       320
+58                   28 Healthy adults given TIV vaccine       320
+59                   28 Healthy adults given TIV vaccine       640
+60                   28 Healthy adults given TIV vaccine       640
+61                   28 Healthy adults given TIV vaccine       160
+62                   28 Healthy adults given TIV vaccine       320
+63                   28 Healthy adults given TIV vaccine       160
+64                   28 Healthy adults given TIV vaccine        40
+65                   28 Healthy adults given TIV vaccine        40
+66                   28 Healthy adults given TIV vaccine       320
+67                   28 Healthy adults given TIV vaccine        80
+68                   28 Healthy adults given TIV vaccine        40
+69                   28 Healthy adults given TIV vaccine       160
+70                   28 Healthy adults given TIV vaccine       160
+71                   28 Healthy adults given TIV vaccine        80
+72                   28 Healthy adults given TIV vaccine        80
+73                   28 Healthy adults given TIV vaccine        80
+74                   28 Healthy adults given TIV vaccine        80
+```
+
+
+The sqldf package
+=================
+
+Sometimes it can be convenient to use SQL statements on dataframes. This is exactly what the sqldf package does.
+
+
+
+```r
+library(sqldf)
+data(iris)
+sqldf("select * from iris limit 5")
+sqldf("select count(*) from iris")
+sqldf("select Species, count(*) from iris group by Species")
+```
+
+
+The `sqldf` package can even provide increased speed over pure R operations. 
+
+Summary
+=======
+
+- R base `data.frames` are convenient but often not adapted to large dataset manipulation (e.g. genomics). 
+
+- Thankfully, there are good alternatives. My recommendtion is:
+    - Use `data.table` for your day-to-day operations
+    - When you have many tables and a complex schema, use `sqlite`.
+    
+**Note:** There many other R packages for "big data" such the `bigmemory` suite, `biglm`, `ff`, `RNetcdf`, `rhdf5`, etc. 
