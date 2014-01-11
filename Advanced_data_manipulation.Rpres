@@ -20,7 +20,9 @@ opts_chunk$set(cache=TRUE)
 ```
 
 
-- R has pass-by-value semantics, which minimizes accidental side effects. However, this can become a major bottleneck when dealing with large datasets. 
+- R has pass-by-value semantics, which minimizes accidental side effects. However, this can become a major bottleneck when dealing with large datasets both in terms of memory and speed.
+
+- Working with `data.frame`s in R can also be painful process in terms of writing code.
 
 - Fortunately, R provides some solution to this problems.
 
@@ -46,7 +48,7 @@ Here we will review three R packages that can be used to provide efficient data 
 - `RSQLite`: Database Interface R driver for SQLite
 - `sqldf`: An R package for runing SQL statements on R data frames, optimized for convenience
 
-<small>Thank to Kevin Ushey (@kevin_ushey) for the `data.table` notes</small>
+<small>Thank to Kevin Ushey (@kevin_ushey) for the `data.table` notes and Matt Dowle and Arunkumar Srinivasan for helpful comments.</small>
 
 What is data.table?
 ===================
@@ -67,7 +69,7 @@ class(dt)
 The extra functionality offered by `data.table` allows us to modify, reshape, 
 and merge `data.table`s much quicker than `data.frame`s. **See that `data.table` inherits from `data.frame`!**
 
-**Note:** The [development version (v1.8.11)](https://r-forge.r-project.org/scm/viewvc.php/pkg/NEWS?view=markup&root=datatable) of data.table includes a lot of new features including `melt` and `dcase` methods
+**Note:** The [development version (v1.8.11)](https://r-forge.r-project.org/scm/viewvc.php/pkg/NEWS?view=markup&root=datatable) of data.table includes a lot of new features including `melt` and `dcast` methods
 
 
 Installing data.table
@@ -85,7 +87,7 @@ install.packages("data.table", repos="http://R-forge.R-project.org")
 ```
 
 
-What's Different?
+What's different?
 =================
 
 Most of your interactions with `data.table`s will be through the subset (`[`)
@@ -137,7 +139,7 @@ DT[, c(2,3)]
 
 `DT[, c(2,3)]` just returns `c(2, 3)`. Why on earth is that?
 
-The j Expression
+The j expression
 ================
 
 The subset operator is really a function, and `data.table` modifies it to behave
@@ -172,7 +174,7 @@ k <- { print(10); 5 }
 print(k)
 ```
 
-The j Expression (suite)
+The j expression (suite)
 ================
 
 So, `data.table` does something special with the `expression` that you pass as
@@ -321,7 +323,7 @@ is parsed as `":="(z, 1)`.
 
 Using by
 ========
-We can also perform split-apply-combine like operations through the use of the
+We can also perform grouping like operations through the use of the
 `by` argument:
 
 ```{r}
@@ -349,7 +351,7 @@ DT[, list(z=mean(x + y)), by=gp]
 Notice that we retain one row for each unique group specified in the `by`
 argument, and only the `by` variables along-side our `z` variable are returned.
 
-The j Expression
+The j expression
 ================
 
 - A `list`
@@ -373,7 +375,7 @@ recycled if the `by` argument is used.
 
 
 
-Special Variables
+Special variables
 =================
 
 There are a number of special variables defined only within `j`, that allow us to
@@ -388,7 +390,7 @@ These variables allow us to infer a bit more about what's going on within the
 `data.table` calls, and also allow us to write more complicated `j expression`s.
 
 
-Special Variables
+Special variables
 ==================
 ## `.SD`
 
@@ -449,14 +451,16 @@ Example usage of .SD - lapply-type calls
 
 ```{r, cache=TRUE}
 library(data.table); library(microbenchmark)
-DT <- data.table(x=rnorm(1E5), y=rnorm(1E5), z=rnorm(1E5))
+DT <- data.table(x=rnorm(1E5), y=rnorm(1E5), z=sample(letters,1E5,replace=TRUE))
+DT2 <- copy(DT)
+setkey(DT2, "z")
 microbenchmark(
-  DT=DT[, sapply(.SD, mean), .SDcols=c('x', 'y', 'z')],
-  base=sapply(DT, mean)
+  DT=DT[, sapply(.SD, mean), .SDcols=c('x', 'y'), by='z'],
+  DT2=DT2[, sapply(.SD, mean), .SDcols=c('x', 'y'), by='z']
 )
 ```
 
-`data.table` isn't always faster, unfortunately.
+setting a key can lead to faster grouping operations. 
 
 Keys
 =====
@@ -550,6 +554,18 @@ setkey(DT2, x)
 merge(DT1, DT2, all=TRUE) ## outer join
 ```
 
+An inner join
+==============
+
+```{r}
+library(data.table); library(microbenchmark)
+DT1 <- data.table(x=c('a', 'a', 'b', 'dt1'), y=1:4)
+DT2 <- data.table(x=c('a', 'b', 'dt2'), z=5:7)
+setkey(DT1, x)
+setkey(DT2, x)
+merge(DT1, DT2, all=FALSE) ## inner join
+```
+
 ---
 
 Speed example
@@ -580,7 +596,7 @@ We perform right joins, so that e.g.
 is a right join of `DT1` into `DT2`. These joins are typically a bit faster. Do
 note that the order of columns post-merge can be different, though.
 
-Subset Joins
+Subset joins
 ============
 
 ```{r}
@@ -599,7 +615,7 @@ setcolorder(tmp2, c('x', 'y', 'z'))
 identical(tmp1, tmp2)
 ```
 
-Subset Joins can be Faster
+Subset joins can be faster
 ==========================
 
 ```{r}
@@ -612,6 +628,23 @@ DT2 <- DT1[ sample(1:nrow(DT1), 1E5), ]
 setnames(DT2, c('x', 'z'))
 setkey(DT1, x); setkey(DT2, x)
 microbenchmark( bracket=DT1[DT2], merge=merge(DT1, DT2, all.y=TRUE), times=5 )
+```
+
+Subset joins and the j-expression
+==========================
+
+More importantly they can be used the j-expression simultaneously, which can be very convenient. 
+
+```{r}
+DT1 <- data.table(x=1:5, y=6:10, z=11:15, key="x")
+DT2 <- data.table(x=2L, y=7, w=1L, key="x")
+# 1) subset only essential/necessary cols
+DT1[DT2, list(z)]
+# 2) create new col
+DT1[DT2, list(newcol = y > i.y)]  
+# i.y refer's to DT2's y col
+# 3) also assign my reference with `:=`
+DT1[DT2, newcol := z-w]
 ```
 
 data.table and SQL
@@ -658,22 +691,24 @@ library(data.table)
 options(datatable.verbose=TRUE)
 DT <- data.table(x=1:5, y=1:5, z=1:5, a=c('a', 'a', 'b', 'b', 'c'))
 DT[, lapply(.SD, mean), by=a]
+options(datatable.verbose=FALSE)
 ```
 
 
 Some thoughts
 ============
 
-The primary use of `data.table` is for the fast split-apply-combine functionality.
+The primary use of `data.table` is for efficient and **elegant** data manipulation including aggregation and joins. 
 
 ```{r}
 library(data.table); library(microbenchmark)
 DT <- data.table(gp1=sample(letters, 1E6, TRUE), gp2=sample(LETTERS, 1E6, TRUE), y=rnorm(1E6))
 microbenchmark( times=5,
   DT=DT[, mean(y), by=list(gp1, gp2)],
-  DF=with(DT, tapply(y, paste(gp1, gp2), mean))
-)
+  DF=with(DT, tapply(y, paste(gp1, gp2), mean)))
 ```
+
+Unlike "split-apply-combine" approaches such as `plyr`, data is never split in `data.table`!
 
 Other interesting convenience functions
 ===============
@@ -727,6 +762,19 @@ dfs <- replicate(100, data.frame(x=rnorm(1E4), y=rnorm(1E4)), simplify=FALSE)
 all.equal( rbindlist(dfs), data.table(do.call(rbind, dfs)) )
 microbenchmark( DT=rbindlist(dfs), DF=do.call(rbind, dfs), times=5 )
 ```
+
+Summary
+=======
+To quote Matt Dowle
+
+`data.table` builds on base R functionality to reduce 2 types of time :
+
+1. programming time (easier to write, read, debug and maintain)
+
+2. compute time
+
+It has always been that way around, 1 before 2.  The *main* benefit is the syntax: combining  where, select|update and 'by' into one query without having to string along a sequence of isolated function calls.  **Reduced function calls.  Reduced variable name repetition.  Easier to understand.**
+
 
 Learning More
 =============
