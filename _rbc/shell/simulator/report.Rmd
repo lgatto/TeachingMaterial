@@ -1,0 +1,46 @@
+# The simulator
+
+The script simulator.R will generate N samples drawn from some random
+distribution.  The value of N is given in the file `params.R`.
+
+<!-- TODO: insert file contents of params.R here. -->
+
+<!-- ```{r, code=capture.output(dump('fivenum', ''))} -->
+<!-- ``` -->
+
+
+For example, here we run the script to genarate samples from the
+uniform distribution.
+
+```{r, engine='bash',eval=FALSE}
+Rscript simulator.R runif
+```
+
+# Plotting the Normal distribution
+
+This is an example of the histogram of the Normal distribution:
+
+![Histogram](sim1.png "Histogram of sim1.dat")
+
+# Histogram of the Uniform distribution
+
+This is an example of the histogram of the Normal distribution:
+
+![Histogram](sim2.png "Histogram of sim2.dat")
+
+# Exercises
+
+* Compile the document for yourself.
+* Fix the deliberate typo in the title.  What should be re-run when
+  you "make". again.
+* Change N to e.g. 1000 to see what happens when you "make".
+* What happens when you change the plotting function (e.g. add
+  xlab='...' to the hist call) -- what should be regenerated?
+* Silence the first block of code by changing eval keyword to
+  something obvious
+* See the effect of caching:
+	1. Set n to 1e6 in `params.R`
+	2. "make"
+	3. "touch report.Rmd"
+	4. "make"
+	5. "make"
