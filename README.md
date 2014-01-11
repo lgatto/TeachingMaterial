@@ -21,7 +21,7 @@ tweeting about it and sharing it with your colleagues.
 
 ### rbc
 - Description: [Software carpentry R bootcamp](http://sje30.github.io/2014-01-07-cam/), Jan 7-8, 2014, Cambridge, UK
-- Authors: [Stephen Eglen](http://www.damtp.cam.ac.uk/user/sje30/), [Laurent Gatto](https://github.com/lgatto) and (Aleksandra Pawlik)[http://www.software.ac.uk/about/people/aleksandra-pawlik]
+- Authors: [Stephen Eglen](http://www.damtp.cam.ac.uk/user/sje30/), [Laurent Gatto](https://github.com/lgatto) and [Aleksandra Pawlik](http://www.software.ac.uk/about/people/aleksandra-pawlik)
 - Original repository: https://github.com/lgatto/rbc/
 
 ### spr
