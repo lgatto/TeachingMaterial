@@ -31,6 +31,12 @@ tweeting about it and sharing it with your colleagues.
 - Original repository: https://github.com/lgatto/spr
 - More details: https://github.com/lgatto/spr#readme
 
+### Biostat-578
+- Description: Bioinformatics for Big Omics Data
+- Author: [Raphael Gottardo](http://www.rglab.org/), Fred Hutchinson Cancer Research Center
+- Original repository: https://github.com/raphg/Biostat-578
+- More details: https://github.com/raphg/Biostat-578/blob/master/README.md
+
 ### QuickPackage
 - Description: Twobrief overviews of `R` package creation
 - Author: [Laurent Gatto](https://github.com/lgatto)
