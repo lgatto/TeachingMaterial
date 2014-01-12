@@ -1,27 +1,41 @@
 TeachingMaterial
 ================
 
-This repository is an aggregator for various [R](http://www.r-project.org/) teaching material.
-Most of the courses are taught at the University of Cambridge, UK, and some have been adapted and exported outside. 
-Each material subdirectory has its own repository; `TeachingMaterial` aggregates a snapshot as a central entry point. 
-Aggregation is done using `git-subtree` (see the [administration page](https://github.com/lgatto/TeachingMaterial/wiki/TM-Administration) for details). 
-The local copies linking to external repositories are prefixed with an underscore. 
+This repository is an aggregator for various
+[R](http://www.r-project.org/), `make` and `git`/`github` teaching
+material.  Most of the courses are taught at the University of
+Cambridge, UK, and some have been adapted and exported outside. We
+would also like to acknowledge contributions from
+[Aleksandra Pawlik](http://www.software.ac.uk/about/people/aleksandra-pawlik),
+Software Sustainability Institute,
+[Raphael Gottardo](http://www.rglab.org/), Fred Hutchinson Cancer
+Research Center and [Karl Broman](http://biostat.wisc.edu/~kbroman/),
+University of Wisconsin-Madison.
 
-Unless otherwise stated, all material is licensed under a 
-[Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/). 
-This means you are free to copy, distribute and transmit the work, 
-adapt it to your needs as long as you cite its origin and, 
-if you do redistribute it, do so under the same license.
+Each material subdirectory has its own repository; `TeachingMaterial`
+aggregates a snapshot as a central entry point.  Aggregation is done
+using `git-subtree` (see the
+[administration page](https://github.com/lgatto/TeachingMaterial/wiki/TM-Administration)
+for details).  The local copies linking to external repositories are
+prefixed with an underscore.
 
-If you like this material and/or this initiative, 
-do not hesitate to let us know by starring the repo, 
-tweeting about it and sharing it with your colleagues. 
+Unless otherwise stated, all material is licensed under a
+[Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/).
+This means you are free to copy, distribute and transmit the work,
+adapt it to your needs as long as you cite its origin and, if you do
+redistribute it, do so under the same license.
+
+If you like this material and/or this initiative, do not hesitate to
+let us know by starring the repo, tweeting about it and sharing it
+with your colleagues.
 
 ## Material
 
 ### rbc
 - Description: [Software carpentry R bootcamp](http://sje30.github.io/2014-01-07-cam/), Jan 7-8, 2014, Cambridge, UK
-- Authors: [Stephen Eglen](http://www.damtp.cam.ac.uk/user/sje30/), [Laurent Gatto](https://github.com/lgatto) and [Aleksandra Pawlik](http://www.software.ac.uk/about/people/aleksandra-pawlik)
+- Authors: [Stephen Eglen](http://www.damtp.cam.ac.uk/user/sje30/),
+  [Laurent Gatto](https://github.com/lgatto) and
+  [Aleksandra Pawlik](http://www.software.ac.uk/about/people/aleksandra-pawlik)
 - Original repository: https://github.com/lgatto/rbc/
 - Content: `R` programming, `git`/`github` (via [software carpentry](http://software-carpentry.org/)), `make`, `shell` and `knitr`. 
 
@@ -36,6 +50,18 @@ tweeting about it and sharing it with your colleagues.
 - Author: [Raphael Gottardo](http://www.rglab.org/), Fred Hutchinson Cancer Research Center
 - Original repository: https://github.com/raphg/Biostat-578
 - More details: https://github.com/raphg/Biostat-578/blob/master/README.md
+
+### github_tutorial
+- Description: `git`/`github` guide
+- Original repository: https://github.com/kbroman/github_tutorial
+- Author: [Karl Broman](http://biostat.wisc.edu/~kbroman/), University of Wisconsin-Madison
+- View it here: http://kbroman.github.io/github_tutorial/
+
+### minimal_make
+- Description: minimal tutorial on `make`
+- Original repository: https://github.com/kbroman/minimal_make
+- Author: [Karl Broman](http://biostat.wisc.edu/~kbroman/), University of Wisconsin-Madison
+- View it here: http://kbroman.github.io/minimal_make/
 
 ### QuickPackage
 - Description: Twobrief overviews of `R` package creation
@@ -148,4 +174,3 @@ tweeting about it and sharing it with your colleagues.
 library(devtools)
 install_github("sequences", "lgatto")
 ```
-
