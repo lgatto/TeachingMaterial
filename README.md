@@ -37,7 +37,7 @@ with your colleagues.
   [Laurent Gatto](https://github.com/lgatto) and
   [Aleksandra Pawlik](http://www.software.ac.uk/about/people/aleksandra-pawlik)
 - Original repository: https://github.com/lgatto/rbc/
-- Content: `R` programming, `git`/`github` (via [software carpentry](http://software-carpentry.org/)), `make`, `shell` and `knitr`. 
+- Content: `R` programming, plotting, `git`/`github` (via [software carpentry](http://software-carpentry.org/)), `make`, `shell` and `knitr`. 
 
 ### spr
 - Description: Scientific Programmign with `R`, MPhil in Computational Biology
