@@ -15,7 +15,7 @@ Th	10:30-11:50	HST T747
 
 **Grading scheme (Tentative):** HW (40%), Midterm (30%), Final project (30%)
 
-**Important dates:** Midterm (Feb 20), Final project presentations: last 2 weeks of class
+**Important dates:** Midterm (Feb 20), Final project presentations: last 2 weeks of class (March 4,6,11&13).
 
 **Scope:** This practical "hands-on" course in Bioinformatics for high dimensional omics will emphasize on how to use statistical methods, as well as the R programming language and the Bioconductor project, as tools to manipulate, visualize and analyze real world omics datasets. The course will be organized around the following topics:
 - Introduction to computing for Bioinformatics using R: Introduction to R/RStudio, review of main data structures and tools for efficient and reproducible research, data manipulation and visualization
