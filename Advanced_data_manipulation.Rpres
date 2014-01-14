@@ -638,9 +638,9 @@ DT2 <- data.table(x=2L, y=7, w=1L, key="x")
 # 1) subset only essential/necessary cols
 DT1[DT2, list(z)]
 # 2) create new col
-DT1[DT2, list(newcol = y > i.y)]  
 # i.y refer's to DT2's y col
-# 3) also assign my reference with `:=`
+DT1[DT2, list(newcol = y > i.y)]  
+# 3) also assign by reference with `:=`
 DT1[DT2, newcol := z-w]
 ```
 
@@ -792,6 +792,9 @@ Databases and the Structured Query Language (SQL)
 - Well-known DBMSs include MySQL, PostgreSQL, SQLite, Microsoft SQL Server, Oracle, etc.
 - Relational DBMSs (RDBMs) store data in a set of related tables
 - Most RDBMs use some form of the Structured Query Language (SQL)
+
+**Why do we even need databases?**
+
 
 The Structured Query Language (SQL) 
 ===================================
