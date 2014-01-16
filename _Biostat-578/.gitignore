@@ -9,8 +9,16 @@ Advanced_data_manipulation.md
 Advanced_data_manipulation.html
 Advanced_graphics_in_R.md
 Advanced_graphics_in_R.html
+Biology_basics.md
+Biology_basics.html
+Microarrays.md
+Microarrays.html
 *-cache/*
 *-figure/*
 *.Rproj
 Biostat-578.Rproj
 Data/SDY61/SDY61.sqlite
+
+Microarrays.md
+
+Normalization.md

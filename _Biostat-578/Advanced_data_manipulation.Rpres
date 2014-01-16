@@ -104,7 +104,6 @@ library(data.table)
 DF <- data.frame(x=1:3, y=4:6, z=7:9)
 DT <- data.table(x=1:3, y=4:6, z=7:9)
 DF[c(2,3)]
-cat("\n")
 DT[c(2,3)]
 ```
 
@@ -119,7 +118,6 @@ library(data.table)
 DF <- data.frame(x=1:3, y=4:6, z=7:9)
 DT <- data.table(x=1:3, y=4:6, z=7:9)
 DF[c(2,3), ]
-cat("\n")
 DT[c(2,3), ]
 ```
 
@@ -133,7 +131,6 @@ library(data.table)
 DF <- data.frame(x=1:3, y=4:6, z=7:9)
 DT <- data.table(x=1:3, y=4:6, z=7:9)
 DF[, c(2,3)]
-cat("\n")
 DT[, c(2,3)]
 ```
 
@@ -442,8 +439,8 @@ Example usage of .SD - lapply-type calls
 ```{r}
 library(data.table)
 DT <- data.table(x=rnorm(10), y=rnorm(10), z=rnorm(10), id=letters[1:10])
-DT[, sapply(.SD, mean), .SDcols=c('x', 'y', 'z')]
-sapply(DT[,1:3, with=FALSE], mean)
+DT[, lapply(.SD, mean), .SDcols=c('x', 'y', 'z')]
+lapply(DT[,1:3, with=FALSE], mean)
 ```
 
 Example usage of .SD - lapply-type calls
@@ -455,8 +452,8 @@ DT <- data.table(x=rnorm(1E5), y=rnorm(1E5), z=sample(letters,1E5,replace=TRUE))
 DT2 <- copy(DT)
 setkey(DT2, "z")
 microbenchmark(
-  DT=DT[, sapply(.SD, mean), .SDcols=c('x', 'y'), by='z'],
-  DT2=DT2[, sapply(.SD, mean), .SDcols=c('x', 'y'), by='z']
+  DT=DT[, lapply(.SD, mean), .SDcols=c('x', 'y'), by='z'],
+  DT2=DT2[, lapply(.SD, mean), .SDcols=c('x', 'y'), by='z']
 )
 ```
 
@@ -641,9 +638,9 @@ DT2 <- data.table(x=2L, y=7, w=1L, key="x")
 # 1) subset only essential/necessary cols
 DT1[DT2, list(z)]
 # 2) create new col
-DT1[DT2, list(newcol = y > i.y)]  
 # i.y refer's to DT2's y col
-# 3) also assign my reference with `:=`
+DT1[DT2, list(newcol = y > i.y)]  
+# 3) also assign by reference with `:=`
 DT1[DT2, newcol := z-w]
 ```
 
@@ -708,7 +705,7 @@ microbenchmark( times=5,
   DF=with(DT, tapply(y, paste(gp1, gp2), mean)))
 ```
 
-Unlike "split-apply-combine" approaches such as `plyr`, data is never split in `data.table`!
+Unlike "split-apply-combine" approaches such as `plyr`, data is never split in `data.table`! `data.table` applies the function to each subset recursively (in C for speed). This keeps the memory footprint low - which is very essential for "big data". 
 
 Other interesting convenience functions
 ===============
@@ -796,6 +793,9 @@ Databases and the Structured Query Language (SQL)
 - Relational DBMSs (RDBMs) store data in a set of related tables
 - Most RDBMs use some form of the Structured Query Language (SQL)
 
+**Why do we even need databases?**
+
+
 The Structured Query Language (SQL) 
 ===================================
 
@@ -838,7 +838,7 @@ Using RSQLite (suite)
 dbListFields(Hs_con, "gene_info")
 dbListFields(Hs_con, "alias")
 # Or using SQLite
-dbGetQuery(Hs_con, "PRAGMA table_info('gene_info');")
+# dbGetQuery(Hs_con, "PRAGMA table_info('gene_info');")
 ```
 
 ```{r select-all, cache=FALSE}
