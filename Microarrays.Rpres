@@ -1,4 +1,4 @@
-Gene expression microarrays
+Bioinformatics for Big Omics Data: Introduction to gene expression microarrays
 ========================================================
 width: 1440
 height: 900
@@ -149,6 +149,7 @@ Illumina bead arrays
 - High density arrays
     - HumanHT-12 v4.0 Expression BeadChip, about 47,000 probes
 - A specific oligonucleotide sequence is assigned to each bead type, which is replicated about 30 times on an array
+- Bead level data can be relavitely large
 
 
 Summary of technologies
@@ -162,3 +163,18 @@ Two colors | One color | One color
 Flexible, choice of probes | High density/Replication | High density/Replication
 - | Cross hybridization | -
 
+
+Analysis pipeline
+==================
+
+1. Biological question
+2. Experimental design
+3. Experiment
+4. Image analysis
+5. Normalization, Batch effect removal
+6. Estimation, Testing, Clustering, Prediction, Classification, Feature selection, etc.
+7. Validate finding generate new hypothesis $\rightarrow$ New experiments
+
+**Most of these steps require the use of statistical methods and/or computational tools**
+
+**Note:** Even though microarrays were designed to study gene expression, they can be used to study many other things (dna-binding, methylation, splicing, etc). Though they are slowly being replaced by sequencing-based assays.
