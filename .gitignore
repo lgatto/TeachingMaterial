@@ -18,7 +18,14 @@ Microarrays.html
 *.Rproj
 Biostat-578.Rproj
 Data/SDY61/SDY61.sqlite
+Data/*
 
 Microarrays.md
 
 Normalization.md
+
+Probe_summary.md
+
+GEOmetadb.sqlite
+
+Bioconductor_intro.md

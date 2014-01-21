@@ -22,9 +22,9 @@ cDNA microarray: An example
 ==========================
 We have two colors (Red) and (Green)
 
-$M=\log2(R/G)$ (and $A=\log2(R*G)$)
+$M=\log2(R/G)$ (and $A=\log2(R\cdot G)$)
 
-Smyth, G. K., & Speed, T. (2003). Normalization of cDNA microarray data. Methods, 31(4), 265–273. doi:10.1016/s1046-2023(03)00155-5
+<small>Smyth, G. K., & Speed, T. (2003). Normalization of cDNA microarray data. Methods, 31(4), 265–273. doi:10.1016/s1046-2023(03)00155-5</small>
 
 --------
 
@@ -35,7 +35,7 @@ Analysis of variance (ANOVA)
 - Statistical procedure due to Fisher used to identify sources of variability from one or more potential sources ("treatments" or "factors").
 - This is what we should do with microarray data
 
-Kerr, M. K., Martin, M., & Churchill, G. A. (2000). Analysis of variance for gene expression microarray data. Journal of Computational Biology : a Journal of Computational Molecular Cell Biology, 7(6), 819–837. doi:10.1089/10665270050514954
+<small>Kerr, M. K., Martin, M., & Churchill, G. A. (2000). Analysis of variance for gene expression microarray data. Journal of Computational Biology : a Journal of Computational Molecular Cell Biology, 7(6), 819–837. doi:10.1089/10665270050514954</small>
 
 ANOVA - Design
 ==============
@@ -59,7 +59,8 @@ ANOVA - Model
 ANOVA normalization
 ===================
 - Kerr and Chuchill use least squares to estimate the effects
-- The VG effect is automatically normalized Used bootstrap to compute error bars
+- The VG effect is automatically normalized 
+- Used bootstrap to compute error bars
 - Nice statistical approach but do not account for non linear effect (MA plot)!
 
 It's even worse than that!
@@ -67,13 +68,18 @@ It's even worse than that!
 
 ![Lowess](Images/Lowess.png)
 
+--------
+
+- $M=\log2(R/G)$ (and $A=\log2(R\cdot G)$)
+- Strong non-linear relationship
+
 Lowess Normalization
 ====================
 
 - ￼￼Locally weighted scatterplot smoothing technique (Cleveland, 1979)
 - Locally linear polynomial Robust to outliers
 - Each smoothed value is computed using neighboring values in a given window (span)
-- Span value $0<f<1$ (proportion of data to use)
+- Span value $0< f <1$ (proportion of data to use)
 
 **Lowess normalization normalizes the data as follows:**
 
@@ -107,30 +113,41 @@ Given $n$ arrays of length $p$, form $X$ of dimension $p \times n$ where each ar
 
 1. sort each column of $X$ to give $X_{sort}$
 2. take the means across rows of $X_{sort}$ and assign this
-mean to each element in the row toget $X'_{sort}$
+mean to each element in the row to get $X'_{sort}$
 3. get $X_{normalized}$ by rearranging each column of
 $X'_{sort}$ to have the same order as the original $X$
 
-Bolstad, B. M., Irizarry, R. A., Åstrand, M., & Speed, T. P. (2003). A comparison of normalization methods for high density oligonucleotide array data based on variance and bias. Bioinformatics, 19(2), 185–193. doi:10.1093/bioinformatics/19.2.185
+<small>Bolstad, B. M., Irizarry, R. A., Åstrand, M., & Speed, T. P. (2003). A comparison of normalization methods for high density oligonucleotide array data based on variance and bias. Bioinformatics, 19(2), 185–193. doi:10.1093/bioinformatics/19.2.185</small>
 
 Quantile illustration
 =====================
 
 ![Quantile on densities](Images/quantile-density.png)
 
-MA plots before quantile
+MA plots before quantile normalization
 ===============
 
 ![Before quantile](Images/before-quantile.png)
 
-MA plots after quantile
+MA plots after quantile normalization
 ===============
 
 ![After quantile](Images/after-quantile.png)
 
+
+Summary
+=======
+
+- You should always normalized your data before any analysis unless you have a very good reason not to!
+- In most cases, quantile normalization will do unless you're working with cDNA arrays
+- Quantile normalization is readily available in R, part of standard pipelines for Affymetryx and Illumina data analyses
+
+
+**Note that all these techniques assume that most genes are not changing accross conditions. This could be a problem in some context.**
+
 Rank invariant methods
 ======================
-Li, C., & Wong, W. H. (2001). Model-based analysis of oligonucleotide arrays: model validation, design issues and standard error application. Genome Biol.
+<small>Li, C., & Wong, W. H. (2001). Model-based analysis of oligonucleotide arrays: model validation, design issues and standard error application. Genome Biol.</small>
 
 - Find a set of genes, which is believed not to change
 - Use these to find the non linear relationship in the MA plot
@@ -138,9 +155,7 @@ Li, C., & Wong, W. H. (2001). Model-based analysis of oligonucleotide arrays: mo
 - Rank based methods.
 - Look at the intensity ranks, if a gene is not differentially expressed its rank should be about the same in the different samples.
 
-Summary
-=======
+Rank based lowess normalization
+==============================
 
-- You should always normalized your data before any analysis unless you have a very good reason not too!
-- In most cases, quantile normalization will do
-- Quantile normalization is readily available in R, part of standard pipelines for Affymetryx and Illumina data analyses
+![Lowess](Images/Lowess.png)
