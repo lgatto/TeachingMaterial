@@ -72,8 +72,10 @@ or if the package contains multiple vignettes or a vignette with a non-standard 
 browseVignettes(package = "GEOmetadb")
 ```
 
-Find the right data in GEO
+Finding the right data in GEO
 ==========================
+
+<small>Zhu, Y., Davis, S., Stephens, R., Meltzer, P. S., & Chen, Y. (2008). GEOmetadb: powerful alternative search engine for the Gene Expression Omnibus. Bioinformatics (Oxford, England), 24(23), 2798–2800. doi:10.1093/bioinformatics/btn520</small>
 
 GEOmetadb uses a SQLite database to store all metadata associate with GEO.
 ```{r eval=FALSE}
@@ -93,8 +95,37 @@ dbListFields(geo_con, 'gse')
 Finding a study
 ===============
 
+The basic record types in GEO include Platforms (GPL), Samples (GSM), Series (GSE) and DataSets (GDS)
+
 ```{r}
 dbGetQuery(geo_con, "SELECT gse.ID, gse.title, gse.gse FROM gse WHERE gse.pubmed_id='21743478';")
+```
+
+Finding a study (suite)
+===============
+
+What samples were used?
+
+```{r}
+dbGetQuery(geo_con, "SELECT gse.gse, gsm.gsm, gsm.title FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j JOIN gsm ON j.gsm=gsm.gsm WHERE gse.pubmed_id='21743478' LIMIT 5;")
+```
+
+Finding a study (suite)
+===============
+
+What about raw data?
+
+```{r}
+res <- dbGetQuery(geo_con, "SELECT gsm.gsm, gsm.supplementary_file FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j JOIN gsm ON j.gsm=gsm.gsm WHERE gse.pubmed_id='21743478' LIMIT 5;")
+head(res)
+```
+
+Finding specific data
+=====================
+
+```{r, cache=TRUE}
+res <- dbGetQuery(geo_con, "SELECT gpl.bioc_package, gsm.title, gsm.series_id, gsm.gpl, gsm.supplementary_file FROM gsm JOIN gpl ON gsm.gpl=gpl.gpl WHERE gpl.manufacturer='Affymetrix' AND gsm.supplementary_file like '%CEL.gz';")
+head(res)
 ```
 
 
@@ -105,9 +136,9 @@ as follows,
 ```{r query-GEO, cache = TRUE}
 # Download the mapping information and processed data
 # This returns a list of eSets
-eSet <- getGEO("GSE29617")[[1]]
+GSE29617_set <- getGEO("GSE29617")[[1]]
 ```
-which returns (a list of) an eSet. 
+which returns (a list of) an ExpressionSet (eSet).
 
 
 The eSet class
@@ -118,9 +149,9 @@ What is an eSet? An S4 class that tries to:
 - Provide common data container for diverse Bioconductor packages.
 
 ```{r}
-str(eSet,max.level=2)
+str(GSE29617_set,max.level=2)
 ```
-An eSet contains the necessary slots to summarize an experiment.
+An eSet contains the necessary "parts" to summarize an experiment.
 
 Classes and methods
 ====================
@@ -173,9 +204,11 @@ The ExpressionSet subclass
 Similar to the `eSet` class but tailored to gene expression, with an expression matrix that can be accessed with the `exprs` method.
 
 ```{r}
-class(eSet)
-exprs(eSet)[1:2,1:3]
+class(GSE29617_set)
+exprs(GSE29617_set)[1:2,1:3]
 ```
+
+also provides additional methods such as `fData`.
 
 The ExpressionSet subclass (suite)
 ==========================
@@ -183,11 +216,11 @@ The ExpressionSet subclass (suite)
 ```{r}
 # Information about preprocessing
 # Nothing in here!
-preproc(eSet)
+preproc(GSE29617_set)
 # A data.frame with number of rows equal to the number of samples
-pData(eSet)[1:2,1:2]
+pData(GSE29617_set)[1:2,1:2]
 # A data.frame with number of rows equal to the number of features/probes
-fData(eSet)[1:2,1:2]
+fData(GSE29617_set)[1:2,1:2]
 ```
 
 The ExpressionSet subclass (suite)
@@ -195,9 +228,9 @@ The ExpressionSet subclass (suite)
 So the `ExpressionSet` objects facilitate the encapsulation of everything that's needed to summarize and analyze an experiment. Specific elements can be access with the `@` operator but many classes have convenient accessor methods.
 
 ```{r}
-fData(eSet)[1:2,1:2]
+fData(GSE29617_set)[1:2,1:2]
 # Note that S4 classes can be nested!
-eSet@featureData@data[1:2,1:2]
+GSE29617_set@featureData@data[1:2,1:2]
 ```
 
 What if you want the raw data?
@@ -228,11 +261,64 @@ then we use the following commands
 # Read the CEL file and creates and AffyBatch
 GSE29617_affyBatch <- ReadAffy(celfile.path="Data/GEO/GSE29617/")
 # Normalize and summarize the data
-GSE29617_eSet <- rma(GSE29617_affyBatch)
+GSE29617_set2 <- rma(GSE29617_affyBatch)
 ```
 Let's check the results and compare to the expression matrix that was submitted to GEO
 ```{r}
-exprs(GSE29617_eSet)[1:2,1:2]
+exprs(GSE29617_set2)[1:2,1:2]
 ```
 
+What are those probes?
+======================
+
+```{r eval=FALSE}
+# We first need to install our annotation package
+library(BiocInstaller)
+# Note that you don't have to use source anymore!
+biocLite("hthgu133a.db")
+```
+
+
+```{r}
+library(hthgu133a.db)
+probe_ids <- rownames(GSE29617_set2)
+probe_data <- select(hthgu133a.db, keys = probe_ids, columns = "SYMBOL", keytype = "PROBEID")
+probe_data[1,]
+```
+This didn't work very well, did it?
+
+What are those probes? (Suite)
+======================
+
+Let's fix this:
+```{r, warning=TRUE}
+probe_ids <- gsub("_PM","",rownames(GSE29617_set2))
+probe_data <- select(hthgu133a.db, keys = probe_ids, columns = "SYMBOL", keytype = "PROBEID")
+probe_data[1, ]
+```
+What's the warning?
+
+What are those probes? (Suite)
+======================
+
+
+This gives us too many rows, what do we do?
+```{r, cache=TRUE}
+library(data.table)
+probe_data_dt <- data.table(probe_data)
+probe_data_dt_unique <- probe_data_dt[,list(SYMBOL=paste(SYMBOL,collapse=";")),by="PROBEID"]
+probe_data_dt_unique[SYMBOL%like%";"]
+```
+
+Completing our ExpressionSet
+============================
+
+```{r}
+annotaded_probes <- data.frame(probe_data_dt_unique)
+rownames(annotaded_probes) <- rownames(GSE29617_set2)
+fData(GSE29617_set2) <- annotaded_probes
+head(fData(GSE29617_set2))
+```
+
+Now you're ready to get the data that you will have to analyze for your second homework.
 

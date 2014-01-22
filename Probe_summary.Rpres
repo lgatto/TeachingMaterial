@@ -102,7 +102,7 @@ Irizarry et al. (2003) argued that MM is a poor measure of non specific hybridiz
 - Model only the PM intensities
 - Before do a "gentle" background correction
 
-$$PM^* =\theta_i+\phi_j+\epsilon_{ij}$$
+$$\log_2(PM^*) =\theta_i+\phi_j+\epsilon_{ij}$$
 
 Where $PM^*$ is a normalized background corrected intensity
 

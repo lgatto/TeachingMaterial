@@ -22,7 +22,7 @@ cDNA microarray: An example
 ==========================
 We have two colors (Red) and (Green)
 
-$M=\log2(R/G)$ (and $A=\log2(R\cdot G)$)
+$M=\log_2(R/G)$ (and $A=\log_2(R\cdot G)$)
 
 <small>Smyth, G. K., & Speed, T. (2003). Normalization of cDNA microarray data. Methods, 31(4), 265–273. doi:10.1016/s1046-2023(03)00155-5</small>
 
@@ -70,7 +70,7 @@ It's even worse than that!
 
 --------
 
-- $M=\log2(R/G)$ (and $A=\log2(R\cdot G)$)
+- $M=\log_2(R/G)$ (and $A=\log_2(R\cdot G)$)
 - Strong non-linear relationship
 
 Lowess Normalization
@@ -138,7 +138,7 @@ MA plots after quantile normalization
 Summary
 =======
 
-- You should always normalized your data before any analysis unless you have a very good reason not to!
+- You should always normalize your data before any analysis unless you have a very good reason not to!
 - In most cases, quantile normalization will do unless you're working with cDNA arrays
 - Quantile normalization is readily available in R, part of standard pipelines for Affymetryx and Illumina data analyses
 
