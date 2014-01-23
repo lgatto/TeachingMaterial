@@ -36,5 +36,6 @@ Th	10:30-11:50	HST T747
 - 01/08/13 Same as above and [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rpres)
 - 01/14/13 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres)
 - 01/16/13 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres) & [Biology basics](https://github.com/raphg/Biostat-578/blob/master/Biology_basics.Rpres) 
-
-
+- 01/21/13 [Intro to Microarrays](https://github.com/raphg/Biostat-578/blob/master/Microarrays.Rpres) & [Normalization](https://github.com/raphg/Biostat-578/blob/master/Normalization.Rpres) & [Probe summary](https://github.com/raphg/Biostat-578/blob/master/Probe_summary.Rpres)
+- 01/23/13 [Probe summary](https://github.com/raphg/Biostat-578/blob/master/Probe_summary.Rpres) & [Intro to Bioconductor](https://github.com/raphg/Biostat-578/blob/master/Bioconductor_intro.Rpres)
+- 01/28/13 Differential expression
