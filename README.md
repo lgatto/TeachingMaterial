@@ -20,23 +20,23 @@ to the previous introductory material and exercises.
 
 ## Exercises
 
-1) Using `R` interactively and running a script.
-2) [Vectors](https://github.com/lgatto/RIntro/blob/master/Exercises/Exercise-02.md)
-3) [How to store microarray data](https://github.com/lgatto/RIntro/blob/master/Exercises/Exercise-03.md)
-   - expression data and meta data
-   - matrices, data frames and lists.
-4) [A short microarray analysis](https://github.com/lgatto/RIntro/blob/master/Exercises/Exercise-04.md)
-   - reading spreadsheets into `R`
-   - saving/loading objects
-   - basic plotting
-   - `for` loops: counting differentially expressed genes in three
+1. Using `R` interactively and running a script.
+2. [Vectors](https://github.com/lgatto/RIntro/blob/master/Exercises/Exercise-02.md)
+3. [How to store microarray data](https://github.com/lgatto/RIntro/blob/master/Exercises/Exercise-03.md)
+  * expression data and meta data
+  * matrices, data frames and lists.
+4. [A short microarray analysis](https://github.com/lgatto/RIntro/blob/master/Exercises/Exercise-04.md)
+  * reading spreadsheets into `R`
+  * saving/loading objects
+  * basic plotting
+  * `for` loops: counting differentially expressed genes in three
      microarray result data
-5) [Another microarray analysis](https://github.com/lgatto/RIntro/blob/master/Exercises/Exercise-05.md)
-   - combining multiple expression matrices and produce a heatmap
-   - extracting, parsing and visualising genes of interest
-6) [A short Bioconductor data analysis](https://github.com/lgatto/RIntro/blob/master/Exercises/Exercise-06.md)
-   - Quality control
-   - Exploratory data analysis
+5. [Another microarray analysis](https://github.com/lgatto/RIntro/blob/master/Exercises/Exercise-05.md)
+  * combining multiple expression matrices and produce a heatmap
+  * extracting, parsing and visualising genes of interest
+6. [A short Bioconductor data analysis](https://github.com/lgatto/RIntro/blob/master/Exercises/Exercise-06.md)
+  * Quality control
+  * Exploratory data analysis
 
 ## See also
 
