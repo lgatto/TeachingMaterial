@@ -19,7 +19,7 @@ LATEXFILES = *.aux\
 	*.tikz\
 
 all:
-	make RIntro
+	make RIntro.pdf
 	## make StangleAll
 
 setvars:
@@ -32,38 +32,21 @@ RIntro.pdf: RIntro.Rnw Sec-AboutR.tex Sec-IntroR.tex Sec-DataTypes1.tex Sec-Data
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('RIntro.Rnw');" 
 	pdflatex RIntro.tex ## to get rid of ~
 
-Sec-AboutR.tex: Sec-AboutR.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-AboutR.Rnw');"
+%.tex: %.Rnw
+	Rscript -e 'require(knitr);  knit("$^")'
 
-Sec-IntroR.tex: Sec-IntroR.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-IntroR.Rnw');"
 
-Sec-DataTypes1.tex: Sec-DataTypes1.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-DataTypes1.Rnw');"
+.PHONY: all clean handouts
 
-Sec-DataTypes2.tex: Sec-DataTypes2.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-DataTypes2.Rnw');"
+handouts:
+	make all
+	cp -f RIntro.pdf handouts/.
+	cp -f Exercises/*html handouts/ex/.
+	cp -f Exercises/*CEL handouts/ex/.
+	cp -f Exercises/*tsv handouts/ex/.
+	cp -f Exercises/*csv handouts/ex/.
 
-Sec-objects.tex: Sec-objects.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-objects.Rnw');"
 
-Sec-Programming.tex: Sec-Programming.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-Programming.Rnw');"
-
-Sec-RBioc.tex: Sec-RBioc.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-RBioc.Rnw');"
-
-Sec-Packages.tex: Sec-Packages.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-Packages.Rnw');"
-
-Sec-UseCase.tex: Sec-UseCase.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-UseCase.Rnw');"
-
-Sec-BiocCase.tex: Sec-BiocCase.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-BiocCase.Rnw');"
-
-Sec-Plotting.tex: Sec-Plotting.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-Plotting.Rnw');"
 
 clean:
 	rm -f $(LATEXFILES)
@@ -74,7 +57,6 @@ clean:
 	rm -rf Exercises/*pdf
 	rm -rf Exercises/*rda
 	rm -rf Exercises/.Rhistory
-
 
 # StangleAll:
 # 	"$(R_HOME)/bin/R" --vanilla -e "sapply(dir(pattern = 'Rnw'), Stangle)"

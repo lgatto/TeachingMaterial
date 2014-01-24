@@ -47,7 +47,7 @@ class(sample.ExpressionSet)
 slotNames(sample.ExpressionSet)
 @ 
 <<eset2b, eval=FALSE>>=
-class?ExpressionSet
+## class?ExpressionSet
 @ 
 \end{frame}
 
@@ -79,6 +79,9 @@ dim(sample.ExpressionSet)
 <<eset4>>=
 phenoData(sample.ExpressionSet)
 @   
+<<eset4b, eval=FALSE>>=
+pData(sample.ExpressionSet) ## as a data.frame
+@
   \end{block}
 \end{frame}
 
@@ -86,8 +89,12 @@ phenoData(sample.ExpressionSet)
   \begin{block}{The \Robject{featureData} slot}
     stores the meta data about the feautres.
 <<eset5>>=
-featureData(sample.ExpressionSet)
+fData(sample.ExpressionSet)
 @   
+<<eset5b, eval=FALSE>>=
+## as an AnnotatedDataFrame
+featureData(sample.ExpressionSet) 
+@
   \end{block}
 \end{frame}
 

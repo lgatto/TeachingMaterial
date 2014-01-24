@@ -44,7 +44,11 @@
 \begin{frame}[fragile]
   \begin{block}{Package installation}
     \begin{itemize}
-    \item From within \R, using \Rfunction{install.packages} - takes care of dependencies.
+    \item From within \R, using \Rfunction{install.packages} - takes care of dependencies
+<<installpack, eval=FALSE>>=
+install.packages("packagename")
+@
+
     \item Update all installed packages with \Rfunction{update.packages}.
     \item For Bioconductor packages, use \Rfunction{biocLite}:
       \small
