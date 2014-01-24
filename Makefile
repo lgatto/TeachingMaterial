@@ -46,7 +46,7 @@ handouts:
 	cp -f Exercises/*tsv handouts/ex/.
 	cp -f Exercises/*csv handouts/ex/.
 	echo "Course web page: http://lgatto.github.io/RIntro/" > handouts/README.txt
-
+	zip -r handouts handouts/*
 
 clean:
 	rm -f $(LATEXFILES)
