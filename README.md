@@ -12,7 +12,8 @@ Roberts.
 
 ## Slides
 
-The slides provide a general introduction to `R` and the main data
+The [slides](https://github.com/lgatto/RIntro/blob/master/RIntro.pdf?raw=true)
+provide a general introduction to `R` and the main data
 structures. Scripting and plotting is presented by means of exercises
 using microarray data as example. Finally, Bioconductor and the
 microarray `eSet`/`ExpresionSet` classes are introduced and compared
