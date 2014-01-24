@@ -13,11 +13,12 @@ Roberts.
 ## Slides
 
 The [slides](https://github.com/lgatto/RIntro/blob/master/RIntro.pdf?raw=true)
-provide a general introduction to `R` and the main data
-structures. Scripting and plotting is presented by means of exercises
-using microarray data as example. Finally, Bioconductor and the
-microarray `eSet`/`ExpresionSet` classes are introduced and compared
-to the previous introductory material and exercises.
+provide a general introduction to [`R`](http://www.r-project.org/) and
+the main data structures. Scripting and plotting is presented by means
+of exercises using microarray data as example. Finally,
+[Bioconductor](http://bioconductor.org/) and the microarray
+`eSet`/`ExpresionSet` classes are introduced and compared to the
+previous introductory material and exercises.
 
 ## Exercises
 
