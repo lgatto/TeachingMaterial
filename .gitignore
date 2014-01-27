@@ -31,3 +31,8 @@ GEOmetadb.sqlite
 Bioconductor_intro.md
 
 Batch_effects.md
+
+Differential_expression.md
+
+Probe_summary_files/*
+Probe_summary.html
