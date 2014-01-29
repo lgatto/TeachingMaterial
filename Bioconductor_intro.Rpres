@@ -1,7 +1,8 @@
 Bioinformatics for Big Omics Data: Introduction to Bioconductor
 ========================================================
-width: 1440
-height: 900
+#width: 1440
+#height: 900
+autosize: true
 transition: none
 font-family: 'Helvetica'
 css: my_style.css
@@ -28,8 +29,21 @@ The broad goals of the Bioconductor project are:
 
 Getting started
 ================
+Before running this presentation, you will need to 
+ - set the current directory in the console (go to session -> Set Working Directory -> To Source File Location)
+ - run the following commands which take up time
+    - source("http://bioconductor.org/biocLite.R")
+    - biocLite()
+    - getSQLiteFile() Note: this will take some time
+    - getGEOSuppFiles("GSE29617", makeDirectory = TRUE, baseDir = "./")
+    - untar("./GSE29617/GSE29617_RAW.tar", exdir="./GSE29617", tar = Sys.getenv("TAR"))
 
-```{r, eval=FALSE}
+Although you will have already connected to the bioconductor website, I have found that I need to keep the code on the next page running (i.e., don't use eval=FALSE)
+
+Getting started
+================
+
+```{r}
 source("http://bioconductor.org/biocLite.R")
 # Install all core packages and update all installed packages
 biocLite()
@@ -109,6 +123,8 @@ What samples were used?
 ```{r}
 dbGetQuery(geo_con, "SELECT gse.gse, gsm.gsm, gsm.title FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j JOIN gsm ON j.gsm=gsm.gsm WHERE gse.pubmed_id='21743478' LIMIT 5;")
 ```
+gse_gsm contains the gse number that is associated with the gsm number. 
+j is the name of a table that is created by joining gse and ges_gsm. Then j is joined with table gsm. 
 
 Finding a study (suite)
 ===============
@@ -119,15 +135,33 @@ What about raw data?
 res <- dbGetQuery(geo_con, "SELECT gsm.gsm, gsm.supplementary_file FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j JOIN gsm ON j.gsm=gsm.gsm WHERE gse.pubmed_id='21743478' LIMIT 5;")
 head(res)
 ```
+raw data is contained in the supplementary files, which are listed in the gsm file. 
 
 Finding specific data
 =====================
+To get list of manufacturers:
+```{r}
+library(data.table)
+manu <- data.table(dbGetQuery(geo_con, "SELECT manufacturer FROM gpl"))
+manu[,list(length(manufacturer)), by=manufacturer]
+```
 
+Finding specific data
+=====================
+To get supplementary file names ending with cel.gz from only manufacturer Affymetrix
 ```{r, cache=TRUE}
 res <- dbGetQuery(geo_con, "SELECT gpl.bioc_package, gsm.title, gsm.series_id, gsm.gpl, gsm.supplementary_file FROM gsm JOIN gpl ON gsm.gpl=gpl.gpl WHERE gpl.manufacturer='Affymetrix' AND gsm.supplementary_file like '%CEL.gz';")
 head(res)
 ```
+Finding specific data
+=====================
+From previous table:
+bioc_package = bioconductor package
+hu6800 = Affymetrix HuGeneFL Genome Array annotation data (chip hu6800) 
+rgu34a = Affymetrix Rat Genome U34 Set annotation data (chip rgu34a)
 
+title = data set title (?)
+For example BM_CD34-1a = bone marrow flow-sorted CD34+ cells (>95% purity) and has GSM sample number GSM575. 
 
 Getting the data we want
 ========================
@@ -151,6 +185,7 @@ What is an eSet? An S4 class that tries to:
 ```{r}
 str(GSE29617_set,max.level=2)
 ```
+str() is the command to get the internal structure of an R object. 
 An eSet contains the necessary "parts" to summarize an experiment.
 
 Classes and methods
@@ -212,7 +247,9 @@ also provides additional methods such as `fData`.
 
 The ExpressionSet subclass (suite)
 ==========================
-`ExpressionSet` objects are meant to facilitate the adoption of MIAME standard
+`ExpressionSet` objects are meant to facilitate the adoption of MIAME standard. MIAME = "Minimum Information about a Microarray experiment". Alvis Brazma et. al. (2001) Nature Genetics
+
+Unfortrunately, not all contributors will upload all the information.
 ```{r}
 # Information about preprocessing
 # Nothing in here!
@@ -245,13 +282,20 @@ GEO also provides access to raw data that can be downloaded with `GEOquery`.
 getGEOSuppFiles("GSE29617", makeDirectory = FALSE, baseDir = "./Data/GEO/")
 # untar downloaded data
 untar("Data/GEO/GSE29617_RAW.tar", exdir="Data/GEO/GSE29617/", tar="gtar")
+# If the above commands do not work, try:
+getGEOSuppFiles("GSE29617", makeDirectory = TRUE, baseDir = "./")
+untar("./GSE29617/GSE29617_RAW.tar", exdir="./GSE29617", tar = Sys.getenv("TAR"))
 ```
 
 Starting from the raw data
 ==========================
 
-Now that we have the Affymetrix raw data (CEL) files, we can apply some of the consepts we've discussed related to normalization and probe summary. We first need to load the appropriate package
+Now that we have the Affymetrix raw data (CEL) files, we can apply some of the concepts we've discussed related to normalization and probe summary. We first need to load the appropriate package
 
+
+```{r}
+biocLite("affy")
+```
 ```{r}
 library(affy)
 ```
@@ -259,19 +303,26 @@ library(affy)
 then we use the following commands
 ```{r cache=TRUE}
 # Read the CEL file and creates and AffyBatch
-GSE29617_affyBatch <- ReadAffy(celfile.path="Data/GEO/GSE29617/")
+#GSE29617_affyBatch <- ReadAffy(celfile.path="Data/GEO/GSE29617/")
+GSE29617_affyBatch <- ReadAffy(celfile.path="GSE29617/")
 # Normalize and summarize the data
 GSE29617_set2 <- rma(GSE29617_affyBatch)
 ```
+
+Starting from the raw data
+==========================
+
 Let's check the results and compare to the expression matrix that was submitted to GEO
 ```{r}
 exprs(GSE29617_set2)[1:2,1:2]
 ```
 
+The rows are the features (i.e., probes). Columns are the samples.
+
 What are those probes?
 ======================
 
-```{r eval=FALSE}
+```{r}
 # We first need to install our annotation package
 library(BiocInstaller)
 # Note that you don't have to use source anymore!
@@ -286,23 +337,25 @@ probe_data <- select(hthgu133a.db, keys = probe_ids, columns = "SYMBOL", keytype
 probe_data[1,]
 ```
 This didn't work very well, did it?
+The problem is that the probe IDs in hthgu133a.db have a different naming scheme than those in GSE29617_set2. This is fixed on the next slide.
 
 What are those probes? (Suite)
 ======================
 
-Let's fix this:
+Let's fix this: Replace _PM with <empty> for the probe id names in GSE29617_set2
 ```{r, warning=TRUE}
 probe_ids <- gsub("_PM","",rownames(GSE29617_set2))
 probe_data <- select(hthgu133a.db, keys = probe_ids, columns = "SYMBOL", keytype = "PROBEID")
 probe_data[1, ]
 ```
-What's the warning?
+What's the warning? Some probes match up with multiple genes, therefore those probe IDs will have more than one record.
 
 What are those probes? (Suite)
 ======================
 
 
-This gives us too many rows, what do we do?
+This gives us too many rows, what do we do? Concatenate the gene names so that there will be one row per probe ID.
+
 ```{r, cache=TRUE}
 library(data.table)
 probe_data_dt <- data.table(probe_data)
