@@ -36,3 +36,5 @@ Differential_expression.md
 
 Probe_summary_files/*
 Probe_summary.html
+
+*.gz
