@@ -129,6 +129,8 @@ p_sorted <- sort(p)
 qplot(1:1000, p_sorted, )+ geom_abline(intercept=0, slope=0.05/1000)+xlim(c(0,500))+ylim(c(0,.1))
 ```
 
+Look at the `p.adjust` function in R!
+
 t-test - revisited
 ==================
 
@@ -185,7 +187,7 @@ The goal here will be to test if some of these contrats are equal to zero.
 Linear Models for Microarray Data - LIMMA (suite)
 =========================================
 
-It is assumed that the linear model is fitted for each gene to obtain an estimator of $\hat{\boldsymbol{\alpha}}_g$ of $\boldsymbol{\alpha}_g$, and estimator $s^2_g$ of $\sigma_g^2$ and estimated covariance matrix:
+It is assumed that the linear model is fitted for each gene to obtain an estimator $\hat{\boldsymbol{\alpha}}_g$ of $\boldsymbol{\alpha}_g$, and estimator $s^2_g$ of $\sigma_g^2$ and estimated covariance matrix:
 
 $$\mathrm{var}(\hat{\alpha}_g ) = \mathbf{V}_g s^2_g$$
 
@@ -199,7 +201,7 @@ Linear Models for Microarray Data - LIMMA (suite)
 =========================================
 
 
- Let $v_{gj}$ be the $j^th$ diagonal element of $\mathbf{C}^T \mathbf{V}_g \mathbf{C}$, then the distributional assumptions made are equivalent to: 
+ Let $v_{gj}$ be the $j^{th}$ diagonal element of $\mathbf{C}^T \mathbf{V}_g \mathbf{C}$, then the distributional assumptions made are equivalent to: 
  
  $$ \hat{\beta}_{gj} | \beta_{gj} , \sigma_g^2 \sim \mathrm{N}(\beta_{gj} , v_{gj} \sigma_g^2)$$
  
@@ -231,7 +233,7 @@ with $\mathrm{Pr}(\beta_{gj}\ne 0) = p_j$ where $v_{0j}$ and $p_j$ are given hyp
 LIMMA- Hierarchical model
 =========================
 
-Under the above hierarchical model, the posterior mean of $\sigma_g^2$ given $s_2^g$ is
+Under the above hierarchical model, the posterior mean of $\sigma_g^2$ given $s_g^2$ is
 
 $$\tilde{s}^2_g=\mathbb{E}(\sigma^2_g|s^2_g)= \frac{d_0s_0^2+d_gs_g^2}{d_0+d_g}$$
 
@@ -241,7 +243,7 @@ $$ \tilde{t}_{gj}=\frac{\hat{\beta}_{gj}}{\tilde{s}_g\sqrt{v_{gj}}}$$
 
 The moderated t-statistics $\tilde{t}_{gj}$ and the residual sample variances $s^2$
 are shown to be distributed independently. The moderated t is shown to follow a t-
-distribution under the null hypothesis H0 : $\beta_gj$ = 0 with degrees of freedom $d_g +d_0$.
+distribution under the null hypothesis H0 : $\beta_{gj}$ = 0 with degrees of freedom $d_g +d_0$.
 
 LIMMA - Estimation of hyperparameters
 =====================================
@@ -422,3 +424,28 @@ fit2 <- eBayes(fit2)
 topTable(fit2, adjust = "fdr")
 ```
 
+Your turn!
+==============
+
+Ok, let's try to repeat what we've done with the TIV07 cohort. 
+
+```{r, eval=FALSE, echo=FALSE}
+pd <- pData(gds[[1]][, grepl("2008-TIV", pData(gds[[1]])$description)])
+hai_0 <- sapply(strsplit(as.character(pd$characteristics_ch1.8), ": "), "[", 2)
+hai_28 <- sapply(strsplit(as.character(pd$characteristics_ch1.9), ":"), "[", 2)
+hai_fold <- log2(as.double(hai_28))-log2(as.double(hai_0))
+pData(TIV_08)$hai_fold <- hai_fold
+```
+
+
+```{r, eval=FALSE, echo=FALSE}
+mm_TIV_08 <- model.matrix(~time+hai_fold, TIV_08)
+fit_TIV_08 <- lmFit(TIV_08, mm_TIV_08)
+ebay_TIV_08 <- eBayes(fit_TIV_08)
+topTable(ebay_TIV_08, coef = "hai_fold")
+responder <- as.factor(hai_fold>1)
+pData(TIV_08)$responder <- responder
+mm_TIV_08 <- model.matrix(~time+responder, TIV_08)
+fit_TIV_08 <- lmFit(TIV_08, mm_TIV_08)
+ebay_TIV_08 <- eBayes(fit_TIV_08)
+```
