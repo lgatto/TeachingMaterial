@@ -32,10 +32,14 @@ Th	10:30-11:50	HST T747
 
 **Lecture notes:**
 
-- 01/07/13 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rpres) 
-- 01/08/13 Same as above and [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rpres)
-- 01/14/13 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres)
-- 01/16/13 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres) & [Biology basics](https://github.com/raphg/Biostat-578/blob/master/Biology_basics.Rpres) 
-- 01/21/13 [Intro to Microarrays](https://github.com/raphg/Biostat-578/blob/master/Microarrays.Rpres) & [Normalization](https://github.com/raphg/Biostat-578/blob/master/Normalization.Rpres) & [Probe summary](https://github.com/raphg/Biostat-578/blob/master/Probe_summary.Rpres)
-- 01/23/13 [Probe summary](https://github.com/raphg/Biostat-578/blob/master/Probe_summary.Rpres) & [Intro to Bioconductor](https://github.com/raphg/Biostat-578/blob/master/Bioconductor_intro.Rpres)
-- 01/28/13 Differential expression
+- 01/07/14 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rpres) 
+- 01/08/14 Same as above and [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rpres)
+- 01/14/14 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres)
+- 01/16/14 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres) & [Biology basics](https://github.com/raphg/Biostat-578/blob/master/Biology_basics.Rpres) 
+- 01/21/14 [Intro to Microarrays](https://github.com/raphg/Biostat-578/blob/master/Microarrays.Rpres) & [Normalization](https://github.com/raphg/Biostat-578/blob/master/Normalization.Rpres) & [Probe summary](https://github.com/raphg/Biostat-578/blob/master/Probe_summary.Rpres)
+- 01/23/14 [Probe summary](https://github.com/raphg/Biostat-578/blob/master/Probe_summary.Rpres) & [Intro to Bioconductor](https://github.com/raphg/Biostat-578/blob/master/Bioconductor_intro.Rpres)
+- 01/28/14 [Differential expression](https://github.com/raphg/Biostat-578/blob/master/Differential_expression.Rpres) 
+- 02/03/14 [Differential expression](https://github.com/raphg/Biostat-578/blob/master/Differential_expression.Rpres) & [Batch correction](https://github.com/raphg/Biostat-578/blob/master/Batch_effects.Rpres)
+- 02/05/14 Sequence analysis in R
+
+- 02/20/14 In class midterm
