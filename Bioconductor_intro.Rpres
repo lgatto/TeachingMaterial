@@ -303,8 +303,7 @@ library(affy)
 then we use the following commands
 ```{r cache=TRUE}
 # Read the CEL file and creates and AffyBatch
-#GSE29617_affyBatch <- ReadAffy(celfile.path="Data/GEO/GSE29617/")
-GSE29617_affyBatch <- ReadAffy(celfile.path="GSE29617/")
+GSE29617_affyBatch <- ReadAffy(celfile.path="Data/GEO/GSE29617/")
 # Normalize and summarize the data
 GSE29617_set2 <- rma(GSE29617_affyBatch)
 ```

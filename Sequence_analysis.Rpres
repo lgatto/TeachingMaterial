@@ -1,0 +1,396 @@
+Bioinformatics for Big Omics Data: Basics of sequence analysis and genomic interval manipulation in R
+========================================================
+width: 1440
+height: 900
+transition: none
+font-family: 'Helvetica'
+css: my_style.css
+author: Raphael Gottardo, PhD
+date: `r format(Sys.Date(), format="%B %d, %Y")`
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
+
+
+```{r, cache=FALSE, echo=FALSE}
+# Let's first turn on the cache for increased performance.
+# Set some global knitr options
+opts_chunk$set(cache=TRUE)
+library(data.table)
+library(ggplot2)
+```
+
+
+Outline
+========
+
+Here we will discuss some of the core functionality in `Bioconductor` for manipulating sequence data and genomic intervals in R.
+You should read the following papers:
+
+1. Morgan, M. et al. ShortRead: a bioconductor package for input, quality assessment and exploration of high-throughput sequence data. Bioinformatics 25, 2607–2608 (2009).
+
+2. Lawrence, M. et al. Software for computing and annotating genomic ranges. PLoS Comput. Biol. 9, e1003118 (2013).
+
+3. Li, H. et al. The Sequence Alignment/Map format and SAMtools. Bioinformatics 25, 2078–2079 (2009).
+
+Some motivation
+==============
+
+The process of gene regulation is a lot more complex that what we originally discussed. 
+It's not as simple as DNA -> RNA -> Proteins. 
+It's more like
+
+Gene expression = f(Transcription factors, Splicing, miRNA, Nucleosome, Methylation, etc.)
+
+Fortunately, Next Generation Sequencing (NGS) can help us to learn about many of these fundamental processes. 
+
+Transcription factors
+=====================
+
+![Transcription factor](http://howardhughes.trinity.duke.edu/uploads/assets/DAILYILLINI.jpg)
+
+Alternative splicing
+=====================
+
+![Alternative splicing](http://www.ncbi.nlm.nih.gov/Class/MLACourse/Modules/MolBioReview/images/alternative_splicing.gif)
+
+
+Next generation sequencing
+==========================
+
+The sequencing revolution started with the Human Genome project. An international collaboration to generate a map of the human genome
+
+- Took years to complete using Sanger sequencing
+
+- Today the same can be done much more rapidly, at a fraction of the cost using next generation sequencing
+
+Let's read [this](http://www.bioinformatics.auckland.ac.nz/workshops/NGS-workshop-update.pdf)
+
+
+Common data formats
+===================
+
+(IMAGES ->) FASTA/FASTQ -> SAM/BAM -> VCF
+
+All of these data formats can be read in R. 
+
+
+Sequence manupulation using Biostrings
+======================================
+
+Here we will see how to manipulate sequence data in R using the `Biostrings` package
+
+```{r, eval=FALSE}
+source("http://bioconductor.org/biocLite.R")
+biocLite(c("Biostrings","hgu133plus2probe"))
+```
+
+Now, we are ready to use the package
+
+```{r}
+library(Biostrings)
+```
+
+The Biostrings package
+======================
+
+`Biostrings` provides memory efficient string containers, string matching algorithms, and other utilities, for fast manipulation of large biological sequences or sets of sequences. 
+
+
+Most of the `Biostrings` functionalities are summarized [here](http://www.bioconductor.org/packages/2.12/bioc/vignettes/Biostrings/inst/doc/BiostringsQuickOverview.pdf).
+
+The XString class
+==================
+
+The XString is in fact a virtual class and therefore cannot be instanciated. Only subclasses
+(or subtypes) BString, DNAString, RNAString and AAString can. These classes are direct
+extensions of the XString class (no additional slot). 
+
+```{r}
+library(Biostrings)
+b <- BString("I am a BString object")
+b
+length(b)
+d <- DNAString("TTGAAAA-CTC-N")
+d
+length(d)
+```
+
+The XString class (suite)
+========================
+
+```{r}
+d[3]
+d[7:12]
+d[]
+b[length(b):1]
+```
+
+The XStringViews class
+======================
+
+An XStringViews object contains a set of views on the same XString object called the subject
+string. Particularly useful for matches and alignments.
+
+```{r}
+v4 <- Views(d, start=3:0, end=5:8)
+v4
+length(v4)
+start(v4)
+end(v4)
+```
+
+Summarizing SC genome
+=======================
+Let's look at the Scerevisiae genome:
+You will need the following package:
+```{r, eval=FALSE}
+biocLite("BSgenome.Scerevisiae.UCSC.sacCer1")
+```
+and then load it
+```{r}
+library("BSgenome.Scerevisiae.UCSC.sacCer1")
+```
+
+here is a quick summary of the number of ACGT across the first chr1.
+
+```{r}
+alphabetFrequency(Scerevisiae[["chr1"]])
+```
+
+Finding patterns
+=======================
+
+```{r}
+matchPattern(pattern = "GATAGA", subject = Scerevisiae[["chr1"]])
+```
+
+```{r}
+countPattern(pattern = "GATAGA", subject = Scerevisiae[["chr1"]])
+```
+
+Handling probe sequence information
+===================================
+
+Let's install the following packages
+```{r eval=FALSE}
+biocLite(c("Biostrings", "hgu133plus2probe", "ShortRead"))
+```
+
+and load the following two libraries
+```{r}
+library(Biostrings)
+library(hgu133plus2probe)
+```
+
+We now have access to the `hgu133plus2probe` dataset containing our probe information.
+
+Handling probe sequence information (suite)
+===================================
+
+Let's create a `DNAStringSet`
+
+```{r}
+probes <- DNAStringSet(hgu133plus2probe)
+```
+
+Let's go back to our flu dataset:
+
+```{r}
+library(affy)
+# Read the CEL file and creates and AffyBatch
+GSE29617_affyBatch <- ReadAffy(celfile.path="Data/GEO/GSE29617/")
+# Normalize and summarize the data
+GSE29617_set2 <- rma(GSE29617_affyBatch)
+```
+
+Handling probe sequence information (suite)
+===================================
+
+Let's calculate the GC content of each probe
+```{r}
+dt_exprs <- data.table(probe_name=gsub("_PM", "", rownames(GSE29617_set2)), exprs(GSE29617_set2))
+# frequency for all probes
+freq <- alphabetFrequency(probes)
+# Compute the GC content
+GC_count <- freq[,"G"]+freq[,"C"]
+dt_probes <- data.table(probe_name=hgu133plus2probe$Probe.Set.Name, GC_count)
+setkey(dt_exprs, "probe_name")
+setkey(dt_probes, "probe_name")
+dt_merged <- dt_exprs[dt_probes]
+```
+
+
+
+Handling probe sequence information (suite)
+===================================
+
+We now look at the effect of probe composition on observed intensities
+
+```{r}
+library(ggplot2)
+library(reshape2)
+dt_merged_melt <- melt(dt_merged, id.vars = c("probe_name", "GC_count"))
+dt_merged_melt_sum <- dt_merged_melt[,list(mean=mean(value)),by=GC_count]
+ggplot(dt_merged_melt[variable=="GSM733942.CEL.gz"],aes(x=as.factor(GC_count), y=value))+geom_violin()+geom_point(data=dt_merged_melt_sum,aes(x=as.factor(GC_count), y=mean), col="red", size=6)+theme_minimal(base_size = 18)
+```
+
+What do you think about the GC content effect? 
+**Excercise:** Repeat the plot above with other sequence characteristics
+
+GenomicRanges
+=============
+
+Bioconductor possesses an infrastructure for representing and computing on annotated genomic ranges and integrating genomic data with the statistical computing features of R and its extensions. At the core of the infrastructure are three packages: `IRanges`, `GenomicRanges`, and `GenomicFeatures`. These packages provide scalable data structures for representing annotated ranges on the genome, and performing opperations on genomic intervals (e.g. overlaps, etc).
+
+Most of the text and examples used here are taken from the various `*Ranges` Bioconductor package vignettes.
+
+IRanges
+=======
+
+The IRanges package is designed to represent sequences, ranges representing indices along those sequences,
+and data related to those ranges. IRanges makes use run-length encodings to provide increased performance.
+For example, the sequence {1, 1, 1, 2, 3, 3} can be represented as values= {1, 2, 3}, run lengths = {3, 1, 2}.
+
+```{r}
+xVector <- sort(sample(1:100, replace = TRUE, size = 10000))
+xRle <- Rle(xVector)
+as.vector(object.size(xRle) / object.size(xVector))
+identical(as.vector(xRle), xVector)
+```
+
+IRanges (suite)
+=============
+
+The IRanges class is a "simple" container where 2 integer vectors of the same length are used to store the start and width values. 
+```{r}
+ir1 <- IRanges(start = 1:10, width = 10:1)
+ir2 <- IRanges(start = 1:10, end = 11)
+ir3 <- IRanges(end = 11, width = 10:1)
+identical(ir1, ir2) & identical(ir2, ir3)
+```
+
+IRanges provides common accessor functions to retrieve relevant pieces of information. 
+
+```{r}
+start(ir1)
+end(ir1)
+width(ir1)
+mid(ir1)
+names(ir1)
+```
+
+RangesList
+===========
+
+An extension of List that holds only Ranges objects. Useful for storing ranges over a set of spaces (e.g. chromosomes), each of which requires a separate Ranges object. As a Vector, RangesList may be annotated with its universe identifier (e.g. a genome) in which all of its spaces exist.
+
+```{r}
+range1 <- IRanges(start=c(1,2,3), end=c(5,2,8))
+range2 <- IRanges(start=c(15,45,20,1), end=c(15,100,80,5))
+named <- RangesList(one = range1, two = range2)
+length(named) # 2
+start(named) # same as start(c(range1, range2))
+names(named) # "one" and "two"
+start(named[["one"]])
+start(named[[1]])
+universe(named) <- "hg18"
+universe(named)
+```
+
+GRanges: Single Interval Range Features
+=======================================
+
+GRanges are like IRanges but with a strand and a chromosome
+
+```{r}
+gr <- GRanges(seqnames = Rle(c("chr1", "chr2", "chr1", "chr3"), c(1, 3, 2, 4)),
+              ranges = IRanges(1:10, end = 7:16, names = head(letters, 10)),
+              strand = Rle(strand(c("-", "+", "*", "+", "-")), c(1, 2, 2, 3, 2)),
+              score = 1:10,
+              GC = seq(1, 0, length=10))
+seqlengths(gr)
+seqnames(gr)
+ranges(gr)
+strand(gr)
+mcols(gr)$score
+```
+
+GRangesList: Multiple Interval Range Features
+=============================================
+
+Whenever genomic features consist of multiple ranges that are grouped by a parent
+feature, they can be represented as `GRangesList` object. Consider the simple example of the two transcript
+`GRangesList` below created using the `GRangesList` constructor.
+
+```{r}
+gr1 <- GRanges(seqnames = "chr2", ranges = IRanges(3, 6), strand = "+", score = 5L, GC = 0.45)
+gr2 <- GRanges(seqnames = c("chr1", "chr1"), ranges = IRanges(c(7,13), width = 3), strand = c("+", "-"), score = 3:4, GC = c(0.3, 0.5))
+grl <- GRangesList("txA" = gr1, "txB" = gr2)
+grl
+# Unlist to GRanges
+ul <- unlist(grl)
+```
+
+Most of the accessors that work for `GRanges` also work for `GRangesList`.
+
+GRanges API
+===========
+
+For more information about the GRanges API look at the following image
+![API](http://www.ploscompbiol.org/article/fetchObject.action?uri=info:doi/10.1371/journal.pcbi.1003118.t001&representation=PNG_M)
+
+extracted from Lawrence et al. (2013)
+
+Load a BAM file into a GAlignments object
+=========================================
+
+```{r}
+library(Rsamtools)
+aln1_file <- system.file("extdata", "ex1.bam", package="Rsamtools")
+aln1 <- readGAlignments(aln1_file)
+aln1
+```
+
+Load a BAM file into a GAlignments object
+=========================================
+What if you want the actual sequences too?
+
+```{r}
+library(ShortRead)
+aln1_file <- system.file("extdata", "ex1.bam", package="Rsamtools")
+aln1 <- readGappedReads(aln1_file)
+aln1
+qseq(aln1)
+```
+
+you can (almost) always convert a given object to a relevant class
+```{r}
+gr1 <- as(aln1,"GRanges")
+```
+
+Reduce
+======
+Merge overlapping and adjacent ranges
+```{r}
+reduce(gr1)
+```
+
+Disjoin
+=======
+Ranges formed from union of endpoints
+```{r}
+disjoin(gr1)
+```
+
+
+Coverage
+========
+
+```{r}
+gr1_list <- split(gr1, seqnames(gr1))
+cv <- coverage(gr1_list[[1]])
+cv_vec <- as.vector(cv$seq1)
+qplot(x=1:1575, y=cv_vec)+geom_smooth()+theme_minimal(base_size = 18)
+```
+
+
