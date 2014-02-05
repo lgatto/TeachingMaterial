@@ -15,6 +15,7 @@ date: `r format(Sys.Date(), format="%B %d, %Y")`
 ```{r, cache=FALSE, echo=FALSE}
 # Let's first turn on the cache for increased performance.
 # Set some global knitr options
+library(knitr)
 opts_chunk$set(cache=TRUE)
 ```
 
@@ -111,8 +112,8 @@ Detect unmodel factor
 The main idea is as follows:
 - Compute the residual matrix $r_{ij} = x_{ij}- \hat{\mu}_i - \hat{f}_i(y_j)$
 - Perform the SVD of $R=(r_{ij})$
-- Permute the rows of the matrix $R$ to obtain $R_0$, and perform the SVD of $R_0$
-- Compare the observed eigenvalues to the permuted ones to obtains significance p-values
+- Permute the rows of the matrix $R$ to obtain $R*$. Regress  $r*_{ij} = x_{ij}- \hat{\mu}_i - \hat{f}_i(y_j)$ to get residual matrix $R_0$, and perform the SVD of $R_0$. Repeat this many times to generate a null distribution for the residuals, given that $y$ is accounted for. 
+- Compare the observed eigenvalues to those generated from the null distribution to obtain significance p-values
 - Record the $K$ significant variables
 
 Construct surrogate variables (suite)
