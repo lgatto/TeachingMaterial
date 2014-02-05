@@ -125,5 +125,6 @@ And here are some examples from [Mike Bostock](http://bost.ocks.org/mike/):
 
 - [GNU Make for reproducible data analysis](http://zmjones.com/make.html) by [Zachary Jones](http://zmjones.com/)
 
-Also see my [git/github guide](http://kbroman.github.io/github_tutorial).
+Also see my [git/github guide](http://kbroman.github.io/github_tutorial)
+and [knitr in a knutshell tutorial](http://kbroman.github.io/knitr_knutshell).
 
