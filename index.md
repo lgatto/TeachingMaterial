@@ -52,5 +52,6 @@ If you have suggestions for changes or improvements, fork
 [the repo](http://github.com/kbroman/github_tutorial): Follow the
 instructions above, &ldquo;[Contribute to someone's repository](pages/fork.html).&rdquo;
 
-Also see my [tutorial on GNU make](http://kbroman.github.io/minimal_make).
+Also see my [minimal make](http://kbroman.github.io/minimal_make) and
+[knitr in a knutshell](http://kbroman.github.io/knitr_knutshell) tutorials.
 
