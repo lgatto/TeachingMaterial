@@ -122,14 +122,15 @@ some power when the test are in fact independent.
 
 ----
 
-```{r}
+```{r, eval=TRUE}
 library(ggplot2)
 p <- rbeta(1000,.1,.1)
 p_sorted <- sort(p)
 qplot(1:1000, p_sorted, )+ geom_abline(intercept=0, slope=0.05/1000)+xlim(c(0,500))+ylim(c(0,.1))
 ```
 
-Look at the `p.adjust` function in R!
+- Look at the `p.adjust` function in R!
+
 
 t-test - revisited
 ==================
@@ -178,7 +179,7 @@ where $\mathbf{X}$ is a full column rank design matrix and $\boldsymbol{\alpha}_
 
 $$\mathrm{var}(\mathbf{y}_g)=\mathbf{W}_g\sigma_g^2$$ 
 
-where $\mathbf{W}_g$ is a weight matrix. Certain constrasts of the vector $\boldsymbol{\alpha}_g$ are of biological interest, and these are defined as:
+where $\mathbf{W}_g$ is a weight matrix. Certain constrasts $mathbf{C}$ of the vector $\boldsymbol{\alpha}_g$ are of biological interest, and these are defined as:
 
 $$\boldsymbol{\beta}_g=\mathbf{C}^T\boldsymbol{\alpha}_g.$$
 
@@ -186,8 +187,27 @@ The goal here will be to test if some of these contrats are equal to zero.
 
 Linear Models for Microarray Data - LIMMA (suite)
 =========================================
+As an example of the difference between the design matrix $\mathbf{X}$ and the contrast matrix $\mathbf{C}$ consider a time course experiment for times $t_0$, $t_1$ and $t_2$ in which there are two replicates for each time point. A design matrix for this experiment would be:
 
-It is assumed that the linear model is fitted for each gene to obtain an estimator $\hat{\boldsymbol{\alpha}}_g$ of $\boldsymbol{\alpha}_g$, and estimator $s^2_g$ of $\sigma_g^2$ and estimated covariance matrix:
+$$\mathbf{X} = \left(\begin{array}{ccc}
+        1 & 0 & 0\\
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & 1\\
+        0 & 0 & 1\end{array}\right)$$
+        
+If we are interested in the difference between $t_0$ and $t_1$, as well as the difference between $t_1$ and $t_2$, the transpose of the contrast matrix would be:
+
+$$\mathbf{C^T} = \left(\begin{array}{ccc}
+              -1 & 1 & 0 \\
+               0 & -1 & 1 \end{array}\right)$$
+
+
+Linear Models for Microarray Data - LIMMA (suite)
+=========================================
+
+It is assumed that the linear model is fitted for each gene to obtain an estimator of $\hat{\boldsymbol{\alpha}}_g$ of $\boldsymbol{\alpha}_g$, and estimator $s^2_g$ of $\sigma_g^2$ and estimated covariance matrix:
 
 $$\mathrm{var}(\hat{\alpha}_g ) = \mathbf{V}_g s^2_g$$
 
@@ -220,7 +240,7 @@ $H_0 : \beta_{gj} = 0.$
 Linear Models for Microarray Data - LIMMA (suite)
 =========================================
 
-This approach still suffers from the small sample size problem mentioned previously. One solution is to use a hierarchical model to borrow strength across genes. In particular, we will place a prior distribution on the variances as follows:
+This approach still suffers from the small sample size problem mentioned previously. One solution is to use a hierarchical model to borrow strength across genes. In particular, we will place a prior distribution on the inverse variances as follows:
 
 $$\sigma_g^{-2}\sim \frac{1}{d_0 s_0^2}\chi^2_{d_0}$$ 
 
@@ -233,7 +253,7 @@ with $\mathrm{Pr}(\beta_{gj}\ne 0) = p_j$ where $v_{0j}$ and $p_j$ are given hyp
 LIMMA- Hierarchical model
 =========================
 
-Under the above hierarchical model, the posterior mean of $\sigma_g^2$ given $s_g^2$ is
+Under the above hierarchical model, the posterior mean of $\sigma_g^2$ given $s_2^g$ is
 
 $$\tilde{s}^2_g=\mathbb{E}(\sigma^2_g|s^2_g)= \frac{d_0s_0^2+d_gs_g^2}{d_0+d_g}$$
 
@@ -243,12 +263,12 @@ $$ \tilde{t}_{gj}=\frac{\hat{\beta}_{gj}}{\tilde{s}_g\sqrt{v_{gj}}}$$
 
 The moderated t-statistics $\tilde{t}_{gj}$ and the residual sample variances $s^2$
 are shown to be distributed independently. The moderated t is shown to follow a t-
-distribution under the null hypothesis H0 : $\beta_{gj}$ = 0 with degrees of freedom $d_g +d_0$.
+distribution under the null hypothesis H_0 : $\beta_gj$ = 0 with degrees of freedom $d_g +d_0$.
 
 LIMMA - Estimation of hyperparameters
 =====================================
 
-All parameters expect $p_j$ are shared across genes and can easily be estimated using and empirical Bayes approach using all genes. The most difficult parameter to estimate is $p_j$, but this parameter is only used in the calculation of the posterior odds and is not required for inference via the moderated t-statistics. 
+All parameters except $p_j$ are shared across genes and can easily be estimated using an empirical Bayes approach using all genes. The most difficult parameter to estimate is $p_j$, but this parameter is only used in the calculation of the posterior odds and is not required for inference via the moderated t-statistics. 
 
 This is typical of frequentist inference where the alternative does not matter. 
 
@@ -269,7 +289,7 @@ The LIMMA package
 
 Let's first install Limma:
 
-```{r, eval=FALSE}
+```{r}
 source("http://bioconductor.org/biocLite.R")
 biocLite("limma")
 ```
@@ -299,7 +319,7 @@ gds <- getGEO("GSE29619")
 #main serie #gds[[1]] = LAIV/TIV 0809, gds[[2]] = FACS, gds[[3]] = TIV 0708
 ```
 
-but before we can use this, we need to clean up the pData a bit (see code in .Rpres file).
+but before we can use this, we need to clean up the pData a bit (see code in .Rpres file by clicking on the pencil icon above, which will bring you to this slide in the .Rpres file). 
 
 ```{r sanitize-pdata, cache=TRUE, echo=FALSE}
 ### Sanitize data and metadata
@@ -338,14 +358,15 @@ LAIV_08 <- gds_new[[1]][ , grepl("2008-LAIV", pData(gds_new[[1]])$description)]
 TIV_07 <- gds_new[[3]][ , grepl("2007-TIV", pData(gds_new[[3]])$description)]
 ```
 
+TIV_08, LAIV_08 and TIV_07 are expression sets containing data from three time points (variable name is "time", with values D0, D3 and D7), for several probes (i.e., of form GSMXXXX) and patients (variable name "ptid"). 
 
 We then use the limma R package to identify genes that are differentially expressed at D3 and D7 compared to baseline for each study. 
 
 
 ```{r, cache=TRUE}
-mm_TIV_08 <- model.matrix(~ptid+time, TIV_08)
-fit_TIV_08 <- lmFit(TIV_08, mm_TIV_08)
-ebay_TIV_08 <- eBayes(fit_TIV_08)
+mm_TIV_08 <- model.matrix(~ptid+time, TIV_08) # design matrix
+fit_TIV_08 <- lmFit(TIV_08, mm_TIV_08) #Fit linear model for each gene given a series of arrays
+ebay_TIV_08 <- eBayes(fit_TIV_08) # compute moderated t-statistics, moderated F-statistic, and log-odds of differential expression
 ```
 
 Testing specific hypothesis
@@ -356,6 +377,7 @@ Let's first look at the estimated coefficients
 ```{r}
 colnames(fit_TIV_08$coef)
 ```
+In this case, the design matrix contains 1's and 0's, indicating which patient and time point matches up to a given measurement in the vector, $\mathbf{Y}$. There is no column for timeD0, since it is the reference point. When both timeD3 and timeD7 are zero, than we know that the measurement is from timeD0. 
 
 Now we can test specific hypotheses.
 
@@ -372,7 +394,7 @@ topT7 <- topTable(ebay_TIV_08, coef="timeD7", number=Inf, sort.by="none")
 ```
 
 
-topTable is a `data.frame` with the following columns:
+`topTable()` extracts a table of the top-ranked genes from a linear model fit and outputs a `data.frame` with the following columns:
 ```{r}
 colnames(topT7)
 ```
@@ -415,7 +437,7 @@ ggplot(dt[is.finite(abs_t)], aes(x=A, y=M, color=abs_t, shape=p<.01))+geom_point
 Setting up your own contrast
 ============================
 
-This can easily be done using the `makeContrats` function as follows,
+Suppose you want to look at the difference between timeD7 and timeD3. We need to create a contrast matrix that will get this information from the design matrix. This can easily be done using the `makeContrats` function as follows,
 
 ```{r}
 cont_matrix <- makeContrasts(timeD7-timeD3,levels=mm_TIV_08)
