@@ -35,7 +35,7 @@ You should read the following papers:
 Some motivation
 ==============
 
-The process of gene regulation is a lot more complex that what we originally discussed. 
+The process of gene regulation is a lot more complex than what we originally discussed. 
 It's not as simple as DNA -> RNA -> Proteins. 
 It's more like
 
@@ -57,7 +57,7 @@ Alternative splicing
 Next generation sequencing
 ==========================
 
-The sequencing revolution started with the Human Genome project. An international collaboration to generate a map of the human genome
+The sequencing revolution started with the Human Genome project. An international collaboration to generate a map of the human genome:
 
 - Took years to complete using Sanger sequencing
 
@@ -154,8 +154,11 @@ library("BSgenome.Scerevisiae.UCSC.sacCer1")
 here is a quick summary of the number of ACGT across the first chr1.
 
 ```{r}
-alphabetFrequency(Scerevisiae[["chr1"]])
+alphabetFrequency(Scerevisiae[["chr1"]])/length(Scerevisiae[["chr1"]])
 ```
+
+
+**Exercise:** Do the same with the human genome and let me know what you get.
 
 Finding patterns
 =======================
@@ -167,6 +170,9 @@ matchPattern(pattern = "GATAGA", subject = Scerevisiae[["chr1"]])
 ```{r}
 countPattern(pattern = "GATAGA", subject = Scerevisiae[["chr1"]])
 ```
+
+
+**Exercise:** Try to play with some of the options such as the number of mismatch and/or indels.
 
 Handling probe sequence information
 ===================================
@@ -217,6 +223,8 @@ dt_probes <- data.table(probe_name=hgu133plus2probe$Probe.Set.Name, GC_count)
 setkey(dt_exprs, "probe_name")
 setkey(dt_probes, "probe_name")
 dt_merged <- dt_exprs[dt_probes]
+dt_merged_melt <- melt(dt_merged, id.vars = c("probe_name", "GC_count"))
+dt_merged_melt_sum <- dt_merged_melt[,list(mean=mean(value)),by=GC_count]
 ```
 
 
@@ -229,10 +237,9 @@ We now look at the effect of probe composition on observed intensities
 ```{r}
 library(ggplot2)
 library(reshape2)
-dt_merged_melt <- melt(dt_merged, id.vars = c("probe_name", "GC_count"))
-dt_merged_melt_sum <- dt_merged_melt[,list(mean=mean(value)),by=GC_count]
 ggplot(dt_merged_melt[variable=="GSM733942.CEL.gz"],aes(x=as.factor(GC_count), y=value))+geom_violin()+geom_point(data=dt_merged_melt_sum,aes(x=as.factor(GC_count), y=mean), col="red", size=6)+theme_minimal(base_size = 18)
 ```
+
 
 What do you think about the GC content effect? 
 **Excercise:** Repeat the plot above with other sequence characteristics
@@ -261,15 +268,14 @@ identical(as.vector(xRle), xVector)
 IRanges (suite)
 =============
 
-The IRanges class is a "simple" container where 2 integer vectors of the same length are used to store the start and width values. 
+The `IRanges` class is a "simple" container where 2 integer vectors of the same length are used to store the start and width values. 
 ```{r}
 ir1 <- IRanges(start = 1:10, width = 10:1)
 ir2 <- IRanges(start = 1:10, end = 11)
 ir3 <- IRanges(end = 11, width = 10:1)
-identical(ir1, ir2) & identical(ir2, ir3)
 ```
 
-IRanges provides common accessor functions to retrieve relevant pieces of information. 
+`IRanges` provides common accessor functions to retrieve relevant pieces of information. 
 
 ```{r}
 start(ir1)
@@ -282,7 +288,7 @@ names(ir1)
 RangesList
 ===========
 
-An extension of List that holds only Ranges objects. Useful for storing ranges over a set of spaces (e.g. chromosomes), each of which requires a separate Ranges object. As a Vector, RangesList may be annotated with its universe identifier (e.g. a genome) in which all of its spaces exist.
+An extension of `List` that holds only `Ranges` objects. Useful for storing ranges over a set of spaces (e.g. chromosomes), each of which requires a separate Ranges object. As a Vector, RangesList may be annotated with its universe identifier (e.g. a genome) in which all of its spaces exist.
 
 ```{r}
 range1 <- IRanges(start=c(1,2,3), end=c(5,2,8))
@@ -300,7 +306,7 @@ universe(named)
 GRanges: Single Interval Range Features
 =======================================
 
-GRanges are like IRanges but with a strand and a chromosome
+`GRanges` are like `IRanges` but with a strand and a chromosome
 
 ```{r}
 gr <- GRanges(seqnames = Rle(c("chr1", "chr2", "chr1", "chr3"), c(1, 3, 2, 4)),
