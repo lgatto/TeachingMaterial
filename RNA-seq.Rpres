@@ -38,3 +38,8 @@ Here we will discuss RNA-seq data analysis including normalization and different
 6. Adiconis, X. et al. Comparative analysis of RNA sequencing methods for degraded or low-input samples. Nat. Methods 10, 623–629 (2013).
 
 7. Law, C. W., Chen, Y., Shi, W. & Smyth, G. K. Voom: precision weights unlock linear model analysis tools for RNA-seq read counts. Genome Biol. 15, R29 (2014).
+
+RNA-seq workflow
+================
+
+![RNA-seq Workflow](./images/RNA-seq-workflow.png)

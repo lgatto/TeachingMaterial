@@ -36,7 +36,7 @@ Some motivation
 ==============
 
 The process of gene regulation is a lot more complex than what we originally discussed. 
-It's not as simple as DNA -> RNA -> Proteins. 
+It's not as simple as DNA &#8594; RNA &#8594; Proteins. 
 It's more like
 
 Gene expression = f(Transcription factors, Splicing, miRNA, Nucleosome, Methylation, etc.)
@@ -54,7 +54,7 @@ Alternative splicing
 ![Alternative splicing](http://www.ncbi.nlm.nih.gov/Class/MLACourse/Modules/MolBioReview/images/alternative_splicing.gif)
 
 
-Next generation sequencing
+Next generation sequencing (NGS)
 ==========================
 
 The sequencing revolution started with the Human Genome project. An international collaboration to generate a map of the human genome:
@@ -65,13 +65,47 @@ The sequencing revolution started with the Human Genome project. An internationa
 
 Let's read [this](http://www.bioinformatics.auckland.ac.nz/workshops/NGS-workshop-update.pdf)
 
+Sequencing types
+=================
+
+- [Single end sequencing](http://www.illumina.com/technology/single_read_sequencing_assay.ilmn)
+
+Single-read sequencing involves sequencing DNA from only one end, and is the simplest type of sequencing.
+
+- [Paired-end sequencing](http://www.illumina.com/technology/paired_end_sequencing_assay.ilmn)
+
+Paired-end sequencing allows users to choose the length of the insert and sequence either end of the insert, generating high-quality, alignable sequence data. Paired-end sequencing can detect rearrangements, including insertions and deletions (indels) and inversions. Note that this is different from [mate pair sequencing](http://www.illumina.com/technology/mate_pair_sequencing_assay.ilmn)
+
+NGS aligment
+============
+
+Next-generation sequencing generally produces short reads or short read pairs (e.g. $<200$ bases) as compared to long reads by Sanger sequencing, which cover ~1000 bases. We need to align these sequences to a reference genome (The exception being de-novo sequencing where we want to infer a new genome).
+
+This is called aligning or mapping the reads against the reference sequence/genome. This is not an easy task:
+- The short reads do not come with position information &#8594; need to find the corresponding region in the reference sequence.
+- The reference sequence can be quite long (~3 billion bases for human) &#8594; computationally intensive task
+- Reads are short &#8594; uncertainty with respect to where the reads can be aligned.
+- We need to allow some mismatches and small structural variation (InDels) in our reads. For RNA-seq we need to allow for splice junctions. 
+- Sequencing is not perfect &#8594; biological variation and sequencing errors can be confounded. 
+
+Aligners
+========
+
+There exist a multitude of aligners that can be used for aligning short reads to a reference genome such as: Bowtie, BWA, GSNAP, TopHat, SOAP, STAR, etc. The choice of the aligner is usually guided by the actual application (e.g. RNA-seq, de novo, etc).
+
 
 Common data formats
 ===================
 
-(IMAGES ->) FASTA/FASTQ -> SAM/BAM -> VCF
+(IMAGES &#8594;) FASTA/FASTQ &#8594; SAM/BAM &#8594; VCF
 
 All of these data formats can be read in R. 
+
+- The SAM/BAM format has emerged as the de facto standard format for short read alignments. 
+- SAM  &#8594; plain-text version
+- BAM  &#8594; compressed binary version
+- BAM files can also be used as an space-saving alternative to FASTQ files to store raw sequence data 
+- All current alignment software can generate SAM/BAM as an output format. BAM files can be indexed to improve data accession. 
 
 
 Sequence manupulation using Biostrings
@@ -398,5 +432,81 @@ cv <- coverage(gr1_list[[1]])
 cv_vec <- as.vector(cv$seq1)
 qplot(x=1:1575, y=cv_vec)+geom_smooth()+theme_minimal(base_size = 18)
 ```
+
+
+Finding overlaps
+================
+
+`findOverlaps` and `countOverlaps` produce a mapping and a
+tabulation of interval overlaps, respectively. 
+
+```{r}
+query <- IRanges(c(1, 5, 3, 4), width=c(2, 2, 4, 6))
+subject <- IRanges(c(1, 3, 5, 6), width=c(4, 4, 5, 4))
+findOverlaps(query, subject, type = "start")
+countOverlaps(query, subject)
+```
+
+
+Preparing data for RNA-seq analysis
+===================================
+
+Let's assume that we want to generate gene counts using the drosophilia genome.
+You first need to install the required transcript dataset.
+```{r, eval=FALSE}
+biocLite("TxDb.Dmelanogaster.UCSC.dm3.ensGene")
+```
+and load the package, which will create an object of class `TranscriptDB`.
+```{r}
+library(TxDb.Dmelanogaster.UCSC.dm3.ensGene)
+TxDb.Dmelanogaster.UCSC.dm3.ensGene
+```
+
+
+Preparing data for RNA-seq analysis (suite)
+===================================
+
+As sample data we use pasillaBamSubset which contains both a single-end BAM (untreated1 chr4) and a paired-end
+BAM (untreated3 chr4). Each le is a subset of chr4 from the "Pasilla" experiment. See ?pasillaBamSubset for details, but we first need to install the package
+```{r, eval=FALSE}
+biocLite("pasillaBamSubset")
+```
+and load the package
+```{r}
+library(pasillaBamSubset)
+un1 <- untreated1_chr4() ## single-end records
+```
+
+
+Preparing data for RNA-seq analysis (suite)
+===================================
+
+Let's also extract the exon ranges by genes as follows,
+```{r}
+exbygene <- exonsBy(TxDb.Dmelanogaster.UCSC.dm3.ensGene, "gene")
+```
+
+we are now ready to count the number of sequences that fall within each gene
+```{r}
+se <- summarizeOverlaps(exbygene, un1, mode="IntersectionNotEmpty")
+se
+```
+which is an object of class `SummarizedExperiment`.
+
+Preparing data for RNA-seq analysis (suite)
+===================================
+
+We can easily extract the counts:
+```{r}
+head(table(assays(se)$counts))
+```
+
+The annotation is stored in the rowData slot:
+```{r}
+rowData(se)
+```
+
+
+
 
 

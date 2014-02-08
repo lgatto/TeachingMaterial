@@ -461,7 +461,7 @@ pData(TIV_08)$hai_fold <- hai_fold
 
 
 ```{r, eval=FALSE, echo=FALSE}
-mm_TIV_08 <- model.matrix(~time+hai_fold, TIV_08)
+mm_TIV_08 <- model.matrix(~time+hai_fold+ptid, TIV_08)
 fit_TIV_08 <- lmFit(TIV_08, mm_TIV_08)
 ebay_TIV_08 <- eBayes(fit_TIV_08)
 topTable(ebay_TIV_08, coef = "hai_fold")
