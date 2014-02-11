@@ -43,3 +43,82 @@ RNA-seq workflow
 ================
 
 ![RNA-seq Workflow](./images/RNA-seq-workflow.png)
+
+Modeling RNA-seq data
+====================
+
+As opposed to microarrays, sequencing leads to count data. In our case, we will try to model counts over genes (or possibly genomic intervals). Let's denote by $Y_{ij}$ the number of reads that fall withing gene $i$ in sample $j$. Then a possible discrete model is the Poisson distribution
+
+$$
+Y_{ijk}=\mathrm{Poisson}(\lambda_{ij}N_{jk})
+$$
+
+where $\lambda_i$ is the rate of emission of gene $i$ in sample $j$, and $N_{jk}$ is the total read count in lane $k$ for sample $j$. $N_{jk}$ basically accounts for sequencing depth variability from one lane to the next. This is basically the model proposed by Marioni et al. 
+
+
+Modeling RNA-seq data (suite)
+=============================
+
+The disavantage of the Poisson distribution is that it depends on one parameter only, which can lead to a lack of flexibility (over-dispersion). Many groups have proposed the negative binomial as an alternative:
+
+In particular, Robinson and Smyth propose the following model:
+
+$$
+Y_{ijk}=\mathrm{NB}(\lambda_{ij}N_{jk}, \phi)
+$$
+
+where $\lambda_{ij}$, $N_{jk}$ are as defined previously and $\phi$ is the dispersion parameter. Robinson and Smyth use the following parametrization: 
+
+$$\mathbb{E}(Y_{ijk})=\mu_{ijk}\quad \mathrm{and}\quad \mathrm{Var}(Y_{ijk})=\mu_{ijk}(1+\mu_{ijk}\phi)$$
+
+where $\mu_{ijk}=\lambda_{ij}N_{jk}$. In this parametrization the poisson distribution can be seen as a special case when $\phi=0$.
+
+The genewise dispersion parameters are estimated by conditional maximum likelihood, conditioning on the total count for that gene (Smyth and Verbyla, 1996). An empirical Bayes procedure is used to shrink the dispersions towards a consensus value, effectively borrowing information between genes (Robinson and Smyth, 2007).
+
+Estimating the dispersion parameter
+===================================
+
+As in `limma`, we would like to use an EB approach to shrink the gene-wise dispersion parameters towards a common value. Unfortunately, the NB distribution does not have a conjugate prior. Robinson and Smyth (2007) proposed to use weighted likelihood. Instead of maximizing the likelihood, they propose to maximize the following weighted likelihood
+
+$$
+WL(\phi_g)=l_g(\phi_g)+\alpha l_C(\phi_g)
+$$
+
+where $\alpha$ is the weight given to the common likelihood (i.e. $\phi$ constant across genes). Then the problem becomes the choice of the appropriate $\alpha$ value. R&S propose some strategies using some EB arguments. 
+
+edgeR
+=============================
+
+The model described above is implemented in `edgeR`, which also provides a generalized linear model interface for modeling the mean expression value as a function of explanatory variables. This is very similar to the `limma` framework. Then inference is done using a likelihood ratio-test comparing the alternative model to the null model. 
+
+
+DESeq
+=============================
+`DEseq` is another popular package for RNA-seq analysis, which utilizes an NB model. 
+In `edgeR`, the mean variance relationship is defined as $\sigma^2=\mu+\alpha \mu^2$. DESeq differs from `edgeR` in its mean-variance relationship, and the way the dispersion parameters are estimated. As explained in Anders et al. (2013):
+
+> edgeR moderates feature-level dispersion estimates toward a trended mean according to the dispersion-mean relationship. In contrast, DESeq takes the maximum of the individual dispersion estimates
+and the dispersion-mean trend. In practice, this means DESeq is less powerful, whereas edgeR is more sensitive to outliers. Recent comparison studies have highlighted that no single method dominates another across all settings.
+
+Using a normal approximation?
+=============================
+
+An alternative to the Poisson and NB models would be to find a data transformation that would make the count data approximately normal. Law et al. (2014) propose to use the $\log_2(\mathrm{cpm}(\cdot))$ transformation. The cpm transformation accounts for sequencing depth variability while the $\log_2$ transformation makes the data more normal. However, as we've seen earlier, the mean-variance relationship is quadratic, and a log transformation is not going to remove this dependence. As a consequence, it would be innapropriate to use a normal linear model with constant variance (even gene-wise). 
+
+Mean-variance trend estimation via voom
+==============================
+Law et al. (2014) propose to estimate the mean-variance trend, and then to use the inverse of the estimated standard deviation for each observation as weight in LIMMA. 
+This is done by the `voom` function in LIMMA. 
+
+Basically, `voom` fits the linear model without weights and uses the residuals of the model to estimate the weights, which are then pass onto a weighted LIMMA call for linear modeling. 
+
+Law et al. (2014) show that this approach: 
+
+1. Control the type I error rate
+2. Is powerful among the methods that control the type I error rate
+3. Has good FDR control
+4. Is faster!
+
+The `voom`+`limma` approach can also be used for gene set analysis, which is difficult to do with count based methods. 
+
+
