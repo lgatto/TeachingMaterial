@@ -101,9 +101,7 @@ Once they do that, you'll get an email about it.  How to handle it?
 
 - Open a terminal/shell, and type
 
-    ````
-    $ git pull
-    ````
+      $ git pull
 
 #### Using the command line
 
@@ -116,21 +114,15 @@ You don't have to use the github website for this.
 - Add a connection to your friend's version of the github repository,
   if you haven't already.
   
-    ````
-    $ git remote add myfriend git://github.com/myfriend/the_repo.git
-    ````
+      $ git remote add myfriend git://github.com/myfriend/the_repo.git
     
 - Pull his/her changes.
 
-    ````
-    $ git pull myfriend master
-    ````
+      $ git pull myfriend master
     
 - Push them back to your github repository.
 
-    ````
-    $ git push
-    ````
+      $ git push
 
 - The pull request on github will be automatically closed.
 
