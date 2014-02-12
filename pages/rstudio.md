@@ -7,7 +7,7 @@ title: git/github with RStudio
 environment for [R](http://www.r-project.org). 
 
 RStudio has built-in facilities for [knitr](http://yihui.name/knitr/)
-(the superb successor to [Sweave](http://www.stat.uni-muenchen.de/~leisch/Sweave/)) and [Rmarkdown](http://www.rstudio.com/ide/docs/r_markdown) (a
+(the superb successor to [Sweave](http://www.stat.uni-muenchen.de/~leisch/Sweave/)) and [R Markdown](http://www.rstudio.com/ide/docs/r_markdown) (a
 variant of
 [Markdown](http://daringfireball.net/projects/markdown/syntax)), which
 are highly recommended for writing data analysis reports.
@@ -21,7 +21,7 @@ Basically, in RStudio you want to create a Project
 ([described further here](http://www.rstudio.com/ide/docs/using/projects)),
 which is basically a directory with some special files to describe
 project-specific RStudio options. This Project will be your git
-repository. Or you can easily make a current git repository into an
+repository. Or you can easily turn a current git repository into an
 RStudio Project. And then you can use items in the menu bar to commit
 changes and push or pull from GitHub.
 
