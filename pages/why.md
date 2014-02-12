@@ -51,15 +51,12 @@ example:
 - [Hadley Wickham](http://had.co.nz)'s
   [bigvis](https://github.com/hadley/bigvis),
   [ggplot2](https://github.com/hadley/ggplot2),
-  [lubridate](https://github.com/hadley/lubridate), ...
+  [lubridate](https://github.com/hadley/lubridate), 
+  [dplyr](https://github.com/hadley/dplyr), 
   
 - [Yihui Xie](http://yihui.name)'s [knitr](https://github.com/yihui/knitr)
 
-- [healthvis](https://github.com/hcorrada/healthvis), by
-  [Prasad Patil](http://www.biostat.jhsph.edu/people/student/patil.shtml),
-  [Hector Corada Bravo](http://www.cbcb.umd.edu/~hcorrada/), and [Jeff Leek](http://www.biostat.jhsph.edu/~jleek/)
-
-- [Nacho Caballero](http://github.com/nachocab)'s [clickme](https://github.com/nachocab/clickme)
+- [Ramnath Vaidyanathan](https://github.com/ramnathv)'s [rCharts](https://github.com/ramnathv/rCharts), [rMaps](https://github.com/ramnathv/rMaps), [slidify](https://github.com/ramnathv/slidify)
 
 - My own [R/qtl](http://github.com/kbroman/qtl)
 
