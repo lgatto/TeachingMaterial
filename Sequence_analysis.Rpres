@@ -403,6 +403,9 @@ aln1
 qseq(aln1)
 ```
 
+Converting to a GRanges
+=======================
+
 you can (almost) always convert a given object to a relevant class
 ```{r}
 gr1 <- as(aln1,"GRanges")

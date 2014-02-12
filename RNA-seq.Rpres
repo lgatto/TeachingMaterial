@@ -14,9 +14,13 @@ date: `r format(Sys.Date(), format="%B %d, %Y")`
 ```{r, cache=FALSE, echo=FALSE}
 # Let's first turn on the cache for increased performance.
 # Set some global knitr options
+library(knitr)
 opts_chunk$set(cache=TRUE)
 library(data.table)
 library(ggplot2)
+library(limma)
+library(edgeR)
+library(GEOquery)
 ```
 
 
@@ -34,8 +38,6 @@ Here we will discuss RNA-seq data analysis including normalization and different
 4. Lund, S. P., Nettleton, D., McCarthy, D. J. & Smyth, G. K. Detecting differential expression in RNA-sequence data using quasi-likelihood with shrunken dispersion estimates. Stat Appl Genet Mol Biol 11, (2012).
 
 5. Anders, S. & Huber, W. Differential expression analysis for sequence count data. Genome Biol. 11, R106 (2010).
-
-6. Adiconis, X. et al. Comparative analysis of RNA sequencing methods for degraded or low-input samples. Nat. Methods 10, 623–629 (2013).
 
 7. Law, C. W., Chen, Y., Shi, W. & Smyth, G. K. Voom: precision weights unlock linear model analysis tools for RNA-seq read counts. Genome Biol. 15, R29 (2014).
 
@@ -88,7 +90,6 @@ where $\alpha$ is the weight given to the common likelihood (i.e. $\phi$ constan
 
 edgeR
 =============================
-
 The model described above is implemented in `edgeR`, which also provides a generalized linear model interface for modeling the mean expression value as a function of explanatory variables. This is very similar to the `limma` framework. Then inference is done using a likelihood ratio-test comparing the alternative model to the null model. 
 
 
@@ -120,5 +121,116 @@ Law et al. (2014) show that this approach:
 4. Is faster!
 
 The `voom`+`limma` approach can also be used for gene set analysis, which is difficult to do with count based methods. 
+
+RNA-seq example
+===============
+
+```{r}
+gd <- getGEO("GSE45735", destdir = "Data/GEO/")
+pd <- pData(gd[[1]])
+# getGEOSuppFiles("GSE45735", makeDirectory=FALSE, baseDir = "Data/GEO/")
+## The T14 file is problematic and needs to be fixed by hand
+
+# Note the regular expression to grep file names
+files <- list.files(path = "Data/GEO/", pattern = "GSE45735_T.*.gz", full.names = TRUE)
+file_list <- lapply(files, read.table, header=TRUE)
+# Remove duplicated rows
+file_list_unique <- lapply(file_list, function(x){x<-x[!duplicated(x$Gene),]; 
+                                                  x <- x[order(x$Gene),]; 
+                                                  rownames(x) <- x$Gene;
+                                                  x[,-1]})
+# Take the intersection of all genes
+gene_list <- Reduce(intersect, lapply(file_list_unique, rownames))
+file_list_unique <- lapply(file_list_unique, "[", gene_list,)
+matrix <- as.matrix(do.call(cbind, file_list_unique))
+
+# Clean up the pData
+pd_small <- pd[!grepl("T13_Day8",pd$title),]
+pd_small$Day <- sapply(strsplit(gsub(" \\[PBMC\\]", "", pd_small$title),"_"),"[",2)
+pd_small$subject <- sapply(strsplit(gsub(" \\[PBMC\\]", "", pd_small$title),"_"),"[",1)
+colnames(matrix) <- rownames(pd_small)
+```
+
+
+RNA-seq example (suite)
+=======================
+
+Note that raw data files for sequencing experiments are available from the SRA database, which can be queried using the SRAdb package:
+```{r, eval=FALSE}
+source("http://bioconductor.org/biocLite.R")
+biocLite("SRAdb")
+```
+
+The resulting files are usually very large!
+
+
+Using Voom
+==========
+
+Let's first create an eSet we can use:
+```{r}
+new_set <- ExpressionSet(assayData = matrix+1)
+pData(new_set) <- pd_small
+```
+
+we now need to set-up our design matrix to estimate our weights:
+
+```{r}
+design <- model.matrix(~subject+Day, new_set)
+new_set_voom <- voom(new_set,design = design)
+```
+
+```{r}
+lm <- lmFit(new_set_voom, design)
+eb <- eBayes(lm)
+# Look at the other time-points
+topTable(eb, coef = "DayDay1")
+```
+
+Using edgeR
+===========
+
+Let's see how we would get setup for edgeR
+
+```{r}
+# We don't have the count matrix, so let's try to "estimate" the counts
+counts <- ceiling(matrix*10)
+dge_list <- DGEList(counts = counts, group = pd_small$Day)
+dge_list <- calcNormFactors(dge_list)
+design <- model.matrix(~Day+subject, pd_small)
+dge_list <- estimateGLMCommonDisp(dge_list,design)
+dge_list <- estimateGLMTrendedDisp(dge_list,design)
+dge_list <- estimateGLMTagwiseDisp(dge_list,design)
+fit <- glmFit(dge_list,design)
+lrt <- glmLRT(fit,coef="DayDay1")
+detags <- rownames(topTags(lrt, n=20))
+plotSmear(lrt, de.tags=detags)
+```
+
+Normalization
+=============
+
+As we have seen above, `edgeR` provides a function for estimating the normalizing factor. 
+The purpose of this normalization strategy is to correct for sequencing depth variability across lanes. A natural way to achieve this would be simply scale the counts by the inverse of the sum of the counts across genes (i.e. the total number of reads/lane). By default, edgeR uses the Trimmed Mean of M-values (TMM) normalization strategy. However, genes with extreme expression values might bias this total read number estimates. Robinson & Oshlack propose a different approach for estimating the normalizing factor. 
+
+
+Normalization - TMM
+=============
+
+![TMM motivation](Images/TMM-motivation.png)
+
+Normalization - TMM (suite)
+=============
+
+![TMM motivation](Images/TMM-formula.png)
+
+A trimmed mean is the average after removing the upper and lower x% of the data. The TMM procedure is doubly trimmed, by trimming both the M and A values. By default, we trim the Mg values by 30% and the Ag values by 5%, but these settings can be tailored to a given experiment. 
+
+DEseq and DEXseq
+================
+
+DEseq is also another popular approach for differential expression, and I will leave it up to you to try this package. One major technical advantage of RNA-seq vs microarrays is that you actually get expression level (count) data at the exon level. As such, using RNA-seq it is possible to detect differential usage of exons. This is what the DEXseq package tries to do. DEXseq models binned (exon) counts instead of gene counts.
+
+![Bins](http://genome.cshlp.org/content/22/10/2008/F1.large.jpg)
 
 
