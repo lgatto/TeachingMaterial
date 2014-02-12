@@ -34,7 +34,8 @@ to contribute at least minor things to others' projects, like the
 and [d3-tip](https://github.com/Caged/d3-tip).
 
 I use git mostly from the command line on a Mac.  I use the github
-site to explore others' code, make pull requests, and indicate issues.
+site to explore others' code, to indicate issues in their code, and
+suggest changes to their code.
 
 I would like all of my statistical/computational collaborators to use
 git and github, so that we
