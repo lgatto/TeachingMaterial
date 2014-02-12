@@ -34,3 +34,5 @@ Edit the bits from `<<<<<<<` to `>>>>>>>`, to make the file just as
 you want it.
 
 Then do `git add`, `git commit`, and `git push`.
+
+**Next**: [Oops; that last commit message was wrong](amend_commit_msg.html)

@@ -24,3 +24,5 @@ project-specific RStudio options. This Project will be your git
 repository. Or you can easily make a current git repository into an
 RStudio Project. And then you can use items in the menu bar to commit
 changes and push or pull from GitHub.
+
+**Next**: [Other resources](resources.html)

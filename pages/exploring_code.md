@@ -80,3 +80,5 @@ If you use [gitx](http://gitx.frim.nl/), you can use it to view the
 differences; use a pipe:
 
     git diff 1.22-21 1.23-16 | gitx
+
+**Next**: [Branching and merging](branching.html)

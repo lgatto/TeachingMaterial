@@ -32,3 +32,6 @@ Here are some examples.
 
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/git)
 
+- [Slides for lecture I gave about git/github, with notes](http://kbroman.github.io/Tools4RR/assets/lectures/04_git_withnotes.pdf)
+
+- [My brief summary of git commands](https://github.com/kbroman/Tools4RR/tree/master/04_Git/GitCommands/git_notes.md)

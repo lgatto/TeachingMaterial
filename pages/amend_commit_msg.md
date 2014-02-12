@@ -16,3 +16,5 @@ It's easy to fix just the message for the last commit:
     
 Or leave off the `-m "New commit message"` and type the message in the
 text editor that opens.    
+
+**Next**: [Exploring code and its history](exploring_code.html)

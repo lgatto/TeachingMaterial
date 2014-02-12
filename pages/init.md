@@ -23,8 +23,15 @@ start exploring it.
 
 The first file to create (and add and commit) is probably a ReadMe
 file, either as plain text or with
-[markdown](http://daringfireball.net/projects/markdown/), describing
-the project.
+[Markdown](http://daringfireball.net/projects/markdown/), describing
+the project. 
+
+Markdown allows you to add a bit of text markup, like
+[hyperlinks](http://en.wikipedia.org/wiki/Hyperlink),
+**bold**/_italics_, or to indicate code with a `monospace
+font`. Markdown is easily converted to html for viewing in a web
+browser, and GitHub will do this for you automatically.
+
 
 
 ### A new repo from an existing project
@@ -64,5 +71,15 @@ Actually, the first line of the instructions will say
 
     $ git remote add origin https://github.com/username/new_repo.git
     
-But I've found that the `https://github...` bit doesn't work and I
-need to use `git@github...`  I don't really understand the difference.
+But I use `git@github...` rather than `https://github...`, as the
+former is for use with
+[ssh](http://en.wikipedia.org/wiki/Secure_Shell) (if you set up ssh as
+I mentioned in "[Your first time](first_time.html)", then you won't
+have to type your password every time you push things to github). If
+you use the latter construction, you'll have to type your github
+password every time you push to github.
+
+**Next**: [Contribute to someone's repository](fork.html)
+
+
+

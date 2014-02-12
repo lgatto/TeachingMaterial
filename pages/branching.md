@@ -70,3 +70,5 @@ is really doing a
 [`git fetch`](https://www.kernel.org/pub/software/scm/git/docs/git-fetch.html)
 followed by a
 [`git merge`](https://www.kernel.org/pub/software/scm/git/docs/git-merge.html).
+
+**Next**: [Git/github with RStudio](rstudio.html)
