@@ -31,7 +31,7 @@
 
 
 ## What you will have to do
-1) Read and understand the paper
-2) Reproduce some of the analysis
-3) Summarize the paper with the analysis in reproducible presentation (a .Rpres file)
-4) Present your work to the rest of the class
+1. Read and understand the paper
+2. Reproduce some of the analysis
+3. Summarize the paper with the analysis in reproducible presentation (a .Rpres file)
+4. Present your work to the rest of the class
