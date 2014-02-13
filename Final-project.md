@@ -13,7 +13,7 @@
     - Trapnell, C. et al. Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat Protoc 7, 562-578 (2012). **Group: Ravi Sood and ??**
     
 - *eQTL/sQTL*
-    - Zhao, K., Lu, Z.-X., Park, J. W., Zhou, Q. & Xing, Y. GLiMMPS: robust statistical model for regulatory variation of alternative splicing using RNA-seq data. Genome Biol. 14, R74 (2013). **Group: Caitlin McHugh** 
+    - Zhao, K., Lu, Z.-X., Park, J. W., Zhou, Q. & Xing, Y. GLiMMPS: robust statistical model for regulatory variation of alternative splicing using RNA-seq data. Genome Biol. 14, R74 (2013). **Group: Caitlin McHugh and ??** 
     
 - *Single-cell gene-expression*
     - McDavid, A. et al. Data exploration, quality control and testing in single-cell qPCR-based gene expression experiments. Bioinformatics 29, 461-467 (2013).
