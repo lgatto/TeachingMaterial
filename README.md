@@ -42,6 +42,7 @@ Th	10:30-11:50	HST T747
 - 02/03/14 [Differential expression](https://github.com/raphg/Biostat-578/blob/master/Differential_expression.Rpres) & [Batch correction](https://github.com/raphg/Biostat-578/blob/master/Batch_effects.Rpres)
 - 02/06/14 [Sequence analysis in R](Sequence_analysis.Rpres)
 - 02/11/14 [RNA-Seq Data analysis](RNA-seq.Rpres)
-- 02/13/14
-- 02/18/14
+- 02/13/14 [RNA-Seq Data analysis](RNA-seq.Rpres)
+- 02/18/14 Gene set enrichment analysis
 - 02/20/14 In class midterm. Andrew McDavid will proctor the exam
+- 02/25/14 In class discussion of the final projects
