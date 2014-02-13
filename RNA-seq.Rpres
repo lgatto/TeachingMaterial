@@ -52,28 +52,28 @@ Modeling RNA-seq data
 As opposed to microarrays, sequencing leads to count data. In our case, we will try to model counts over genes (or possibly genomic intervals). Let's denote by $Y_{ij}$ the number of reads that fall withing gene $i$ in sample $j$. Then a possible discrete model is the Poisson distribution
 
 $$
-Y_{ijk}=\mathrm{Poisson}(\lambda_{ij}N_{jk})
+Y_{ijk}=\mathrm{Poisson}(w_{ij}N_{jk})
 $$
 
-where $\lambda_i$ is the rate of emission of gene $i$ in sample $j$, and $N_{jk}$ is the total read count in lane $k$ for sample $j$. $N_{jk}$ basically accounts for sequencing depth variability from one lane to the next. This is basically the model proposed by Marioni et al. 
+where $w_{ij}$ is the normalized rate of emission of gene $i$ in sample $j$, and $N_{jk}$ is the total read count in lane $k$ for sample $j$. $N_{jk}$ basically accounts for sequencing depth variability from one lane to the next. This is basically the model proposed by Marioni et al. (2010). Note that we have the following constraint $\sum_i w_{ij}=1$.
 
 
 Modeling RNA-seq data (suite)
 =============================
 
-The disavantage of the Poisson distribution is that it depends on one parameter only, which can lead to a lack of flexibility (over-dispersion). Many groups have proposed the negative binomial as an alternative:
+The disavantage of the Poisson distribution is that it depends on one parameter only, which can lead to a lack of fit (over-dispersion). Many groups have proposed the negative binomial as an alternative model:
 
-In particular, Robinson and Smyth propose the following model:
+In particular, Robinson and Smyth (2007,2008) proposed the following model:
 
 $$
-Y_{ijk}=\mathrm{NB}(\lambda_{ij}N_{jk}, \phi)
+Y_{ijk}=\mathrm{NB}(w_{ij}N_{jk}, \phi)
 $$
 
-where $\lambda_{ij}$, $N_{jk}$ are as defined previously and $\phi$ is the dispersion parameter. Robinson and Smyth use the following parametrization: 
+where $w_{ij}$, $N_{jk}$ are as defined previously and $\phi$ is the dispersion parameter. Robinson and Smyth use the following parametrization: 
 
 $$\mathbb{E}(Y_{ijk})=\mu_{ijk}\quad \mathrm{and}\quad \mathrm{Var}(Y_{ijk})=\mu_{ijk}(1+\mu_{ijk}\phi)$$
 
-where $\mu_{ijk}=\lambda_{ij}N_{jk}$. In this parametrization the poisson distribution can be seen as a special case when $\phi=0$.
+where $\mu_{ijk}=w_{ij}N_{jk}$. In this parametrization the poisson distribution can be seen as a special case when $\phi=0$.
 
 The genewise dispersion parameters are estimated by conditional maximum likelihood, conditioning on the total count for that gene (Smyth and Verbyla, 1996). An empirical Bayes procedure is used to shrink the dispersions towards a consensus value, effectively borrowing information between genes (Robinson and Smyth, 2007).
 
@@ -95,7 +95,7 @@ The model described above is implemented in `edgeR`, which also provides a gener
 
 DESeq
 =============================
-`DEseq` is another popular package for RNA-seq analysis, which utilizes an NB model. 
+`DEseq` is another popular package for RNA-seq analysis, which also utilizes an NB model. 
 In `edgeR`, the mean variance relationship is defined as $\sigma^2=\mu+\alpha \mu^2$. DESeq differs from `edgeR` in its mean-variance relationship, and the way the dispersion parameters are estimated. As explained in Anders et al. (2013):
 
 > edgeR moderates feature-level dispersion estimates toward a trended mean according to the dispersion-mean relationship. In contrast, DESeq takes the maximum of the individual dispersion estimates
@@ -169,6 +169,7 @@ Using Voom
 
 Let's first create an eSet we can use:
 ```{r}
+# Note that I add one to the count
 new_set <- ExpressionSet(assayData = matrix+1)
 pData(new_set) <- pd_small
 ```
@@ -184,7 +185,7 @@ new_set_voom <- voom(new_set,design = design)
 lm <- lmFit(new_set_voom, design)
 eb <- eBayes(lm)
 # Look at the other time-points
-topTable(eb, coef = "DayDay1")
+topTable(eb, coef = "DayDay1", number = 5)
 ```
 
 Using edgeR
@@ -211,7 +212,7 @@ Normalization
 =============
 
 As we have seen above, `edgeR` provides a function for estimating the normalizing factor. 
-The purpose of this normalization strategy is to correct for sequencing depth variability across lanes. A natural way to achieve this would be simply scale the counts by the inverse of the sum of the counts across genes (i.e. the total number of reads/lane). By default, edgeR uses the Trimmed Mean of M-values (TMM) normalization strategy. However, genes with extreme expression values might bias this total read number estimates. Robinson & Oshlack propose a different approach for estimating the normalizing factor. 
+The purpose of this normalization strategy is to correct for sequencing depth variability across libraries/lanes. A natural way to achieve this would be simply scale the counts by the inverse of the sum of the counts across genes (i.e. the total number of reads/lane). However, genes with extreme expression values might bias this total read number estimate. Robinson & Oshlack propose a different approach for estimating the normalizing factor, Trimmed Mean of M-values. By default, edgeR uses the TMM normalization strategy.
 
 
 Normalization - TMM
@@ -234,3 +235,7 @@ DEseq is also another popular approach for differential expression, and I will l
 ![Bins](http://genome.cshlp.org/content/22/10/2008/F1.large.jpg)
 
 
+Summary
+=======
+
+We've explored some of the computational challenges involved in the analysis of RNA-seq data. There exists many different methods, tools and software packages for RNA-seq. I encourage you to explore some of these tools/methods. Some of these have been proposed for your final project.
