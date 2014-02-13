@@ -5,7 +5,7 @@
     - Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007).
 
 - *RNA-seq*
-    - Anders, S., Reyes, A. & Huber, W. Detecting differential usage of exons from RNA-seq data. Genome Res. 22, 2008-2017 (2012).
+    - Anders, S., Reyes, A. & Huber, W. Detecting differential usage of exons from RNA-seq data. Genome Res. 22, 2008-2017 (2012). **Group: Anna Plantinga, Katie Wilson, Shih-Yu (Shirley) Chang**
     - Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. & Leek, J. T. Differential expression analysis of RNA-seq data at single-base resolution. Biostatistics kxt053 (2014). doi:10.1093/biostatistics/kxt053
     - Risso, D., Schwartz, K., Sherlock, G. & Dudoit, S. GC-content normalization for RNA-Seq data. BMC Bioinformatics 12, 480 (2011). **Group: David Whitney and Jun Wung**
     - Katz, Y., Wang, E. T., Airoldi, E. M. & Burge, C. B. Analysis and design of RNA sequencing experiments for identifying isoform regulation. Nat. Methods 7, 1009-1015 (2010). **Group: Elisabeth Rosenthal and ??**
