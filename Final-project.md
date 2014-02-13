@@ -28,3 +28,10 @@
 - *Methylation*
     - Hansen, K. D., Langmead, B. & Irizarry, R. A. BSmooth: from whole genome bisulfite sequencing reads to differentially methylated regions. Genome Biol. (2012).
     - Saito, Y., Tsuji, J. & Mituyama, T. Bisulfighter: accurate detection of methylated cytosines and differentially methylated regions. Nucleic Acids Res. gkt1373 (2014). doi:10.1093/nar/gkt1373
+
+
+## What you will have to do
+1) Read and understand the paper
+2) Reproduce some of the analysis
+3) Summarize the paper with the analysis in reproducible presentation (a .Rpres file)
+4) Present your work to the rest of the class
