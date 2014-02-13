@@ -13,14 +13,14 @@
     - Trapnell, C. et al. Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat Protoc 7, 562-578 (2012). **Group: Ravi Sood and ??**
     
 - *eQTL/sQTL*
-    - Zhao, K., Lu, Z.-X., Park, J. W., Zhou, Q. & Xing, Y. GLiMMPS: robust statistical model for regulatory variation of alternative splicing using RNA-seq data. Genome Biol. 14, R74 (2013).
+    - Zhao, K., Lu, Z.-X., Park, J. W., Zhou, Q. & Xing, Y. GLiMMPS: robust statistical model for regulatory variation of alternative splicing using RNA-seq data. Genome Biol. 14, R74 (2013). **Group: Caitlin McHugh** 
     
 - *Single-cell gene-expression*
     - McDavid, A. et al. Data exploration, quality control and testing in single-cell qPCR-based gene expression experiments. Bioinformatics 29, 461-467 (2013).
     - Shalek, A. K. et al. Single-cell transcriptomics reveals bimodality in expression and splicing in immune cells. Nature 498, 236-240 (2013).
 
 - *Gene expression deconvolution*
-    - Shen-Orr, S. S. et al. Cell type-specific gene expression differences in complex tissues. Nat. Methods 7, 287-289 (2010). **Group: Jiajin and ??**
+    - Shen-Orr, S. S. et al. Cell type-specific gene expression differences in complex tissues. Nat. Methods 7, 287-289 (2010). **Group: Jia Jin Kee and ??**
     
 - *ChIP-seq*
     - Zhang, Y. et al. Model-based analysis of ChIP-Seq (MACS). Genome Biol. 9, R137 (2008).
