@@ -2,15 +2,15 @@
 
 
 - *Surrogate variable analysis*
-    - Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007). **Group: Anna Engstrom and ??**
+    - Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007). **Group: Anna Engstrom, Xieting Zhang and Yu Yin**
 
 - *RNA-seq*
     - Anders, S., Reyes, A. & Huber, W. Detecting differential usage of exons from RNA-seq data. Genome Res. 22, 2008-2017 (2012). **Group: Anna Plantinga, Katie Wilson, Shih-Yu (Shirley) Chang**
-    - Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. & Leek, J. T. Differential expression analysis of RNA-seq data at single-base resolution. Biostatistics kxt053 (2014). doi:10.1093/biostatistics/kxt053
+    - Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. & Leek, J. T. Differential expression analysis of RNA-seq data at single-base resolution. Biostatistics kxt053 (2014). doi:10.1093/biostatistics/kxt053. **Group: Travis and ??**
     - Risso, D., Schwartz, K., Sherlock, G. & Dudoit, S. GC-content normalization for RNA-Seq data. BMC Bioinformatics 12, 480 (2011). **Group: David Whitney and Jun Wung**
     - Katz, Y., Wang, E. T., Airoldi, E. M. & Burge, C. B. Analysis and design of RNA sequencing experiments for identifying isoform regulation. Nat. Methods 7, 1009-1015 (2010). **Group: Elisabeth Rosenthal and ??**
     - Hansen, K. D., Irizarry, R. A. & Wu, Z. Removing technical variability in RNA-seq data using conditional quantile normalization. Biostatistics 13, 204-216 (2012).
-    - Trapnell, C. et al. Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat Protoc 7, 562-578 (2012). **Group: Ravi Sood and ??**
+    - Trapnell, C. et al. Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat Protoc 7, 562-578 (2012). **Group: Ravi Sood and David Scoville**
     
 - *eQTL/sQTL*
     - Zhao, K., Lu, Z.-X., Park, J. W., Zhou, Q. & Xing, Y. GLiMMPS: robust statistical model for regulatory variation of alternative splicing using RNA-seq data. Genome Biol. 14, R74 (2013). **Group: Caitlin McHugh and ??** 
@@ -27,7 +27,7 @@
 
 - *Methylation*
     - Hansen, K. D., Langmead, B. & Irizarry, R. A. BSmooth: from whole genome bisulfite sequencing reads to differentially methylated regions. Genome Biol. (2012).
-    - Saito, Y., Tsuji, J. & Mituyama, T. Bisulfighter: accurate detection of methylated cytosines and differentially methylated regions. Nucleic Acids Res. gkt1373 (2014). doi:10.1093/nar/gkt1373
+    - Saito, Y., Tsuji, J. & Mituyama, T. Bisulfighter: accurate detection of methylated cytosines and differentially methylated regions. Nucleic Acids Res. gkt1373 (2014). doi:10.1093/nar/gkt1373. **Group: YuChi Chang and ??**
 
 
 ## What you will have to do
