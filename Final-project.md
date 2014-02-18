@@ -10,17 +10,17 @@
     - Risso, D., Schwartz, K., Sherlock, G. & Dudoit, S. GC-content normalization for RNA-Seq data. BMC Bioinformatics 12, 480 (2011). **Group: David Whitney and Jun Wung**
     - Katz, Y., Wang, E. T., Airoldi, E. M. & Burge, C. B. Analysis and design of RNA sequencing experiments for identifying isoform regulation. Nat. Methods 7, 1009-1015 (2010). **Group: Elisabeth Rosenthal and Xieting Zhang and Yu Yin**
     - Hansen, K. D., Irizarry, R. A. & Wu, Z. Removing technical variability in RNA-seq data using conditional quantile normalization. Biostatistics 13, 204-216 (2012).
-    - Trapnell, C. et al. Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat Protoc 7, 562-578 (2012). **Group: Ravi Sood and David Scoville**
+    - Trapnell, C. et al. Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat Protoc 7, 562-578 (2012). **Group: Ravi Sood, David Scoville and Yanfei Li**
     
 - *eQTL/sQTL*
     - Zhao, K., Lu, Z.-X., Park, J. W., Zhou, Q. & Xing, Y. GLiMMPS: robust statistical model for regulatory variation of alternative splicing using RNA-seq data. Genome Biol. 14, R74 (2013). **Group: Caitlin McHugh and ??** 
     
 - *Single-cell gene-expression*
     - McDavid, A. et al. Data exploration, quality control and testing in single-cell qPCR-based gene expression experiments. Bioinformatics 29, 461-467 (2013).
-    - Shalek, A. K. et al. Single-cell transcriptomics reveals bimodality in expression and splicing in immune cells. Nature 498, 236-240 (2013).
+    - Shalek, A. K. et al. Single-cell transcriptomics reveals bimodality in expression and splicing in immune cells. Nature 498, 236-240 (2013). **Group: Kenneth Chen and ??**
 
 - *Gene expression deconvolution*
-    - Shen-Orr, S. S. et al. Cell type-specific gene expression differences in complex tissues. Nat. Methods 7, 287-289 (2010). **Group: Jia Jin Kee and ??**
+    - Shen-Orr, S. S. et al. Cell type-specific gene expression differences in complex tissues. Nat. Methods 7, 287-289 (2010). **Group: Jia Jin Kee and Ju Young Park**
     
 - *ChIP-seq*
     - Zhang, Y. et al. Model-based analysis of ChIP-Seq (MACS). Genome Biol. 9, R137 (2008).
