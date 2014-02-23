@@ -43,6 +43,9 @@ Th	10:30-11:50	HST T747
 - 02/06/14 [Sequence analysis in R](Sequence_analysis.Rpres)
 - 02/11/14 [RNA-Seq Data analysis](RNA-seq.Rpres)
 - 02/13/14 [RNA-Seq Data analysis](RNA-seq.Rpres)
-- 02/18/14 Gene set enrichment analysis
+- 02/18/14 [Gene set enrichment analysis](GSEA.Rpres)
 - 02/20/14 In class midterm. Andrew McDavid will proctor the exam
 - 02/25/14 In class discussion of the final projects
+- 02/27/14 [ChIP-seq](chip-seq.Rpres) and perhaps start talking about prediction
+- 03/04/14 Finish talking about predictions and talk about projects
+- 03/06/14, 03/10/14, 03/13/14 Project presentations
