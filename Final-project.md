@@ -2,7 +2,7 @@
 
 
 - *Surrogate variable analysis*
-    - Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007). **Group: Anna Engstrom, Xieting Zhang and Yu Yin**
+    - Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007). **Group: Anna Engstrom and ??**
 
 - *RNA-seq*
     - Anders, S., Reyes, A. & Huber, W. Detecting differential usage of exons from RNA-seq data. Genome Res. 22, 2008-2017 (2012). **Group: Anna Plantinga, Katie Wilson, Shih-Yu (Shirley) Chang**
