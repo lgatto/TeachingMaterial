@@ -2,7 +2,7 @@
 
 
 - *Surrogate variable analysis*
-    - Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007). **Group: Anna Engstrom and ??**
+    - Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007).
 
 - *RNA-seq*
     - Anders, S., Reyes, A. & Huber, W. Detecting differential usage of exons from RNA-seq data. Genome Res. 22, 2008-2017 (2012). **Group: Anna Plantinga, Katie Wilson, Shih-Yu (Shirley) Chang**
@@ -10,7 +10,7 @@
     - Risso, D., Schwartz, K., Sherlock, G. & Dudoit, S. GC-content normalization for RNA-Seq data. BMC Bioinformatics 12, 480 (2011). **Group: David Whitney, Jun Wung and Caitlin McHugh**
     - Katz, Y., Wang, E. T., Airoldi, E. M. & Burge, C. B. Analysis and design of RNA sequencing experiments for identifying isoform regulation. Nat. Methods 7, 1009-1015 (2010). **Group: Elisabeth Rosenthal and Xieting Zhang and Yu Yin**
     - Hansen, K. D., Irizarry, R. A. & Wu, Z. Removing technical variability in RNA-seq data using conditional quantile normalization. Biostatistics 13, 204-216 (2012).
-    - Trapnell, C. et al. Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat Protoc 7, 562-578 (2012). **Group: Ravi Sood, David Scoville and Yanfei Li**
+    - Trapnell, C. et al. Differential gene and transcript expression analysis of RNA-seq experiments with TopHat and Cufflinks. Nat Protoc 7, 562-578 (2012). **Group: Ravi Sood, David Scoville, Anna Engstrom and Yanfei Li**
     
 - *eQTL/sQTL*
     - Zhao, K., Lu, Z.-X., Park, J. W., Zhou, Q. & Xing, Y. GLiMMPS: robust statistical model for regulatory variation of alternative splicing using RNA-seq data. Genome Biol. 14, R74 (2013).
