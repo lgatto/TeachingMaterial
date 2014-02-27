@@ -1,0 +1,92 @@
+Bioinformatics for Big Omics Data: Statistical prediction
+========================================================
+width: 1440
+height: 900
+transition: none
+font-family: 'Helvetica'
+css: my_style.css
+author: Raphael Gottardo, PhD
+date: `r format(Sys.Date(), format="%B %d, %Y")`
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
+
+Prediction
+==========
+
+In statistics we are often interested in predicting an outcome variable based on a set of dependent variables. 
+
+In our case, we might be interested in predicting antibody response at day 28 based on gene expression data at day 3 or day 7. 
+
+As another example, Netflix has been very interested in predicting movie rankings for it's users: http://www2.research.att.com/~volinsky/netflix/bpc.html
+
+Statistical issues involved in prediction
+=========================================
+
+In our case, we are often dealing with the traditional large $p$, small $n$ problem. We have few observations but many potential predictors. 
+
+**What should we be worried about?**
+
+Statistical issues involved in prediction
+=========================================
+
+In our case, we are often dealing with the traditional large $p$, small $n$ problem. We have few observations but many potential predictors. 
+
+**What should we be worried about?**
+
+- If we use a traditional (generalized) linear model, we won't have enough degrees of freedom to estimate all regression coefficients
+- Using too many coefficients, we are likely to run into an overfitting problem
+
+An approach that has been proposed to solve this problem is regularized or penalized regression. 
+
+Penalized regression
+================
+In a traditional `glm` framework, we assume the following model:
+
+$$g(\mathbb{E}(\mathbf{Y}))=\mathbf{X}\boldsymbol{\beta}$$ 
+
+where $g$ is the link function. Our goal is to estimate the vector $\boldsymbol{\beta}$ that leads to the best prediction of $\mathbf Y$. In traditional linear regression, this can be done via least-squares.
+
+In regularized regression, we add a penalty term to force the coefficient to be well behaved even when the number of predictors is large. For example, in *ridge regression*, this is done by minimizing the following quantity:
+
+$$ \|\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}\|_2+ \lambda \|\boldsymbol{\beta}\|_2 $$ 
+
+In L1-regression (aka Lasso), we minimize the following function:
+
+$$ \|\mathbf{Y}-\mathbf{X}\boldsymbol{\beta}\|_2+ \lambda \|\boldsymbol{\beta}\|_1 $$ 
+
+The Elastic net uses a convex combination of L1 and L2 norms. 
+
+L1 vs L2 regularization
+=======================
+
+Altough these two regularization strategies share a common goal, the L1 offers a significant advantage. The advantage of the L1 based penalty is that it leads to a sparse solution where many of the estimated coefficients are exactly zero. 
+
+In practice, this is very convenient as we are usually interested in selecting the most informative variables. In fact, we are often more interested in variable selection than actual prediction. 
+
+Estimation in the L1
+===============================
+
+For a fixed value of $\lambda$, estimation can be made very efficient using convex optimization. The problem is that we still need to estimate $\lambda$, as the value of $\lambda$ influence the final inference (i.e. the variables selected). A popular approach for selecting $\lambda$ is cross-validation where a small portion of the data is left out at the estimation stage and used for evaluating the selected model (i.e. error rate, deviance, etc). Then the $\lambda$ value that leads to the best performance is selected. 
+
+However, this requires estimating our model for many different values of $\lambda$!
+Fortunately, the folks at Stanford (Friedman, Hastie, Tibshirani, Efron, etc) have come up with cleaver algorithms to provide the full regularization path as the solution of the Lasso, ridge, and elastic net problems. 
+
+A quick example
+==============
+
+Fortunately for us, the `glmnet` package provides everything that we need to perform statistical inference/prediction using penalized regression. 
+
+```{r, eval=FALSE}
+install.packages("glmnet")
+```
+
+```{r ,results='hide'}
+library(glmnet)
+# Gaussian
+x <- matrix(rnorm(100*20),100,20)
+y <- rnorm(100)
+fit1 <- glmnet(x,y)
+coef(fit1, s=0.01) # extract coefficients at a single value of lambda
+predict(fit1, newx=x[1:10,],s=c(0.01,0.005)) # make predictions
+```
+
