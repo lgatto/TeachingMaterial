@@ -53,8 +53,6 @@ GSEA.md
 
 Midterm.html
 
-Midterm.md
-
 chip-seq.md
 
 Prediction.md
@@ -62,3 +60,5 @@ Prediction.md
 SDY224_cpm_matrix.csv
 
 SDY224_pd.csv
+
+tmp.R
