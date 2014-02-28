@@ -37,22 +37,22 @@ Microarrays
 Reverse transcription
 =====================
 
-![RT](images/RT.png)
+![RT](Images/RT.png)
 
 Hybridization
 ==============
 
-![RT](images/hybridization.png)
+![RT](Images/hybridization.png)
 
 cDNA-microarray
 ===============
 
-![RT](images/cDNA-microarrays.png)
+![RT](Images/cDNA-microarrays.png)
 
 cDNA-microarray (suite)
 ===============
 
-![RT](images/microarray-image.png)
+![RT](Images/microarray-image.png)
 
 Oligonucleotide arrays
 ======================
@@ -69,7 +69,7 @@ Oligonucleotide arrays
 Affymetrix arrays - probes
 =================
 
-![Affy probe](images/Affy-probe.png)
+![Affy probe](Images/Affy-probe.png)
 
 -----------
 
@@ -82,7 +82,7 @@ Affymetrix arrays - probes
 Affymetrix arrays - probes (suite)
 =================
 
-![PM-MM probes](images/PM-MM-probes.png)
+![PM-MM probes](Images/PM-MM-probes.png)
 
 -------------------
 
@@ -100,23 +100,23 @@ http://www.youtube.com/watch?v=ui4BOtwJEXs
 Affymetrix arrays
 =================
 
-![Affymetrix arrays](images/affymetrix-layout.png)
+![Affymetrix arrays](Images/affymetrix-layout.png)
 
 Affymetrix protocol
 =================
 
-![Affymetrix arrays](images/affymetrix-protocol.png)
+![Affymetrix arrays](Images/affymetrix-protocol.png)
 
 
 Affymetrix probesets
 ====================
 
-![Affymetrix arrays](images/probe-set.png)
+![Affymetrix arrays](Images/probe-set.png)
 
 Affymetrix image
 ====================
 
-![Affymetrix arrays](images/affymetrix-image.png)
+![Affymetrix arrays](Images/affymetrix-image.png)
 
 
 Illumina bead arrays

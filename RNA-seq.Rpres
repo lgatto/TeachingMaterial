@@ -44,7 +44,7 @@ Here we will discuss RNA-seq data analysis including normalization and different
 RNA-seq workflow
 ================
 
-![RNA-seq Workflow](./images/RNA-seq-workflow.png)
+![RNA-seq Workflow](Images/RNA-seq-workflow.png)
 
 Modeling RNA-seq data
 ====================

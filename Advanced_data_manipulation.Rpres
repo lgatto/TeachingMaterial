@@ -18,6 +18,7 @@ Motivation
 
 Let's first turn on the cache for increased performance.
 ```{r, cache=FALSE}
+library(knitr)
 # Set some global knitr options
 opts_chunk$set(cache=TRUE)
 ```

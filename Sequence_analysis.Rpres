@@ -14,9 +14,12 @@ date: `r format(Sys.Date(), format="%B %d, %Y")`
 ```{r, cache=FALSE, echo=FALSE}
 # Let's first turn on the cache for increased performance.
 # Set some global knitr options
+library(knitr)
 opts_chunk$set(cache=TRUE)
 library(data.table)
 library(ggplot2)
+library(GenomicRanges)
+library(IRanges)
 ```
 
 
@@ -258,6 +261,8 @@ setkey(dt_exprs, "probe_name")
 setkey(dt_probes, "probe_name")
 dt_merged <- dt_exprs[dt_probes]
 dt_merged_melt <- melt(dt_merged, id.vars = c("probe_name", "GC_count"))
+# This line is not needed if you're using the latest dev version of data.tabler
+dt_merged_melt <- data.table(dt_merged_melt)
 dt_merged_melt_sum <- dt_merged_melt[,list(mean=mean(value)),by=GC_count]
 ```
 

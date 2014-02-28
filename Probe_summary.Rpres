@@ -20,7 +20,7 @@ Probe summary
 Affymetrix arrays - probes
 =================
 
-![Affy probe](images/Affy-probe.png)
+![Affy probe](Images/Affy-probe.png)
 
 -----------
 
@@ -33,7 +33,7 @@ Affymetrix arrays - probes
 Affymetrix arrays - probes (suite)
 =================
 
-![PM-MM probes](images/PM-MM-probes.png)
+![PM-MM probes](Images/PM-MM-probes.png)
 
 -------------------
 
@@ -43,25 +43,25 @@ the Perfect Match sticks and the Mistach does not!
 Affymetrix probesets
 ====================
 
-![Affymetrix arrays](images/probe-set.png)
+![Affymetrix arrays](Images/probe-set.png)
 
 
 Probe summary - A Naive approach
 ================================
 
-![Affymetrix arrays](images/Naive-summary.png)
+![Affymetrix arrays](Images/Naive-summary.png)
 
 Probe summary - A Naive approach (suite)
 ================================
 
-![Affymetrix arrays](images/Naive-summary-array.png)
+![Affymetrix arrays](Images/Naive-summary-array.png)
 
 Basis of the MAS 4.0 model (Affymetrix)
 
 Probe summary - MAS 4.0
 ================================
 
-![Affymetrix arrays](images/MAS-4.0.png)
+![Affymetrix arrays](Images/MAS-4.0.png)
 
 Is this an appropriate model?
 
@@ -70,17 +70,17 @@ Probe summary - Dchip
 
 <small>Li, C., & Wong, W. H. (2001). Model-based analysis of oligonucleotide arrays: model validation, design issues and standard error application. Genome Biology.</small>
 
-![Affymetrix arrays](images/Dchip.png)
+![Affymetrix arrays](Images/Dchip.png)
 
 Probe summary - Dchip vs MAS4.0
 ================================
 
-![Affymetrix arrays](images/Lack-of-fit.png)
+![Affymetrix arrays](Images/Lack-of-fit.png)
 
 Probe summary - Dchip (suite)
 ================================
 
-![Affymetrix arrays](images/dChip-fit.png)
+![Affymetrix arrays](Images/dChip-fit.png)
 
 The same can be done with the probes
 by looking at the variance of $\phi$
@@ -88,7 +88,7 @@ by looking at the variance of $\phi$
 Probe summary - MAS 5.0
 ================================
 
-![Affymetrix arrays](images/MAS-5.0.png)
+![Affymetrix arrays](Images/MAS-5.0.png)
 
 
 Alternative approaches
@@ -111,7 +111,7 @@ This the basic model implemeted in the robust multiarray average _RMA_
 RMA background estimation
 =========================
 
-![Affymetrix arrays](images/RMA-background.png)
+![Affymetrix arrays](Images/RMA-background.png)
 
 This can also be used in new Affymetrix arrays that have no MM probes
 
@@ -130,25 +130,25 @@ Probe sequence affinity
 GC bias
 =======================
 
-![Affymetrix arrays](images/GC-bias.png)
+![Affymetrix arrays](Images/GC-bias.png)
 
 GC bias (suite)
 =======================
 
-![Affymetrix arrays](images/GC-effect.png)
+![Affymetrix arrays](Images/GC-effect.png)
 
 Probe sequence affinity models
 ==============================
 
 <small>Naef, F., & Magnasco, M. O. (2003). Solving the riddle of the bright mismatches: labeling and effective binding in oligonucleotide arrays. Physical Review. E, Statistical, Nonlinear, and Soft Matter Physics, 68(1 Pt 1), 011906.</small>
 
-![Affymetrix arrays](images/Positional-model.png)
+![Affymetrix arrays](Images/Positional-model.png)
 
 
 Sequence effect estimates
 =========================
 
-![Affymetrix arrays](images/Wu-Naef.png)
+![Affymetrix arrays](Images/Wu-Naef.png)
 
 <small>Wu, Z., & Irizarry, R. A. (2004). Stochastic models inspired by hybridization theory for short oligonucleotide arrays. the eighth annual international conference (pp. 98–106). New York, New York, USA: ACM. doi:10.1145/974614.974628</small>
 
@@ -156,7 +156,7 @@ Sequence effect estimates
 RMA vs MAS5 vs gcRMA
 ====================
 
-![Affymetrix arrays](images/gcRMA-MAS-RMA.png)
+![Affymetrix arrays](Images/gcRMA-MAS-RMA.png)
 
 Summary
 =======
