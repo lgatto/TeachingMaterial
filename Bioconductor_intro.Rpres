@@ -279,12 +279,11 @@ GEO also provides access to raw data that can be downloaded with `GEOquery`.
 ```{r download-raw-data, eval = FALSE}
 # Download all raw data. This should only be evaluated once
 # Then the data would be stored locally in the data directory
+# Make sure the directory exists
 getGEOSuppFiles("GSE29617", makeDirectory = FALSE, baseDir = "./Data/GEO/")
 # untar downloaded data
-untar("Data/GEO/GSE29617_RAW.tar", exdir="Data/GEO/GSE29617/", tar="gtar")
+untar("Data/GEO/GSE29617_RAW.tar", exdir="Data/GEO/GSE29617/", tar=Sys.getenv("TAR"))
 # If the above commands do not work, try:
-getGEOSuppFiles("GSE29617", makeDirectory = TRUE, baseDir = "./")
-untar("./GSE29617/GSE29617_RAW.tar", exdir="./GSE29617", tar = Sys.getenv("TAR"))
 ```
 
 Starting from the raw data

@@ -123,7 +123,7 @@ Using CAMERA
 
 Camera is readily available in the `limma` package. Let us go back to our RNA-seq example:
 
-```{r}
+```{r get-data}
 gd <- getGEO("GSE45735", destdir = "Data/GEO/")
 pd <- pData(gd[[1]])
 # getGEOSuppFiles("GSE45735", makeDirectory=FALSE, baseDir = "Data/GEO/")
@@ -152,7 +152,7 @@ colnames(matrix) <- rownames(pd_small)
 CAMERA - Hands on
 ==================
 
-```{r}
+```{r expression-set, dependson="get-data"}
 # Note that I add one to the count
 new_set <- ExpressionSet(assayData = matrix+1)
 pData(new_set) <- pd_small
@@ -160,7 +160,7 @@ pData(new_set) <- pd_small
 
 we now need to set-up our design matrix to estimate our weights:
 
-```{r}
+```{r, dependson="get-data;expression-set"}
 design <- model.matrix(~subject+Day, new_set)
 new_set_voom <- voom(new_set,design = design)
 ```

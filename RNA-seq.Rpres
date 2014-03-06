@@ -126,10 +126,12 @@ RNA-seq example
 ===============
 
 ```{r}
+# You should make sure the directory Data/GEO exist
 gd <- getGEO("GSE45735", destdir = "Data/GEO/")
 pd <- pData(gd[[1]])
 # getGEOSuppFiles("GSE45735", makeDirectory=FALSE, baseDir = "Data/GEO/")
-## The T14 file is problematic and needs to be fixed by hand
+# The T14 file is problematic and needs to be fixed by hand
+# Open the file, go to the bottom and remove the few inconsistent line at the end
 
 # Note the regular expression to grep file names
 files <- list.files(path = "Data/GEO/", pattern = "GSE45735_T.*.gz", full.names = TRUE)
