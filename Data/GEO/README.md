@@ -1,0 +1,1 @@
+This is a directory where I store all GEO data. 
