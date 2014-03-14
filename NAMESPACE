@@ -1,6 +1,7 @@
 useDynLib(sequences)
 
 import("methods")
+import("Rcpp")
 
 exportClasses(GenericSeq,
               DnaSeq,

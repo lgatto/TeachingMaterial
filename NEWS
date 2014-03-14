@@ -1,11 +1,11 @@
 CHANGES IN VERSION 0.5.8
 ------------------------
- o 
+ o update to testthat 0.8 [2014-03-14 Fri]
 
 CHANGES IN VERSION 0.5.7
 ------------------------
  o better gccount2.cpp <2013-05-17 Fri>
- o test that gccount c/cpp/r prodice 
+ o test that gccount c/cpp/r produces 
    identical results <2013-05-17 Fri>
 
 CHANGES IN VERSION 0.5.6
