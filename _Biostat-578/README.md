@@ -32,9 +32,20 @@ Th	10:30-11:50	HST T747
 
 **Lecture notes:**
 
-- 01/07/13 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rpres) 
-- 01/08/13 Same as above and [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rpres)
-- 01/14/13 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres)
-- 01/16/13 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres) & [Biology basics](https://github.com/raphg/Biostat-578/blob/master/Biology_basics.Rpres) 
-
-
+- 01/07/14 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rpres) 
+- 01/08/14 Same as above and [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rpres)
+- 01/14/14 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres)
+- 01/16/14 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres) & [Biology basics](https://github.com/raphg/Biostat-578/blob/master/Biology_basics.Rpres) 
+- 01/21/14 [Intro to Microarrays](https://github.com/raphg/Biostat-578/blob/master/Microarrays.Rpres) & [Normalization](https://github.com/raphg/Biostat-578/blob/master/Normalization.Rpres) & [Probe summary](https://github.com/raphg/Biostat-578/blob/master/Probe_summary.Rpres)
+- 01/23/14 [Probe summary](https://github.com/raphg/Biostat-578/blob/master/Probe_summary.Rpres) & [Intro to Bioconductor](https://github.com/raphg/Biostat-578/blob/master/Bioconductor_intro.Rpres)
+- 01/28/14 [Differential expression](https://github.com/raphg/Biostat-578/blob/master/Differential_expression.Rpres) 
+- 02/03/14 [Differential expression](https://github.com/raphg/Biostat-578/blob/master/Differential_expression.Rpres) & [Batch correction](https://github.com/raphg/Biostat-578/blob/master/Batch_effects.Rpres)
+- 02/06/14 [Sequence analysis in R](Sequence_analysis.Rpres)
+- 02/11/14 [RNA-Seq Data analysis](RNA-seq.Rpres)
+- 02/13/14 [RNA-Seq Data analysis](RNA-seq.Rpres)
+- 02/18/14 [Gene set enrichment analysis](GSEA.Rpres)
+- 02/20/14 In class midterm. Andrew McDavid will proctor the exam
+- 02/25/14 In class discussion of the final projects
+- 02/27/14 [ChIP-seq](chip-seq.Rpres) and perhaps start talking about prediction
+- 03/04/14 Finish talking about predictions and talk about projects
+- 03/06/14, 03/10/14, 03/13/14 Project presentations

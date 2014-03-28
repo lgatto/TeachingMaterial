@@ -10,11 +10,15 @@ date: `r format(Sys.Date(), format="%B %d, %Y")`
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
 
+Here is a simple change
+==========
+
 Motivation
 ==========
 
 Let's first turn on the cache for increased performance.
 ```{r, cache=FALSE}
+library(knitr)
 # Set some global knitr options
 opts_chunk$set(cache=TRUE)
 ```
@@ -675,7 +679,7 @@ SQL | data.table
 LEFT JOIN | x[y]
 RIGHT JOIN | y[x]
 INNER JOIN | x[y, nomatch=0]
-OUTER JOIN | merge(x,y)
+OUTER JOIN | merge(x,y,all=TRUE)
 
 data.table and SQL
 ==================
@@ -930,7 +934,28 @@ Creating your own SQLite database in R (suite)
 dbListFields(db, "hai")
 dbListFields(db, "cohort")
 
-dbGetQuery(db, "SELECT STUDY_TIME_COLLECTED, cohort.DESCRIPTION, MAX(VALUE_REPORTED) AS max_value FROM hai JOIN cohort ON hai.ARM_ACCESSION = cohort.ARM_ACCESSION WHERE cohort.DESCRIPTION LIKE '%TIV%' GROUP BY BIOSAMPLE_ACCESSION;")
+res <- dbGetQuery(db, "SELECT STUDY_TIME_COLLECTED, cohort.DESCRIPTION, MAX(VALUE_REPORTED) AS max_value FROM hai JOIN cohort ON hai.ARM_ACCESSION = cohort.ARM_ACCESSION WHERE cohort.DESCRIPTION LIKE '%TIV%' GROUP BY BIOSAMPLE_ACCESSION;")
+
+head(res)
+```
+
+Using data.table to perform the same operations
+===============================================
+
+```{r a-la-dt}
+# Read the tables using fread
+hai <- fread("./Data/SDY61/hai_result.txt")
+cohort <- fread("./Data/SDY61/arm_or_cohort.txt")
+
+## Set keys before joining
+setkey(hai, "ARM_ACCESSION")
+setkey(cohort, "ARM_ACCESSION")
+
+## Inner join
+dt_joined <- cohort[hai, nomatch=0]
+
+## Summarize values
+head(dt_joined[DESCRIPTION %like% "TIV", list(max_value=max(VALUE_REPORTED)), by="BIOSAMPLE_ACCESSION,STUDY_TIME_COLLECTED"])
 ```
 
 The sqldf package
