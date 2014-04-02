@@ -2,7 +2,7 @@
 # For more see: https://github.com/mojombo/jekyll/wiki/Permalinks
 permalink: /:categories/:year/:month/:day/:title 
 
-exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
+exclude: [".rvmrc", ".rbenv-version", "ReadMe.md", "Rakefile", "changelog.md", "License.md"]
 pygments: true
 
 # Themes are encouraged to use these universal variables 
@@ -17,6 +17,10 @@ author :
   feedburner : nil
 
 production_url : http://kbroman.github.io/github_tutorial
+
+# Tell Github to use the Kramdown markdown interpreter
+# (see https://help.github.com/articles/migrating-your-pages-site-from-maruku)
+markdown: kramdown
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
