@@ -129,7 +129,7 @@ And here are some examples from [Mike Bostock](http://bost.ocks.org/mike/):
 
 The source for this minimal tutorial is [on github](http://github.com/kbroman/minimal_make).
 
-Also see my [git/github guide](http://kbroman.github.io/github_tutorial)
-and [knitr in a knutshell tutorial](http://kbroman.github.io/knitr_knutshell).
-
+Also see my [git/github guide](http://kbroman.github.io/github_tutorial),
+[knitr in a knutshell tutorial](http://kbroman.github.io/knitr_knutshell),
+and [simple site tutorial](http://kbroman.github.io/simple_site).
 
