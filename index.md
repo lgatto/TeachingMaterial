@@ -125,6 +125,8 @@ And here are some examples from [Mike Bostock](http://bost.ocks.org/mike/):
 
 - [GNU Make for reproducible data analysis](http://zmjones.com/make.html) by [Zachary Jones](http://zmjones.com/)
 
+- [Makefiles for R/LaTeX projects](http://robjhyndman.com/hyndsight/makefiles/) by [Rob Hyndman](http://robjhyndman.com)
+
 ---
 
 The source for this minimal tutorial is [on github](http://github.com/kbroman/minimal_make).
@@ -132,4 +134,3 @@ The source for this minimal tutorial is [on github](http://github.com/kbroman/mi
 Also see my [git/github guide](http://kbroman.github.io/github_tutorial),
 [knitr in a knutshell tutorial](http://kbroman.github.io/knitr_knutshell),
 and [simple site tutorial](http://kbroman.github.io/simple_site).
-
