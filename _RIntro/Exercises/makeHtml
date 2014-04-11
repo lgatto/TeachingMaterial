@@ -1,22 +1,19 @@
 #! /usr/local/bin/Rscript
 
-args <- commandArgs()
-args <- args[-(1:match("--args", args))]
+args <- commandArgs(TRUE)
 
 if (length(args) == 0) {
   message("Provide at least one 'Rmd' file as argument")
   q()
 }
 
-library('knitr')
-library('markdown')
+library(knitr)
 
 for (rmd in args) {
-  .rmd <- rmd
-  .html <- sub("Rmd", "html", rmd)
-  .md <- sub("Rmd", "md", rmd)
-  knit(rmd, tangle = TRUE)
-  knit(rmd, tangle = FALSE)
-  markdownToHTML(.md, .html)
-  ## unlink(.md)
+  # purl(rmd) # extract R-Code with chunk headers
+  knit(rmd, tangle = TRUE) # without chunk headers
+  knit2html(rmd)
 }
+## unlink(sub("\\.Rmd$", ".md", args))
+
+q()
