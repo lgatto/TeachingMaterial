@@ -28,6 +28,10 @@ Here are some examples.
   [Git for scientists](http://karthik.github.io/git_intro) and his
   [review paper on git](https://github.com/karthik/smb_git)
 
+-
+  [Git and Github videos for beginners](http://www.dataschool.io/git-and-github-videos-for-beginners/)
+  by [Kevin Markham](http://www.dataschool.io/about/)
+
 - [Google](http://bit.ly/13lFEmG)
 
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/git)
