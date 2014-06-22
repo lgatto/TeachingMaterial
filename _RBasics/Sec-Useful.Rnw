@@ -13,7 +13,9 @@ options(width = 50)
     \item[load] load a binary \R file from disk.      
     \end{description}
   \end{block}
-  Specialised data formats often have specific i/o functionality (microarray \texttt{CEL} files, \texttt{XML}, \ldots)
+  Specialised data formats often have specific i/o functionality
+  (microarray \texttt{CEL} files, \texttt{XML}, HTS data, MS data,
+  \ldots)
 \end{frame}
 
 \begin{frame}[fragile]

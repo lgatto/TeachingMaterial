@@ -119,8 +119,11 @@ myFun <- function(param1, param2, ...) {
   \begin{block}{Function facts}    
     \begin{itemize}
     \item Single \Rfunction{return} value.
-    \item To return multiple items, use a \Robject{list} or a proper \Robject{object} (see OO programming).
-    \item The return value is either the last statement, or explicit return using \Rfunction{return} (can be called from any where in a function)
+    \item To return multiple items, use a \Robject{list} or define
+      your own \Robject{object} (see OO programming).
+    \item The return value is either the last statement, or explicit
+      return using \Rfunction{return} (can be called from any where in
+      a function)
     \end{itemize}
   \end{block}
 \end{frame}

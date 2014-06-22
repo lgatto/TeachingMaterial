@@ -278,20 +278,20 @@ ll[[1]] ## first element of the list
 sample.ExpressionSet[1:10, 1:2]
 
 
-## @knitr env, echo=FALSE, message = FALSE
+## ----env, echo=FALSE, message = FALSE------------------------------------
 options(width = 50)
 
 
-## @knitr read.csv0, tidy = FALSE
+## ----read.csv0, tidy = FALSE---------------------------------------------
 read.table("./Data/data.csv", sep = ",",
            header = TRUE, row.names = 1)
 
 
-## @knitr read.csv1
+## ----read.csv1-----------------------------------------------------------
 read.csv("./Data/data.csv", row.names = 1)
 
 
-## @knitr read.csv2
+## ----read.csv2-----------------------------------------------------------
 x <- read.csv("./Data/data.csv", row.names = 1)
 save(x, file = "./Data/data.rda")
 rm(x)
@@ -299,33 +299,33 @@ load("./Data/data.rda")
 x[1:3, ]
 
 
-## @knitr str1
+## ----str1----------------------------------------------------------------
 paste("abc", "def", sep = "-")
 paste0("abc", "def")
 
 
-## @knitr str2
+## ----str2----------------------------------------------------------------
 month.name[1:4]
 grep("Feb", month.name)
 grep("Feb", month.name, value = TRUE)
 grepl("Feb", month.name)
 
 
-## @knitr str3
+## ----str3----------------------------------------------------------------
 month.name[1]
 length(month.name[1])
 nchar(month.name[1])
 
 
-## @knitr str4
+## ----str4----------------------------------------------------------------
 strsplit("abc-def", "-")
 
 
-## @knitr str4b
+## ----str4b---------------------------------------------------------------
 strsplit(c("abc-def", "ghi-jkl"), "-")
 
 
-## @knitr comp
+## ----comp----------------------------------------------------------------
 set.seed(1)
 x <- sample(letters[1:10], 6)
 y <- sample(letters[1:10], 6)
@@ -333,37 +333,37 @@ x
 y
 
 
-## @knitr comp2
+## ----comp2---------------------------------------------------------------
 intersect(x, y)
 setdiff(x, y)
 union(x, y)
 
 
-## @knitr comp3
+## ----comp3---------------------------------------------------------------
 x %in% y
 x == y
 match(x, y)
 
 
-## @knitr gen
+## ----gen-----------------------------------------------------------------
 seq(1,7,3)
 rep(1:2, 2)
 rep(1:2, each = 2)
 
 
-## @knitr gen2
+## ----gen2----------------------------------------------------------------
 runif(5)
 rnorm(5)
 
 
-## @knitr aboutdata, size="scriptsize"
+## ----aboutdata, size="scriptsize"----------------------------------------
 table(sample(letters, 100, replace = TRUE))
 summary(rnorm(100))
 head(x)
 tail(x)
 
 
-## @knitr head
+## ----head----------------------------------------------------------------
 M <- matrix(rnorm(1000), ncol=4)
 head(M)
 
@@ -415,7 +415,7 @@ smoothScatter(log2(exprs(sample.ExpressionSet)[, 1:2]))
 
 
 
-## @knitr flowctrl, eval = FALSE, tidy = FALSE
+## ----flowctrl, eval = FALSE, tidy = FALSE--------------------------------
 ## for (var in seq) expr
 ## 
 ## while (cond) expr
@@ -425,19 +425,19 @@ smoothScatter(log2(exprs(sample.ExpressionSet)[, 1:2]))
 ## 
 
 
-## @knitr for
+## ----for-----------------------------------------------------------------
 for (i in 1:4) { ## bad
   print(i^2)
 }
 (1:4)^2 ## good
 
 
-## @knitr slapply
+## ----slapply-------------------------------------------------------------
 sapply(month.name[1:2], paste0, "_2012")
 lapply(month.name[1:2], paste0, "_2012")
 
 
-## @knitr apply
+## ----apply---------------------------------------------------------------
 M <- matrix(1:9, ncol = 3)
 M
 apply(M, 1, sum) ## better rowSums
@@ -445,13 +445,13 @@ apply(M, 2, sum) ## better colSums
 2
 
 
-## @knitr replicate
+## ----replicate-----------------------------------------------------------
 mean(rnorm(100))
 replicate(3, mean(rnorm(100)))
 replicate(2, rnorm(3))
 
 
-## @knitr flow, eval = FALSE, tidy = FALSE
+## ----flow, eval = FALSE, tidy = FALSE------------------------------------
 ## if (cond) expr1 else expr2
 ## 
 ## ifelse(cond, expr1, expr2)
@@ -459,7 +459,7 @@ replicate(2, rnorm(3))
 ## switch
 
 
-## @knitr ifelse
+## ----ifelse--------------------------------------------------------------
 x <- 2
 if (x > 0) { ## bad
   log2(x)
@@ -469,7 +469,7 @@ if (x > 0) { ## bad
 log2(abs(x)) ## better 
 
 
-## @knitr fun, eval=FALSE, tidy = FALSE
+## ----fun, eval=FALSE, tidy = FALSE---------------------------------------
 ## myFun <- function(param1, param2, ...) {
 ##   ## function body
 ##   ## acting on copies of the params
@@ -478,14 +478,14 @@ log2(abs(x)) ## better
 ## }
 
 
-## @knitr f1
+## ----f1------------------------------------------------------------------
 x <- 1
 f <- function(x) { x <- x + 10; x }
 f(x)
 x
 
 
-## @knitr f2
+## ----f2------------------------------------------------------------------
 x <- 1
 f <- function() { x <- x + 10; x }
 f()

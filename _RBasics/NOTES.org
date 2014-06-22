@@ -7,3 +7,6 @@
 - vectorized arithmetics
 - x < 0
 - M[x<0] <- 0
+
+- mention/refer to MS/RNAseq data (for io for example)
+
