@@ -42,7 +42,7 @@
 }
 
 % Author, Title, etc.
-\title[CSAMA 2012 -- Brixen] 
+\title[CSAMA 2014 -- Brixen] 
 {%
   R Basics
 }
@@ -62,8 +62,7 @@
 
 \date[]
 {
-  Computational Statistics for Genome Biology\\
-  24$^{th}$ June 2013
+  CSAMA -- 23$^{th}$ June 2014
 }
 
 
