@@ -18,6 +18,8 @@ LATEXFILES = *.aux\
         *.out\
 	*.tikz\
 
+.PHONY: clean allclean dist
+
 all:
 	make R-Basics.pdf
 	make StangleAll
@@ -61,11 +63,21 @@ R-Basics.tex: Sec-Intro.tex Sec-DataTypes.tex Sec-Programming.tex Sec-RBioc.tex 
 # Sec-Plotting.tex: Sec-Plotting.Rnw
 # 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('Sec-Plotting.Rnw');"
 
+dist:
+	mkdir -p R-Basics/.
+	cp R-Basics.pdf R-Basics.R R-Basics/.
+	cp -r RefCards R-Basics/.
+	cp -r Data R-Basics/.
+	cp README.md R-Basics/.
+	zip R-Basics.zip R-Basics/*
+
 clean:
 	rm -f $(LATEXFILES)
 	rm -f *~
 	rm -rf figure
 	rm -f Data/data.rda
+	rm -r R-Basics
+	rm R-Basics.zip
 
 StangleAll:
 	"$(R_HOME)/bin/R" --vanilla -e "sapply(dir(pattern = 'Rnw'), knitr::purl)"
