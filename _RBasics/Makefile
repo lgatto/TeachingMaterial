@@ -69,7 +69,7 @@ dist:
 	cp -r RefCards R-Basics/.
 	cp -r Data R-Basics/.
 	cp README.md R-Basics/.
-	zip R-Basics.zip R-Basics/*
+	zip R-Basics.zip R-Basics/*/*
 
 clean:
 	rm -f $(LATEXFILES)
