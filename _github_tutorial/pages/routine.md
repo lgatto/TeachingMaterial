@@ -66,7 +66,7 @@ of changes that you're thoroughly happy with and before you move on to
 something else.
 
 Once you've pushed a commit, it's hard to take it away.  If you've
-not pushed it yet, you _can_ go back and scrap it and not have it part
+not pushed it yet, you _can_ go back and scrap it and not have it be part
 of your project's history.
 
 But if you move on to something else without having pushed the
@@ -111,10 +111,10 @@ of commit messages they write.
 
 ### What to commit?
 
-Don't include files that are derived from others.  (Are you using
+Don't include files that are derived from other files in the repository.  (Are you using
 [make](http://www.gnu.org/software/make/) or
 [rake](http://rake.rubyforge.org/)?  You should be!  See my
-[make tutorial](kbroman.github.io/minimal_make).)
+[make tutorial](http://kbroman.github.io/minimal_make).)
 
 For example, for a [LaTeX](http://www.latex-project.org/) manuscript,
 I wouldn't include all the .log, .dvi, .aux, etc., files.  And if I
@@ -122,10 +122,10 @@ have R code to generate a figure, I'll include the R code but not the
 figure.
 
 Be careful about committing binary files, or really big files.  Git
-works best with text files (like source code), as it keeps track of
-just the lines that were changed.  With a binary file, you'll save the
-entire file again with each change; that will clutter up your
-repository.  
+works best with text files (like source code), as you can see
+just the lines that were changed.  A new copy of a file will get added to
+the repository every time you change it. For small text files, that's
+no big deal; for big images, you'll get a bloated repository.
 
 And once you've committed a big file to your repository, it's there
 forever, even if you use `git rm` to remove it later.
@@ -142,5 +142,19 @@ in git should be indicated in a `.gitignore` file.
 You don't _have_ to have a `.gitignore` file, but if you don't, those
 files will show up every time you type `git status`.
 
-Each subdirectory can have its own `.gitignore` file, too.  And you
-can have a global such in your home directory, `~/.gitignore`.
+Each subdirectory can have its own `.gitignore` file, too.  
+
+Also, you can have a global such in your home directory; I use
+`~/.gitignore_global`, which contains:
+
+    *~
+    .*~
+    .DS_Store
+    .Rhistory
+    .RData
+
+You have to tell git about the global `.gitignore` file:
+
+    $ git config --global core.excludesfile ~/.gitignore_global
+
+**Next**: [Start a new repository](init.html)

@@ -19,11 +19,11 @@ See the
 Each commit is assigned a &ldquo;hash tag&rdquo; which is a unique
 sequence of letters and numbers, like
 [4d9fe11e56652bd19e19e28eac3906f09d5a3074](https://github.com/kbroman/github_tutorial/commit/4d9fe11e56652bd19e19e28eac3906f09d5a3074).
-When you refer to these hash tags, you can just use an initial substr,
+When you refer to these hash tags, you can just use an initial substring,
 like `4d9fe`, that is unique to your repository.
 
 For my [R/qtl package](http://github.com/kbroman/qtl), I like to tag
-particular commits by the version number of the package, then I can
+particular commits by the version number of the package. Then I can
 use my assigned tag in place of the less memorable hash tag.
 
 To assign a tag, use something like
@@ -76,7 +76,19 @@ And again you can use this for a particular file:
 
     git diff 1.22-21 1.23-16 inst/STATUS.txt
 
+`git diff` has a ton of options; see the manual page:
+
+    git diff --help
+    
+For example, you can get a brief summary of which files were changed with `--stat`:
+
+    git diff 1.22-21 1.23-16 --stat
+
 If you use [gitx](http://gitx.frim.nl/), you can use it to view the
 differences; use a pipe:
 
     git diff 1.22-21 1.23-16 | gitx
+
+
+
+**Next**: [Branching and merging](branching.html)

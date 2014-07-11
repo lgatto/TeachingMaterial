@@ -34,7 +34,8 @@ to contribute at least minor things to others' projects, like the
 and [d3-tip](https://github.com/Caged/d3-tip).
 
 I use git mostly from the command line on a Mac.  I use the github
-site to explore others' code, make pull requests, and indicate issues.
+site to explore others' code, to indicate issues in their code, and
+suggest changes to their code.
 
 I would like all of my statistical/computational collaborators to use
 git and github, so that we
@@ -52,5 +53,6 @@ If you have suggestions for changes or improvements, fork
 [the repo](http://github.com/kbroman/github_tutorial): Follow the
 instructions above, &ldquo;[Contribute to someone's repository](pages/fork.html).&rdquo;
 
-Also see my [tutorial on GNU make](http://kbroman.github.io/minimal_make).
-
+Also see my [minimal make](http://kbroman.github.io/minimal_make),
+[knitr in a knutshell](http://kbroman.github.io/knitr_knutshell),
+and [simple site](http://kbroman.github.io/simple_site) tutorials.

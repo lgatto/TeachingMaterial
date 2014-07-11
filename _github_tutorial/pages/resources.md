@@ -24,11 +24,18 @@ Here are some examples.
 
 - [git - the simple guide](http://rogerdudler.github.io/git-guide/)
 
-- [Karthik Ram](http://karthikram.github.io)'s
-  [Git for scientists](http://karthikram.github.io/git_intro) and his
-  [review paper on git](https://github.com/karthikram/smb_git)
+- [Karthik Ram](https://github.com/karthik)'s
+  [Git for scientists](http://karthik.github.io/git_intro) and his
+  [review paper on git](https://github.com/karthik/smb_git)
+
+-
+  [Git and Github videos for beginners](http://www.dataschool.io/git-and-github-videos-for-beginners/)
+  by [Kevin Markham](http://www.dataschool.io/about/)
 
 - [Google](http://bit.ly/13lFEmG)
 
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/git)
 
+- [Slides for lecture I gave about git/github, with notes](http://kbroman.github.io/Tools4RR/assets/lectures/04_git_withnotes.pdf)
+
+- [My brief summary of git commands](https://github.com/kbroman/Tools4RR/tree/master/04_Git/GitCommands/git_notes.md)

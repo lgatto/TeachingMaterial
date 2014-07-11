@@ -17,16 +17,15 @@ Say you want to contribute changes to someone else's repository (eg,
 
 - Type
 
-    ````
-    $ git clone git@github.com:username/the_repo.git
-    ````
+      $ git clone git@github.com:username/the_repo.git
+
+  where `username` is _your_ username.
 
 - You'll now have a local copy of _your version_ of that repository.
+
 - Add a connection to the original owner's repository.
 
-    ````
-    $ git remote add myfriend git://github.com/myfriend/the_repo.git
-    ````
+      $ git remote add myfriend git://github.com/myfriend/the_repo.git
 
 - Note the distinction between `git@github...` in the first case and
   `git://github...` in the second case.  I'm not sure why these need
@@ -102,9 +101,7 @@ Once they do that, you'll get an email about it.  How to handle it?
 
 - Open a terminal/shell, and type
 
-    ````
-    $ git pull
-    ````
+      $ git pull
 
 #### Using the command line
 
@@ -117,20 +114,16 @@ You don't have to use the github website for this.
 - Add a connection to your friend's version of the github repository,
   if you haven't already.
   
-    ````
-    $ git remote add myfriend git://github.com/myfriend/the_repo.git
-    ````
+      $ git remote add myfriend git://github.com/myfriend/the_repo.git
     
 - Pull his/her changes.
 
-    ````
-    $ git pull myfriend master
-    ````
+      $ git pull myfriend master
     
 - Push them back to your github repository.
 
-    ````
-    $ git push
-    ````
+      $ git push
 
 - The pull request on github will be automatically closed.
+
+**Next**: [Handling merge conflicts](merge_conflicts.html)
