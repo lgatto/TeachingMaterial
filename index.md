@@ -53,6 +53,6 @@ If you have suggestions for changes or improvements, fork
 [the repo](http://github.com/kbroman/github_tutorial): Follow the
 instructions above, &ldquo;[Contribute to someone's repository](pages/fork.html).&rdquo;
 
-Also see my [minimal make](http://kbroman.github.io/minimal_make),
-[knitr in a knutshell](http://kbroman.github.io/knitr_knutshell),
-and [simple site](http://kbroman.github.io/simple_site) tutorials.
+Also see my [minimal make](http://kbroman.org/minimal_make),
+[knitr in a knutshell](http://kbroman.org/knitr_knutshell),
+and [simple site](http://kbroman.org/simple_site) tutorials.

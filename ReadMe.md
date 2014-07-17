@@ -7,7 +7,7 @@ hard to get started.  I hope these pages help.
 There are many resources for git and github; my aim is to provide the
 minimal guide to get started.
 
-View the thing [here](http://kbroman.github.io/github_tutorial).
+View the thing [here](http://kbroman.org/github_tutorial).
 
 ---
 
