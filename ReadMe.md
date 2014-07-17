@@ -6,7 +6,7 @@ is [make](http://www.gnu.org/software/make) (cf
 
 This is a minimal tutorial to get started.
 
-View the thing [here](http://kbroman.github.io/minimal_make).
+View the thing [here](http://kbroman.org/minimal_make).
 
 ---
 
