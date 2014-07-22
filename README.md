@@ -40,7 +40,7 @@ with your colleagues.
 - Content: `R` programming, plotting, `git`/`github` (via [software carpentry](http://software-carpentry.org/)), `make`, `shell` and `knitr`. 
 
 ### spr
-- Description: Scientific Programmign with `R`, MPhil in Computational Biology
+- Description: Scientific Programming with `R`, MPhil in Computational Biology
 - Author: [Stephen Eglen](http://www.damtp.cam.ac.uk/user/sje30/) with contributions from [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/spr
 - More details: https://github.com/lgatto/spr#readme
@@ -64,7 +64,7 @@ with your colleagues.
 - View it here: http://kbroman.github.io/minimal_make/
 
 ### QuickPackage
-- Description: Twobrief overviews of `R` package creation
+- Description: Two brief overviews of `R` package creation
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/QuickPackage
 - More details: https://github.com/lgatto/QuickPackage#readme
