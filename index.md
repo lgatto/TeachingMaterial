@@ -1,7 +1,7 @@
 ---
 layout: page
 title: git/github guide
-tagline: Karl's minimal tutorial
+tagline: a minimal tutorial
 ---
 
 All statistical/computational scientists should use
