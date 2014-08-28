@@ -49,8 +49,9 @@ got me started with version control (using subversion), and
 git, but don't hold either responsible for any errors in my
 understanding.
 
-If you have suggestions for changes or improvements, fork
-[the repo](http://github.com/kbroman/github_tutorial): Follow the
+If you have suggestions for changes or improvements,
+[submit an issue](https://github.com/kbroman/github_tutorial/issues) or
+fork [the repo](http://github.com/kbroman/github_tutorial): Follow the
 instructions above, &ldquo;[Contribute to someone's repository](pages/fork.html).&rdquo;
 
 Also see my [minimal make](http://kbroman.org/minimal_make),
