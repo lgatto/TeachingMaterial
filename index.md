@@ -109,6 +109,10 @@ And here are some examples from [Mike Bostock](http://bost.ocks.org/mike/):
 
 - [Makefile](https://github.com/mbostock/d3/blob/master/Makefile) for [D3](http://d3js.org/)
 
+Also look at the
+[Makefile](https://github.com/yihui/knitr/blob/master/Makefile) for
+[Yihui Xie](http://yihui.name/)'s [knitr](http://yihui.name/knitr/) package for [R](http://r-project.org).
+
 ### Resources
 
 - [GNU make webpage](http://www.gnu.org/software/make)
