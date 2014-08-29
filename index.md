@@ -99,6 +99,9 @@ Here are some of my own examples:
 - [Makefile](https://github.com/kbroman/Talk_FunQTL/blob/master/Makefile)
   for a [talk on QTL mapping for function-valued traits](http://www.biostat.wisc.edu/~kbroman/talks/FunQTL/).
 
+- [Makefile](https://github.com/kbroman/qtlcharts/blob/master/Makefile)
+  for my [R/qtlcharts](http://kbroman.org/qtlcharts) package.
+
 And here are some examples from [Mike Bostock](http://bost.ocks.org/mike/):
 
 - [Makefile](https://github.com/mbostock/world-atlas/blob/master/Makefile)
