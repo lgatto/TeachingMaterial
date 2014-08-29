@@ -46,21 +46,30 @@ that looks something like [the following](assets/Makefile) (here using
 Each batch of lines indicates a file to be created (the _target_), the files it
 depends on (the _dependencies_), and then a set of commands needed to
 construct the target from the dependent files.  Note that the lines
-with the commands _must_ start with a tab character.  
+with the commands _must_ start with a **tab** character (**not spaces**).
 
-One oddity: if you need to change directories to run a command, do
+Another great feature: in the example above, you'd only build
+`fig1.pdf` when `fig1.R` changed.  And note that the dependencies
+propagate.  If you change `fig1.R`, then `fig1.pdf` will change, and
+so `mypaper.pdf` will be re-built.
+
+**One oddity**: if you need to change directories to run a command, do
 the `cd` on the same line as the related command.  The following
-_*would not work*_:
+**_would not work_**:
 
     ### this doesn't work ###
     Figs/fig1.pdf: R/fig1.R
     	cd R
     	R CMD BATCH fig1.R fig1.Rout
 
-Another great feature: in the example above, you'd only build
-`fig1.pdf` when `fig1.R` changed.  And note that the dependencies
-propagate.  If you change `fig1.R`, then `fig1.pdf` will change, and
-so `mypaper.pdf` will be re-built.
+You can, however, use `\` for a continuation line, line so:
+
+    ### this works ###
+    Figs/fig1.pdf: R/fig1.R
+    	cd R;\
+    	R CMD BATCH fig1.R fig1.Rout
+
+Note that you still need to use the semicolon (`;`).
 
 ### Using GNU make
 
