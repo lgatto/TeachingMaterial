@@ -1,1 +1,7 @@
 _site
+*.bbl
+*.blg
+*.log
+*.aux
+*.Rout
+*.pdf
