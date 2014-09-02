@@ -132,13 +132,13 @@ There are a bunch of
 that you can use to save yourself a lot of typing. Here are the ones
 that I use most:
 
-- `$@` the file name of the target
-- `$<` the name of the first prerequisite (i.e., dependency)
-- `$^` the names of all prerequisites (i.e., dependencies)
-- `$(@D)` the directory part of the target
-- `$(@F)` the file part of the target
-- `$(<D)` the directory part of the first prerequisite (i.e., dependency)
-- `$(<F)` the file part of the first prerequisite (i.e., dependency)
+- `$@` &nbsp;&nbsp; the file name of the target
+- `$<` &nbsp;&nbsp; the name of the first prerequisite (i.e., dependency)
+- `$^` &nbsp;&nbsp; the names of all prerequisites (i.e., dependencies)
+- `$(@D)` &nbsp;&nbsp; the directory part of the target
+- `$(@F)` &nbsp;&nbsp; the file part of the target
+- `$(<D)` &nbsp;&nbsp; the directory part of the first prerequisite (i.e., dependency)
+- `$(<F)` &nbsp;&nbsp; the file part of the first prerequisite (i.e., dependency)
 
 For example, in our simple example, we could simplify the lines
 
