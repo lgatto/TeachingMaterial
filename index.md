@@ -17,7 +17,7 @@ file for the references.
 
 Compiling the final PDF is a bit of work: 
 
-- Run each R script through R to produce the relevant figure
+- Run each R script through R to produce the relevant figure.
 - Run latex and then bibtex and then latex a couple of more times.
 
 And the R scripts need to be run before latex is, and only if they've
@@ -43,7 +43,7 @@ that looks something like [the following](examples/ex1/Makefile) (here using
     	cd R;R CMD BATCH fig2.R
 
 Each batch of lines indicates a file to be created (the _target_), the files it
-depends on (the _dependencies_), and then a set of commands needed to
+depends on (the _prerequisites_), and then a set of commands needed to
 construct the target from the dependent files.  Note that the lines
 with the commands _must_ start with a **tab** character (**not spaces**).
 
