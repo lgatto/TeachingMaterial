@@ -27,7 +27,7 @@ changed.
 
 [GNU make](http://www.gnu.org/software/make) makes this easy.  In your
 directory for the manuscript, you create a text file called `Makefile`
-that looks something like [the following](assets/Makefile) (here using
+that looks something like [the following](examples/ex1/Makefile) (here using
 [pdflatex](http://www.tug.org/applications/pdftex/)).
 
     mypaper.pdf: mypaper.bib mypaper.tex Figs/fig1.pdf Figs/fig2.pdf
@@ -178,8 +178,8 @@ you want to add a third figure, you just add it as another dependency
 
 #### Our example, with the frills
 
-Adding all of this together, here's what our example `Makefile` will
-look like.
+Adding all of this together, here's what our example `Makefile`
+[will look like](examples/ex2/Makefile).
 
     R_OPTS=--vanilla
 
