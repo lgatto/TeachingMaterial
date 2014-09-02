@@ -83,6 +83,57 @@ To use make:
 - In the example above, if you want to build `fig1.pdf` without
   building `mypaper.pdf`, just type `make fig1.pdf`.
 
+### Frills
+
+You can go along way with just simple make files as above, specifying
+the target files, their dependencies, and the commands to create
+them. But there are _a lot_ of frills you can add, to save some
+typing.
+
+I'll give a very brief introduction to some of the options that I
+use. See the
+[make documentation](http://www.gnu.org/software/make/manual/make.html)
+for further details.
+
+#### Variables
+
+If you'll be repeating the same piece of code multiple times, you
+might want to define a
+[variable](http://www.gnu.org/software/make/manual/make.html#Using-Variables).
+
+For example, you might want to run R with the flag `--vanilla`. You
+could then define a variable `R_OPTS`:
+
+    R_OPTS=--vanilla
+
+You refer to this variable as `${R_OPTS}`, so in the R commands you
+would use something like
+
+    cd R;R CMD BATCH ${R_OPTS} fig1.R fig1.Rout
+
+An advantage of this is that you just need to type out the options you
+want once; if you change your mind about the R options you want to
+use, you just have to change them in the one place.
+
+For example, I actually like to use the following:
+
+    R_OPTS=--no-save --no-restore --no-init-file --no-site-file
+
+This is like `--vanilla` but without `--no-environ` (which I need
+because I use the `.Renviron` file to define `R_LIBS`, to say that I
+have R packages defined in an alternative directory).
+
+
+#### Automatic variables
+
+
+
+
+#### Pattern rules
+
+
+
+
 ### More complicated examples
 
 There are complicated Makefiles all over the place.  Poke around
