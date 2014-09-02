@@ -37,10 +37,10 @@ that looks something like [the following](assets/Makefile) (here using
     	pdflatex mypaper
 
     Figs/fig1.pdf: R/fig1.R
-    	cd R;R CMD BATCH fig1.R fig1.Rout
+    	cd R;R CMD BATCH fig1.R
 
     Figs/fig2.pdf: R/fig2.R
-    	cd R;R CMD BATCH fig2.R fig2.Rout
+    	cd R;R CMD BATCH fig2.R
 
 Each batch of lines indicates a file to be created (the _target_), the files it
 depends on (the _dependencies_), and then a set of commands needed to
@@ -59,14 +59,14 @@ the `cd` on the same line as the related command.  The following
     ### this doesn't work ###
     Figs/fig1.pdf: R/fig1.R
     	cd R
-    	R CMD BATCH fig1.R fig1.Rout
+    	R CMD BATCH fig1.R
 
 You can, however, use `\` for a continuation line, line so:
 
     ### this works ###
     Figs/fig1.pdf: R/fig1.R
     	cd R;\
-    	R CMD BATCH fig1.R fig1.Rout
+    	R CMD BATCH fig1.R
 
 Note that you still need to use the semicolon (`;`).
 
@@ -109,7 +109,7 @@ could then define a variable `R_OPTS`:
 You refer to this variable as `${R_OPTS}`, so in the R commands you
 would use something like
 
-    cd R;R CMD BATCH ${R_OPTS} fig1.R fig1.Rout
+    cd R;R CMD BATCH ${R_OPTS} fig1.R
 
 An advantage of this is that you just need to type out the options you
 want once; if you change your mind about the R options you want to
@@ -126,13 +126,77 @@ have R packages defined in an alternative directory).
 
 #### Automatic variables
 
+There are a bunch of
+[automatic variables](http://www.gnu.org/software/make/manual/make.html#Automatic-Variables)
+that you can use to save yourself a lot of typing. Here are the ones
+that I use most:
 
+- `$@` the file name of the target
+- `$<` the name of the first prerequisite (i.e., dependency)
+- `$^` the names of all prerequisites (i.e., dependencies)
+- `$(@D)` the directory part of the target
+- `$(@F)` the file part of the target
+- `$(<D)` the directory part of the first prerequisite (i.e., dependency)
+- `$(<F)` the file part of the first prerequisite (i.e., dependency)
 
+For example, in our simple example, we could simplify the lines
+
+    Figs/fig1.pdf: R/fig1.R
+    	cd R;R CMD BATCH fig1.R
+
+We could instead write
+
+    Figs/fig1.pdf: R/fig1.R
+    	cd $(<D);R CMD BATCH $(<F)
+
+The automatic variable `$(<D)` will take the value of the directory of
+the first prerequisite, `R` in this case. `$(<F)` will take value of
+the file part of the first prerequisite, `fig1.R` in this case.
+
+There doesn't seem to be much advantage to this, unless perhaps the
+directory is an obnoxiously long string which we want to avoid having
+to type twice. The big advantage comes from 
 
 #### Pattern rules
 
+If a number of files are to be built in the same way, you may want to
+use a
+[pattern rule](http://www.gnu.org/software/make/manual/make.html#Pattern-Rules).
+The key idea is that you can use the symbol `%` as a wildcard, to be
+expanded to any string of text.
 
+For example, our two figures are being built in basically the same
+way. We could simplify the example by including one set of lines
+covering both `fig1.pdf` and `fig2.pdf`:
 
+    Figs/%.pdf: R/%.R
+    	cd $(<D);R CMD BATCH $(<F)
+
+This saves typing and makes the file easier to maintain and extend. If
+you want to add a third figure, you just add it as another dependency
+(i.e., prerequisite) for `mypaper.pdf`.
+
+#### Our example, with the frills
+
+Adding all of this together, here's what our example `Makefile` will
+look like.
+
+    R_OPTS=--vanilla
+
+    mypaper.pdf: mypaper.bib mypaper.tex Figs/fig1.pdf Figs/fig2.pdf
+    	pdflatex mypaper
+    	bibtex mypaper
+    	pdflatex mypaper
+    	pdflatex mypaper
+
+    Figs/%.pdf: R/%.R
+    	cd $(<D);R CMD BATCH $(R_OPTS) $(<F)
+
+The advantage of the added frills: less typing, and it's easier to
+extend to include additional figures. The disadvantage: it's harder
+for others who are less familiar with
+[GNU Make](http://www.gnu.org/software/make/) to understand what it's
+doing.
 
 ### More complicated examples
 
