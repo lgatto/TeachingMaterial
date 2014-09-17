@@ -154,9 +154,10 @@ The automatic variable `$(<D)` will take the value of the directory of
 the first prerequisite, `R` in this case. `$(<F)` will take value of
 the file part of the first prerequisite, `fig1.R` in this case.
 
+Okay, that's not _really_ a simplification.
 There doesn't seem to be much advantage to this, unless perhaps the
-directory is an obnoxiously long string which we want to avoid having
-to type twice. The big advantage comes from 
+directory were an obnoxiously long string and we wanted to avoid having
+to type it twice. The main advantage comes in the next section.
 
 #### Pattern rules
 
