@@ -1,0 +1,622 @@
+\documentclass[presentation]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+
+\usepackage{hyperref}
+
+\newcommand{\Slang}{\texttt{S} }
+\newcommand{\R}{\texttt{R} }
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\mbox{\normalfont\textsf{#1}}}}
+
+\definecolor{Red}{rgb}{0.7,0,0}
+\definecolor{Blue}{rgb}{0,0,0.8}
+
+\usepackage{hyperref}
+\hypersetup{%
+  pdfusetitle,
+  bookmarks = {true},
+  bookmarksnumbered = {true},
+  bookmarksopen = {true},
+  bookmarksopenlevel = 2,
+  unicode = {true},
+  breaklinks = {false},
+  hyperindex = {true},
+  colorlinks = {true},
+  linktocpage = {true},
+  plainpages = {false},
+  linkcolor = {Blue},
+  citecolor = {Blue},
+  urlcolor = {Red},
+  pdfstartview = {Fit},
+  pdfpagemode = {UseOutlines},
+  pdfview = {XYZ null null null}
+}
+
+\author{L. Gatto}
+
+\date{\today}
+
+\title{Vectorisation in \texttt{R}}
+
+\hypersetup{
+  pdfkeywords={vectorisation},
+  pdfsubject={Vectorisation in R}}
+
+\begin{document}
+
+\maketitle
+
+% http://lists.gnu.org/archive/html/emacs-orgmode/2009-11/msg01129.html
+
+\section{Introduction}
+
+\begin{frame}
+
+  \begin{quotation} 
+    Many operations in R are vectorized, and understanding and using
+    vectorization is an essential component of becoming a proficient
+    programmer.
+  \end{quotation}
+
+  R Gentleman in \emph{R Programming for Bioinformatics}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Vectorisation}
+  A \textbf{vectorised computation} is one that, when applied to a
+  vector (of length greater than 1), automatically operates directly on
+  all elements of the input vector.
+
+<<>>=
+(x <- 1:5)
+(y <- 5:1)
+x + y
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Recycling rule}
+
+  What is \texttt{x} and \texttt{y} are of different length: the shorter
+  vector is replicate so that its length matches the longer ones.
+
+<<>>=
+(x <- 1:6)
+(y <- 1:2)
+x+y
+@
+
+If the shorter vector is not an even multiple of the longer, a warning
+is issued.
+
+\end{frame}
+
+\begin{frame}[fragile]{With matrices (1)}
+
+Matrices must be conformable. 
+
+\begin{columns}
+  \begin{column}{.5\textwidth}
+<<>>=
+(m <- matrix(1:9, 3))
+@    
+  \end{column}
+  \begin{column}{.5\textwidth}
+<<>>=
+(n <- matrix(9:1, 3))
+@
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{With matrices (2)}
+
+\begin{columns}
+  \begin{column}{.5\textwidth}
+<<>>=
+m * n
+@    
+  \end{column}
+  \begin{column}{.5\textwidth}
+<<>>=
+m %*%n
+@
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{diff} example (1)}
+
+Compute difference between times of events, \texttt{e}. Given
+\texttt{n} events, there will be \texttt{n-1} inter-event
+times. \texttt{interval[i] <- e[i+1] - e[i]}
+
+\bigskip
+
+Procedural implementation:
+
+<<>>=
+diff1 <- function(e) {
+  n <- length(e)
+  interval <- rep(0, n - 1) 
+  for (i in 1:(n - 1)) 
+      interval[i] <- e[i + 1] - e[i]
+  interval
+}
+e <- c(2, 5, 10.2, 12, 19)
+diff1(e)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{diff} example (2)}
+
+Vectorised implementation
+
+
+<<>>=
+diff2 <- function(e) {
+  n <- length(e)
+  e[-1] - e[-n]
+}  
+e <- c(2, 5, 10.2, 12, 19)
+diff2(e)
+@
+
+<<>>=
+all.equal(diff1(e), diff2(e))
+@
+\end{frame}
+
+
+% Writing vectorised functions
+
+\section{Iterations}
+
+\begin{frame}[fragile]{When using \texttt{for} loops}
+
+Initialising the result variable before iteration to avoid unnecessary
+copies at each iteration substantially increases performance.
+
+\begin{columns}
+  \begin{column}{.5\textwidth}    
+<<>>=
+f1 <- function(n = 5e3) {
+    a <- NULL
+    for (i in 1:n)
+        a <- c(a, sqrt(i))
+    a
+}
+system.time(f1())
+@
+  \end{column}
+
+  \begin{column}{.5\textwidth}    
+<<>>=
+f2 <- function(n = 5e3) {
+    a <- numeric(n)
+    for (i in 1:n)
+        a[i] <- sqrt(i)
+    a
+}
+system.time(f2())
+@
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{\texttt{*apply} functions}
+
+How to apply a function, iteratively, on a set of elements?
+
+\bigskip
+
+\texttt{apply(X, MARGIN, FUN, ...)}
+
+\begin{itemize}
+\item \texttt{MARGIN} = 1 for row, 2 for cols.
+\item \texttt{FUN} = function to apply
+\item \texttt{...} = extra args to function.
+\item \texttt{simplify} =  should the result be simplified if possible.
+\end{itemize}
+
+\bigskip
+
+\texttt{*apply} functions are (generally) \alert{NOT} faster than
+loops, but more succint and thus clearer.
+
+\end{frame}
+
+\begin{frame}[fragile]{Usage (1)}
+
+<<eval=FALSE>>=
+v <- rnorm(1000) ## or a list
+res <- numeric(length(v))
+
+for (i in 1:length(v)) 
+  res[i] <- f(v[i])
+
+res <- sapply(v, f)
+
+## if f is vectorised
+f(v)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Usage (2)}
+
+<<eval=FALSE>>=
+## M is a matrix/data.frame/array
+rowResults <- numeric(nrow(M))
+colResults <- numeric(ncol(M))
+
+for (i in 1:nrow(M)) 
+  rowResults <- f(M[i, ])
+
+for (j in 1:ncol(M)) 
+  colResults <- f(M[, j])
+
+rowResults <- apply(M, 1, f)
+colResults <- apply(M, 2, f)
+
+rowSums(M)
+colSums(M)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{*apply} functions}
+
+\begin{center}
+\begin{tabular}{ll}
+\hline
+apply & matrices, arrays, data.frames\\
+lapply & lists, vectors\\
+sapply & lists, vectors\\
+vapply & with a pre-specified type of return value\\
+tapply & atomic objects, typically vectors\\
+by & similar to tapply\\
+eapply & environments\\
+mapply & multiple values\\
+rapply & recursive version of lapply\\
+esApply & \texttt{ExpressionSet}, defined in \texttt{Biobase}\\
+\hline
+\end{tabular}
+\end{center}
+
+See also the \texttt{BiocGenerics} package for \texttt{[l|m|s|t]apply}
+S4 generics, as well as parallel versions in the \texttt{parallel}
+package.
+
+\bigskip
+
+See also the \texttt{plyr} package, that offers its own flavour of
+\alert{apply} functions.
+
+\end{frame}
+
+\begin{frame}{Other functions}
+
+\begin{itemize}
+\item \texttt{replicate} -- repeated evaluation of an expression
+\item \texttt{aggregate} -- compute summary statistics of data subsets
+\item \texttt{ave} -- group averages over level combinations of factors
+\item \texttt{sweep} -- sweep out array summaries
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Anonymous functions}
+
+A function defined/called without being assigned to an 
+identifier and generally passed as argument to other functions 
+(and in particular \texttt{apply} functions).
+
+<<eval=FALSE>>=
+M <- matrix(rnorm(100), 10)
+apply(M, 1, function(Mrow) 'do something with Mrow')
+apply(M, 2, function(Mcol) 'do something with Mcol')
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Example - extract (1)}
+
+Extracting the $i^{th}$ column of elements in a list:
+
+<<>>=
+A <- matrix(1:4, nr = 2)
+B <- matrix(1:6, nr = 2)
+L <- list(A, B)
+sapply(L, function(x) x[,2])
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Example - extract (2)}
+
+Extracting the $i^{th}$ column of elements in a list:
+<<>>=
+A <- matrix(1:4, 2)
+B <- matrix(1:6, 2)
+L <- list(A, B)
+lapply(L, "[", , 2)
+@
+
+(See \texttt{help("[")} if the syntax is unexpected.)
+
+\end{frame}
+
+\begin{frame}[fragile]{Example - replicate}
+
+<<>>=
+f <- function(d) {
+  M <- matrix(runif(d^2), nrow=d)
+  solve(M)
+}
+system.time(f(100))
+
+res <- replicate(10, system.time(f(100))[["elapsed"]])
+summary(res)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Example - integration (1)}
+
+<<dev='pdf', echo=FALSE, fig.width=7, fig.height=5>>=
+f <- function(x, a = 1) sin(x^2)/ (a + abs(x))
+x <- seq(-7, 7, 0.02 )
+x0 <- seq(-2, 2, 0.02)
+y0 <- f(x0)
+y0[y0 < 0] <- 0
+plot(x, f(x), type = "l", main = expression(f(x) ==  frac(sin(x^2),(a + abs(x)))))
+grid()
+abline(v = c(-2, 2), lty = "dotted")
+polygon(x0, y0, col = "#00000010")
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Example - integration (2)}
+
+The \texttt{integrate} function approximates definite integrals by
+adaptive quadrature.
+
+<<>>=
+f <- function(x, a = 1) sin(x^2)/ (a + abs(x))
+integrate(f, lower = -2, upper = 2)
+@
+
+It is not vectorised.
+
+<<>>=
+lo <- c(-2, 0)
+hi <- c(0, 2)
+integrate(f, lower = lo, upper = hi)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Example - integration (3)}
+
+To vectorise a function, we can explicitly wrap it inside a helper
+function that will take care of argument recycling (via \texttt{rep}),
+then loop over the inputs and call the non-vectorised function.
+
+\end{frame}
+
+\begin{frame}[fragile]{Example - integration (4)}
+
+To vectorise a function, we can explicitate the vectorised calculation
+using \texttt{mapply}
+
+<<>>=
+mapply(function(lo, hi) integrate(f, lo, hi)$value,
+       lo, hi)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Example - integration (5)}
+
+Create a vectorised form using \texttt{Vectorize}. It takes a function
+(here, an anonymous function) as input and returns a function.
+
+<<>>=
+Integrate <- Vectorize(
+  function(fn, lower, upper)
+  integrate(fn, lower, upper)$value,
+  vectorize.args=c("lower", "upper")
+  )
+Integrate(f, lower=lo, upper=hi)
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Example - \texttt{tapply}}
+
+<<>>=
+dfr <- data.frame(A = sample(letters[1:5], 100,
+		    replace = TRUE), 
+		  B = rnorm(100))
+tapply(dfr$B, dfr$A, mean)
+@
+
+<<>>=
+tapply(dfr$B, dfr$A, summary)[1:2]
+@
+
+\end{frame}
+
+\begin{frame}[fragile]{Efficient apply-like functions}
+
+\begin{itemize}
+\item In \texttt{base}: rowSums, rowMeans, colSums, colMeans
+\item In \texttt{Biobase}: rowQ, rowMax, rowMin, rowMedias, \ldots{}
+\item In \texttt{genefilter}: rowttests, rowFtests, rowSds, rowVars, \ldots{}
+\end{itemize}
+
+\bigskip
+
+Generalisable on other data structures, like \texttt{ExpressionSet}
+instances.
+
+\end{frame}
+
+\begin{frame}[fragile]{Timings (1)}
+
+<<>>=
+f1 <- function(n) {
+  a <- NULL 
+  for (i in 1:n) a <- c(a, sqrt(i))
+  a
+}
+f2 <- function(n) {
+  a <- numeric(n)
+  for (i in 1:n) a[i] <- sqrt(i)
+  a
+}
+
+f3 <- function(n)
+  sapply(seq_len(n), sqrt)
+
+f4 <- function(n) sqrt(n)
+@
+
+\end{frame}
+
+
+<<echo=FALSE, cache=TRUE>>=
+n <- 10^(2:5)   
+t1 <- sapply(n, function(.n) system.time(f1(.n))[["elapsed"]])
+t2 <- sapply(n, function(.n) system.time(f2(.n))[["elapsed"]])
+t3 <- sapply(n, function(.n) system.time(f3(.n))[["elapsed"]])
+t4 <- sapply(n, function(.n) system.time(f4(.n))[["elapsed"]])
+  
+elapsed <- data.frame(t1, t2, t3, t4)
+rownames(elapsed) <- n
+  
+colnames(elapsed) <-
+    c("for loop\nwithout init",
+      "for loop\nwith init",
+      "wrapped in\napply",
+      "built-in sqrt\n(vectorised)")
+@
+
+\begin{frame}[fragile]{Timings (1)}
+
+<<dev='pdf', echo=FALSE, fig.width=7, fig.height=5, message=FALSE>>=
+library(grid)
+library(reshape2)
+library(scales)
+library(ggplot2)
+mainvp <- viewport(width = 1,
+                   height = 1,
+                   x = 0.5, y = 0.5)
+subvp <- viewport(width = 6/9,
+                  height = 5/9,
+                  x = .1,
+                  y = .95,
+                  just = c("left","top"))
+df <- melt(elapsed)
+colnames(df) <- c("Implementation", "Elapsed")
+df$Iterations <- rep(n, 4)
+ymax <- max(elapsed[, -1])
+p <- ggplot(data=df, aes(x=Iterations, y=Elapsed, col=Implementation)) +
+    geom_line() + geom_point() +
+        theme(legend.position="bottom") +
+            scale_x_continuous(trans=log10_trans()) + 
+                coord_trans(x="log2")
+q <- p + coord_cartesian(ylim=c(0, (ymax+.05))) +
+    theme_gray(8) +
+        labs(x = NULL, y = NULL) +
+            theme(plot.margin = unit(rep(0.3, 4), "lines")) +
+                theme(legend.position="none")
+print(p, vp = mainvp)
+print(q, vp = subvp)
+@
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Timings (2)}
+
+<<>>=
+f1 <- function(M) {
+  res <- numeric(nrow(M))
+  for (i in 1:nrow(M))
+    res[i] <- sum(M[i, ])
+  res
+}
+
+f2 <- function(M)
+  apply(M, 1, sum)
+
+f3 <- function(M)
+  rowSums(M)
+@
+
+\end{frame}
+
+<<echo=FALSE, cache=TRUE, message=FALSE>>=
+n <- 100
+M <- matrix(rnorm(1e4), ncol = 10)  
+
+t1 <- replicate(n, system.time(f1(M))[["elapsed"]])
+t2 <- replicate(n, system.time(f2(M))[["elapsed"]])
+t3 <- replicate(n, system.time(f3(M))[["elapsed"]])
+
+elapsed <- data.frame(t1, t2, t3)
+
+colnames(elapsed) <-
+    c("for loop\nwith init",
+      "wrapped in\napply",
+      "rowSums")
+@
+
+\begin{frame}[fragile]{Timings (2)}
+
+<<dev='pdf', echo=FALSE, fig.width=7, fig.height=5, message=FALSE>>=
+df <- melt(elapsed)
+colnames(df) <- c("Implementation", "Elapsed")
+p <- ggplot(data=df, aes(x=Implementation, y=Elapsed)) +
+    geom_boxplot() +
+        ggtitle(paste0("replicate(", n, ", system.time(f(M))[['elapsed']])"))  
+print(p)
+@
+
+\end{frame}
+
+\begin{frame}{Parallelisation}
+
+Vectorised operations are natural candidats for parallel execution. \\
+See later, \emph{Parallel computation} topic.
+
+\end{frame}
+
+\section{References}
+
+\begin{frame}{References}
+
+\begin{itemize}
+\item R Gentleman, \emph{R Programming for Bioinformatics}, CRC Press,
+  2008
+\item Ligges and Fox, \emph{R Help Desk, How Can I Avoid This Loop or
+    Make It Faster?} \alert{R News}, Vol 8/1. May 2008.
+\item R Grouping functions: sapply vs. lapply vs. apply. vs. tapply
+  vs. by vs. aggregate \ldots{}
+  \url{http://stackoverflow.com/questions/3505701/}
+\end{itemize}
+
+\end{frame}
+
+\end{document}
