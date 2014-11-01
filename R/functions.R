@@ -53,3 +53,10 @@ gccount2 <- function(inseq) {
         inseq,
         PACKAGE="sequences")
 }
+
+
+debugme <- function() {
+    f <- list.files(system.file("scripts", package = "sequences"),
+                    full.names = TRUE)
+    source(f)
+}
