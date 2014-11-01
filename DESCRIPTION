@@ -12,7 +12,8 @@ Description: Educational package used in R courses to illustrate OO programming
 	     as a working example.
 Depends: methods, Rcpp
 LinkingTo: Rcpp
-Suggests: testthat
+Suggests: testthat, knitr
 License: GPL-3
 biocViews: Infrastructure, DataRepresentation, DataImport
+VignetteBuilder: knitr
 URL: https://github.com/lgatto/sequences/

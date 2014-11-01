@@ -1,7 +1,8 @@
 CHANGES IN VERSION 0.5.9
 ------------------------
  o fasta file with 3 sequences in extdata and fun to debug in
- inst/scripts [2014-11-01 Sat]
+   inst/scripts [2014-11-01 Sat]
+ o use knitr for vignette [2014-11-01 Sat]
  
 CHANGES IN VERSION 0.5.8
 ------------------------

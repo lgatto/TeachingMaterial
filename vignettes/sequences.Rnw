@@ -1,18 +1,17 @@
+%\VignetteEngine{knitr}
 %\VignetteIndexEntry{Brief overview of the 'sequences' package}
 %\VignetteKeywords{sequences, DNA, RNA}
 %\VignettePackage{sequence-demo}
 \documentclass{article}
-\usepackage[nogin]{Sweave}
 \usepackage{hyperref}
 \usepackage[authoryear,round]{natbib}
-
-\SweaveOpts{echo=T,eval=T,cache=F}
 
 \newcommand{\R}{\texttt{R} }
 \newcommand{\Rfunction}[1]{{\texttt{#1}}}
 \newcommand{\Robject}[1]{{\texttt{#1}}}
 \newcommand{\Rpackage}[1]{{\textit{#1}}}
 \newcommand{\email}[1]{\href{mailto:#1}{\normalfont\texttt{#1}}}
+
 %% colors
 \usepackage{color}
 \definecolor{Red}{rgb}{0.7,0,0}
@@ -31,12 +30,7 @@
   pdfview = {XYZ null null null}
 }
 
-\author{Laurent Gatto\\
-  \email{lg390@cam.ac.uk}\\
-  Cambridge Center for Proteomics\\
-  University of Cambridge
-}
-
+\author{Laurent Gatto\footnote{\email{lg390@cam.ac.uk}}}
 
 \begin{document}
 
@@ -45,6 +39,7 @@
 \maketitle
 
 %%\tableofcontents
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Section
@@ -72,32 +67,32 @@ have a look at \Rpackage{Biostrings}\footnote{%%
 Let's start by loading the package and read a 
 fasta sequence that is provided with the package. 
 
-<<load,echo=TRUE>>=
-library(sequences)
-fastafilename <- dir(system.file(package="sequences",dir="extdata"),
+<<loadseq>>=
+library("sequences")
+fastafilename <- dir(system.file(package="sequences", dir="extdata"),
                      full.name=TRUE,
                      pattern="fasta$")
 fastafilename
-myseq <- readFasta(fastafilename)
+myseq <- readFasta(fastafilename[1])
 myseq
 @ 
 
 Printing the sequence displays it's sequence numbering 
 the lines.
 
-<<printseq,echo=TRUE>>=
+<<printseq>>=
 print(myseq)
 @ 
 
 This creates an instance of class \Sexpr{class(myseq)} that can 
 be transcribed with the \Rfunction{transcribe} method.
 
-<<transcribe,echo=TRUE>>=
+<<transcribe>>=
 transcribe(myseq)
 @ 
 
 \begin{figure}[!htb]
-<<gccount, fig=TRUE, echo=TRUE, height=4, width=4>>=
+<<gccount, dev='pdf', echo=TRUE,fig.width=6, fig.height=4>>=
 barplot(gccount(seq(myseq)))
 @
 \caption{Number of A, C, G and T bases in the \Robject{myseq} object.}
@@ -108,15 +103,17 @@ barplot(gccount(seq(myseq)))
 
 \section{Background}\label{sec:background}
 
-This package is developed as part of the \textit{Advanced R programming and package development}
-(ARPD) course, taught by Laurent Gatto and Robert Stojnic. 
-The course has originally been set up and run as an intense 1 day course 
-in the Graduate School of Life Sciences of the University of Cambridge. 
-Since March 2011, the course has been run on a regular basis 
-in the Bioinformatics Teaching Facilty in the Department of Genetics, Cambridge.
+This package is developed as part of the \textit{Advanced R
+  programming and package development} (ARPD) course, taught by
+Laurent Gatto and Robert Stojnic.  The course has originally been set
+up and run as an intense 1 day course in the Graduate School of Life
+Sciences of the University of Cambridge.  Since March 2011, the course
+has been run on a regular basis in the Bioinformatics Teaching Facilty
+in the Department of Genetics, Cambridge.
 
-On the 28 and 29 November, a 2 day version was taught at the EMBL in Heidelberg, 
-at Wolfgang Huber's invitation (see figure \ref{fig:heidelberg2011}).
+In November 2011 and December 2012, 2 day courses were taught at the
+EMBL in Heidelberg, at Wolfgang Huber's invitation (see figure
+\ref{fig:heidelberg2011}).
 
 \begin{figure}[htb]
   \includegraphics[width=\linewidth]{r-advanced-course-2011.jpg}
@@ -127,13 +124,14 @@ at Wolfgang Huber's invitation (see figure \ref{fig:heidelberg2011}).
 \paragraph{Acknowledgements} Several people have been contributed to 
 make this course possible. David P. Judge, initially helped us to set up 
 the course in the Bioinformatics Teaching Facilty at the Cambridge University. 
-Wolfgang Huber, invited us at the EMBL in Heidelberg, in November 2011, 
+Wolfgang Huber, invited us at the EMBL in Heidelberg.
 
 
 \clearpage
 
 \section{Session information}\label{sec:sessionInfo} 
-<<label=sessioninfo,results=tex,echo=FALSE,cache=FALSE>>=
+
+<<sessioninfo, results='asis', echo=FALSE, cache=FALSE>>=
 toLatex(sessionInfo())
 @
 
