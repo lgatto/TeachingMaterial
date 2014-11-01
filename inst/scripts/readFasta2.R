@@ -29,10 +29,9 @@ readFasta2 <- function(infile) {
   out <- vector("list", length=length(fasta.ids))
   
   for (i in 1:length(fasta.ids))
-    out[[i]] <- structure(list(id = fasta.ids[i],
-                               alphabet = alphabet,
-                               seq = fasta.seqs[i]),
-                          class = "GenericSeq")
-  
+      out[[i]] <- new("DnaSeq",
+                      id = fasta.ids[i],
+                      alphabet = alphabet,
+                      seq = fasta.seqs[i])  
   return(out)
 }
