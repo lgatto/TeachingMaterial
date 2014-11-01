@@ -1,3 +1,8 @@
+CHANGES IN VERSION 0.5.9
+------------------------
+ o fasta file with 3 sequences in extdata and fun to debug in
+ inst/scripts [2014-11-01 Sat]
+ 
 CHANGES IN VERSION 0.5.8
 ------------------------
  o update to testthat 0.8 [2014-03-14 Fri]
@@ -68,7 +73,8 @@ CHANGES IN VERSION 0.3.7
 
 CHANGES IN VERSION 0.3.6
 ------------------------
- o update print method, remove pgfSweave dependency for vignette and added print exemple chunk
+ o update print method, remove pgfSweave dependency for vignette and
+ added print exemple chunk
 
 CHANGES IN VERSION 0.3.5
 ------------------------
