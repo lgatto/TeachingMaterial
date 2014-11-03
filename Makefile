@@ -6,13 +6,13 @@ unittesting.md: unittesting.Rmd
 		R --vanilla -e "library(knitr); knit('unittesting.Rmd')"
 
 unittesting.html: unittesting.md
-		R --vanilla -e " markdown::markdownToHTML('unittesting.md')"
+		R --vanilla -e "markdown::markdownToHTML('unittesting.md', output = 'unittesting.html')"
 
 testing.md: testing.Rmd
 		R --vanilla -e "library(knitr); knit('testing.Rmd')"
 
 testing.html: testing.md
-		R --vanilla -e " markdown::markdownToHTML('testing.md')"
+		R --vanilla -e "markdown::markdownToHTML('testing.md', output = 'testing.html')"
 
 .PHONY: clean
 
