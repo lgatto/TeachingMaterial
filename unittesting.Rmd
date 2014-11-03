@@ -1,7 +1,7 @@
 
 # Introduction
 
-Why unit testing?
+**Why unit testing?**
 
 Each section provides a function that supposedly works as expected,
 but quickly proves to misbehave. The exercise aims at first writing
@@ -252,3 +252,4 @@ sqrtabs(numeric())
 <!-- } -->
 <!-- test_sqrtabs()                          # yes! -->
 <!-- ``` -->
+

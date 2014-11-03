@@ -1,7 +1,7 @@
 
 # Introduction
 
-Why unit testing?
+**Why unit testing?**
 
 Each section provides a function that supposedly works as expected,
 but quickly proves to misbehave. The exercise aims at first writing
@@ -34,7 +34,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "O" "C" "H" "Y" "B"
+## [1] "I" "N" "G" "L" "Y"
 ```
 But
 
@@ -45,7 +45,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "O" "C" "H" "Y" "B" NA
+## [1] "I" "N" "G" "L" "Y" NA
 ```
 
 ### Solution
@@ -248,7 +248,7 @@ distances(p, m)
 ```
 
 ```
-## [1] 0.000000 1.993841 2.286223 1.420076 0.854431
+## [1] 0.0000000 2.4640405 0.8117454 0.5694019 1.5032424
 ```
 
 ```r
@@ -352,3 +352,4 @@ sqrtabs(numeric())
 <!-- } -->
 <!-- test_sqrtabs()                          # yes! -->
 <!-- ``` -->
+
