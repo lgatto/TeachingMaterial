@@ -1,3 +1,7 @@
+These exercises were written by Martin Morgan and Laurent Gatto to be
+used during
+[Bioconductor Developer Day workshop](http://bioconductor.org/help/course-materials/2013/BioC2013/developer-day-debug/)
+activities.
 
 # Introduction
 
@@ -34,7 +38,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "I" "N" "G" "L" "Y"
+## [1] "S" "T" "P" "M" "C"
 ```
 But
 
@@ -45,7 +49,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "I" "N" "G" "L" "Y" NA
+## [1] "S" "T" "P" "M" "C" NA
 ```
 
 ### Solution
@@ -92,6 +96,8 @@ test_isIn() ## the bug is fixed and monitored
 ## Character matching
 
 ### Problem
+
+What are the exact matches of `x` in `y`?
 
 
 ```r
@@ -151,6 +157,9 @@ isExactIn(c("a", "z"), c("abc", letters))
 ## If conditions with length > 1
 
 ### Problem
+
+If `x` is greater than `y`, we want the difference of their
+squares. Otherwise, we want the sum.
 
 
 ```r
@@ -226,6 +235,9 @@ ifcond(3:1, c(2, 2, 2))
 
 ### Problem
 
+Calculate the euclidean distance between a single point and a set of
+other points.
+
 
 ```r
 ## Example
@@ -241,21 +253,59 @@ distances <- function(point, pointVec) {
 x <- rnorm(5)
 y <- rnorm(5)
 
-m <- cbind(x, y)
-p <- m[1, ]
+(m <- cbind(x, y))
+```
 
+```
+##               x          y
+## [1,]  0.9337659 -1.7568430
+## [2,] -0.2461883 -0.3463200
+## [3,] -0.3517330 -0.4897523
+## [4,] -1.0087053 -0.5456311
+## [5,]  0.3394810  1.2328814
+```
+
+```r
+(p <- m[1, ])
+```
+
+```
+##          x          y 
+##  0.9337659 -1.7568430
+```
+
+```r
 distances(p, m)
 ```
 
 ```
-## [1] 0.0000000 2.4640405 0.8117454 0.5694019 1.5032424
+## [1] 0.000000 1.838985 1.805000 2.289155 3.048217
 ```
 
 ```r
 ## Bug!
-dd <- data.frame(x, y)
-q <- dd[1, ]
+(dd <- data.frame(x, y))
+```
 
+```
+##            x          y
+## 1  0.9337659 -1.7568430
+## 2 -0.2461883 -0.3463200
+## 3 -0.3517330 -0.4897523
+## 4 -1.0087053 -0.5456311
+## 5  0.3394810  1.2328814
+```
+
+```r
+(q <- dd[1, ])
+```
+
+```
+##           x         y
+## 1 0.9337659 -1.756843
+```
+
+```r
 distances(q, dd)
 ```
 
@@ -299,6 +349,8 @@ distances(q, dd)
 ## Iterate on 0 length
 
 ### Problem
+
+Calculate the square root of the absolute value of a set of numbers.
 
 
 ```r

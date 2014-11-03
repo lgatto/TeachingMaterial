@@ -201,6 +201,11 @@ hr {
 </head>
 
 <body>
+<p>These exercises were written by Martin Morgan and Laurent Gatto to be
+used during
+<a href="http://bioconductor.org/help/course-materials/2013/BioC2013/developer-day-debug/">Bioconductor Developer Day workshop</a>
+activities.</p>
+
 <h1>Introduction</h1>
 
 <p><strong>Why unit testing?</strong></p>
@@ -233,7 +238,7 @@ x &lt;- sample(LETTERS, 5)
 isIn(x, LETTERS)
 </code></pre>
 
-<pre><code>## [1] &quot;I&quot; &quot;N&quot; &quot;G&quot; &quot;L&quot; &quot;Y&quot;
+<pre><code>## [1] &quot;S&quot; &quot;T&quot; &quot;P&quot; &quot;M&quot; &quot;C&quot;
 </code></pre>
 
 <p>But</p>
@@ -242,7 +247,7 @@ isIn(x, LETTERS)
 isIn(c(x, &quot;a&quot;), LETTERS)
 </code></pre>
 
-<pre><code>## [1] &quot;I&quot; &quot;N&quot; &quot;G&quot; &quot;L&quot; &quot;Y&quot; NA
+<pre><code>## [1] &quot;S&quot; &quot;T&quot; &quot;P&quot; &quot;M&quot; &quot;C&quot; NA
 </code></pre>
 
 <h3>Solution</h3>
@@ -283,6 +288,8 @@ test_isIn() ## the bug is fixed and monitored
 <h2>Character matching</h2>
 
 <h3>Problem</h3>
+
+<p>What are the exact matches of <code>x</code> in <code>y</code>?</p>
 
 <pre><code class="r">isExactIn &lt;- function(x, y)
     y[grep(x, y)]
@@ -344,6 +351,9 @@ isExactIn(&quot;a&quot;, c(&quot;abc&quot;, letters))
 <h2>If conditions with length &gt; 1</h2>
 
 <h3>Problem</h3>
+
+<p>If <code>x</code> is greater than <code>y</code>, we want the difference of their
+squares. Otherwise, we want the sum.</p>
 
 <pre><code class="r">ifcond &lt;- function(x, y) {
     if (x &gt; y) {
@@ -420,6 +430,9 @@ ifcond(3:1, c(2, 2, 2))
 
 <h3>Problem</h3>
 
+<p>Calculate the euclidean distance between a single point and a set of
+other points.</p>
+
 <pre><code class="r">## Example
 distances &lt;- function(point, pointVec) {
     x &lt;- point[1]
@@ -433,20 +446,50 @@ distances &lt;- function(point, pointVec) {
 x &lt;- rnorm(5)
 y &lt;- rnorm(5)
 
-m &lt;- cbind(x, y)
-p &lt;- m[1, ]
-
-distances(p, m)
+(m &lt;- cbind(x, y))
 </code></pre>
 
-<pre><code>## [1] 0.0000000 2.4640405 0.8117454 0.5694019 1.5032424
+<pre><code>##               x          y
+## [1,]  0.9337659 -1.7568430
+## [2,] -0.2461883 -0.3463200
+## [3,] -0.3517330 -0.4897523
+## [4,] -1.0087053 -0.5456311
+## [5,]  0.3394810  1.2328814
+</code></pre>
+
+<pre><code class="r">(p &lt;- m[1, ])
+</code></pre>
+
+<pre><code>##          x          y 
+##  0.9337659 -1.7568430
+</code></pre>
+
+<pre><code class="r">distances(p, m)
+</code></pre>
+
+<pre><code>## [1] 0.000000 1.838985 1.805000 2.289155 3.048217
 </code></pre>
 
 <pre><code class="r">## Bug!
-dd &lt;- data.frame(x, y)
-q &lt;- dd[1, ]
+(dd &lt;- data.frame(x, y))
+</code></pre>
 
-distances(q, dd)
+<pre><code>##            x          y
+## 1  0.9337659 -1.7568430
+## 2 -0.2461883 -0.3463200
+## 3 -0.3517330 -0.4897523
+## 4 -1.0087053 -0.5456311
+## 5  0.3394810  1.2328814
+</code></pre>
+
+<pre><code class="r">(q &lt;- dd[1, ])
+</code></pre>
+
+<pre><code>##           x         y
+## 1 0.9337659 -1.756843
+</code></pre>
+
+<pre><code class="r">distances(q, dd)
 </code></pre>
 
 <pre><code>##   x
@@ -510,6 +553,8 @@ distances(q, dd)
 <h2>Iterate on 0 length</h2>
 
 <h3>Problem</h3>
+
+<p>Calculate the square root of the absolute value of a set of numbers.</p>
 
 <pre><code class="r">sqrtabs &lt;- function(x) {
     v &lt;- abs(x)

@@ -1,3 +1,7 @@
+These exercises were written by Martin Morgan and Laurent Gatto to be
+used during
+[Bioconductor Developer Day workshop](http://bioconductor.org/help/course-materials/2013/BioC2013/developer-day-debug/)
+activities.
 
 # Introduction
 
@@ -73,6 +77,8 @@ test_isIn() ## the bug is fixed and monitored
 
 ### Problem
 
+What are the exact matches of `x` in `y`?
+
 ```{r}
 isExactIn <- function(x, y)
     y[grep(x, y)]
@@ -108,6 +114,9 @@ isExactIn(c("a", "z"), c("abc", letters))
 ## If conditions with length > 1
 
 ### Problem
+
+If `x` is greater than `y`, we want the difference of their
+squares. Otherwise, we want the sum.
 
 ```{r}
 ifcond <- function(x, y) {
@@ -153,6 +162,9 @@ ifcond(3:1, c(2, 2, 2))
 
 ### Problem
 
+Calculate the euclidean distance between a single point and a set of
+other points.
+
 ```{r}
 ## Example
 distances <- function(point, pointVec) {
@@ -167,14 +179,14 @@ distances <- function(point, pointVec) {
 x <- rnorm(5)
 y <- rnorm(5)
 
-m <- cbind(x, y)
-p <- m[1, ]
+(m <- cbind(x, y))
+(p <- m[1, ])
 
 distances(p, m)
 
 ## Bug!
-dd <- data.frame(x, y)
-q <- dd[1, ]
+(dd <- data.frame(x, y))
+(q <- dd[1, ])
 
 distances(q, dd)
 ```
@@ -214,6 +226,8 @@ distances(q, dd)
 ## Iterate on 0 length
 
 ### Problem
+
+Calculate the square root of the absolute value of a set of numbers.
 
 ```{r}
 sqrtabs <- function(x) {
