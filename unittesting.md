@@ -12,7 +12,7 @@ this. See the
 [Unit Testing How-To](http://bioconductor.org/developers/how-to/unitTesting-guidelines/)
 guide for details on unit testing using RUnit.
 
-# Exercises
+# Example
 
 ## Subsetting
 
@@ -34,7 +34,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "L" "T" "J" "Y" "D"
+## [1] "O" "C" "H" "Y" "B"
 ```
 But
 
@@ -45,7 +45,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "L" "T" "J" "Y" "D" NA
+## [1] "O" "C" "H" "Y" "B" NA
 ```
 
 ### Solution
@@ -87,6 +87,7 @@ test_isIn() ## the bug is fixed and monitored
 ## [1] TRUE
 ```
 
+# Exercises
 
 ## Character matching
 
@@ -127,36 +128,25 @@ isExactIn(c("a", "z"), c("abc", letters))
 ## [1] "abc" "a"
 ```
 
-### Solution
+<!-- ### Solution -->
 
+<!-- ```{r} -->
+<!-- ## Unit test: -->
+<!-- library("RUnit") -->
+<!-- test_isExactIn <- function() { -->
+<!--     checkIdentical("a", isExactIn("a", letters)) -->
+<!--     checkIdentical("a", isExactIn("a", c("abc", letters))) -->
+<!--     checkIdentical(c("a", "z"), isExactIn(c("a", "z"), c("abc", letters))) -->
+<!-- } -->
 
-```r
-## Unit test:
-library("RUnit")
-test_isExactIn <- function() {
-    checkIdentical("a", isExactIn("a", letters))
-    checkIdentical("a", isExactIn("a", c("abc", letters)))
-    checkIdentical(c("a", "z"), isExactIn(c("a", "z"), c("abc", letters)))
-}
+<!-- test_isExactIn() -->
 
-test_isExactIn()
-```
+<!-- ## updated function: -->
+<!-- isExactIn <- function(x, y) -->
+<!--     x[x %in% y] -->
 
-```
-## Error in checkIdentical("a", isExactIn("a", c("abc", letters))): FALSE
-```
-
-```r
-## updated function:
-isExactIn <- function(x, y)
-    x[x %in% y]
-
-test_isExactIn()
-```
-
-```
-## [1] TRUE
-```
+<!-- test_isExactIn() -->
+<!-- ``` -->
 
 ## If conditions with length > 1
 
@@ -211,42 +201,26 @@ ifcond(3:1, c(2, 2, 2))
 ## [1]  5  0 -3
 ```
 
-### Solution
+<!-- ### Solution -->
 
+<!-- ```{r} -->
+<!-- ## Unit test: -->
+<!-- library("RUnit") -->
+<!-- test_ifcond <- function() { -->
+<!--     checkIdentical(5, ifcond(3, 2)) -->
+<!--     checkIdentical(8, ifcond(2, 2)) -->
+<!--     checkIdentical(5, ifcond(1, 2)) -->
+<!--     checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2))) -->
+<!-- } -->
 
-```r
-## Unit test:
-library("RUnit")
-test_ifcond <- function() {
-    checkIdentical(5, ifcond(3, 2))
-    checkIdentical(8, ifcond(2, 2))
-    checkIdentical(5, ifcond(1, 2))
-    checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2)))
-}
+<!-- test_ifcond() -->
 
-test_ifcond()
-```
+<!-- ## updated function: -->
+<!-- ifcond <- function(x, y) -->
+<!--     ifelse(x > y, x*x - y*y, x*x + y*y) -->
 
-```
-## Warning in if (x > y) {: the condition has length > 1 and only the first
-## element will be used
-```
-
-```
-## Error in checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2))): FALSE
-```
-
-```r
-## updated function:
-ifcond <- function(x, y)
-    ifelse(x > y, x*x - y*y, x*x + y*y)
-
-test_ifcond()
-```
-
-```
-## [1] TRUE
-```
+<!-- test_ifcond() -->
+<!-- ``` -->
 
 ## Know your inputs
 
@@ -274,7 +248,7 @@ distances(p, m)
 ```
 
 ```
-## [1] 0.0000000 1.1382367 2.8764931 1.7418514 0.6607965
+## [1] 0.000000 1.993841 2.286223 1.420076 0.854431
 ```
 
 ```r
@@ -289,48 +263,38 @@ distances(q, dd)
 ##   x
 ## 1 0
 ```
-### Solution
 
+<!-- ### Solution -->
 
-```r
-## Unit test:
-library("RUnit")
-test_distances <- function() {
-    x <- y <- c(0, 1, 2)
-    m <- cbind(x, y)
-    p <- m[1, ]
-    dd <- data.frame(x, y)
-    q <- dd[1, ]
-    expct <- c(0, sqrt(c(2, 8)))
-    checkIdentical(expct, distances(p, m))
-    checkIdentical(expct, distances(q, dd))
-}
+<!-- ```{r} -->
+<!-- ## Unit test: -->
+<!-- library("RUnit") -->
+<!-- test_distances <- function() { -->
+<!--     x <- y <- c(0, 1, 2) -->
+<!--     m <- cbind(x, y) -->
+<!--     p <- m[1, ] -->
+<!--     dd <- data.frame(x, y) -->
+<!--     q <- dd[1, ] -->
+<!--     expct <- c(0, sqrt(c(2, 8))) -->
+<!--     checkIdentical(expct, distances(p, m)) -->
+<!--     checkIdentical(expct, distances(q, dd)) -->
+<!-- } -->
 
-test_distances()
-```
+<!-- test_distances() -->
 
-```
-## Error in checkIdentical(expct, distances(q, dd)): FALSE
-```
+<!-- ## updated function -->
+<!-- distances <- function(point, pointVec) { -->
+<!--     point <- as.numeric(point) -->
+<!--     x <- point[1] -->
+<!--     y <- point[2] -->
+<!--     xVec <- pointVec[,1] -->
+<!--     yVec <- pointVec[,2] -->
+<!--     dist <- sqrt((xVec - x)^2 + (yVec - y)^2) -->
+<!--     return(dist) -->
+<!-- } -->
 
-```r
-## updated function
-distances <- function(point, pointVec) {
-    point <- as.numeric(point)
-    x <- point[1]
-    y <- point[2]
-    xVec <- pointVec[,1]
-    yVec <- pointVec[,2]
-    dist <- sqrt((xVec - x)^2 + (yVec - y)^2)
-    return(dist)
-}
-
-test_distances()
-```
-
-```
-## [1] TRUE
-```
+<!-- test_distances() -->
+<!-- ``` -->
 
 ## Iterate on 0 length
 
@@ -364,44 +328,27 @@ sqrtabs(numeric())
 ## numeric(0)
 ```
 
-### Solution
+<!-- ### Solution -->
 
+<!-- ```{r} -->
+<!-- ## Unit test: -->
+<!-- library(RUnit) -->
+<!-- test_sqrtabs <- function() { -->
+<!--     checkIdentical(c(2, 0, 2), sqrtabs(c(-4, 0, 4))) -->
+<!--     checkIdentical(numeric(), sqrtabs(numeric())) -->
+<!-- } -->
+<!-- test_sqrtabs() -->
 
-```r
-## Unit test:
-library(RUnit)
-test_sqrtabs <- function() {
-    checkIdentical(c(2, 0, 2), sqrtabs(c(-4, 0, 4)))
-    checkIdentical(numeric(), sqrtabs(numeric()))
-}
-test_sqrtabs()
-```
+<!-- ## updated function: -->
+<!-- sqrtabs <- function(x) { -->
+<!--   v <- abs(x) -->
+<!--   sapply(seq_along(v), function(i) sqrt(v[i])) -->
+<!-- } -->
+<!-- test_sqrtabs()                          # nope! -->
 
-```
-## Error in checkIdentical(numeric(), sqrtabs(numeric())): FALSE
-```
-
-```r
-## updated function:
-sqrtabs <- function(x) {
-  v <- abs(x)
-  sapply(seq_along(v), function(i) sqrt(v[i]))
-}
-test_sqrtabs()                          # nope!
-```
-
-```
-## Error in checkIdentical(numeric(), sqrtabs(numeric())): FALSE
-```
-
-```r
-sqrtabs <- function(x) {
-  v <- abs(x)
-  vapply(seq_along(v), function(i) sqrt(v[i]), 0)
-}
-test_sqrtabs()                          # yes!
-```
-
-```
-## [1] TRUE
-```
+<!-- sqrtabs <- function(x) { -->
+<!--   v <- abs(x) -->
+<!--   vapply(seq_along(v), function(i) sqrt(v[i]), 0) -->
+<!-- } -->
+<!-- test_sqrtabs()                          # yes! -->
+<!-- ``` -->
