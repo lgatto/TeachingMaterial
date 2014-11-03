@@ -44,7 +44,7 @@ options(width = 60)
   \end{block}
   \begin{block}{On Windows}
     \R is very much Unix centric. To build from source on Windows, you will need \texttt{Rtools}\footnote{%%
-      \url{http://www.murdoch-sutherland.com/Rtools/}}. See the \textit{The Windows toolset} in R-Admin 
+      \url{http://cran.r-project.org/bin/windows/Rtools/}}. See the \textit{The Windows toolset} in R-Admin 
     for more details. 
     %% It is also possible to build Windows binary packages from Linux\footnote{%%
     %% \url{http://cran.r-project.org/doc/contrib/cross-build.pdf}}.

@@ -1,3 +1,4 @@
+
   
 \section{Writing R documentation}
 
@@ -256,6 +257,11 @@ load("all.RData", .GlobalEnv)
     for more extensive package documentation and use-cases. \\
     \bigskip
     Reference: \url{http://www.stat.uni-muenchen.de/~leisch/Sweave/}
+  \end{block}
+  \begin{block}{}
+    The \texttt{knitr}\footnote{\url{http://yihui.name/knitr/}} package
+    is an alternative to the \texttt{Sweave} package that provides
+    syntax highlighting, caching, ... and markdown out of the box.
   \end{block}
 \end{frame}
 
