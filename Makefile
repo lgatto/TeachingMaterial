@@ -3,7 +3,7 @@ vectorisation.pdf: debugging.Rnw
 	pdflatex debugging.tex
 
 unittesting.md: unittesting.Rmd
-		R --vanilla -e "library(knitr); knit2html('unittesting.Rmd')"
+		R --vanilla -e "library(knitr); knit('unittesting.Rmd')"
 
 .PHONY: clean
 

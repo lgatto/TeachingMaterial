@@ -32,7 +32,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "Z" "X" "T" "B" "G"
+## [1] "A" "V" "P" "B" "Q"
 ```
 But
 
@@ -43,5 +43,42 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "Z" "X" "T" "B" "G" NA
+## [1] "A" "V" "P" "B" "Q" NA
+```
+
+## Solution
+
+
+```r
+## Unit test:
+library("RUnit")
+test_isIn <- function() {
+    x <- c("A", "B", "Z")
+    checkIdentical(x, isIn(x, LETTERS))
+    checkIdentical(x, isIn(c(x, "a"), LETTERS))
+
+}
+
+test_isIn()
+```
+
+```
+## Error in checkIdentical(x, isIn(c(x, "a"), LETTERS)): FALSE
+```
+
+Unpdate the buggy function until the unit test succeeds
+
+
+```r
+## updated function
+isIn <- function(x, y) {
+    sel <- x %in% y
+    x[sel]
+}
+
+test_isIn()
+```
+
+```
+## [1] TRUE
 ```
