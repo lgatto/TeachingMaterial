@@ -3,7 +3,16 @@ vectorisation.pdf: debugging.Rnw
 	pdflatex debugging.tex
 
 unittesting.md: unittesting.Rmd
-		R --vanilla -e "library(knitr); knit2html('unittesting.Rmd')"
+		R --vanilla -e "library(knitr); knit('unittesting.Rmd')"
+
+unittesting.html: unittesting.md
+		R --vanilla -e " markdown::markdownToHTML('unittesting.md')"
+
+testing.md: testing.Rmd
+		R --vanilla -e "library(knitr); knit('testing.Rmd')"
+
+testing.html: testing.md
+		R --vanilla -e " markdown::markdownToHTML('testing.md')"
 
 .PHONY: clean
 
