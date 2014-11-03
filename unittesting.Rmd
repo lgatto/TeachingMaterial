@@ -40,6 +40,8 @@ isIn(c(x, "a"), LETTERS)
 
 ### Solution
 
+Write a unit test that demonstrates the issue
+
 ```{r}
 ## Unit test:
 library("RUnit")
@@ -53,7 +55,7 @@ test_isIn <- function() {
 test_isIn()
 ```
 
-Unpdate the buggy function until the unit test succeeds
+Update the buggy function until the unit test succeeds
 
 ```{r}
 ## updated function
@@ -62,7 +64,7 @@ isIn <- function(x, y) {
     x[sel]
 }
 
-test_isIn()
+test_isIn() ## the bug is fixed and monitored
 ```
 
 
@@ -82,6 +84,26 @@ isExactIn("a", c("abc", letters))
 isExactIn(c("a", "z"), c("abc", letters))
 ```
 
+### Solution
+
+```{r}
+## Unit test:
+library("RUnit")
+test_isExactIn <- function() {
+    checkIdentical("a", isExactIn("a", letters))
+    checkIdentical("a", isExactIn("a", c("abc", letters)))
+    checkIdentical(c("a", "z"), isExactIn(c("a", "z"), c("abc", letters)))
+}
+
+test_isExactIn()
+
+## updated function:
+isExactIn <- function(x, y)
+    x[x %in% y]
+
+test_isExactIn()
+```
+
 ## If conditions with length > 1
 
 ### Problem
@@ -97,12 +119,33 @@ ifcond <- function(x, y) {
 }
 
 ## Expected
-do(3, 2)
-do(2, 2)
-do(1, 2)
+ifcond(3, 2)
+ifcond(2, 2)
+ifcond(1, 2)
 
 ## Bug!
-do(3:1, c(2, 2, 2))
+ifcond(3:1, c(2, 2, 2))
+```
+
+### Solution
+
+```{r}
+## Unit test:
+library("RUnit")
+test_ifcond <- function() {
+    checkIdentical(5, ifcond(3, 2))
+    checkIdentical(8, ifcond(2, 2))
+    checkIdentical(5, ifcond(1, 2))
+    checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2)))
+}
+
+test_ifcond()
+
+## updated function:
+ifcond <- function(x, y)
+    ifelse(x > y, x*x - y*y, x*x + y*y)
+
+test_ifcond()
 ```
 
 ## Know your inputs
@@ -134,6 +177,37 @@ q <- dd[1, ]
 
 distances(q, dd)
 ```
+### Solution
+
+```{r}
+## Unit test:
+library("RUnit")
+test_distances <- function() {
+    x <- y <- c(0, 1, 2)
+    m <- cbind(x, y)
+    p <- m[1, ]
+    dd <- data.frame(x, y)
+    q <- dd[1, ]
+    expct <- c(0, sqrt(c(2, 8)))
+    checkIdentical(expct, distances(p, m))
+    checkIdentical(expct, distances(q, dd))
+}
+
+test_distances()
+
+## updated function
+distances <- function(point, pointVec) {
+    point <- as.numeric(point)
+    x <- point[1]
+    y <- point[2]
+    xVec <- pointVec[,1]
+    yVec <- pointVec[,2]
+    dist <- sqrt((xVec - x)^2 + (yVec - y)^2)
+    return(dist)
+}
+
+test_distances()
+```
 
 ## Iterate on 0 length
 
@@ -150,4 +224,29 @@ all(sqrtabs(c(-4, 0, 4)) == c(2, 0, 2))
 
 ## Bug!
 sqrtabs(numeric())
+```
+
+### Solution
+
+```{r}
+## Unit test:
+library(RUnit)
+test_sqrtabs <- function() {
+    checkIdentical(c(2, 0, 2), sqrtabs(c(-4, 0, 4)))
+    checkIdentical(numeric(), sqrtabs(numeric()))
+}
+test_sqrtabs()
+
+## updated function:
+sqrtabs <- function(x) {
+  v <- abs(x)
+  sapply(seq_along(v), function(i) sqrt(v[i]))
+}
+test_sqrtabs()                          # nope!
+
+sqrtabs <- function(x) {
+  v <- abs(x)
+  vapply(seq_along(v), function(i) sqrt(v[i]), 0)
+}
+test_sqrtabs()                          # yes!
 ```
