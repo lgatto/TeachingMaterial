@@ -1,23 +1,17 @@
+vectorisation.pdf: debugging.Rnw
+	R --vanilla -e "library(knitr); knit('debugging.Rnw')"
+	pdflatex debugging.tex
 
-debugging.tex: debugging.Rnw
-	R CMD Sweave debugging.Rnw
-	pdflatex debugging.tex
-	pdflatex debugging.tex
+unittesting.md: unittesting.Rmd
+		R --vanilla -e "library(knitr); knit2html('unittesting.Rmd')"
+
+.PHONY: clean
 
 clean:
-	rm -f *.aux
-	rm -f *.map
-	rm -f *.log
-	rm -f *.nav
-	rm -f *.out
-	rm -f *.snm
-	rm -f *.toc
-	rm -f *.tex.backup
-	rm -f *.dvi
-	rm -f *.vrb
-	rm -f *.bbl
-	rm -f *.blg
-	rm -f *.tex
 	rm -f *~
-	rm -f Rplots.pdf
-	rm -f fig-*pdf
+	rm -f debugging.aux debugging.log debugging.nav debugging.org debugging.out debugging.snm debugging.tex debugging.toc debugging.vrb
+
+allclean:
+	make clean
+	rm -rf cache figure
+

@@ -1,24 +1,8 @@
-\SweaveOpts{engine=R,eps=FALSE,keep.source=T}
-\SweaveOpts{prefix.string=.sweave/sweave}
-
 \documentclass{beamer}
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% FOR HANDOUTS UNCOMMENT:
-%\documentclass[handout]{beamer}
-%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Setup appearance:
-% \usetheme{Darmstadt}
-%\usetheme{Copenhagen}
 \usetheme{Boadilla}
 \usefonttheme[onlylarge]{structurebold}
 \usepackage{underscore}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% FOR HANDOUTS UNCOMMENT:
-%\usepackage{handoutWithNotes}
-%\pgfpagesuselayout{3 on 1 with notes}[a4paper,border shrink=5mm]
-%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
 \setbeamertemplate{navigation symbols}{}
@@ -27,7 +11,6 @@
 % \usepackage[latin1]{inputenc}
 % \usepackage{times}
 % \usepackage[T1]{fontenc}
-\usepackage{Sweave}
 \usepackage{ulem}
 \usepackage{colortbl}
 \usepackage{verbatim}
@@ -84,68 +67,40 @@
 \institute[CSBC]
 {
 %   \inst{1}%
-  Cambridge System Biology Centre \\
   University of Cambridge \\
-%%  \pgfuseimage{uc-logo}
 }
 
-%% \pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
-%% \pgfdeclareimage[height=.7cm]{ebi-logo}{./Figures/EMBLEBIlogo}
-%% \logo{\pgfuseimage{uc-logo}}
-
-
-%% \AtBeginSection[] %% Do nothing for \section*
-%% {
-%% \begin{frame}<beamer>
-%% \frametitle{Plan}
-%% \tableofcontents[currentsection]
-%% \end{frame}
-%% }
-
-
-% The main document
-
 \begin{document}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Title frame                                                 %% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{frame}
   \titlepage
 \end{frame}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Table of contents                                           %% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%% \begin{frame}{Plan}
-%%   \footnotesize
-%%   \tableofcontents
-%% \end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% section                                                     %% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Overview}
 
 \begin{frame}{Overview}
   \begin{block}{Using \R's tools}
     \begin{itemize}
-    \item Call \Rfunction{traceback()} after error to print the sequence of calls 
-      that lead to the error.
-    \item Use \Rfunction{debug(faultyFunction)} to register \Rfunction{faultyFunction} for debugging, 
-      so that \Rfunction{browser()} will be called on entry. In \Rfunction{browser} mode, the execution 
-      of an expression is interrupted and it is possible to inspect the environment (with \Rfunction{ls()}).
-      Use \Rfunction{undebug(faultyFunction)} to revert to normal usage. \\
-      See exercise on next slide.
-    \item Use \Rfunction{trace()} to insert code into functions, 
-      start the \Rfunction{browser} or \Rfunction{recover()} from error. %% Let's illustrate \Rfunction{recover()}.
-    \item Set \Rfunction{options(error=recover)} to get the call stack and browse in any of the function calls.
+    \item Call \Rfunction{traceback()} after error to print the
+      sequence of calls that lead to the error.
+    \item Use \Rfunction{debug(faultyFunction)} to register
+      \Rfunction{faultyFunction} for debugging, so that
+      \Rfunction{browser()} will be called on entry. In
+      \Rfunction{browser} mode, the execution of an expression is
+      interrupted and it is possible to inspect the environment (with
+      \Rfunction{ls()}).
+      Use \Rfunction{undebug(faultyFunction)} to revert to normal usage. 
+    \item Use \Rfunction{trace()} to insert code into functions, start
+      the \Rfunction{browser} or \Rfunction{recover()} from
+      error. %% Let's illustrate \Rfunction{recover()}.
+    \item Set \Rfunction{options(error=recover)} to get the call stack
+      and browse in any of the function calls.
+    \item RStudio has build-in debugging facilities.
     \end{itemize}
-    Good reference: \textit{An Introduction to the Interactive Debugging Tools in R}\footnote{%%
+    Good reference: \textit{An Introduction to the Interactive
+      Debugging Tools in R}\footnote{%%
       \url{http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf}}
   \end{block}
 \end{frame}
@@ -155,7 +110,8 @@
 \begin{frame}[fragile]{Debugging example (1)}
   Let's walk through an example\footnote{credit Martin Morgan and Robert Gentleman}. 
   The buggy setp is:
-\begin{verbatim}
+
+<<buggy>>=
 e <- function(i) {
   x <- 1:4
   if (i < 5) x[1:2]
@@ -163,13 +119,13 @@ e <- function(i) {
 }
 f <- function() sapply(1:10, e)
 g <- function() f()
-\end{verbatim}
+@
 \end{frame}
 
 \begin{frame}[fragile]{Debugging example (2)}
 \begin{verbatim}
 > g()
-Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+Error in x[-1:2] (from #3) : only 0 s may be mixed with negative subscripts
 > traceback()
 5: FUN(1:10[[5L]], ...)
 4: lapply(X = X, FUN = FUN, ...)
@@ -185,7 +141,7 @@ Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
 
 \begin{verbatim}  
 > g()
-Error in x[-1:2] (from #3) : only 0's may be mixed with negative subscripts
+Error in x[-1:2] (from #3) : only 0 s may be mixed with negative subscripts
 
 Enter a frame number, or 0 to exit   
 
@@ -239,7 +195,8 @@ Browse[2]> Q
 
 
 \begin{frame}[fragile]{Using \textbf{trace}}
-\begin{verbatim}
+
+<<trace1, eval=FALSE>>=
 ## Report whenever e invoked
 trace(e)
 ## Evaluate arbitrary code whenever e invoked
@@ -248,13 +205,15 @@ trace(e, quote(cat("i am", i, "\n")))
 trace(e, browser)
 ## stop tracing
 untrace(e)
-\end{verbatim}
+@
 
-\begin{verbatim}
+
+<<trace2, eval=FALSE>>=
 require("stats4")
 ## Debug S4 methods with signature argument
-trace("plot", browser, exit = browser, signature = c("track", "missing"))
-\end{verbatim}
+trace("plot", browser, exit = browser,
+      signature = c("track", "missing"))
+@
 
 \end{frame}
 
@@ -264,16 +223,19 @@ trace("plot", browser, exit = browser, signature = c("track", "missing"))
   case of /unusual conditions/, including warnings and errors. In the example below, 
   we start a browser in case of (obscure) warnings.
   \bigskip
-<<handler, echo=TRUE, eval=TRUE>>=
-f <- function(x){
-  for(i in 1:10){
-    ## make an example 2x2 contingency table
-    d = matrix(sample(4:10, 4), nrow=2, ncol=2)
-    ## will produce warning if there is a 5 or less 
-    ## in the contingency table
-    chisq.test(d)
-  }
+<<handler0, echo=TRUE, eval=TRUE>>=
+
+f <- function(x = 10) {
+    lapply(seq_len(x), function(i) {
+        ## make an example 2x2 contingency table
+        d = matrix(sample(4:10, 4), nrow=2, ncol=2)
+        ## will produce warning if there is a 5 or less 
+        ## in the contingency table
+        chisq.test(d)
+    })
 }
+           
+
 @ 
 \end{frame}
 
@@ -291,18 +253,22 @@ withCallingHandlers(f(), warning=function(e) recover())
 \begin{frame}[fragile]{}
 %%   \begin{block}{\exercise}
   \begin{block}{Exercise}
-    The \Rfunction{readFasta2} function is similar to \Rfunction{readFasta}, 
-    but reads multiple sequences in a fasta file and returns a list of 
-    \Robject{DnaSeq} instances... at least, that's what it is supposed to do. 
+    The \Rfunction{readFasta2} function is similar to
+    \Rfunction{readFasta}, but reads multiple sequences in a fasta
+    file and returns a list of \Robject{DnaSeq} instances... at least,
+    that's what it is supposed to do.
 
     \begin{enumerate}
-    \item source the \texttt{readFasta2.R} file, and try the function with the 
-      \texttt{multiple.fasta} file.
+    \item Get \texttt{readFasta2.R} file with
+      \Rfunction{sequences:::debugme()}, and try the function with the
+      \texttt{moreDnaSeqs.fasta} file
+      \texttt{dir(system.file("extdata", package = "sequences"),
+        full.names=TRUE)}.
     \item Prepare for debugging: \Rfunction{debug(readFasta2)}.
     \item Debug!
     \item \Rfunction{fix} the function.
     \end{enumerate}
-    \bigskip
+
     Hint: when debugging, use \texttt{n} (or an empty line) to advance to the next step,
     \texttt{c} to continue to the end of the current context (to the end of a loop for instance),     
     \texttt{where} to print the stack trace of all active function calls 
@@ -314,3 +280,4 @@ withCallingHandlers(f(), warning=function(e) recover())
 
 
 \end{document}
+p
