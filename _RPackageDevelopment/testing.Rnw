@@ -50,7 +50,7 @@
 
 \begin{frame}[fragile]{Using \Rpackage{testthat}}
   \begin{example}
-<<testthat1,echo=TRUE, tidy = FALSE>>=
+<<testthat1,echo=TRUE,tidy=FALSE>>=
 library(sequences)
 library(testthat)
 a <- new("DnaSeq",sequence="ACGTaa")
@@ -64,13 +64,3 @@ expect_true(seq(a)=="ACGTaa")
   \end{example}
 \end{frame}
 
-\begin{frame}
-  \begin{block}{Demonstration}
-    \begin{itemize}
-      \item Let's inspect the \texttt{sequences/tests/sequences-test.R} and \texttt{sequences-test.Rout.save} files. 
-        When actually \Rfunction{check}ing the package, the resulting \texttt{sequences-test.Rout} file is in 
-        \texttt{sequences.Rcheck/tests/}.
-      \item Let's play with \Rpackage{testthat} interactively.
-    \end{itemize}
-  \end{block}
-\end{frame}
