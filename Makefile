@@ -25,6 +25,7 @@ endif
 
 
 rpd.pdf: rpd.Rnw dist.tex rd.tex struct.tex testing.tex
+	rm -rf myRpackage
 	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('rpd.Rnw');"
 	pdflatex rpd.tex
 

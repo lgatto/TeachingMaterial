@@ -10,41 +10,45 @@ options(width = 60)
 @ 
 
 
-\section{Package structure}
+\section{Package commands and structure}
 
-\begin{frame}[fragile]
-  \begin{block}{A minimal package}
-    Function package.skeleton() automates some of the setup for a new source package. 
-    Calling it with minimal arguments produces the following hierarchy:
+\begin{frame}[fragile]{Package commands}
+  \begin{block}{Building packages}
+    \texttt{R CMD build myRpackage} -- the \R package builder builds R package (and vignettes if available).
   \end{block}
-<<minpkg,echo=TRUE>>=
-foo <- function(x) x
-package.skeleton(name="myRpackage",list="foo")
-@ 
+  \begin{block}{Checking packages}
+    \texttt{R CMD check myRpackage\_1.0.tar.gz} or \texttt{R CMD check myRpackage} -- 
+    the \R package checker tests whether the package or source work correctly.
+    \begin{itemize}
+    \scriptsize
+    \item The package is installed (checks missing cross-references and duplicate aliases in help files).
+    \item File names validity, permissions.
+    \item Package DESCRIPTION file is checked for completeness, and some of its entries for correctness.
+    \item \texttt{R} and \texttt{.Rd} files are checked for syntax errors.
+    \item A check is made for missing documentation entries.
+    \item Codoc checking
+    \item Examples provided by the package's documentation are run.
+    \item If available, package tests are run and vignettes are executed and compiled.  
+    \end{itemize}
+  \end{block}
 \end{frame}
 
-\begin{frame}[fragile]
-<<minpkg2, echo=TRUE, eval = FALSE>>=
-foo <- function(x) x
-package.skeleton(name="myRpackage",list="foo")
-@ 
-\begin{block}{}
-  produces
-\end{block}
-\begin{scriptsize}
-\begin{verbatim}
-myRpackage/
-|-- DESCRIPTION
-|-- man
-|   |-- foo.Rd
-|   `-- myRpackage-package.Rd
-|-- R
-|   `-- foo.R
-`-- Read-and-delete-me
-
-2 directories, 5 files
-\end{verbatim}
-\end{scriptsize}  
+\begin{frame}[fragile]{Package commands}
+  \begin{block}{Installing packages}
+    \texttt{R CMD INSTALL myRpackage\_1.0.tar.gz} or \Rfunction{install.packages("myRpackage\_1.0.tar.gz")}
+    -- installs the package in the default library. 
+    Other libraries can be specified with the \texttt{-l} option or \texttt{lib} argument.
+  \end{block}
+  \begin{block}{Loading}
+    Use \Rfunction{library()} or \Rfunction{require()}.
+  \end{block}
+  \begin{block}{On Windows}
+    \R is very much Unix centric. To build from source on Windows, you will need \texttt{Rtools}\footnote{%%
+      \url{http://www.murdoch-sutherland.com/Rtools/}}. See the \textit{The Windows toolset} in R-Admin 
+    for more details. 
+    %% It is also possible to build Windows binary packages from Linux\footnote{%%
+    %% \url{http://cran.r-project.org/doc/contrib/cross-build.pdf}}.
+  \end{block}
 \end{frame}
 
 \begin{frame}[fragile]{DESCRIPTION}
@@ -59,6 +63,10 @@ Author: Who wrote it ## *
 Maintainer: Who to complain to <yourfault@somewhere.net> ## *
 Description: More about what it does (maybe more than one line) ## *
 License: What license is it under? ## *
+Depends: methods, Biostrings ## for e.g.
+Imports: evd ## for e.g.
+Suggests: BSgenome.Hsapiens.UCSC.hg19 ## for e.g.
+Collate: 'DataClasses.R' 'read.R' ## for e.g.
 \end{verbatim}
   \end{small}
 \end{frame}
@@ -229,30 +237,3 @@ functions-ClassA.R  ...
   \end{block}
 \end{frame}
 
-\begin{frame}
-  \begin{block}{\exercise Let's create a package}
-    So far, you have defined a set of classes, methods and functions \ldots
-    Create the required directory structure and files using 
-    \Rfunction{package.skeleton(name="sequences")} or manually. 
-    For the former, you can use different arguments:
-    \begin{description}
-    \item[list] to specify the R objects by their names.
-    \item[code\_files] to specify R code files (use this if you have S4 classes).
-    \item[environment] to specify an environment where objects are looked for.
-    \end{description}
-    See \Rfunction{?package.skeleton} for more details.\\
-    \bigskip
-  \end{block}
-\end{frame}
-
-\begin{frame}[fragile]
-  \begin{block}{\exercise Let's build/check it}
-    Do you expect the package to \texttt{build}/\texttt{check}/\texttt{INSTALL}: 
-    \begin{verbatim}
-R CMD build sequences
-R CMD check sequences_1.0.tar.gz
-R CMD INSTALL sequences_1.0.tar.gz
-    \end{verbatim}
-    Why? Have a look at \texttt{R CMD build|check -{}-help}.
-  \end{block}
-\end{frame}

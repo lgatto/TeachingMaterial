@@ -7,10 +7,73 @@
   \begin{block}{R documentation format}
     R objects are documented in files written in \textit{R documentation} (\texttt{Rd}) format, 
     a simple markup language much of which closely resembles \LaTeX, which can be processed 
-    into a variety of formats, including \LaTeX, HTML, pdf and plain text.
+    into a variety of formats, including \LaTeX, HTML, pdf and plain text.    
+  \end{block}
+  \begin{block}{\texttt{man/} directory}
+  	The documentation files are in the separate \texttt{man/} package directory.
+  \end{block}
+  \begin{block}{Using roxygen2}
+  	Package \Rfunction{roxyxgen2} makes it easier to write documentation using special
+  	\textbf{in-source} markup (similarly to Doxygen).  	  
   \end{block}
 \end{frame}
 
+\begin{frame}[fragile]{Roxygen2}
+  \begin{example}
+    \tiny
+\begin{verbatim}
+#' Reads sequences data in fasta and create \code{DnaSeq}
+#' and \code{RnaSeq} instances. 
+#'
+#' This funtion reads DNA and RNA fasta files and generates
+#' valid \code{"DnaSeq"} and \code{"RnaSeq"} instances.
+#' 
+#' @title Read fasta files.
+#' @param infile  the name of the fasta file which the data are to be read from.
+#' @return an instance of \code{DnaSeq} or \code{RnaSeq}.
+#' @seealso \code{\linkS4class{GenericSeq}}, \code{\linkS4class{DnaSeq}} and \code{\linkS4class{RnaSeq}}.
+#' @examples
+#' f <- dir(system.file("extdata",package="sequences"),pattern="fasta",full.names=TRUE)
+#' f
+#' aa <- readFasta(f)
+#' aa
+#' @author Laurent Gatto \email{lg390@@cam.ac.uk}
+#' @export
+readFasta <- function(infile){
+  lines <- readLines(infile)
+  header <- grep("^>", lines)
+  if (length(header)>1) {
+    warning("Reading first sequence only.")
+    lines <- lines[header[1]:(header[2]-1)]
+    header <- header[1]
+  }
+  ##### (code cut for space reasons) #####
+  if (validObject(newseq))
+    return(newseq)
+}
+\end{verbatim}
+  \end{example}
+\end{frame}
+
+\begin{frame}[fragile]{Using roxygen2 to write documentation}
+  \begin{block}{\exercise Document readFasta}
+  	Use the code from the previous slide to document your own readFasta() function inside your package. 
+  	When you are finished do the following:
+  	\begin{enumerate}
+  		\item To generate the .Rd file for your package run:
+<<roxygen2,echo=TRUE,eval=FALSE>>=
+library(roxygen2)
+roxygenise("myRpackage/")
+@ 
+		\item Rebuild/reload your package
+		\item Verify that \Rfunction{?readFasta} gives the expected help page.
+		\item Look at \Rfunction{man/readFasta.Rd} and try to understand the structure.
+  	\end{enumerate}
+  \end{block}
+  \begin{block}{roxygen2 syntax}
+  For more information on roxygen2: \url{http://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html}.
+  \end{block}
+\end{frame}
 
 \begin{frame}{Rd format}
   \begin{block}{An \texttt{Rd} file constists of}
@@ -164,106 +227,19 @@ load("all.RData", .GlobalEnv)
   \begin{example}    
      \texttt{promptClass("MyClass")} and \texttt{promptMethods("myMethod")}
   \end{example}
-  \begin{block}{Demonstration}
-    Let's have a look at our class documentations; 
-    we have used aliases for the methods to refer to on documentation file.
-  \end{block} 
 \end{frame}
 
-\subsection{In-source documentation}
-
-\begin{frame}[fragile]{Roxygen2}
-  \begin{block}{What is it?}
-    Roxygen is a Doxygen-like documentation system for R; allowing \textbf{in-source} 
-    specification of Rd files, collation and namespace directives.\\
-    \bigskip
-    See \url{https://github.com/klutometis/roxygen}. \\
-    %% (\url{http://roxygen.org/} and \url{http://roxygen.org/useR/}).\\
-    \bigskip
-    Install with \Rfunction{install.packages("roxygen2")}.\\
-    \bigskip
-    Use \texttt{R CMD roxygen myPackage} to generate manuals and NAMESPACE. %%call graphs.
+\begin{frame}{Document GenericSeq}
+  \begin{block}{\exercise Document GenericSeq using \Rfunction{promptClass()}}
+  	Load \texttt{GenericSeq} \textbf{and} all of its methods into your
+  	R session and then run \Rfunction{promptClass("GenericSeq")}. Edit the 
+  	resulting .Rd file and place it into \texttt{man/}. 
   \end{block}
-\end{frame}
-
-\begin{frame}[fragile]{Roxygen}
-  \begin{example}
-    \tiny
-\begin{verbatim}
-##' Reads sequences data in fasta and create \code{DnaSeq}
-##' and \code{RnaSeq} instances. 
-##'
-##' This funtion reads DNA and RNA fasta files and generates
-##' valid \code{"DnaSeq"} and \code{"RnaSeq"} instances.
-##' 
-##' @title Read fasta files.
-##' @param infile  the name of the fasta file which the data are to be read from.
-##' @return an instance of \code{DnaSeq} or \code{RnaSeq}.
-##' @seealso \code{\linkS4class{GenericSeq}}, \code{\linkS4class{DnaSeq}} and \code{\linkS4class{RnaSeq}}.
-##' @examples
-##' f <- dir(system.file("extdata",package="sequences"),pattern="fasta",full.names=TRUE)
-##' f
-##' aa <- readFasta(f)
-##' aa
-##' @author Laurent Gatto \email{lg390@@cam.ac.uk}
-##' @keywords IO, file
-readFasta <- function(infile){
-  lines <- readLines(infile)
-  header <- grep("^>", lines)
-  if (length(header)>1) {
-    warning("Reading first sequence only.")
-    lines <- lines[header[1]:(header[2]-1)]
-    header <- header[1]
-  }
-  .id <- sub("^> *","",lines[header],perl=TRUE)
-  .sequence <- toupper(paste(lines[(header+1):length(lines)],collapse=""))
-  .alphabet <- toupper(unique(strsplit(.sequence,"")[[1]]))
-  if (all(.alphabet %in% c("A","C","G","T"))) {
-    newseq <- new("DnaSeq",
-                  id=.id,
-                  sequence=.sequence)
-  } else if (all(.alphabet %in% c("A","C","G","U"))) {
-    newseq <- new("RnaSeq",
-                  id=.id,
-                  sequence=.sequence)
-  } else {
-    stop("Alphabet ",.alphabet," is unknown.")
-  }
-  if (validObject(newseq))
-    return(newseq)
-}
-\end{verbatim}
-  \end{example}
-\end{frame}
   
-\begin{frame}[fragile]{Roxygen2}
-  \begin{block}{Good points}
-    Makes (1) to get from code to full package straightforward and also (2) maintenance much easier.
+    \begin{block}{Compare: \Rfunction{promptClass()} vs roxygen2}
+  	Roxygen makes it easy to document individual methods, \Rfunction{promptClass()}
+  	makes it easy to document the whole class with all the methods in a single file.
   \end{block}
-  \begin{block}{Since roxygen2}
-    S4 support (classes, generics, methods) -- at least under development.
-  \end{block}
-  \begin{block}{See also}
-    \texttt{Rd2roxygen} -- Convert Rd to roxygen documentation and utilities to improve 
-    documentation \\ 
-    \small{\url{http://cran.r-project.org/web/packages/Rd2roxygen/index.html}}
-  \end{block}
-  %% \begin{alertblock}{But}
-  %%   Poor support for S4 system. In practice, does not work too well. \\
-  %%   Manuel J. A. Eugster (personal communication)
-  %%   \begin{quote}
-  %%     One problem is, that none of us two really use S4, so the support is pretty basic.
-  %%   \end{quote}
-  %% \end{alertblock}
-  %% \pause
-  %% \begin{block}{But}
-  %%   Peter Danenberg (Roxygen-devel mailing list, 5$^{th}$ March 2011)
-  %%   \begin{quote}
-  %%     I'm currently working with Michael Lawrence and Nicholas Lewin-Koh at
-  %%     Genentech to shore up S4 support; there was some talk of reference
-  %%     classes, too.
-  %%   \end{quote}
-  %% \end{block}
 \end{frame}
 
 \subsection{Vignettes}

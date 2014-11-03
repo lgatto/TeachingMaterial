@@ -105,9 +105,9 @@
   \pgfuseimage{uc-logo}
 }
 
-\date[24-25/01/2013]
+\date[6-7/11/2014]
 {
-  24 - 25 January 2013
+  6 - 7 November 2014
 }
 
 \pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
@@ -128,6 +128,25 @@
 % The main document
 
 \begin{document}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
+
+<<knitr, echo=FALSE>>=
+opts_chunk$set(tidy.opts = 
+               list(width.cutoff = 50, 
+                    tidy = FALSE),
+               fig.align = 'center',
+               stop_on_error = 1L,
+               comment = NA,
+               prompt = TRUE)
+options(width = 60)
+@ 
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Title frame                                                 %% 
@@ -151,7 +170,7 @@
 %% section                                                     %% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{A few words about R packages}
+\section{R package basics}
 
 \begin{frame}[fragile]
   \begin{block}{References}
@@ -177,12 +196,12 @@
         \begin{block}{Packages}
         One of the aspects that make \R appealing:
         \begin{description}
-        \item[CRAN] package repository features 4262 available packages.
-        \item[R-forge] 1453 hosted projects.
-        \item[Bioconductor] 610 reviewed packages in latest release (version 2.11).
+        \item[CRAN] package repository features 5986 available packages.
+        \item[R-forge] 1800 hosted projects.
+        \item[Bioconductor] 934 reviewed packages in latest release (version 3.0).
         \end{description}
         \bigskip
-        \flushright \tiny Numbers checked on 21$^{2t}$ January 2013
+        \flushright \tiny Numbers checked in October 2014
       \end{block}
     \end{column}
     \begin{column}{.42\linewidth}
@@ -209,45 +228,130 @@
   \end{block}
 \end{frame}
 
-
-\begin{frame}[fragile]{Administration}
-  \begin{block}{Building packages}
-    \texttt{R CMD build myPackage} -- the \R package builder builds R package (and vignettes if available).
+\begin{frame}[fragile]{Package creation workflow}
+  \begin{block}{Workflow}
+  	\begin{enumerate}
+  		\item Prepare your code as .R file(s)
+  		\item Use function \Rfunction{package.skeleton()} to place them in the ``package layout''
+  		\item Create the .tar.gz file using \texttt{\bf R CMD build myRpackage}
+  		\item (Optional, but recommended) Check the .tar.gz for errors using\\ \texttt{\bf R CMD check myRpackage\_1.0.tar.gz}
+  		\item Install the package using \texttt{\bf R CMD INSTALL myRpackage\_1.0.tar.gz} or 
+  			  \Rfunction{install.packages()}
+  	\end{enumerate}
   \end{block}
-  \begin{block}{Checking packages}
-    \texttt{R CMD check myPackage\_0.1.1.tar.gz} or \texttt{R CMD check myPackage} -- 
-    the \R package checker tests whether the package or source work correctly.
-    \begin{itemize}
-    \scriptsize
-    \item The package is installed (checks missing cross-references and duplicate aliases in help files).
-    \item File names validity, permissions.
-    \item Package DESCRIPTION file is checked for completeness, and some of its entries for correctness.
-    \item \texttt{R} and \texttt{.Rd} files are checked for syntax errors.
-    \item A check is made for missing documentation entries.
-    \item Codoc checking
-    \item Examples provided by the package's documentation are run.
-    \item If available, package tests are run and vignettes are executed and compiled.  
-    \end{itemize}
+  \begin{block}{Notes}
+  	- Use steps 1-5 to create the initial version of the package, and steps 3-5 to update the package.\\
+  	- Text in \textbf{bold} is executed \textbf{outside R} (i.e. from the console).
   \end{block}
 \end{frame}
 
-\begin{frame}[fragile]{Administration}
-  \begin{block}{Installing packages}
-    \texttt{R CMD INSTALL myPackage\_0.1.1.tar.gz} or \Rfunction{install.packages("myPackage\_0.1.1.tar.gz")}
-    -- installs the package in the default library. 
-    Other libraries can be specified with the \texttt{-l} option or \texttt{lib} argument.
+\begin{frame}[fragile]{Creating a package - package.skeleton()}
+  \begin{block}{A minimal package}
+  	We prepared a file read.R that containt the function \Rfunction{readFasta()}. 
+  	
+    Function package.skeleton() automates some of the setup for a new package:    
   \end{block}
-  \begin{block}{Loading}
-    Use \Rfunction{library()} or \Rfunction{require()}.
+<<minpkg,echo=TRUE>>=
+package.skeleton(name="myRpackage", code_files="read.R")
+@   
+\end{frame}
+
+\begin{frame}[fragile]
+<<minpkg2, echo=TRUE, eval = FALSE>>=
+package.skeleton(name="myRpackage", code_files="read.R")
+@ 
+\begin{block}{}
+  produces
+\end{block}
+\begin{verbatim}
+myRpackage/
+|-- DESCRIPTION
+|-- NAMESPACE
+|-- man
+|   `-- myRpackage-package.Rd
+|   `-- readFasta.Rd
+|-- R
+|   `-- read.R
+`-- Read-and-delete-me
+
+2 directories, 6 files
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Building the package}
+\begin{block}{Note}
+To build the package we will first delete the documentation 
+templates (we will revisit this later).  
+\end{block}
+\begin{verbatim}
+# delete documentation templates
+$ rm -rf myRpackage/man/* 
+$ R CMD build myRpackage
+* checking for file ‘myRpackage/DESCRIPTION’ ... OK
+* preparing ‘myRpackage’:
+* checking DESCRIPTION meta-information ... OK
+* checking for LF line-endings in source and make files
+* checking for empty or unneeded directories
+* building ‘myRpackage_1.0.tar.gz
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Installing and using the package}
+\begin{scriptsize}
+\begin{verbatim}
+$ R CMD INSTALL myRpackage_1.0.tar.gz
+* installing to library ‘/ext/home/R/x86_64-pc-linux-gnu-library/3.1’
+* installing *source* package ‘myRpackage’ ...
+** R
+** preparing package for lazy loading
+** help
+No man pages found in package  ‘myRpackage’ 
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded
+* DONE (myRpackage)
+\end{verbatim}
+\begin{block}{Use package}
+	We can verify the new package is now available (although still not fully functional!) from R:
+\end{block}
+<<minpkg3,echo=TRUE>>=
+library("myRpackage")
+
+readFasta("aDnaSeq.fasta")
+@ 
+\end{scriptsize}  
+\end{frame}
+
+\begin{frame}
+  \begin{block}{\exercise Create a package}
+  	Follow the steps from the previous slides to create the example package 
+  	containing the \Rfunction{readFasta()} function. 
   \end{block}
-  \begin{block}{On Windows}
-    \R is very much Unix centric. To build from source on Windows, you will need \texttt{Rtools}\footnote{%%
-      \url{http://www.murdoch-sutherland.com/Rtools/}}. See the \textit{The Windows toolset} in R-Admin 
-    for more details. 
-    %% It is also possible to build Windows binary packages from Linux\footnote{%%
-    %% \url{http://cran.r-project.org/doc/contrib/cross-build.pdf}}.
+  \begin{block}{\exercise Complete the package functionality}
+  	Add the \Rfunction{GenericSeq} class to the package by adding a new
+  	file \texttt{DataClasses.R} to your package. Copy this file
+  	to the package \texttt{R/} directory and then rebuild the package
+  	following steps 3-5.
   \end{block}
 \end{frame}
+
+\begin{frame}[fragile]{Some practical tips}
+  \begin{block}{Using \Rfunction{devtools}}
+  	Rebuilding and reloading packages can be a bit cumbersome. Package
+  	\Rfunction{devtools} has many great tools for package development, 
+  	such as \Rfunction{load_all()} that mimics the rebuild/reload process.
+
+<<devtools,echo=TRUE,eval=FALSE>>=
+library(devtools)
+load_all("myRpackage/") 
+
+readFasta("aDnaSeq.fasta") 
+@   	  	
+  	... and many more!
+  \end{block}
+\end{frame}
+
+%%%%%%%%
 
 \input{struct.tex}
 
