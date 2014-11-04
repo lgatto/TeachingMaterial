@@ -5,7 +5,7 @@ tagline: A minimal tutorial on make
 ---
 
 I would argue that the most important tool for reproducible research
-is not [Sweave](http://www.stat.uni-muenchen.de/~leisch/Sweave/) or 
+is not [Sweave](http://www.stat.uni-muenchen.de/~leisch/Sweave/) or
 [knitr](http://yihui.name/knitr/) but
 *[GNU make](http://www.gnu.org/software/make)*.
 
@@ -15,7 +15,7 @@ script for each figure plus a [LaTeX](http://www.latex-project.org)
 file for the main text.  And then a [BibTeX](http://www.bibtex.org)
 file for the references.
 
-Compiling the final PDF is a bit of work: 
+Compiling the final PDF is a bit of work:
 
 - Run each R script through R to produce the relevant figure.
 - Run latex and then bibtex and then latex a couple of more times.
@@ -31,16 +31,16 @@ that looks something like [the following](examples/ex1/Makefile) (here using
 [pdflatex](http://www.tug.org/applications/pdftex/)).
 
     mypaper.pdf: mypaper.bib mypaper.tex Figs/fig1.pdf Figs/fig2.pdf
-    	pdflatex mypaper
-    	bibtex mypaper
-    	pdflatex mypaper
-    	pdflatex mypaper
+        pdflatex mypaper
+        bibtex mypaper
+        pdflatex mypaper
+        pdflatex mypaper
 
     Figs/fig1.pdf: R/fig1.R
-    	cd R;R CMD BATCH fig1.R
+        cd R;R CMD BATCH fig1.R
 
     Figs/fig2.pdf: R/fig2.R
-    	cd R;R CMD BATCH fig2.R
+        cd R;R CMD BATCH fig2.R
 
 Each batch of lines indicates a file to be created (the _target_), the files it
 depends on (the _prerequisites_), and then a set of commands needed to
@@ -58,15 +58,15 @@ the `cd` on the same line as the related command.  The following
 
     ### this doesn't work ###
     Figs/fig1.pdf: R/fig1.R
-    	cd R
-    	R CMD BATCH fig1.R
+        cd R
+        R CMD BATCH fig1.R
 
 You can, however, use `\` for a continuation line, line so:
 
     ### this works ###
     Figs/fig1.pdf: R/fig1.R
-    	cd R;\
-    	R CMD BATCH fig1.R
+        cd R;\
+        R CMD BATCH fig1.R
 
 Note that you still need to use the semicolon (`;`).
 
@@ -143,12 +143,12 @@ that I use most:
 For example, in our simple example, we could simplify the lines
 
     Figs/fig1.pdf: R/fig1.R
-    	cd R;R CMD BATCH fig1.R
+        cd R;R CMD BATCH fig1.R
 
 We could instead write
 
     Figs/fig1.pdf: R/fig1.R
-    	cd $(<D);R CMD BATCH $(<F)
+        cd $(<D);R CMD BATCH $(<F)
 
 The automatic variable `$(<D)` will take the value of the directory of
 the first prerequisite, `R` in this case. `$(<F)` will take value of
@@ -172,7 +172,7 @@ way. We could simplify the example by including one set of lines
 covering both `fig1.pdf` and `fig2.pdf`:
 
     Figs/%.pdf: R/%.R
-    	cd $(<D);R CMD BATCH $(<F)
+        cd $(<D);R CMD BATCH $(<F)
 
 This saves typing and makes the file easier to maintain and extend. If
 you want to add a third figure, you just add it as another dependency
@@ -186,13 +186,13 @@ Adding all of this together, here's what our example `Makefile`
     R_OPTS=--vanilla
 
     mypaper.pdf: mypaper.bib mypaper.tex Figs/fig1.pdf Figs/fig2.pdf
-    	pdflatex mypaper
-    	bibtex mypaper
-    	pdflatex mypaper
-    	pdflatex mypaper
+        pdflatex mypaper
+        bibtex mypaper
+        pdflatex mypaper
+        pdflatex mypaper
 
     Figs/%.pdf: R/%.R
-    	cd $(<D);R CMD BATCH $(R_OPTS) $(<F)
+        cd $(<D);R CMD BATCH $(R_OPTS) $(<F)
 
 The advantage of the added frills: less typing, and it's easier to
 extend to include additional figures. The disadvantage: it's harder
@@ -213,12 +213,12 @@ Here are some of my own examples:
 - [Makefile](https://github.com/kbroman/phyloQTLpaper/blob/master/Makefile)
   for
   [my phylo QTL paper](http://www.genetics.org/content/192/1/267.full)
-  
+
 - [Makefile](https://github.com/kbroman/preCCProbPaper/blob/master/Makefile)
   for my
   [pre-CC probabilities paper](http://www.genetics.org/content/190/2/403.full)
 
-- [Makefile](https://github.com/kbroman/Talk_InteractiveGraphs1/blob/master/Makefile) 
+- [Makefile](https://github.com/kbroman/Talk_InteractiveGraphs1/blob/master/Makefile)
   for a [talk on interactive graphs](http://www.biostat.wisc.edu/~kbroman/talks/InteractiveGraphs/).
 
 - [Makefile](https://github.com/kbroman/Talk_FunQTL/blob/master/Makefile)
