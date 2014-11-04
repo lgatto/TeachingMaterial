@@ -28,14 +28,23 @@ Here are some examples.
   [Git for scientists](http://karthik.github.io/git_intro) and his
   [review paper on git](https://github.com/karthik/smb_git)
 
--
-  [Git and Github videos for beginners](http://www.dataschool.io/git-and-github-videos-for-beginners/)
+- [Git and Github videos for beginners](http://www.dataschool.io/git-and-github-videos-for-beginners/)
   by [Kevin Markham](http://www.dataschool.io/about/)
 
+- Using GitHub with [RStudio](http://www.rstudio.com):
+  
+  - [Using GitHub with R and Rstudio](http://markrchristie.wordpress.com/2013/11/26/using-github-with-r-and-rstudio/)
+    by [Mark Christie](http://markrchristie.wordpress.com/)
+
+  - [Getting started with GitHub](http://jennybc.github.io/2014-05-12-ubc/ubc-r/session2.4_github.html)
+    from materials for a
+    [software carpentry](http://software-carpentry.org/)
+    [course at UBC](http://jennybc.github.io/2014-05-12-ubc/)
+    
 - [Google](http://bit.ly/13lFEmG)
 
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/git)
 
-- [Slides for lecture I gave about git/github, with notes](http://kbroman.github.io/Tools4RR/assets/lectures/04_git_withnotes.pdf)
+- [Slides for lecture I gave about git/github, with notes](http://kbroman.org/Tools4RR/assets/lectures/04_git_withnotes.pdf)
 
 - [My brief summary of git commands](https://github.com/kbroman/Tools4RR/tree/master/04_Git/GitCommands/git_notes.md)

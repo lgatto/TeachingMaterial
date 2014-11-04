@@ -17,7 +17,7 @@ Say you want to contribute changes to someone else's repository (eg,
 
 - Type
 
-      $ git clone git@github.com:username/the_repo.git
+      $ git clone git@github.com:username/the_repo
 
   where `username` is _your_ username.
 
@@ -25,10 +25,10 @@ Say you want to contribute changes to someone else's repository (eg,
 
 - Add a connection to the original owner's repository.
 
-      $ git remote add myfriend git://github.com/myfriend/the_repo.git
+      $ git remote add myfriend git://github.com/myfriend/the_repo
 
-- Note the distinction between `git@github...` in the first case and
-  `git://github...` in the second case.  I'm not sure why these need
+- Note the distinction between `git@github.com:` in the first case and
+  `git://github.com/` in the second case.  I'm not sure why these need
   to be the way they are, but that's what works for me.
 
 - Make changes to files.
@@ -114,7 +114,7 @@ You don't have to use the github website for this.
 - Add a connection to your friend's version of the github repository,
   if you haven't already.
   
-      $ git remote add myfriend git://github.com/myfriend/the_repo.git
+      $ git remote add myfriend git://github.com/myfriend/the_repo
     
 - Pull his/her changes.
 

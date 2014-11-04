@@ -114,7 +114,7 @@ of commit messages they write.
 Don't include files that are derived from other files in the repository.  (Are you using
 [make](http://www.gnu.org/software/make/) or
 [rake](http://rake.rubyforge.org/)?  You should be!  See my
-[make tutorial](http://kbroman.github.io/minimal_make).)
+[make tutorial](http://kbroman.org/minimal_make).)
 
 For example, for a [LaTeX](http://www.latex-project.org/) manuscript,
 I wouldn't include all the .log, .dvi, .aux, etc., files.  And if I

@@ -64,14 +64,14 @@ file, but I don't.
 Now, follow the second set of instructions, &ldquo;Push an existing
 repository...&rdquo;
 
-    $ git remote add origin git@github.com:username/new_repo.git
+    $ git remote add origin git@github.com:username/new_repo
     $ git push -u origin master
 
 Actually, the first line of the instructions will say
 
-    $ git remote add origin https://github.com/username/new_repo.git
+    $ git remote add origin https://github.com/username/new_repo
     
-But I use `git@github...` rather than `https://github...`, as the
+But I use `git@github.com:username/new_repo` rather than `https://github.com/username/new_repo`, as the
 former is for use with
 [ssh](http://en.wikipedia.org/wiki/Secure_Shell) (if you set up ssh as
 I mentioned in "[Your first time](first_time.html)", then you won't
