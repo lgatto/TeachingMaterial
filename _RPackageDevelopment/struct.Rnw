@@ -228,12 +228,33 @@ functions-ClassA.R  ...
   \begin{block}{tests}
     Contains additional package-specific test code. We will talk about unit tests later.
   \end{block}
-  \begin{block}{src}
-    Contains sources and headers for the compiled code, plus optionally a file Makevars or Makefile.
-  \end{block}
   \begin{block}{demo}
     R scripts runned via \Rfunction{demo()} that demonstrate some of the functionality of the package. 
     Execution of these scripts is not checked.
   \end{block}
+  \begin{block}{src}
+    Contains sources and headers for the compiled code, plus optionally a file Makevars or Makefile.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Adding C/C++ code}
+  \begin{block}{Using package \Rfunction{Rcpp}:}
+    Package \Rfunction{Rcpp} makes it easy to call C/C++ code from R. It also has a 
+    function:
+<<minpkg2, echo=TRUE, eval = FALSE>>=
+Rcpp.package.skeleton("myRpackage")
+@     
+    that will create a fully functioning R package with C/C++ integration. 
+  \end{block}
+  \begin{block}{Or manually:}
+    \begin{enumerate}
+    	\item Add your C/C++ files to directory \Rfunction{src/}
+    	\item Create R wrapper functions for your C/C++ code
+    	\item (Optionally) provide \Rfunction{Makefile} and \Rfunction{Makevars} files in \texttt{src/}
+    	\item Add \Rfunction{useDynLib(myRpackage)} to \texttt{NAMESPACE} file   
+    	\item (For \Rfunction{Rcpp}) also add \texttt{LinkingTo:} \texttt{Rcpp} to \texttt{DESCRIPTION} 	
+    \end{enumerate}
+  \end{block}
+
 \end{frame}
 
