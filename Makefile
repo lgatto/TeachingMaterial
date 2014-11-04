@@ -1,7 +1,5 @@
-parallel.tex: parallel.Rnw
-	make clean
-	R CMD Sweave parallel.Rnw
-	pdflatex parallel.tex
+parallel.pdf: parallel.Rnw
+	R --vanilla -e "library(knitr); knit('parallel.Rnw')"
 	pdflatex parallel.tex
 
 clean:
@@ -20,6 +18,5 @@ clean:
 	rm -f *.tex
 	rm -f *~
 	rm -f Rplots.pdf
-	rm -f fig-*pdf
 	rm -f .Rhistory
 	rm -f src/.Rhistory
