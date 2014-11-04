@@ -1,0 +1,28 @@
+\documentclass[12pt]{article}
+
+\usepackage{graphicx}
+\setlength{\parskip}{6pt}   % space between paragraphs
+\setlength{\parindent}{0pt} % don't indent paragraphs
+
+\begin{document}
+
+\textbf{Simple example}
+
+\bigskip
+
+This is a simple example of a \LaTeX\/ document, to illustrate the use
+of GNU Make. To learn more about \LaTeX, see \cite{Kopka2003}.
+
+Here's the first figure:
+
+\centerline{\includegraphics[width=\textwidth]{Figs/fig1.pdf}}
+
+Here's the second figure:
+
+\centerline{\includegraphics[width=\textwidth]{Figs/fig2.pdf}}
+
+% Insert bibliography
+\bibliography{mypaper}{}
+\bibliographystyle{plain}
+
+\end{document}
