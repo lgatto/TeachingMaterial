@@ -72,6 +72,18 @@
 \end{block}
 \end{frame}
 
+\begin{frame}[fragile]{Parallel execution}
+<<>>=
+library("parallel")
+unlist(lapply(1:3, function(x) Sys.getpid()))
+unlist(mclapply(1:3, function(x) Sys.getpid())) ## 2 cores
+detectCores()
+unlist(mclapply(1:3, function(x) Sys.getpid(),
+                mc.cores = 3))
+@
+\end{frame}
+
+
 \begin{frame}{\Rpackage{parallel} example}
   \begin{block}{Dropin replacement for \Rfunction{*apply} functions}
     \begin{itemize}
@@ -81,7 +93,6 @@
   \end{block}
   (demonstration)
 \end{frame}
-
 
 
 \begin{frame}[fragile]{\Rpackage{foreach} example}
