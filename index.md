@@ -241,6 +241,8 @@ Also look at the
 [Makefile](https://github.com/yihui/knitr/blob/master/Makefile) for
 [Yihui Xie](http://yihui.name/)'s [knitr](http://yihui.name/knitr/) package for [R](http://r-project.org).
 
+[`maker`](https://github.com/ComputationalProteomicsUnit/maker), a `Makefile` for R package development.
+
 ### Resources
 
 - [GNU make webpage](http://www.gnu.org/software/make)
