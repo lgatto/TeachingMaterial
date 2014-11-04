@@ -82,6 +82,8 @@
   (demonstration)
 \end{frame}
 
+
+
 \begin{frame}[fragile]{\Rpackage{foreach} example}
 
 <<eval=FALSE>>=
@@ -133,13 +135,27 @@ SerialParam()
 \end{frame}
 
 \begin{frame}[fragile]
-<<>>=
+<<cache=TRUE>>=
 p <- MulticoreParam(2L)
 unlist(bplapply(ll, f, BPPARAM=p))
 
 p <- SnowParam(4L)
 unlist(bplapply(ll, f, BPPARAM=p))
 @
+\end{frame}
+
+\begin{frame}[fragile]{Parallel vectorized evaluation}
+
+<<message=TRUE>>=
+bpvec(1:10, function(v) {
+    message("working") ## 10 tasks, 4 messages
+    sqrt(v)
+})
+@ 
+
+There is also a \Rfunction{pvec} that uses forking
+(only). \Rfunction{bpvec} also accepts a \texttt{BPPARAM} argument.
+
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
