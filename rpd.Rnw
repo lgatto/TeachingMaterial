@@ -100,9 +100,8 @@
 \institute[CSBC]
 {
 %   \inst{1}%
-  Cambridge System Biology Centre \\
   University of Cambridge \\
-  \pgfuseimage{uc-logo}
+  \url{DataProgrammers.net}
 }
 
 \date[6-7/11/2014]
@@ -374,6 +373,10 @@ readFasta("aDnaSeq.fasta")
     \item R Installation and Administration, R Core team.
     \item Writing R Extensions, R Core team.
     \item Robert Gentleman, \R Programming for Bioinformatics, 2008.
+    \item Building packages for Bioconductor:
+      \url{http://www.bioconductor.org/developers/how-to/buildingPackagesForBioc/}
+    \item \R package development, by Hadley Wickham:
+      \url{http://r-pkgs.had.co.nz/}
 %%     \item \Rpackage{Rcpp} documentation
 %%     \item Parallel R (end 2011), \Rpackage{parallel} and \Rpackage{foreach} vignettes
 %%       and the \textit{High Performance Computing} CRAN task view.
