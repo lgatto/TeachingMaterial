@@ -46,6 +46,11 @@ NumericVector rowSumC2(NumericMatrix x) {
 }
 
 
+/*** R
+# pdistR <- function(x, ys)
+#  sqrt( (x - ys) ^ 2 )
+*/
+
 // [[Rcpp::export]]
 NumericVector pdistC(double x, NumericVector ys) {
   NumericVector ans(ys.size());
@@ -204,3 +209,116 @@ NumericVector callFunction(NumericVector x,
 // callFunction(x, summary)
 
 
+// ============================
+
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+double meanC(NumericVector x) {
+  int n = x.size();
+  double total = 0;
+
+  for(int i = 0; i < n; ++i) {
+    total += x[i];
+  }
+  return total / n;
+}
+
+/*** R
+library(microbenchmark)
+x <- runif(1e5)
+microbenchmark(
+  mean(x),
+  meanC(x)
+)
+*/
+
+
+// [[Rcpp::export]]
+NumericVector f2(NumericVector x) {
+  int n = x.size();
+  NumericVector out(n);
+
+  out[0] = x[0];
+  for(int i = 1; i < n; ++i) {
+    out[i] = out[i - 1] + x[i];
+  }
+  return out;
+}
+
+// [[Rcpp::export]]
+bool f3(LogicalVector x) {
+  int n = x.size();
+
+  for(int i = 0; i < n; ++i) {
+    if (x[i]) return true;
+  }
+  return false;
+}
+
+// [[Rcpp::export]]
+int f4(Function pred, List x) {
+  int n = x.size();
+
+  for(int i = 0; i < n; ++i) {
+    LogicalVector res = pred(x[i]);
+    if (res[0]) return i + 1;
+  }
+  return 0;
+}
+
+// [[Rcpp::export]]
+NumericVector f5(NumericVector x, NumericVector y) {
+  int n = std::max(x.size(), y.size());
+  NumericVector x1 = rep_len(x, n);
+  NumericVector y1 = rep_len(y, n);
+
+  NumericVector out(n);
+
+  for (int i = 0; i < n; ++i) {
+    out[i] = std::min(x1[i], y1[i]);
+  }
+
+  return out;
+}
+
+// [[Rcpp::export]]
+NumericVector attribs() {
+  NumericVector out = NumericVector::create(1, 2, 3);
+
+  out.names() = CharacterVector::create("a", "b", "c");
+  out.attr("my-attr") = "my-value";
+  out.attr("class") = "my-class";
+
+  return out;
+}
+
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+List scalar_missings() {
+  int int_s = NA_INTEGER;
+  String chr_s = NA_STRING;
+  bool lgl_s = NA_LOGICAL;
+  double num_s = NA_REAL;
+
+  return List::create(int_s, chr_s, lgl_s, num_s);
+}
+
+
+#include <numeric>
+#include <Rcpp.h>
+using namespace Rcpp;
+
+
+// [[Rcpp::export]]
+double sum4(NumericVector x) {
+  return std::accumulate(x.begin(), x.end(), 0.0);
+}
+
+// [[Rcpp::export]]
+double sum4x(NumericVector x) {
+  return std::accumulate(x.begin(), x.end(), 0);
+}
