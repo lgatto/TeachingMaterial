@@ -1,4 +1,9 @@
-vectorisation.pdf: debugging.Rnw
+all:
+	make debugging.pdf
+	make unittesting.md
+	make testing.md
+
+debugging.pdf: debugging.Rnw
 	R --vanilla -e "library(knitr); knit('debugging.Rnw')"
 	pdflatex debugging.tex
 
