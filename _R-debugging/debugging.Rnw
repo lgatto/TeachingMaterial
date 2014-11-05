@@ -60,14 +60,15 @@
 
 \author[Stojnic and Gatto]
 {
-  Robert~Stojnic <\url{rs550@cam.ac.uk}> \\
-  Laurent~Gatto <\url{lg390@cam.ac.uk}> \\
+  Robert~Stojnic \url{rs550@cam.ac.uk} \\
+  Laurent~Gatto \url{lg390@cam.ac.uk} \\
 }
 
 \institute[CSBC]
 {
 %   \inst{1}%
   University of Cambridge \\
+  \url{DataProgrammers.net}
 }
 
 \begin{document}
