@@ -74,6 +74,7 @@ a * a - 2
 ```
 
 ```{r,eval=FALSE}
+1L + 2L == 3L
 1.0 + 2.0 == 3.0
 0.1 + 0.2 == 0.3
 ```
@@ -81,8 +82,8 @@ a * a - 2
 # Floating point: how to compare
 
 ```{r}
-all.equal( 0.1 + 0.2, 0.3)
-all.equal( 0.1 + 0.2, 3.0)
+all.equal(0.1 + 0.2, 0.3)
+all.equal(0.1 + 0.2, 3.0)
 isTRUE(all.equal(0.1 + 0.2, 3))           # when you just want TRUE/FALSE
 ```
 
