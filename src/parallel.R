@@ -32,7 +32,7 @@ stopCluster(cl)
 
 library(doMC)
 library(foreach)
-registerDoMC(2)
+registerDoMC(8L)
 
 foreach(i = ll) %dopar% f(i)
 ##foreach(i = ll) %do% f(i) ## serial version
