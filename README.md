@@ -37,12 +37,16 @@ with your colleagues.
 ## Material
 
 ### rbc
-- Description: [Software carpentry R bootcamp](http://sje30.github.io/2014-01-07-cam/), Jan 7-8, 2014, Cambridge, UK
+- Description:
+  [Software carpentry R bootcamp](http://github.com/lgatto/rbc), Jan
+  7-8, 2014, Cambridge, UK and 6-7 Nov 2014, Zurich, Switzerland.
 - Authors: [Stephen Eglen](http://www.damtp.cam.ac.uk/user/sje30/),
-  [Laurent Gatto](https://github.com/lgatto) and
+  [Laurent Gatto](https://github.com/lgatto), Robert Stojnić and
   [Aleksandra Pawlik](http://www.software.ac.uk/about/people/aleksandra-pawlik)
 - Original repository: https://github.com/lgatto/rbc/
-- Content: `R` programming, plotting, `git`/`github` (via [software carpentry](http://software-carpentry.org/)), `make`, `shell` and `knitr`. 
+- Content: `R` programming, plotting, `git`/`github` (via
+  [software carpentry](http://software-carpentry.org/)), `make`,
+  `shell` and `knitr`, profiling, testing, debugging.
 
 ### spr
 - Description: Scientific Programming with `R`, MPhil in Computational Biology
