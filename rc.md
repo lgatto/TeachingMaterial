@@ -11,7 +11,7 @@ chapter of the *Advanced R* book by Hadley Wickham.
 
 > R is interpreted; C++ is a compiled language.
 
-We will focus on short simple code snippets using `[Rcpp](http://rcpp.org/)`:
+We will focus on short simple code snippets using [`Rcpp`](http://rcpp.org/):
 
 
 ```r
@@ -97,7 +97,7 @@ sumC
 
 ```
 ## function (x) 
-## .Primitive(".Call")(<pointer: 0x2ae83f50dd60>, x)
+## .Primitive(".Call")(<pointer: 0x2b7a2b840d60>, x)
 ```
 
 ```r
@@ -105,7 +105,7 @@ sumC(c(1, 2, 1:4, rnorm(3)))
 ```
 
 ```
-## [1] 13.87955
+## [1] 12.69535
 ```
 
 ### Sourcing C++ code
@@ -151,15 +151,15 @@ sourceCpp("./src/ex_sumC.cpp")
 ```
 ## 
 ## > (x <- c(1, 3, rnorm(10)))
-##  [1]  1.00000000  3.00000000  0.03221003  0.13812202  1.07289799
-##  [6]  0.24790057 -0.20173767 -1.97670296 -0.25369404  0.86000656
-## [11]  1.78555673 -1.32250913
+##  [1]  1.00000000  3.00000000  0.93458475 -2.91834537  0.36712273
+##  [6] -0.33708521 -0.08169273 -0.54008712  0.24044590  0.32212111
+## [11]  1.06620877 -0.17073411
 ## 
 ## > sumC(x)
-## [1] 4.38205
+## [1] 2.882539
 ## 
 ## > sum(x)
-## [1] 4.38205
+## [1] 2.882539
 ```
 
 ## An example with a matrix

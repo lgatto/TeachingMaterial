@@ -11,7 +11,7 @@ chapter of the *Advanced R* book by Hadley Wickham.
 
 > R is interpreted; C++ is a compiled language.
 
-We will focus on short simple code snippets using `[Rcpp](http://rcpp.org/)`:
+We will focus on short simple code snippets using [`Rcpp`](http://rcpp.org/):
 
 ```{r, eval=FALSE}
 install.packages("Rcpp")
