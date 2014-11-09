@@ -3,6 +3,8 @@ CHANGES IN VERSION 0.5.9
  o fasta file with 3 sequences in extdata and fun to debug in
    inst/scripts [2014-11-01 Sat]
  o use knitr for vignette [2014-11-01 Sat]
+ o fix duplicated sequence name in fasta file (pull request by Julian
+   Gehring) [2014-11-09 Sun]
  
 CHANGES IN VERSION 0.5.8
 ------------------------
