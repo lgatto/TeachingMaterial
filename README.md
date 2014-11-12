@@ -17,7 +17,7 @@ provide a general introduction to [`R`](http://www.r-project.org/) and
 the main data structures. Scripting and plotting is presented by means
 of exercises using microarray data as example. Finally,
 [Bioconductor](http://bioconductor.org/) and the microarray
-`eSet`/`ExpresionSet` classes are introduced and compared to the
+`eSet`/`ExpressionSet` classes are introduced and compared to the
 previous introductory material and exercises.
 
 ## Exercises
