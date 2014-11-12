@@ -73,7 +73,7 @@
 \date[]
 {
   \textbf{Microarray Analysis using \R and Bioconductor}\\
-  diXa Training --  14$^{th}$ May 2013
+  diXa Training --  28$^{th}$ Jan 2014
 }
 
 

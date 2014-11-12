@@ -28,13 +28,12 @@ options(width = 60)
 <<vec0>>=
 1
 c(1, 4, 7, 10) ## concatenate
-c(0.001, 1e3, 9, -1)
 @ 
   A \Robject{vector} contains an indexed set of values
   \begin{itemize}
   \item index starts at \Robject{1}
-  \item all items are of the same \textit{kind} (see later)
-  %% \item one of \Robject{logical}, \Robject{numeric}, \Robject{complex} or \Robject{character},
+  \item all items are of the same \textit{kind}: 
+    \Robject{numeric}, \Robject{logical} or \Robject{character}.
   \end{itemize}
   \bigskip
   %% \Robject{numeric} can futher be broken into \Robject{integer}, \Robject{single} and \Robject{double} types
@@ -175,7 +174,6 @@ a <- "10"
 a <- b
 a <- "b"
 @     
-\pause
 \end{block}
   \begin{columns}[c]
     \begin{column}{.32\linewidth}
