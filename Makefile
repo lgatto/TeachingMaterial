@@ -14,8 +14,8 @@ endif
 R = "$(R_HOME)/bin/R"
 
 
-rbio-proteomics.html: rbioc-proteomics.Rmd
-	${R} --vanilla -e "library(knitr); knit2html('rbioc-proteomics.Rmd'); purl('rbioc-proteomics.Rmd');"
+rbio-proteomics.md: rbioc-proteomics.Rmd
+	${R} --vanilla -e "library(knitr); knit('rbioc-proteomics.Rmd'); purl('rbioc-proteomics.Rmd');"
 
 
 .PHONY: clean allclean
