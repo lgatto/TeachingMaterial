@@ -93,41 +93,12 @@ dim(hd)
 names(hd)
 
 
-## ----, ex_raw, fig.align='center'----------------------------------------
-hd2 <- hd[hd$msLevel == 2, ]
-i <- which.max(hd2$basePeakIntensity)
-hd2[i, ]
-pi <- peaks(ms, hd2[i, 1])
-mz <- hd2[i, "basePeakMZ"]
-
-par(mfrow = c(2, 2))
-plot(pi, type = "h", main = paste("Acquisition", i))
-plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
-
-pj <- peaks(ms, 100)
-plot(pj, type = "l", main = paste("Acquisition", 100))
-plot(pj, type = "l", xlim = c(536,540))
-
-
 ## ----, id, cache=TRUE----------------------------------------------------
 library("mzID")
 (f <- dir(system.file("extdata", package = "RforProteomics"),
          pattern = "mzid", full.names=TRUE))
 id <- mzID(f)
 id
-
-
-## ----, ex_id-------------------------------------------------------------
-fid <- flatten(id)
-x <- by(fid, fid$accession, function(x)
-    c(unique(x$length),
-      length(unique(x$pepseq)),
-      mean(x$'ms-gf:specevalue')))
-x <- data.frame(do.call(rbind, x))
-colnames(x) <- c("plength", "npep", "eval")
-x$bins <- cut(x$eval, summary(x$eval))
-library("lattice")
-xyplot(plength ~ npep | bins, data = x)
 
 
 ## ----, rtandem, eval=FALSE-----------------------------------------------

@@ -167,27 +167,29 @@ dim(hd)
 names(hd)
 ```
 
-#### Application
+#### Exercise
 
 Extract the index of the MS2 spectrum with the highest base peak
 intensity and plot its spectrum. Is the data centroided or in profile
 mode?
 
-```{r, ex_raw, fig.align='center'}
-hd2 <- hd[hd$msLevel == 2, ]
-i <- which.max(hd2$basePeakIntensity)
-hd2[i, ]
-pi <- peaks(ms, hd2[i, 1])
-mz <- hd2[i, "basePeakMZ"]
+<!-- #### Solution -->
 
-par(mfrow = c(2, 2))
-plot(pi, type = "h", main = paste("Acquisition", i))
-plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
+<!-- ```{r, ex_raw, fig.align='center'} -->
+<!-- hd2 <- hd[hd$msLevel == 2, ] -->
+<!-- i <- which.max(hd2$basePeakIntensity) -->
+<!-- hd2[i, ] -->
+<!-- pi <- peaks(ms, hd2[i, 1]) -->
+<!-- mz <- hd2[i, "basePeakMZ"] -->
 
-pj <- peaks(ms, 100)
-plot(pj, type = "l", main = paste("Acquisition", 100))
-plot(pj, type = "l", xlim = c(536,540))
-```
+<!-- par(mfrow = c(2, 2)) -->
+<!-- plot(pi, type = "h", main = paste("Acquisition", i)) -->
+<!-- plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5)) -->
+
+<!-- pj <- peaks(ms, 100) -->
+<!-- plot(pj, type = "l", main = paste("Acquisition", 100)) -->
+<!-- plot(pj, type = "l", xlim = c(536,540)) -->
+<!-- ``` -->
 
 ### Handling identification data
 
@@ -212,27 +214,53 @@ accessor functions such as `database`, `scans`, `peptides`, ... The
 object can also be converted into a `data.frame` using the `flatten`
 function.
 
-The `mzR` package also support fast parsing of `mzIdentML` files with
-the `openIDfile` function.
-
-#### Application
+#### Exercise
 
 Is there a relation between the length of a protein and the number of
 identified peptides, conditioned by the (average) e-value of the
 identifications?
 
-```{r, ex_id}
-fid <- flatten(id)
-x <- by(fid, fid$accession, function(x)
-    c(unique(x$length),
-      length(unique(x$pepseq)),
-      mean(x$'ms-gf:specevalue')))
-x <- data.frame(do.call(rbind, x))
-colnames(x) <- c("plength", "npep", "eval")
-x$bins <- cut(x$eval, summary(x$eval))
-library("lattice")
-xyplot(plength ~ npep | bins, data = x)
-```
+<!-- #### Solution -->
+
+<!-- ```{r, ex_id} -->
+<!-- fid <- flatten(id) -->
+<!-- x <- by(fid, fid$accession, function(x) -->
+<!--     c(unique(x$length), -->
+<!--       length(unique(x$pepseq)), -->
+<!--       mean(x$'ms-gf:specevalue'))) -->
+<!-- x <- data.frame(do.call(rbind, x)) -->
+<!-- colnames(x) <- c("plength", "npep", "eval") -->
+<!-- x$bins <- cut(x$eval, summary(x$eval)) -->
+<!-- library("lattice") -->
+<!-- xyplot(plength ~ npep | bins, data = x) -->
+<!-- ``` -->
+
+#### Exercise
+
+The `mzR` package also support fast parsing of `mzIdentML` files with
+the `openIDfile` function. Compare it, it terms of output and speed
+with `mzID`.
+
+<!-- ```{r} -->
+<!-- library("mzR") -->
+<!-- olibrary("mzID") -->
+<!-- f <- dir(system.file("extdata", package = "RforProteomics"), -->
+<!--          pattern = "mzid", full.names=TRUE) -->
+
+<!-- system.time({ -->
+<!--     id0 <- mzID(f) -->
+<!--     fid0 <- flatten(id0) -->
+<!-- }) -->
+
+<!-- head(fid0) -->
+
+<!-- system.time({ -->
+<!--     id1 <- openIDfile(f) -->
+<!--     fid1 <- psms(id1) -->
+<!-- }) -->
+
+<!-- head(fid1) -->
+<!-- ``` -->
 
 ### MS/MS database search
 
@@ -556,7 +584,7 @@ qnt.imp <- impute(qnt0)
 plot0(qnt, qnt.imp)
 ```
 
-#### Application
+#### Exercise
 
 The `mzt` instance created from the `mzTab` file has the following is
 a TMT 6-plex with the following design:

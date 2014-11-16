@@ -22,6 +22,7 @@ rbio-proteomics.md: rbioc-proteomics.Rmd
 
 clean:
 	rm -f *~
+	rm -r .Rhistory
 
 allclean:
 	rm -rf cache figure
