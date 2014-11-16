@@ -1,0 +1,680 @@
+---
+output:
+  BiocStyle::html_document
+---
+
+<!--
+%\VignetteIndexEntry{Proteomics workflow}
+%\VignetteKeyword{bioinformatics, proteomics, mass spectrometry, visualisation}
+%\VignettePackage{RforProteomics}
+%\VignetteEngine{knitr::knitr}
+-->
+
+# Proteomics workflow
+
+**Abstract** This workflow describes recent R / Bioconductor
+developments for proteomics. Topics covered focus on support for open
+community-driven formats for raw data and identification results,
+packages for peptide-spectrum matching, quantitative proteomics, mass
+spectrometry (MS) and quantitation data processing. Links to other
+packages and references are also documented.
+
+```{r, env, message=FALSE, echo=FALSE, warning=FALSE}
+library("knitr")
+opts_knit$set(error = FALSE)
+
+library("RforProteomics")
+library("mzR")
+library("mzID")
+library("MSnID")
+library("MSGFplus")
+library("MSnbase")
+library("rpx")
+library("MLInterfaces")
+library("pRoloc")
+library("pRolocdata")
+library("BiocInstaller")
+library("rTANDEM")
+## library("shinyTANDEM")
+```
+
+## Introduction
+
+```{r, pk, echo=FALSE, warning=FALSE, cache=TRUE}
+biocv <- as.character(biocVersion())
+pp <- proteomicsPackages(biocv)
+msp <- massSpectrometryPackages(biocv)
+msdp <- massSpectrometryDataPackages(biocv)
+```
+
+In Bioconductor version `r biocv`, there are respectively `r nrow(pp)`
+[proteomics](http://bioconductor.org/packages/release/BiocViews.html#___Proteomics),
+`r nrow(msp)`
+[mass spectrometry software packages](http://bioconductor.org/packages/release/BiocViews.html#___MassSpectrometry)
+and `r nrow(msdp)`
+[mass spectrometry experiment packages](http://bioconductor.org/packages/release/BiocViews.html#___MassSpectrometryData). These
+respective packages can be extracted with the `proteomicsPackages()`,
+`massSpectrometryPackages()` and `massSpectrometryDataPackages()` and
+explored interactively.
+
+
+```{r, pp, eval=FALSE}
+library("RforProteomics")
+pp <- proteomicsPackages()
+display(pp)
+```
+
+## Mass spectrometry data
+
+```{r, datatab, results='asis', echo=FALSE}
+
+datatab <-
+    data.frame(Type = c("raw", "identification", "quantitation",
+                   "peak lists", "other"),
+               Format = c("mzML, mzXML, netCDF, mzData",
+                   "mzIdentML", "mzQuantML", "mgf", "mzTab"),
+               Package = c(
+                   "[`mzR`](http://bioconductor.org/packages/release/bioc/html/mzR.html) (read)",
+                   "`mzR` and [`mzID`](http://bioconductor.org/packages/release/bioc/html/mzID.html) (read)",
+                   "",
+                   "[`MSnbase`](http://bioconductor.org/packages/release/bioc/html/MSnbase.html) (read/write)", 
+                   "[`MSnbase`](http://bioconductor.org/packages/release/bioc/html/MSnbase.html) (read/write)"))
+library("knitr")
+kable(datatab)
+```
+
+### Getting data from proteomics repositories
+
+Contemporary MS-based proteomics data is disseminated through the
+[ProteomeXchange](http://www.proteomexchange.org/) infrastructure,
+which centrally coordinates submission, storage and dissemination
+through multiple data repositories, such as the
+[PRIDE](https://www.ebi.ac.uk/pride/archive/) data base at the EBI for
+MS/MS experiments, [PASSEL](http://www.peptideatlas.org/passel/) at
+the ISB for SRM data and the
+[MassIVE](http://massive.ucsd.edu/ProteoSAFe/static/massive.jsp)
+resource. The
+[`rpx`](http://www.bioconductor.org/packages/release/bioc/html/rpx.html)
+is an interface to ProteomeXchange and provides a basic and unified
+access to PX data.
+
+```{r, rpx}
+library("rpx")
+pxannounced()
+```
+
+```{r, pxd}
+px <- PXDataset("PXD000001")
+px
+pxfiles(px)
+```
+
+Other metadata for the `px` dataset:
+
+```{r, pxvar, eval=FALSE}
+pxtax(px)
+pxurl(px)
+pxref(px)
+```
+
+Data files can then be downloaded with the `pxget` function as
+illustrated below. Alternatively, the file is available on the
+workshop's Amazon virtual machine in `/data/Proteomics/data/`.
+
+```{r, pxget}
+mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
+mzf <- file.path("/data/Proteomics/data", mzf)
+if (!file.exists(mzf))
+    mzf <- pxget(px, pxfiles(px)[6])
+mzf
+```
+
+### Handling raw MS data
+
+The `mzR` package provides an interface to the
+[proteowizard](http://proteowizard.sourceforge.net/) code base,
+the legacy RAMP is a non-sequential parser and other C/C++ code to
+access various raw data files, such as `mzML`, `mzXML`, `netCDF`, and
+`mzData`. The data is accessed on-disk, i.e it does not get loaded
+entirely in memory by default. The three main functions are
+`openMSfile` to create a file handle to a raw data file, `header` to
+extract metadata about the spectra contained in the file and `peaks`
+to extract one or multiple spectra of interest. Other functions such
+as `instrumentInfo`, or `runInfo` can be used to gather general
+information about a run.
+
+```{r, rawms}
+library("mzR")
+ms <- openMSfile(mzf)
+ms
+```
+
+```{r, hd}
+hd <- header(ms)
+dim(hd)
+names(hd)
+```
+
+#### Application
+
+Extract the index of the MS2 spectrum with the highest base peak
+intensity and plot its spectrum. Is the data centroided or in profile
+mode?
+
+```{r, ex_raw, fig.align='center'}
+hd2 <- hd[hd$msLevel == 2, ]
+i <- which.max(hd2$basePeakIntensity)
+hd2[i, ]
+pi <- peaks(ms, hd2[i, 1])
+mz <- hd2[i, "basePeakMZ"]
+
+par(mfrow = c(2, 2))
+plot(pi, type = "h", main = paste("Acquisition", i))
+plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
+
+pj <- peaks(ms, 100)
+plot(pj, type = "l", main = paste("Acquisition", 100))
+plot(pj, type = "l", xlim = c(536,540))
+```
+
+### Handling identification data
+
+The `RforProteomics` package distributes a small identification result
+file (see
+`?TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzid`) that we
+load and parse using infrastructure from the 
+[`mzID`](http://bioconductor.org/packages/release/bioc/html/mzID.html)
+package.
+
+
+```{r, id, cache=TRUE}
+library("mzID")
+(f <- dir(system.file("extdata", package = "RforProteomics"),
+         pattern = "mzid", full.names=TRUE))
+id <- mzID(f)
+id
+```
+
+Various data can be extracted from the `mzID` object, using one the
+accessor functions such as `database`, `scans`, `peptides`, ... The
+object can also be converted into a `data.frame` using the `flatten`
+function.
+
+The `mzR` package also support fast parsing of `mzIdentML` files with
+the `openIDfile` function.
+
+#### Application
+
+Is there a relation between the length of a protein and the number of
+identified peptides, conditioned by the (average) e-value of the
+identifications?
+
+```{r, ex_id}
+fid <- flatten(id)
+x <- by(fid, fid$accession, function(x)
+    c(unique(x$length),
+      length(unique(x$pepseq)),
+      mean(x$'ms-gf:specevalue')))
+x <- data.frame(do.call(rbind, x))
+colnames(x) <- c("plength", "npep", "eval")
+x$bins <- cut(x$eval, summary(x$eval))
+library("lattice")
+xyplot(plength ~ npep | bins, data = x)
+```
+
+### MS/MS database search
+
+While searches are generally performed using third-party software
+independently of R or can be started from R using a `system` call, the
+[`rTANDEM`](http://www.bioconductor.org/packages/release/bioc/html/rTANDEM.html)
+package allows one to execute such searches using the X!Tandem
+engine. The
+[`shinyTANDEM`](http://www.bioconductor.org/packages/release/bioc/html/shinyTANDEM.html)
+provides a interactive interface to explore the search results.
+
+```{r, rtandem, eval=FALSE}
+library("rTANDEM")
+?rtandem
+library("shinyTANDEM")
+?shinyTANDEM
+```
+
+Similarly, the
+[`MSGFplus`](http://www.bioconductor.org/packages/release/bioc/html/MSGFplus.html)
+package enables to perform a search using the MSGF+ engine, as illustrated below:
+
+```{r msgfplus, eval=FALSE}
+library("MSGFplus")
+parameters <- msgfPar(database = 'proteins.fasta',
+                      tolerance='20 ppm',
+                      instrument='TOF',
+                      enzyme='Lys-C')
+runMSGF(parameters, c('file1.mzML', 'file2.mzML'))
+```
+
+A graphical interface to perform the search the data and explore the
+results is also available:
+
+```{r msgfgui, eval=FALSE}
+library("MSGFgui")
+MSGFgui()
+```
+### Analysing search results
+
+The
+[`MSnID`](http://bioconductor.org/packages/release/bioc/html/MSnID.html)
+package can be used for post-search filtering of MS/MS
+identifications. One starts with the construction of an `MSnID`
+object that is populated with identification results that can be
+imported from a `data.frame` or from `mzIdenML` files.
+
+
+```{r, msnid}
+library("MSnID")
+msnid <- MSnID(".")
+
+PSMresults <- read.delim(system.file("extdata", "human_brain.txt",
+                                     package="MSnID"),
+                         stringsAsFactors=FALSE)
+psms(msnid) <- PSMresults
+show(msnid)
+```
+
+The package then enables to define, optimise and apply filtering based
+for example on missed cleavages, identification scores, precursor mass
+errors, etc. and assess PSM, peptide and protein FDR levels.
+
+```{r msnidfilt}
+msnid$msmsScore <- -log10(msnid$`MS.GF.SpecEValue`)
+msnid$absParentMassErrorPPM <- abs(mass_measurement_error(msnid))
+
+filtObj <- MSnIDFilter(msnid)
+filtObj$absParentMassErrorPPM <- list(comparison="<", threshold=5.0)
+filtObj$msmsScore <- list(comparison=">", threshold=8.0)
+show(filtObj)
+filtObj.grid <- optimize_filter(filtObj, msnid, fdr.max=0.01,
+                                method="Grid", level="peptide",
+                                n.iter=500)
+show(filtObj.grid)
+msnid <- apply_filter(msnid, filtObj.grid)
+show(msnid)
+```
+
+The resulting data can be exported to a `data.frame` or to a dedicated
+`MSnSet` data structure for quantitative MS data, described below, and
+further processed and analyses using appropriate statistical tests.
+
+## High-level data interface
+
+The above sections introduced low-level interfaces to raw and
+identification results. The
+[`MSnbase`](http://bioconductor.org/packages/release/bioc/html/MSnbase.html)
+package provides abstractions for raw data through the `MSnExp` class
+and containers for quantification data via the `MSnSet` class. Both
+store the actual assay data (spectra or quantitation matrix) and
+sample and feature metadata, accessed with `spectra` (or the
+`[`, `[[` operators) or `exprs`, `pData` and `fData`.
+
+The figure below give a schematics of an `MSnSet` instance and the
+relation between the assay data and the respective feature and sample
+metadata.
+
+
+```{r, msnset, echo=FALSE, fig.width = 5, fig.height = 7, fig.align='center'}
+plot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
+rect(0, 0, 3, 1.9)
+rect(0, 2, 3, 10)
+rect(3.05, 2, 5, 10)
+
+segments(seq(0, 3, length.out = 7),
+         rep(0, 7),
+         seq(0, 3, length.out = 7),
+         rep(10, 7),
+         lty = "dotted")
+
+segments(rep(0, 50),
+         seq(2, 10, length.out = 50),
+         rep(5, 100),
+         seq(2, 10, length.out = 50),
+         lty = "dotted")
+
+text(1.5, 1, "sample metadata", cex = 1.5)
+text(1.5, 6, "assay data", cex = 1.5)
+text(4, 6, "feature\nmetadata", cex = 1.5)
+```
+
+Another useful slot is `processingData`, accessed with `processingData(.)`, that records all the processing that objects have undergone since their creation (see examples below).
+
+The `readMSData` will parse the raw data, extract the MS2 spectra and
+construct an MS experiment file.
+
+```{r, msnbase}
+library("MSnbase")
+quantFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
+                 full.name = TRUE, pattern = "mzXML$")
+quantFile
+msexp <- readMSData(quantFile, verbose=FALSE)
+msexp
+```
+
+The identification results stemming from the same raw data file can
+then be used to add PSM matches.
+
+```{r, addid}
+## find path to a mzIdentML file
+identFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
+                 full.name = TRUE, pattern = "dummyiTRAQ.mzid")
+identFile
+msexp <- addIdentificationData(msexp, identFile)
+fData(msexp)
+```
+
+```{r, specplot, fig.align='center'}
+msexp[[1]]
+plot(msexp[[1]], full=TRUE)
+as(msexp[[1]], "data.frame")[100:105, ]
+```
+
+### Quantitative proteomics
+
+There are a wide range of proteomics quantitation techniques that can
+broadly be classified as labelled vs. label-free, depending whether
+the features are labelled prior the MS acquisition and the MS level at
+which quantitation is inferred, namely MS1 or MS2. 
+
+```{r, quanttab, echo=FALSE, results='asis'}
+
+qtb <- matrix(c("XIC", "Counting", "SILAC, 15N", "iTRAQ, TMT"),
+              nrow = 2, ncol = 2)
+dimnames(qtb) <- list(
+    'MS level' = c("MS1", "MS2"),
+    'Quantitation' = c("Label-free", "Labelled"))
+
+kable(qtb)
+
+```
+
+In terms of raw data quantitation, most efforts have been devoted to
+MS2-level quantitation. Label-free XIC quantitation has however been
+addressed in the frame of metabolomics data processing by the
+[`xcms`](http://bioconductor.org/packages/release/bioc/html/xcms.html)
+infrastructure. 
+
+
+An `MSnExp` is converted to an `MSnSet` by the `quantitation`
+method. Below, we use the iTRAQ 4-plex isobaric tagging strategy
+(defined by the `iTRAQ4` parameter; other tags are available).
+
+```{r, itraq4plot, fig.align='center'}
+plot(msexp[[1]], full=TRUE, reporters = iTRAQ4)
+```
+
+```{r, quantitraq}
+msset <- quantify(msexp, method = "trap", reporters = iTRAQ4, verbose=FALSE)
+exprs(msset)
+processingData(msset)
+```
+
+Other MS2 quantitation methods available in `quantify` include the
+(normalised) spectral index `SI` and (normalised) spectral abundance
+factor `SAF` or simply a simple count method.
+
+```{r, lfms2}
+exprs(si <- quantify(msexp, method = "SIn"))     
+exprs(saf <- quantify(msexp, method = "NSAF"))
+```
+
+Note that spectra that have not been assigned any peptide (`NA`) or
+that match non-unique peptides (`npsm > 1`) are discarded in the
+counting process.
+
+**See also** The
+[`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html)
+package supports quantitation from centroided `mgf` peak lists or its
+own tab-separated files that can be generated from Mascot and Phenyx
+vendor files.
+
+### Importing third-party data
+
+The PSI `mzTab` file format is aimed at providing a simpler (than XML
+formats) and more accessible file format to the wider community. It is
+composed of a key-value metadata section and peptide/protein/small
+molecule tabular sections. 
+
+```{r, mztab}
+mztf <- pxget(px, pxfiles(px)[2])
+(mzt <- readMzTabData(mztf, what = "PEP"))
+```
+
+It is also possible to import arbitrary spreadsheets as `MSnSet`
+objects into R with the `readMSnSet2` function. The main 2 arguments
+of the function are (1) a text-based spreadsheet and (2) column names
+of indices that identify the quantitation data.
+
+```{r, readmsnset2}
+csv <- dir(system.file ("extdata" , package = "pRolocdata"),
+           full.names = TRUE, pattern = "pr800866n_si_004-rep1.csv")
+getEcols(csv, split = ",")
+ecols <- 7:10
+res <- readMSnSet2(csv, ecols)
+head(exprs(res))
+head(fData(res))
+```
+
+## Data processing and analysis
+
+### Processing and normalisation
+
+Each different types of quantitative data will require their own
+pre-processing and normalisation steps. Both `isobar` and `MSnbase`
+allow to correct for isobaric tag impurities normalise the
+quantitative data.
+
+```{r, pure}
+data(itraqdata)
+qnt <- quantify(itraqdata, method = "trap",
+                reporters = iTRAQ4, verbose = FALSE)
+impurities <- matrix(c(0.929,0.059,0.002,0.000,
+                       0.020,0.923,0.056,0.001,
+                       0.000,0.030,0.924,0.045,
+                       0.000,0.001,0.040,0.923),
+                     nrow=4, byrow = TRUE)
+## or, using makeImpuritiesMatrix()
+## impurities <- makeImpuritiesMatrix(4)
+qnt.crct <- purityCorrect(qnt, impurities)
+processingData(qnt.crct)
+```
+
+
+```{r, pureplot, fig.align='center'}
+
+plot0 <- function(x, y, main = "") {
+    old.par <- par(no.readonly = TRUE)
+    on.exit(par(old.par))
+    par(mar = c(4, 4, 1, 1))
+    par(mfrow = c(2, 2))
+    sx <- sampleNames(x)
+    sy <- sampleNames(y)
+    for (i in seq_len(ncol(x))) {
+        plot(exprs(x)[, i], exprs(y)[, i], log = "xy",
+             xlab = sx[i], ylab = sy[i])
+        grid()
+    }
+}
+
+plot0(qnt, qnt.crct)
+```
+
+Various normalisation methods can be applied the `MSnSet` instances
+using the `normalise` method: variance stabilisation (`vsn`), quantile
+(`quantiles`), median or mean centring (`center.media` or
+`center.mean`), ...
+
+```{r, norm, fig.align='center'}
+qnt.crct.nrm <- normalise(qnt.crct,"quantiles")
+plot0(qnt, qnt.crct.nrm)
+```
+
+The `combineFeatures` method combines spectra/peptides quantitation
+values into protein data. The grouping is defined by the `groupBy`
+parameter, which is generally taken from the feature metadata (protein
+accessions, for example).
+
+```{r, comb}
+## arbitraty grouping
+g <- factor(c(rep(1, 25), rep(2, 15), rep(3, 15)))
+prt <- combineFeatures(qnt.crct.nrm, groupBy = g, fun = "sum")
+processingData(prt)
+```
+
+Finally, proteomics data analysis is generally hampered by missing
+values. Missing data imputation is a sensitive operation whose success
+will be guided by many factors, such as degree and (non-)random nature
+of the missingness. Missing value in `MSnSet` instances can be
+filtered out and imputed using the `filterNA` and `impute` functions.
+
+```{r, impute, fig.align='center'}
+set.seed(1)
+qnt0 <- qnt
+exprs(qnt0)[sample(prod(dim(qnt0)), 10)] <- NA
+table(is.na(qnt0))
+qnt00 <- filterNA(qnt0)
+dim(qnt00)
+qnt.imp <- impute(qnt0)
+plot0(qnt, qnt.imp)
+```
+
+#### Application
+
+The `mzt` instance created from the `mzTab` file has the following is
+a TMT 6-plex with the following design:
+
+   In this TMT 6-plex experiment, four exogenous proteins were spiked
+   into an equimolar *Erwinia carotovora* lysate with varying
+   proportions in each channel of quantitation; yeast enolase (ENO) at
+   10:5:2.5:1:2.5:10, bovine serum albumin (BSA) at 1:2.5:5:10:5:1,
+   rabbit glycogen phosphorylase (PHO) at 2:2:2:2:1:1 and bovin
+   cytochrome C (CYT) at 1:1:1:1:1:2. Proteins were then digested,
+   differentially labelled with TMT reagents, fractionated by reverse
+   phase nanoflow UPLC (nanoACQUITY, Waters), and analysed on an LTQ
+   Orbitrap Velos mass spectrometer (Thermo Scientic).
+
+Explore the `mzt` data using some of the illustrated functions. The
+heatmap and MAplot (see `MAplot` function), taken from the
+[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
+vignette, have been produced using the same data.
+
+![heatmap](figures/heatmap.png)
+![maplot](figures/maplot.png)
+
+### Statistical analysis
+
+R in general and Bioconductor in particular are well suited for the
+statistical analysis of data. Several packages provide dedicated
+resources for proteomics data:
+
+- [`MSstats`](http://www.bioconductor.org/packages/release/bioc/html/MSstats.html):
+  A set of tools for statistical relative protein significance
+  analysis in DDA, SRM and DIA experiments.
+
+- [`msmsTest`](http://www.bioconductor.org/packages/release/bioc/html/msmsTests.html):
+  Statistical tests for label-free LC-MS/MS data by spectral counts,
+  to discover differentially expressed proteins between two biological
+  conditions. Three tests are available: Poisson GLM regression,
+  quasi-likelihood GLM regression, and the negative binomial of the
+  edgeR package.
+
+<!-- ```{r, msmstest} -->
+<!-- library(msmsTests) -->
+<!-- data(msms.dataset) -->
+<!-- msms.dataset -->
+<!-- e <- pp.msms.data(msms.dataset) -->
+<!-- e -->
+     
+<!-- null.f <- "y~batch" -->
+<!-- alt.f <- "y~treat+batch" -->
+<!-- div <- apply(exprs(e),2,sum) -->
+<!-- res <- msms.edgeR(e,alt.f,null.f,div=div,fnm="treat") -->
+     
+<!-- head(res) -->
+<!-- ``` -->
+
+- [`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html)
+  also provides dedicated infrastructure for the statistical analysis of isobaric data. 
+
+### Machine learning
+
+The
+[`MLInterfaces`](http://www.bioconductor.org/packages/release/bioc/html/MLInterfaces.html)
+package provides a unified interface to a wide range of machine
+learning algorithms. Initially developed for microarray and
+`ExpressionSet` instances, the
+[`pRoloc`](http://www.bioconductor.org/packages/release/bioc/html/pRoloc.html)
+package enables application of these algorithms to `MSnSet` data.
+
+```{r, ml}
+library("MLInterfaces")
+library("pRoloc")
+library("pRolocdata")
+data(dunkley2006)
+traininds <- which(fData(dunkley2006)$markers != "unknown")
+ans <- MLearn(markers ~ ., data = t(dunkley2006), knnI(k = 5), traininds)
+ans
+```
+
+```{r, clust, fig.align='center'}
+kcl <- MLearn( ~ ., data = dunkley2006, kmeansI, centers = 12)
+kcl
+plot(kcl, exprs(dunkley2006))
+```
+
+```{r, clust2, fig.align='center'}
+hcl <- MLearn( ~ ., data = t(dunkley2006), hclustI(distFun =  dist, cutParm = list(k = 4)))
+hcl
+plot(hcl, exprs(t(dunkley2006)))
+```
+
+
+## Annotation
+
+All the
+[Bioconductor annotation infrastructure](http://bioconductor.org/help/workflows/annotation/annotation/),
+such as
+[`biomaRt`](http://bioconductor.org/packages/release/bioc/html/biomaRt.html),
+[`GO.db`](http://www.bioconductor.org/packages/release/data/annotation/html/GO.db.html),
+organism specific annotations, .. are directly relevant to the
+analysis of proteomics data. Some proteomics-centred annotations such
+as the PSI Mass Spectrometry Ontology, Molecular Interaction (PSI MI
+2.5) or Protein Modifications are available through the
+[`rols`](http://www.bioconductor.org/packages/release/bioc/html/rols.html). Data
+from the [Human Protein Atlas](http://www.proteinatlas.org/) is
+available via the
+[`hpar`](http://www.bioconductor.org/packages/release/bioc/html/hpar.html)
+package.
+
+## Other relevant packages/pipelines
+
+- Analysis of post translational modification with
+  [`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html).
+- Analysis of label-free data from a Synapt G2 (including ion
+  mobility) with
+  [`synapter`](http://www.bioconductor.org/packages/release/bioc/html/synapter.html).
+- Analysis of spatial proteomics data with
+  [`pRoloc`](http://www.bioconductor.org/packages/release/bioc/html/pRoloc.html).
+- Analysis of MALDI data with the
+  [`MALDIquant`](http://cran.r-project.org/web/packages/MALDIquant/index.html)
+  package.
+- Access to the Proteomics Standard Initiative Common QUery InterfaCe
+  with the
+  [`PSICQUIC`](http://www.bioconductor.org/packages/release/bioc/html/PSICQUIC.html)
+  package.
+
+Additional relevant packages are described in the
+[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
+vignettes. 
+
+## Session information
+
+```{r, si, echo=FALSE}
+print(sessionInfo(), local = FALSE)
+```
