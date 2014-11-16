@@ -1,12 +1,6 @@
 Using R and Bioconductor for proteomics data analysis
 =======
 
-# 1
-
-## 2
-
-### 3
-
 ## Setup
 
 ```{r env0, message=FALSE, echo=FALSE, warning=FALSE}
