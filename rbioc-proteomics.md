@@ -9,7 +9,7 @@ Using R and Bioconductor for proteomics data analysis
 
 [Projet PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France
 
-Version of this document: 195b729 [2014-11-16 21:41:30 +0000]
+Version of this document: 3b6ec3a [2014-11-16 22:00:24 +0000]
 
 
 ## Setup
@@ -34,6 +34,8 @@ library("pRolocdata")
 library("rTANDEM")
 library("MSGFplus")
 library("MSGFgui")
+library("rols")
+library("hpar")
 ```
 
 The most convenient way to install all the tutorials requirement (and
@@ -630,7 +632,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 21:59:17 2014 
+## Data loaded: Sun Nov 16 22:07:46 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -806,8 +808,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 21:59:17 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 21:59:19 2014 
+## Data loaded: Sun Nov 16 22:07:46 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:07:48 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -893,7 +895,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 21:59:21 2014 
+## mzTab read: Sun Nov 16 22:07:53 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -992,8 +994,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 21:59:23 2014 
-## Purity corrected: Sun Nov 16 21:59:23 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:07:55 2014 
+## Purity corrected: Sun Nov 16 22:07:55 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1055,10 +1057,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 21:59:23 2014 
-## Purity corrected: Sun Nov 16 21:59:23 2014 
-## Normalised (quantiles): Sun Nov 16 21:59:23 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 21:59:24 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:07:55 2014 
+## Purity corrected: Sun Nov 16 22:07:55 2014 
+## Normalised (quantiles): Sun Nov 16 22:07:55 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 22:07:55 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1248,11 +1250,24 @@ organism specific annotations, .. are directly relevant to the
 analysis of proteomics data. Some proteomics-centred annotations such
 as the PSI Mass Spectrometry Ontology, Molecular Interaction (PSI MI
 2.5) or Protein Modifications are available through the
-[`rols`](http://www.bioconductor.org/packages/release/bioc/html/rols.html). Data
-from the [Human Protein Atlas](http://www.proteinatlas.org/) is
+[`rols`](http://www.bioconductor.org/packages/release/bioc/html/rols.html).
+
+
+```r
+library("rols")
+olsQuery("ESI", "MS")
+```
+
+```
+##  MS:1000073  MS:1000162 
+##       "ESI" "HiRes ESI"
+```
+
+Data from the [Human Protein Atlas](http://www.proteinatlas.org/) is
 available via the
 [`hpar`](http://www.bioconductor.org/packages/release/bioc/html/hpar.html)
 package.
+
 
 ## Other relevant packages/pipelines
 
@@ -1287,15 +1302,16 @@ vignettes.
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] MSGFgui_1.0.1        rTANDEM_1.6.0        data.table_1.9.4    
-##  [4] pRolocdata_1.5.2     pRoloc_1.7.1         MLInterfaces_1.46.0 
-##  [7] cluster_1.15.3       annotate_1.44.0      XML_3.98-1.1        
-## [10] AnnotationDbi_1.28.1 GenomeInfoDb_1.2.3   IRanges_2.0.0       
-## [13] S4Vectors_0.4.0      rpx_1.2.0            MSGFplus_1.0.3      
-## [16] MSnID_1.0.0          mzID_1.4.1           RforProteomics_1.5.2
-## [19] MSnbase_1.14.0       BiocParallel_1.0.0   mzR_2.0.0           
-## [22] Rcpp_0.11.3          Biobase_2.26.0       BiocGenerics_0.12.1 
-## [25] BiocInstaller_1.16.1 knitr_1.8           
+##  [1] hpar_1.8.0           rols_1.8.0           MSGFgui_1.0.1       
+##  [4] rTANDEM_1.6.0        data.table_1.9.4     pRolocdata_1.5.2    
+##  [7] pRoloc_1.7.1         MLInterfaces_1.46.0  cluster_1.15.3      
+## [10] annotate_1.44.0      XML_3.98-1.1         AnnotationDbi_1.28.1
+## [13] GenomeInfoDb_1.2.3   IRanges_2.0.0        S4Vectors_0.4.0     
+## [16] rpx_1.2.0            MSGFplus_1.0.3       MSnID_1.0.0         
+## [19] mzID_1.4.1           RforProteomics_1.5.2 MSnbase_1.14.0      
+## [22] BiocParallel_1.0.0   mzR_2.0.0            Rcpp_0.11.3         
+## [25] Biobase_2.26.0       BiocGenerics_0.12.1  BiocInstaller_1.16.1
+## [28] knitr_1.8           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] affy_1.44.0                  affyio_1.34.0               
@@ -1341,9 +1357,10 @@ vignettes.
 ## [81] sampling_2.6                 scales_0.2.4                
 ## [83] sendmailR_1.2-1              sfsmisc_1.0-26              
 ## [85] shiny_0.10.2.1               shinyFiles_0.4.0            
-## [87] splines_3.1.1                stringr_0.6.2               
-## [89] survival_2.37-7              tools_3.1.1                 
-## [91] vsn_3.34.0                   xlsx_0.5.7                  
-## [93] xlsxjars_0.6.1               xtable_1.7-4                
-## [95] zlibbioc_1.12.0
+## [87] splines_3.1.1                SSOAP_0.8-0                 
+## [89] stringr_0.6.2                survival_2.37-7             
+## [91] tools_3.1.1                  vsn_3.34.0                  
+## [93] xlsx_0.5.7                   xlsxjars_0.6.1              
+## [95] XMLSchema_0.7-2              xtable_1.7-4                
+## [97] zlibbioc_1.12.0
 ```

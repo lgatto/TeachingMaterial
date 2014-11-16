@@ -40,6 +40,8 @@ library("pRolocdata")
 library("rTANDEM")
 library("MSGFplus")
 library("MSGFgui")
+library("rols")
+library("hpar")
 ```
 
 The most convenient way to install all the tutorials requirement (and
@@ -774,11 +776,18 @@ organism specific annotations, .. are directly relevant to the
 analysis of proteomics data. Some proteomics-centred annotations such
 as the PSI Mass Spectrometry Ontology, Molecular Interaction (PSI MI
 2.5) or Protein Modifications are available through the
-[`rols`](http://www.bioconductor.org/packages/release/bioc/html/rols.html). Data
-from the [Human Protein Atlas](http://www.proteinatlas.org/) is
+[`rols`](http://www.bioconductor.org/packages/release/bioc/html/rols.html).
+
+```{r rols}
+library("rols")
+olsQuery("ESI", "MS")
+```
+
+Data from the [Human Protein Atlas](http://www.proteinatlas.org/) is
 available via the
 [`hpar`](http://www.bioconductor.org/packages/release/bioc/html/hpar.html)
 package.
+
 
 ## Other relevant packages/pipelines
 

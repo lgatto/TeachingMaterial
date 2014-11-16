@@ -23,6 +23,8 @@ library("pRolocdata")
 library("rTANDEM")
 library("MSGFplus")
 library("MSGFgui")
+library("rols")
+library("hpar")
 
 
 ## ----r4pinstall, eval=FALSE----------------------------------------------
@@ -322,6 +324,11 @@ plot(kcl, exprs(dunkley2006))
 hcl <- MLearn( ~ ., data = t(dunkley2006), hclustI(distFun =  dist, cutParm = list(k = 4)))
 hcl
 plot(hcl, exprs(t(dunkley2006)))
+
+
+## ----rols----------------------------------------------------------------
+library("rols")
+olsQuery("ESI", "MS")
 
 
 ## ----, si, echo=FALSE----------------------------------------------------
