@@ -1,8 +1,8 @@
 Using R and Bioconductor for proteomics data analysis
 =======
 
-Laurent Gatto, 
-[Computational Proteomics Unit](http://cpu.sysbiol.cam.ac.uk)
+Laurent Gatto [Computational Proteomics Unit](http://cpu.sysbiol.cam.ac.uk)  
+[Projet PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France.
 
 <!-- FIXME -->
 <!-- Version of this document -->
@@ -687,8 +687,8 @@ plot0(qnt, qnt.imp)
 > [`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
 > vignette, have been produced using the same data.
 
-![heatmap](figures/heatmap.png)
-![maplot](figures/maplot.png)
+![heatmap](figure/heatmap.png)
+![maplot](figure/maplot.png)
 
 ### Statistical analysis
 

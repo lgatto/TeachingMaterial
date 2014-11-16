@@ -13,10 +13,14 @@ endif
 
 R = "$(R_HOME)/bin/R"
 
-
-rbio-proteomics.md: rbioc-proteomics.Rmd
+rbioc-proteomics.md: rbioc-proteomics.Rmd
 	${R} --vanilla -e "library(knitr); knit('rbioc-proteomics.Rmd'); purl('rbioc-proteomics.Rmd');"
 
+rbioc-proteomics.html: rbioc-proteomics.md
+	${R} --vanilla -e "rmarkdown::render('rbioc-proteomics.md')"
+
+rbioc-proteomics.pdf: rbioc-proteomics.md
+	${R} --vanilla -e "rmarkdown::render('rbioc-proteomics.md', output_format = 'pdf_document')"
 
 .PHONY: clean allclean
 
@@ -27,4 +31,5 @@ clean:
 allclean:
 	rm -rf cache figure
 	rm -r F063721.dat-mztab.txt TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+	rm -f rbioc-proteomics.md rbioc-proteomics.pdf rbioc-proteomics.html
 

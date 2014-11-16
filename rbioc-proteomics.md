@@ -1,8 +1,8 @@
 Using R and Bioconductor for proteomics data analysis
 =======
 
-Laurent Gatto, 
-[Computational Proteomics Unit](http://cpu.sysbiol.cam.ac.uk)
+Laurent Gatto [Computational Proteomics Unit](http://cpu.sysbiol.cam.ac.uk)  
+[Projet PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France.
 
 <!-- FIXME -->
 <!-- Version of this document -->
@@ -627,7 +627,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 13:06:23 2014 
+## Data loaded: Sun Nov 16 20:50:38 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -803,8 +803,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 13:06:23 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 13:06:25 2014 
+## Data loaded: Sun Nov 16 20:50:38 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 20:50:40 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -890,7 +890,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 13:06:27 2014 
+## mzTab read: Sun Nov 16 20:50:47 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -989,8 +989,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 13:06:29 2014 
-## Purity corrected: Sun Nov 16 13:06:29 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 20:50:48 2014 
+## Purity corrected: Sun Nov 16 20:50:48 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1052,10 +1052,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 13:06:29 2014 
-## Purity corrected: Sun Nov 16 13:06:29 2014 
-## Normalised (quantiles): Sun Nov 16 13:06:29 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 13:06:29 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 20:50:48 2014 
+## Purity corrected: Sun Nov 16 20:50:48 2014 
+## Normalised (quantiles): Sun Nov 16 20:50:49 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 20:50:49 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1115,8 +1115,8 @@ plot0(qnt, qnt.imp)
 > [`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
 > vignette, have been produced using the same data.
 
-![heatmap](figures/heatmap.png)
-![maplot](figures/maplot.png)
+![heatmap](figure/heatmap.png)
+![maplot](figure/maplot.png)
 
 ### Statistical analysis
 
