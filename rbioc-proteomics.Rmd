@@ -138,7 +138,6 @@ workshop's Amazon virtual machine in `/data/Proteomics/data/`.
 
 ```{r, pxget}
 mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
-mzf <- file.path("/data/Proteomics/data", mzf)
 if (!file.exists(mzf))
     mzf <- pxget(px, pxfiles(px)[6])
 mzf
@@ -319,6 +318,39 @@ results is also available:
 ```{r msgfgui, eval=FALSE}
 library("MSGFgui")
 MSGFgui()
+```
+
+#### Exercise
+
+```{r, echo=FALSE}
+mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
+```
+
+Search `r mzf` against the fasta file from `PXD000001` using, for
+example, `MSGFplus`/`MSGFgui`. 
+
+
+#### Solution
+
+1. Get the fasta database:
+
+```{r}
+fas <- pxget(px, pxfiles(px)[8])
+```
+
+One could run MSGF+ from the command-line directly from `R`:
+
+
+```{r msgfcmd}
+msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar")
+system(paste0("java -jar ", msgf))
+cmd <- paste("java -jar", msgf, "-protocol 2 -s", mzf, "-d", fas)
+cmd
+```
+
+```{r msgfsys, eval=FALSE}
+system(cmd)
+
 ```
 ### Analysing search results
 

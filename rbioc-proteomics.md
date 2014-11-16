@@ -171,17 +171,8 @@ workshop's Amazon virtual machine in `/data/Proteomics/data/`.
 
 ```r
 mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
-mzf <- file.path("/data/Proteomics/data", mzf)
 if (!file.exists(mzf))
     mzf <- pxget(px, pxfiles(px)[6])
-```
-
-```
-## Downloading 1 file
-## TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML already present.
-```
-
-```r
 mzf
 ```
 
@@ -425,6 +416,48 @@ results is also available:
 library("MSGFgui")
 MSGFgui()
 ```
+
+#### Exercise
+
+
+
+Search TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML against the fasta file from `PXD000001` using, for
+example, `MSGFplus`/`MSGFgui`. 
+
+
+#### Solution
+
+1. Get the fasta database:
+
+
+```r
+fas <- pxget(px, pxfiles(px)[8])
+```
+
+```
+## Downloading 1 file
+## erwinia_carotovora.fasta already present.
+```
+
+One could run MSGF+ from the command-line directly from `R`:
+
+
+
+```r
+msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar")
+system(paste0("java -jar ", msgf))
+cmd <- paste("java -jar", msgf, "-protocol 2 -s", mzf, "-d", fas)
+cmd
+```
+
+```
+## [1] "java -jar /home/lg390/R/x86_64-unknown-linux-gnu-library/3.1/MSGFplus/MSGFPlus/MSGFPlus.jar -protocol 2 -s TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML -d erwinia_carotovora.fasta"
+```
+
+
+```r
+system(cmd)
+```
 ### Analysing search results
 
 The
@@ -578,7 +611,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 12:21:37 2014 
+## Data loaded: Sun Nov 16 12:35:46 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -754,8 +787,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 12:21:37 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:21:38 2014 
+## Data loaded: Sun Nov 16 12:35:46 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:35:48 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -841,7 +874,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 12:21:41 2014 
+## mzTab read: Sun Nov 16 12:35:52 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -940,8 +973,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:21:43 2014 
-## Purity corrected: Sun Nov 16 12:21:43 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:35:54 2014 
+## Purity corrected: Sun Nov 16 12:35:54 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1003,10 +1036,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:21:43 2014 
-## Purity corrected: Sun Nov 16 12:21:43 2014 
-## Normalised (quantiles): Sun Nov 16 12:21:43 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 12:21:43 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:35:54 2014 
+## Purity corrected: Sun Nov 16 12:35:54 2014 
+## Normalised (quantiles): Sun Nov 16 12:35:54 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 12:35:54 2014 
 ##  MSnbase version: 1.1.22
 ```
 

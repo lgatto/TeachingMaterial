@@ -75,7 +75,6 @@ pxfiles(px)
 
 ## ----, pxget-------------------------------------------------------------
 mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
-mzf <- file.path("/data/Proteomics/data", mzf)
 if (!file.exists(mzf))
     mzf <- pxget(px, pxfiles(px)[6])
 mzf
@@ -120,6 +119,26 @@ id
 ## ----msgfgui, eval=FALSE-------------------------------------------------
 ## library("MSGFgui")
 ## MSGFgui()
+
+
+## ----, echo=FALSE--------------------------------------------------------
+mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
+
+
+## ------------------------------------------------------------------------
+fas <- pxget(px, pxfiles(px)[8])
+
+
+## ----msgfcmd-------------------------------------------------------------
+msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar")
+system(paste0("java -jar ", msgf))
+cmd <- paste("java -jar", msgf, "-protocol 2 -s", mzf, "-d", fas)
+cmd
+
+
+## ----msgfsys, eval=FALSE-------------------------------------------------
+## system(cmd)
+## 
 
 
 ## ----, msnid-------------------------------------------------------------
