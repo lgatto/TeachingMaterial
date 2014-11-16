@@ -40,18 +40,20 @@ library("BiocInstaller")
 biocLite("RforProteomics", dependencies = TRUE)
 ```
 
-The vignettes included in
-[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
-also contains useful material.
-
 ## Introduction
 
-This workflow describes recent R / Bioconductor developments for
+This tutorial illustrates R / Bioconductor infrastructure for
 proteomics. Topics covered focus on support for open community-driven
 formats for raw data and identification results, packages for
 peptide-spectrum matching, quantitative proteomics, mass spectrometry
 (MS) and quantitation data processing. Links to other packages and
 references are also documented.
+
+The vignettes included in the
+[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
+package also contains useful material.
+
+## Exploring available infrastructure
 
 ```{r, pk, echo=FALSE, warning=FALSE, cache=TRUE}
 biocv <- as.character(biocVersion())
@@ -141,6 +143,27 @@ if (!file.exists(mzf))
     mzf <- pxget(px, pxfiles(px)[6])
 mzf
 ```
+
+#### Exercise
+
+Explore what data files have been deposited by Pandey's recent
+[draft map of the human proteome](http://www.ebi.ac.uk/pride/archive/projects/PXD000561).
+
+
+#### Solution
+
+```{r pxd000561}
+
+hum <- PXDataset("PXD000561")
+hum
+humf <- pxfiles(hum)
+
+length(humf)
+table(sub("^.+\\.", "", humf))
+rawf <- grep("raw", humf, value = TRUE)
+table(sub("_.+$", "", rawf))
+```
+
 
 ### Handling raw MS data
 

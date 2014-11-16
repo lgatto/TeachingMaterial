@@ -37,18 +37,20 @@ library("BiocInstaller")
 biocLite("RforProteomics", dependencies = TRUE)
 ```
 
-The vignettes included in
-[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
-also contains useful material.
-
 ## Introduction
 
-This workflow describes recent R / Bioconductor developments for
+This tutorial illustrates R / Bioconductor infrastructure for
 proteomics. Topics covered focus on support for open community-driven
 formats for raw data and identification results, packages for
 peptide-spectrum matching, quantitative proteomics, mass spectrometry
 (MS) and quantitation data processing. Links to other packages and
 references are also documented.
+
+The vignettes included in the
+[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
+package also contains useful material.
+
+## Exploring available infrastructure
 
 
 
@@ -186,6 +188,59 @@ mzf
 ```
 ## [1] "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
 ```
+
+#### Exercise
+
+Explore what data files have been deposited by Pandey's recent
+[draft map of the human proteome](http://www.ebi.ac.uk/pride/archive/projects/PXD000561).
+
+
+#### Solution
+
+
+```r
+hum <- PXDataset("PXD000561")
+hum
+```
+
+```
+## Object of class "PXDataset"
+##  Id: PXD000561 with 2384 files
+##  [1] 'Adult_Adrenalgland_Gel_Elite_49.msf' ... [2384] 'README.txt'
+##  Use 'pxfiles(.)' to see all files.
+```
+
+```r
+humf <- pxfiles(hum)
+
+length(humf)
+```
+
+```
+## [1] 2384
+```
+
+```r
+table(sub("^.+\\.", "", humf))
+```
+
+```
+## 
+##  msf  raw  txt  xls  xml 
+##   85 2212    1    1   85
+```
+
+```r
+rawf <- grep("raw", humf, value = TRUE)
+table(sub("_.+$", "", rawf))
+```
+
+```
+## 
+## Adult Fetal 
+##  1715   497
+```
+
 
 ### Handling raw MS data
 
@@ -557,7 +612,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 11:13:57 2014 
+## Data loaded: Sun Nov 16 12:19:58 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -733,8 +788,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 11:13:57 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:13:59 2014 
+## Data loaded: Sun Nov 16 12:19:58 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:19:59 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -820,7 +875,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 11:14:02 2014 
+## mzTab read: Sun Nov 16 12:20:04 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -919,8 +974,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:14:04 2014 
-## Purity corrected: Sun Nov 16 11:14:04 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:20:06 2014 
+## Purity corrected: Sun Nov 16 12:20:06 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -982,10 +1037,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:14:04 2014 
-## Purity corrected: Sun Nov 16 11:14:04 2014 
-## Normalised (quantiles): Sun Nov 16 11:14:04 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 11:14:04 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:20:06 2014 
+## Purity corrected: Sun Nov 16 12:20:06 2014 
+## Normalised (quantiles): Sun Nov 16 12:20:06 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 12:20:06 2014 
 ##  MSnbase version: 1.1.22
 ```
 

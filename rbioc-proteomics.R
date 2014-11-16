@@ -81,6 +81,18 @@ if (!file.exists(mzf))
 mzf
 
 
+## ----pxd000561-----------------------------------------------------------
+
+hum <- PXDataset("PXD000561")
+hum
+humf <- pxfiles(hum)
+
+length(humf)
+table(sub("^.+\\.", "", humf))
+rawf <- grep("raw", humf, value = TRUE)
+table(sub("_.+$", "", rawf))
+
+
 ## ----, rawms-------------------------------------------------------------
 library("mzR")
 ms <- openMSfile(mzf)
