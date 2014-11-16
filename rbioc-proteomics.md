@@ -319,9 +319,9 @@ function.
 
 #### Exercise
 
-Is there a relation between the length of a protein and the number of
-identified peptides, conditioned by the (average) e-value of the
-identifications?
+- Is there a relation between the length of a protein and the number
+  of identified peptides, conditioned by the (average) e-value of the
+  identifications?
 
 <!-- #### Solution -->
 
@@ -338,11 +338,10 @@ identifications?
 <!-- xyplot(plength ~ npep | bins, data = x) -->
 <!-- ``` -->
 
-#### Exercise
 
-The `mzR` package also support fast parsing of `mzIdentML` files with
-the `openIDfile` function. Compare it, it terms of output and speed
-with `mzID`.
+- The `mzR` package also support fast parsing of `mzIdentML` files
+  with the `openIDfile` function. Compare it, it terms of output and
+  speed with `mzID`.
 
 <!-- ```{r} -->
 <!-- library("mzR") -->
@@ -519,42 +518,7 @@ relation between the assay data and the respective feature and sample
 metadata.
 
 
-
-```
-## Error in eval(expr, envir, enclos): could not find function "lot"
-```
-
-```
-## Error in rect(0, 0, 3, 1.9): plot.new has not been called yet
-```
-
-```
-## Error in rect(0, 2, 3, 10): plot.new has not been called yet
-```
-
-```
-## Error in rect(3.05, 2, 5, 10): plot.new has not been called yet
-```
-
-```
-## Error in segments(seq(0, 3, length.out = 7), rep(0, 7), seq(0, 3, length.out = 7), : plot.new has not been called yet
-```
-
-```
-## Error in segments(rep(0, 50), seq(2, 10, length.out = 50), rep(5, 100), : plot.new has not been called yet
-```
-
-```
-## Error in text.default(1.5, 1, "sample metadata", cex = 1.5): plot.new has not been called yet
-```
-
-```
-## Error in text.default(1.5, 6, "assay data", cex = 1.5): plot.new has not been called yet
-```
-
-```
-## Error in text.default(4, 6, "feature\nmetadata", cex = 1.5): plot.new has not been called yet
-```
+<img src="figure/msnset-1.png" title="plot of chunk msnset" alt="plot of chunk msnset" style="display: block; margin: auto;" />
 
 Another useful slot is `processingData`, accessed with
 `processingData(.)`, that records all the processing that objects have
@@ -593,7 +557,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 11:10:20 2014 
+## Data loaded: Sun Nov 16 11:13:57 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -769,8 +733,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 11:10:20 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:10:21 2014 
+## Data loaded: Sun Nov 16 11:13:57 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:13:59 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -856,7 +820,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 11:10:25 2014 
+## mzTab read: Sun Nov 16 11:14:02 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -955,8 +919,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:10:27 2014 
-## Purity corrected: Sun Nov 16 11:10:27 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:14:04 2014 
+## Purity corrected: Sun Nov 16 11:14:04 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1018,10 +982,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:10:27 2014 
-## Purity corrected: Sun Nov 16 11:10:27 2014 
-## Normalised (quantiles): Sun Nov 16 11:10:27 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 11:10:27 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:14:04 2014 
+## Purity corrected: Sun Nov 16 11:14:04 2014 
+## Normalised (quantiles): Sun Nov 16 11:14:04 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 11:14:04 2014 
 ##  MSnbase version: 1.1.22
 ```
 

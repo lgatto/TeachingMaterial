@@ -150,7 +150,7 @@ show(msnid)
 
 
 ## ----, msnset, echo=FALSE, fig.width = 5, fig.height = 7, fig.align='center'----
-lot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
+plot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
 rect(0, 0, 3, 1.9)
 rect(0, 2, 3, 10)
 rect(3.05, 2, 5, 10)

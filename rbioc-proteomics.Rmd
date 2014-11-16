@@ -217,9 +217,9 @@ function.
 
 #### Exercise
 
-Is there a relation between the length of a protein and the number of
-identified peptides, conditioned by the (average) e-value of the
-identifications?
+- Is there a relation between the length of a protein and the number
+  of identified peptides, conditioned by the (average) e-value of the
+  identifications?
 
 <!-- #### Solution -->
 
@@ -236,11 +236,10 @@ identifications?
 <!-- xyplot(plength ~ npep | bins, data = x) -->
 <!-- ``` -->
 
-#### Exercise
 
-The `mzR` package also support fast parsing of `mzIdentML` files with
-the `openIDfile` function. Compare it, it terms of output and speed
-with `mzID`.
+- The `mzR` package also support fast parsing of `mzIdentML` files
+  with the `openIDfile` function. Compare it, it terms of output and
+  speed with `mzID`.
 
 <!-- ```{r} -->
 <!-- library("mzR") -->
@@ -363,7 +362,7 @@ metadata.
 
 
 ```{r, msnset, echo=FALSE, fig.width = 5, fig.height = 7, fig.align='center'}
-lot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
+plot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
 rect(0, 0, 3, 1.9)
 rect(0, 2, 3, 10)
 rect(3.05, 2, 5, 10)
