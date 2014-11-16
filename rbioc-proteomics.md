@@ -195,51 +195,17 @@ Explore what data files have been deposited by Pandey's recent
 [draft map of the human proteome](http://www.ebi.ac.uk/pride/archive/projects/PXD000561).
 
 
-#### Solution
+<!-- #### Solution -->
 
-
-```r
-hum <- PXDataset("PXD000561")
-hum
-```
-
-```
-## Object of class "PXDataset"
-##  Id: PXD000561 with 2384 files
-##  [1] 'Adult_Adrenalgland_Gel_Elite_49.msf' ... [2384] 'README.txt'
-##  Use 'pxfiles(.)' to see all files.
-```
-
-```r
-humf <- pxfiles(hum)
-
-length(humf)
-```
-
-```
-## [1] 2384
-```
-
-```r
-table(sub("^.+\\.", "", humf))
-```
-
-```
-## 
-##  msf  raw  txt  xls  xml 
-##   85 2212    1    1   85
-```
-
-```r
-rawf <- grep("raw", humf, value = TRUE)
-table(sub("_.+$", "", rawf))
-```
-
-```
-## 
-## Adult Fetal 
-##  1715   497
-```
+<!-- ```{r pxd000561} -->
+<!-- hum <- PXDataset("PXD000561") -->
+<!-- hum -->
+<!-- humf <- pxfiles(hum) -->
+<!-- length(humf) -->
+<!-- table(sub("^.+\\.", "", humf)) -->
+<!-- rawf <- grep("raw", humf, value = TRUE) -->
+<!-- table(sub("_.+$", "", rawf)) -->
+<!-- ``` -->
 
 
 ### Handling raw MS data
@@ -612,7 +578,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 12:19:58 2014 
+## Data loaded: Sun Nov 16 12:21:37 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -788,8 +754,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 12:19:58 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:19:59 2014 
+## Data loaded: Sun Nov 16 12:21:37 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:21:38 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -875,7 +841,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 12:20:04 2014 
+## mzTab read: Sun Nov 16 12:21:41 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -974,8 +940,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:20:06 2014 
-## Purity corrected: Sun Nov 16 12:20:06 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:21:43 2014 
+## Purity corrected: Sun Nov 16 12:21:43 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1037,10 +1003,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:20:06 2014 
-## Purity corrected: Sun Nov 16 12:20:06 2014 
-## Normalised (quantiles): Sun Nov 16 12:20:06 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 12:20:06 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:21:43 2014 
+## Purity corrected: Sun Nov 16 12:21:43 2014 
+## Normalised (quantiles): Sun Nov 16 12:21:43 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 12:21:43 2014 
 ##  MSnbase version: 1.1.22
 ```
 

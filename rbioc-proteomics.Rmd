@@ -150,19 +150,17 @@ Explore what data files have been deposited by Pandey's recent
 [draft map of the human proteome](http://www.ebi.ac.uk/pride/archive/projects/PXD000561).
 
 
-#### Solution
+<!-- #### Solution -->
 
-```{r pxd000561}
-
-hum <- PXDataset("PXD000561")
-hum
-humf <- pxfiles(hum)
-
-length(humf)
-table(sub("^.+\\.", "", humf))
-rawf <- grep("raw", humf, value = TRUE)
-table(sub("_.+$", "", rawf))
-```
+<!-- ```{r pxd000561} -->
+<!-- hum <- PXDataset("PXD000561") -->
+<!-- hum -->
+<!-- humf <- pxfiles(hum) -->
+<!-- length(humf) -->
+<!-- table(sub("^.+\\.", "", humf)) -->
+<!-- rawf <- grep("raw", humf, value = TRUE) -->
+<!-- table(sub("_.+$", "", rawf)) -->
+<!-- ``` -->
 
 
 ### Handling raw MS data
