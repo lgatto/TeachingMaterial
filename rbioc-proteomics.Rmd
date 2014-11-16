@@ -145,8 +145,8 @@ mzf
 
 #### Exercise
 
-Explore what data files have been deposited by Pandey's recent
-[draft map of the human proteome](http://www.ebi.ac.uk/pride/archive/projects/PXD000561).
+> Explore what data files have been deposited by Pandey's recent
+> [draft map of the human proteome](http://www.ebi.ac.uk/pride/archive/projects/PXD000561).
 
 
 <!-- #### Solution -->

@@ -182,8 +182,8 @@ mzf
 
 #### Exercise
 
-Explore what data files have been deposited by Pandey's recent
-[draft map of the human proteome](http://www.ebi.ac.uk/pride/archive/projects/PXD000561).
+> Explore what data files have been deposited by Pandey's recent
+> [draft map of the human proteome](http://www.ebi.ac.uk/pride/archive/projects/PXD000561).
 
 
 <!-- #### Solution -->
@@ -617,7 +617,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 12:49:55 2014 
+## Data loaded: Sun Nov 16 12:51:55 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -793,8 +793,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 12:49:55 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:49:56 2014 
+## Data loaded: Sun Nov 16 12:51:55 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:51:57 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -880,7 +880,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 12:49:59 2014 
+## mzTab read: Sun Nov 16 12:51:59 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -979,8 +979,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:50:01 2014 
-## Purity corrected: Sun Nov 16 12:50:01 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:52:01 2014 
+## Purity corrected: Sun Nov 16 12:52:01 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1042,10 +1042,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:50:01 2014 
-## Purity corrected: Sun Nov 16 12:50:01 2014 
-## Normalised (quantiles): Sun Nov 16 12:50:01 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 12:50:02 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:52:01 2014 
+## Purity corrected: Sun Nov 16 12:52:01 2014 
+## Normalised (quantiles): Sun Nov 16 12:52:01 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 12:52:01 2014 
 ##  MSnbase version: 1.1.22
 ```
 
