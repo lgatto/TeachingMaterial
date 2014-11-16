@@ -190,9 +190,9 @@ names(hd)
 
 #### Exercise
 
-Extract the index of the MS2 spectrum with the highest base peak
-intensity and plot its spectrum. Is the data centroided or in profile
-mode?
+> Extract the index of the MS2 spectrum with the highest base peak
+> intensity and plot its spectrum. Is the data centroided or in
+> profile mode?
 
 <!-- #### Solution -->
 
@@ -237,9 +237,9 @@ function.
 
 #### Exercise
 
-- Is there a relation between the length of a protein and the number
-  of identified peptides, conditioned by the (average) e-value of the
-  identifications?
+> Is there a relation between the length of a protein and the number
+> of identified peptides, conditioned by the (average) e-value of the
+> identifications?
 
 <!-- #### Solution -->
 
@@ -257,9 +257,9 @@ function.
 <!-- ``` -->
 
 
-- The `mzR` package also support fast parsing of `mzIdentML` files
-  with the `openIDfile` function. Compare it, it terms of output and
-  speed with `mzID`.
+> The `mzR` package also support fast parsing of `mzIdentML` files
+> with the `openIDfile` function. Compare it, it terms of output and
+> speed with `mzID`.
 
 <!-- ```{r} -->
 <!-- library("mzR") -->
@@ -326,8 +326,8 @@ MSGFgui()
 mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
 ```
 
-Search `r mzf` against the fasta file from `PXD000001` using, for
-example, `MSGFplus`/`MSGFgui`. 
+> Search `r mzf` against the fasta file from `PXD000001` using, for
+> example, `MSGFplus`/`MSGFgui`.
 
 
 <!-- #### Solution -->
@@ -659,23 +659,23 @@ plot0(qnt, qnt.imp)
 
 #### Exercise
 
-The `mzt` instance created from the `mzTab` file has the following is
-a TMT 6-plex with the following design:
-
-   In this TMT 6-plex experiment, four exogenous proteins were spiked
-   into an equimolar *Erwinia carotovora* lysate with varying
-   proportions in each channel of quantitation; yeast enolase (ENO) at
-   10:5:2.5:1:2.5:10, bovine serum albumin (BSA) at 1:2.5:5:10:5:1,
-   rabbit glycogen phosphorylase (PHO) at 2:2:2:2:1:1 and bovin
-   cytochrome C (CYT) at 1:1:1:1:1:2. Proteins were then digested,
-   differentially labelled with TMT reagents, fractionated by reverse
-   phase nanoflow UPLC (nanoACQUITY, Waters), and analysed on an LTQ
-   Orbitrap Velos mass spectrometer (Thermo Scientic).
-
-Explore the `mzt` data using some of the illustrated functions. The
-heatmap and MAplot (see `MAplot` function), taken from the
-[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
-vignette, have been produced using the same data.
+> The `mzt` instance created from the `mzTab` file has the following
+> is a TMT 6-plex with the following design:
+>
+>   In this TMT 6-plex experiment, four exogenous proteins were spiked
+>   into an equimolar *Erwinia carotovora* lysate with varying
+>   proportions in each channel of quantitation; yeast enolase (ENO)
+>   at 10:5:2.5:1:2.5:10, bovine serum albumin (BSA) at
+>   1:2.5:5:10:5:1, rabbit glycogen phosphorylase (PHO) at 2:2:2:2:1:1
+>   and bovin cytochrome C (CYT) at 1:1:1:1:1:2. Proteins were then
+>   digested, differentially labelled with TMT reagents, fractionated
+>   by reverse phase nanoflow UPLC (nanoACQUITY, Waters), and analysed
+>   on an LTQ Orbitrap Velos mass spectrometer (Thermo Scientic).
+>
+> Explore the `mzt` data using some of the illustrated functions. The
+> heatmap and MAplot (see `MAplot` function), taken from the
+> [`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
+> vignette, have been produced using the same data.
 
 ![heatmap](figures/heatmap.png)
 ![maplot](figures/maplot.png)
