@@ -1,3 +1,9 @@
+
+all:
+	make rbioc-proteomics.md
+	make rbioc-proteomics.pdf
+
+
 setvars:
 ifeq (${R_HOME},)
 R_HOME= $(shell R RHOME)
@@ -12,6 +18,7 @@ ifeq (${DEV},0)
 endif
 
 R = "$(R_HOME)/bin/R"
+
 
 rbioc-proteomics.md: rbioc-proteomics.Rmd
 	${R} --vanilla -e "library(knitr); knit('rbioc-proteomics.Rmd'); purl('rbioc-proteomics.Rmd');"

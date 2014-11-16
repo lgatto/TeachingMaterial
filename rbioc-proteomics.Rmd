@@ -1,14 +1,14 @@
 Using R and Bioconductor for proteomics data analysis
 =======
 
-Laurent Gatto [Computational Proteomics Unit](http://cpu.sysbiol.cam.ac.uk)  
-[Projet PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France.
 
-<!-- FIXME -->
-<!-- Version of this document -->
-<!-- ```{r docver} -->
-<!-- v <- system('git log -1 --format="%h [%ci]"') -->
-<!-- ``` -->
+```{r docver, echo=FALSE}
+v <- system('git log -1 --format="%h [%ci]"', intern = TRUE)
+```
+
+**Laurent Gatto** - [Computational Proteomics Unit](http://cpu.sysbiol.cam.ac.uk)  
+[Projet PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France  
+Version of this document: `r v`
 
 
 ## Setup

@@ -1,4 +1,8 @@
 
+## ----docver, echo=FALSE--------------------------------------------------
+v <- system('git log -1 --format="%h [%ci]"', intern = TRUE)
+
+
 ## ----env0, message=FALSE, echo=FALSE, warning=FALSE----------------------
 library("knitr")
 opts_knit$set(error = FALSE)
