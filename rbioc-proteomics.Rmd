@@ -330,44 +330,44 @@ Search `r mzf` against the fasta file from `PXD000001` using, for
 example, `MSGFplus`/`MSGFgui`. 
 
 
-#### Solution
+<!-- #### Solution -->
 
-1. Get the fasta database:
+<!-- 1. Get the fasta database: -->
 
-```{r ex_getfas}
-fas <- pxget(px, pxfiles(px)[8])
-```
+<!-- ```{r ex_getfas} -->
+<!-- fas <- pxget(px, pxfiles(px)[8]) -->
+<!-- ``` -->
 
-2. One could run MSGF+ from the command-line directly from `R`:
+<!-- 2. One could run MSGF+ from the command-line directly from `R`: -->
 
-```{r ex_msgfcmd}
-msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar")
-system(paste0("java -jar ", msgf))
-cmd <- paste("java -jar", msgf, "-protocol 2 -inst 1 -s", mzf, "-d", fas)
-cmd
-```
+<!-- ```{r ex_msgfcmd} -->
+<!-- msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar") -->
+<!-- system(paste0("java -jar ", msgf)) -->
+<!-- cmd <- paste("java -jar", msgf, "-protocol 2 -inst 1 -s", mzf, "-d", fas) -->
+<!-- cmd -->
+<!-- ``` -->
 
-```{r ex_msgfsys, eval=FALSE}
-system(cmd)
-```
+<!-- ```{r ex_msgfsys, eval=FALSE} -->
+<!-- system(cmd) -->
+<!-- ``` -->
 
-or, use `MSGFplus`:
+<!-- or, use `MSGFplus`: -->
 
-```{r ex_msgfplus, eval=FALSE}
-library("MSGFplus")
-msgfpar <- msgfPar(database = fas,
-               instrument = 'HighRes',
-               enzyme = 'Trypsin'm
-               protocol = 'iTRAQ')
-runMSGF(msgfpar, mzf)
-```
+<!-- ```{r ex_msgfplus, eval=FALSE} -->
+<!-- library("MSGFplus") -->
+<!-- msgfpar <- msgfPar(database = fas, -->
+<!--                instrument = 'HighRes', -->
+<!--                enzyme = 'Trypsin'm -->
+<!--                protocol = 'iTRAQ') -->
+<!-- runMSGF(msgfpar, mzf) -->
+<!-- ``` -->
 
-or, through the graphical user interface:
+<!-- or, through the graphical user interface: -->
 
-```{r ex_msgfgui, eval=FALSE}
-library("MSGFgui")
-MSGFgui()
-```
+<!-- ```{r ex_msgfgui, eval=FALSE} -->
+<!-- library("MSGFgui") -->
+<!-- MSGFgui() -->
+<!-- ``` -->
 
 ### Analysing search results
 

@@ -425,58 +425,44 @@ Search TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML against the f
 example, `MSGFplus`/`MSGFgui`. 
 
 
-#### Solution
+<!-- #### Solution -->
 
-1. Get the fasta database:
+<!-- 1. Get the fasta database: -->
 
+<!-- ```{r ex_getfas} -->
+<!-- fas <- pxget(px, pxfiles(px)[8]) -->
+<!-- ``` -->
 
-```r
-fas <- pxget(px, pxfiles(px)[8])
-```
+<!-- 2. One could run MSGF+ from the command-line directly from `R`: -->
 
-```
-## Downloading 1 file
-## erwinia_carotovora.fasta already present.
-```
+<!-- ```{r ex_msgfcmd} -->
+<!-- msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar") -->
+<!-- system(paste0("java -jar ", msgf)) -->
+<!-- cmd <- paste("java -jar", msgf, "-protocol 2 -inst 1 -s", mzf, "-d", fas) -->
+<!-- cmd -->
+<!-- ``` -->
 
-2. One could run MSGF+ from the command-line directly from `R`:
+<!-- ```{r ex_msgfsys, eval=FALSE} -->
+<!-- system(cmd) -->
+<!-- ``` -->
 
+<!-- or, use `MSGFplus`: -->
 
-```r
-msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar")
-system(paste0("java -jar ", msgf))
-cmd <- paste("java -jar", msgf, "-protocol 2 -inst 1 -s", mzf, "-d", fas)
-cmd
-```
+<!-- ```{r ex_msgfplus, eval=FALSE} -->
+<!-- library("MSGFplus") -->
+<!-- msgfpar <- msgfPar(database = fas, -->
+<!--                instrument = 'HighRes', -->
+<!--                enzyme = 'Trypsin'm -->
+<!--                protocol = 'iTRAQ') -->
+<!-- runMSGF(msgfpar, mzf) -->
+<!-- ``` -->
 
-```
-## [1] "java -jar /home/lg390/R/x86_64-unknown-linux-gnu-library/3.1/MSGFplus/MSGFPlus/MSGFPlus.jar -protocol 2 -inst 1 -s TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML -d erwinia_carotovora.fasta"
-```
+<!-- or, through the graphical user interface: -->
 
-
-```r
-system(cmd)
-```
-
-or, use `MSGFplus`:
-
-
-```r
-library("MSGFplus")
-msgfpar <- msgfPar(database = fas,
-               instrument = 'HighRes',
-               enzyme = 'Trypsin'm
-               protocol = 'iTRAQ')
-runMSGF(msgfpar, mzf)
-```
-
-or, through the graphical user interface:
-
-
-```r
-library("MSGFgui")
-MSGFgui()
-```
+<!-- ```{r ex_msgfgui, eval=FALSE} -->
+<!-- library("MSGFgui") -->
+<!-- MSGFgui() -->
+<!-- ``` -->
 
 ### Analysing search results
 
@@ -631,7 +617,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 12:48:12 2014 
+## Data loaded: Sun Nov 16 12:49:55 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -807,8 +793,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 12:48:12 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:48:14 2014 
+## Data loaded: Sun Nov 16 12:49:55 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:49:56 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -894,7 +880,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 12:48:17 2014 
+## mzTab read: Sun Nov 16 12:49:59 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -993,8 +979,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:48:19 2014 
-## Purity corrected: Sun Nov 16 12:48:19 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:50:01 2014 
+## Purity corrected: Sun Nov 16 12:50:01 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1056,10 +1042,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:48:19 2014 
-## Purity corrected: Sun Nov 16 12:48:19 2014 
-## Normalised (quantiles): Sun Nov 16 12:48:19 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 12:48:19 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:50:01 2014 
+## Purity corrected: Sun Nov 16 12:50:01 2014 
+## Normalised (quantiles): Sun Nov 16 12:50:01 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 12:50:02 2014 
 ##  MSnbase version: 1.1.22
 ```
 
