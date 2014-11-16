@@ -125,20 +125,33 @@ id
 mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
 
 
-## ------------------------------------------------------------------------
+## ----ex_getfas-----------------------------------------------------------
 fas <- pxget(px, pxfiles(px)[8])
 
 
-## ----msgfcmd-------------------------------------------------------------
+## ----ex_msgfcmd----------------------------------------------------------
 msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar")
 system(paste0("java -jar ", msgf))
-cmd <- paste("java -jar", msgf, "-protocol 2 -s", mzf, "-d", fas)
+cmd <- paste("java -jar", msgf, "-protocol 2 -inst 1 -s", mzf, "-d", fas)
 cmd
 
 
-## ----msgfsys, eval=FALSE-------------------------------------------------
+## ----ex_msgfsys, eval=FALSE----------------------------------------------
 ## system(cmd)
-## 
+
+
+## ----ex_msgfplus, eval=FALSE---------------------------------------------
+## library("MSGFplus")
+## msgfpar <- msgfPar(database = fas,
+##                instrument = 'HighRes',
+##                enzyme = 'Trypsin'm
+##                protocol = 'iTRAQ')
+## runMSGF(msgfpar, mzf)
+
+
+## ----ex_msgfgui, eval=FALSE----------------------------------------------
+## library("MSGFgui")
+## MSGFgui()
 
 
 ## ----, msnid-------------------------------------------------------------
