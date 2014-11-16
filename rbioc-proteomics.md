@@ -458,7 +458,7 @@ cmd
 system(cmd)
 ```
 
-or, use `MSGFplus':
+or, use `MSGFplus`:
 
 
 ```r
@@ -631,7 +631,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 12:46:45 2014 
+## Data loaded: Sun Nov 16 12:48:12 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -807,8 +807,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 12:46:45 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:46:46 2014 
+## Data loaded: Sun Nov 16 12:48:12 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:48:14 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -894,7 +894,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 12:46:49 2014 
+## mzTab read: Sun Nov 16 12:48:17 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -993,8 +993,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:46:51 2014 
-## Purity corrected: Sun Nov 16 12:46:51 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:48:19 2014 
+## Purity corrected: Sun Nov 16 12:48:19 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1056,10 +1056,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:46:51 2014 
-## Purity corrected: Sun Nov 16 12:46:51 2014 
-## Normalised (quantiles): Sun Nov 16 12:46:51 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 12:46:51 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 12:48:19 2014 
+## Purity corrected: Sun Nov 16 12:48:19 2014 
+## Normalised (quantiles): Sun Nov 16 12:48:19 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 12:48:19 2014 
 ##  MSnbase version: 1.1.22
 ```
 
