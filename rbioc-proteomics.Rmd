@@ -1,12 +1,6 @@
+# Using R and Bioconductor for proteomics data analysis
 
-# Proteomics workflow
-
-This workflow describes recent R / Bioconductor developments for
-proteomics. Topics covered focus on support for open community-driven
-formats for raw data and identification results, packages for
-peptide-spectrum matching, quantitative proteomics, mass spectrometry
-(MS) and quantitation data processing. Links to other packages and
-references are also documented.
+## Setup
 
 ```{r env0, message=FALSE, echo=FALSE, warning=FALSE}
 library("knitr")
@@ -50,6 +44,13 @@ The vignettes included in
 also contains useful material.
 
 ## Introduction
+
+This workflow describes recent R / Bioconductor developments for
+proteomics. Topics covered focus on support for open community-driven
+formats for raw data and identification results, packages for
+peptide-spectrum matching, quantitative proteomics, mass spectrometry
+(MS) and quantitation data processing. Links to other packages and
+references are also documented.
 
 ```{r, pk, echo=FALSE, warning=FALSE, cache=TRUE}
 biocv <- as.character(biocVersion())
