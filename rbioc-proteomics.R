@@ -1,9 +1,12 @@
 
-## ----, env, message=FALSE, echo=FALSE, warning=FALSE---------------------
+## ----env0, message=FALSE, echo=FALSE, warning=FALSE----------------------
 library("knitr")
 opts_knit$set(error = FALSE)
-
+library("BiocInstaller")
 library("RforProteomics")
+
+
+## ----, env, message=FALSE, echo=TRUE, warning=FALSE----------------------
 library("mzR")
 library("mzID")
 library("MSnID")
@@ -13,9 +16,14 @@ library("rpx")
 library("MLInterfaces")
 library("pRoloc")
 library("pRolocdata")
-library("BiocInstaller")
 library("rTANDEM")
-## library("shinyTANDEM")
+library("MSGFplus")
+library("MSGFgui")
+
+
+## ----r4pinstall, eval=FALSE----------------------------------------------
+## library("BiocInstaller")
+## biocLite("RforProteomics", dependencies = TRUE)
 
 
 ## ----, pk, echo=FALSE, warning=FALSE, cache=TRUE-------------------------

@@ -1,20 +1,23 @@
 
 # Proteomics workflow
 
-**Abstract** This workflow describes recent R / Bioconductor
-developments for proteomics. Topics covered focus on support for open
-community-driven formats for raw data and identification results,
-packages for peptide-spectrum matching, quantitative proteomics, mass
-spectrometry (MS) and quantitation data processing. Links to other
-packages and references are also documented.
+This workflow describes recent R / Bioconductor developments for
+proteomics. Topics covered focus on support for open community-driven
+formats for raw data and identification results, packages for
+peptide-spectrum matching, quantitative proteomics, mass spectrometry
+(MS) and quantitation data processing. Links to other packages and
+references are also documented.
 
-
-
-```{r, env, message=FALSE, echo=FALSE, warning=FALSE}
+```{r env0, message=FALSE, echo=FALSE, warning=FALSE}
 library("knitr")
 opts_knit$set(error = FALSE)
-
+library("BiocInstaller")
 library("RforProteomics")
+```
+
+The follow packages will be used throughout this documents:
+
+```{r, env, message=FALSE, echo=TRUE, warning=FALSE}
 library("mzR")
 library("mzID")
 library("MSnID")
@@ -24,10 +27,27 @@ library("rpx")
 library("MLInterfaces")
 library("pRoloc")
 library("pRolocdata")
-library("BiocInstaller")
 library("rTANDEM")
-## library("shinyTANDEM")
+library("MSGFplus")
+library("MSGFgui")
 ```
+
+The most convenient way to install all the tutorials requirement (and
+more related content), is to install
+[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
+with all its dependencies.
+
+
+
+
+```{r r4pinstall, eval=FALSE}
+library("BiocInstaller")
+biocLite("RforProteomics", dependencies = TRUE)
+```
+
+The vignettes included in
+[`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
+also contains useful material.
 
 ## Introduction
 
