@@ -93,22 +93,6 @@ dim(hd)
 names(hd)
 
 
-## ----, ex_raw, fig.align='center'----------------------------------------
-hd2 <- hd[hd$msLevel == 2, ]
-i <- which.max(hd2$basePeakIntensity)
-hd2[i, ]
-pi <- peaks(ms, hd2[i, 1])
-mz <- hd2[i, "basePeakMZ"]
-
-par(mfrow = c(2, 2))
-plot(pi, type = "h", main = paste("Acquisition", i))
-plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
-
-pj <- peaks(ms, 100)
-plot(pj, type = "l", main = paste("Acquisition", 100))
-plot(pj, type = "l", xlim = c(536,540))
-
-
 ## ----, id, cache=TRUE----------------------------------------------------
 library("mzID")
 (f <- dir(system.file("extdata", package = "RforProteomics"),
@@ -206,7 +190,7 @@ msexp <- addIdentificationData(msexp, identFile)
 fData(msexp)
 
 
-## ----, specplot, fig.align='center'--------------------------------------
+## ----, specplot----------------------------------------------------------
 msexp[[1]]
 plot(msexp[[1]], full=TRUE)
 as(msexp[[1]], "data.frame")[100:105, ]
@@ -269,7 +253,7 @@ qnt.crct <- purityCorrect(qnt, impurities)
 processingData(qnt.crct)
 
 
-## ----, pureplot, fig.align='center'--------------------------------------
+## ----, pureplot----------------------------------------------------------
 
 plot0 <- function(x, y, main = "") {
     old.par <- par(no.readonly = TRUE)
@@ -300,7 +284,7 @@ prt <- combineFeatures(qnt.crct.nrm, groupBy = g, fun = "sum")
 processingData(prt)
 
 
-## ----, impute, fig.align='center'----------------------------------------
+## ----impute--------------------------------------------------------------
 set.seed(1)
 qnt0 <- qnt
 exprs(qnt0)[sample(prod(dim(qnt0)), 10)] <- NA
@@ -321,13 +305,13 @@ ans <- MLearn(markers ~ ., data = t(dunkley2006), knnI(k = 5), traininds)
 ans
 
 
-## ----, clust, fig.align='center'-----------------------------------------
+## ----clust---------------------------------------------------------------
 kcl <- MLearn( ~ ., data = dunkley2006, kmeansI, centers = 12)
 kcl
 plot(kcl, exprs(dunkley2006))
 
 
-## ----, clust2, fig.align='center'----------------------------------------
+## ----clust2--------------------------------------------------------------
 hcl <- MLearn( ~ ., data = t(dunkley2006), hclustI(distFun =  dist, cutParm = list(k = 4)))
 hcl
 plot(hcl, exprs(t(dunkley2006)))

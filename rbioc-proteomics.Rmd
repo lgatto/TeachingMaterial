@@ -174,23 +174,23 @@ Extract the index of the MS2 spectrum with the highest base peak
 intensity and plot its spectrum. Is the data centroided or in profile
 mode?
 
-#### Solution
+<!-- #### Solution -->
 
-```{r, ex_raw, fig.align='center'}
-hd2 <- hd[hd$msLevel == 2, ]
-i <- which.max(hd2$basePeakIntensity)
-hd2[i, ]
-pi <- peaks(ms, hd2[i, 1])
-mz <- hd2[i, "basePeakMZ"]
+<!-- ```{r, ex_raw, fig.align='center'} -->
+<!-- hd2 <- hd[hd$msLevel == 2, ] -->
+<!-- i <- which.max(hd2$basePeakIntensity) -->
+<!-- hd2[i, ] -->
+<!-- pi <- peaks(ms, hd2[i, 1]) -->
+<!-- mz <- hd2[i, "basePeakMZ"] -->
 
-par(mfrow = c(2, 2))
-plot(pi, type = "h", main = paste("Acquisition", i))
-plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
+<!-- par(mfrow = c(2, 2)) -->
+<!-- plot(pi, type = "h", main = paste("Acquisition", i)) -->
+<!-- plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5)) -->
 
-pj <- peaks(ms, 100)
-plot(pj, type = "l", main = paste("Acquisition", 100))
-plot(pj, type = "l", xlim = c(536,540))
-```
+<!-- pj <- peaks(ms, 100) -->
+<!-- plot(pj, type = "l", main = paste("Acquisition", 100)) -->
+<!-- plot(pj, type = "l", xlim = c(536,540)) -->
+<!-- ``` -->
 
 ### Handling identification data
 
@@ -413,7 +413,7 @@ msexp <- addIdentificationData(msexp, identFile)
 fData(msexp)
 ```
 
-```{r, specplot, fig.align='center'}
+```{r, specplot}
 msexp[[1]]
 plot(msexp[[1]], full=TRUE)
 as(msexp[[1]], "data.frame")[100:105, ]
@@ -530,7 +530,7 @@ processingData(qnt.crct)
 ```
 
 
-```{r, pureplot, fig.align='center'}
+```{r, pureplot}
 
 plot0 <- function(x, y, main = "") {
     old.par <- par(no.readonly = TRUE)
@@ -577,7 +577,7 @@ will be guided by many factors, such as degree and (non-)random nature
 of the missingness. Missing value in `MSnSet` instances can be
 filtered out and imputed using the `filterNA` and `impute` functions.
 
-```{r, impute, fig.align='center'}
+```{r impute}
 set.seed(1)
 qnt0 <- qnt
 exprs(qnt0)[sample(prod(dim(qnt0)), 10)] <- NA
@@ -666,13 +666,13 @@ ans <- MLearn(markers ~ ., data = t(dunkley2006), knnI(k = 5), traininds)
 ans
 ```
 
-```{r, clust, fig.align='center'}
+```{r clust}
 kcl <- MLearn( ~ ., data = dunkley2006, kmeansI, centers = 12)
 kcl
 plot(kcl, exprs(dunkley2006))
 ```
 
-```{r, clust2, fig.align='center'}
+```{r clust2}
 hcl <- MLearn( ~ ., data = t(dunkley2006), hclustI(distFun =  dist, cutParm = list(k = 4)))
 hcl
 plot(hcl, exprs(t(dunkley2006)))

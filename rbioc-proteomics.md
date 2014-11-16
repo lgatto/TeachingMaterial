@@ -248,42 +248,23 @@ Extract the index of the MS2 spectrum with the highest base peak
 intensity and plot its spectrum. Is the data centroided or in profile
 mode?
 
-#### Solution
+<!-- #### Solution -->
 
+<!-- ```{r, ex_raw, fig.align='center'} -->
+<!-- hd2 <- hd[hd$msLevel == 2, ] -->
+<!-- i <- which.max(hd2$basePeakIntensity) -->
+<!-- hd2[i, ] -->
+<!-- pi <- peaks(ms, hd2[i, 1]) -->
+<!-- mz <- hd2[i, "basePeakMZ"] -->
 
-```r
-hd2 <- hd[hd$msLevel == 2, ]
-i <- which.max(hd2$basePeakIntensity)
-hd2[i, ]
-```
+<!-- par(mfrow = c(2, 2)) -->
+<!-- plot(pi, type = "h", main = paste("Acquisition", i)) -->
+<!-- plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5)) -->
 
-```
-##      seqNum acquisitionNum msLevel polarity peaksCount totIonCurrent
-## 5404   5404           5404       2        1        275    2283283712
-##      retentionTime basePeakMZ basePeakIntensity collisionEnergy
-## 5404       2751.31   859.5032         354288224               0
-##      ionisationEnergy    lowMZ  highMZ precursorScanNum precursorMZ
-## 5404                0 100.5031 1995.63             5403    859.1722
-##      precursorCharge precursorIntensity mergedScan mergedResultScanNum
-## 5404               3          627820480          0                   0
-##      mergedResultStartScanNum mergedResultEndScanNum
-## 5404                        0                      0
-```
-
-```r
-pi <- peaks(ms, hd2[i, 1])
-mz <- hd2[i, "basePeakMZ"]
-
-par(mfrow = c(2, 2))
-plot(pi, type = "h", main = paste("Acquisition", i))
-plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
-
-pj <- peaks(ms, 100)
-plot(pj, type = "l", main = paste("Acquisition", 100))
-plot(pj, type = "l", xlim = c(536,540))
-```
-
-<img src="figure/ex_raw-1.png" title="plot of chunk ex_raw" alt="plot of chunk ex_raw" style="display: block; margin: auto;" />
+<!-- pj <- peaks(ms, 100) -->
+<!-- plot(pj, type = "l", main = paste("Acquisition", 100)) -->
+<!-- plot(pj, type = "l", xlim = c(536,540)) -->
+<!-- ``` -->
 
 ### Handling identification data
 
@@ -612,7 +593,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 11:05:17 2014 
+## Data loaded: Sun Nov 16 11:10:20 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -720,7 +701,7 @@ msexp[[1]]
 plot(msexp[[1]], full=TRUE)
 ```
 
-<img src="figure/specplot-1.png" title="plot of chunk specplot" alt="plot of chunk specplot" style="display: block; margin: auto;" />
+![plot of chunk specplot](figure/specplot-1.png) 
 
 ```r
 as(msexp[[1]], "data.frame")[100:105, ]
@@ -788,8 +769,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 11:05:17 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:05:19 2014 
+## Data loaded: Sun Nov 16 11:10:20 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:10:21 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -875,7 +856,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 11:05:24 2014 
+## mzTab read: Sun Nov 16 11:10:25 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -974,8 +955,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:05:26 2014 
-## Purity corrected: Sun Nov 16 11:05:26 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:10:27 2014 
+## Purity corrected: Sun Nov 16 11:10:27 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -999,7 +980,7 @@ plot0 <- function(x, y, main = "") {
 plot0(qnt, qnt.crct)
 ```
 
-<img src="figure/pureplot-1.png" title="plot of chunk pureplot" alt="plot of chunk pureplot" style="display: block; margin: auto;" />
+![plot of chunk pureplot](figure/pureplot-1.png) 
 
 Various normalisation methods can be applied the `MSnSet` instances
 using the `normalise` method: variance stabilisation (`vsn`), quantile
@@ -1037,10 +1018,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:05:26 2014 
-## Purity corrected: Sun Nov 16 11:05:26 2014 
-## Normalised (quantiles): Sun Nov 16 11:05:26 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 11:05:26 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 11:10:27 2014 
+## Purity corrected: Sun Nov 16 11:10:27 2014 
+## Normalised (quantiles): Sun Nov 16 11:10:27 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 11:10:27 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1078,7 +1059,7 @@ qnt.imp <- impute(qnt0)
 plot0(qnt, qnt.imp)
 ```
 
-<img src="figure/impute-1.png" title="plot of chunk impute" alt="plot of chunk impute" style="display: block; margin: auto;" />
+![plot of chunk impute](figure/impute-1.png) 
 
 #### Exercise
 
@@ -1194,7 +1175,7 @@ kcl
 plot(kcl, exprs(dunkley2006))
 ```
 
-<img src="figure/clust-1.png" title="plot of chunk clust" alt="plot of chunk clust" style="display: block; margin: auto;" />
+![plot of chunk clust](figure/clust-1.png) 
 
 
 ```r
@@ -1216,7 +1197,7 @@ hcl
 plot(hcl, exprs(t(dunkley2006)))
 ```
 
-<img src="figure/clust2-1.png" title="plot of chunk clust2" alt="plot of chunk clust2" style="display: block; margin: auto;" />
+![plot of chunk clust2](figure/clust2-1.png) 
 
 
 ## Annotation
