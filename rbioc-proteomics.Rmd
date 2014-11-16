@@ -174,23 +174,23 @@ Extract the index of the MS2 spectrum with the highest base peak
 intensity and plot its spectrum. Is the data centroided or in profile
 mode?
 
-<!-- #### Solution -->
+#### Solution
 
-<!-- ```{r, ex_raw, fig.align='center'} -->
-<!-- hd2 <- hd[hd$msLevel == 2, ] -->
-<!-- i <- which.max(hd2$basePeakIntensity) -->
-<!-- hd2[i, ] -->
-<!-- pi <- peaks(ms, hd2[i, 1]) -->
-<!-- mz <- hd2[i, "basePeakMZ"] -->
+```{r, ex_raw, fig.align='center'}
+hd2 <- hd[hd$msLevel == 2, ]
+i <- which.max(hd2$basePeakIntensity)
+hd2[i, ]
+pi <- peaks(ms, hd2[i, 1])
+mz <- hd2[i, "basePeakMZ"]
 
-<!-- par(mfrow = c(2, 2)) -->
-<!-- plot(pi, type = "h", main = paste("Acquisition", i)) -->
-<!-- plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5)) -->
+par(mfrow = c(2, 2))
+plot(pi, type = "h", main = paste("Acquisition", i))
+plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
 
-<!-- pj <- peaks(ms, 100) -->
-<!-- plot(pj, type = "l", main = paste("Acquisition", 100)) -->
-<!-- plot(pj, type = "l", xlim = c(536,540)) -->
-<!-- ``` -->
+pj <- peaks(ms, 100)
+plot(pj, type = "l", main = paste("Acquisition", 100))
+plot(pj, type = "l", xlim = c(536,540))
+```
 
 ### Handling identification data
 
@@ -449,7 +449,7 @@ An `MSnExp` is converted to an `MSnSet` by the `quantitation`
 method. Below, we use the iTRAQ 4-plex isobaric tagging strategy
 (defined by the `iTRAQ4` parameter; other tags are available).
 
-```{r, itraq4plot, fig.align='center'}
+```{r, itraq4plot}
 plot(msexp[[1]], full=TRUE, reporters = iTRAQ4)
 ```
 

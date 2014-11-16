@@ -93,6 +93,22 @@ dim(hd)
 names(hd)
 
 
+## ----, ex_raw, fig.align='center'----------------------------------------
+hd2 <- hd[hd$msLevel == 2, ]
+i <- which.max(hd2$basePeakIntensity)
+hd2[i, ]
+pi <- peaks(ms, hd2[i, 1])
+mz <- hd2[i, "basePeakMZ"]
+
+par(mfrow = c(2, 2))
+plot(pi, type = "h", main = paste("Acquisition", i))
+plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
+
+pj <- peaks(ms, 100)
+plot(pj, type = "l", main = paste("Acquisition", 100))
+plot(pj, type = "l", xlim = c(536,540))
+
+
 ## ----, id, cache=TRUE----------------------------------------------------
 library("mzID")
 (f <- dir(system.file("extdata", package = "RforProteomics"),
@@ -150,7 +166,7 @@ show(msnid)
 
 
 ## ----, msnset, echo=FALSE, fig.width = 5, fig.height = 7, fig.align='center'----
-plot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
+lot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
 rect(0, 0, 3, 1.9)
 rect(0, 2, 3, 10)
 rect(3.05, 2, 5, 10)
@@ -208,7 +224,7 @@ kable(qtb)
 
 
 
-## ----, itraq4plot, fig.align='center'------------------------------------
+## ----, itraq4plot--------------------------------------------------------
 plot(msexp[[1]], full=TRUE, reporters = iTRAQ4)
 
 
