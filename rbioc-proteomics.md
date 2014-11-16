@@ -9,7 +9,7 @@ Using R and Bioconductor for proteomics data analysis
 
 [Projet PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France
 
-Version of this document: 3b6ec3a [2014-11-16 22:00:24 +0000]
+Version of this document: 6f6ac51 [2014-11-16 22:08:29 +0000]
 
 
 ## Setup
@@ -632,7 +632,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 22:07:46 2014 
+## Data loaded: Sun Nov 16 22:10:02 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -808,8 +808,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 22:07:46 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:07:48 2014 
+## Data loaded: Sun Nov 16 22:10:02 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:10:04 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -895,7 +895,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 22:07:53 2014 
+## mzTab read: Sun Nov 16 22:10:09 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -994,8 +994,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:07:55 2014 
-## Purity corrected: Sun Nov 16 22:07:55 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:10:11 2014 
+## Purity corrected: Sun Nov 16 22:10:11 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1057,10 +1057,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:07:55 2014 
-## Purity corrected: Sun Nov 16 22:07:55 2014 
-## Normalised (quantiles): Sun Nov 16 22:07:55 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 22:07:55 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:10:11 2014 
+## Purity corrected: Sun Nov 16 22:10:11 2014 
+## Normalised (quantiles): Sun Nov 16 22:10:11 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 22:10:11 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1247,9 +1247,10 @@ such as
 [`biomaRt`](http://bioconductor.org/packages/release/bioc/html/biomaRt.html),
 [`GO.db`](http://www.bioconductor.org/packages/release/data/annotation/html/GO.db.html),
 organism specific annotations, .. are directly relevant to the
-analysis of proteomics data. Some proteomics-centred annotations such
-as the PSI Mass Spectrometry Ontology, Molecular Interaction (PSI MI
-2.5) or Protein Modifications are available through the
+analysis of proteomics data. A total of 93
+ontologies, including some proteomics-centred annotations such as the
+PSI Mass Spectrometry Ontology, Molecular Interaction (PSI MI 2.5) or
+Protein Modifications are available through the
 [`rols`](http://www.bioconductor.org/packages/release/bioc/html/rols.html).
 
 

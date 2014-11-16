@@ -773,9 +773,10 @@ such as
 [`biomaRt`](http://bioconductor.org/packages/release/bioc/html/biomaRt.html),
 [`GO.db`](http://www.bioconductor.org/packages/release/data/annotation/html/GO.db.html),
 organism specific annotations, .. are directly relevant to the
-analysis of proteomics data. Some proteomics-centred annotations such
-as the PSI Mass Spectrometry Ontology, Molecular Interaction (PSI MI
-2.5) or Protein Modifications are available through the
+analysis of proteomics data. A total of `r nrow(ontologies())`
+ontologies, including some proteomics-centred annotations such as the
+PSI Mass Spectrometry Ontology, Molecular Interaction (PSI MI 2.5) or
+Protein Modifications are available through the
 [`rols`](http://www.bioconductor.org/packages/release/bioc/html/rols.html).
 
 ```{r rols}
