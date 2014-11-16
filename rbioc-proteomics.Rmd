@@ -15,7 +15,9 @@ library("BiocInstaller")
 library("RforProteomics")
 ```
 
-The follow packages will be used throughout this documents:
+The follow packages will be used throughout this documents. R version
+3.1.1 or higher is required to install all the packages using
+`BiocInstaller::biocLite`.
 
 ```{r, env, message=FALSE, echo=TRUE, warning=FALSE}
 library("mzR")
@@ -36,8 +38,6 @@ The most convenient way to install all the tutorials requirement (and
 more related content), is to install
 [`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
 with all its dependencies.
-
-
 
 
 ```{r r4pinstall, eval=FALSE}

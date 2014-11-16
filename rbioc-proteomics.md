@@ -17,47 +17,15 @@ The follow packages will be used throughout this documents:
 library("mzR")
 library("mzID")
 library("MSnID")
-```
-
-```
-## Error in library("MSnID"): there is no package called 'MSnID'
-```
-
-```r
 library("MSGFplus")
-```
-
-```
-## Error in library("MSGFplus"): there is no package called 'MSGFplus'
-```
-
-```r
 library("MSnbase")
 library("rpx")
 library("MLInterfaces")
 library("pRoloc")
 library("pRolocdata")
 library("rTANDEM")
-```
-
-```
-## Error in library("rTANDEM"): there is no package called 'rTANDEM'
-```
-
-```r
 library("MSGFplus")
-```
-
-```
-## Error in library("MSGFplus"): there is no package called 'MSGFplus'
-```
-
-```r
 library("MSGFgui")
-```
-
-```
-## Error in library("MSGFgui"): there is no package called 'MSGFgui'
 ```
 
 The most convenient way to install all the tutorials requirement (and
@@ -442,49 +410,38 @@ imported from a `data.frame` or from `mzIdenML` files.
 
 ```r
 library("MSnID")
-```
-
-```
-## Error in library("MSnID"): there is no package called 'MSnID'
-```
-
-```r
 msnid <- MSnID(".")
 ```
 
 ```
-## Error in eval(expr, envir, enclos): could not find function "MSnID"
+## Note, the anticipated/suggested columns in the
+## peptide-to-spectrum matching results are:
+## -----------------------------------------------
+## accession
+## calculatedMassToCharge
+## chargeState
+## experimentalMassToCharge
+## isDecoy
+## peptide
+## spectrumFile
+## spectrumID
 ```
 
 ```r
 PSMresults <- read.delim(system.file("extdata", "human_brain.txt",
                                      package="MSnID"),
                          stringsAsFactors=FALSE)
-```
-
-```
-## Warning in file(file, "rt"): file("") only supports open = "w+" and open =
-## "w+b": using the former
-```
-
-```
-## Error in read.table(file = file, header = header, sep = sep, quote = quote, : no lines available in input
-```
-
-```r
 psms(msnid) <- PSMresults
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'PSMresults' not found
-```
-
-```r
 show(msnid)
 ```
 
 ```
-## Error in show(msnid): error in evaluating the argument 'object' in selecting a method for function 'show': Error: object 'msnid' not found
+## MSnID object
+## Working directory: "."
+## #Spectrum Files:  1 
+## #PSMs: 997 at 37 % FDR
+## #peptides: 687 at 57 % FDR
+## #accessions: 665 at 65 % FDR
 ```
 
 The package then enables to define, optimise and apply filtering based
@@ -494,84 +451,43 @@ errors, etc. and assess PSM, peptide and protein FDR levels.
 
 ```r
 msnid$msmsScore <- -log10(msnid$`MS.GF.SpecEValue`)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'msnid' not found
-```
-
-```r
 msnid$absParentMassErrorPPM <- abs(mass_measurement_error(msnid))
-```
 
-```
-## Error in eval(expr, envir, enclos): could not find function "mass_measurement_error"
-```
-
-```r
 filtObj <- MSnIDFilter(msnid)
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "MSnIDFilter"
-```
-
-```r
 filtObj$absParentMassErrorPPM <- list(comparison="<", threshold=5.0)
-```
-
-```
-## Error in filtObj$absParentMassErrorPPM <- list(comparison = "<", threshold = 5): object 'filtObj' not found
-```
-
-```r
 filtObj$msmsScore <- list(comparison=">", threshold=8.0)
-```
-
-```
-## Error in filtObj$msmsScore <- list(comparison = ">", threshold = 8): object 'filtObj' not found
-```
-
-```r
 show(filtObj)
 ```
 
 ```
-## Error in show(filtObj): error in evaluating the argument 'object' in selecting a method for function 'show': Error: object 'filtObj' not found
+## MSnIDFilter object
+## (absParentMassErrorPPM < 5) & (msmsScore > 8)
 ```
 
 ```r
 filtObj.grid <- optimize_filter(filtObj, msnid, fdr.max=0.01,
                                 method="Grid", level="peptide",
                                 n.iter=500)
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "optimize_filter"
-```
-
-```r
 show(filtObj.grid)
 ```
 
 ```
-## Error in show(filtObj.grid): error in evaluating the argument 'object' in selecting a method for function 'show': Error: object 'filtObj.grid' not found
+## MSnIDFilter object
+## (absParentMassErrorPPM < 2.3) & (msmsScore > 7.8)
 ```
 
 ```r
 msnid <- apply_filter(msnid, filtObj.grid)
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "apply_filter"
-```
-
-```r
 show(msnid)
 ```
 
 ```
-## Error in show(msnid): error in evaluating the argument 'object' in selecting a method for function 'show': Error: object 'msnid' not found
+## MSnID object
+## Working directory: "."
+## #Spectrum Files:  1 
+## #PSMs: 346 at 0 % FDR
+## #peptides: 160 at 0 % FDR
+## #accessions: 132 at 0 % FDR
 ```
 
 The resulting data can be exported to a `data.frame` or to a dedicated
@@ -610,7 +526,7 @@ quantFile
 ```
 
 ```
-## [1] "/home/lg390/R/x86_64-unknown-linux-gnu-library/3.2/MSnbase/extdata/dummyiTRAQ.mzXML"
+## [1] "/home/lg390/R/x86_64-unknown-linux-gnu-library/3.1/MSnbase/extdata/dummyiTRAQ.mzXML"
 ```
 
 ```r
@@ -631,8 +547,8 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 09:10:27 2014 
-##  MSnbase version: 1.15.2 
+## Data loaded: Sun Nov 16 09:11:44 2014 
+##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
 ##   rowNames: 1
@@ -660,7 +576,7 @@ identFile
 ```
 
 ```
-## [1] "/home/lg390/R/x86_64-unknown-linux-gnu-library/3.2/MSnbase/extdata/dummyiTRAQ.mzid"
+## [1] "/home/lg390/R/x86_64-unknown-linux-gnu-library/3.1/MSnbase/extdata/dummyiTRAQ.mzid"
 ```
 
 ```r
@@ -807,9 +723,9 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 09:10:27 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 09:10:28 2014 
-##  MSnbase version: 1.15.2
+## Data loaded: Sun Nov 16 09:11:44 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 09:11:46 2014 
+##  MSnbase version: 1.14.0
 ```
 
 Other MS2 quantitation methods available in `quantify` include the
@@ -894,8 +810,8 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 09:10:31 2014 
-##  MSnbase version: 1.15.2
+## mzTab read: Sun Nov 16 09:11:48 2014 
+##  MSnbase version: 1.14.0
 ```
 
 It is also possible to import arbitrary spreadsheets as `MSnSet`
@@ -993,8 +909,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 09:10:32 2014 
-## Purity corrected: Sun Nov 16 09:10:32 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 09:11:50 2014 
+## Purity corrected: Sun Nov 16 09:11:50 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1056,10 +972,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 09:10:32 2014 
-## Purity corrected: Sun Nov 16 09:10:32 2014 
-## Normalised (quantiles): Sun Nov 16 09:10:32 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 09:10:32 2014 
+## iTRAQ4 quantification by trapezoidation: Sun Nov 16 09:11:50 2014 
+## Purity corrected: Sun Nov 16 09:11:50 2014 
+## Normalised (quantiles): Sun Nov 16 09:11:50 2014 
+## Combined 55 features into 3 using sum: Sun Nov 16 09:11:50 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1280,7 +1196,7 @@ vignettes.
 
 
 ```
-## R Under development (unstable) (2014-11-01 r66923)
+## R version 3.1.1 Patched (2014-09-02 r66514)
 ## Platform: x86_64-unknown-linux-gnu (64-bit)
 ## 
 ## attached base packages:
@@ -1288,58 +1204,62 @@ vignettes.
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] lattice_0.20-29      pRolocdata_1.5.1     pRoloc_1.7.0        
-##  [4] MLInterfaces_1.47.0  cluster_1.15.3       annotate_1.45.0     
-##  [7] XML_3.98-1.1         AnnotationDbi_1.29.1 GenomeInfoDb_1.3.7  
-## [10] IRanges_2.1.10       S4Vectors_0.5.6      rpx_1.3.0           
-## [13] mzID_1.5.1           RforProteomics_1.5.2 MSnbase_1.15.2      
-## [16] BiocParallel_1.1.5   mzR_2.1.1            Rcpp_0.11.3         
-## [19] Biobase_2.27.0       BiocGenerics_0.13.1  BiocInstaller_1.17.1
-## [22] knitr_1.8           
+##  [1] lattice_0.20-29      MSGFgui_1.0.1        rTANDEM_1.6.0       
+##  [4] data.table_1.9.4     pRolocdata_1.5.2     pRoloc_1.7.1        
+##  [7] MLInterfaces_1.46.0  cluster_1.15.3       annotate_1.44.0     
+## [10] XML_3.98-1.1         AnnotationDbi_1.28.1 GenomeInfoDb_1.2.3  
+## [13] IRanges_2.0.0        S4Vectors_0.4.0      rpx_1.2.0           
+## [16] MSGFplus_1.0.3       MSnID_1.0.0          mzID_1.4.1          
+## [19] RforProteomics_1.5.2 MSnbase_1.14.0       BiocParallel_1.0.0  
+## [22] mzR_2.0.0            Rcpp_0.11.3          Biobase_2.26.0      
+## [25] BiocGenerics_0.12.1  BiocInstaller_1.16.1 knitr_1.8           
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] affy_1.45.0                  affyio_1.35.0               
+##  [1] affy_1.44.0                  affyio_1.34.0               
 ##  [3] base64enc_0.1-2              BatchJobs_1.5               
-##  [5] BBmisc_1.8                   biocViews_1.35.6            
+##  [5] BBmisc_1.8                   biocViews_1.34.1            
 ##  [7] BradleyTerry2_1.0-5          brew_1.0-6                  
 ##  [9] brglm_0.5-9                  car_2.0-21                  
-## [11] caret_6.0-37                 Category_2.33.0             
-## [13] checkmate_1.5.0              class_7.3-11                
-## [15] codetools_0.2-9              colorspace_1.2-4            
-## [17] DBI_0.3.1                    digest_0.6.4                
-## [19] doParallel_1.0.8             e1071_1.6-4                 
-## [21] evaluate_0.5.5               fail_1.2                    
-## [23] FNN_1.1                      foreach_1.4.2               
-## [25] formatR_1.0                  gdata_2.13.3                
-## [27] genefilter_1.49.2            ggplot2_1.0.0               
-## [29] graph_1.45.0                 grid_3.2.0                  
-## [31] gridSVG_1.4-0                GSEABase_1.29.0             
-## [33] gtable_0.1.2                 gtools_3.4.1                
-## [35] htmltools_0.2.6              httpuv_1.3.2                
-## [37] impute_1.41.0                interactiveDisplay_1.5.0    
-## [39] interactiveDisplayBase_1.5.1 iterators_1.0.7             
-## [41] kernlab_0.9-19               labeling_0.3                
-## [43] limma_3.23.1                 lme4_1.1-7                  
-## [45] lpSolve_5.6.10               MALDIquant_1.11             
-## [47] MASS_7.3-35                  Matrix_1.1-4                
-## [49] mclust_4.4                   mime_0.2                    
-## [51] minqa_1.2.4                  munsell_0.4.2               
-## [53] mvtnorm_1.0-0                nlme_3.1-118                
-## [55] nloptr_1.0.4                 nnet_7.3-8                  
-## [57] pcaMethods_1.57.0            pls_2.4-3                   
-## [59] plyr_1.8.1                   preprocessCore_1.29.0       
-## [61] proto_0.3-10                 proxy_0.4-13                
-## [63] R6_2.0.1                     randomForest_4.6-10         
-## [65] RBGL_1.43.0                  RColorBrewer_1.0-5          
-## [67] RCurl_1.95-4.3               rda_1.0.2-2                 
-## [69] reshape2_1.4                 RJSONIO_1.3-0               
-## [71] R.methodsS3_1.6.1            R.oo_1.18.0                 
-## [73] rpart_4.1-8                  RSQLite_1.0.0               
-## [75] RUnit_0.4.27                 R.utils_1.34.0              
-## [77] sampling_2.6                 scales_0.2.4                
-## [79] sendmailR_1.2-1              sfsmisc_1.0-26              
-## [81] shiny_0.10.2.1               splines_3.2.0               
-## [83] stringr_0.6.2                survival_2.37-7             
-## [85] tools_3.2.0                  vsn_3.35.0                  
-## [87] xtable_1.7-4                 zlibbioc_1.13.0
+## [11] caret_6.0-37                 Category_2.32.0             
+## [13] checkmate_1.5.0              chron_2.3-45                
+## [15] class_7.3-11                 codetools_0.2-9             
+## [17] colorspace_1.2-4             DBI_0.3.1                   
+## [19] digest_0.6.4                 doParallel_1.0.8            
+## [21] e1071_1.6-4                  evaluate_0.5.5              
+## [23] fail_1.2                     FNN_1.1                     
+## [25] foreach_1.4.2                formatR_1.0                 
+## [27] gdata_2.13.3                 genefilter_1.48.1           
+## [29] ggplot2_1.0.0                graph_1.44.0                
+## [31] grid_3.1.1                   gridSVG_1.4-0               
+## [33] GSEABase_1.28.0              gtable_0.1.2                
+## [35] gtools_3.4.1                 htmltools_0.2.6             
+## [37] httpuv_1.3.2                 impute_1.40.0               
+## [39] interactiveDisplay_1.4.0     interactiveDisplayBase_1.4.0
+## [41] iterators_1.0.7              kernlab_0.9-19              
+## [43] labeling_0.3                 limma_3.22.1                
+## [45] lme4_1.1-7                   lpSolve_5.6.10              
+## [47] MALDIquant_1.11              MASS_7.3-35                 
+## [49] Matrix_1.1-4                 mclust_4.4                  
+## [51] mime_0.2                     minqa_1.2.4                 
+## [53] munsell_0.4.2                mvtnorm_1.0-0               
+## [55] nlme_3.1-118                 nloptr_1.0.4                
+## [57] nnet_7.3-8                   pcaMethods_1.56.0           
+## [59] pls_2.4-3                    plyr_1.8.1                  
+## [61] preprocessCore_1.28.0        proto_0.3-10                
+## [63] proxy_0.4-13                 R6_2.0.1                    
+## [65] randomForest_4.6-10          RBGL_1.42.0                 
+## [67] R.cache_0.10.0               RColorBrewer_1.0-5          
+## [69] RCurl_1.95-4.3               rda_1.0.2-2                 
+## [71] reshape2_1.4                 rJava_0.9-6                 
+## [73] RJSONIO_1.3-0                R.methodsS3_1.6.1           
+## [75] R.oo_1.18.0                  rpart_4.1-8                 
+## [77] RSQLite_1.0.0                RUnit_0.4.27                
+## [79] R.utils_1.34.0               sampling_2.6                
+## [81] scales_0.2.4                 sendmailR_1.2-1             
+## [83] sfsmisc_1.0-26               shiny_0.10.2.1              
+## [85] shinyFiles_0.4.0             splines_3.1.1               
+## [87] stringr_0.6.2                survival_2.37-7             
+## [89] tools_3.1.1                  vsn_3.34.0                  
+## [91] xlsx_0.5.7                   xlsxjars_0.6.1              
+## [93] xtable_1.7-4                 zlibbioc_1.12.0
 ```
