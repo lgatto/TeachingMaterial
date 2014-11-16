@@ -434,10 +434,12 @@ identification results. The
 [`MSnbase`](http://bioconductor.org/packages/release/bioc/html/MSnbase.html)
 package provides abstractions for raw data through the `MSnExp` class
 and containers for quantification data via the `MSnSet` class. Both
-store the actual assay data (spectra or quantitation matrix) and
-sample and feature metadata, accessed with `spectra` (or the
-`[`, `[[` operators) or `exprs`, `pData` and `fData`.
+store
 
+1. the actual assay data (spectra or quantitation matrix), accessed
+   with `spectra` (or the `[`, `[[` operators) or `exprs`; 
+2. sample metadata, accessed as a `data.frame` with `pData`;
+3. feature metadata, accessed as a `data.frame` with `fData`.
 
 The figure below give a schematics of an `MSnSet` instance and the
 relation between the assay data and the respective feature and sample
