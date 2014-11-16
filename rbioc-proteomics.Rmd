@@ -1,6 +1,16 @@
 Using R and Bioconductor for proteomics data analysis
 =======
 
+Laurent Gatto
+[Computational Proteomics Unit](http://cpu.sysbiol.cam.ac.uk)
+
+Version of this document
+
+```{r docver}
+system('git log -1 --format="%h [%ci]" &')
+```
+
+
 ## Setup
 
 ```{r env0, message=FALSE, echo=FALSE, warning=FALSE}

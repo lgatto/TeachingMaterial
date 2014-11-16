@@ -1,4 +1,8 @@
 
+## ------------------------------------------------------------------------
+system('git log -1 --format="%h [%ci]" &')
+
+
 ## ----env0, message=FALSE, echo=FALSE, warning=FALSE----------------------
 library("knitr")
 opts_knit$set(error = FALSE)
