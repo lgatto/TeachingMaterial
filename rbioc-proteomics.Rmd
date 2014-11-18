@@ -525,6 +525,7 @@ plot(msexp[[1]], full=TRUE)
 msexp[1:3]
 plot(msexp[1:3], full=TRUE)
 ```
+
 Coercion to a `data.frame` is straightforward.
 
 ```{r}
@@ -621,6 +622,20 @@ head(fData(res))
 ```
 
 ## Data processing and analysis
+
+### Raw data processing
+
+For raw data processing look at `MSnbases`'s `clean`, `smooth`,
+`pickPeaks`, `removePeaks` and `trimMz` for `MSnExp` and spectra
+processing methods.
+
+The
+[`MALDIquant`](http://cran.r-project.org/web/packages/MALDIquant/index.html)
+and
+[`xcms`](http://bioconductor.org/packages/release/bioc/html/xcms.html)
+packages also feautres a wide range of raw data processing methods on
+their own ad hoc data instance types.
+
 
 ### Processing and normalisation
 
