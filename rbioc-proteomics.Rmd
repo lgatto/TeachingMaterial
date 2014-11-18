@@ -166,15 +166,15 @@ mzf
 
 <!-- #### Solution -->
 
-<!-- ```{r pxd000561} -->
-<!-- hum <- PXDataset("PXD000561") -->
-<!-- hum -->
-<!-- humf <- pxfiles(hum) -->
-<!-- length(humf) -->
-<!-- table(sub("^.+\\.", "", humf)) -->
-<!-- rawf <- grep("raw", humf, value = TRUE) -->
-<!-- table(sub("_.+$", "", rawf)) -->
-<!-- ``` -->
+```{r pxd000561, cache=TRUE, echo=FALSE}
+hum <- PXDataset("PXD000561")
+hum
+humf <- pxfiles(hum)
+length(humf)
+table(sub("^.+\\.", "", humf))
+rawf <- grep("raw", humf, value = TRUE)
+table(sub("_.+$", "", rawf))
+```'''
 
 ### Handling raw MS data
 
