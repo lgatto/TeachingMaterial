@@ -67,7 +67,7 @@ library("rpx")
 pxannounced()
 
 
-## ----, pxd---------------------------------------------------------------
+## ----, pxd, cache=TRUE---------------------------------------------------
 px <- PXDataset("PXD000001")
 px
 pxfiles(px)
@@ -80,10 +80,19 @@ pxfiles(px)
 
 
 ## ----, pxget-------------------------------------------------------------
-mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
-if (!file.exists(mzf))
-    mzf <- pxget(px, pxfiles(px)[6])
+mzf <- pxget(px, pxfiles(px)[6])
 mzf
+
+
+## ----pxd000561, cache=TRUE, echo=FALSE-----------------------------------
+library("rpx")
+hum <- PXDataset("PXD000561")
+hum
+humf <- pxfiles(hum)
+length(humf)
+table(sub("^.+\\.", "", humf))
+rawf <- grep("raw", humf, value = TRUE)
+table(sub("_.+$", "", rawf))
 
 
 ## ----, rawms-------------------------------------------------------------
@@ -324,6 +333,11 @@ plot(kcl, exprs(dunkley2006))
 hcl <- MLearn( ~ ., data = t(dunkley2006), hclustI(distFun =  dist, cutParm = list(k = 4)))
 hcl
 plot(hcl, exprs(t(dunkley2006)))
+
+
+## ----nont, echo=FALSE, cache=TRUE----------------------------------------
+library("rols")
+nont <- nrow(ontologies())
 
 
 ## ----rols----------------------------------------------------------------

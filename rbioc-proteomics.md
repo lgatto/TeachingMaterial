@@ -9,7 +9,7 @@ Using R and Bioconductor for proteomics data analysis
 
 [Projet PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France
 
-Version of this document: 6f6ac51 [2014-11-16 22:08:29 +0000]
+Version of this document: a5198de [2014-11-18 14:37:14 +0000]
 
 
 ## Setup
@@ -123,21 +123,21 @@ pxannounced()
 
 ```
 ##     Data.Set    Publication.Data             Message
-## 1  PXD000898 2014-11-13 14:42:49                 New
-## 2  PXD000922 2014-11-12 11:03:38                 New
-## 3  PXD001243 2014-11-12 08:54:07                 New
-## 4  PXD001045 2014-11-11 08:20:08                 New
-## 5  PXD001090 2014-11-10 13:37:29                 New
-## 6  PXD001089 2014-11-10 13:34:47                 New
-## 7  PXD001099 2014-11-10 11:47:19 Updated information
-## 8  PXD001203 2014-11-10 11:46:31                 New
-## 9  PXD001074 2014-11-06 09:52:57                 New
-## 10 PXD001165 2014-11-05 15:22:20                 New
-## 11 PXD001423 2014-11-04 14:01:46                 New
-## 12 PXD001422 2014-11-04 13:57:55                 New
-## 13 PXD001421 2014-11-04 13:41:36                 New
-## 14 PXD001420 2014-11-04 13:25:20                 New
-## 15 PXD001419 2014-11-04 13:21:13                 New
+## 1  PXD000715 2014-11-18 16:34:39 Updated information
+## 2  PXD000837 2014-11-18 16:30:02 Updated information
+## 3  PXD001354 2014-11-18 16:29:15 Updated information
+## 4  PXD000627 2014-11-18 16:28:07 Updated information
+## 5  PXD001125 2014-11-18 16:27:02 Updated information
+## 6  PXD001045 2014-11-18 16:26:04 Updated information
+## 7  PXD001260 2014-11-18 16:24:55 Updated information
+## 8  PXD001414 2014-11-18 16:22:44 Updated information
+## 9  PXD000715 2014-11-18 09:35:10                 New
+## 10 PXD000837 2014-11-18 09:27:36                 New
+## 11 PXD001260 2014-11-18 09:13:08 Updated information
+## 12 PXD001045 2014-11-18 09:12:15 Updated information
+## 13 PXD001354 2014-11-18 09:11:16                 New
+## 14 PXD001125 2014-11-18 09:05:58                 New
+## 15 PXD001414 2014-11-18 08:51:50                 New
 ```
 
 
@@ -178,14 +178,19 @@ pxref(px)
 ```
 
 Data files can then be downloaded with the `pxget` function as
-illustrated below. Alternatively, the file is available on the
-workshop's Amazon virtual machine in `/data/Proteomics/data/`.
+illustrated below. 
 
 
 ```r
-mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
-if (!file.exists(mzf))
-    mzf <- pxget(px, pxfiles(px)[6])
+mzf <- pxget(px, pxfiles(px)[6])
+```
+
+```
+## Downloading 1 file
+## TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML already present.
+```
+
+```r
 mzf
 ```
 
@@ -201,16 +206,29 @@ mzf
 
 <!-- #### Solution -->
 
-<!-- ```{r pxd000561} -->
-<!-- hum <- PXDataset("PXD000561") -->
-<!-- hum -->
-<!-- humf <- pxfiles(hum) -->
-<!-- length(humf) -->
-<!-- table(sub("^.+\\.", "", humf)) -->
-<!-- rawf <- grep("raw", humf, value = TRUE) -->
-<!-- table(sub("_.+$", "", rawf)) -->
-<!-- ``` -->
 
+```
+## Object of class "PXDataset"
+##  Id: PXD000561 with 2384 files
+##  [1] 'Adult_Adrenalgland_Gel_Elite_49.msf' ... [2384] 'README.txt'
+##  Use 'pxfiles(.)' to see all files.
+```
+
+```
+## [1] 2384
+```
+
+```
+## 
+##  msf  raw  txt  xls  xml 
+##   85 2212    1    1   85
+```
+
+```
+## 
+## Adult Fetal 
+##  1715   497
+```
 
 ### Handling raw MS data
 
@@ -632,7 +650,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 22:10:02 2014 
+## Data loaded: Tue Nov 18 19:10:20 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -808,8 +826,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Nov 16 22:10:02 2014 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:10:04 2014 
+## Data loaded: Tue Nov 18 19:10:20 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:10:21 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -895,7 +913,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Sun Nov 16 22:10:09 2014 
+## mzTab read: Tue Nov 18 19:10:26 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -994,8 +1012,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:10:11 2014 
-## Purity corrected: Sun Nov 16 22:10:11 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:10:28 2014 
+## Purity corrected: Tue Nov 18 19:10:28 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1057,10 +1075,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Sun Nov 16 22:10:11 2014 
-## Purity corrected: Sun Nov 16 22:10:11 2014 
-## Normalised (quantiles): Sun Nov 16 22:10:11 2014 
-## Combined 55 features into 3 using sum: Sun Nov 16 22:10:11 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:10:28 2014 
+## Purity corrected: Tue Nov 18 19:10:28 2014 
+## Normalised (quantiles): Tue Nov 18 19:10:28 2014 
+## Combined 55 features into 3 using sum: Tue Nov 18 19:10:28 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1138,7 +1156,7 @@ resources for proteomics data:
   to discover differentially expressed proteins between two biological
   conditions. Three tests are available: Poisson GLM regression,
   quasi-likelihood GLM regression, and the negative binomial of the
-  edgeR package.
+  [`edgeR`](http://www.bioconductor.org/packages/release/bioc/html/edgeR.html) package.
 
 <!-- ```{r, msmstest} -->
 <!-- library(msmsTests) -->
@@ -1241,16 +1259,18 @@ plot(hcl, exprs(t(dunkley2006)))
 
 ## Annotation
 
+
+
 All the
 [Bioconductor annotation infrastructure](http://bioconductor.org/help/workflows/annotation/annotation/),
 such as
 [`biomaRt`](http://bioconductor.org/packages/release/bioc/html/biomaRt.html),
 [`GO.db`](http://www.bioconductor.org/packages/release/data/annotation/html/GO.db.html),
 organism specific annotations, .. are directly relevant to the
-analysis of proteomics data. A total of 93
-ontologies, including some proteomics-centred annotations such as the
-PSI Mass Spectrometry Ontology, Molecular Interaction (PSI MI 2.5) or
-Protein Modifications are available through the
+analysis of proteomics data. A total of 93 ontologies, including
+some proteomics-centred annotations such as the PSI Mass Spectrometry
+Ontology, Molecular Interaction (PSI MI 2.5) or Protein Modifications
+are available through the
 [`rols`](http://www.bioconductor.org/packages/release/bioc/html/rols.html).
 
 

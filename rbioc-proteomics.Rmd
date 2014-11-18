@@ -133,7 +133,7 @@ library("rpx")
 pxannounced()
 ```
 
-```{r, pxd}
+```{r, pxd, cache=TRUE}
 px <- PXDataset("PXD000001")
 px
 pxfiles(px)
@@ -148,13 +148,10 @@ pxref(px)
 ```
 
 Data files can then be downloaded with the `pxget` function as
-illustrated below. Alternatively, the file is available on the
-workshop's Amazon virtual machine in `/data/Proteomics/data/`.
+illustrated below. 
 
 ```{r, pxget}
-mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
-if (!file.exists(mzf))
-    mzf <- pxget(px, pxfiles(px)[6])
+mzf <- pxget(px, pxfiles(px)[6])
 mzf
 ```
 
@@ -167,6 +164,7 @@ mzf
 <!-- #### Solution -->
 
 ```{r pxd000561, cache=TRUE, echo=FALSE}
+library("rpx")
 hum <- PXDataset("PXD000561")
 hum
 humf <- pxfiles(hum)
@@ -174,7 +172,7 @@ length(humf)
 table(sub("^.+\\.", "", humf))
 rawf <- grep("raw", humf, value = TRUE)
 table(sub("_.+$", "", rawf))
-```'''
+```
 
 ### Handling raw MS data
 
