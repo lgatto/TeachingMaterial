@@ -195,7 +195,7 @@ library("MSnbase")
 rawFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
                full.name = TRUE, pattern = "mzXML$")
 basename(rawFile)
-msexp <- readMSData(rawFile)
+msexp <- readMSData(rawFile, verbose = FALSE)
 msexp
 
 
