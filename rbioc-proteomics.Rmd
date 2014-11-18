@@ -224,6 +224,11 @@ names(hd)
 <!-- plot(pj, type = "l", xlim = c(536,540)) -->
 <!-- ``` -->
 
+> Read the `MSmap` manual and look at the example to learn how the
+> `mzR` raw data support can be exploited to generate maps of slides
+> of raw MS data. (Note that the `hd` variable containing the raw data
+> header was missing in version < `1.14.1`.)
+
 ### Handling identification data
 
 The `RforProteomics` package distributes a small identification result
@@ -440,10 +445,11 @@ store
 2. sample metadata, accessed as a `data.frame` with `pData`;
 3. feature metadata, accessed as a `data.frame` with `fData`.
 
+<!-- `]]`, `]` -->
+
 The figure below give a schematics of an `MSnSet` instance and the
 relation between the assay data and the respective feature and sample
 metadata.
-
 
 ```{r, msnset, echo=FALSE, fig.width = 5, fig.height = 7, fig.align='center'}
 plot(NA, xlim = c(0, 5), ylim = c(0, 10), axes=FALSE, xlab = NA, ylab = NA)
@@ -472,35 +478,50 @@ Another useful slot is `processingData`, accessed with
 `processingData(.)`, that records all the processing that objects have
 undergone since their creation (see examples below).
 
-The `readMSData` will parse the raw data, extract the MS2 spectra and
-construct an MS experiment file.
+The `readMSData` will parse the raw data, extract the MS2 spectra (by
+default) and construct an MS experiment file.
+
+(Note that while `readMSData` supports MS1 data, this is currently not
+convenient as all the data is read into memory.)
 
 ```{r, msnbase}
 library("MSnbase")
-quantFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
-                 full.name = TRUE, pattern = "mzXML$")
-quantFile
-msexp <- readMSData(quantFile, verbose=FALSE)
+rawFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
+               full.name = TRUE, pattern = "mzXML$")
+basename(rawFile)
+msexp <- readMSData(rawFile)
 msexp
+```
+
+MS2 spectra can be extracted as a list of `Spectrum2` objects with the `spectra`
+accessor or with the `[` operator.  Individual can be accessed with `[[`.
+
+```{r}
+length(msexp)
+msexp[[2]]
 ```
 
 The identification results stemming from the same raw data file can
 then be used to add PSM matches.
 
 ```{r, addid}
+fData(msexp)
 ## find path to a mzIdentML file
 identFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
                  full.name = TRUE, pattern = "dummyiTRAQ.mzid")
-identFile
+basename(identFile)
 msexp <- addIdentificationData(msexp, identFile)
 fData(msexp)
 ```
+
 
 ```{r, specplot}
 msexp[[1]]
 plot(msexp[[1]], full=TRUE)
 as(msexp[[1]], "data.frame")[100:105, ]
 ```
+
+> 
 
 ### Quantitative proteomics
 
@@ -560,6 +581,9 @@ counting process.
 package supports quantitation from centroided `mgf` peak lists or its
 own tab-separated files that can be generated from Mascot and Phenyx
 vendor files.
+
+> Have a look at the `?quantify` documentation file and review the
+> above by walking through the example.
 
 ### Importing third-party data
 

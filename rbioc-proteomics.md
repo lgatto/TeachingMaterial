@@ -9,7 +9,7 @@ Using R and Bioconductor for proteomics data analysis
 
 [Projet PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France
 
-Version of this document: 9f3d8ef [2014-11-18 19:14:07 +0000]
+Version of this document: f123d2a [2014-11-18 19:15:33 +0000]
 
 
 ## Setup
@@ -286,6 +286,11 @@ names(hd)
 <!-- plot(pj, type = "l", main = paste("Acquisition", 100)) -->
 <!-- plot(pj, type = "l", xlim = c(536,540)) -->
 <!-- ``` -->
+
+> Read the `MSmap` manual and look at the example to learn how the
+> `mzR` raw data support can be exploited to generate maps of slides
+> of raw MS data. (Note that the `hd` variable containing the raw data
+> header was missing in version < `1.14.1`.)
 
 ### Handling identification data
 
@@ -584,10 +589,11 @@ store
 2. sample metadata, accessed as a `data.frame` with `pData`;
 3. feature metadata, accessed as a `data.frame` with `fData`.
 
+<!-- `]]`, `]` -->
+
 The figure below give a schematics of an `MSnSet` instance and the
 relation between the assay data and the respective feature and sample
 metadata.
-
 
 <img src="figure/msnset-1.png" title="plot of chunk msnset" alt="plot of chunk msnset" style="display: block; margin: auto;" />
 
@@ -595,23 +601,42 @@ Another useful slot is `processingData`, accessed with
 `processingData(.)`, that records all the processing that objects have
 undergone since their creation (see examples below).
 
-The `readMSData` will parse the raw data, extract the MS2 spectra and
-construct an MS experiment file.
+The `readMSData` will parse the raw data, extract the MS2 spectra (by
+default) and construct an MS experiment file.
+
+(Note that while `readMSData` supports MS1 data, this is currently not
+convenient as all the data is read into memory.)
 
 
 ```r
 library("MSnbase")
-quantFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
-                 full.name = TRUE, pattern = "mzXML$")
-quantFile
+rawFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
+               full.name = TRUE, pattern = "mzXML$")
+basename(rawFile)
 ```
 
 ```
-## [1] "/home/lg390/R/x86_64-unknown-linux-gnu-library/3.1/MSnbase/extdata/dummyiTRAQ.mzXML"
+## [1] "dummyiTRAQ.mzXML"
 ```
 
 ```r
-msexp <- readMSData(quantFile, verbose=FALSE)
+msexp <- readMSData(rawFile)
+```
+
+```
+## Reading 5 MS2 spectra from file dummyiTRAQ.mzXML
+##   |                                                                         |                                                                 |   0%  |                                                                         |=============                                                    |  20%  |                                                                         |==========================                                       |  40%  |                                                                         |=======================================                          |  60%  |                                                                         |====================================================             |  80%  |                                                                         |=================================================================| 100%
+```
+
+```
+## Caching...
+```
+
+```
+## Creating 'MSnExp' object
+```
+
+```r
 msexp
 ```
 
@@ -628,7 +653,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 19:15:09 2014 
+## Data loaded: Tue Nov 18 19:51:36 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -645,19 +670,58 @@ msexp
 ## experimentData: use 'experimentData(object)'
 ```
 
+MS2 spectra can be extracted as a list of `Spectrum2` objects with the `spectra`
+accessor or with the `[` operator.  Individual can be accessed with `[[`.
+
+
+```r
+length(msexp)
+```
+
+```
+## [1] 5
+```
+
+```r
+msexp[[2]]
+```
+
+```
+## Object of class "Spectrum2"
+##  Precursor: 546.9586 
+##  Retention time: 25:2 
+##  Charge: 3 
+##  MSn level: 2 
+##  Peaks count: 1012 
+##  Total ion count: 56758067
+```
+
 The identification results stemming from the same raw data file can
 then be used to add PSM matches.
 
 
 ```r
-## find path to a mzIdentML file
-identFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
-                 full.name = TRUE, pattern = "dummyiTRAQ.mzid")
-identFile
+fData(msexp)
 ```
 
 ```
-## [1] "/home/lg390/R/x86_64-unknown-linux-gnu-library/3.1/MSnbase/extdata/dummyiTRAQ.mzid"
+##      spectrum
+## X1.1        1
+## X2.1        2
+## X3.1        3
+## X4.1        4
+## X5.1        5
+```
+
+```r
+## find path to a mzIdentML file
+identFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
+                 full.name = TRUE, pattern = "dummyiTRAQ.mzid")
+basename(identFile)
+```
+
+```
+## [1] "dummyiTRAQ.mzid"
 ```
 
 ```r
@@ -718,6 +782,7 @@ fData(msexp)
 ```
 
 
+
 ```r
 msexp[[1]]
 ```
@@ -751,6 +816,8 @@ as(msexp[[1]], "data.frame")[100:105, ]
 ## 104 141.1091 155376.312
 ## 105 141.1117   4752.541
 ```
+
+> 
 
 ### Quantitative proteomics
 
@@ -804,8 +871,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 19:15:09 2014 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:15:11 2014 
+## Data loaded: Tue Nov 18 19:51:36 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:51:37 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -843,6 +910,9 @@ counting process.
 package supports quantitation from centroided `mgf` peak lists or its
 own tab-separated files that can be generated from Mascot and Phenyx
 vendor files.
+
+> Have a look at the `?quantify` documentation file and review the
+> above by walking through the example.
 
 ### Importing third-party data
 
@@ -891,7 +961,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Tue Nov 18 19:15:15 2014 
+## mzTab read: Tue Nov 18 19:51:42 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -990,8 +1060,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:15:17 2014 
-## Purity corrected: Tue Nov 18 19:15:17 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:51:44 2014 
+## Purity corrected: Tue Nov 18 19:51:44 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1053,10 +1123,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:15:17 2014 
-## Purity corrected: Tue Nov 18 19:15:17 2014 
-## Normalised (quantiles): Tue Nov 18 19:15:17 2014 
-## Combined 55 features into 3 using sum: Tue Nov 18 19:15:17 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:51:44 2014 
+## Purity corrected: Tue Nov 18 19:51:44 2014 
+## Normalised (quantiles): Tue Nov 18 19:51:44 2014 
+## Combined 55 features into 3 using sum: Tue Nov 18 19:51:44 2014 
 ##  MSnbase version: 1.1.22
 ```
 

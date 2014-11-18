@@ -192,18 +192,24 @@ text(4, 6, "feature\nmetadata", cex = 1.5)
 
 ## ----, msnbase-----------------------------------------------------------
 library("MSnbase")
-quantFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
-                 full.name = TRUE, pattern = "mzXML$")
-quantFile
-msexp <- readMSData(quantFile, verbose=FALSE)
+rawFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
+               full.name = TRUE, pattern = "mzXML$")
+basename(rawFile)
+msexp <- readMSData(rawFile)
 msexp
 
 
+## ------------------------------------------------------------------------
+length(msexp)
+msexp[[2]]
+
+
 ## ----, addid-------------------------------------------------------------
+fData(msexp)
 ## find path to a mzIdentML file
 identFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
                  full.name = TRUE, pattern = "dummyiTRAQ.mzid")
-identFile
+basename(identFile)
 msexp <- addIdentificationData(msexp, identFile)
 fData(msexp)
 
