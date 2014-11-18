@@ -84,15 +84,15 @@ mzf <- pxget(px, pxfiles(px)[6])
 mzf
 
 
-## ----pxd000561, cache=TRUE, echo=FALSE-----------------------------------
-library("rpx")
-hum <- PXDataset("PXD000561")
-hum
-humf <- pxfiles(hum)
-length(humf)
-table(sub("^.+\\.", "", humf))
-rawf <- grep("raw", humf, value = TRUE)
-table(sub("_.+$", "", rawf))
+## ----pxd000561, cache=TRUE, eval=FALSE-----------------------------------
+## library("rpx")
+## hum <- PXDataset("PXD000561")
+## hum
+## humf <- pxfiles(hum)
+## length(humf)
+## table(sub("^.+\\.", "", humf))
+## rawf <- grep("raw", humf, value = TRUE)
+## table(sub("_.+$", "", rawf))
 
 
 ## ----, rawms-------------------------------------------------------------
