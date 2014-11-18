@@ -514,14 +514,23 @@ msexp <- addIdentificationData(msexp, identFile)
 fData(msexp)
 ```
 
+Spectra and (parts of) experiments can be extraced and plotted.
 
 ```{r, specplot}
 msexp[[1]]
 plot(msexp[[1]], full=TRUE)
-as(msexp[[1]], "data.frame")[100:105, ]
 ```
 
-> 
+```{r, specplot2}
+msexp[1:3]
+plot(msexp[1:3], full=TRUE)
+```
+Coercion to a `data.frame` is straightforward.
+
+
+```{r}
+as(msexp[[1]], "data.frame")[100:105, ]
+```
 
 ## Quantitative proteomics
 
