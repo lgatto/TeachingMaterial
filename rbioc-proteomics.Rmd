@@ -9,7 +9,7 @@ v <- system('git log -1 --format="%h [%ci]"', intern = TRUE)
 **Laurent Gatto**
 [Computational Proteomics Unit](http://cpu.sysbiol.cam.ac.uk)
 
-[Atelier PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France
+[Atelier PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenoble, France
 
 Version of this document: `r v`
 
