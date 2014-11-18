@@ -176,7 +176,6 @@ mzf
 <!-- table(sub("_.+$", "", rawf)) -->
 <!-- ``` -->
 
-
 ### Handling raw MS data
 
 The `mzR` package provides an interface to the
@@ -767,16 +766,21 @@ plot(hcl, exprs(t(dunkley2006)))
 
 ## Annotation
 
+```{r nont, echo=FALSE, cache=TRUE}
+library("rols")
+nont <- nrow(ontologies())
+```
+
 All the
 [Bioconductor annotation infrastructure](http://bioconductor.org/help/workflows/annotation/annotation/),
 such as
 [`biomaRt`](http://bioconductor.org/packages/release/bioc/html/biomaRt.html),
 [`GO.db`](http://www.bioconductor.org/packages/release/data/annotation/html/GO.db.html),
 organism specific annotations, .. are directly relevant to the
-analysis of proteomics data. A total of `r nrow(ontologies())`
-ontologies, including some proteomics-centred annotations such as the
-PSI Mass Spectrometry Ontology, Molecular Interaction (PSI MI 2.5) or
-Protein Modifications are available through the
+analysis of proteomics data. A total of `r nont` ontologies, including
+some proteomics-centred annotations such as the PSI Mass Spectrometry
+Ontology, Molecular Interaction (PSI MI 2.5) or Protein Modifications
+are available through the
 [`rols`](http://www.bioconductor.org/packages/release/bioc/html/rols.html).
 
 ```{r rols}
