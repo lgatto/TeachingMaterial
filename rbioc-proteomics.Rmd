@@ -60,13 +60,32 @@ biocLite("RforProteomics", dependencies = TRUE)
 This tutorial illustrates R / Bioconductor infrastructure for
 proteomics. Topics covered focus on support for open community-driven
 formats for raw data and identification results, packages for
-peptide-spectrum matching, quantitative proteomics, mass spectrometry
-(MS) and quantitation data processing. Links to other packages and
-references are also documented.
+peptide-spectrum matching, data processing and analysis:
 
-The vignettes included in the
+- Exploring available infrastructure
+- Mass spectrometry data
+- Getting data from proteomics repositories
+- Handling raw MS data
+- Handling identification data
+- MS/MS database search
+- Analysing search results
+- High-level data interface
+- find path to a mzIdentML file
+- Quantitative proteomics
+- Importing third-party quantitative data
+- Data processing and analysis
+- or, using makeImpuritiesMatrix()
+- impurities <- makeImpuritiesMatrix(4)
+- arbitraty grouping
+- Statistical analysis
+- Machine learning
+- Annotation
+- Other relevant packages/pipelines
+
+Links to other packages and references are also documented. In
+particular, the vignettes included in the
 [`RforProteomics`](http://www.bioconductor.org/packages/release/data/experiment/html/RforProteomics.html)
-package also contains useful material.
+package also contains relevant material.
 
 ## Exploring available infrastructure
 
