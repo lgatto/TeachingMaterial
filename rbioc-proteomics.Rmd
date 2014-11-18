@@ -163,7 +163,7 @@ mzf
 
 <!-- #### Solution -->
 
-```{r pxd000561, cache=TRUE, eval=FALSE}
+```{r pxd000561, cache=TRUE, eval=FALSE, echo=FALSE}
 library("rpx")
 hum <- PXDataset("PXD000561")
 hum
