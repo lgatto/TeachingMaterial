@@ -224,10 +224,10 @@ names(hd)
 <!-- plot(pj, type = "l", xlim = c(536,540)) -->
 <!-- ``` -->
 
-> Read the `MSmap` manual and look at the example to learn how the
-> `mzR` raw data support can be exploited to generate maps of slides
-> of raw MS data. (Note that the `hd` variable containing the raw data
-> header was missing in version < `1.14.1`.)
+> Read the `MSnbase::MSmap` manual and look at the example to learn
+> how the `mzR` raw data support can be exploited to generate maps of
+> slides of raw MS data. (Note that the `hd` variable containing the
+> raw data header was missing in `MSnbase` version < `1.14.1`.)
 
 ## Handling identification data
 
@@ -489,7 +489,7 @@ library("MSnbase")
 rawFile <- dir(system.file(package = "MSnbase", dir = "extdata"),
                full.name = TRUE, pattern = "mzXML$")
 basename(rawFile)
-msexp <- readMSData(rawFile)
+msexp <- readMSData(rawFile, verbose = FALSE)
 msexp
 ```
 
