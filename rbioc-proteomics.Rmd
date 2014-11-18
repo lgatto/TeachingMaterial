@@ -712,7 +712,7 @@ resources for proteomics data:
   to discover differentially expressed proteins between two biological
   conditions. Three tests are available: Poisson GLM regression,
   quasi-likelihood GLM regression, and the negative binomial of the
-  edgeR package.
+  [`edgeR`](http://www.bioconductor.org/packages/release/bioc/html/edgeR.html) package.
 
 <!-- ```{r, msmstest} -->
 <!-- library(msmsTests) -->
