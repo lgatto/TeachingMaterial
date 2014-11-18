@@ -9,7 +9,7 @@ Using R and Bioconductor for proteomics data analysis
 
 [Projet PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France
 
-Version of this document: f123d2a [2014-11-18 19:15:33 +0000]
+Version of this document: 2049c13 [2014-11-18 19:52:21 +0000]
 
 
 ## Setup
@@ -96,7 +96,7 @@ display(pp)
 |peak lists     |mgf                         |[`MSnbase`](http://bioconductor.org/packages/release/bioc/html/MSnbase.html) (read/write) |
 |other          |mzTab                       |[`MSnbase`](http://bioconductor.org/packages/release/bioc/html/MSnbase.html) (read/write) |
 
-### Getting data from proteomics repositories
+## Getting data from proteomics repositories
 
 Contemporary MS-based proteomics data is disseminated through the
 [ProteomeXchange](http://www.proteomexchange.org/) infrastructure,
@@ -208,7 +208,7 @@ mzf
 
 
 
-### Handling raw MS data
+## Handling raw MS data
 
 The `mzR` package provides an interface to the
 [proteowizard](http://proteowizard.sourceforge.net/) code base,
@@ -292,7 +292,7 @@ names(hd)
 > of raw MS data. (Note that the `hd` variable containing the raw data
 > header was missing in version < `1.14.1`.)
 
-### Handling identification data
+## Handling identification data
 
 The `RforProteomics` package distributes a small identification result
 file (see
@@ -390,7 +390,7 @@ function.
 <!-- head(fid1) -->
 <!-- ``` -->
 
-### MS/MS database search
+## MS/MS database search
 
 While searches are generally performed using third-party software
 independently of R or can be started from R using a `system` call, the
@@ -478,7 +478,7 @@ MSGFgui()
 <!-- MSGFgui() -->
 <!-- ``` -->
 
-### Analysing search results
+## Analysing search results
 
 The
 [`MSnID`](http://bioconductor.org/packages/release/bioc/html/MSnID.html)
@@ -653,7 +653,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 19:51:36 2014 
+## Data loaded: Tue Nov 18 19:58:06 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -819,7 +819,7 @@ as(msexp[[1]], "data.frame")[100:105, ]
 
 > 
 
-### Quantitative proteomics
+## Quantitative proteomics
 
 There are a wide range of proteomics quantitation techniques that can
 broadly be classified as labelled vs. label-free, depending whether
@@ -871,8 +871,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 19:51:36 2014 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:51:37 2014 
+## Data loaded: Tue Nov 18 19:58:06 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:58:08 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -914,7 +914,7 @@ vendor files.
 > Have a look at the `?quantify` documentation file and review the
 > above by walking through the example.
 
-### Importing third-party data
+## Importing third-party quantitative data
 
 The PSI `mzTab` file format is aimed at providing a simpler (than XML
 formats) and more accessible file format to the wider community. It is
@@ -961,7 +961,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Tue Nov 18 19:51:42 2014 
+## mzTab read: Tue Nov 18 19:58:12 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -1060,8 +1060,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:51:44 2014 
-## Purity corrected: Tue Nov 18 19:51:44 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:58:14 2014 
+## Purity corrected: Tue Nov 18 19:58:14 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1123,10 +1123,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:51:44 2014 
-## Purity corrected: Tue Nov 18 19:51:44 2014 
-## Normalised (quantiles): Tue Nov 18 19:51:44 2014 
-## Combined 55 features into 3 using sum: Tue Nov 18 19:51:44 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 19:58:14 2014 
+## Purity corrected: Tue Nov 18 19:58:14 2014 
+## Normalised (quantiles): Tue Nov 18 19:58:14 2014 
+## Combined 55 features into 3 using sum: Tue Nov 18 19:58:14 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1189,7 +1189,7 @@ plot0(qnt, qnt.imp)
 ![heatmap](figure/heatmap.png)
 ![maplot](figure/maplot.png)
 
-### Statistical analysis
+## Statistical analysis
 
 R in general and Bioconductor in particular are well suited for the
 statistical analysis of data. Several packages provide dedicated
@@ -1224,7 +1224,7 @@ resources for proteomics data:
 - [`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html)
   also provides dedicated infrastructure for the statistical analysis of isobaric data. 
 
-### Machine learning
+## Machine learning
 
 The
 [`MLInterfaces`](http://www.bioconductor.org/packages/release/bioc/html/MLInterfaces.html)
@@ -1304,6 +1304,11 @@ plot(hcl, exprs(t(dunkley2006)))
 
 ![plot of chunk clust2](figure/clust2-1.png) 
 
+A wide range of classification algorithms are also available, as
+described in the `?MLearn` documentation page. The `pRoloc` package
+also uses `MSnSet` instances as input and ,while being conceived with
+the analysis of spatial/organelle proteomics data in mind, is
+applicable many use cases.
 
 ## Annotation
 

@@ -113,7 +113,7 @@ library("knitr")
 kable(datatab)
 ```
 
-### Getting data from proteomics repositories
+## Getting data from proteomics repositories
 
 Contemporary MS-based proteomics data is disseminated through the
 [ProteomeXchange](http://www.proteomexchange.org/) infrastructure,
@@ -174,7 +174,7 @@ rawf <- grep("raw", humf, value = TRUE)
 table(sub("_.+$", "", rawf))
 ```
 
-### Handling raw MS data
+## Handling raw MS data
 
 The `mzR` package provides an interface to the
 [proteowizard](http://proteowizard.sourceforge.net/) code base,
@@ -229,7 +229,7 @@ names(hd)
 > of raw MS data. (Note that the `hd` variable containing the raw data
 > header was missing in version < `1.14.1`.)
 
-### Handling identification data
+## Handling identification data
 
 The `RforProteomics` package distributes a small identification result
 file (see
@@ -299,7 +299,7 @@ function.
 <!-- head(fid1) -->
 <!-- ``` -->
 
-### MS/MS database search
+## MS/MS database search
 
 While searches are generally performed using third-party software
 independently of R or can be started from R using a `system` call, the
@@ -386,7 +386,7 @@ mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
 <!-- MSGFgui() -->
 <!-- ``` -->
 
-### Analysing search results
+## Analysing search results
 
 The
 [`MSnID`](http://bioconductor.org/packages/release/bioc/html/MSnID.html)
@@ -523,7 +523,7 @@ as(msexp[[1]], "data.frame")[100:105, ]
 
 > 
 
-### Quantitative proteomics
+## Quantitative proteomics
 
 There are a wide range of proteomics quantitation techniques that can
 broadly be classified as labelled vs. label-free, depending whether
@@ -585,7 +585,7 @@ vendor files.
 > Have a look at the `?quantify` documentation file and review the
 > above by walking through the example.
 
-### Importing third-party data
+## Importing third-party quantitative data
 
 The PSI `mzTab` file format is aimed at providing a simpler (than XML
 formats) and more accessible file format to the wider community. It is
@@ -718,7 +718,7 @@ plot0(qnt, qnt.imp)
 ![heatmap](figure/heatmap.png)
 ![maplot](figure/maplot.png)
 
-### Statistical analysis
+## Statistical analysis
 
 R in general and Bioconductor in particular are well suited for the
 statistical analysis of data. Several packages provide dedicated
@@ -753,7 +753,7 @@ resources for proteomics data:
 - [`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html)
   also provides dedicated infrastructure for the statistical analysis of isobaric data. 
 
-### Machine learning
+## Machine learning
 
 The
 [`MLInterfaces`](http://www.bioconductor.org/packages/release/bioc/html/MLInterfaces.html)
@@ -785,6 +785,11 @@ hcl
 plot(hcl, exprs(t(dunkley2006)))
 ```
 
+A wide range of classification algorithms are also available, as
+described in the `?MLearn` documentation page. The `pRoloc` package
+also uses `MSnSet` instances as input and ,while being conceived with
+the analysis of spatial/organelle proteomics data in mind, is
+applicable many use cases.
 
 ## Annotation
 
