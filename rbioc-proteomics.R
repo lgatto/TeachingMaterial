@@ -109,8 +109,9 @@ names(hd)
 
 ## ----, id, cache=TRUE----------------------------------------------------
 library("mzID")
-(f <- dir(system.file("extdata", package = "RforProteomics"),
-         pattern = "mzid", full.names=TRUE))
+f <- dir(system.file("extdata", package = "RforProteomics"),
+         pattern = "mzid", full.names=TRUE)
+basename(f)
 id <- mzID(f)
 id
 

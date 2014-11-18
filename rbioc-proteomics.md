@@ -9,7 +9,7 @@ Using R and Bioconductor for proteomics data analysis
 
 [Atelier PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France
 
-Version of this document: 4ebf509 [2014-11-18 20:16:44 +0000]
+Version of this document: 0f19a4b [2014-11-18 20:19:18 +0000]
 
 
 ## Setup
@@ -305,12 +305,13 @@ package.
 
 ```r
 library("mzID")
-(f <- dir(system.file("extdata", package = "RforProteomics"),
-         pattern = "mzid", full.names=TRUE))
+f <- dir(system.file("extdata", package = "RforProteomics"),
+         pattern = "mzid", full.names=TRUE)
+basename(f)
 ```
 
 ```
-## [1] "/home/lg390/R/x86_64-unknown-linux-gnu-library/3.1/RforProteomics/extdata/TMT_Erwinia.mzid.gz"
+## [1] "TMT_Erwinia.mzid.gz"
 ```
 
 ```r
@@ -637,7 +638,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 20:18:50 2014 
+## Data loaded: Tue Nov 18 20:22:48 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -806,8 +807,8 @@ msexp[1:3]
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 20:18:50 2014 
-## Data [numerically] subsetted 3 spectra: Tue Nov 18 20:18:50 2014 
+## Data loaded: Tue Nov 18 20:22:48 2014 
+## Data [numerically] subsetted 3 spectra: Tue Nov 18 20:22:48 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -899,8 +900,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 20:18:50 2014 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:18:51 2014 
+## Data loaded: Tue Nov 18 20:22:48 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:22:50 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -989,7 +990,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Tue Nov 18 20:19:00 2014 
+## mzTab read: Tue Nov 18 20:22:57 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -1102,8 +1103,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:19:02 2014 
-## Purity corrected: Tue Nov 18 20:19:02 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:22:59 2014 
+## Purity corrected: Tue Nov 18 20:22:59 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1165,10 +1166,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:19:02 2014 
-## Purity corrected: Tue Nov 18 20:19:02 2014 
-## Normalised (quantiles): Tue Nov 18 20:19:03 2014 
-## Combined 55 features into 3 using sum: Tue Nov 18 20:19:03 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:22:59 2014 
+## Purity corrected: Tue Nov 18 20:22:59 2014 
+## Normalised (quantiles): Tue Nov 18 20:22:59 2014 
+## Combined 55 features into 3 using sum: Tue Nov 18 20:22:59 2014 
 ##  MSnbase version: 1.1.22
 ```
 
