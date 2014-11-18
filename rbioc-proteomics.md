@@ -9,7 +9,7 @@ Using R and Bioconductor for proteomics data analysis
 
 [Projet PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenomble, France
 
-Version of this document: 511176a [2014-11-18 20:01:44 +0000]
+Version of this document: 067b113 [2014-11-18 20:07:49 +0000]
 
 
 ## Setup
@@ -637,7 +637,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 20:02:18 2014 
+## Data loaded: Tue Nov 18 20:08:23 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -765,6 +765,7 @@ fData(msexp)
 ## X5.1         2     1         1         1        1
 ```
 
+Spectra and (parts of) experiments can be extraced and plotted.
 
 
 ```r
@@ -787,6 +788,51 @@ plot(msexp[[1]], full=TRUE)
 
 ![plot of chunk specplot](figure/specplot-1.png) 
 
+
+```r
+msexp[1:3]
+```
+
+```
+## Object of class "MSnExp"
+##  Object size in memory: 0.13 Mb
+## - - - Spectra data - - -
+##  MS level(s): 2 
+##  Number of MS1 acquisitions: 1 
+##  Number of MSn scans: 3 
+##  Number of precursor ions: 3 
+##  2 unique MZs
+##  Precursor MZ's: 546.96 - 645.37 
+##  MSn M/Z range: 100 2016.66 
+##  MSn retention times: 25:1 - 25:2 minutes
+## - - - Processing information - - -
+## Data loaded: Tue Nov 18 20:08:23 2014 
+## Data [numerically] subsetted 3 spectra: Tue Nov 18 20:08:23 2014 
+##  MSnbase version: 1.14.0 
+## - - - Meta data  - - -
+## phenoData
+##   rowNames: 1
+##   varLabels: sampleNames
+##   varMetadata: labelDescription
+## Loaded from:
+##   dummyiTRAQ.mzXML,   dummyiTRAQ.mzid 
+## protocolData: none
+## featureData
+##   featureNames: X1.1 X2.1 X3.1
+##   fvarLabels: spectrum scan number(s) ... npsm.pep (30 total)
+##   fvarMetadata: labelDescription
+## experimentData: use 'experimentData(object)'
+```
+
+```r
+plot(msexp[1:3], full=TRUE)
+```
+
+![plot of chunk specplot2](figure/specplot2-1.png) 
+Coercion to a `data.frame` is straightforward.
+
+
+
 ```r
 as(msexp[[1]], "data.frame")[100:105, ]
 ```
@@ -800,8 +846,6 @@ as(msexp[[1]], "data.frame")[100:105, ]
 ## 104 141.1091 155376.312
 ## 105 141.1117   4752.541
 ```
-
-> 
 
 ## Quantitative proteomics
 
@@ -855,8 +899,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 20:02:18 2014 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:02:20 2014 
+## Data loaded: Tue Nov 18 20:08:23 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:08:25 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -945,7 +989,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Tue Nov 18 20:02:26 2014 
+## mzTab read: Tue Nov 18 20:08:32 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -1044,8 +1088,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:02:28 2014 
-## Purity corrected: Tue Nov 18 20:02:29 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:08:34 2014 
+## Purity corrected: Tue Nov 18 20:08:34 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1107,10 +1151,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:02:28 2014 
-## Purity corrected: Tue Nov 18 20:02:29 2014 
-## Normalised (quantiles): Tue Nov 18 20:02:29 2014 
-## Combined 55 features into 3 using sum: Tue Nov 18 20:02:29 2014 
+## iTRAQ4 quantification by trapezoidation: Tue Nov 18 20:08:34 2014 
+## Purity corrected: Tue Nov 18 20:08:34 2014 
+## Normalised (quantiles): Tue Nov 18 20:08:34 2014 
+## Combined 55 features into 3 using sum: Tue Nov 18 20:08:34 2014 
 ##  MSnbase version: 1.1.22
 ```
 
