@@ -4,3 +4,4 @@ cache
 .Rcache
 .Rhistory
 erwinia_carotovora.fasta
+rbioc-code.R
