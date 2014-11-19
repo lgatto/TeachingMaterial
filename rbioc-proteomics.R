@@ -146,25 +146,25 @@ library("lattice")
 xyplot(plength ~ npep | bins, data = x)
 
 
-## ----mzrvsid-------------------------------------------------------------
-library("mzR")
-library("mzID")
-f <- dir(system.file("extdata", package = "RforProteomics"),
-         pattern = "mzid", full.names=TRUE)
-
-system.time({
-    id0 <- mzID(f)
-    fid0 <- flatten(id0)
-})
-
-head(fid0)
-
-system.time({
-    id1 <- openIDfile(f)
-    fid1 <- psms(id1)
-})
-
-head(fid1)
+## ----mzrvsid, eval = FALSE-----------------------------------------------
+## library("mzR")
+## library("mzID")
+## f <- dir(system.file("extdata", package = "RforProteomics"),
+##          pattern = "mzid", full.names=TRUE)
+## 
+## system.time({
+##     id0 <- mzID(f)
+##     fid0 <- flatten(id0)
+## })
+## 
+## head(fid0)
+## 
+## system.time({
+##     id1 <- openIDfile(f)
+##     fid1 <- psms(id1)
+## })
+## 
+## head(fid1)
 
 
 ## ----, rtandem, eval=FALSE-----------------------------------------------

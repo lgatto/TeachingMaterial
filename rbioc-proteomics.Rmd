@@ -295,7 +295,7 @@ xyplot(plength ~ npep | bins, data = x)
 > with the `openIDfile` function. Compare it, it terms of output and
 > speed with `mzID`.
 
-```{r mzrvsid}
+```{r mzrvsid, eval = FALSE}
 library("mzR")
 library("mzID")
 f <- dir(system.file("extdata", package = "RforProteomics"),
