@@ -9,7 +9,7 @@ Using R and Bioconductor for proteomics data analysis
 
 [Atelier PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenoble, France
 
-Version of this document: 8d5f29d [2014-11-19 14:44:33 +0000]
+Version of this document: c5bda0d [2014-11-19 14:50:09 +0000]
 
 
 ## Setup
@@ -188,8 +188,26 @@ Other metadata for the `px` dataset:
 
 ```r
 pxtax(px)
+```
+
+```
+## [1] "Erwinia carotovora"
+```
+
+```r
 pxurl(px)
+```
+
+```
+## [1] "ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2012/03/PXD000001"
+```
+
+```r
 pxref(px)
+```
+
+```
+## [1] "Gatto L, Christoforou A. Using R and Bioconductor for proteomics data analysis. Biochim Biophys Acta. 2014 Jan;1844(1 Pt A):42-51. Review"
 ```
 
 Data files can then be downloaded with the `pxget` function as
@@ -197,8 +215,15 @@ illustrated below.
 
 
 ```r
-## mzf <- pxget(px, pxfiles(px)[6])
-mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
+mzf <- pxget(px, pxfiles(px)[6])
+```
+
+```
+## Downloading 1 file
+## TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML already present.
+```
+
+```r
 mzf
 ```
 
@@ -215,6 +240,48 @@ mzf
 #### Solution
 
 
+```r
+library("rpx")
+hum <- PXDataset("PXD000561")
+hum
+```
+
+```
+## Object of class "PXDataset"
+##  Id: PXD000561 with 2384 files
+##  [1] 'Adult_Adrenalgland_Gel_Elite_49.msf' ... [2384] 'README.txt'
+##  Use 'pxfiles(.)' to see all files.
+```
+
+```r
+humf <- pxfiles(hum)
+length(humf)
+```
+
+```
+## [1] 2384
+```
+
+```r
+table(sub("^.+\\.", "", humf))
+```
+
+```
+## 
+##  msf  raw  txt  xls  xml 
+##   85 2212    1    1   85
+```
+
+```r
+rawf <- grep("raw", humf, value = TRUE)
+table(sub("_.+$", "", rawf))
+```
+
+```
+## 
+## Adult Fetal 
+##  1715   497
+```
 
 ## Handling raw MS data
 
@@ -411,15 +478,125 @@ system.time({
     id0 <- mzID(f)
     fid0 <- flatten(id0)
 })
+```
 
+```
+## reading TMT_Erwinia.mzid.gz... DONE!
+```
+
+```
+##    user  system elapsed 
+##  18.338   0.238  18.602
+```
+
+```r
 head(fid0)
+```
 
+```
+##   spectrumid scan number(s) acquisitionnum passthreshold rank
+## 1  scan=5782           5782           5782          TRUE    1
+## 2  scan=6037           6037           6037          TRUE    1
+## 3  scan=5235           5235           5235          TRUE    1
+## 4  scan=5397           5397           5397          TRUE    1
+## 5  scan=6075           6075           6075          TRUE    1
+## 6  scan=5761           5761           5761          TRUE    1
+##   calculatedmasstocharge experimentalmasstocharge chargestate
+## 1              1080.2321                1080.2325           3
+## 2              1002.2115                1002.2089           3
+## 3              1189.2800                1189.2836           3
+## 4               960.5365                 960.5365           3
+## 5              1264.3419                1264.3409           3
+## 6              1268.6501                1268.6429           2
+##   ms-gf:denovoscore ms-gf:evalue ms-gf:rawscore ms-gf:specevalue
+## 1               174 5.430080e-21            147     3.764831e-27
+## 2               245 9.943751e-20            214     6.902626e-26
+## 3               264 2.564787e-19            211     1.778789e-25
+## 4               178 2.581753e-18            154     1.792541e-24
+## 5               252 2.178423e-17            188     1.510364e-23
+## 6               138 2.329453e-17            123     1.618941e-23
+##   assumeddissociationmethod isotopeerror isdecoy post pre end start
+## 1                       HCD            0   FALSE    S   R  84    50
+## 2                       HCD            0   FALSE    R   K 315   288
+## 3                       HCD            0   FALSE    A   R 224   192
+## 4                       HCD            0   FALSE    -   R 290   264
+## 5                       HCD            0   FALSE    F   R 153   119
+## 6                       HCD            0   FALSE    Y   K 286   264
+##   accession length                                       description
+## 1   ECA1932    155                        outer membrane lipoprotein
+## 2   ECA1147    434                                    trigger factor
+## 3   ECA0013    295                ribose-binding periplasmic protein
+## 4   ECA1731    290                                         flagellin
+## 5   ECA1443    298      UTP--glucose-1-phosphate uridylyltransferase
+## 6   ECA1444    468 6-phosphogluconate dehydrogenase, decarboxylating
+##                                pepseq modified modification
+## 1 PVQIQAGEDSNVIGALGGAVLGGFLGNTIGGGSGR    FALSE         <NA>
+## 2        TQVLDGLINANDIEVPVALIDGEIDVLR    FALSE         <NA>
+## 3   TKGLNVMQNLLTAHPDVQAVFAQNDEMALGALR    FALSE         <NA>
+## 4         SQILQQAGTSVLSQANQVPQTVLSLLR    FALSE         <NA>
+## 5 PIIGDNPFVVVLPDVVLDESTADQTQENLALLISR    FALSE         <NA>
+## 6             WTSQSSLDLGEPLSLITESVFAR    FALSE         <NA>
+##                                                  spectrumFile
+## 1 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+## 2 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+## 3 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+## 4 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+## 5 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+## 6 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+##               databaseFile
+## 1 erwinia_carotovora.fasta
+## 2 erwinia_carotovora.fasta
+## 3 erwinia_carotovora.fasta
+## 4 erwinia_carotovora.fasta
+## 5 erwinia_carotovora.fasta
+## 6 erwinia_carotovora.fasta
+```
+
+```r
 system.time({
     id1 <- openIDfile(f)
-    fid1 <- psms(id1)
+    fid1 <- mzR::psms(id1)
 })
+```
 
+```
+##    user  system elapsed 
+##   0.319   0.004   0.324
+```
+
+```r
 head(fid1)
+```
+
+```
+##   spectrumID chargeState rank passThreshold experimentalMassToCharge
+## 1  scan=5782           3    1          TRUE                1080.2325
+## 2  scan=6037           3    1          TRUE                1002.2089
+## 3  scan=5235           3    1          TRUE                1189.2836
+## 4  scan=5397           3    1          TRUE                 960.5365
+## 5  scan=6075           3    1          TRUE                1264.3409
+## 6  scan=5761           2    1          TRUE                1268.6429
+##   calculatedMassToCharge                            sequence modNum
+## 1              1080.2321 PVQIQAGEDSNVIGALGGAVLGGFLGNTIGGGSGR      0
+## 2              1002.2115        TQVLDGLINANDIEVPVALIDGEIDVLR      0
+## 3              1189.2800   TKGLNVMQNLLTAHPDVQAVFAQNDEMALGALR      0
+## 4               960.5365         SQILQQAGTSVLSQANQVPQTVLSLLR      0
+## 5              1264.3419 PIIGDNPFVVVLPDVVLDESTADQTQENLALLISR      0
+## 6              1268.6501             WTSQSSLDLGEPLSLITESVFAR      0
+##   isDecoy post pre start end DatabaseAccess DatabaseSeq
+## 1   FALSE    S   R    50  84        ECA1932            
+## 2   FALSE    R   K   288 315        ECA1147            
+## 3   FALSE    A   R   192 224        ECA0013            
+## 4   FALSE    -   R   264 290        ECA1731            
+## 5   FALSE    F   R   119 153        ECA1443            
+## 6   FALSE    Y   K   264 286        ECA1444            
+##                                         DatabaseDescription
+## 1                        ECA1932 outer membrane lipoprotein
+## 2                                    ECA1147 trigger factor
+## 3                ECA0013 ribose-binding periplasmic protein
+## 4                                         ECA1731 flagellin
+## 5      ECA1443 UTP--glucose-1-phosphate uridylyltransferase
+## 6 ECA1444 6-phosphogluconate dehydrogenase, decarboxylating
 ```
 
 ## MS/MS database search
@@ -477,8 +654,12 @@ MSGFgui()
 
 
 ```r
-## fas <- pxget(px, pxfiles(px)[8])
-fas <- "erwinia_carotovora.fasta"
+fas <- pxget(px, pxfiles(px)[8])
+```
+
+```
+## Downloading 1 file
+## erwinia_carotovora.fasta already present.
 ```
 
 2. One could run MSGF+ from the command-line directly from `R`:
@@ -679,7 +860,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Wed Nov 19 14:48:34 2014 
+## Data loaded: Wed Nov 19 22:20:18 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -848,8 +1029,8 @@ msexp[1:3]
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Wed Nov 19 14:48:34 2014 
-## Data [numerically] subsetted 3 spectra: Wed Nov 19 14:48:35 2014 
+## Data loaded: Wed Nov 19 22:20:18 2014 
+## Data [numerically] subsetted 3 spectra: Wed Nov 19 22:20:19 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -941,8 +1122,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Wed Nov 19 14:48:34 2014 
-## iTRAQ4 quantification by trapezoidation: Wed Nov 19 14:48:36 2014 
+## Data loaded: Wed Nov 19 22:20:18 2014 
+## iTRAQ4 quantification by trapezoidation: Wed Nov 19 22:20:20 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -993,8 +1174,15 @@ molecule tabular sections.
 
 
 ```r
-## mztf <- pxget(px, pxfiles(px)[2])
-mztf <- "F063721.dat-mztab.txt"
+mztf <- pxget(px, pxfiles(px)[2])
+```
+
+```
+## Downloading 1 file
+## F063721.dat-mztab.txt already present.
+```
+
+```r
 (mzt <- readMzTabData(mztf, what = "PEP"))
 ```
 
@@ -1024,7 +1212,7 @@ mztf <- "F063721.dat-mztab.txt"
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Wed Nov 19 14:48:37 2014 
+## mzTab read: Wed Nov 19 22:20:31 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -1137,8 +1325,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Wed Nov 19 14:48:39 2014 
-## Purity corrected: Wed Nov 19 14:48:40 2014 
+## iTRAQ4 quantification by trapezoidation: Wed Nov 19 22:20:33 2014 
+## Purity corrected: Wed Nov 19 22:20:33 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1200,10 +1388,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Wed Nov 19 14:48:39 2014 
-## Purity corrected: Wed Nov 19 14:48:40 2014 
-## Normalised (quantiles): Wed Nov 19 14:48:40 2014 
-## Combined 55 features into 3 using sum: Wed Nov 19 14:48:40 2014 
+## iTRAQ4 quantification by trapezoidation: Wed Nov 19 22:20:33 2014 
+## Purity corrected: Wed Nov 19 22:20:33 2014 
+## Normalised (quantiles): Wed Nov 19 22:20:33 2014 
+## Combined 55 features into 3 using sum: Wed Nov 19 22:20:33 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1334,8 +1522,8 @@ e
 ##   pubMedIds: http://www.ncbi.nlm.nih.gov/pubmed/22588121 
 ## Annotation:  
 ## - - - Processing information - - -
-## Subset [697,14][675,14] Wed Nov 19 14:48:41 2014 
-## Applied pp.msms.data preprocessing: Wed Nov 19 14:48:41 2014 
+## Subset [697,14][675,14] Wed Nov 19 22:20:34 2014 
+## Applied pp.msms.data preprocessing: Wed Nov 19 22:20:34 2014 
 ##  MSnbase version: 1.8.0
 ```
 

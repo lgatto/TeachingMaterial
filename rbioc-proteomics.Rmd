@@ -156,7 +156,7 @@ pxfiles(px)
 
 Other metadata for the `px` dataset:
 
-```{r, pxvar, eval=FALSE}
+```{r, pxvar}
 pxtax(px)
 pxurl(px)
 pxref(px)
@@ -166,8 +166,7 @@ Data files can then be downloaded with the `pxget` function as
 illustrated below. 
 
 ```{r, pxget}
-## mzf <- pxget(px, pxfiles(px)[6])
-mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
+mzf <- pxget(px, pxfiles(px)[6])
 mzf
 ```
 
@@ -179,7 +178,7 @@ mzf
 
 #### Solution
 
-```{r pxd000561, cache=TRUE, eval=FALSE, echo=FALSE}
+```{r pxd000561, cache=TRUE}
 library("rpx")
 hum <- PXDataset("PXD000561")
 hum
@@ -295,7 +294,7 @@ xyplot(plength ~ npep | bins, data = x)
 > with the `openIDfile` function. Compare it, it terms of output and
 > speed with `mzID`.
 
-```{r mzrvsid, eval = FALSE}
+```{r mzrvsid, eval = TRUE}
 library("mzR")
 library("mzID")
 f <- dir(system.file("extdata", package = "RforProteomics"),
@@ -310,7 +309,7 @@ head(fid0)
 
 system.time({
     id1 <- openIDfile(f)
-    fid1 <- psms(id1)
+    fid1 <- mzR::psms(id1)
 })
 
 head(fid1)
@@ -369,8 +368,7 @@ mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
 1. Get the fasta database:
 
 ```{r ex_getfas}
-## fas <- pxget(px, pxfiles(px)[8])
-fas <- "erwinia_carotovora.fasta"
+fas <- pxget(px, pxfiles(px)[8])
 ```
 
 2. One could run MSGF+ from the command-line directly from `R`:
@@ -620,8 +618,7 @@ composed of a key-value metadata section and peptide/protein/small
 molecule tabular sections. 
 
 ```{r, mztab}
-## mztf <- pxget(px, pxfiles(px)[2])
-mztf <- "F063721.dat-mztab.txt"
+mztf <- pxget(px, pxfiles(px)[2])
 (mzt <- readMzTabData(mztf, what = "PEP"))
 ```
 

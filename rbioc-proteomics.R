@@ -73,27 +73,26 @@ px
 pxfiles(px)
 
 
-## ----, pxvar, eval=FALSE-------------------------------------------------
-## pxtax(px)
-## pxurl(px)
-## pxref(px)
+## ----, pxvar-------------------------------------------------------------
+pxtax(px)
+pxurl(px)
+pxref(px)
 
 
 ## ----, pxget-------------------------------------------------------------
-## mzf <- pxget(px, pxfiles(px)[6])
-mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
+mzf <- pxget(px, pxfiles(px)[6])
 mzf
 
 
-## ----pxd000561, cache=TRUE, eval=FALSE, echo=FALSE-----------------------
-## library("rpx")
-## hum <- PXDataset("PXD000561")
-## hum
-## humf <- pxfiles(hum)
-## length(humf)
-## table(sub("^.+\\.", "", humf))
-## rawf <- grep("raw", humf, value = TRUE)
-## table(sub("_.+$", "", rawf))
+## ----pxd000561, cache=TRUE-----------------------------------------------
+library("rpx")
+hum <- PXDataset("PXD000561")
+hum
+humf <- pxfiles(hum)
+length(humf)
+table(sub("^.+\\.", "", humf))
+rawf <- grep("raw", humf, value = TRUE)
+table(sub("_.+$", "", rawf))
 
 
 ## ----, rawms-------------------------------------------------------------
@@ -146,25 +145,25 @@ library("lattice")
 xyplot(plength ~ npep | bins, data = x)
 
 
-## ----mzrvsid, eval = FALSE-----------------------------------------------
-## library("mzR")
-## library("mzID")
-## f <- dir(system.file("extdata", package = "RforProteomics"),
-##          pattern = "mzid", full.names=TRUE)
-## 
-## system.time({
-##     id0 <- mzID(f)
-##     fid0 <- flatten(id0)
-## })
-## 
-## head(fid0)
-## 
-## system.time({
-##     id1 <- openIDfile(f)
-##     fid1 <- psms(id1)
-## })
-## 
-## head(fid1)
+## ----mzrvsid, eval = TRUE------------------------------------------------
+library("mzR")
+library("mzID")
+f <- dir(system.file("extdata", package = "RforProteomics"),
+         pattern = "mzid", full.names=TRUE)
+
+system.time({
+    id0 <- mzID(f)
+    fid0 <- flatten(id0)
+})
+
+head(fid0)
+
+system.time({
+    id1 <- openIDfile(f)
+    fid1 <- mzR::psms(id1)
+})
+
+head(fid1)
 
 
 ## ----, rtandem, eval=FALSE-----------------------------------------------
@@ -193,8 +192,7 @@ mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
 
 
 ## ----ex_getfas-----------------------------------------------------------
-## fas <- pxget(px, pxfiles(px)[8])
-fas <- "erwinia_carotovora.fasta"
+fas <- pxget(px, pxfiles(px)[8])
 
 
 ## ----ex_msgfcmd----------------------------------------------------------
@@ -338,8 +336,7 @@ exprs(saf <- quantify(msexp, method = "NSAF"))
 
 
 ## ----, mztab-------------------------------------------------------------
-## mztf <- pxget(px, pxfiles(px)[2])
-mztf <- "F063721.dat-mztab.txt"
+mztf <- pxget(px, pxfiles(px)[2])
 (mzt <- readMzTabData(mztf, what = "PEP"))
 
 
