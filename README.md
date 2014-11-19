@@ -8,7 +8,7 @@ package. It has been used (and updated) for the following events:
    [workshop](http://bioconductor.org/help/course-materials/2014/BioC2014/Gatto.html),
    31 July 2014, Boston, MA.
 2. [Aterlier PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html)
-   19 Nov 2014, Grenomble, France
+   19 Nov 2014, Grenoble, France
 
 See the [TeachingMaterial](https://github.com/lgatto/TeachingMaterial)
 repository for general `R` material.
