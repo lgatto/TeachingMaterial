@@ -9,7 +9,7 @@ Using R and Bioconductor for proteomics data analysis
 
 [Atelier PROSPECTOM](http://prospectom.liglab.fr/atelier-2014/index.html) 19 Nov 2014, Grenoble, France
 
-Version of this document: 6f1ef48 [2014-11-18 21:05:38 +0000]
+Version of this document: e8c452c [2014-11-19 12:55:42 +0000]
 
 
 ## Setup
@@ -138,21 +138,21 @@ pxannounced()
 
 ```
 ##     Data.Set    Publication.Data             Message
-## 1  PXD000715 2014-11-18 16:34:39 Updated information
-## 2  PXD000837 2014-11-18 16:30:02 Updated information
-## 3  PXD001354 2014-11-18 16:29:15 Updated information
-## 4  PXD000627 2014-11-18 16:28:07 Updated information
-## 5  PXD001125 2014-11-18 16:27:02 Updated information
-## 6  PXD001045 2014-11-18 16:26:04 Updated information
-## 7  PXD001260 2014-11-18 16:24:55 Updated information
-## 8  PXD001414 2014-11-18 16:22:44 Updated information
-## 9  PXD000715 2014-11-18 09:35:10                 New
-## 10 PXD000837 2014-11-18 09:27:36                 New
-## 11 PXD001260 2014-11-18 09:13:08 Updated information
-## 12 PXD001045 2014-11-18 09:12:15 Updated information
-## 13 PXD001354 2014-11-18 09:11:16                 New
-## 14 PXD001125 2014-11-18 09:05:58                 New
-## 15 PXD001414 2014-11-18 08:51:50                 New
+## 1  PXD001283 2014-11-19 08:44:40                 New
+## 2  PXD001301 2014-11-19 08:42:01                 New
+## 3  PXD000837 2014-11-19 08:30:45 Updated information
+## 4  PXD000715 2014-11-18 16:34:39 Updated information
+## 5  PXD000837 2014-11-18 16:30:02 Updated information
+## 6  PXD001354 2014-11-18 16:29:15 Updated information
+## 7  PXD000627 2014-11-18 16:28:07 Updated information
+## 8  PXD001125 2014-11-18 16:27:02 Updated information
+## 9  PXD001045 2014-11-18 16:26:04 Updated information
+## 10 PXD001260 2014-11-18 16:24:55 Updated information
+## 11 PXD001414 2014-11-18 16:22:44 Updated information
+## 12 PXD000715 2014-11-18 09:35:10                 New
+## 13 PXD000837 2014-11-18 09:27:36                 New
+## 14 PXD001260 2014-11-18 09:13:08 Updated information
+## 15 PXD001045 2014-11-18 09:12:15 Updated information
 ```
 
 
@@ -197,15 +197,8 @@ illustrated below.
 
 
 ```r
-mzf <- pxget(px, pxfiles(px)[6])
-```
-
-```
-## Downloading 1 file
-## TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML already present.
-```
-
-```r
+## mzf <- pxget(px, pxfiles(px)[6])
+mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
 mzf
 ```
 
@@ -219,7 +212,7 @@ mzf
 > [draft map of the human proteome](http://www.ebi.ac.uk/pride/archive/projects/PXD000561).
 
 
-<!-- #### Solution -->
+#### Solution
 
 
 
@@ -284,23 +277,42 @@ names(hd)
 > intensity and plot its spectrum. Is the data centroided or in
 > profile mode?
 
-<!-- #### Solution -->
+#### Solution
 
-<!-- ```{r, ex_raw, fig.align='center'} -->
-<!-- hd2 <- hd[hd$msLevel == 2, ] -->
-<!-- i <- which.max(hd2$basePeakIntensity) -->
-<!-- hd2[i, ] -->
-<!-- pi <- peaks(ms, hd2[i, 1]) -->
-<!-- mz <- hd2[i, "basePeakMZ"] -->
 
-<!-- par(mfrow = c(2, 2)) -->
-<!-- plot(pi, type = "h", main = paste("Acquisition", i)) -->
-<!-- plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5)) -->
+```r
+hd2 <- hd[hd$msLevel == 2, ]
+i <- which.max(hd2$basePeakIntensity)
+hd2[i, ]
+```
 
-<!-- pj <- peaks(ms, 100) -->
-<!-- plot(pj, type = "l", main = paste("Acquisition", 100)) -->
-<!-- plot(pj, type = "l", xlim = c(536,540)) -->
-<!-- ``` -->
+```
+##      seqNum acquisitionNum msLevel polarity peaksCount totIonCurrent
+## 5404   5404           5404       2        1        275    2283283712
+##      retentionTime basePeakMZ basePeakIntensity collisionEnergy
+## 5404       2751.31   859.5032         354288224               0
+##      ionisationEnergy    lowMZ  highMZ precursorScanNum precursorMZ
+## 5404                0 100.5031 1995.63             5403    859.1722
+##      precursorCharge precursorIntensity mergedScan mergedResultScanNum
+## 5404               3          627820480          0                   0
+##      mergedResultStartScanNum mergedResultEndScanNum
+## 5404                        0                      0
+```
+
+```r
+pi <- peaks(ms, hd2[i, 1])
+mz <- hd2[i, "basePeakMZ"]
+
+par(mfrow = c(2, 2))
+plot(pi, type = "h", main = paste("Acquisition", i))
+plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
+
+pj <- peaks(ms, 100)
+plot(pj, type = "l", main = paste("Acquisition", 100))
+plot(pj, type = "l", xlim = c(536,540))
+```
+
+<img src="figure/ex_raw-1.png" title="plot of chunk ex_raw" alt="plot of chunk ex_raw" style="display: block; margin: auto;" />
 
 > Read the `MSnbase::MSmap` manual and look at the example to learn
 > how the `mzR` raw data support can be exploited to generate maps of
@@ -365,46 +377,136 @@ function.
 > of identified peptides, conditioned by the (average) e-value of the
 > identifications?
 
-<!-- #### Solution -->
+#### Solution
 
-<!-- ```{r, ex_id} -->
-<!-- fid <- flatten(id) -->
-<!-- x <- by(fid, fid$accession, function(x) -->
-<!--     c(unique(x$length), -->
-<!--       length(unique(x$pepseq)), -->
-<!--       mean(x$'ms-gf:specevalue'))) -->
-<!-- x <- data.frame(do.call(rbind, x)) -->
-<!-- colnames(x) <- c("plength", "npep", "eval") -->
-<!-- x$bins <- cut(x$eval, summary(x$eval)) -->
-<!-- library("lattice") -->
-<!-- xyplot(plength ~ npep | bins, data = x) -->
-<!-- ``` -->
+
+```r
+fid <- flatten(id)
+x <- by(fid, fid$accession, function(x)
+    c(unique(x$length),
+      length(unique(x$pepseq)),
+      mean(x$'ms-gf:specevalue')))
+x <- data.frame(do.call(rbind, x))
+colnames(x) <- c("plength", "npep", "eval")
+x$bins <- cut(x$eval, summary(x$eval))
+library("lattice")
+xyplot(plength ~ npep | bins, data = x)
+```
+
+![plot of chunk ex_id](figure/ex_id-1.png) 
 
 
 > The `mzR` package also support fast parsing of `mzIdentML` files
 > with the `openIDfile` function. Compare it, it terms of output and
 > speed with `mzID`.
 
-<!-- ```{r} -->
-<!-- library("mzR") -->
-<!-- olibrary("mzID") -->
-<!-- f <- dir(system.file("extdata", package = "RforProteomics"), -->
-<!--          pattern = "mzid", full.names=TRUE) -->
 
-<!-- system.time({ -->
-<!--     id0 <- mzID(f) -->
-<!--     fid0 <- flatten(id0) -->
-<!-- }) -->
+```r
+library("mzR")
+library("mzID")
+f <- dir(system.file("extdata", package = "RforProteomics"),
+         pattern = "mzid", full.names=TRUE)
 
-<!-- head(fid0) -->
+system.time({
+    id0 <- mzID(f)
+    fid0 <- flatten(id0)
+})
+```
 
-<!-- system.time({ -->
-<!--     id1 <- openIDfile(f) -->
-<!--     fid1 <- psms(id1) -->
-<!-- }) -->
+```
+## reading TMT_Erwinia.mzid.gz... DONE!
+```
 
-<!-- head(fid1) -->
-<!-- ``` -->
+```
+##    user  system elapsed 
+##  27.540   0.100  27.679
+```
+
+```r
+head(fid0)
+```
+
+```
+##   spectrumid scan number(s) acquisitionnum passthreshold rank
+## 1  scan=5782           5782           5782          TRUE    1
+## 2  scan=6037           6037           6037          TRUE    1
+## 3  scan=5235           5235           5235          TRUE    1
+## 4  scan=5397           5397           5397          TRUE    1
+## 5  scan=6075           6075           6075          TRUE    1
+## 6  scan=5761           5761           5761          TRUE    1
+##   calculatedmasstocharge experimentalmasstocharge chargestate
+## 1              1080.2321                1080.2325           3
+## 2              1002.2115                1002.2089           3
+## 3              1189.2800                1189.2836           3
+## 4               960.5365                 960.5365           3
+## 5              1264.3419                1264.3409           3
+## 6              1268.6501                1268.6429           2
+##   ms-gf:denovoscore ms-gf:evalue ms-gf:rawscore ms-gf:specevalue
+## 1               174 5.430080e-21            147     3.764831e-27
+## 2               245 9.943751e-20            214     6.902626e-26
+## 3               264 2.564787e-19            211     1.778789e-25
+## 4               178 2.581753e-18            154     1.792541e-24
+## 5               252 2.178423e-17            188     1.510364e-23
+## 6               138 2.329453e-17            123     1.618941e-23
+##   assumeddissociationmethod isotopeerror isdecoy post pre end start
+## 1                       HCD            0   FALSE    S   R  84    50
+## 2                       HCD            0   FALSE    R   K 315   288
+## 3                       HCD            0   FALSE    A   R 224   192
+## 4                       HCD            0   FALSE    -   R 290   264
+## 5                       HCD            0   FALSE    F   R 153   119
+## 6                       HCD            0   FALSE    Y   K 286   264
+##   accession length                                       description
+## 1   ECA1932    155                        outer membrane lipoprotein
+## 2   ECA1147    434                                    trigger factor
+## 3   ECA0013    295                ribose-binding periplasmic protein
+## 4   ECA1731    290                                         flagellin
+## 5   ECA1443    298      UTP--glucose-1-phosphate uridylyltransferase
+## 6   ECA1444    468 6-phosphogluconate dehydrogenase, decarboxylating
+##                                pepseq modified modification
+## 1 PVQIQAGEDSNVIGALGGAVLGGFLGNTIGGGSGR    FALSE         <NA>
+## 2        TQVLDGLINANDIEVPVALIDGEIDVLR    FALSE         <NA>
+## 3   TKGLNVMQNLLTAHPDVQAVFAQNDEMALGALR    FALSE         <NA>
+## 4         SQILQQAGTSVLSQANQVPQTVLSLLR    FALSE         <NA>
+## 5 PIIGDNPFVVVLPDVVLDESTADQTQENLALLISR    FALSE         <NA>
+## 6             WTSQSSLDLGEPLSLITESVFAR    FALSE         <NA>
+##                                                  spectrumFile
+## 1 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+## 2 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+## 3 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+## 4 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+## 5 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+## 6 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML
+##               databaseFile
+## 1 erwinia_carotovora.fasta
+## 2 erwinia_carotovora.fasta
+## 3 erwinia_carotovora.fasta
+## 4 erwinia_carotovora.fasta
+## 5 erwinia_carotovora.fasta
+## 6 erwinia_carotovora.fasta
+```
+
+```r
+system.time({
+    id1 <- openIDfile(f)
+    fid1 <- psms(id1)
+})
+```
+
+```
+## Error in (function (classes, fdef, mtable) : unable to find an inherited method for function 'psms' for signature '"mzRident"'
+```
+
+```
+## Timing stopped at: 0.237 0.001 0.237
+```
+
+```r
+head(fid1)
+```
+
+```
+## Error in head(fid1): error in evaluating the argument 'x' in selecting a method for function 'head': Error: object 'fid1' not found
+```
 
 ## MS/MS database search
 
@@ -455,44 +557,54 @@ MSGFgui()
 > example, `MSGFplus`/`MSGFgui`.
 
 
-<!-- #### Solution -->
+#### Solution
 
-<!-- 1. Get the fasta database: -->
+1. Get the fasta database:
 
-<!-- ```{r ex_getfas} -->
-<!-- fas <- pxget(px, pxfiles(px)[8]) -->
-<!-- ``` -->
 
-<!-- 2. One could run MSGF+ from the command-line directly from `R`: -->
+```r
+## fas <- pxget(px, pxfiles(px)[8])
+fas <- "erwinia_carotovora.fasta"
+```
 
-<!-- ```{r ex_msgfcmd} -->
-<!-- msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar") -->
-<!-- system(paste0("java -jar ", msgf)) -->
-<!-- cmd <- paste("java -jar", msgf, "-protocol 2 -inst 1 -s", mzf, "-d", fas) -->
-<!-- cmd -->
-<!-- ``` -->
+2. One could run MSGF+ from the command-line directly from `R`:
 
-<!-- ```{r ex_msgfsys, eval=FALSE} -->
-<!-- system(cmd) -->
-<!-- ``` -->
 
-<!-- or, use `MSGFplus`: -->
+```r
+msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar")
+system(paste0("java -jar ", msgf))
+cmd <- paste("java -jar", msgf, "-protocol 2 -inst 1 -s", mzf, "-d", fas)
+cmd
+```
 
-<!-- ```{r ex_msgfplus, eval=FALSE} -->
-<!-- library("MSGFplus") -->
-<!-- msgfpar <- msgfPar(database = fas, -->
-<!--                instrument = 'HighRes', -->
-<!--                enzyme = 'Trypsin'm -->
-<!--                protocol = 'iTRAQ') -->
-<!-- runMSGF(msgfpar, mzf) -->
-<!-- ``` -->
+```
+## [1] "java -jar /home/lg390/R/x86_64-unknown-linux-gnu-library/3.1/MSGFplus/MSGFPlus/MSGFPlus.jar -protocol 2 -inst 1 -s TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML -d erwinia_carotovora.fasta"
+```
 
-<!-- or, through the graphical user interface: -->
 
-<!-- ```{r ex_msgfgui, eval=FALSE} -->
-<!-- library("MSGFgui") -->
-<!-- MSGFgui() -->
-<!-- ``` -->
+```r
+system(cmd)
+```
+
+or, use `MSGFplus`:
+
+
+```r
+library("MSGFplus")
+msgfpar <- msgfPar(database = fas,
+               instrument = 'HighRes',
+               enzyme = 'Trypsin'm
+               protocol = 'iTRAQ')
+runMSGF(msgfpar, mzf)
+```
+
+or, through the graphical user interface:
+
+
+```r
+library("MSGFgui")
+MSGFgui()
+```
 
 ## Analysing search results
 
@@ -653,7 +765,7 @@ msexp
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 21:07:32 2014 
+## Data loaded: Wed Nov 19 14:44:21 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -822,8 +934,8 @@ msexp[1:3]
 ##  MSn M/Z range: 100 2016.66 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 21:07:32 2014 
-## Data [numerically] subsetted 3 spectra: Tue Nov 18 21:07:33 2014 
+## Data loaded: Wed Nov 19 14:44:21 2014 
+## Data [numerically] subsetted 3 spectra: Wed Nov 19 14:44:21 2014 
 ##  MSnbase version: 1.14.0 
 ## - - - Meta data  - - -
 ## phenoData
@@ -915,8 +1027,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Tue Nov 18 21:07:32 2014 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 21:07:34 2014 
+## Data loaded: Wed Nov 19 14:44:21 2014 
+## iTRAQ4 quantification by trapezoidation: Wed Nov 19 14:44:23 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -967,15 +1079,8 @@ molecule tabular sections.
 
 
 ```r
-mztf <- pxget(px, pxfiles(px)[2])
-```
-
-```
-## Downloading 1 file
-## F063721.dat-mztab.txt already present.
-```
-
-```r
+## mztf <- pxget(px, pxfiles(px)[2])
+mztf <- "F063721.dat-mztab.txt"
 (mzt <- readMzTabData(mztf, what = "PEP"))
 ```
 
@@ -1005,7 +1110,7 @@ mztf <- pxget(px, pxfiles(px)[2])
 ## experimentData: use 'experimentData(object)'
 ## Annotation:  
 ## - - - Processing information - - -
-## mzTab read: Tue Nov 18 21:07:40 2014 
+## mzTab read: Wed Nov 19 14:44:23 2014 
 ##  MSnbase version: 1.14.0
 ```
 
@@ -1118,8 +1223,8 @@ processingData(qnt.crct)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 21:07:42 2014 
-## Purity corrected: Tue Nov 18 21:07:42 2014 
+## iTRAQ4 quantification by trapezoidation: Wed Nov 19 14:44:25 2014 
+## Purity corrected: Wed Nov 19 14:44:25 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1181,10 +1286,10 @@ processingData(prt)
 ```
 ## - - - Processing information - - -
 ## Data loaded: Wed May 11 18:54:39 2011 
-## iTRAQ4 quantification by trapezoidation: Tue Nov 18 21:07:42 2014 
-## Purity corrected: Tue Nov 18 21:07:42 2014 
-## Normalised (quantiles): Tue Nov 18 21:07:43 2014 
-## Combined 55 features into 3 using sum: Tue Nov 18 21:07:43 2014 
+## iTRAQ4 quantification by trapezoidation: Wed Nov 19 14:44:25 2014 
+## Purity corrected: Wed Nov 19 14:44:25 2014 
+## Normalised (quantiles): Wed Nov 19 14:44:26 2014 
+## Combined 55 features into 3 using sum: Wed Nov 19 14:44:26 2014 
 ##  MSnbase version: 1.1.22
 ```
 
@@ -1264,20 +1369,86 @@ resources for proteomics data:
   quasi-likelihood GLM regression, and the negative binomial of the
   [`edgeR`](http://www.bioconductor.org/packages/release/bioc/html/edgeR.html) package.
 
-<!-- ```{r, msmstest} -->
-<!-- library(msmsTests) -->
-<!-- data(msms.dataset) -->
-<!-- msms.dataset -->
-<!-- e <- pp.msms.data(msms.dataset) -->
-<!-- e -->
-     
-<!-- null.f <- "y~batch" -->
-<!-- alt.f <- "y~treat+batch" -->
-<!-- div <- apply(exprs(e),2,sum) -->
-<!-- res <- msms.edgeR(e,alt.f,null.f,div=div,fnm="treat") -->
-     
-<!-- head(res) -->
-<!-- ``` -->
+
+
+```r
+library(msmsTests)
+```
+
+```
+## Error in library(msmsTests): there is no package called 'msmsTests'
+```
+
+```r
+data(msms.dataset)
+```
+
+```
+## Warning in data(msms.dataset): data set 'msms.dataset' not found
+```
+
+```r
+msms.dataset
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'msms.dataset' not found
+```
+
+```r
+e <- pp.msms.data(msms.dataset)
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "pp.msms.data"
+```
+
+```r
+e
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'e' not found
+```
+
+```r
+null.f <- "y~batch"
+alt.f <- "y~treat+batch"
+div <- apply(exprs(e),2,sum)
+```
+
+```
+## Error in exprs(e): error in evaluating the argument 'object' in selecting a method for function 'exprs': Error: object 'e' not found
+```
+
+```r
+res <- msms.edgeR(e,alt.f,null.f,div=div,fnm="treat")
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "msms.edgeR"
+```
+
+```r
+head(res)
+```
+
+```
+## MSnSet (storageMode: lockedEnvironment)
+## assayData: 1 features, 4 samples 
+##   element names: exprs 
+## protocolData: none
+## phenoData: none
+## featureData
+##   featureNames: 1
+##   fvarLabels: Protein.ID FBgn ... pd.markers (12 total)
+##   fvarMetadata: labelDescription
+## experimentData: use 'experimentData(object)'
+## Annotation:  
+## - - - Processing information - - -
+## Subset [888,4][1,4] Wed Nov 19 14:44:26 2014 
+##  MSnbase version: 1.14.0
+```
 
 - [`isobar`](http://www.bioconductor.org/packages/release/bioc/html/isobar.html)
   also provides dedicated infrastructure for the statistical analysis of isobaric data. 
@@ -1434,16 +1605,16 @@ vignettes.
 ## [8] methods   base     
 ## 
 ## other attached packages:
-##  [1] hpar_1.8.0           rols_1.8.0           MSGFgui_1.0.1       
-##  [4] rTANDEM_1.6.0        data.table_1.9.4     pRolocdata_1.5.2    
-##  [7] pRoloc_1.7.1         MLInterfaces_1.46.0  cluster_1.15.3      
-## [10] annotate_1.44.0      XML_3.98-1.1         AnnotationDbi_1.28.1
-## [13] GenomeInfoDb_1.2.3   IRanges_2.0.0        S4Vectors_0.4.0     
-## [16] rpx_1.2.0            MSGFplus_1.0.3       MSnID_1.0.0         
-## [19] mzID_1.4.1           RforProteomics_1.5.2 MSnbase_1.14.0      
-## [22] BiocParallel_1.0.0   mzR_2.0.0            Rcpp_0.11.3         
-## [25] Biobase_2.26.0       BiocGenerics_0.12.1  BiocInstaller_1.16.1
-## [28] knitr_1.8           
+##  [1] lattice_0.20-29      hpar_1.8.0           rols_1.8.0          
+##  [4] MSGFgui_1.0.1        rTANDEM_1.6.0        data.table_1.9.4    
+##  [7] pRolocdata_1.5.2     pRoloc_1.7.1         MLInterfaces_1.46.0 
+## [10] cluster_1.15.3       annotate_1.44.0      XML_3.98-1.1        
+## [13] AnnotationDbi_1.28.1 GenomeInfoDb_1.2.3   IRanges_2.0.0       
+## [16] S4Vectors_0.4.0      rpx_1.2.0            MSGFplus_1.0.3      
+## [19] MSnID_1.0.0          mzID_1.4.1           RforProteomics_1.5.2
+## [22] MSnbase_1.14.0       BiocParallel_1.0.0   mzR_2.0.0           
+## [25] Rcpp_0.11.3          Biobase_2.26.0       BiocGenerics_0.12.1 
+## [28] BiocInstaller_1.16.1 knitr_1.8           
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] affy_1.44.0                  affyio_1.34.0               
@@ -1467,32 +1638,31 @@ vignettes.
 ## [37] httpuv_1.3.2                 impute_1.40.0               
 ## [39] interactiveDisplay_1.4.0     interactiveDisplayBase_1.4.0
 ## [41] iterators_1.0.7              kernlab_0.9-19              
-## [43] labeling_0.3                 lattice_0.20-29             
-## [45] limma_3.22.1                 lme4_1.1-7                  
-## [47] lpSolve_5.6.10               MALDIquant_1.11             
-## [49] MASS_7.3-35                  Matrix_1.1-4                
-## [51] mclust_4.4                   mime_0.2                    
-## [53] minqa_1.2.4                  munsell_0.4.2               
-## [55] mvtnorm_1.0-0                nlme_3.1-118                
-## [57] nloptr_1.0.4                 nnet_7.3-8                  
-## [59] pcaMethods_1.56.0            pls_2.4-3                   
-## [61] plyr_1.8.1                   preprocessCore_1.28.0       
-## [63] proto_0.3-10                 proxy_0.4-13                
-## [65] R6_2.0.1                     randomForest_4.6-10         
-## [67] RBGL_1.42.0                  R.cache_0.10.0              
-## [69] RColorBrewer_1.0-5           RCurl_1.95-4.3              
-## [71] rda_1.0.2-2                  reshape2_1.4                
-## [73] rJava_0.9-6                  RJSONIO_1.3-0               
-## [75] R.methodsS3_1.6.1            R.oo_1.18.0                 
-## [77] rpart_4.1-8                  RSQLite_1.0.0               
-## [79] RUnit_0.4.27                 R.utils_1.34.0              
-## [81] sampling_2.6                 scales_0.2.4                
-## [83] sendmailR_1.2-1              sfsmisc_1.0-26              
-## [85] shiny_0.10.2.1               shinyFiles_0.4.0            
-## [87] splines_3.1.1                SSOAP_0.8-0                 
-## [89] stringr_0.6.2                survival_2.37-7             
-## [91] tools_3.1.1                  vsn_3.34.0                  
-## [93] xlsx_0.5.7                   xlsxjars_0.6.1              
-## [95] XMLSchema_0.7-2              xtable_1.7-4                
-## [97] zlibbioc_1.12.0
+## [43] labeling_0.3                 limma_3.22.1                
+## [45] lme4_1.1-7                   lpSolve_5.6.10              
+## [47] MALDIquant_1.11              MASS_7.3-35                 
+## [49] Matrix_1.1-4                 mclust_4.4                  
+## [51] mime_0.2                     minqa_1.2.4                 
+## [53] munsell_0.4.2                mvtnorm_1.0-0               
+## [55] nlme_3.1-118                 nloptr_1.0.4                
+## [57] nnet_7.3-8                   pcaMethods_1.56.0           
+## [59] pls_2.4-3                    plyr_1.8.1                  
+## [61] preprocessCore_1.28.0        proto_0.3-10                
+## [63] proxy_0.4-13                 R6_2.0.1                    
+## [65] randomForest_4.6-10          RBGL_1.42.0                 
+## [67] R.cache_0.10.0               RColorBrewer_1.0-5          
+## [69] RCurl_1.95-4.3               rda_1.0.2-2                 
+## [71] reshape2_1.4                 rJava_0.9-6                 
+## [73] RJSONIO_1.3-0                R.methodsS3_1.6.1           
+## [75] R.oo_1.18.0                  rpart_4.1-8                 
+## [77] RSQLite_1.0.0                RUnit_0.4.27                
+## [79] R.utils_1.34.0               sampling_2.6                
+## [81] scales_0.2.4                 sendmailR_1.2-1             
+## [83] sfsmisc_1.0-26               shiny_0.10.2.1              
+## [85] shinyFiles_0.4.0             splines_3.1.1               
+## [87] SSOAP_0.8-0                  stringr_0.6.2               
+## [89] survival_2.37-7              tools_3.1.1                 
+## [91] vsn_3.34.0                   xlsx_0.5.7                  
+## [93] xlsxjars_0.6.1               XMLSchema_0.7-2             
+## [95] xtable_1.7-4                 zlibbioc_1.12.0
 ```

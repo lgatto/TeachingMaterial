@@ -80,7 +80,8 @@ pxfiles(px)
 
 
 ## ----, pxget-------------------------------------------------------------
-mzf <- pxget(px, pxfiles(px)[6])
+## mzf <- pxget(px, pxfiles(px)[6])
+mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
 mzf
 
 
@@ -107,6 +108,22 @@ dim(hd)
 names(hd)
 
 
+## ----, ex_raw, fig.align='center'----------------------------------------
+hd2 <- hd[hd$msLevel == 2, ]
+i <- which.max(hd2$basePeakIntensity)
+hd2[i, ]
+pi <- peaks(ms, hd2[i, 1])
+mz <- hd2[i, "basePeakMZ"]
+
+par(mfrow = c(2, 2))
+plot(pi, type = "h", main = paste("Acquisition", i))
+plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
+
+pj <- peaks(ms, 100)
+plot(pj, type = "l", main = paste("Acquisition", 100))
+plot(pj, type = "l", xlim = c(536,540))
+
+
 ## ----, id, cache=TRUE----------------------------------------------------
 library("mzID")
 f <- dir(system.file("extdata", package = "RforProteomics"),
@@ -114,6 +131,40 @@ f <- dir(system.file("extdata", package = "RforProteomics"),
 basename(f)
 id <- mzID(f)
 id
+
+
+## ----, ex_id-------------------------------------------------------------
+fid <- flatten(id)
+x <- by(fid, fid$accession, function(x)
+    c(unique(x$length),
+      length(unique(x$pepseq)),
+      mean(x$'ms-gf:specevalue')))
+x <- data.frame(do.call(rbind, x))
+colnames(x) <- c("plength", "npep", "eval")
+x$bins <- cut(x$eval, summary(x$eval))
+library("lattice")
+xyplot(plength ~ npep | bins, data = x)
+
+
+## ----mzrvsid-------------------------------------------------------------
+library("mzR")
+library("mzID")
+f <- dir(system.file("extdata", package = "RforProteomics"),
+         pattern = "mzid", full.names=TRUE)
+
+system.time({
+    id0 <- mzID(f)
+    fid0 <- flatten(id0)
+})
+
+head(fid0)
+
+system.time({
+    id1 <- openIDfile(f)
+    fid1 <- psms(id1)
+})
+
+head(fid1)
 
 
 ## ----, rtandem, eval=FALSE-----------------------------------------------
@@ -139,6 +190,36 @@ id
 
 ## ----, echo=FALSE--------------------------------------------------------
 mzf <- "TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzXML"
+
+
+## ----ex_getfas-----------------------------------------------------------
+## fas <- pxget(px, pxfiles(px)[8])
+fas <- "erwinia_carotovora.fasta"
+
+
+## ----ex_msgfcmd----------------------------------------------------------
+msgf <- system.file(package = "MSGFplus", "MSGFPlus", "MSGFPlus.jar")
+system(paste0("java -jar ", msgf))
+cmd <- paste("java -jar", msgf, "-protocol 2 -inst 1 -s", mzf, "-d", fas)
+cmd
+
+
+## ----ex_msgfsys, eval=FALSE----------------------------------------------
+## system(cmd)
+
+
+## ----ex_msgfplus, eval=FALSE---------------------------------------------
+## library("MSGFplus")
+## msgfpar <- msgfPar(database = fas,
+##                instrument = 'HighRes',
+##                enzyme = 'Trypsin'm
+##                protocol = 'iTRAQ')
+## runMSGF(msgfpar, mzf)
+
+
+## ----ex_msgfgui, eval=FALSE----------------------------------------------
+## library("MSGFgui")
+## MSGFgui()
 
 
 ## ----, msnid-------------------------------------------------------------
@@ -257,7 +338,8 @@ exprs(saf <- quantify(msexp, method = "NSAF"))
 
 
 ## ----, mztab-------------------------------------------------------------
-mztf <- pxget(px, pxfiles(px)[2])
+## mztf <- pxget(px, pxfiles(px)[2])
+mztf <- "F063721.dat-mztab.txt"
 (mzt <- readMzTabData(mztf, what = "PEP"))
 
 
@@ -326,6 +408,21 @@ qnt00 <- filterNA(qnt0)
 dim(qnt00)
 qnt.imp <- impute(qnt0)
 plot0(qnt, qnt.imp)
+
+
+## ----, msmstest----------------------------------------------------------
+library(msmsTests)
+data(msms.dataset)
+msms.dataset
+e <- pp.msms.data(msms.dataset)
+e
+     
+null.f <- "y~batch"
+alt.f <- "y~treat+batch"
+div <- apply(exprs(e),2,sum)
+res <- msms.edgeR(e,alt.f,null.f,div=div,fnm="treat")
+     
+head(res)
 
 
 ## ----, ml----------------------------------------------------------------
