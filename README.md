@@ -60,6 +60,12 @@ with your colleagues.
 - Original repository: https://github.com/raphg/Biostat-578
 - More details: https://github.com/raphg/Biostat-578/blob/master/README.md
 
+### rbioc-proteomics
+- Using R/Bioconductor for MS-based proteomics data analysis
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/rbioc-proteomics
+- More details: https://github.com/lgatto/rbioc-proteomics#readme
+
 ### github_tutorial
 - Description: `git`/`github` guide
 - Original repository: https://github.com/kbroman/github_tutorial
