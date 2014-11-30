@@ -922,8 +922,8 @@ Creating your own SQLite database in R
 
 ```{r sqlite-ex, cache=FALSE}
 db <- dbConnect(SQLite(), dbname="./Data/SDY61/SDY61.sqlite")
-dbWriteTable(conn = db, name = "hai", value = "./Data/SDY61/hai_result.txt", row.names = FALSE, header = TRUE, sep="\t")
-dbWriteTable(conn = db, name = "cohort", value = "./Data/SDY61/arm_or_cohort.txt", row.names = FALSE, header = TRUE, sep="\t")
+dbWriteTable(conn = db, name = "hai", value = "./Data/SDY61/hai_result.txt", row.names = FALSE, header = TRUE, sep="\t", overwrite=TRUE)
+dbWriteTable(conn = db, name = "cohort", value = "./Data/SDY61/arm_or_cohort.txt", row.names = FALSE, header = TRUE, sep="\t", overwrite=TRUE)
 ```
 
 
