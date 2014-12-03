@@ -7,9 +7,10 @@ Authors@R: c(person(given = "Laurent", family = "Gatto",
              person(given = "Robert", family ="Stojnic",
   	            email = "rs550@cam.ac.uk",
 		    role = "aut"))
-Description: Educational package used in R courses to illustrate OO programming 
-       	     and package development. Using biological sequences (DNA and RNA) 
-	     as a working example.
+Description: Educational package used in R courses to illustrate
+       	     object-oriented programming and package
+       	     development. Using biological sequences (DNA and RNA) as
+       	     a working example.
 Depends: methods, Rcpp
 LinkingTo: Rcpp
 Suggests: testthat, knitr
