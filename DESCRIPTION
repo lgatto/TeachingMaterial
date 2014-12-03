@@ -1,5 +1,5 @@
 Package: sequences
-Title: Generic and biological sequences.
+Title: Generic and Biological Sequences
 Version: 0.5.9
 Authors@R: c(person(given = "Laurent", family = "Gatto",
 	            email = "lg390@cam.ac.uk",
