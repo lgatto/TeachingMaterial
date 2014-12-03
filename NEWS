@@ -6,6 +6,7 @@ CHANGES IN VERSION 0.5.9
  o fix duplicated sequence name in fasta file (pull request by Julian
    Gehring) [2014-11-09 Sun]
  o Title: Use title case and remove period [2014-12-03 Wed]
+ o fix readFasta example to use fits file [2014-12-03 Wed]
  
 CHANGES IN VERSION 0.5.8
 ------------------------
