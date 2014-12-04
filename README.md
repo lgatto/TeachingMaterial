@@ -1,13 +1,14 @@
 BIOSTAT 578A: Bioinformatics for Big Omics Data
 ===============================================
 
+**Important Note:** I am in the process of modifying the content of this repository in preparation for Winter 2015. Stay tuned. If you want to be informed of all changes, please create a github account and watch the repository.
+
 **Instructor:** Raphael Gottardo, PhD, Fred Hutchinson Cancer Research Center
 
 If you need to contact me, please email me at <rgottard@fhcrc.org>.
 
 **Time and location:**
-T	10:30-11:50	HST T531
-Th	10:30-11:50	HST T747
+T & Th	10:30-11:50	HST T439
 
 **Prerequisite:** BIOSTAT 511/12 or permission of the instructor. Please email me if you're unsure.
 
