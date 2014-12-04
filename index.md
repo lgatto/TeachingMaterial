@@ -56,5 +56,6 @@ instructions above, &ldquo;[Contribute to someone's repository](pages/fork.html)
 
 Also see my [minimal make](http://kbroman.org/minimal_make),
 [knitr in a knutshell](http://kbroman.org/knitr_knutshell), and
-[simple site](http://kbroman.org/simple_site) tutorials, and my
-[R package primer](http://kbroman.org/pkg_primer).
+[simple site](http://kbroman.org/simple_site) tutorials, my
+[R package primer](http://kbroman.org/pkg_primer), and
+[initial steps towards reproducible research](http://kbroman.org/steps2rr).
