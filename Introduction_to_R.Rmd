@@ -612,6 +612,7 @@ or buy his book
 ## Time for your to work!
 
 What you need to do:
+
 - Download [R](r-project.org) and [RStudio](rstudio.org)
 - Signup for an account on [GitHub](github.com). 
     - Set up your first repository!
