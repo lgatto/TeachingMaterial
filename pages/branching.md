@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Branching and merging
+description: Git/GitHub Guide: branching and merging
 ---
 
 I touched on just a few things about git.  Get yourself going with git and

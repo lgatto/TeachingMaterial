@@ -1,6 +1,7 @@
 ---
 layout: page
 title: git/github resources
+description: Git/GitHub Guide: resources page
 ---
 
 This tutorial is minimal.  It's probably considerably less than

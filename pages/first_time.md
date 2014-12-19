@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Your first time with git and github
+description: Git/GitHub Guide: initial setup
 ---
 
 If you've never used git or github before, there are a bunch of things

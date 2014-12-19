@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Handling merge conflicts
+description: Git/GitHub Guide: handling merge conflicts
 ---
 
 One of the best features of [git](http://git-scm.com) is its ability

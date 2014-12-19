@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Amend the last commit message
+description: Git/GitHub Guide: amend the last commit message
 ---
 
 &ldquo;Oops!  That last commit message was screwed up.

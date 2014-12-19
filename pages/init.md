@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Start a new git repository
+description: Git/GitHub Guide: creating a new git repository
 ---
 
 Your first instinct, when you start to do something new, should be

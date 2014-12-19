@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Why git and github?
+description: Git/GitHub Guide: why use git and github?
 ---
 
 ### Why use [git](http://git-scm.com)?

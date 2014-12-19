@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Exploring code and its history
+description: Git/GitHub Guide: exploring code and its history
 ---
 
 For my own repositories, I like to use [gitx](http://gitx.frim.nl/) on

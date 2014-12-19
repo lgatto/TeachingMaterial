@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Routine use of git and github
+description: Git/GitHub Guide: day-to-day use
 ---
 
 The routine use of [git](http://git-scm.com) involves just a few commands:

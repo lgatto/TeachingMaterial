@@ -1,6 +1,7 @@
 ---
 layout: page
 title: git/github with RStudio
+description: Git/GitHub Guide: use of git/github in RStudio
 ---
 
 [RStudio](http://www.rstudio.com/ide) is a popular development

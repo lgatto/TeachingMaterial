@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Contribute to someone's repository
+description: Git/GitHub Guide: contributing to someone's repository
 ---
 
 Say you want to contribute changes to someone else's repository (eg,
