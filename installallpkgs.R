@@ -17,10 +17,10 @@
 #
 # This script was initially developed for use with course materials of
 # "BIOSTAT 578A: Bioinformatics for Big Omics Data", specifically the  
-# files (*.Rpres) found at https://github.com/raphg/Biostat-578/
+# files (*.Rpres, *.Rmd) found at https://github.com/raphg/Biostat-578/
 #
 # The idea is to download the course materials with "git clone", then
-# run this script to install all of the packages used in the Rpres files
+# run this script to install all of the packages used in presentation files
 # so that the slides will display properly when run using, e.g., RStudio.
 # Since many of the presentaions do not include installation commands 
 # for all of the required packages, the slides may not display properly
@@ -35,7 +35,7 @@
 #      ... where you should use the actual file path to this script.
 #
 # Author: Brian High
-# Date: 2014-11-29
+# Date: 2014-12-19
 # License: http://creativecommons.org/licenses/by-sa/3.0/deed.en_US
 
 # ----------------------------------------------------------------------
@@ -60,9 +60,9 @@ tryinstall <- function(p) {
 # Main Routine
 # ----------------------------------------------------------------------
 
-# Compile a list of R and Rpres filenames in the current directory
-# Tip: Use pattern="*.Rpres|.R" to also check *.R scripts.
-filenames <- list.files(".", pattern="*.Rpres", full.names=FALSE)
+# Compile a list of R, Rpres, and Rmd filenames in the current directory
+# Tip: Use pattern="*.Rpres|*.R|*.Rmd" to also check *.R scripts.
+filenames <- list.files(".", pattern="*.Rpres|*.Rmd", full.names=FALSE)
 
 # Parse each file to find the packages used and compile into a list
 allpkgs <- c()
