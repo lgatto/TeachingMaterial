@@ -60,9 +60,9 @@ tryinstall <- function(p) {
 # Main Routine
 # ----------------------------------------------------------------------
 
-# Compile a list of R, Rpres, and Rmd filenames in the current directory
-# Tip: Use pattern="*.Rpres|*.R|*.Rmd" to also check *.R scripts.
-filenames <- list.files(".", pattern="*.Rpres|*.Rmd", full.names=FALSE)
+# Compile a list of Rpres and Rmd filenames in the current directory
+# Tip: Use pattern="*.(Rpres|R|Rmd)" to also check *.R scripts.
+filenames <- list.files(".", pattern="*.(Rpres|Rmd)", full.names=FALSE)
 
 # Parse each file to find the packages used and compile into a list
 allpkgs <- c()
