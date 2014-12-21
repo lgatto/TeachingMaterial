@@ -2,6 +2,7 @@
 layout: page
 title: minimal make
 tagline: A minimal tutorial on make
+description: A minimal tutorial on GNU Make, the most important tool for reproducible research.
 ---
 
 I would argue that the most important tool for reproducible research
