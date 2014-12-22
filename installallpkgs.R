@@ -34,7 +34,7 @@
 #   2. Run this command: source("installallpkgs.R")
 #      ... where you should use the actual file path to this script.
 #
-# Author: Brian High
+# Author: Brian High with modification from Raphael Gottardo
 # Date: 2014-12-19
 # License: http://creativecommons.org/licenses/by-sa/3.0/deed.en_US
 
@@ -46,15 +46,9 @@
 #     Conditionally install using install.packages
 #            or biocLite()
 #     Usage: tryinstall(c("package1", "package2", ...))
-tryinstall <- function(p) {
-    n <- p[!(p %in% installed.packages()[,"Package"])]
-    if(length(n)) {
-        install.packages(n, repos="http://cran.fhcrc.org") | {
-            source("http://bioconductor.org/biocLite.R")
-            biocLite(n, ask = FALSE)
-        }
-    }
-}
+
+# Also source biocLite
+source("http://bioconductor.org/biocLite.R")
 
 # ----------------------------------------------------------------------
 # Main Routine
@@ -83,11 +77,5 @@ allpkgs <- unique(allpkgs)
 # Save a copy of the package list
 write(allpkgs, "packages_list.txt")
 
-# Attempt to install each package using the tryinstall function
-for (pkg in allpkgs) tryinstall(pkg)
-
-# Uncomment the next line to install the development version of data.table.
-# install.packages("data.table", repos="http://R-forge.R-project.org")
-
-# Check that all packages will load
-for (pkg in allpkgs) require(pkg, character.only = TRUE)
+# Install all packages using biocLite. biocLite can pull packages from Bioconductor and CRAN
+biocLite(allpkgs, ask=FALSE)
