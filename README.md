@@ -34,5 +34,5 @@ T & Th	9:00-10:20	HST T439
 *Note that this is tentative ouline and minor modifications are likely to occur. Please watch this page regularly for updates.*
 
 **Lecture notes:**
-
+Notes are provided as the source file (.Rmd) and resulting html file for online viewing. If you'd like to print these notes, please use the intermediate md file and [gitprint](http://gitprint.com/).
 - 01/06/14 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rmd) 
