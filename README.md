@@ -8,7 +8,7 @@ BIOSTAT 578A: Bioinformatics for Big Omics Data
 If you need to contact me, please email me at <rgottard@fhcrc.org>.
 
 **Time and location:**
-T & Th	10:30-11:50	HST T439
+T & Th	9:00-10:20	HST T439
 
 **Prerequisite:** BIOSTAT 511/12 or permission of the instructor. Please email me if you're unsure.
 
