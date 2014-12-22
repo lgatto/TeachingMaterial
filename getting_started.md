@@ -6,8 +6,7 @@ Here is a quick list of things to do to get started, ideally before the first cl
 ```r 
 source("installallpkgs.R")
 ``` 
-in the R studio should work.
-As an alternative you can also also click on the `source` button in RStudio.
+in the R console should work. As an alternative you can also also click on the `source` button in RStudio.
 
 - If you have never used R before, please have a look at the following material and links from Rstudio: http://www.rstudio.com/resources/training/online-learning/
 
