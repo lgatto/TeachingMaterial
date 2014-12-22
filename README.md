@@ -1,7 +1,7 @@
 BIOSTAT 578A: Bioinformatics for Big Omics Data
 ===============================================
 
-**Important Note:** I am in the process of modifying the content of this repository in preparation for Winter 2015. Stay tuned. If you want to be informed of all changes, please create a github account and watch the repository.
+**Important Note:** I am in the process of modifying the content of this repository in preparation for Winter 2015. Stay tuned. If you want to be informed of all changes, please create a github account and watch the repository. Please also make sure you look at the "Getting Started" section below, as I expect you to do some things before the course actually starts.
 
 **Instructor:** Raphael Gottardo, PhD, Fred Hutchinson Cancer Research Center
 
@@ -11,6 +11,8 @@ If you need to contact me, please email me at <rgottard@fhcrc.org>.
 T & Th	10:30-11:50	HST T439
 
 **Prerequisite:** BIOSTAT 511/12 or permission of the instructor. Please email me if you're unsure.
+
+**Getting Started:** Please look at [this document](https://github.com/raphg/Biostat-578/blob/master/getting_started.md) to get you all set-up before the first class. This will include doing some reading/learning about R/Bioconductor/git/GitHub. 
 
 **Grading scheme (Tentative):** HW (40%), Midterm (30%), Final project (30%)
 
@@ -33,4 +35,4 @@ T & Th	10:30-11:50	HST T439
 
 **Lecture notes:**
 
-- 01/06/14 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rpres) 
+- 01/06/14 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rmd) 
