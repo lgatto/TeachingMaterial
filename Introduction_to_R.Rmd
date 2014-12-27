@@ -10,6 +10,10 @@ output:
     smaller: yes
 ---
 
+```{r, echo=FALSE}
+library("knitr")
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80))
+```
 
 ## What is Bioinformatics?
 
