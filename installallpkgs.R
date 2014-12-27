@@ -26,24 +26,8 @@
 #      ... where you should use the actual file path to this script.
 #
 # Author: Brian High with modification from Raphael Gottardo
-# Date: 2014-12-19
+# Date: 2014-12-27
 # License: http://creativecommons.org/licenses/by-sa/3.0/deed.en_US
-
-# ----------------------------------------------------------------------
-# Functions
-# ----------------------------------------------------------------------
-
-# tryinstall() function
-#     Conditionally install using install.packages
-#            or biocLite()
-#     Usage: tryinstall(c("package1", "package2", ...))
-
-# Also source biocLite
-source("http://bioconductor.org/biocLite.R")
-
-# ----------------------------------------------------------------------
-# Main Routine
-# ----------------------------------------------------------------------
 
 # Compile a list of Rpres and Rmd filenames in the current directory
 # Tip: Use pattern="*.(Rpres|R|Rmd)" to also check *.R scripts.
@@ -68,5 +52,7 @@ allpkgs <- unique(allpkgs)
 # Save a copy of the package list
 write(allpkgs, "packages_list.txt")
 
-# Install all packages using biocLite. biocLite can pull packages from Bioconductor and CRAN
+# Install all packages using biocLite. 
+# * biocLite can pull packages from Bioconductor and CRAN
+source("http://bioconductor.org/biocLite.R")
 biocLite(allpkgs, ask=FALSE)
