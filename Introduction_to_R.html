@@ -688,8 +688,8 @@ for(i in 1:n) {
 
 y[1:10]</pre>
 
-<pre >##  [1] 3.453171 3.062379 3.249000 3.287270 3.297476 3.244471 3.205690
-##  [8] 3.465723 3.272240 3.327273</pre>
+<pre >##  [1] 3.200889 3.082610 3.186432 3.166426 3.144875 3.161952 3.216381
+##  [8] 2.960723 3.135867 3.196169</pre>
 
 <pre class = 'prettyprint lang-r'>## While loops
 counter &lt;- 1
@@ -700,8 +700,8 @@ while(counter&lt;=n) {
 
 y[1:10]</pre>
 
-<pre >##  [1] 3.453171 3.062379 3.249000 3.287270 3.297476 3.244471 3.205690
-##  [8] 3.465723 3.272240 3.327273</pre>
+<pre >##  [1] 3.200889 3.082610 3.186432 3.166426 3.144875 3.161952 3.216381
+##  [8] 2.960723 3.135867 3.196169</pre>
 
 </article></slide><slide class=''><hgroup><h2>Functions and arguments (suite)</h2></hgroup><article  id="functions-and-arguments-suite" class="smaller ">
 
@@ -737,11 +737,11 @@ microbenchmark(for(i in 1:n) y[i] &lt;- sqrt(x[i]), sqrt(x), times=10)</pre>
 
 <pre >## Unit: microseconds
 ##                               expr       min        lq       mean
-##  for (i in 1:n) y[i] &lt;- sqrt(x[i]) 10479.919 10953.463 12329.1552
-##                            sqrt(x)    44.267    45.325    82.7652
+##  for (i in 1:n) y[i] &lt;- sqrt(x[i]) 10022.896 10775.341 12566.9655
+##                            sqrt(x)    44.357    44.722    60.8613
 ##     median        uq       max neval cld
-##  11385.354 13516.885 16889.736    10   b
-##     57.292    89.081   265.631    10  a</pre>
+##  12831.578 14346.327 14466.921    10   b
+##     48.659    78.432   113.829    10  a</pre>
 
 <p>The for loop is increadibly slower!</p>
 
@@ -772,11 +772,11 @@ microbenchmark(for(i in 1:n) y[i] &lt;- MySqrt(x[i]), sapply(x, MySqrt), times=1
 
 <pre >## Unit: milliseconds
 ##                                 expr      min       lq     mean   median
-##  for (i in 1:n) y[i] &lt;- MySqrt(x[i]) 58.03037 60.24212 71.74181 65.39104
-##                    sapply(x, MySqrt) 51.84054 55.89565 59.62110 56.27237
-##        uq       max neval cld
-##  69.63599 112.31222    10   a
-##  66.09556  73.20776    10   a</pre>
+##  for (i in 1:n) y[i] &lt;- MySqrt(x[i]) 58.16229 60.29550 63.35428 62.30589
+##                    sapply(x, MySqrt) 54.66953 57.86308 63.94049 61.58541
+##        uq      max neval cld
+##  65.65185 73.94306    10   a
+##  70.91474 74.46710    10   a</pre>
 
 <p><code>*apply</code> functions are not necessarily faster than <code>for</code> loops, but they can be very convenient and usually lead to more compact and more elegant code.</p>
 

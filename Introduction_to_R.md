@@ -1,19 +1,7 @@
----
-title: 'Bioinformatics for Big Omics Data: Introduction to R (and related tools)'
-author: "Raphael Gottardo"
-date: "December 8, 2014"
-output:
-  ioslides_presentation:
-    fig_caption: yes
-    fig_retina: 1
-    keep_md: yes
-    smaller: yes
----
+# Bioinformatics for Big Omics Data: Introduction to R (and related tools)
+Raphael Gottardo  
+December 8, 2014  
 
-```{r, echo=FALSE}
-library("knitr")
-opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80))
-```
 
 ## What is Bioinformatics?
 
@@ -160,18 +148,45 @@ More advanced:
 ## R basics
 
 R is an overgrown calculator!
-```{r some-easy-math}
+
+```r
 2+2
+```
+
+```
+## [1] 4
+```
+
+```r
 exp(-2)
+```
+
+```
+## [1] 0.1353353
+```
+
+```r
 pi
+```
+
+```
+## [1] 3.141593
+```
+
+```r
 sin(2*pi)
+```
+
+```
+## [1] -2.449294e-16
 ```
 
 ## Getting help
 
 You can easily find help via the command line:
 
-```{r getting-help}
+
+```r
 help(pi) ## equivalent ?pi
 ?sqrt
 ?sin
@@ -179,7 +194,8 @@ help(pi) ## equivalent ?pi
 ```
 
 If you don't know the exact name, use
-```{r getting-more-help}
+
+```r
 help.search("trigonometry")
 ??trigonometry
 ```
@@ -188,10 +204,15 @@ Or using the help tab integrated in RStudio, or using your favorite search engin
 ## Assignment
 
 Need a way to store intermediate results:
-```{r storing-things}
+
+```r
 x <- 2
 y <- 2
 x+y
+```
+
+```
+## [1] 4
 ```
 
 Try to use meaningful names! 
@@ -208,12 +229,24 @@ We need a way to store a sequence/list of numbers
 
 One can simply concatenate elements with the `c` function.
 
-```{r concatenate}
+
+```r
 weight <- c(60, 72, 75, 90, 95, 72)
 weight[1]
+```
+
+```
+## [1] 60
+```
+
+```r
 height <- c(1.75, 1.80, 1.65, 1.90, 1.74, 1.91)
 bmi <- weight/height^2 ## vector based operation
 bmi
+```
+
+```
+## [1] 19.59184 22.22222 27.54821 24.93075 31.37799 19.73630
 ```
 - Vector based operation are much faster!
 - `c` can be used to concatenate strings and numbers.
@@ -242,7 +275,8 @@ For more details: [http://adv-r.had.co.nz/Data-structures.html](http://adv-r.had
 ## Vectors
 
 We have three types of vectors: numeric, logical, character
-```{r vectors}
+
+```r
 ## Numeric vectors
 x <- c(1, 5, 8)
 ## Logical vectors
@@ -259,22 +293,59 @@ We have already encountered the `NaN` symbol meaning not-a-number, and `Inf`, `-
 
 Depending on the context, R provides different ways to deal with missing values.
 
-```{r missing-values}
+
+```r
 weight <- c(60, 72, 75, 90, NA, 72)
 mean(weight)
+```
+
+```
+## [1] NA
+```
+
+```r
 mean(weight, na.rm=TRUE)
+```
+
+```
+## [1] 73.8
 ```
 
 ## Matrices and arrays
 
 A matrix is a two dimensional array of numbers. Matrices can be used to perform statistical operations (linear algebra). However, they can also be used to hold tables. 
 
-```{r matrices}
+
+```r
 x <- 1:12
 length(x)
+```
+
+```
+## [1] 12
+```
+
+```r
 dim(x)
+```
+
+```
+## NULL
+```
+
+```r
 dim(x) <- c(3, 4)
 x
+```
+
+```
+##      [,1] [,2] [,3] [,4]
+## [1,]    1    4    7   10
+## [2,]    2    5    8   11
+## [3,]    3    6    9   12
+```
+
+```r
 x <- matrix(1:12, nrow=3, byrow=TRUE)
 x <- matrix(1:12, nrow=3, byrow=FALSE)
 rownames(x) <- c("A", "B", "C")
@@ -285,7 +356,8 @@ colnames(x) <- c("1", "2", "x", "y")
 
 Matrices can also be formed by "glueing" rows and columns using `cbind` and `rbind`. This is the equivalent of `c` for vectors.
 
-```{r matrices2}
+
+```r
 x1 <- 1:4
 x2 <- 5:8
 y1 <- c(3, 9)
@@ -294,8 +366,15 @@ new_matrix <- cbind(my_matrix, y1)
 new_matrix
 ```
 
+```
+##            y1
+## x1 1 2 3 4  3
+## x2 5 6 7 8  9
+```
+
 n-dimesional arrays generalize matrices, as follows:
-```{r arrays, eval=FALSE}
+
+```r
 array(1:9, c(3, 3, 3))
 ```
 
@@ -303,14 +382,33 @@ array(1:9, c(3, 3, 3))
 
 It is common to have categorical data in statistical data analysis (e.g. Male/Female). In R such variables are referred to as factors. Makes it possible to assign meaningful names to categories. A factor has a set of levels.
 
-```{r factors}
+
+```r
 pain <- c(0, 3, 2, 2, 1)
 fpain <- factor(pain)
 levels(fpain) <- c("none", "mild", "medium", "severe")
 is.factor(fpain)
+```
+
+```
+## [1] TRUE
+```
+
+```r
 is.vector(fpain)
+```
+
+```
+## [1] FALSE
+```
+
+```r
 ## Additional attribute
 levels(fpain)
+```
+
+```
+## [1] "none"   "mild"   "medium" "severe"
 ```
 
 A factor is very similar to an integer vector with a set of labels. While factors look like character vectors, they are not. So be careful when converting factors to characters and vice-versa. For example, use `stringsAsFactors = FALSE` when reading dataframes (more on this later).
@@ -318,22 +416,47 @@ A factor is very similar to an integer vector with a set of labels. While factor
 ## Lists
 
 Lists can be used to store objects (of possibly different kinds/sizes) into a larger composite object. 
-```{r lists}
+
+```r
 x <- c(31, 32, 40)
 y <- factor(c("F", "M", "M", "F"))
 ## Different types and dimensions!
 z <- c("London", "School")
 my_list <- list(age=x, sex=y, meta=z)
 my_list
+```
+
+```
+## $age
+## [1] 31 32 40
+## 
+## $sex
+## [1] F M M F
+## Levels: F M
+## 
+## $meta
+## [1] "London" "School"
+```
+
+```r
 my_list$age
+```
+
+```
+## [1] 31 32 40
 ```
 
 ## Data Frames
 
 A data frame is a "data matrix" or a "data set". It is a list of vectors and/or factors of the same length that are related "across" such that data in the same position come from the same experimental unit (subject, gene, etc).
-```{r data-frames}
+
+```r
 my_df <- data.frame(age=c(31, 32, 40, 50), sex=c("M", "M", "F", "M"))
 my_df$age
+```
+
+```
+## [1] 31 32 40 50
 ```
 Why do we need data frames if it is simply a list? 
 
@@ -346,13 +469,39 @@ R provides some (more efficient) alternatives to dataframe. More later!
 
 Name(s) of an R object can be accessed and/or modified with the `names` function (method).
 
-```{r names}
+
+```r
 x <- rep(1:3)
 names(x)
+```
+
+```
+## NULL
+```
+
+```r
 names(x) <- c("a", "b", "c")
 my_df <- data.frame(age=c(31,32,40,50), sex=y)
 my_df
+```
+
+```
+##   age sex
+## 1  31   F
+## 2  32   M
+## 3  40   M
+## 4  50   F
+```
+
+```r
 names(my_df)
+```
+
+```
+## [1] "age" "sex"
+```
+
+```r
 names(my_df) <- c("age", "gender")
 names(my_df)[1] <- c("Age")
 ```
@@ -364,42 +513,177 @@ Names are a special kind of attributes. See more here: http://adv-r.had.co.nz/Da
 Indexing is a great way to directly 
 access elements of interest.
 
-```{r indexing}
+
+```r
 ## Indexing a vector
 pain <- c(0, 3, 2, 2, 1)
 pain[1]
+```
+
+```
+## [1] 0
+```
+
+```r
 pain[2]
+```
+
+```
+## [1] 3
+```
+
+```r
 pain[1:2]
+```
+
+```
+## [1] 0 3
+```
+
+```r
 pain[c(1, 3)]
+```
+
+```
+## [1] 0 2
+```
+
+```r
 pain[-5]
+```
+
+```
+## [1] 0 3 2 2
 ```
 Note that with a data frame, the indexing of subject is straightforward!
 
 ## Indexing (suite)
 
-```{r indexing-suite}
+
+```r
 ## Indexing a matrix
 my_matrix[1, 1]
+```
+
+```
+## x1 
+##  1
+```
+
+```r
 my_matrix[1, ]
+```
+
+```
+## [1] 1 2 3 4
+```
+
+```r
 my_matrix[, 1]
+```
+
+```
+## x1 x2 
+##  1  5
+```
+
+```r
 my_matrix[, -2]
+```
+
+```
+##    [,1] [,2] [,3]
+## x1    1    3    4
+## x2    5    7    8
+```
+
+```r
 ## Indexing list is done in the same way
 my_list[3]
+```
+
+```
+## $meta
+## [1] "London" "School"
+```
+
+```r
 my_list[[3]]
+```
+
+```
+## [1] "London" "School"
+```
+
+```r
 my_list[[3]][1]
+```
+
+```
+## [1] "London"
+```
+
+```r
 ## Indexing a data frame
 my_df[1, ]
+```
+
+```
+##   Age gender
+## 1  31      F
+```
+
+```r
 my_df[2, ]
+```
+
+```
+##   Age gender
+## 2  32      M
 ```
 
 ## Indexing by name
 <div class="columns-2">
 
-```{r indexing-by-name}
+
+```r
 my_list$age
+```
+
+```
+## [1] 31 32 40
+```
+
+```r
 my_list["age"]
+```
+
+```
+## $age
+## [1] 31 32 40
+```
+
+```r
 my_list[["age"]]
+```
+
+```
+## [1] 31 32 40
+```
+
+```r
 my_df["Age"]
+```
+
+```
+##   Age
+## 1  31
+## 2  32
+## 3  40
+## 4  50
+```
+
+```r
 ## Try also
 ## my_df[1]
 ## my_df[[1]]
@@ -411,12 +695,24 @@ What is the main difference between `[[]]` and `[]`?
 
 Indexing can be conditional on another variable!
 
-```{r conditional-indexing}
+
+```r
 pain <- c(0, 3, 2, 2, 1)
 sex <- factor(c("M", "M", "F", "F", "M"))
 age <- c(45, 51, 45, 32, 90)
 pain[sex=="M"]
+```
+
+```
+## [1] 0 3 1
+```
+
+```r
 pain[age>32]
+```
+
+```
+## [1] 0 3 2 1
 ```
 
 **Exercise:** Do the same by indexing with F.
@@ -436,7 +732,8 @@ Most function arguments have sensible default and can thus be omitted, e.g. `plo
 
 R is a true programming language, and thus has a rich syntax including `for` loops and conditional statements (`while`, `if`, `ifelse`, etc).
 
-```{r if-statement}
+
+```r
 ## A simple if statement
 x <- -2
 if(x>0) {
@@ -444,7 +741,13 @@ if(x>0) {
 } else {
   print(-x)
 }
+```
 
+```
+## [1] 2
+```
+
+```r
 if(x>0) {
   print(x)
 } else if(x==0) {
@@ -454,8 +757,13 @@ if(x>0) {
 }
 ```
 
+```
+## [1] 2
+```
 
-```{r for-while}
+
+
+```r
 ## For loops
 n <- 1000000
 x <- rnorm(n, 10, 1)
@@ -466,7 +774,14 @@ for(i in 1:n) {
 }
 
 y[1:10]
+```
 
+```
+##  [1] 3.200889 3.082610 3.186432 3.166426 3.144875 3.161952 3.216381
+##  [8] 2.960723 3.135867 3.196169
+```
+
+```r
 ## While loops
 counter <- 1
 while(counter<=n) {
@@ -477,11 +792,17 @@ while(counter<=n) {
 y[1:10]
 ```
 
+```
+##  [1] 3.200889 3.082610 3.186432 3.166426 3.144875 3.161952 3.216381
+##  [8] 2.960723 3.135867 3.196169
+```
+
 ## Functions and arguments (suite)
 
 You can easily create your own function in R. Recommended when you plan to use the same code over and over again.
 
-```{r NR}
+
+```r
 ## Newton-Raphson to find the square root of a number
 MySqrt <- function(y) {
   x <- y/2
@@ -491,14 +812,26 @@ MySqrt <- function(y) {
   x
   }
 MySqrt(81)
+```
+
+```
+## [1] 9
+```
+
+```r
 MySqrt(101)
+```
+
+```
+## [1] 10.04988
 ```
 
 ## Vectorized operation
 
 For loops are notoriously slow in R, and whenever possible, it is preferable to use vectorized operations. Most functions in R are already vectorized.
 
-```{r vectorized-ops}
+
+```r
 ## Let's generate some uniform [0,10] random numbers
 n <- 10000
 x  <-  runif(n, 0, 10)
@@ -506,6 +839,16 @@ y <- rep(0, n)
 
 library(microbenchmark)
 microbenchmark(for(i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times=10)
+```
+
+```
+## Unit: microseconds
+##                               expr       min        lq       mean
+##  for (i in 1:n) y[i] <- sqrt(x[i]) 10022.896 10775.341 12566.9655
+##                            sqrt(x)    44.357    44.722    60.8613
+##     median        uq       max neval cld
+##  12831.578 14346.327 14466.921    10   b
+##     48.659    78.432   113.829    10  a
 ```
 
 The for loop is increadibly slower! 
@@ -529,13 +872,24 @@ For more details have a look at [this](http://www.dummies.com/how-to/content/how
 
 ## Vectorized operation with the *apply family (suite)
 
-```{r vectorized-apply}
+
+```r
 ## Let's generate some uniform [0,10] random numbers
 n <- 10000
 x  <-  runif(n, 0, 10)
 y  <- rep(0, n)
 library(microbenchmark)
 microbenchmark(for(i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times=10)
+```
+
+```
+## Unit: milliseconds
+##                                 expr      min       lq     mean   median
+##  for (i in 1:n) y[i] <- MySqrt(x[i]) 58.16229 60.29550 63.35428 62.30589
+##                    sapply(x, MySqrt) 54.66953 57.86308 63.94049 61.58541
+##        uq      max neval cld
+##  65.65185 73.94306    10   a
+##  70.91474 74.46710    10   a
 ```
 
 `*apply` functions are not necessarily faster than `for` loops, but they can be very convenient and usually lead to more compact and more elegant code. 
@@ -585,7 +939,7 @@ Mardown with R code chuncks.
 
 As we've seen, R expressions can also be evaluated inline:
 
-pi=`r pi`
+pi=3.1415927
 
 ## knitr and caching
 
