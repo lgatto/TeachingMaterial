@@ -3,6 +3,7 @@ Raphael Gottardo
 December 8, 2014  
 
 
+
 ## What is Bioinformatics?
 
 - It depends who you ask but, according to [Wikipedia](http://www.wikipedia.org): 
@@ -150,7 +151,7 @@ More advanced:
 R is an overgrown calculator!
 
 ```r
-2+2
+2 + 2
 ```
 
 ```
@@ -174,7 +175,7 @@ pi
 ```
 
 ```r
-sin(2*pi)
+sin(2 * pi)
 ```
 
 ```
@@ -187,17 +188,17 @@ You can easily find help via the command line:
 
 
 ```r
-help(pi) ## equivalent ?pi
-?sqrt
-?sin
-?Special
+help(pi)  ## equivalent ?pi
+`?`(sqrt)
+`?`(sin)
+`?`(Special)
 ```
 
 If you don't know the exact name, use
 
 ```r
 help.search("trigonometry")
-??trigonometry
+`?`(`?`(trigonometry))
 ```
 Or using the help tab integrated in RStudio, or using your favorite search engine!
 
@@ -208,7 +209,7 @@ Need a way to store intermediate results:
 ```r
 x <- 2
 y <- 2
-x+y
+x + y
 ```
 
 ```
@@ -240,8 +241,8 @@ weight[1]
 ```
 
 ```r
-height <- c(1.75, 1.80, 1.65, 1.90, 1.74, 1.91)
-bmi <- weight/height^2 ## vector based operation
+height <- c(1.75, 1.8, 1.65, 1.9, 1.74, 1.91)
+bmi <- weight/height^2  ## vector based operation
 bmi
 ```
 
@@ -304,7 +305,7 @@ mean(weight)
 ```
 
 ```r
-mean(weight, na.rm=TRUE)
+mean(weight, na.rm = TRUE)
 ```
 
 ```
@@ -346,8 +347,8 @@ x
 ```
 
 ```r
-x <- matrix(1:12, nrow=3, byrow=TRUE)
-x <- matrix(1:12, nrow=3, byrow=FALSE)
+x <- matrix(1:12, nrow = 3, byrow = TRUE)
+x <- matrix(1:12, nrow = 3, byrow = FALSE)
 rownames(x) <- c("A", "B", "C")
 colnames(x) <- c("1", "2", "x", "y")
 ```
@@ -422,7 +423,7 @@ x <- c(31, 32, 40)
 y <- factor(c("F", "M", "M", "F"))
 ## Different types and dimensions!
 z <- c("London", "School")
-my_list <- list(age=x, sex=y, meta=z)
+my_list <- list(age = x, sex = y, meta = z)
 my_list
 ```
 
@@ -451,7 +452,7 @@ my_list$age
 A data frame is a "data matrix" or a "data set". It is a list of vectors and/or factors of the same length that are related "across" such that data in the same position come from the same experimental unit (subject, gene, etc).
 
 ```r
-my_df <- data.frame(age=c(31, 32, 40, 50), sex=c("M", "M", "F", "M"))
+my_df <- data.frame(age = c(31, 32, 40, 50), sex = c("M", "M", "F", "M"))
 my_df$age
 ```
 
@@ -481,7 +482,7 @@ names(x)
 
 ```r
 names(x) <- c("a", "b", "c")
-my_df <- data.frame(age=c(31,32,40,50), sex=y)
+my_df <- data.frame(age = c(31, 32, 40, 50), sex = y)
 my_df
 ```
 
@@ -684,9 +685,7 @@ my_df["Age"]
 ```
 
 ```r
-## Try also
-## my_df[1]
-## my_df[[1]]
+## Try also my_df[1] my_df[[1]]
 ```
 
 What is the main difference between `[[]]` and `[]`?
@@ -700,7 +699,7 @@ Indexing can be conditional on another variable!
 pain <- c(0, 3, 2, 2, 1)
 sex <- factor(c("M", "M", "F", "F", "M"))
 age <- c(45, 51, 45, 32, 90)
-pain[sex=="M"]
+pain[sex == "M"]
 ```
 
 ```
@@ -708,7 +707,7 @@ pain[sex=="M"]
 ```
 
 ```r
-pain[age>32]
+pain[age > 32]
 ```
 
 ```
@@ -736,10 +735,10 @@ R is a true programming language, and thus has a rich syntax including `for` loo
 ```r
 ## A simple if statement
 x <- -2
-if(x>0) {
-  print(x)
+if (x > 0) {
+    print(x)
 } else {
-  print(-x)
+    print(-x)
 }
 ```
 
@@ -748,12 +747,12 @@ if(x>0) {
 ```
 
 ```r
-if(x>0) {
-  print(x)
-} else if(x==0) {
-  print(0)
+if (x > 0) {
+    print(x)
+} else if (x == 0) {
+    print(0)
 } else {
-  print(-x)
+    print(-x)
 }
 ```
 
@@ -765,36 +764,34 @@ if(x>0) {
 
 ```r
 ## For loops
-n <- 1000000
+n <- 1e+06
 x <- rnorm(n, 10, 1)
 y <- x^2
 y <- rep(0, n)
-for(i in 1:n) {
-  y[i]<-sqrt(x[i])
+for (i in 1:n) {
+    y[i] <- sqrt(x[i])
 }
-
 y[1:10]
 ```
 
 ```
-##  [1] 3.200889 3.082610 3.186432 3.166426 3.144875 3.161952 3.216381
-##  [8] 2.960723 3.135867 3.196169
+##  [1] 3.227797 3.050229 3.169105 3.188305 3.218317 3.121084 3.207667
+##  [8] 3.032597 3.202525 3.198408
 ```
 
 ```r
 ## While loops
 counter <- 1
-while(counter<=n) {
-  y[counter] <- sqrt(x[counter])
-  counter <- counter+1
+while (counter <= n) {
+    y[counter] <- sqrt(x[counter])
+    counter <- counter + 1
 }
-
 y[1:10]
 ```
 
 ```
-##  [1] 3.200889 3.082610 3.186432 3.166426 3.144875 3.161952 3.216381
-##  [8] 2.960723 3.135867 3.196169
+##  [1] 3.227797 3.050229 3.169105 3.188305 3.218317 3.121084 3.207667
+##  [8] 3.032597 3.202525 3.198408
 ```
 
 ## Functions and arguments (suite)
@@ -805,12 +802,12 @@ You can easily create your own function in R. Recommended when you plan to use t
 ```r
 ## Newton-Raphson to find the square root of a number
 MySqrt <- function(y) {
-  x <- y/2
-  while (abs(x*x-y) > 1e-10) {
-    x <- (x+y/x)/2
+    x <- y/2
+    while (abs(x * x - y) > 1e-10) {
+        x <- (x + y/x)/2
     }
-  x
-  }
+    x
+}
 MySqrt(81)
 ```
 
@@ -834,21 +831,20 @@ For loops are notoriously slow in R, and whenever possible, it is preferable to 
 ```r
 ## Let's generate some uniform [0,10] random numbers
 n <- 10000
-x  <-  runif(n, 0, 10)
+x <- runif(n, 0, 10)
 y <- rep(0, n)
-
 library(microbenchmark)
-microbenchmark(for(i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times=10)
+microbenchmark(for (i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times = 10)
 ```
 
 ```
 ## Unit: microseconds
 ##                               expr       min        lq       mean
-##  for (i in 1:n) y[i] <- sqrt(x[i]) 10022.896 10775.341 12566.9655
-##                            sqrt(x)    44.357    44.722    60.8613
-##     median        uq       max neval cld
-##  12831.578 14346.327 14466.921    10   b
-##     48.659    78.432   113.829    10  a
+##  for (i in 1:n) y[i] <- sqrt(x[i]) 10774.947 14495.832 18327.7873
+##                            sqrt(x)    44.887    47.942    62.6594
+##     median       uq       max neval cld
+##  18152.774 22499.64 26079.751    10   b
+##     51.547    78.36   102.697    10  a
 ```
 
 The for loop is increadibly slower! 
@@ -876,20 +872,20 @@ For more details have a look at [this](http://www.dummies.com/how-to/content/how
 ```r
 ## Let's generate some uniform [0,10] random numbers
 n <- 10000
-x  <-  runif(n, 0, 10)
-y  <- rep(0, n)
+x <- runif(n, 0, 10)
+y <- rep(0, n)
 library(microbenchmark)
-microbenchmark(for(i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times=10)
+microbenchmark(for (i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times = 10)
 ```
 
 ```
 ## Unit: milliseconds
 ##                                 expr      min       lq     mean   median
-##  for (i in 1:n) y[i] <- MySqrt(x[i]) 58.16229 60.29550 63.35428 62.30589
-##                    sapply(x, MySqrt) 54.66953 57.86308 63.94049 61.58541
-##        uq      max neval cld
-##  65.65185 73.94306    10   a
-##  70.91474 74.46710    10   a
+##  for (i in 1:n) y[i] <- MySqrt(x[i]) 59.68382 62.97784 72.85871 66.19327
+##                    sapply(x, MySqrt) 54.21298 58.42445 62.70739 60.47214
+##        uq       max neval cld
+##  77.38468 105.83648    10   a
+##  66.31586  75.72628    10   a
 ```
 
 `*apply` functions are not necessarily faster than `for` loops, but they can be very convenient and usually lead to more compact and more elegant code. 
