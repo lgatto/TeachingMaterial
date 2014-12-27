@@ -4,16 +4,7 @@
 #
 # This script attempts to find all of the R packages used in all
 # of the R presentation files in the current working folder and then 
-# attempts to install them, either with "install.packages" or "biocLite",
-# then tries to load them into memory with "require". The intent is to
-# ensure that any packages required for the scripts to run have been
-# installed previously. 
-#
-# Only those packages which are not already installed will be installed. 
-# The "require" function is used to check those packages after 
-# they are installed to make sure they can load into memory. Therefore, 
-# even if packages have already been loaded with "library", this script 
-# should run very quickly once the packages have been initially installed.
+# attempts to install them using "biocLite".
 #
 # This script was initially developed for use with course materials of
 # "BIOSTAT 578A: Bioinformatics for Big Omics Data", specifically the  
