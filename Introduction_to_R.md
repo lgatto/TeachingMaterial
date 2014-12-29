@@ -60,22 +60,22 @@ Git is version control software, it manages changes to a project without overwri
 
 GitHub = hosting for Git. GitHub is a social version of git, on the web with a user community. Great for finding users, collaborators, projects, but also contribute to existing project.
 
-Some added features: Forks/Pull request
+**Some added features:** Forks/Pull requests
 
 GitHub is a great platform for bioinformatics projects.
 We will make extensive use of GitHub during this class, and in particular for your homework.
 
 ## GitHub Glossary
 
-- *Repository (repo):* A repository is the most basic element of GitHub. They're easiest to imagine as a project's folder.
-- *Branch:* A parallel version of a repository
-- *Clone:* Local copy of the repository
-- *Commit:* An individual change to a file (or set of files). Commits usually contain a commit message. 
-- *Fork:* A personal copy of another user's repository that lives on your account
-- *Merge:* Merging takes the changes from one branch (in the same repository or from a fork), and applies them into another.
-- *Pull:* Pull refers to when you are fetching in changes and merging them.
-- *Pull Request:* Pull requests are proposed changes to a repository submitted by a user and accepted or rejected by a repository's collaborators
-- *Push:* Pushing refers to sending your committed changes to a remote repository such as GitHub.com
+- **Repository (repo):** A repository is the most basic element of GitHub. They're easiest to imagine as a project's folder.
+- **Branch:** A parallel version of a repository
+- **Clone:** Local copy of the repository
+- **Commit:** An individual change to a file (or set of files). Commits usually contain a commit message. 
+- **Fork:** A personal copy of another user's repository that lives on your account
+- **Merge:** Merging takes the changes from one branch (in the same repository or from a fork), and applies them into another.
+- **Pull:** Pull refers to when you are fetching in changes and merging them.
+- **Pull Request:** Pull requests are proposed changes to a repository submitted by a user and accepted or rejected by a repository's collaborators
+- **Push:** Pushing refers to sending your committed changes to a remote repository such as GitHub.com
 
 [More details here](https://help.github.com/articles/github-glossary/)
 
@@ -225,7 +225,6 @@ Have a look at:
 ## Vectorized arithmetic
 
 We cannot do much statistics with a single number!
-
 We need a way to store a sequence/list of numbers
 
 One can simply concatenate elements with the `c` function.
@@ -346,6 +345,9 @@ x
 ## [3,]    3    6    9   12
 ```
 
+## Matrices and arrays
+
+
 ```r
 x <- matrix(1:12, nrow = 3, byrow = TRUE)
 x <- matrix(1:12, nrow = 3, byrow = FALSE)
@@ -353,7 +355,7 @@ rownames(x) <- c("A", "B", "C")
 colnames(x) <- c("1", "2", "x", "y")
 ```
 
-## Matrices and Arrays (suite)
+## Matrices and Arrays 
 
 Matrices can also be formed by "glueing" rows and columns using `cbind` and `rbind`. This is the equivalent of `c` for vectors.
 
@@ -411,6 +413,8 @@ levels(fpain)
 ```
 ## [1] "none"   "mild"   "medium" "severe"
 ```
+
+## Factors
 
 A factor is very similar to an integer vector with a set of labels. While factors look like character vectors, they are not. So be careful when converting factors to characters and vice-versa. For example, use `stringsAsFactors = FALSE` when reading dataframes (more on this later).
 
@@ -558,7 +562,7 @@ pain[-5]
 ```
 Note that with a data frame, the indexing of subject is straightforward!
 
-## Indexing (suite)
+## Indexing 
 
 
 ```r
@@ -775,8 +779,8 @@ y[1:10]
 ```
 
 ```
-##  [1] 3.227797 3.050229 3.169105 3.188305 3.218317 3.121084 3.207667
-##  [8] 3.032597 3.202525 3.198408
+##  [1] 2.998718 2.885465 2.972830 3.394277 3.063744 2.855615 3.282814
+##  [8] 3.055196 3.146308 3.352740
 ```
 
 ```r
@@ -790,11 +794,11 @@ y[1:10]
 ```
 
 ```
-##  [1] 3.227797 3.050229 3.169105 3.188305 3.218317 3.121084 3.207667
-##  [8] 3.032597 3.202525 3.198408
+##  [1] 2.998718 2.885465 2.972830 3.394277 3.063744 2.855615 3.282814
+##  [8] 3.055196 3.146308 3.352740
 ```
 
-## Functions and arguments (suite)
+## Functions and arguments 
 
 You can easily create your own function in R. Recommended when you plan to use the same code over and over again.
 
@@ -840,11 +844,11 @@ microbenchmark(for (i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times = 10)
 ```
 ## Unit: microseconds
 ##                               expr       min        lq       mean
-##  for (i in 1:n) y[i] <- sqrt(x[i]) 10774.947 14495.832 18327.7873
-##                            sqrt(x)    44.887    47.942    62.6594
-##     median       uq       max neval cld
-##  18152.774 22499.64 26079.751    10   b
-##     51.547    78.36   102.697    10  a
+##  for (i in 1:n) y[i] <- sqrt(x[i]) 10938.067 12006.526 13757.1820
+##                            sqrt(x)    50.849    55.989    73.0123
+##      median        uq       max neval cld
+##  13980.4740 15429.495 16337.976    10   b
+##     73.7245    82.444    98.614    10  a
 ```
 
 The for loop is increadibly slower! 
@@ -866,7 +870,7 @@ The most common `*apply` functions are
 
 For more details have a look at [this](http://www.dummies.com/how-to/content/how-to-use-the-apply-family-of-functions-in-r.html).
 
-## Vectorized operation with the *apply family (suite)
+## Vectorized operation with the *apply family 
 
 
 ```r
@@ -881,11 +885,11 @@ microbenchmark(for (i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times = 1
 ```
 ## Unit: milliseconds
 ##                                 expr      min       lq     mean   median
-##  for (i in 1:n) y[i] <- MySqrt(x[i]) 59.68382 62.97784 72.85871 66.19327
-##                    sapply(x, MySqrt) 54.21298 58.42445 62.70739 60.47214
-##        uq       max neval cld
-##  77.38468 105.83648    10   a
-##  66.31586  75.72628    10   a
+##  for (i in 1:n) y[i] <- MySqrt(x[i]) 59.66906 62.10234 73.48008 72.13016
+##                    sapply(x, MySqrt) 55.37663 59.42218 67.20928 64.34820
+##        uq      max neval cld
+##  80.54422 95.21816    10   a
+##  71.49224 95.53208    10   a
 ```
 
 `*apply` functions are not necessarily faster than `for` loops, but they can be very convenient and usually lead to more compact and more elegant code. 
@@ -933,6 +937,8 @@ Mardown with R code chuncks.
 
 ![R Mardown](http://www.rstudio.com/images/docs/markdownUntitled.png)
 
+## R Markdown
+
 As we've seen, R expressions can also be evaluated inline:
 
 pi=3.1415927
@@ -946,7 +952,7 @@ Large data and complex analysis can require significant computing time
 - Why rerun a script when nothing has changed?
 - The solution is caching
 
-## knitr and caching (suite)
+## knitr and caching 
 
 knitr provides powerful caching mechanism:
 
@@ -964,6 +970,7 @@ or buy his book
 
 ![Dynamic Documents with R and knitr](http://ecx.images-amazon.com/images/I/41kI1dxXGfL.jpg)
 </div>
+
 ## Time for your to work!
 
 What you need to do:
