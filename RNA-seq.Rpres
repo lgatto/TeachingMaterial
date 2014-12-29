@@ -138,7 +138,7 @@ files <- list.files(path = "Data/GEO/", pattern = "GSE45735_T.*.gz", full.names 
 file_list <- lapply(files, read.table, sep='\t', header=TRUE)
 
 # Subset to only those rows where Gene contains only non-space characters
-# This address problems with T14 file containing 28 invalid rows at end of file
+# This addresses problems with T14 file containing 28 invalid rows at end of file
 file_list <- lapply(file_list, function(file_list)subset(file_list, grepl('^[^[:space:]]+$', Gene)))
 
 # Remove duplicated rows
