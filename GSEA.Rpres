@@ -126,12 +126,18 @@ Camera is readily available in the `limma` package. Let us go back to our RNA-se
 ```{r get-data}
 gd <- getGEO("GSE45735", destdir = "Data/GEO/")
 pd <- pData(gd[[1]])
-# getGEOSuppFiles("GSE45735", makeDirectory=FALSE, baseDir = "Data/GEO/")
-## The T14 file is problematic and needs to be fixed by hand
+getGEOSuppFiles("GSE45735", makeDirectory=FALSE, baseDir = "Data/GEO/")
 
 # Note the regular expression to grep file names
 files <- list.files(path = "Data/GEO/", pattern = "GSE45735_T.*.gz", full.names = TRUE)
-file_list <- lapply(files, read.table, header=TRUE)
+
+# Read in gzip-compressed, tab-delimited files
+file_list <- lapply(files, read.table, sep='\t', header=TRUE)
+
+# Subset to only those rows where Gene contains only non-space characters
+# This addresses problems with T14 file containing 28 invalid rows at end of file
+file_list <- lapply(file_list, function(file_list)subset(file_list, grepl('^[^[:space:]]+$', Gene)))
+
 # Remove duplicated rows
 file_list_unique <- lapply(file_list, function(x){x<-x[!duplicated(x$Gene),]; 
                                                   x <- x[order(x$Gene),]; 
