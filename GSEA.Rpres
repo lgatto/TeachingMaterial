@@ -203,7 +203,7 @@ and convert the gene sets to gene indices
 c2_set <- getGmt("GSEA-sets/c2.all.v4.0.symbols.gmt")
 gene_ids <- geneIds(c2_set)
 # Camera requires gene-indices
-sets_indices <- symbols2indices(gene_ids, rownames(new_set))
+sets_indices <- ids2indices(gene_ids, rownames(new_set))
 ```
 
 Finding enriched gene sets
@@ -255,7 +255,7 @@ Li, S. et al. Molecular signatures of antibody responses derived from a systems 
 BTM_set <- getGmt("GSEA-sets/BTM_for_GSEA_20131008.gmt")
 gene_ids <- geneIds(BTM_set)
 # Camera requires gene-indices
-sets_indices <- symbols2indices(gene_ids, rownames(new_set))
+sets_indices <- ids2indices(gene_ids, rownames(new_set))
 ```
 
 ```{r}
@@ -284,10 +284,10 @@ pheatmap(PValue_small, cluster_cols=FALSE)
 
 Conclusion
 ==========
-- Gene sets provide a convinient way to summarize gene activities over known pathways, which facilitate biological interpretation
+- Gene sets provide a convenient way to summarize gene activities over known pathways, which facilitate biological interpretation
 
 - Gene set analysis are complementary to gene based analyses, as gene sets might masked gene level signal
 
 - You are not limited to using the predeﬁned gene sets. 
     - Specific applications might require specific gene sets (e.g. Immune gene sets). 
-    - The GSEA gmt format provides a convinient way to do this.
+    - The GSEA gmt format provides a convenient way to do this.
