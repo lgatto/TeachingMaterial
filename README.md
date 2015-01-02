@@ -1,7 +1,7 @@
 BIOSTAT 578A: Bioinformatics for Big Omics Data
 ===============================================
 
-**Important Note:** I am in the process of modifying the content of this repository in preparation for Winter 2015. Stay tuned. If you want to be informed of all changes, please create a github account and watch the repository. Please also make sure you look at the "Getting Started" section below, as I expect you to do some things before the course actually starts. Please also login to `myuw` and look for other information on `canvas`.
+**Important Note:** I am in the process of modifying the content of this repository in preparation for Winter 2015. Stay tuned (I have now updated the first few lectures). If you want to be informed of all changes, please create a github account and watch the repository. Please also make sure you look at the "Getting Started" section below, as I expect you to do some things before the course actually starts. Please also login to `myuw` and look for other information on `canvas`.
 
 **Instructor:** Raphael Gottardo, PhD, Fred Hutchinson Cancer Research Center
 
@@ -37,4 +37,5 @@ T & Th	9:00-10:20	HST T439
 Notes are provided as the source file (.Rmd) and resulting html file for online viewing. If you'd like to print these notes, please use the intermediate md file and [gitprint](http://gitprint.com/).
 - 01/06/15 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rmd) 
 - 01/08/15 [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rmd)
+- 01/13/15 [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rmd)
 - 01/15/15 Lab with Brian (in class)
