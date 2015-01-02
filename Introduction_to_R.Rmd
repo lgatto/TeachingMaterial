@@ -12,7 +12,7 @@ output:
 
 ```{r, echo=FALSE}
 library("knitr")
-opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80))
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80),cache=TRUE)
 ```
 
 ## What is Bioinformatics?

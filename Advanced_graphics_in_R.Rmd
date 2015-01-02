@@ -13,7 +13,8 @@ output:
 
 ```{r, echo=FALSE}
 library("knitr")
-opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80))
+library("knitr")
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80),cache=TRUE)
 ```
 
 ## Exploratory data analysis (EDA)
