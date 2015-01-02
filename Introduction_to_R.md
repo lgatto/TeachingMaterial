@@ -117,6 +117,9 @@ See [NY Times](http://www.nytimes.com/2009/01/07/technology/business-computing/0
 
 ![R in the NY Times](http://graphics8.nytimes.com/images/2009/01/07/business/07program.600.jpg)
 
+## R in Nature 
+
+<iframe src="http://www.nature.com/news/programming-tools-adventures-with-r-1.16609?WT.ec_id=NATURE-20141225"></iframe>
 
 ## Some references
 
@@ -779,8 +782,8 @@ y[1:10]
 ```
 
 ```
-##  [1] 2.998718 2.885465 2.972830 3.394277 3.063744 2.855615 3.282814
-##  [8] 3.055196 3.146308 3.352740
+##  [1] 3.006402 3.314150 3.233281 3.305495 2.822150 2.884600 3.001308
+##  [8] 3.214372 3.368869 3.354529
 ```
 
 ```r
@@ -794,8 +797,8 @@ y[1:10]
 ```
 
 ```
-##  [1] 2.998718 2.885465 2.972830 3.394277 3.063744 2.855615 3.282814
-##  [8] 3.055196 3.146308 3.352740
+##  [1] 3.006402 3.314150 3.233281 3.305495 2.822150 2.884600 3.001308
+##  [8] 3.214372 3.368869 3.354529
 ```
 
 ## Functions and arguments 
@@ -843,12 +846,12 @@ microbenchmark(for (i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times = 10)
 
 ```
 ## Unit: microseconds
-##                               expr       min        lq       mean
-##  for (i in 1:n) y[i] <- sqrt(x[i]) 10938.067 12006.526 13757.1820
-##                            sqrt(x)    50.849    55.989    73.0123
-##      median        uq       max neval cld
-##  13980.4740 15429.495 16337.976    10   b
-##     73.7245    82.444    98.614    10  a
+##                               expr      min       lq       mean     median
+##  for (i in 1:n) y[i] <- sqrt(x[i]) 9288.222 9898.274 11608.5032 10589.1060
+##                            sqrt(x)   42.873   44.691    60.3355    46.4685
+##         uq       max neval cld
+##  13258.576 15801.016    10   b
+##     79.308    96.358    10  a
 ```
 
 The for loop is increadibly slower! 
@@ -885,11 +888,11 @@ microbenchmark(for (i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times = 1
 ```
 ## Unit: milliseconds
 ##                                 expr      min       lq     mean   median
-##  for (i in 1:n) y[i] <- MySqrt(x[i]) 59.66906 62.10234 73.48008 72.13016
-##                    sapply(x, MySqrt) 55.37663 59.42218 67.20928 64.34820
+##  for (i in 1:n) y[i] <- MySqrt(x[i]) 56.15022 57.47533 59.67963 60.05248
+##                    sapply(x, MySqrt) 53.38532 55.85502 59.74696 58.88669
 ##        uq      max neval cld
-##  80.54422 95.21816    10   a
-##  71.49224 95.53208    10   a
+##  61.42299 62.59480    10   a
+##  61.37142 74.81957    10   a
 ```
 
 `*apply` functions are not necessarily faster than `for` loops, but they can be very convenient and usually lead to more compact and more elegant code. 
