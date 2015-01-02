@@ -37,5 +37,5 @@ T & Th	9:00-10:20	HST T439
 Notes are provided as the source file (.Rmd) and resulting html file for online viewing. If you'd like to print these notes, please use the intermediate md file and [gitprint](http://gitprint.com/).
 - 01/06/15 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rmd) 
 - 01/08/15 [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rmd)
-- 01/13/15 [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rmd)
+- 01/13/15 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rmd)
 - 01/15/15 Lab with Brian (in class)
