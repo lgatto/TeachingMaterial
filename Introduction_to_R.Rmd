@@ -637,6 +637,5 @@ What you need to do:
 
 We will use RStudio, GitHub and knitr a whole lot throughout this course! 
 
-
 I expect your to use GitHub/knitr/Rstudio for your homeworks and final project!
 

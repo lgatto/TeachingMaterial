@@ -782,8 +782,8 @@ y[1:10]
 ```
 
 ```
-##  [1] 3.006402 3.314150 3.233281 3.305495 2.822150 2.884600 3.001308
-##  [8] 3.214372 3.368869 3.354529
+##  [1] 3.218566 3.537758 3.194833 2.936778 3.226154 2.926123 3.245930
+##  [8] 2.913872 2.876005 3.177791
 ```
 
 ```r
@@ -797,8 +797,8 @@ y[1:10]
 ```
 
 ```
-##  [1] 3.006402 3.314150 3.233281 3.305495 2.822150 2.884600 3.001308
-##  [8] 3.214372 3.368869 3.354529
+##  [1] 3.218566 3.537758 3.194833 2.936778 3.226154 2.926123 3.245930
+##  [8] 2.913872 2.876005 3.177791
 ```
 
 ## Functions and arguments 
@@ -846,12 +846,12 @@ microbenchmark(for (i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times = 10)
 
 ```
 ## Unit: microseconds
-##                               expr      min       lq       mean     median
-##  for (i in 1:n) y[i] <- sqrt(x[i]) 9288.222 9898.274 11608.5032 10589.1060
-##                            sqrt(x)   42.873   44.691    60.3355    46.4685
+##                               expr       min       lq       mean    median
+##  for (i in 1:n) y[i] <- sqrt(x[i]) 10160.222 10396.59 12069.0914 10919.690
+##                            sqrt(x)    44.473    47.65    54.7425    48.083
 ##         uq       max neval cld
-##  13258.576 15801.016    10   b
-##     79.308    96.358    10  a
+##  13569.264 18215.223    10   b
+##     55.094    80.908    10  a
 ```
 
 The for loop is increadibly slower! 
@@ -888,11 +888,11 @@ microbenchmark(for (i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times = 1
 ```
 ## Unit: milliseconds
 ##                                 expr      min       lq     mean   median
-##  for (i in 1:n) y[i] <- MySqrt(x[i]) 56.15022 57.47533 59.67963 60.05248
-##                    sapply(x, MySqrt) 53.38532 55.85502 59.74696 58.88669
+##  for (i in 1:n) y[i] <- MySqrt(x[i]) 58.08852 60.16150 64.20910 61.40455
+##                    sapply(x, MySqrt) 51.92839 53.71897 62.29996 57.55061
 ##        uq      max neval cld
-##  61.42299 62.59480    10   a
-##  61.37142 74.81957    10   a
+##  63.04317 88.50716    10   a
+##  71.19711 89.74499    10   a
 ```
 
 `*apply` functions are not necessarily faster than `for` loops, but they can be very convenient and usually lead to more compact and more elegant code. 
@@ -984,7 +984,6 @@ What you need to do:
 - Try [knitr](yihui.name/knitr/) and git within [RStudio](rstudio.org)
 
 We will use RStudio, GitHub and knitr a whole lot throughout this course! 
-
 
 I expect your to use GitHub/knitr/Rstudio for your homeworks and final project!
 
