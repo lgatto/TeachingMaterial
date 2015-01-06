@@ -16,3 +16,6 @@ SDY224_voom_matrix.csv.zip
 SDY224_cpm_matrix.csv
 SDY224_pd.csv
 Data/GEO/*
+*cache*
+
+*.sqlite

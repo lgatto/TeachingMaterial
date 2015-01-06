@@ -3,6 +3,7 @@ Raphael Gottardo
 December 8, 2014  
 
 
+
 ## What is Bioinformatics?
 
 - It depends who you ask but, according to [Wikipedia](http://www.wikipedia.org): 
@@ -59,22 +60,22 @@ Git is version control software, it manages changes to a project without overwri
 
 GitHub = hosting for Git. GitHub is a social version of git, on the web with a user community. Great for finding users, collaborators, projects, but also contribute to existing project.
 
-Some added features: Forks/Pull request
+**Some added features:** Forks/Pull requests
 
 GitHub is a great platform for bioinformatics projects.
 We will make extensive use of GitHub during this class, and in particular for your homework.
 
 ## GitHub Glossary
 
-- *Repository (repo):* A repository is the most basic element of GitHub. They're easiest to imagine as a project's folder.
-- *Branch:* A parallel version of a repository
-- *Clone:* Local copy of the repository
-- *Commit:* An individual change to a file (or set of files). Commits usually contain a commit message. 
-- *Fork:* A personal copy of another user's repository that lives on your account
-- *Merge:* Merging takes the changes from one branch (in the same repository or from a fork), and applies them into another.
-- *Pull:* Pull refers to when you are fetching in changes and merging them.
-- *Pull Request:* Pull requests are proposed changes to a repository submitted by a user and accepted or rejected by a repository's collaborators
-- *Push:* Pushing refers to sending your committed changes to a remote repository such as GitHub.com
+- **Repository (repo):** A repository is the most basic element of GitHub. They're easiest to imagine as a project's folder.
+- **Branch:** A parallel version of a repository
+- **Clone:** Local copy of the repository
+- **Commit:** An individual change to a file (or set of files). Commits usually contain a commit message. 
+- **Fork:** A personal copy of another user's repository that lives on your account
+- **Merge:** Merging takes the changes from one branch (in the same repository or from a fork), and applies them into another.
+- **Pull:** Pull refers to when you are fetching in changes and merging them.
+- **Pull Request:** Pull requests are proposed changes to a repository submitted by a user and accepted or rejected by a repository's collaborators
+- **Push:** Pushing refers to sending your committed changes to a remote repository such as GitHub.com
 
 [More details here](https://help.github.com/articles/github-glossary/)
 
@@ -116,6 +117,9 @@ See [NY Times](http://www.nytimes.com/2009/01/07/technology/business-computing/0
 
 ![R in the NY Times](http://graphics8.nytimes.com/images/2009/01/07/business/07program.600.jpg)
 
+## R in Nature 
+
+<iframe src="http://www.nature.com/news/programming-tools-adventures-with-r-1.16609?WT.ec_id=NATURE-20141225"></iframe>
 
 ## Some references
 
@@ -150,7 +154,7 @@ More advanced:
 R is an overgrown calculator!
 
 ```r
-2+2
+2 + 2
 ```
 
 ```
@@ -174,7 +178,7 @@ pi
 ```
 
 ```r
-sin(2*pi)
+sin(2 * pi)
 ```
 
 ```
@@ -187,17 +191,17 @@ You can easily find help via the command line:
 
 
 ```r
-help(pi) ## equivalent ?pi
-?sqrt
-?sin
-?Special
+help(pi)  ## equivalent ?pi
+`?`(sqrt)
+`?`(sin)
+`?`(Special)
 ```
 
 If you don't know the exact name, use
 
 ```r
 help.search("trigonometry")
-??trigonometry
+`?`(`?`(trigonometry))
 ```
 Or using the help tab integrated in RStudio, or using your favorite search engine!
 
@@ -208,7 +212,7 @@ Need a way to store intermediate results:
 ```r
 x <- 2
 y <- 2
-x+y
+x + y
 ```
 
 ```
@@ -224,7 +228,6 @@ Have a look at:
 ## Vectorized arithmetic
 
 We cannot do much statistics with a single number!
-
 We need a way to store a sequence/list of numbers
 
 One can simply concatenate elements with the `c` function.
@@ -240,8 +243,8 @@ weight[1]
 ```
 
 ```r
-height <- c(1.75, 1.80, 1.65, 1.90, 1.74, 1.91)
-bmi <- weight/height^2 ## vector based operation
+height <- c(1.75, 1.8, 1.65, 1.9, 1.74, 1.91)
+bmi <- weight/height^2  ## vector based operation
 bmi
 ```
 
@@ -304,7 +307,7 @@ mean(weight)
 ```
 
 ```r
-mean(weight, na.rm=TRUE)
+mean(weight, na.rm = TRUE)
 ```
 
 ```
@@ -345,14 +348,17 @@ x
 ## [3,]    3    6    9   12
 ```
 
+## Matrices and arrays
+
+
 ```r
-x <- matrix(1:12, nrow=3, byrow=TRUE)
-x <- matrix(1:12, nrow=3, byrow=FALSE)
+x <- matrix(1:12, nrow = 3, byrow = TRUE)
+x <- matrix(1:12, nrow = 3, byrow = FALSE)
 rownames(x) <- c("A", "B", "C")
 colnames(x) <- c("1", "2", "x", "y")
 ```
 
-## Matrices and Arrays (suite)
+## Matrices and Arrays 
 
 Matrices can also be formed by "glueing" rows and columns using `cbind` and `rbind`. This is the equivalent of `c` for vectors.
 
@@ -411,6 +417,8 @@ levels(fpain)
 ## [1] "none"   "mild"   "medium" "severe"
 ```
 
+## Factors
+
 A factor is very similar to an integer vector with a set of labels. While factors look like character vectors, they are not. So be careful when converting factors to characters and vice-versa. For example, use `stringsAsFactors = FALSE` when reading dataframes (more on this later).
 
 ## Lists
@@ -422,7 +430,7 @@ x <- c(31, 32, 40)
 y <- factor(c("F", "M", "M", "F"))
 ## Different types and dimensions!
 z <- c("London", "School")
-my_list <- list(age=x, sex=y, meta=z)
+my_list <- list(age = x, sex = y, meta = z)
 my_list
 ```
 
@@ -451,7 +459,7 @@ my_list$age
 A data frame is a "data matrix" or a "data set". It is a list of vectors and/or factors of the same length that are related "across" such that data in the same position come from the same experimental unit (subject, gene, etc).
 
 ```r
-my_df <- data.frame(age=c(31, 32, 40, 50), sex=c("M", "M", "F", "M"))
+my_df <- data.frame(age = c(31, 32, 40, 50), sex = c("M", "M", "F", "M"))
 my_df$age
 ```
 
@@ -481,7 +489,7 @@ names(x)
 
 ```r
 names(x) <- c("a", "b", "c")
-my_df <- data.frame(age=c(31,32,40,50), sex=y)
+my_df <- data.frame(age = c(31, 32, 40, 50), sex = y)
 my_df
 ```
 
@@ -557,7 +565,7 @@ pain[-5]
 ```
 Note that with a data frame, the indexing of subject is straightforward!
 
-## Indexing (suite)
+## Indexing 
 
 
 ```r
@@ -684,9 +692,7 @@ my_df["Age"]
 ```
 
 ```r
-## Try also
-## my_df[1]
-## my_df[[1]]
+## Try also my_df[1] my_df[[1]]
 ```
 
 What is the main difference between `[[]]` and `[]`?
@@ -700,7 +706,7 @@ Indexing can be conditional on another variable!
 pain <- c(0, 3, 2, 2, 1)
 sex <- factor(c("M", "M", "F", "F", "M"))
 age <- c(45, 51, 45, 32, 90)
-pain[sex=="M"]
+pain[sex == "M"]
 ```
 
 ```
@@ -708,7 +714,7 @@ pain[sex=="M"]
 ```
 
 ```r
-pain[age>32]
+pain[age > 32]
 ```
 
 ```
@@ -736,10 +742,10 @@ R is a true programming language, and thus has a rich syntax including `for` loo
 ```r
 ## A simple if statement
 x <- -2
-if(x>0) {
-  print(x)
+if (x > 0) {
+    print(x)
 } else {
-  print(-x)
+    print(-x)
 }
 ```
 
@@ -748,12 +754,12 @@ if(x>0) {
 ```
 
 ```r
-if(x>0) {
-  print(x)
-} else if(x==0) {
-  print(0)
+if (x > 0) {
+    print(x)
+} else if (x == 0) {
+    print(0)
 } else {
-  print(-x)
+    print(-x)
 }
 ```
 
@@ -765,39 +771,37 @@ if(x>0) {
 
 ```r
 ## For loops
-n <- 1000000
+n <- 1e+06
 x <- rnorm(n, 10, 1)
 y <- x^2
 y <- rep(0, n)
-for(i in 1:n) {
-  y[i]<-sqrt(x[i])
+for (i in 1:n) {
+    y[i] <- sqrt(x[i])
 }
-
 y[1:10]
 ```
 
 ```
-##  [1] 3.200889 3.082610 3.186432 3.166426 3.144875 3.161952 3.216381
-##  [8] 2.960723 3.135867 3.196169
+##  [1] 3.218566 3.537758 3.194833 2.936778 3.226154 2.926123 3.245930
+##  [8] 2.913872 2.876005 3.177791
 ```
 
 ```r
 ## While loops
 counter <- 1
-while(counter<=n) {
-  y[counter] <- sqrt(x[counter])
-  counter <- counter+1
+while (counter <= n) {
+    y[counter] <- sqrt(x[counter])
+    counter <- counter + 1
 }
-
 y[1:10]
 ```
 
 ```
-##  [1] 3.200889 3.082610 3.186432 3.166426 3.144875 3.161952 3.216381
-##  [8] 2.960723 3.135867 3.196169
+##  [1] 3.218566 3.537758 3.194833 2.936778 3.226154 2.926123 3.245930
+##  [8] 2.913872 2.876005 3.177791
 ```
 
-## Functions and arguments (suite)
+## Functions and arguments 
 
 You can easily create your own function in R. Recommended when you plan to use the same code over and over again.
 
@@ -805,12 +809,12 @@ You can easily create your own function in R. Recommended when you plan to use t
 ```r
 ## Newton-Raphson to find the square root of a number
 MySqrt <- function(y) {
-  x <- y/2
-  while (abs(x*x-y) > 1e-10) {
-    x <- (x+y/x)/2
+    x <- y/2
+    while (abs(x * x - y) > 1e-10) {
+        x <- (x + y/x)/2
     }
-  x
-  }
+    x
+}
 MySqrt(81)
 ```
 
@@ -834,21 +838,20 @@ For loops are notoriously slow in R, and whenever possible, it is preferable to 
 ```r
 ## Let's generate some uniform [0,10] random numbers
 n <- 10000
-x  <-  runif(n, 0, 10)
+x <- runif(n, 0, 10)
 y <- rep(0, n)
-
 library(microbenchmark)
-microbenchmark(for(i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times=10)
+microbenchmark(for (i in 1:n) y[i] <- sqrt(x[i]), sqrt(x), times = 10)
 ```
 
 ```
 ## Unit: microseconds
-##                               expr       min        lq       mean
-##  for (i in 1:n) y[i] <- sqrt(x[i]) 10022.896 10775.341 12566.9655
-##                            sqrt(x)    44.357    44.722    60.8613
-##     median        uq       max neval cld
-##  12831.578 14346.327 14466.921    10   b
-##     48.659    78.432   113.829    10  a
+##                               expr       min       lq       mean    median
+##  for (i in 1:n) y[i] <- sqrt(x[i]) 10160.222 10396.59 12069.0914 10919.690
+##                            sqrt(x)    44.473    47.65    54.7425    48.083
+##         uq       max neval cld
+##  13569.264 18215.223    10   b
+##     55.094    80.908    10  a
 ```
 
 The for loop is increadibly slower! 
@@ -870,26 +873,26 @@ The most common `*apply` functions are
 
 For more details have a look at [this](http://www.dummies.com/how-to/content/how-to-use-the-apply-family-of-functions-in-r.html).
 
-## Vectorized operation with the *apply family (suite)
+## Vectorized operation with the *apply family 
 
 
 ```r
 ## Let's generate some uniform [0,10] random numbers
 n <- 10000
-x  <-  runif(n, 0, 10)
-y  <- rep(0, n)
+x <- runif(n, 0, 10)
+y <- rep(0, n)
 library(microbenchmark)
-microbenchmark(for(i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times=10)
+microbenchmark(for (i in 1:n) y[i] <- MySqrt(x[i]), sapply(x, MySqrt), times = 10)
 ```
 
 ```
 ## Unit: milliseconds
 ##                                 expr      min       lq     mean   median
-##  for (i in 1:n) y[i] <- MySqrt(x[i]) 58.16229 60.29550 63.35428 62.30589
-##                    sapply(x, MySqrt) 54.66953 57.86308 63.94049 61.58541
+##  for (i in 1:n) y[i] <- MySqrt(x[i]) 58.08852 60.16150 64.20910 61.40455
+##                    sapply(x, MySqrt) 51.92839 53.71897 62.29996 57.55061
 ##        uq      max neval cld
-##  65.65185 73.94306    10   a
-##  70.91474 74.46710    10   a
+##  63.04317 88.50716    10   a
+##  71.19711 89.74499    10   a
 ```
 
 `*apply` functions are not necessarily faster than `for` loops, but they can be very convenient and usually lead to more compact and more elegant code. 
@@ -937,6 +940,8 @@ Mardown with R code chuncks.
 
 ![R Mardown](http://www.rstudio.com/images/docs/markdownUntitled.png)
 
+## R Markdown
+
 As we've seen, R expressions can also be evaluated inline:
 
 pi=3.1415927
@@ -950,7 +955,7 @@ Large data and complex analysis can require significant computing time
 - Why rerun a script when nothing has changed?
 - The solution is caching
 
-## knitr and caching (suite)
+## knitr and caching 
 
 knitr provides powerful caching mechanism:
 
@@ -968,6 +973,7 @@ or buy his book
 
 ![Dynamic Documents with R and knitr](http://ecx.images-amazon.com/images/I/41kI1dxXGfL.jpg)
 </div>
+
 ## Time for your to work!
 
 What you need to do:
@@ -978,7 +984,6 @@ What you need to do:
 - Try [knitr](yihui.name/knitr/) and git within [RStudio](rstudio.org)
 
 We will use RStudio, GitHub and knitr a whole lot throughout this course! 
-
 
 I expect your to use GitHub/knitr/Rstudio for your homeworks and final project!
 
