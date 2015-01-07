@@ -30,3 +30,4 @@ ShortRead
 Rsamtools
 TxDb.Dmelanogaster.UCSC.dm3.ensGene
 pasillaBamSubset
+foo
