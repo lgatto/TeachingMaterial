@@ -104,9 +104,9 @@
   \url{DataProgrammers.net}
 }
 
-\date[6-7/11/2014]
+\date[15-16/01/2015]
 {
-  6 - 7 November 2014
+  15 - 16 January 2015
 }
 
 \pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
@@ -284,7 +284,7 @@ templates (we will revisit this later).
 \end{block}
 \begin{verbatim}
 # delete documentation templates
-$ rm myRpackage/man/* 
+$ rm -f myRpackage/man/* 
 $ R CMD build myRpackage
 * checking for file ‘myRpackage/DESCRIPTION’ ... OK
 * preparing ‘myRpackage’:

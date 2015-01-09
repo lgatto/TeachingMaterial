@@ -1,3 +1,19 @@
+#' Reads sequences data in fasta and create \code{GenericSeq}
+#'
+#' This funtion reads DNA and RNA fasta files and generates
+#' valid \code{"GenericSeq"} instances.
+#'
+#' @title Read fasta files.
+#' @param infile the name of the fasta file which the data are to be read from.
+#' @return an instance of \code{GenericSeq}.
+#' @seealso \code{\linkS4class{GenericSeq}}
+#' @examples
+#' f <- dir(system.file("extdata",package="sequences"), pattern="fasta",full.names=TRUE)
+#' f
+#' aa <- readFasta(f)
+#' aa
+#' @author Laurent Gatto \email{lg390@@cam.ac.uk}
+#' @export
 readFasta <- function(infile){
   lines <- readLines(infile)
   header <- grep("^>", lines)
@@ -9,17 +25,9 @@ readFasta <- function(infile){
   .id <- sub("^> *","",lines[header],perl=TRUE)
   .sequence <- toupper(paste(lines[(header+1):length(lines)],collapse=""))
   .alphabet <- toupper(unique(strsplit(.sequence,"")[[1]]))
-  if (all(.alphabet %in% c("A","C","G","T"))) {
-    newseq <- new("DnaSeq",
-                  id=.id,
+  
+  newseq <- new("GenericSeq", id=.id, alphabet=.alphabet,
                   sequence=.sequence)
-  } else if (all(.alphabet %in% c("A","C","G","U"))) {
-    newseq <- new("RnaSeq",
-                  id=.id,
-                  sequence=.sequence)
-  } else {
-    stop("Alphabet ",.alphabet," is unknown.")
-  }
-  if (validObject(newseq))
-    return(newseq)
+
+  return(newseq)
 }
