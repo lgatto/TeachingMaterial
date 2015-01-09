@@ -1,4 +1,4 @@
-source("06_S4_complete.R")
+source("02_S4_complete.R")
 
 setGeneric("transcribe", function(object, ...) standardGeneric("transcribe"))
 setMethod("transcribe","DnaSeq",

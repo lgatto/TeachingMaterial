@@ -24,11 +24,11 @@ readFasta <- function(infile){
 #### define S3 methods
 
 # generics
-id <- function(x){ UseMethod("id") }
+id <- function(x, ...){ UseMethod("id") }
 
 # methods
-id.GenericSeq <- function(x){ x$id } 
-seq.GenericSeq = function(x){ x$seq }
+id.GenericSeq <- function(x, ...){ x$id } 
+seq.GenericSeq = function(x, ...){ x$seq }
 
 ##### Test code
 s <- readFasta("aDnaSeq.fasta")

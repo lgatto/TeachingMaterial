@@ -38,17 +38,17 @@ setSeqSubtype <- function(s){
 #### define S3 methods
 
 # generics
-id <- function(x){ UseMethod("id") }
-alphabet <- function(x) UseMethod("alphabet")
-comp <- function(x){ UseMethod("comp") }
+id <- function(x, ...){ UseMethod("id") }
+alphabet <- function(x, ...) UseMethod("alphabet")
+comp <- function(x, ...){ UseMethod("comp") }
 
 # methods
-id.GenericSeq <- function(x){ x$id } 
-seq.GenericSeq = function(x){ x$seq }
-alphabet.GenericSeq <- function(x) x$alphabet
+id.GenericSeq <- function(x, ...){ x$id } 
+seq.GenericSeq = function(x, ...){ x$seq }
+alphabet.GenericSeq <- function(x, ...) x$alphabet
 length.GenericSeq <- function(x) nchar(seq(x))
 rev.GenericSeq <- function(x) paste(rev(unlist(strsplit(x$seq, ""))), collapse="")
-comp.DnaSeq = function(x) chartr("ACGT", "TGCA", seq(x))
+comp.DnaSeq <- function(x, ...) chartr("ACGT", "TGCA", seq(x))
 
 ##### Test code
 s <- readFasta("aDnaSeq.fasta")

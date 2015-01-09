@@ -65,9 +65,9 @@ setClass("RnaSeq",
 # generics
 
 setGeneric("rev", function(x) standardGeneric("rev"))
-setGeneric("id", function(object) standardGeneric("id"))
+setGeneric("id", function(object, ...) standardGeneric("id"))
 setGeneric("id<-", function(object,value) standardGeneric("id<-"))
-setGeneric("alphabet", function(object) standardGeneric("alphabet"))
+setGeneric("alphabet", function(object, ...) standardGeneric("alphabet"))
 
 ## There is already a S3 'seq' method (see ?seq),
 ## although not a generic one (see isGeneric(seq))
@@ -79,11 +79,11 @@ setGeneric("comp",function(object,...) standardGeneric("comp"))
 # methods
 setMethod("rev", "GenericSeq",
           function(x) paste(rev(unlist(strsplit(x@sequence, ""))), collapse=""))          
-setMethod("id", "GenericSeq", function(object) object@id)
+setMethod("id", "GenericSeq", function(object, ...) object@id)
                  
-setMethod("alphabet", "GenericSeq", function(object) object@alphabet)
+setMethod("alphabet", "GenericSeq", function(object, ...) object@alphabet)
 setMethod("length", "GenericSeq", function(x) nchar(x@sequence))
-setMethod("seq", "GenericSeq", function(object,...) object@sequence)
+setMethod("seq", "GenericSeq", function(object, ...) object@sequence)
 
 setReplaceMethod("id",
                  signature(object="GenericSeq",
