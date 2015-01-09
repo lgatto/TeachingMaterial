@@ -97,7 +97,7 @@ with your colleagues.
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/R-bmark-prof-optim
 - More details: https://github.com/lgatto/R-bmark-prof-optim#readme
-- Read the [material](https://github.com/lgatto/R-bmark-prof-optim/bmark-prof-optim.md
+- Read the [material](https://github.com/lgatto/R-bmark-prof-optim/blob/master/bmark-prof-optim.md)
 
 ### RBasics
 - Description: A introduction to `R` for knowledgeable bioinformaticians. Used as `R` intro lecture for the [CSAMA](http://marray.economia.unimi.it/) workshop.
