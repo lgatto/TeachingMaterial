@@ -92,6 +92,13 @@ with your colleagues.
 - More details: https://github.com/lgatto/RPackageDevelopment#readme
 - Download the [pdf](https://github.com/lgatto/RPackageDevelopment/blob/master/rpd.pdf?raw=true)
 
+### Benchmarking, profiling and optimisation
+- Description: Benchmarking, profiling and optimisation
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/R-bmark-prof-optim
+- More details: https://github.com/lgatto/R-bmark-prof-optim#readme
+- Read the [material](https://github.com/lgatto/R-bmark-prof-optim/bmark-prof-optim.md
+
 ### RBasics
 - Description: A introduction to `R` for knowledgeable bioinformaticians. Used as `R` intro lecture for the [CSAMA](http://marray.economia.unimi.it/) workshop.
 - Author: [Laurent Gatto](https://github.com/lgatto)
