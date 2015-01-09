@@ -1,4 +1,4 @@
 setMethod("comp","RnaSeq",
-          function(object) {
+          function(object, ...) {
             chartr("ACGU","UGCA",seq(object))
           })

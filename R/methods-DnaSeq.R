@@ -1,11 +1,11 @@
 setMethod("comp","DnaSeq",
-          function(object) {
+          function(object, ...) {
             chartr("ACGT","TGCA",seq(object))
           })
 
 
 setMethod("transcribe","DnaSeq",
-          function(object) {
+          function(object, ...) {
             .sequence <- chartr("T","U",toupper(seq(object)))
             .id <-  paste(id(object),"-- transcribed")
             rna <- new("RnaSeq",
