@@ -603,7 +603,7 @@ pi=`r pi`
 Large data and complex analysis can require significant computing time
     
 - Not unusual for an analysis to take a few minutes to an hour, or even more!
-- This can result in some performance issues when viewing a report → User frustration
+- This can result in some performance issues when viewing a report -> User frustration
 - Why rerun a script when nothing has changed?
 - The solution is caching
 
