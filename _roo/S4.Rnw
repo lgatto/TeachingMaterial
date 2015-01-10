@@ -11,23 +11,31 @@ options(width = 60)
 
 \section{S4 object oriented framework}
 
-% S4 class system introduction
-\begin{frame}[t]{Introduction to S4 class system}
+% input to readFasta()
+\begin{frame}[fragile]
 
-\begin{block}{Differences of S4 class system to S3}
-\begin{small}
-\begin{itemize}
-\item \textbf{Classes are explicit} - they have slots which describe what kind of data is stored
-\item \textbf{Improved introspection} - class, method and slot introspection
-\item \textbf{Consistency checking} - can no longer assign any class name, class hierarchy is explicitly checked and reinforced 
-\item \textbf{Validity checking} - custom automatic checks of data consistency 
-\item \textbf{Multiple inheritance, multiple dispatch, virtual classes}
-\end{itemize}
-\end{small}
-
+\begin{block}{\code{readFasta()} input file}
+We will start with the implementation of \code{readFasta()}. This function should load the data 
+from a FASTA file and somehow represent it in \R. 
 \bigskip
-S4 class system is the de-facto standard in Bioconductor. 
 
+A sample FASTA file:
+\begin{Verbatim}[frame=single, xleftmargin=5mm, xrightmargin=5mm]
+> example dna sequence
+agcatacgacgactacgacactacgacatcagacactacagactactac
+gactacagacatcagacactacatatttacatcatcagagattatatta
+acatcagacatcgacacatcatcatcagcatcat
+\end{Verbatim}
+\smallskip
+\end{block}
+
+\begin{block}{Sequence description}
+Notice that a sequence is described by the: 
+\begin{itemize}
+	\item name (\code{example dna sequence})
+	\item nucleotide sequence
+	\item sequence alphabet (in case of DNA ATGC, for RNA AUGC)
+\end{itemize}
 \end{block}
 
 \end{frame}
@@ -43,8 +51,8 @@ S4 class system is the de-facto standard in Bioconductor.
 setClass("GenericSeq",
          representation = representation(
            id = "character",
-           alphabet = "character",
-           sequence =  "character"
+           sequence =  "character",
+           alphabet = "character"
           ))
 @
 \end{frame}
@@ -70,8 +78,9 @@ class("hello")
 <<make-obj1,echo=TRUE, tidy = FALSE>>=
 genseq <- new("GenericSeq", 
               id="sequence name", 
-              alphabet=c("A", "C", "G", "T"), 
-              sequence="AGATACCCCGAAACGA")
+              sequence="AGATACCCCGAAACGA",
+              alphabet=c("A", "C", "G", "T")
+              )
 @
 \end{frame}
 
@@ -85,32 +94,106 @@ slot(genseq, "id")
   \end{scriptsize}
 \end{frame}
 
+% simple readFasta()
+\begin{frame}[fragile]{Naive \code{readFasta()} implementation}
+  \begin{block}{readFasta() implementation}
+    Read in a sequence from FASTA file and return the \code{id, sequence} and \code{alphabet} in a list:
+  \end{block}
+
+\begin{scriptsize}
+<<readFasta-S3, echo=TRUE>>=
+readFasta <- function(infile){
+  lines <- readLines(infile)
+  header <- grep("^>", lines) 
+  if ( length(header) > 1 ) {
+    warning("Reading first sequence only.")
+    lines <- lines[header[1]:(header[2]-1)]
+    header <- header[1]
+  }  
+  id <- sub("^> *","",lines[header],perl=TRUE)
+  sequence <- toupper(paste(lines[(header+1):length(lines)],collapse=""))
+  alphabet <- unique(strsplit(sequence,"")[[1]])  
+  
+  return.value <- new("GenericSeq", id=id, sequence=sequence, alphabet=alphabet)
+
+  return.value
+}
+@
+\end{scriptsize}
+\end{frame}
+
+% inspect S4 objects and introduce methods
+
+\begin{frame}[fragile]{S4 object from readFasta()}
+  \begin{scriptsize}
+<<readFasta-use,echo=TRUE>>=
+s <- readFasta("aDnaSeq.fasta")
+s
+@
+\end{scriptsize}
+\end{frame}
+
+% Making generics
+\begin{frame}[shrink]{Writing S3/S4 methods: introducing Generics}
+\begin{center}
+\pgfuseimage{generics}
+\end{center}
+\end{frame}
+
+
+% S4 methods - getters and setters
+\begin{frame}[fragile]{Defining S4 methods}
+  \begin{block}{When a generic does not exist already}
+    If a generic \Rfunction{id()} does not exist, we need to create it to be able
+    to use our method. 
+    
+    \smallskip
+    We create our (hidden) implementation with \Rfunction{setMethod()}. 
+  \end{block}
+
+<<s4-accessors,echo=TRUE, tidy=FALSE>>=
+setGeneric("id", function(obj, ...) standardGeneric("id"))
+setMethod("id", "GenericSeq", function(obj, ...) obj@id)
+id(genseq)
+@
+\end{frame}
+
 % S4 methods
-\begin{frame}[fragile]{S4 methods}
-\begin{block}{Creating S4 methods}
-  Similar to S3 we define object methods in two steps: by defining a 
-  \textbf{generic} and the \textbf{method}. 
+\begin{frame}[fragile]{Defining S4 methods}
+\begin{block}{When a generic exists}
+  How to check if a generic for e.g. \Rfunction{rev} exists:
+  \begin{itemize}
+  	\item \Rfunction{isGeneric("rev")} will check for S4 generics. If it already
+  	exists, we use it with the defined parameter names.  
+  	\item \Rfunction{show(rev)} will show the source code of \Rfunction{rev} if
+  	it exists. If the source contains \Rfunction{UseMethod("rev")} it is an S3
+  	generic. In this case, we need to define a S4 generic 
+  	\textbf{with exactly the same parameters}.
+  	\item All primitive function (e.g. \Rfunction{c()}) have implicit generics. 
+  \end{itemize}
+  
 \end{block}
 
+\begin{scriptsize}
 <<s4-methods,echo=TRUE, tidy = FALSE>>=
 setGeneric("rev", function(x) standardGeneric("rev"))
-setMethod("rev", "GenericSeq", 
-          function(x) 
+setMethod("rev", "GenericSeq", function(x) 
           paste(rev(unlist(strsplit(x@sequence, ""))), 
                 collapse=""))         
 @
+\end{scriptsize}
 \end{frame}
 
 \begin{frame}[fragile]
 <<s4-method2>>=
 rev(genseq)
+rev(1:5)
 showMethods("rev")
 @   
 \end{frame}
 
-% S4 methods - getters and setters
 \begin{frame}[fragile]
-  \begin{block}{S4 accessor methods}
+	\begin{block}{S4 accessor methods}
     It is considered bad practice to use \Rfunction{@} in your code to access slots. 
     It breaks the division between the internal class implementation and class usage. 
     
@@ -118,14 +201,6 @@ showMethods("rev")
     Instead, create getter and setter methods for all slots you want to expose.
   \end{block}
 
-<<s4-accessors,echo=TRUE, tidy=FALSE>>=
-setGeneric("id", function(object) standardGeneric("id"))
-setMethod("id", "GenericSeq", function(object) object@id)
-id(genseq)
-@
-\end{frame}
-
-\begin{frame}[fragile]
   \begin{scriptsize}
 <<s4-accessor2, tidy = FALSE>>=
 setGeneric("id<-", 
@@ -146,7 +221,7 @@ id(genseq)
 
 % S4 first batch of exercises
 \begin{frame}[fragile]{S4 introspection}
-  \begin{block}{\exercise (code: \code{04_basic_S4.R})}
+  \begin{block}{\exercise (code: \code{01_basic_S4.R})}
     \small
     Try the following introspection functions: 
   \end{block}
@@ -166,7 +241,7 @@ isGeneric("rev")
 \end{frame}
 
 \begin{frame}[fragile]
-\begin{block}{\exercise (code as above, solution: \code{05_accessors_solution.R})}
+\begin{block}{\exercise (code as above, solution: \code{01_basic_S4_solution.R})}
 \small
 Lets complete our \code{GenericSeq} implementation with some more methods.
 Implement getter/setter method \code{seq()} and getter only \code{alphabet()}.
@@ -186,9 +261,6 @@ invisible({
   setMethod("length", "GenericSeq", function(x) nchar(x@sequence))
   setMethod("seq", "GenericSeq", function(object,...) object@sequence)
   
-  setMethod("seq<-", "GenericSeq",
-            function(object,value) object@sequence <- value)
-  
   setReplaceMethod("seq",
                    signature(object="GenericSeq",
                              value="character"),
@@ -199,6 +271,25 @@ invisible({
                    })
 })
 @
+\end{frame}
+
+\begin{frame}[fragile]{S4 use cases and considerations}
+\begin{block}{Developer vs User}
+	In OOP there is a strong distinction between a developer (i.e. you) who has
+	complete knowledge of the code, and the user who just wants to achieve a certain
+	task. 
+\end{block}
+\begin{block}{When to use S4?}
+	\begin{itemize}
+		\item When to create a new class? \\ - If there is a clear benefit
+		in terms of data organisation and generic re-usage (e.g. \Rfunction{plot()} function). 
+		\smallskip
+		\item When to we create a new generic? 
+		\\ - Accessors or general functionality (e.g. \Rfunction{normalize()}). 
+		\\ - If using Bioconductor always check package \Rfunction{BiocGenerics} and other
+		packages you use. 
+	\end{itemize}
+\end{block}
 \end{frame}
 
 % S4 further methods
@@ -451,7 +542,7 @@ Look at the code we wrote so far and understand it. Then solve the
 following exercise.
 \bigskip
 
-\begin{block}{\exercise (code: \code{06_S4_complete.R})}
+\begin{block}{\exercise (code: \code{02_S4_complete.R})}
 \small
 Try again reading the supplied fasta file using \\
 ~~~~~~~~~~~~\code{ x <- readFasta("aDnaSeq.fasta")} \\
@@ -464,7 +555,7 @@ and what if: \\
 \end{block}
 
 
-\begin{block}{\exercise (code as above, solution: \code{07_transcribe_solution.R)}}
+\begin{block}{\exercise (code as above, solution: \code{02_transcribe_solution.R)}}
 \small
 Implement a new method \code{transcribe()} of \code{DnaSeq}. This method should take a
 \code{DnaSeq}, replace the T's with U's and return a \code{RnaSeq} object.
@@ -558,23 +649,3 @@ will no longer work.
 
 \end{frame}
 
-\begin{frame}[fragile]{Mutability in S3 and S4}
-  \begin{block}{Mutability}
-    \small
-    \R objects are not \textbf{mutable}; \R has a \textbf{pass-by-value} semantics, 
-    consistently with functional programming semantics. 
-    Whenever\footnote{\tiny{Although, in general, \R tries to avoid copying objects unless they are modified.}} 
-    you pass an object to a function, a copy is passed as argument; changes made to the object are local to the function call; 
-    the original object is unchanged. This is how things work for both S3 and S4 class systems. 
-  \end{block}
-\begin{scriptsize}
-<<makea, echo=FALSE>>=
-a <- new("DnaSeq",sequence="ACGTaa")
-@   
-<<mutability,echo=TRUE>>=
-seq(a)
-comp(a)
-seq(a)
-@ 
-\end{scriptsize}
-\end{frame}

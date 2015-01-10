@@ -106,15 +106,16 @@
   \pgfuseimage{uc-logo}
 }
 
-\date[24-25/01/2013]
+\date[15-16/01/2015]
 {
-  24 - 25 January 2013
+  15 - 16 January 2015
 }
 
 
 \pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
 \pgfdeclareimage[height=.7cm]{ebi-logo}{./Figures/EMBLEBIlogo}
 \pgfdeclareimage[width=5.5cm]{uml-diagram}{./Figures/uml-diagram}
+\pgfdeclareimage[width=12cm]{generics}{./Figures/generics}
 %% \logo{\pgfuseimage{uc-logo}}
 
 \AtBeginSection[] % Do nothing for \section*
@@ -202,9 +203,9 @@ options(width = 60)
 
 \input{oo-intro.tex}
 
-\input{S3.tex}
-
 \input{S4.tex}
+
+\input{S3.tex}
 
 \input{Ref.tex}
 

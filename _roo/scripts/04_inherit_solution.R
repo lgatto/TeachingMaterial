@@ -1,9 +1,9 @@
 
-source("03_inherit.R")
+source("04_inherit.R")
 
 #### S3 methods
 # method definition
-comp.RnaSeq <- function(x) chartr("ACGU","UGCA", seq(x))
+comp.RnaSeq <- function(x, ...) chartr("ACGU","UGCA", seq(x))
 
 #### Test code
 

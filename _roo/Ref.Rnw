@@ -121,10 +121,10 @@ s$sequence
 %% Final Reference class exercises
 
 \begin{frame}[fragile,t]{S4 introspection and methods exercises}
-\begin{block}{\exercise (code: \code{08_seqRefClass.R})}
+\begin{block}{\exercise (code: \code{05_seqRefClass.R})}
 We implemented some more methods using Reference Classes. Read through the methods
 and make sure you understand how they work. Then try out the test code in
-\code{08_seqRefClass.R}. What happens when we assign one Reference Class object
+\code{05_seqRefClass.R}. What happens when we assign one Reference Class object
 to another? 
 \end{block}
 

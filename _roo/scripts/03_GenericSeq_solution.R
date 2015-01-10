@@ -1,14 +1,14 @@
 
-source("02_GenericSeq.R")
+source("03_GenericSeq.R")
 
 
 #### S3 methods
 
 # generics
-alphabet <- function(x) UseMethod("alphabet")
+alphabet <- function(x, ...) UseMethod("alphabet")
 
 # methods
-alphabet.GenericSeq <- function(x) x$alphabet
+alphabet.GenericSeq <- function(x, ...) x$alphabet
 length.GenericSeq <- function(x) nchar(seq(x))
 rev.GenericSeq <- function(x) paste(rev(unlist(strsplit(x$seq, ""))), collapse="")
 
