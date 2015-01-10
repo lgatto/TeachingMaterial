@@ -37,7 +37,7 @@ R provides a powerful environment for EDA and visualization
 ## A few tips
 
 - Avoid 3-D graphics
-- Don’t show too much information on the same graph (color, patterns, etc)
+- Don't show too much information on the same graph (color, patterns, etc)
 - Stay away from Excel, Excel is not a statistics package!
 - R provides a great environment for EDA with good graphics capabilities
 
