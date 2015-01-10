@@ -747,9 +747,9 @@ Here we will use SQLite, which is a self contained relational database managemen
 Here we will make use of the [Bioconductor](http://www.bioconductor.org) project to load and use an SQLite database.
 
 ```{r eval=FALSE}
-# You only need to run this once
+# You only need to run this once. Install if require() fails.
 source("http://bioconductor.org/biocLite.R")
-biocLite(c("org.Hs.eg.db"))
+require(org.Hs.eg.db) || biocLite("org.Hs.eg.db")
 ```
 
 ```{r load-Hs-library, cache=FALSE}
