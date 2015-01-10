@@ -61,7 +61,8 @@ The extra functionality offered by `data.table` allows us to modify, reshape, an
     
     
 ```{r eval=FALSE}
-install.packages("data.table")
+# Only install if not already installed. 
+require(data.table) || install.packages("data.table")
 ```
 - latest bug-fixes + enhancements (No need to do that, we will use the stable release)
 ```{r eval=FALSE}
