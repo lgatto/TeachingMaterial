@@ -1,20 +1,31 @@
-These exercises were written by Martin Morgan and Laurent Gatto to be
-used during
-[Bioconductor Developer Day workshop](http://bioconductor.org/help/course-materials/2013/BioC2013/developer-day-debug/)
-activities.
+These exercises were written by Martin Morgan and Laurent Gatto for a
+[Bioconductor Developer Day workshop](http://bioconductor.org/help/course-materials/2013/BioC2013/developer-day-debug/).
 
 # Introduction
 
 **Why unit testing?**
+
+- Writing code to test code;
+- anticipate bugs, in particular for edge cases;
+- anticipate disruptive updates;
+- document and test observed bugs using specific tests.
 
 Each section provides a function that supposedly works as expected,
 but quickly proves to misbehave. The exercise aims at first writing
 some dedicated testing functions that will identify the problems and
 then update the function so that it passes the specific tests. This
 practice is called unit testing and we use the RUnit package for
-this. See the
+this.
+
+See the
 [Unit Testing How-To](http://bioconductor.org/developers/how-to/unitTesting-guidelines/)
-guide for details on unit testing using RUnit.
+guide for details on unit testing using the
+[`RUnit`](http://cran.r-project.org/web/packages/RUnit/index.html)
+package. The
+[`testthat`](http://cran.r-project.org/web/packages/testthat/) is
+another package that provides unit testing infrastructure. Both
+packages can conveniently be used to automate unit testing within
+package testing. 
 
 # Example
 
@@ -38,7 +49,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "B" "X" "T" "H" "M"
+## [1] "G" "R" "N" "H" "A"
 ```
 But
 
@@ -49,7 +60,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "B" "X" "T" "H" "M" NA
+## [1] "G" "R" "N" "H" "A" NA
 ```
 
 ### Solution
@@ -134,7 +145,7 @@ isExactIn(c("a", "z"), c("abc", letters))
 ## [1] "abc" "a"
 ```
 
-<!-- ### Solution -->
+### Solution
 
 <!-- ```{r} -->
 <!-- ## Unit test: -->
@@ -210,7 +221,7 @@ ifcond(3:1, c(2, 2, 2))
 ## [1]  5  0 -3
 ```
 
-<!-- ### Solution -->
+### Solution
 
 <!-- ```{r} -->
 <!-- ## Unit test: -->
@@ -257,12 +268,12 @@ y <- rnorm(5)
 ```
 
 ```
-##               x          y
-## [1,] -0.4559843  1.1198861
-## [2,] -0.8508631  1.7721079
-## [3,]  0.7888237  0.1627900
-## [4,] -1.5754012  0.4915273
-## [5,]  0.2147186 -0.1521818
+##                x          y
+## [1,] -0.08866721 -0.1689596
+## [2,] -0.56628485 -0.3466350
+## [3,]  0.60314345 -1.5913059
+## [4,]  1.19967540  0.2114289
+## [5,]  2.12492564 -0.4756302
 ```
 
 ```r
@@ -270,8 +281,8 @@ y <- rnorm(5)
 ```
 
 ```
-##          x          y 
-## -0.4559843  1.1198861
+##           x           y 
+## -0.08866721 -0.16895957
 ```
 
 ```r
@@ -279,7 +290,7 @@ distances(p, m)
 ```
 
 ```
-## [1] 0.000000 0.762445 1.570217 1.283717 1.438054
+## [1] 0.0000000 0.5095951 1.5816672 1.3433250 2.2347349
 ```
 
 ```r
@@ -288,12 +299,12 @@ distances(p, m)
 ```
 
 ```
-##            x          y
-## 1 -0.4559843  1.1198861
-## 2 -0.8508631  1.7721079
-## 3  0.7888237  0.1627900
-## 4 -1.5754012  0.4915273
-## 5  0.2147186 -0.1521818
+##             x          y
+## 1 -0.08866721 -0.1689596
+## 2 -0.56628485 -0.3466350
+## 3  0.60314345 -1.5913059
+## 4  1.19967540  0.2114289
+## 5  2.12492564 -0.4756302
 ```
 
 ```r
@@ -301,8 +312,8 @@ distances(p, m)
 ```
 
 ```
-##            x        y
-## 1 -0.4559843 1.119886
+##             x          y
+## 1 -0.08866721 -0.1689596
 ```
 
 ```r
@@ -314,7 +325,7 @@ distances(q, dd)
 ## 1 0
 ```
 
-<!-- ### Solution -->
+### Solution
 
 <!-- ```{r} -->
 <!-- ## Unit test: -->
@@ -380,7 +391,7 @@ sqrtabs(numeric())
 ## numeric(0)
 ```
 
-<!-- ### Solution -->
+### Solution
 
 <!-- ```{r} -->
 <!-- ## Unit test: -->
@@ -405,3 +416,97 @@ sqrtabs(numeric())
 <!-- test_sqrtabs()                          # yes! -->
 <!-- ``` -->
 
+# Unit testing in a package 
+
+## The `testthat` syntax
+
+`expect_that(object_or_expression, condition)` with conditions
+- equals: `expect_that(1+2,equals(3))` or `expect_equal(1+2,3)`
+- gives warning: `expect_that(warning("a")`, `gives_warning())`
+- is a: `expect_that(1, is_a("numeric"))` or `expect_is(1,"numeric")`
+- is true: `expect_that(2 == 2, is_true())` or `expect_true(2==2)`
+- matches: `expect_that("Testing is fun", matches("fun"))` or `expect_match("Testing is fun", "f.n")`
+- takes less: `than expect_that(Sys.sleep(1), takes_less_than(3))`
+
+and
+
+```r
+test_that("description", {
+    a <- foo()
+    b <- bar()
+    expect_equal(a, b)
+})
+```
+
+## Interactive unit testing
+
+```r
+library("testthat")
+test_dir("./unittests/")
+test_file("./unittests/test_foo.R")
+```
+
+## In a package
+
+1. Create a directory `./mypackage/tests`.
+2. Create the `testthat.R` file
+
+```r
+library("testthat")
+library("mypackage")
+test_check("sequences")
+```
+
+3. Create a sub-directory `./mypackage/tests/testthat` and include as
+   many unit test files as desired that are named with the `test_`
+   prefix and contain unit tests.
+
+4. Suggest the unit testing package in your `DESCRIPTION` file:
+
+```
+Suggests: testthat
+```
+
+## Example from the `sequences` package
+
+From the `./sequences/tests/testthat/test_sequences.R` file:
+
+### Object creation and validity
+
+We have a fasta file and the corresponding `DnaSeq` object.
+
+1. Let's make sure that the `DnaSeq` instance is valid, as changes in
+   the class definition might have altered its validity.
+
+2. Let's verify that `readFasta` regenerates and identical `DnaSeq`
+   object given the original fasta file.
+
+```r
+test_that("dnaseq validity", {
+  data(dnaseq)
+  expect_true(validObject(dnaseq))
+})
+
+test_that("readFasta", {
+  ## loading _valid_ dnaseq
+  data(dnaseq)
+  ## reading fasta sequence
+  f <- dir(system.file("extdata",package="sequences"),pattern="fasta",full.names=TRUE)
+  xx <- readFasta(f[1])
+  expect_true(all.equal(xx, dnaseq))
+})
+```
+
+### Multiple implementations
+
+Let's check that the R, C and C++ (via `Rcpp`) give the same result
+
+```r
+test_that("ccpp code", {
+  gccountr <-
+    function(x) tabulate(factor(strsplit(x, "")[[1]]))
+  x <- "AACGACTACAGCATACTAC"
+  expect_true(identical(gccount(x), gccountr(x)))
+  expect_true(identical(gccount2(x), gccountr(x)))
+})
+```

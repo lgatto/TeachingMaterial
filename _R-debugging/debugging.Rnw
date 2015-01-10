@@ -110,7 +110,7 @@
 
 \begin{frame}[fragile]{Debugging example (1)}
   Let's walk through an example\footnote{credit Martin Morgan and Robert Gentleman}. 
-  The buggy setp is:
+  The buggy code is:
 
 <<buggy>>=
 e <- function(i) {
