@@ -291,7 +291,7 @@ load("all.RData", .GlobalEnv)
 \begin{frame}{Vignettes}
   \begin{block}{Demonstration}
     Let's have a look at the \Rpackage{sequences} package vignette in 
-    \texttt{sequences/inst/doc}.
+    \texttt{sequences/vignettes}.
   \end{block}
 \end{frame}
 
