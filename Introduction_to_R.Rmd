@@ -8,6 +8,7 @@ output:
     fig_retina: 1
     keep_md: yes
     smaller: yes
+  beamer_presentation: default
 ---
 
 ```{r, echo=FALSE}

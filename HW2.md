@@ -1,11 +1,10 @@
-**This is your second homework due Tuesday Feb 18.**
+**This is your first homework due Tuesday Feb 4.**
 
-Reproduce the results presented in Figure 2 of the following paper: 
-Qian, F., Bolen, C. R., Jing, C., Wang, X., Zheng, W., Zhao, H., et al. (2013). Impaired toll-like receptor 3-mediated immune responses from macrophages of patients chronically infected with hepatitis C virus. Clinical and Vaccine Immunology : CVI, 20(2), 146–155. doi:10.1128/CVI.00530-12
+1. Use the GEOmetabd package to find all HCV gene expression data using the Illumina platform submitted by an investigator at Yale. This should be done with a single query, showing the title, the GSE accession number, the GPL accession number and the manufacturer and the description of the platform used.
 
-You will have to:
+2. Reproduce your above query using the data.table package. Again, try to use a single line of code. [Hint: You first need to convert all db tables to data.table tables].
 
-1. Get the data from GEO
-2. Normalize the data (if necessary)
-3. Use limma to test for differential expression
-4. Display the results using a heatmap [Hint: Use the pheatmap package]
+
+Please submit your code as an Rmd file that can be used to check your queries and show the results. You need to make sure you ignore all output files. For consistency, please name your repository HW1-yourusername.
+
+Remember to comment your code as much as possible and use good coding standards. 

@@ -974,7 +974,7 @@ or buy his book
 ![Dynamic Documents with R and knitr](http://ecx.images-amazon.com/images/I/41kI1dxXGfL.jpg)
 </div>
 
-## Time for your to work!
+## Time for you to work!
 
 What you need to do:
 
