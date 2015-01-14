@@ -54,7 +54,7 @@ replicate(5, system.time(apply(m, 1, sum))[[1]])
 ```
 
 ```
-## [1] 0.002 0.001 0.002 0.001 0.001
+## [1] 0.001 0.001 0.001 0.001 0.001
 ```
 
 
@@ -91,7 +91,7 @@ gccount(s)
 ```
 
 ```
-## [1] 23 33 25 19
+## [1] 27 25 27 21
 ```
 
 ```r
@@ -101,7 +101,7 @@ gccountr(s)
 ```
 ## 
 ##  A  C  G  T 
-## 23 33 25 19
+## 27 25 27 21
 ```
 
 ```r
@@ -109,7 +109,7 @@ gccountr2(s)
 ```
 
 ```
-## [1] 23 33 25 19
+## [1] 27 25 27 21
 ```
 
 But are they really the same? Are we really comparing the same
@@ -256,7 +256,7 @@ tracemem(a)
 ```
 
 ```
-## [1] "<0x4601f98>"
+## [1] "<0x51ba158>"
 ```
 
 ```r
@@ -264,8 +264,8 @@ seq(a) <- "GATC"
 ```
 
 ```
-## tracemem[0x4601f98 -> 0x425bc08]: eval eval withVisible withCallingHandlers doTryCatch tryCatchOne tryCatchList tryCatch try handle evaluate_call evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file knit 
-## tracemem[0x425bc08 -> 0x41f3ba0]: seq<- seq<- eval eval withVisible withCallingHandlers doTryCatch tryCatchOne tryCatchList tryCatch try handle evaluate_call evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file knit
+## tracemem[0x51ba158 -> 0x50c1788]: eval eval withVisible withCallingHandlers doTryCatch tryCatchOne tryCatchList tryCatch try handle evaluate_call evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file knit 
+## tracemem[0x50c1788 -> 0x5316128]: seq<- seq<- eval eval withVisible withCallingHandlers doTryCatch tryCatchOne tryCatchList tryCatch try handle evaluate_call evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file knit
 ```
 
 The illusion of copying
@@ -277,7 +277,7 @@ tracemem(x)
 ```
 
 ```
-## [1] "<0x3d29538>"
+## [1] "<0x4b9a218>"
 ```
 
 ```r
@@ -287,7 +287,7 @@ x[1] <- 1L
 ```
 
 ```
-## tracemem[0x3d29538 -> 0x3cb9e50]: eval eval withVisible withCallingHandlers doTryCatch tryCatchOne tryCatchList tryCatch try handle evaluate_call evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file knit
+## tracemem[0x4b9a218 -> 0x4b28c30]: eval eval withVisible withCallingHandlers doTryCatch tryCatchOne tryCatchList tryCatch try handle evaluate_call evaluate in_dir block_exec call_block process_group.block process_group withCallingHandlers process_file knit
 ```
 
 ```r
@@ -342,13 +342,7 @@ microbenchmark(readFasta(f), readFastaCmp(f), times = 1e2)
 ```
 
 ```
-## Unit: microseconds
-##             expr     min       lq     mean  median      uq      max neval
-##     readFasta(f) 603.590 618.1235 656.9715 637.179 673.671  946.715   100
-##  readFastaCmp(f) 600.057 613.5380 703.0776 626.811 687.359 3110.835   100
-##  cld
-##    a
-##    a
+## Error in file(con, "r"): invalid 'description' argument
 ```
 Fibonacci example
 
@@ -397,13 +391,9 @@ microbenchmark(fibR(10), fibRcmp(10), fibC(10), times = 1e2)
 ```
 ## Unit: microseconds
 ##         expr     min       lq      mean   median       uq      max neval
-##     fibR(10) 152.605 175.9425 193.23615 178.7570 188.5425 1146.152   100
-##  fibRcmp(10) 160.187 173.4690 182.94544 178.2695 185.3835  240.485   100
-##     fibC(10)   1.950   2.6965   3.33669   3.1990   3.8300    8.476   100
-##  cld
-##    b
-##    b
-##   a
+##     fibR(10) 149.079 170.7530 178.46982 174.7970 184.7115  227.537   100
+##  fibRcmp(10) 151.479 169.9570 184.91071 173.2775 179.1755 1056.961   100
+##     fibC(10)   1.670   2.1895   2.74918   2.6435   3.0280    7.408   100
 ```
 
 
@@ -453,7 +443,7 @@ f()
 ```
 
 ```
-## <environment: 0x3f58cb8>
+## <environment: 0x4fceeb0>
 ```
 
 ```r
@@ -473,7 +463,7 @@ e
 ```
 
 ```
-## <environment: 0x3c98228>
+## <environment: 0x4808cf8>
 ```
 
 ```r
@@ -538,6 +528,7 @@ This is used in the `eSet` et al. microarray data structures to store the expres
   [pbdDemo](http://cran.r-project.org/web/packages/pbdDEMO/)
   package/vignette.
 - [Bioconductor in the cloud](http://bioconductor.org/help/bioconductor-cloud-ami/)
+- [Bioconductor docker containers](http://bioconductor.org/help/docker/)
 - ...
 
 
