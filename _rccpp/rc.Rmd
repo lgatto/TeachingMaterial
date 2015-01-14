@@ -11,7 +11,7 @@ chapter of the *Advanced R* book by Hadley Wickham.
 
 > R is interpreted; C++ is a compiled language.
 
-We will focus on short simple code snippets using `[Rcpp](http://rcpp.org/)`:
+We will focus on short simple code snippets using [`Rcpp`](http://rcpp.org/):
 
 ```{r, eval=FALSE}
 install.packages("Rcpp")
@@ -351,7 +351,8 @@ enables to expose C++ classes and methods to R.
 - [Rcpp book](http://www.rcpp.org/book/) and [web page](http://rcpp.org/)
 - [High performance functions with Rcpp](http://adv-r.had.co.nz/Rcpp.html)
   chapter of the *Advanced R* book by Hadley Wickham.
-
+- [Rcpp.org](http://rcpp.org/)
+- [Rcpp book](http://www.rcpp.org/book/)
 
 ```{r, echo=FALSE}
 ## testing solutions

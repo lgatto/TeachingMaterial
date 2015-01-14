@@ -11,7 +11,7 @@ chapter of the *Advanced R* book by Hadley Wickham.
 
 > R is interpreted; C++ is a compiled language.
 
-We will focus on short simple code snippets using `[Rcpp](http://rcpp.org/)`:
+We will focus on short simple code snippets using [`Rcpp`](http://rcpp.org/):
 
 
 ```r
@@ -97,7 +97,7 @@ sumC
 
 ```
 ## function (x) 
-## .Primitive(".Call")(<pointer: 0x2ae83f50dd60>, x)
+## .Primitive(".Call")(<pointer: 0x2b09359e1d60>, x)
 ```
 
 ```r
@@ -105,7 +105,7 @@ sumC(c(1, 2, 1:4, rnorm(3)))
 ```
 
 ```
-## [1] 13.87955
+## [1] 10.03978
 ```
 
 ### Sourcing C++ code
@@ -151,15 +151,15 @@ sourceCpp("./src/ex_sumC.cpp")
 ```
 ## 
 ## > (x <- c(1, 3, rnorm(10)))
-##  [1]  1.00000000  3.00000000  0.03221003  0.13812202  1.07289799
-##  [6]  0.24790057 -0.20173767 -1.97670296 -0.25369404  0.86000656
-## [11]  1.78555673 -1.32250913
+##  [1]  1.00000000  3.00000000 -0.34321383 -0.06583524  1.35844772
+##  [6]  0.11544398  1.47693880  1.38057156  0.17528749  1.62468629
+## [11] -0.47150602 -1.10324033
 ## 
 ## > sumC(x)
-## [1] 4.38205
+## [1] 8.14758
 ## 
 ## > sum(x)
-## [1] 4.38205
+## [1] 8.14758
 ```
 
 ## An example with a matrix
@@ -421,6 +421,7 @@ enables to expose C++ classes and methods to R.
 - [Rcpp book](http://www.rcpp.org/book/) and [web page](http://rcpp.org/)
 - [High performance functions with Rcpp](http://adv-r.had.co.nz/Rcpp.html)
   chapter of the *Advanced R* book by Hadley Wickham.
-
+- [Rcpp.org](http://rcpp.org/)
+- [Rcpp book](http://www.rcpp.org/book/)
 
 
