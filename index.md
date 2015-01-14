@@ -152,7 +152,7 @@ We could instead write
         cd $(<D);R CMD BATCH $(<F)
 
 The automatic variable `$(<D)` will take the value of the directory of
-the first prerequisite, `R` in this case. `$(<F)` will take value of
+the first prerequisite, `R/` in this case. `$(<F)` will take value of
 the file part of the first prerequisite, `fig1.R` in this case.
 
 Okay, that's not _really_ a simplification.
