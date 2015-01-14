@@ -97,7 +97,7 @@ sumC
 
 ```
 ## function (x) 
-## .Primitive(".Call")(<pointer: 0x2b7a2b840d60>, x)
+## .Primitive(".Call")(<pointer: 0x2b09359e1d60>, x)
 ```
 
 ```r
@@ -105,7 +105,7 @@ sumC(c(1, 2, 1:4, rnorm(3)))
 ```
 
 ```
-## [1] 12.69535
+## [1] 10.03978
 ```
 
 ### Sourcing C++ code
@@ -151,15 +151,15 @@ sourceCpp("./src/ex_sumC.cpp")
 ```
 ## 
 ## > (x <- c(1, 3, rnorm(10)))
-##  [1]  1.00000000  3.00000000  0.93458475 -2.91834537  0.36712273
-##  [6] -0.33708521 -0.08169273 -0.54008712  0.24044590  0.32212111
-## [11]  1.06620877 -0.17073411
+##  [1]  1.00000000  3.00000000 -0.34321383 -0.06583524  1.35844772
+##  [6]  0.11544398  1.47693880  1.38057156  0.17528749  1.62468629
+## [11] -0.47150602 -1.10324033
 ## 
 ## > sumC(x)
-## [1] 2.882539
+## [1] 8.14758
 ## 
 ## > sum(x)
-## [1] 2.882539
+## [1] 8.14758
 ```
 
 ## An example with a matrix
@@ -421,6 +421,7 @@ enables to expose C++ classes and methods to R.
 - [Rcpp book](http://www.rcpp.org/book/) and [web page](http://rcpp.org/)
 - [High performance functions with Rcpp](http://adv-r.had.co.nz/Rcpp.html)
   chapter of the *Advanced R* book by Hadley Wickham.
-
+- [Rcpp.org](http://rcpp.org/)
+- [Rcpp book](http://www.rcpp.org/book/)
 
 
