@@ -1,5 +1,9 @@
+CHANGES IN VERSION 0.5.11
+-------------------------
+ o add GenericSeq, DnaSeq and RnaSeq aliases [2015-01-15 Thu]
+
 CHANGES IN VERSION 0.5.10
-------------------------
+-------------------------
  o update all generics to have ...
 
 CHANGES IN VERSION 0.5.9

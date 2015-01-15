@@ -2,8 +2,10 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{DnaSeq-class}
+\alias{DnaSeq}
 \alias{class:DnaSeq}
 \alias{RnaSeq-class}
+\alias{RnaSeq}
 \alias{class:RnaSeq}
 
 \alias{comp}
