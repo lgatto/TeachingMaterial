@@ -47,6 +47,13 @@ Say you want to contribute changes to someone else's repository (eg,
 - `git push` them back to [github](http://github.com).  These will go
   to _your version_ of the repository.
 
+- Note: if you get an error like:
+
+      error: src refspec master does not match any.
+      error: failed to push some refs to 'git@github.com:username/the_repo'
+
+Then try `git push origin HEAD:gh-pages` [stackoverflow.](http://stackoverflow.com/questions/4181861/src-refspec-master-does-not-match-any-when-pushing-commits-in-git) Typing `git show-ref` can show what reference to put after HEAD.
+
 - Go to _your version_ of the repository on github.
 
 - Click the &ldquo;Pull Request&rdquo; button at the top.

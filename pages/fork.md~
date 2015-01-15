@@ -32,6 +32,14 @@ Say you want to contribute changes to someone else's repository (eg,
   `git://github.com/` in the second case.  I'm not sure why these need
   to be the way they are, but that's what works for me.
 
+- Also note the first myfriend does not need to be the same as the username of `myfriend`.  You could very well choose:
+
+      $ git remote add repo_nickname git://github.com/myfriend/the_repo
+
+- To check this `remote add` set up:
+
+      $ git remote -v
+
 - Make changes to files.
 
 - `git add` and `git commit` those changes
