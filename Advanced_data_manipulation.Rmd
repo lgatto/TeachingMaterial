@@ -14,11 +14,9 @@ output:
 
 Let's first turn on the cache for increased performance.
 ```{r, cache=FALSE}
-library(knitr)
 # Set some global knitr options
 library("knitr")
-opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80),cache=TRUE)
-
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80), cache=TRUE)
 ```
 
 ## Motivation

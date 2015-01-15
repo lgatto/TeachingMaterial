@@ -7,10 +7,9 @@ December 8, 2014
 Let's first turn on the cache for increased performance.
 
 ```r
-library(knitr)
 # Set some global knitr options
 library("knitr")
-opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80),cache=TRUE)
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80), cache=TRUE)
 ```
 
 ## Motivation
@@ -69,7 +68,8 @@ The extra functionality offered by `data.table` allows us to modify, reshape, an
     
 
 ```r
-install.packages("data.table")
+# Only install if not already installed.
+require(data.table) || install.packages("data.table")
 ```
 - latest bug-fixes + enhancements (No need to do that, we will use the stable release)
 
@@ -1213,9 +1213,9 @@ Here we will make use of the [Bioconductor](http://www.bioconductor.org) project
 
 
 ```r
-# You only need to run this once
+# You only need to run this once. Install if require() fails.
 source("http://bioconductor.org/biocLite.R")
-biocLite(c("org.Hs.eg.db"))
+require(org.Hs.eg.db) || biocLite("org.Hs.eg.db")
 ```
 
 
@@ -1329,7 +1329,7 @@ gc()
 ```
 ##           used (Mb) gc trigger  (Mb) max used (Mb)
 ## Ncells 1141630 61.0    2320208 124.0  1628720 87.0
-## Vcells 1261294  9.7    3635490  27.8  1986027 15.2
+## Vcells 1261314  9.7    3648212  27.9  1986142 15.2
 ```
 
 ```r
@@ -1340,7 +1340,7 @@ gc()
 ```
 ##           used (Mb) gc trigger  (Mb) max used (Mb)
 ## Ncells 1245119 66.5    3288291 175.7  1628720 87.0
-## Vcells 1625263 12.4    3635490  27.8  2370830 18.1
+## Vcells 1625283 12.4    3648212  27.9  2370850 18.1
 ```
 
 ```r
@@ -1359,7 +1359,7 @@ gc()
 ```
 ##           used (Mb) gc trigger  (Mb) max used (Mb)
 ## Ncells 1290972 69.0    3288291 175.7  1628720   87
-## Vcells 2112421 16.2    5169686  39.5  3004320   23
+## Vcells 2112441 16.2    5187496  39.6  3004340   23
 ```
 
 ```r
@@ -1370,7 +1370,7 @@ gc()
 ```
 ##           used (Mb) gc trigger  (Mb) max used (Mb)
 ## Ncells 1290989 69.0    3288291 175.7  1628720   87
-## Vcells 2112517 16.2    5169686  39.5  3004320   23
+## Vcells 2112537 16.2    5187496  39.6  3004340   23
 ```
 
 ## Some SQL Commands

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Bioinformatics for Big Omics Data: Advanced data manipulation</title>
+  <title>Bioinformatics for Big Omics Data: Introduction to Bioconductor</title>
 
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,6 +10,7 @@
 
 
 
+  <meta name="date" content="2014-01-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -25,7 +26,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'Bioinformatics for Big Omics Data: Advanced data manipulation',
+                title: 'Bioinformatics for Big Omics Data: Introduction to Bioconductor',
                         useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -88,1400 +89,1533 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">December 8, 2014</p>
+            <p style="margin-top: 6px; margin-left: -2px;">January 15, 2014</p>
           </hgroup>
   </slide>
 
 <slide class=''><hgroup><h2>Setting up some options</h2></hgroup><article  id="setting-up-some-options" class="smaller ">
 
-<p>Let&#39;s first turn on the cache for increased performance.</p>
+<p>Let&#39;s first turn on the cache for increased performance and improved styling</p>
 
 <pre class = 'prettyprint lang-r'># Set some global knitr options
 library(&quot;knitr&quot;)
-opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=80), cache=TRUE)</pre>
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), cache=TRUE, messages=FALSE)</pre>
 
-</article></slide><slide class=''><hgroup><h2>Motivation</h2></hgroup><article  id="motivation" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>The Bioconductor project</h2></hgroup><article  id="the-bioconductor-project" class="smaller ">
 
 <ul>
-<li><p>R has pass-by-value semantics, which minimizes accidental side effects. However, this can become a major bottleneck when dealing with large datasets both in terms of memory and speed.</p></li>
-<li><p>Working with <code>data.frame</code>s in R can also be painful process in terms of writing code.</p></li>
-<li><p>Fortunately, R provides some solution to this problems.</p></li>
+<li><p><a href='http://www.bioconductor.org' title=''>Bioconductor</a> is an open source, open development software project to provide tools for the analysis and comprehension of high-throughput genomic data. It is based primarily on the R programming language.</p></li>
+<li><p>Most Bioconductor components are distributed as R packages. The functional scope of Bioconductor packages includes the analysis of DNA microarray, sequence, flow, SNP, and other data.</p></li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Overview</h2></hgroup><article  id="overview" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Project Goals</h2></hgroup><article  id="project-goals" class="smaller ">
 
-<p>Here we will review three R packages that can be used to provide efficient data manipulation:</p>
+<p>The broad goals of the Bioconductor project are:</p>
 
 <ul>
-<li><code>data.table</code>: An package for efficient data storage and manipulation</li>
-<li><code>RSQLite</code>: Database Interface R driver for SQLite</li>
-<li><code>sqldf</code>: An R package for runing SQL statements on R data frames, optimized for convenience</li>
+<li>To provide widespread access to a broad range of powerful statistical and graphical methods for the analysis of genomic data.</li>
+<li>To facilitate the inclusion of biological metadata in the analysis of genomic data, e.g. literature data from PubMed, annotation data from Entrez genes.</li>
+<li>To provide a common software platform that enables the rapid development and deployment of extensible, scalable, and interoperable software.</li>
+<li>To further scientific understanding by producing high-quality documentation and reproducible research.</li>
+<li>To train researchers on computational and statistical methods for the analysis of genomic data.</li>
 </ul>
 
-<p><small>Thank to Kevin Ushey (<span class="cite">@kevin_ushey</span>) for the <code>data.table</code> notes and Matt Dowle and Arunkumar Srinivasan for helpful comments.</small></p>
+</article></slide><slide class=''><hgroup><h2>Getting started</h2></hgroup><article  id="getting-started" class="smaller ">
 
-</article></slide><slide class=''><hgroup><h2>What is data.table?</h2></hgroup><article  id="what-is-data.table" class="smaller ">
-
-<p><code>data.table</code> is an R package that extends. <code>R</code> <code>data.frame</code>s.</p>
-
-<p>Under the hood, they are just `data.frame&#39;s, with some extra &#39;stuff&#39; added on. So, they&#39;re collections of equal-length vectors. Each vector can be of different type.</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-dt &lt;- data.table(x = 1:3, y = c(4, 5, 6), z = letters[1:3])
-dt</pre>
-
-<pre >##    x y z
-## 1: 1 4 a
-## 2: 2 5 b
-## 3: 3 6 c</pre>
-
-<pre class = 'prettyprint lang-r'>class(dt)</pre>
-
-<pre >## [1] &quot;data.table&quot; &quot;data.frame&quot;</pre>
-
-<p>The extra functionality offered by <code>data.table</code> allows us to modify, reshape, and merge <code>data.table</code>s much quicker than <code>data.frame</code>s. <strong>See that <code>data.table</code> inherits from <code>data.frame</code>!</strong></p>
-
-</article></slide><slide class=''><hgroup><h2>Installing data.table</h2></hgroup><article  id="installing-data.table" class="smaller ">
+<p>Before running this presentation, you will need to:</p>
 
 <ul>
-<li>stable CRAN release</li>
-</ul>
-
-<pre class = 'prettyprint lang-r'># Only install if not already installed.
-require(data.table) || install.packages(&quot;data.table&quot;)</pre>
+<li><p>set the current directory in the console (go to session -&gt; Set Working Directory -&gt; To Source File Location)</p></li>
+<li>run the following commands which take up time
 
 <ul>
-<li>latest bug-fixes + enhancements (No need to do that, we will use the stable release)</li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>library(devtools)
-install_github(&quot;Rdatatable/data.table&quot;, build_vignettes = FALSE)</pre>
-
-</article></slide><slide class=''><hgroup><h2>What&#39;s different?</h2></hgroup><article  id="whats-different" class="smaller ">
-
-<p>Most of your interactions with <code>data.table</code>s will be through the subset (<code>[</code>) operator, which behaves quite differently for <code>data.table</code>s. We&#39;ll examine a few of the common cases.</p>
-
-<p>Visit <a href='http://stackoverflow.com/questions/13618488/what-you-can-do-with-data-frame-that-you-cant-in-data-table' title=''>this stackoverflow question</a> for a summary of the differences between <code>data.frame</code>s and <code>data.table</code>s.</p>
-
-</article></slide><slide class=''><hgroup><h2>Single element subsetting</h2></hgroup><article  id="single-element-subsetting" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DF &lt;- data.frame(x = 1:3, y = 4:6, z = 7:9)
-DT &lt;- data.table(x = 1:3, y = 4:6, z = 7:9)
-DF[c(2, 3)]</pre>
-
-<pre >##   y z
-## 1 4 7
-## 2 5 8
-## 3 6 9</pre>
-
-<pre class = 'prettyprint lang-r'>DT[c(2, 3)]</pre>
-
-<pre >##    x y z
-## 1: 2 5 8
-## 2: 3 6 9</pre>
-
-<p>By default, single-element subsetting in <code>data.table</code>s refers to rows, rather than columns.</p>
-
-</article></slide><slide class=''><hgroup><h2>Row subsetting</h2></hgroup><article  id="row-subsetting" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DF &lt;- data.frame(x = 1:3, y = 4:6, z = 7:9)
-DT &lt;- data.table(x = 1:3, y = 4:6, z = 7:9)
-DF[c(2, 3), ]</pre>
-
-<pre >##   x y z
-## 2 2 5 8
-## 3 3 6 9</pre>
-
-<pre class = 'prettyprint lang-r'>DT[c(2, 3), ]</pre>
-
-<pre >##    x y z
-## 1: 2 5 8
-## 2: 3 6 9</pre>
-
-<p>Notice: row names are lost with <code>data.table</code>s. Otherwise, output is identical.</p>
-
-</article></slide><slide class=''><hgroup><h2>Column subsetting</h2></hgroup><article  id="column-subsetting" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DF &lt;- data.frame(x = 1:3, y = 4:6, z = 7:9)
-DT &lt;- data.table(x = 1:3, y = 4:6, z = 7:9)
-DF[, c(2, 3)]</pre>
-
-<pre >##   y z
-## 1 4 7
-## 2 5 8
-## 3 6 9</pre>
-
-<pre class = 'prettyprint lang-r'>DT[, c(2, 3)]</pre>
-
-<pre >## [1] 2 3</pre>
-
-<p><code>DT[, c(2,3)]</code> just returns <code>c(2, 3)</code>. Why on earth is that?</p>
-
-</article></slide><slide class=''><hgroup><h2>The j expression</h2></hgroup><article  id="the-j-expression" class="smaller ">
-
-<p>The subset operator is really a function, and <code>data.table</code> modifies it to behave differently.</p>
-
-<p>Call the arguments we pass e.g. <code>DT[i, j]</code>, or <code>DT[i]</code>.</p>
-
-<p>The second argument to <code>[</code> is called the <code>j expression</code>, so-called because it&#39;s interpreted as an <code>R</code> expression. This is where most of the <code>data.table</code> magic happens.</p>
-
-<p><code>j</code> is an expression evaluated within the frame of the <code>data.table</code>, so it sees the column names of <code>DT</code>. Similarly for <code>i</code>.</p>
-
-<p>First, let&#39;s remind ourselves what an <code>R</code> expression is.</p>
-
-</article></slide><slide class=''><hgroup><h2>Expressions</h2></hgroup><article  id="expressions" class="smaller ">
-
-<p>An <code>expression</code> is a collection of statements, enclosed in a block generated by braces <code>{}</code>.</p>
-
-<pre class = 'prettyprint lang-r'>## an expression with two statements
-{
-    x &lt;- 1
-    y &lt;- 2
-}
-## the last statement in an expression is returned
-k &lt;- {
-    print(10)
-    5
-}</pre>
-
-<pre >## [1] 10</pre>
-
-<pre class = 'prettyprint lang-r'>print(k)</pre>
-
-<pre >## [1] 5</pre>
-
-</article></slide><slide class=''><hgroup><h2>The j expression</h2></hgroup><article  id="the-j-expression-1" class="smaller ">
-
-<p>So, <code>data.table</code> does something special with the <code>expression</code> that you pass as <code>j</code>, the second argument, to the subsetting (<code>[</code>) operator.</p>
-
-<p>The return type of the final statement in our expression determines the type of operation that will be performed.</p>
-
-<p>In general, the output should either be a <code>list</code> of symbols, or a statement using <code>:=</code>.</p>
-
-<p>We&#39;ll start by looking at the <code>list</code> of symbols as an output.</p>
-
-</article></slide><slide class=''><hgroup><h2>An example</h2></hgroup><article  id="an-example" class="smaller ">
-
-<p>When we simply provide a <code>list</code> to the <code>j expression</code>, we generate a new <code>data.table</code> as output, with operations as performed within the <code>list</code> call.</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DT &lt;- data.table(x = 1:5, y = 1:5)
-DT[, list(mean_x = mean(x), sum_y = sum(y), sumsq = sum(x^2 + y^2))]</pre>
-
-<pre >##    mean_x sum_y sumsq
-## 1:      3    15   110</pre>
-
-<p>Notice how the symbols <code>x</code> and <code>y</code> are looked up within the <code>data.table</code> <code>DT</code>. No more writing <code>DT$</code> everywhere!</p>
-
-</article></slide><slide class=''><hgroup><h2>Using :=</h2></hgroup><article  id="using" class="smaller ">
-
-<p>Using the <code>:=</code> operator tells us we should assign columns by reference into the <code>data.table</code> <code>DT</code>:</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DT &lt;- data.table(x = 1:5)
-DT[, `:=`(y, x^2)]</pre>
-
-<pre >##    x  y
-## 1: 1  1
-## 2: 2  4
-## 3: 3  9
-## 4: 4 16
-## 5: 5 25</pre>
-
-</article></slide><slide class=''><hgroup><h2>Using :=</h2></hgroup><article  id="using-1" class="smaller ">
-
-<p>By default, <code>data.table</code>s are not copied on a direct assignment <code>&lt;-</code>:</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DT &lt;- data.table(x = 1)
-DT2 &lt;- DT
-DT[, `:=`(y, 2)]</pre>
-
-<pre >##    x y
-## 1: 1 2</pre>
-
-<pre class = 'prettyprint lang-r'>DT2</pre>
-
-<pre >##    x y
-## 1: 1 2</pre>
-
-<p>Notice that <code>DT2</code> has changed. This is something to be mindful of; if you want to explicitly copy a <code>data.table</code> do so with <code>DT2 &lt;- copy(DT)</code>.</p>
-
-</article></slide><slide class=''><hgroup><h2>A slightly more complicated example</h2></hgroup><article  id="a-slightly-more-complicated-example" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DT &lt;- data.table(x = 1:5, y = 6:10, z = 11:15)
-DT[, `:=`(m, log2((x + 1)/(y + 1)))]</pre>
-
-<pre >##    x  y  z          m
-## 1: 1  6 11 -1.8073549
-## 2: 2  7 12 -1.4150375
-## 3: 3  8 13 -1.1699250
-## 4: 4  9 14 -1.0000000
-## 5: 5 10 15 -0.8744691</pre>
-
-</article></slide><slide class=''><hgroup><h2>Using an expression in j</h2></hgroup><article  id="using-an-expression-in-j" class="smaller ">
-
-<p>Note that the right-hand side of a <code>:=</code> call can be an expression.</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DT &lt;- data.table(x = 1:5, y = 6:10, z = 11:15)
-DT[, `:=`(m, {
-    tmp &lt;- (x + 1)/(y + 1)
-    log2(tmp)
-})]</pre>
-
-<pre >##    x  y  z          m
-## 1: 1  6 11 -1.8073549
-## 2: 2  7 12 -1.4150375
-## 3: 3  8 13 -1.1699250
-## 4: 4  9 14 -1.0000000
-## 5: 5 10 15 -0.8744691</pre>
-
-</article></slide><slide class=''><hgroup><h2>Multiple returns in j</h2></hgroup><article  id="multiple-returns-in-j" class="smaller ">
-
-<p>The left hand side of a <code>:=</code> call can also be a character vector of names, for which the corresponding final statement in the <code>j expression</code> should be a list of the same length.</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DT &lt;- data.table(x = 1:5, y = 6:10, z = 11:15)
-DT[, `:=`(c(&quot;m&quot;, &quot;n&quot;), {
-    tmp &lt;- (x + 1)/(y + 1)
-    list(log2(tmp), log10(tmp))
-})]</pre>
-
-<pre >##    x  y  z          m          n
-## 1: 1  6 11 -1.8073549 -0.5440680
-## 2: 2  7 12 -1.4150375 -0.4259687
-## 3: 3  8 13 -1.1699250 -0.3521825
-## 4: 4  9 14 -1.0000000 -0.3010300
-## 5: 5 10 15 -0.8744691 -0.2632414</pre>
-
-<pre class = 'prettyprint lang-r'>DT[, `:=`(a = x^2, b = y^2)]</pre>
-
-<pre >##    x  y  z          m          n  a   b
-## 1: 1  6 11 -1.8073549 -0.5440680  1  36
-## 2: 2  7 12 -1.4150375 -0.4259687  4  49
-## 3: 3  8 13 -1.1699250 -0.3521825  9  64
-## 4: 4  9 14 -1.0000000 -0.3010300 16  81
-## 5: 5 10 15 -0.8744691 -0.2632414 25 100</pre>
-
-<pre class = 'prettyprint lang-r'>DT[, `:=`(c(&quot;c&quot;, &quot;d&quot;), list(x^2, y^2))]</pre>
-
-<pre >##    x  y  z          m          n  a   b  c   d
-## 1: 1  6 11 -1.8073549 -0.5440680  1  36  1  36
-## 2: 2  7 12 -1.4150375 -0.4259687  4  49  4  49
-## 3: 3  8 13 -1.1699250 -0.3521825  9  64  9  64
-## 4: 4  9 14 -1.0000000 -0.3010300 16  81 16  81
-## 5: 5 10 15 -0.8744691 -0.2632414 25 100 25 100</pre>
-
-</article></slide><slide class=''><hgroup><h2>The j expression revisited</h2></hgroup><article  id="the-j-expression-revisited" class="smaller ">
-
-<p>So, we typically call <code>j</code> the <code>j expression</code>, but really, it&#39;s either:</p>
-
-<ol>
-<li><p>An expression, or</p></li>
-<li><p>A call to the function <code>:=</code>, for which the first argument is a set of names (vectors to update), and the second argument is an expression, with the final statement typically being a list of results to assign within the <code>data.table</code>.</p></li>
-</ol>
-
-<p>As I said before, <code>a := b</code> is parsed by <code>R</code> as <code>&quot;:=&quot;(a, b)</code>, hence it looking somewhat like an operator.</p>
-
-<pre class = 'prettyprint lang-r'>quote(`:=`(a, b))</pre>
-
-<pre >## `:=`(a, b)</pre>
-
-</article></slide><slide class=''><hgroup><h2>Why does it matter?</h2></hgroup><article  id="why-does-it-matter" class="smaller ">
-
-<p>Whenever you sub-assign a <code>data.frame</code>, <code>R</code> is forced to copy the entire <code>data.frame</code>.</p>
-
-<p>That is, whenever you write <code>DF$x &lt;- 1</code>, <code>DF[&quot;x&quot;] &lt;- 1</code>, <code>DF[[&quot;x&quot;]] &lt;- 1</code>&#8230;</p>
-
-<p>&#8230; R will make a copy of <code>DF</code> before assignment.</p>
-
-<p>This is done in order to ensure any other symbols pointing at the same object do not get modified. This is a good thing for when we need to reason about the code we write, since, in general, we expect <code>R</code> to operate without side effects.</p>
-
-<p>Unfortunately, it is prohibitively slow for large objects, and hence why <code>:=</code> can be very useful.</p>
-
-</article></slide><slide class=''><hgroup><h2>Why does it matter?</h2></hgroup><article  id="why-does-it-matter-1" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-big_df &lt;- data.frame(x = rnorm(1e+06), y = sample(letters, 1e+06, TRUE))
-big_dt &lt;- data.table(big_df)
-microbenchmark(big_df$z &lt;- 1, big_dt[, `:=`(z, 1)])</pre>
-
-<pre >## Unit: milliseconds
-##                  expr      min       lq     mean   median      uq      max
-##         big_df$z &lt;- 1 1.325358 2.331905 5.860944 2.544618 4.37489 105.6464
-##  big_dt[, `:=`(z, 1)] 2.536554 4.295727 8.677173 5.066026 7.62658 128.0590
-##  neval cld
-##    100   a
-##    100   a</pre>
-
-<p>Once again, notice that <code>:=</code> is actually a function, and <code>z := 1</code> is parsed as <code>&quot;:=&quot;(z, 1)</code>.</p>
-
-</article></slide><slide class=''><hgroup><h2>Using by</h2></hgroup><article  id="using-by" class="smaller ">
-
-<p>We can also perform grouping like operations through the use of the <code>by</code> argument:</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DT &lt;- data.table(x = 1:5, y = 6:10, gp = c(&quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;b&quot;))
-DT[, `:=`(z, mean(x + y)), by = gp]</pre>
-
-<pre >##    x  y gp  z
-## 1: 1  6  a  9
-## 2: 2  7  a  9
-## 3: 3  8  a  9
-## 4: 4  9  b 14
-## 5: 5 10  b 14</pre>
-
-<p>Notice that since <code>mean(x+y)</code> returns a scalar (numeric vector of length 1), it is recycled to fill within each group.</p>
-
-</article></slide><slide class=''><hgroup><h2>Generating a new data.table</h2></hgroup><article  id="generating-a-new-data.table" class="smaller ">
-
-<p>What if, rather than modifying the current <code>data.table</code>, we wanted to generate a new one?</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DT &lt;- data.table(x = 1:5, y = 6:10, gp = c(&quot;a&quot;, &quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;b&quot;))
-DT[, list(z = mean(x + y)), by = gp]</pre>
-
-<pre >##    gp  z
-## 1:  a  9
-## 2:  b 14</pre>
-
-<p>Notice that we retain one row for each unique group specified in the <code>by</code> argument, and only the <code>by</code> variables along-side our <code>z</code> variable are returned.</p>
-
-</article></slide><slide class=''><hgroup><h2>The j expression</h2></hgroup><article  id="the-j-expression-2" class="smaller ">
-
-<ul>
-<li>A <code>list</code></li>
-</ul>
-
-<p>&#8230; returns a new <code>data.table</code>, potentially subset over groups in your <code>by</code>.</p>
-
-<ul>
-<li>A <code>:=</code> Call</li>
-</ul>
-
-<p>&#8230; modifies that <code>data.table</code> in place, hence saving memory. Output is recycled if the <code>by</code> argument is used.</p>
-
-<h4>In general, our <code>j expression</code> is either:</h4>
-
-<ol>
-<li><p>an expression, with the final (or only) statement being a <code>list</code> of (named) arguments,</p></li>
-<li>a call to the <code>:=</code> function, with</li>
-</ol>
-
-<ul>
-<li>the first argument being names, and</li>
-<li>the second argument being an expression, for which the last statement is a list of the same length as the first argument.</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>Special variables</h2></hgroup><article  id="special-variables" class="smaller ">
-
-<p>There are a number of special variables defined only within <code>j</code>, that allow us to do some neat things&#8230;</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-data.table()[, ls(all = TRUE)]</pre>
-
-<pre >## [1] &quot;.GRP&quot; &quot;.I&quot;   &quot;.N&quot;   &quot;.SD&quot;</pre>
-
-<p>These variables allow us to infer a bit more about what&#39;s going on within the <code>data.table</code> calls, and also allow us to write more complicated <code>j expression</code>s.</p>
-
-</article></slide><slide class=''><hgroup><h2>Special variables</h2></hgroup><article  id="special-variables-1" class="smaller ">
-
-<h3><code>.SD</code></h3>
-
-<p>A <code>data.table</code> containing the subset of data for each group, excluding columns used in <code>by</code>.</p>
-
-<h3><code>.BY</code></h3>
-
-<p>A <code>list</code> containing a length 1 vector for each item in <code>by</code>.</p>
-
-<h3><code>.N</code></h3>
-
-</article></slide><slide class=''><hgroup><h2>Special variables</h2></hgroup><article  id="special-variables-2" class="smaller ">
-
-<p>An integer, length 1, containing the number of rows in <code>.SD</code>.</p>
-
-<h3><code>.I</code></h3>
-
-<p>A vector of indices, holding the row locations from which <code>.SD</code> was pulled from the parent <code>DT</code>.</p>
-
-<h3><code>.GRP</code></h3>
-
-<p>A counter telling you which group you&#39;re working with (1st, 2nd, 3rd&#8230;)</p>
-
-</article></slide><slide class=''><hgroup><h2>Example usage of .N - Counts</h2></hgroup><article  id="example-usage-of-.n---counts" class="smaller ">
-
-<p>Compute the counts, by group, using <code>data.table</code>&#8230;</p>
-
-<pre class = 'prettyprint lang-r'>set.seed(123)
-library(data.table)
-library(microbenchmark)
-DT &lt;- data.table(x = sample(letters[1:3], 1e+05, TRUE))
-DT[, .N, by = x]</pre>
-
-<pre >##    x     N
-## 1: a 33387
-## 2: c 33201
-## 3: b 33412</pre>
-
-<pre class = 'prettyprint lang-r'>table(DT$x)</pre>
-
-<pre >## 
-##     a     b     c 
-## 33387 33412 33201</pre>
-
-</article></slide><slide class=''><hgroup><h2>Example usage of .N - Counts</h2></hgroup><article  id="example-usage-of-.n---counts-1" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT &lt;- data.table(x = factor(sample(letters[1:3], 1e+05, TRUE)))
-microbenchmark(tbl = table(DT$x), DT = DT[, .N, by = x])</pre>
-
-<pre >## Unit: milliseconds
-##  expr      min        lq      mean    median       uq       max neval cld
-##   tbl 8.535709 10.253819 12.447354 11.502042 13.22827 25.109841   100   b
-##    DT 1.112893  1.403274  1.780877  1.590881  1.90645  4.514918   100  a</pre>
-
-</article></slide><slide class=''><hgroup><h2>Example usage of .SD - lapply-type calls</h2></hgroup><article  id="example-usage-of-.sd---lapply-type-calls" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DT &lt;- data.table(x = rnorm(10), y = rnorm(10), z = rnorm(10), id = letters[1:10])
-DT[, lapply(.SD, mean), .SDcols = c(&quot;x&quot;, &quot;y&quot;, &quot;z&quot;)]</pre>
-
-<pre >##             x         y         z
-## 1: -0.2511676 0.7089166 0.4615515</pre>
-
-<pre class = 'prettyprint lang-r'>lapply(DT[, 1:3, with = FALSE], mean)</pre>
-
-<pre >## $x
-## [1] -0.2511676
-## 
-## $y
-## [1] 0.7089166
-## 
-## $z
-## [1] 0.4615515</pre>
-
-</article></slide><slide class=''><hgroup><h2>Example usage of .SD - lapply-type calls</h2></hgroup><article  id="example-usage-of-.sd---lapply-type-calls-1" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT &lt;- data.table(x = rnorm(1e+05), y = rnorm(1e+05), z = sample(letters, 1e+05, replace = TRUE))
-DT2 &lt;- copy(DT)
-setkey(DT2, &quot;z&quot;)
-microbenchmark(DT = DT[, lapply(.SD, mean), .SDcols = c(&quot;x&quot;, &quot;y&quot;), by = &quot;z&quot;], DT2 = DT2[, 
-    lapply(.SD, mean), .SDcols = c(&quot;x&quot;, &quot;y&quot;), by = &quot;z&quot;])</pre>
-
-<pre >## Unit: milliseconds
-##  expr      min       lq    mean   median       uq      max neval cld
-##    DT 2.013897 2.485728 2.99011 2.684291 3.390388 5.935036   100   b
-##   DT2 1.995405 2.235107 2.69206 2.397125 2.779748 9.285968   100  a</pre>
-
-<p>setting a key can lead to faster grouping operations.</p>
-
-</article></slide><slide class=''><hgroup><h2>Keys</h2></hgroup><article  id="keys" class="smaller ">
-
-<p><code>data.table</code>s can be keyed, allowing for faster indexing and subsetting. Keys are also used for <code>join</code>s, as we&#39;ll see later.</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-DT &lt;- data.table(x = c(&quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;a&quot;), y = rnorm(5))
-setkey(DT, x)
-DT[&quot;a&quot;]  ## grabs rows corresponding to &#39;a&#39;</pre>
-
-<pre >##    x         y
-## 1: a 1.3242525
-## 2: a 3.2439986
-## 3: a 0.6207716</pre>
-
-<p>Note that this does a <code>binary search</code> rather than a <code>vector scan</code>, which is much faster!</p>
-
-</article></slide><slide class=''><hgroup><h2>Key performance</h2></hgroup><article  id="key-performance" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DF &lt;- data.frame(key = sample(letters, 1e+06, TRUE), x = rnorm(1e+06))
-DT &lt;- data.table(DF)
-setkey(DT, key)
-identical(DT[&quot;a&quot;]$x, DF[DF$key == &quot;a&quot;, ]$x)</pre>
-
-<pre >## [1] TRUE</pre>
-
-<pre class = 'prettyprint lang-r'>microbenchmark(DT = DT[&quot;a&quot;], DF = DF[DF$key == &quot;a&quot;, ], times = 5)</pre>
-
-<pre >## Unit: milliseconds
-##  expr        min         lq      mean     median         uq        max
-##    DT   3.009992   3.641566   3.88202   3.762855   3.949109   5.046576
-##    DF 160.408577 189.953657 199.53043 202.004269 202.728430 242.557198
-##  neval cld
-##      5  a 
-##      5   b</pre>
-
-<p>Further reading: you can set multiple keys with <code>setkeyv</code> as well.</p>
-
-</article></slide><slide class=''><hgroup><h2>Joins</h2></hgroup><article  id="joins" class="smaller ">
-
-<p><code>data.table</code> comes with many kinds of joins, implements through the <code>merge.data.table</code> function, and also through the <code>[</code> syntax as well. We&#39;ll focus on using <code>merge</code>.</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT1 &lt;- data.table(x = c(&quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;dt1&quot;), y = 1:4)
-DT2 &lt;- data.table(x = c(&quot;a&quot;, &quot;b&quot;, &quot;dt2&quot;), z = 5:7)
-setkey(DT1, x)
-setkey(DT2, x)
-merge(DT1, DT2)</pre>
-
-<pre >##    x y z
-## 1: a 1 5
-## 2: a 2 5
-## 3: b 3 6</pre>
-
-</article></slide><slide class=''><hgroup><h2>Overview of joins</h2></hgroup><article  id="overview-of-joins" class="smaller ">
-
-<p>Here is a quick summary of SQL joins, applicable to <code>data.table</code> too.</p>
-
-<p>(Source: <a href='http://www.codeproject.com' title=''>http://www.codeproject.com</a>)</p>
-
-<p><img src="http://www.codeproject.com/KB/database/Visual_SQL_Joins/Visual_SQL_JOINS_orig.jpg" width="600"></p>
-
-</article></slide><slide class=''><hgroup><h2>A left join</h2></hgroup><article  id="a-left-join" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT1 &lt;- data.table(x = c(&quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;dt1&quot;), y = 1:4)
-DT2 &lt;- data.table(x = c(&quot;a&quot;, &quot;b&quot;, &quot;dt2&quot;), z = 5:7)
-setkey(DT1, x)
-setkey(DT2, x)
-merge(DT1, DT2, all.x = TRUE)</pre>
-
-<pre >##      x y  z
-## 1:   a 1  5
-## 2:   a 2  5
-## 3:   b 3  6
-## 4: dt1 4 NA</pre>
-
-</article></slide><slide class=''><hgroup><h2>A right join</h2></hgroup><article  id="a-right-join" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT1 &lt;- data.table(x = c(&quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;dt1&quot;), y = 1:4)
-DT2 &lt;- data.table(x = c(&quot;a&quot;, &quot;b&quot;, &quot;dt2&quot;), z = 5:7)
-setkey(DT1, x)
-setkey(DT2, x)
-merge(DT1, DT2, all.y = TRUE)</pre>
-
-<pre >##      x  y z
-## 1:   a  1 5
-## 2:   a  2 5
-## 3:   b  3 6
-## 4: dt2 NA 7</pre>
-
-</article></slide><slide class=''><hgroup><h2>An outer join</h2></hgroup><article  id="an-outer-join" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT1 &lt;- data.table(x = c(&quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;dt1&quot;), y = 1:4)
-DT2 &lt;- data.table(x = c(&quot;a&quot;, &quot;b&quot;, &quot;dt2&quot;), z = 5:7)
-setkey(DT1, x)
-setkey(DT2, x)
-merge(DT1, DT2, all = TRUE)  ## outer join</pre>
-
-<pre >##      x  y  z
-## 1:   a  1  5
-## 2:   a  2  5
-## 3:   b  3  6
-## 4: dt1  4 NA
-## 5: dt2 NA  7</pre>
-
-</article></slide><slide class=''><hgroup><h2>An inner join</h2></hgroup><article  id="an-inner-join" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT1 &lt;- data.table(x = c(&quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;dt1&quot;), y = 1:4)
-DT2 &lt;- data.table(x = c(&quot;a&quot;, &quot;b&quot;, &quot;dt2&quot;), z = 5:7)
-setkey(DT1, x)
-setkey(DT2, x)
-merge(DT1, DT2, all = FALSE)  ## inner join</pre>
-
-<pre >##    x y z
-## 1: a 1 5
-## 2: a 2 5
-## 3: b 3 6</pre>
-
-</article></slide><slide class=''><hgroup><h2>Speed example</h2></hgroup><article  id="speed-example" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT1 &lt;- data.table(x = do.call(paste, expand.grid(letters, letters, letters, letters)), 
-    y = rnorm(26^4))
-DT2 &lt;- DT1[sample(1:nrow(DT1), 1e+05), ]
-setnames(DT2, c(&quot;x&quot;, &quot;z&quot;))
-DF1 &lt;- as.data.frame(DT1)
-DF2 &lt;- as.data.frame(DT2)
-setkey(DT1, x)
-setkey(DT2, x)
-microbenchmark(DT = merge(DT1, DT2), DF = merge.data.frame(DF1, DF2), replications = 5)</pre>
-
-<pre >## Unit: nanoseconds
-##          expr       min          lq         mean    median           uq
-##            DT  43588481  47473113.5 5.960710e+07  50444820   60420617.5
-##            DF 864700111 947929331.0 1.068524e+09 997906140 1170151161.5
-##  replications         6        38.5 1.876600e+02       174        245.5
-##         max neval cld
-##   166500058   100  b 
-##  1944960095   100   c
-##         651   100 a</pre>
-
-</article></slide><slide class=''><hgroup><h2>Subset joins</h2></hgroup><article  id="subset-joins" class="smaller ">
-
-<p>We can also perform joins of two keyed <code>data.table</code>s using the <code>[</code> operator. We perform right joins, so that e.g.</p>
-
-<ul>
-<li><code>DT1[DT2]</code></li>
-</ul>
-
-<p>is a right join of <code>DT1</code> into <code>DT2</code>. These joins are typically a bit faster. Do note that the order of columns post-merge can be different, though.</p>
-
-</article></slide><slide class=''><hgroup><h2>Subset joins</h2></hgroup><article  id="subset-joins-1" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT1 &lt;- data.table(x = do.call(paste, expand.grid(letters, letters, letters, letters)), 
-    y = rnorm(26^4))
-DT2 &lt;- DT1[sample(1:nrow(DT1), 1e+05), ]
-setnames(DT2, c(&quot;x&quot;, &quot;z&quot;))
-setkey(DT1, x)
-setkey(DT2, x)
-tmp1 &lt;- DT2[DT1]
-setcolorder(tmp1, c(&quot;x&quot;, &quot;y&quot;, &quot;z&quot;))
-tmp2 &lt;- merge(DT1, DT2, all.x = TRUE)
-setcolorder(tmp2, c(&quot;x&quot;, &quot;y&quot;, &quot;z&quot;))
-identical(tmp1, tmp2)</pre>
-
-<pre >## [1] TRUE</pre>
-
-</article></slide><slide class=''><hgroup><h2>Subset joins can be faster</h2></hgroup><article  id="subset-joins-can-be-faster" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT1 &lt;- data.table(x = do.call(paste, expand.grid(letters, letters, letters, letters)), 
-    y = rnorm(26^4))
-DT2 &lt;- DT1[sample(1:nrow(DT1), 1e+05), ]
-setnames(DT2, c(&quot;x&quot;, &quot;z&quot;))
-setkey(DT1, x)
-setkey(DT2, x)
-microbenchmark(bracket = DT1[DT2], merge = merge(DT1, DT2, all.y = TRUE), times = 5)</pre>
-
-<pre >## Unit: milliseconds
-##     expr      min       lq     mean   median        uq       max neval cld
-##  bracket 36.23743 37.09330  48.2612 44.13048  54.22463  69.62013     5  a 
-##    merge 85.16531 91.30996 123.7399 97.66892 159.58336 184.97197     5   b</pre>
-
-</article></slide><slide class=''><hgroup><h2>Subset joins and the j-expression</h2></hgroup><article  id="subset-joins-and-the-j-expression" class="smaller ">
-
-<p>More importantly they can be used the j-expression simultaneously, which can be very convenient.</p>
-
-<pre class = 'prettyprint lang-r'>DT1 &lt;- data.table(x = 1:5, y = 6:10, z = 11:15, key = &quot;x&quot;)
-DT2 &lt;- data.table(x = 2L, y = 7, w = 1L, key = &quot;x&quot;)
-# 1) subset only essential/necessary cols
-DT1[DT2, list(z)]</pre>
-
-<pre >##     z
-## 1: 12</pre>
-
-<pre class = 'prettyprint lang-r'># 2) create new col, i.y refer&#39;s to DT2&#39;s y col
-DT1[DT2, list(newcol = y &gt; i.y)]</pre>
-
-<pre >##    newcol
-## 1:  FALSE</pre>
-
-<pre class = 'prettyprint lang-r'># 3) also assign by reference with `:=`
-DT1[DT2, `:=`(newcol, z - w)]</pre>
-
-<pre >##    x  y  z newcol
-## 1: 1  6 11     NA
-## 2: 2  7 12     11
-## 3: 3  8 13     NA
-## 4: 4  9 14     NA
-## 5: 5 10 15     NA</pre>
-
-</article></slide><slide class=''><hgroup><h2>data.table and SQL</h2></hgroup><article  id="data.table-and-sql" class="smaller ">
-
-<p>We can understand the usage of <code>[</code> as SQL statements. From <a href='http://datatable.r-forge.r-project.org/datatable-faq.pdf' title=''>FAQ 2.16</a>:</p>
-
-<table class = 'rmdtable'>
-<tr class="header">
-<th align="left">data.table Argument</th>
-<th align="left">SQL Statement</th>
-</tr>
-<tr class="odd">
-<td align="left">i</td>
-<td align="left">WHERE</td>
-</tr>
-<tr class="even">
-<td align="left">j</td>
-<td align="left">SELECT</td>
-</tr>
-<tr class="odd">
-<td align="left">:=</td>
-<td align="left">UPDATE</td>
-</tr>
-<tr class="even">
-<td align="left">by</td>
-<td align="left">GROUP BY</td>
-</tr>
-<tr class="odd">
-<td align="left">i</td>
-<td align="left">ORDER BY (in compound syntax)</td>
-</tr>
-<tr class="even">
-<td align="left">i</td>
-<td align="left">HAVING (in compound syntax)</td>
-</tr>
-</table>
-
-<p>Compound syntax refers to multiple subsetting calls, and generally isn&#39;t necessary until you really feel like a <code>data.table</code> expert:</p>
-
-<pre >DT[where,select|update,group by][having][order by][ ]...[ ]</pre>
-
-</article></slide><slide class=''><hgroup><h2>data.table and SQL - Joins</h2></hgroup><article  id="data.table-and-sql---joins" class="smaller ">
-
-<p>Here is a quick summary table of joins in <code>data.table</code>.</p>
-
-<table class = 'rmdtable'>
-<tr class="header">
-<th align="left">SQL</th>
-<th align="left">data.table</th>
-</tr>
-<tr class="odd">
-<td align="left">LEFT JOIN</td>
-<td align="left">x[y]</td>
-</tr>
-<tr class="even">
-<td align="left">RIGHT JOIN</td>
-<td align="left">y[x]</td>
-</tr>
-<tr class="odd">
-<td align="left">INNER JOIN</td>
-<td align="left">x[y, nomatch=0]</td>
-</tr>
-<tr class="even">
-<td align="left">OUTER JOIN</td>
-<td align="left">merge(x,y,all=TRUE)</td>
-</tr>
-</table>
-
-</article></slide><slide class=''><hgroup><h2>data.table and SQL</h2></hgroup><article  id="data.table-and-sql-1" class="smaller ">
-
-<p>It&#39;s worth noting that I really mean it when I say that <code>data.table</code> is like an in-memory data base. It will even perform some basic query optimization!</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-options(datatable.verbose = TRUE)
-DT &lt;- data.table(x = 1:5, y = 1:5, z = 1:5, a = c(&quot;a&quot;, &quot;a&quot;, &quot;b&quot;, &quot;b&quot;, &quot;c&quot;))
-DT[, lapply(.SD, mean), by = a]</pre>
-
-<pre >## Finding groups (bysameorder=FALSE) ... done in 0secs. bysameorder=TRUE and o__ is length 0
-## lapply optimization changed j from &#39;lapply(.SD, mean)&#39; to &#39;list(mean(x), mean(y), mean(z))&#39;
-## GForce optimized j to &#39;list(gmean(x), gmean(y), gmean(z))&#39;</pre>
-
-<pre >##    a   x   y   z
-## 1: a 1.5 1.5 1.5
-## 2: b 3.5 3.5 3.5
-## 3: c 5.0 5.0 5.0</pre>
-
-<pre class = 'prettyprint lang-r'>options(datatable.verbose = FALSE)</pre>
-
-</article></slide><slide class=''><hgroup><h2>Some thoughts</h2></hgroup><article  id="some-thoughts" class="smaller ">
-
-<p>The primary use of <code>data.table</code> is for efficient and <strong>elegant</strong> data manipulation including aggregation and joins.</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-DT &lt;- data.table(gp1 = sample(letters, 1e+06, TRUE), gp2 = sample(LETTERS, 1e+06, 
-    TRUE), y = rnorm(1e+06))
-microbenchmark(times = 5, DT = DT[, mean(y), by = list(gp1, gp2)], DF = with(DT, 
-    tapply(y, paste(gp1, gp2), mean)))</pre>
-
-<pre >## Unit: milliseconds
-##  expr      min        lq      mean    median       uq      max neval cld
-##    DT  25.2472  28.39406  34.69776  28.67093  41.2674  49.9092     5  a 
-##    DF 320.3084 345.78784 413.33449 445.41037 471.8036 483.3623     5   b</pre>
-
-<p>Unlike &quot;split-apply-combine&quot; approaches such as <code>plyr</code>, data is never split in <code>data.table</code>! <code>data.table</code> applies the function to each subset recursively (in C for speed). This keeps the memory footprint low - which is very essential for &quot;big data&quot;.</p>
-
-</article></slide><slide class=''><hgroup><h2>Other interesting convenience functions</h2></hgroup><article  id="other-interesting-convenience-functions" class="smaller ">
-
-<ul>
-<li><code>like</code></li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>DT = data.table(Name = c(&quot;Mary&quot;, &quot;George&quot;, &quot;Martha&quot;), Salary = c(2, 3, 4))
-# Use regular expressions
-DT[Name %like% &quot;^Mar&quot;]</pre>
-
-<pre >##      Name Salary
-## 1:   Mary      2
-## 2: Martha      4</pre>
-
-<ul>
-<li><code>set*</code> functions <code>set</code>, <code>setattr</code>, <code>setnames</code>, <code>setcolorder</code>, <code>setkey</code>, <code>setkeyv</code></li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>setcolorder(DT, c(&quot;Salary&quot;, &quot;Name&quot;))
-DT</pre>
-
-<pre >##    Salary   Name
-## 1:      2   Mary
-## 2:      3 George
-## 3:      4 Martha</pre>
-
-<ul>
-<li><code>DT[, (myvar):=NULL]</code> remove a column</li>
-</ul>
-
-<pre class = 'prettyprint lang-r'>DT[, `:=`(Name, NULL)]</pre>
-
-<pre >##    Salary
-## 1:      2
-## 2:      3
-## 3:      4</pre>
-
-</article></slide><slide class=''><hgroup><h2>Bonuses: fread</h2></hgroup><article  id="bonuses-fread" class="smaller ">
-
-<p><code>data.table</code> also comes with <code>fread</code>, a file reader much, much better than <code>read.table</code> or <code>read.csv</code>:</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-big_df &lt;- data.frame(x = rnorm(1e+06), y = rnorm(1e+06))
-file &lt;- tempfile()
-write.table(big_df, file = file, row.names = FALSE, col.names = TRUE, sep = &quot;\t&quot;, 
-    quote = FALSE)
-microbenchmark(fread = fread(file), r.t = read.table(file, header = TRUE, sep = &quot;\t&quot;), 
-    times = 1)</pre>
-
-<pre >## Unit: milliseconds
-##   expr       min        lq      mean    median        uq       max neval
-##  fread  310.5437  310.5437  310.5437  310.5437  310.5437  310.5437     1
-##    r.t 7050.3093 7050.3093 7050.3093 7050.3093 7050.3093 7050.3093     1</pre>
-
-<pre class = 'prettyprint lang-r'>unlink(file)</pre>
-
-</article></slide><slide class=''><hgroup><h2>Bonuses: rbindlist</h2></hgroup><article  id="bonuses-rbindlist" class="smaller ">
-
-<p>Use this function to <code>rbind</code> a list of <code>data.frame</code>s, <code>data.table</code>s or <code>list</code>s:</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-library(microbenchmark)
-dfs &lt;- replicate(100, data.frame(x = rnorm(10000), y = rnorm(10000)), simplify = FALSE)
-all.equal(rbindlist(dfs), data.table(do.call(rbind, dfs)))</pre>
-
-<pre >## [1] TRUE</pre>
-
-<pre class = 'prettyprint lang-r'>microbenchmark(DT = rbindlist(dfs), DF = do.call(rbind, dfs), times = 5)</pre>
-
-<pre >## Unit: milliseconds
-##  expr        min         lq       mean    median         uq       max
-##    DT   5.981805   8.551772   8.997102   9.64301   9.767579  11.04134
-##    DF 709.929230 843.444154 869.686238 884.76882 954.812659 955.47633
-##  neval cld
-##      5  a 
-##      5   b</pre>
-
-</article></slide><slide class=''><hgroup><h2>Summary</h2></hgroup><article  id="summary" class="smaller ">
-
-<p>To quote Matt Dowle</p>
-
-<p><code>data.table</code> builds on base R functionality to reduce 2 types of time :</p>
-
-<ol>
-<li><p>programming time (easier to write, read, debug and maintain)</p></li>
-<li><p>compute time</p></li>
-</ol>
-
-<p>It has always been that way around, 1 before 2. The <em>main</em> benefit is the syntax: combining where, select|update and &#39;by&#39; into one query without having to string along a sequence of isolated function calls. <strong>Reduced function calls. Reduced variable name repetition. Easier to understand.</strong></p>
-
-</article></slide><slide class=''><hgroup><h2>Learning More</h2></hgroup><article  id="learning-more" class="smaller ">
-
-<ul>
-<li><p>Read some of the <code>[data.table]</code> tagged questions on <a href='http://stackoverflow.com/questions/tagged/data.table' title=''>StackOverflow</a></p></li>
-<li><p>Read through the <a href='http://datatable.r-forge.r-project.org/datatable-faq.pdf' title=''>data.table FAQ</a>, which is surprisingly well-written and comprehensive.</p></li>
-<li><p><a href='https://s3.amazonaws.com/assets.datacamp.com/img/blog/data+table+cheat+sheet.pdf' title=''>data.table cheatsheet</a></p></li>
-<li><p>Experiment!</p></li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>Databases and the Structured Query Language (SQL)</h2></hgroup><article  id="databases-and-the-structured-query-language-sql" class="smaller ">
-
-<ul>
-<li>A database is an organized collection of datasets (tables).</li>
-<li>A database management system (DBMS) is a software system designed to allow the definition, creation, querying, update, and administration of databases.</li>
-<li>Well-known DBMSs include MySQL, PostgreSQL, SQLite, Microsoft SQL Server, Oracle, etc.</li>
-<li>Relational DBMSs (RDBMs) store data in a set of related tables</li>
-<li>Most RDBMs use some form of the Structured Query Language (SQL)</li>
-</ul>
-
-<p><strong>Why do we even need databases?</strong></p>
-
-</article></slide><slide class=''><hgroup><h2>The Structured Query Language (SQL)</h2></hgroup><article  id="the-structured-query-language-sql" class="smaller ">
-
-<p>Although SQL is an ANSI (American National Standards Institute) standard, there are different flavors of the SQL language.</p>
-
-<p>The data in RDBMS is stored in database objects called tables.</p>
-
-<p>A table is a collection of related data entries and it consists of columns and rows.</p>
-
-<p>Here we will use SQLite, which is a self contained relational database management system. In contrast to other database management systems, SQLite is not a separate process that is accessed from the client application (e.g. MySQL, PostgreSQL).</p>
-
-</article></slide><slide class=''><hgroup><h2>Using RSQLite</h2></hgroup><article  id="using-rsqlite" class="smaller ">
-
-<p>Here we will make use of the <a href='http://www.bioconductor.org' title=''>Bioconductor</a> project to load and use an SQLite database.</p>
-
-<pre class = 'prettyprint lang-r'># You only need to run this once. Install if require() fails.
-source(&quot;http://bioconductor.org/biocLite.R&quot;)
-require(org.Hs.eg.db) || biocLite(&quot;org.Hs.eg.db&quot;)</pre>
-
-<pre class = 'prettyprint lang-r'># Now we can use the org.Hs.eg.db to load a database
-library(org.Hs.eg.db)</pre>
-
-<pre >## Loading required package: AnnotationDbi
-## Loading required package: BiocGenerics
-## Loading required package: parallel
-## 
-## Attaching package: &#39;BiocGenerics&#39;
-## 
-## The following objects are masked from &#39;package:parallel&#39;:
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from &#39;package:stats&#39;:
-## 
-##     xtabs
-## 
-## The following objects are masked from &#39;package:base&#39;:
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
-## 
-## Loading required package: Biobase
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     &#39;browseVignettes()&#39;. To cite Bioconductor, see
-##     &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.
-## 
-## Loading required package: GenomeInfoDb
-## Loading required package: DBI</pre>
-
-<pre class = 'prettyprint lang-r'># Create a connection
-Hs_con &lt;- org.Hs.eg_dbconn()</pre>
-
-</article></slide><slide class=''><hgroup><h2>Using RSQLite</h2></hgroup><article  id="using-rsqlite-1" class="smaller ">
-
-<pre class = 'prettyprint lang-r'># List tables
-head(dbListTables(Hs_con))</pre>
-
-<pre >## [1] &quot;accessions&quot;            &quot;alias&quot;                 &quot;chrlengths&quot;           
-## [4] &quot;chromosome_locations&quot;  &quot;chromosomes&quot;           &quot;cytogenetic_locations&quot;</pre>
-
-<pre class = 'prettyprint lang-r'># Or using an SQLite command (NOTE: This is specific to SQLite)
-head(dbGetQuery(Hs_con, &quot;SELECT name FROM sqlite_master WHERE type=&#39;table&#39; ORDER BY name;&quot;))</pre>
-
-<pre >##                    name
-## 1            accessions
-## 2                 alias
-## 3            chrlengths
-## 4  chromosome_locations
-## 5           chromosomes
-## 6 cytogenetic_locations</pre>
-
-</article></slide><slide class=''><hgroup><h2>Using RSQLite</h2></hgroup><article  id="using-rsqlite-2" class="smaller ">
-
-<pre class = 'prettyprint lang-r'># What columns are available?
-dbListFields(Hs_con, &quot;gene_info&quot;)</pre>
-
-<pre >## [1] &quot;_id&quot;       &quot;gene_name&quot; &quot;symbol&quot;</pre>
-
-<pre class = 'prettyprint lang-r'>dbListFields(Hs_con, &quot;alias&quot;)</pre>
-
-<pre >## [1] &quot;_id&quot;          &quot;alias_symbol&quot;</pre>
-
-<pre class = 'prettyprint lang-r'># Or using SQLite dbGetQuery(Hs_con, &#39;PRAGMA table_info(&#39;gene_info&#39;);&#39;)</pre>
-
-</article></slide><slide class=''><hgroup><h2>Using RSQLite</h2></hgroup><article  id="using-rsqlite-3" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>gc()</pre>
-
-<pre >##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1141630 61.0    2320208 124.0  1628720 87.0
-## Vcells 1261314  9.7    3648212  27.9  1986142 15.2</pre>
-
-<pre class = 'prettyprint lang-r'>alias &lt;- dbGetQuery(Hs_con, &quot;SELECT * FROM alias;&quot;)
-gc()</pre>
-
-<pre >##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1245119 66.5    3288291 175.7  1628720 87.0
-## Vcells 1625283 12.4    3648212  27.9  2370850 18.1</pre>
-
-<pre class = 'prettyprint lang-r'>gene_info &lt;- dbGetQuery(Hs_con, &quot;SELECT * FROM gene_info;&quot;)
-chromosomes &lt;- dbGetQuery(Hs_con, &quot;SELECT * FROM chromosomes;&quot;)</pre>
-
-</article></slide><slide class=''><hgroup><h2>Using RSQLite</h2></hgroup><article  id="using-rsqlite-4" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>CD154_df &lt;- dbGetQuery(Hs_con, &quot;SELECT * FROM alias a JOIN gene_info g ON g._id = a._id WHERE a.alias_symbol LIKE &#39;CD154&#39;;&quot;)
-gc()</pre>
-
-<pre >##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1290972 69.0    3288291 175.7  1628720   87
-## Vcells 2112441 16.2    5187496  39.6  3004340   23</pre>
-
-<pre class = 'prettyprint lang-r'>CD40LG_alias_df &lt;- dbGetQuery(Hs_con, &quot;SELECT * FROM alias a JOIN gene_info g ON g._id = a._id WHERE g.symbol LIKE &#39;CD40LG&#39;;&quot;)
-gc()</pre>
-
-<pre >##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1290989 69.0    3288291 175.7  1628720   87
-## Vcells 2112537 16.2    5187496  39.6  3004340   23</pre>
-
-</article></slide><slide class=''><hgroup><h2>Some SQL Commands</h2></hgroup><article  id="some-sql-commands" class="smaller ">
-
-<h3>SELECT</h3>
-
-<p>The SELECT is used to query the database and retrieve selected data that match the specific criteria that you specify:</p>
-
-<p>SELECT column1 [, column2, &#8230;] FROM tablename WHERE condition</p>
-
-<h3>ORDER BY</h3>
-
-<p>ORDER BY clause can order column name in either ascending (ASC) or descending (DESC) order.</p>
-
-</article></slide><slide class=''><hgroup><h2>Some SQL Commands</h2></hgroup><article  id="some-sql-commands-1" class="smaller ">
-
-<h3>JOIN</h3>
-
-<p>There are times when we need to collate data from two or more tables. As with data.tables we can use LEFT/RIGHT/INNER JOINS</p>
-
-<h3>GROUP BY</h3>
-
-<p>The GROUP BY was added to SQL so that aggregate functions could return a result grouped by column values.</p>
-
-<p>SELECT col_name, function (col_name) FROM table_name GROUP BY col_name</p>
-
-</article></slide><slide class=''><hgroup><h2>A &quot;GROUP BY&quot; example</h2></hgroup><article  id="a-group-by-example" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>dbGetQuery(Hs_con, &quot;SELECT c.chromosome, COUNT(g.gene_name) AS count FROM chromosomes c JOIN gene_info g ON g._id = c._id WHERE c.chromosome IN (1,2,3,4,&#39;X&#39;) GROUP BY c.chromosome ORDER BY count;&quot;)</pre>
-
-<pre >##   chromosome count
-## 1          4  1917
-## 2          X  2154
-## 3          3  2549
-## 4          2  3131
-## 5          1  4439</pre>
-
-</article></slide><slide class=''><hgroup><h2>Some more SQL commands</h2></hgroup><article  id="some-more-sql-commands" class="smaller ">
-
-<p>Some other SQL statements that might be of used to you:</p>
-
-<h3>CREATE TABLE</h3>
-
-<p>The CREATE TABLE statement is used to create a new table.</p>
-
-<h3>DELETE</h3>
-
-<p>The DELETE command can be used to remove a record(s) from a table.</p>
-
-<h3>DROP</h3>
-
-<p>To remove an entire table from the database use the DROP command.</p>
-
-<h3>CREATE VIEW</h3>
-
-<p>A view is a virtual table that is a result of SQL SELECT statement. A view contains fields from one or more real tables in the database. This virtual table can then be queried as if it were a real table.</p>
-
-</article></slide><slide class=''><hgroup><h2>Creating your own SQLite database in R</h2></hgroup><article  id="creating-your-own-sqlite-database-in-r" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>db &lt;- dbConnect(SQLite(), dbname = &quot;./Data/SDY61/SDY61.sqlite&quot;)
-dbWriteTable(conn = db, name = &quot;hai&quot;, value = &quot;./Data/SDY61/hai_result.txt&quot;, row.names = FALSE, 
-    header = TRUE, sep = &quot;\t&quot;, overwrite = TRUE)</pre>
-
-<pre >## [1] TRUE</pre>
-
-<pre class = 'prettyprint lang-r'>dbWriteTable(conn = db, name = &quot;cohort&quot;, value = &quot;./Data/SDY61/arm_or_cohort.txt&quot;, 
-    row.names = FALSE, header = TRUE, sep = &quot;\t&quot;, overwrite = TRUE)</pre>
-
-<pre >## [1] TRUE</pre>
-
-</article></slide><slide class=''><hgroup><h2>Creating your own SQLite database in R</h2></hgroup><article  id="creating-your-own-sqlite-database-in-r-1" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>dbListFields(db, &quot;hai&quot;)</pre>
-
-<pre >##  [1] &quot;RESULT_ID&quot;                 &quot;ARM_ACCESSION&quot;            
-##  [3] &quot;BIOSAMPLE_ACCESSION&quot;       &quot;EXPSAMPLE_ACCESSION&quot;      
-##  [5] &quot;EXPERIMENT_ACCESSION&quot;      &quot;STUDY_ACCESSION&quot;          
-##  [7] &quot;STUDY_TIME_COLLECTED&quot;      &quot;STUDY_TIME_COLLECTED_UNIT&quot;
-##  [9] &quot;SUBJECT_ACCESSION&quot;         &quot;VALUE_REPORTED&quot;           
-## [11] &quot;VIRUS_STRAIN&quot;              &quot;WORKSPACE_ID&quot;</pre>
-
-<pre class = 'prettyprint lang-r'>dbListFields(db, &quot;cohort&quot;)</pre>
-
-<pre >## [1] &quot;ARM_ACCESSION&quot;             &quot;DESCRIPTION&quot;              
-## [3] &quot;NAME&quot;                      &quot;POPULATION_SELECTION_RULE&quot;
-## [5] &quot;SORT_ORDER&quot;                &quot;STUDY_ACCESSION&quot;          
-## [7] &quot;TYPE&quot;                      &quot;WORKSPACE_ID&quot;</pre>
-
-</article></slide><slide class=''><hgroup><h2>Creating your own SQLite database in R</h2></hgroup><article  id="creating-your-own-sqlite-database-in-r-2" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>res &lt;- dbGetQuery(db, &quot;SELECT STUDY_TIME_COLLECTED, cohort.DESCRIPTION, MAX(VALUE_REPORTED) AS max_value FROM hai JOIN cohort ON hai.ARM_ACCESSION = cohort.ARM_ACCESSION WHERE cohort.DESCRIPTION LIKE &#39;%TIV%&#39; GROUP BY BIOSAMPLE_ACCESSION;&quot;)
-head(res)</pre>
-
-<pre >##   STUDY_TIME_COLLECTED                      DESCRIPTION max_value
-## 1                    0 Healthy adults given TIV vaccine        80
-## 2                    0 Healthy adults given TIV vaccine        40
-## 3                    0 Healthy adults given TIV vaccine       160
-## 4                    0 Healthy adults given TIV vaccine       160
-## 5                    0 Healthy adults given TIV vaccine         5
-## 6                    0 Healthy adults given TIV vaccine        40</pre>
-
-</article></slide><slide class=''><hgroup><h2>Using data.table to perform the same operations</h2></hgroup><article  id="using-data.table-to-perform-the-same-operations" class="smaller ">
-
-<pre class = 'prettyprint lang-r'># Read the tables using fread
-hai &lt;- fread(&quot;./Data/SDY61/hai_result.txt&quot;)
-cohort &lt;- fread(&quot;./Data/SDY61/arm_or_cohort.txt&quot;)
-## Set keys before joining
-setkey(hai, &quot;ARM_ACCESSION&quot;)
-setkey(cohort, &quot;ARM_ACCESSION&quot;)
-## Inner join
-dt_joined &lt;- cohort[hai, nomatch = 0]
-## Summarize values
-head(dt_joined[DESCRIPTION %like% &quot;TIV&quot;, list(max_value = max(VALUE_REPORTED)), by = &quot;BIOSAMPLE_ACCESSION,STUDY_TIME_COLLECTED&quot;])</pre>
-
-<pre >##    BIOSAMPLE_ACCESSION STUDY_TIME_COLLECTED max_value
-## 1:            BS586649                   28        40
-## 2:            BS586655                   28       160
-## 3:            BS586424                    0        40
-## 4:            BS586408                    0         5
-## 5:            BS586636                   28       640
-## 6:            BS586059                   28      2560</pre>
-
-</article></slide><slide class=''><hgroup><h2>The sqldf package</h2></hgroup><article  id="the-sqldf-package" class="smaller ">
-
-<p>Sometimes it can be convenient to use SQL statements on dataframes. This is exactly what the sqldf package does.</p>
-
-<pre class = 'prettyprint lang-r'>library(sqldf)
-data(iris)
-sqldf(&quot;select * from iris limit 5&quot;)
-sqldf(&quot;select count(*) from iris&quot;)
-sqldf(&quot;select Species, count(*) from iris group by Species&quot;)</pre>
-
-<p>The <code>sqldf</code> package can even provide increased speed over pure R operations.</p>
-
-</article></slide><slide class=''><hgroup><h2>dplyr</h2></hgroup><article  id="dplyr" class="smaller ">
-
-<p><a href='https://github.com/hadley/dplyr' title=''>dplyr</a> is a new package which provides a set of tools for efficiently manipulating datasets in R.</p>
-
-<ul>
-<li><p>Identify the most important data manipulation tools needed for data analysis and make them easy to use from R.</p></li>
-<li><p>Provide blazing fast performance for in-memory data by writing key pieces in C++.</p></li>
-<li><p>Use the same interface to work with data no matter where it&#39;s stored, whether in a data frame, a data table or database.</p></li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>dplyr is verbose!</h2></hgroup><article  id="dplyr-is-verbose" class="smaller ">
-
-<p><code>dplyr</code> implements the following verbs useful for data manipulation:</p>
-
-<ul>
-<li><code>select()</code>: focus on a subset of variables</li>
-<li><code>filter()</code>: focus on a subset of rows</li>
-<li><code>mutate()</code>: add new columns</li>
-<li><code>summarise()</code>: reduce each group to a smaller number of summary statistics</li>
-<li><code>arrange()</code>: re-order the rows</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>dplyr with SQLite</h2></hgroup><article  id="dplyr-with-sqlite" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>suppressMessages(library(dplyr))
-my_db &lt;- src_sqlite(&quot;./Data/SDY61/SDY61.sqlite&quot;, create = T)
-hai_sql &lt;- tbl(my_db, &quot;hai&quot;)</pre>
-
-</article></slide><slide class=''><hgroup><h2>Select</h2></hgroup><article  id="select-1" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>select(hai_sql, ARM_ACCESSION, BIOSAMPLE_ACCESSION)</pre>
-
-<pre >## Source: sqlite 3.8.6 [./Data/SDY61/SDY61.sqlite]
-## From: hai [390 x 2]
-## 
-##    ARM_ACCESSION BIOSAMPLE_ACCESSION
-## 1         ARM457            BS586649
-## 2         ARM456            BS586611
-## 3         ARM457            BS586655
-## 4         ARM456            BS586392
-## 5         ARM456            BS586401
-## 6         ARM457            BS586424
-## 7         ARM457            BS586408
-## 8         ARM457            BS586636
-## 9         ARM457            BS586059
-## 10        ARM456            BS586622
-## ..           ...                 ...</pre>
-
-</article></slide><slide class=''><hgroup><h2>Filter</h2></hgroup><article  id="filter" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>filter(hai_sql, value_reported &gt; 10)</pre>
-
-<pre >## Source: sqlite 3.8.6 [./Data/SDY61/SDY61.sqlite]
-## From: hai [178 x 12]
-## Filter: value_reported &gt; 10 
-## 
-##    RESULT_ID ARM_ACCESSION BIOSAMPLE_ACCESSION EXPSAMPLE_ACCESSION
-## 1       1563        ARM457            BS586649            ES495456
-## 2        592        ARM456            BS586611            ES495390
-## 3       1569        ARM457            BS586655            ES495462
-## 4       1646        ARM457            BS586424            ES495595
-## 5       1662        ARM457            BS586636            ES495555
-## 6       1721        ARM457            BS586059            ES495642
-## 7        491        ARM456            BS586622            ES495289
-## 8       1526        ARM457            BS586416            ES495475
-## 9        495        ARM456            BS586626            ES495293
-## 10      1635        ARM457            BS586413            ES495584
-## ..       ...           ...                 ...                 ...
-## Variables not shown: EXPERIMENT_ACCESSION (chr), STUDY_ACCESSION (chr),
-##   STUDY_TIME_COLLECTED (int), STUDY_TIME_COLLECTED_UNIT (chr),
-##   SUBJECT_ACCESSION (chr), VALUE_REPORTED (int), VIRUS_STRAIN (chr),
-##   WORKSPACE_ID (int)</pre>
-
-</article></slide><slide class=''><hgroup><h2>Summarize</h2></hgroup><article  id="summarize" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>summarize(group_by(hai_sql, SUBJECT_ACCESSION, STUDY_TIME_COLLECTED), mean(VALUE_REPORTED))</pre>
-
-<pre >## Source: sqlite 3.8.6 [./Data/SDY61/SDY61.sqlite]
-## From: &lt;derived table&gt; [?? x 3]
-## Grouped by: SUBJECT_ACCESSION 
-## 
-##    SUBJECT_ACCESSION STUDY_TIME_COLLECTED mean(VALUE_REPORTED)
-## 1          SUB112829                    0             33.33333
-## 2          SUB112829                   28             40.00000
-## 3          SUB112830                    0             43.33333
-## 4          SUB112830                   28            270.00000
-## 5          SUB112831                    0              5.00000
-## 6          SUB112831                   28              5.00000
-## 7          SUB112832                    0             14.16667
-## 8          SUB112832                   28            141.66667
-## 9          SUB112833                    0             81.66667
-## 10         SUB112833                   28             81.66667
-## ..               ...                  ...                  ...</pre>
-
-</article></slide><slide class=''><hgroup><h2>dplyr on data.tables</h2></hgroup><article  id="dplyr-on-data.tables" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>summarize(group_by(hai, SUBJECT_ACCESSION, STUDY_TIME_COLLECTED), mean(VALUE_REPORTED))</pre>
-
-<pre >## Source: local data table [120 x 3]
-## Groups: SUBJECT_ACCESSION
-## 
-##    SUBJECT_ACCESSION STUDY_TIME_COLLECTED mean(VALUE_REPORTED)
-## 1          SUB112829                    0             33.33333
-## 2          SUB112829                   28             40.00000
-## 3          SUB112830                    0             43.33333
-## 4          SUB112830                   28            270.00000
-## 5          SUB112831                    0              5.00000
-## 6          SUB112831                   28              5.00000
-## 7          SUB112832                    0             14.16667
-## 8          SUB112832                   28            141.66667
-## 9          SUB112833                    0             81.66667
-## 10         SUB112833                   28             81.66667
-## ..               ...                  ...                  ...</pre>
-
-</article></slide><slide class=''><hgroup><h2>dplyr and magrittr</h2></hgroup><article  id="dplyr-and-magrittr" class="smaller ">
-
-<p>dplyr can use piping operations via the <a href='https://github.com/smbache/magrittr' title=''>magrittr</a> package, as follows,</p>
-
-<pre class = 'prettyprint lang-r'>library(magrittr)
-hai %&gt;% group_by(SUBJECT_ACCESSION, STUDY_TIME_COLLECTED) %&gt;% summarize(hai_mean = mean(VALUE_REPORTED)) %&gt;% 
-    filter(STUDY_TIME_COLLECTED == 28)</pre>
-
-<pre >## Source: local data table [60 x 3]
-## Groups: SUBJECT_ACCESSION
-## 
-##    SUBJECT_ACCESSION STUDY_TIME_COLLECTED   hai_mean
-## 1          SUB112829                   28  40.000000
-## 2          SUB112830                   28 270.000000
-## 3          SUB112831                   28   5.000000
-## 4          SUB112832                   28 141.666667
-## 5          SUB112833                   28  81.666667
-## 6          SUB112834                   28  93.333333
-## 7          SUB112835                   28 241.666667
-## 8          SUB112836                   28   5.000000
-## 9          SUB112837                   28 861.666667
-## 10         SUB112838                   28   5.000000
-## 11         SUB112839                   28 120.000000
-## 12         SUB112840                   28  10.000000
-## 13         SUB112841                   28 273.333333
-## 14         SUB112842                   28 106.666667
-## 15         SUB112843                   28 573.333333
-## 16         SUB112844                   28  15.000000
-## 17         SUB112845                   28 119.166667
-## 18         SUB112846                   28  10.000000
-## 19         SUB112847                   28 626.666667
-## 20         SUB112848                   28 293.333333
-## 21         SUB112849                   28  31.666667
-## 22         SUB112850                   28   6.666667
-## 23         SUB112851                   28   5.000000
-## 24         SUB112852                   28 266.666667
-## 25         SUB112853                   28 213.333333
-## 26         SUB112854                   28   6.666667
-## 27         SUB112855                   28 266.666667
-## 28         SUB112856                   28 280.000000
-## 29         SUB112857                   28 133.333333
-## 30         SUB112858                   28   5.000000
-## 31         SUB112859                   28   5.000000
-## 32         SUB112860                   28  21.666667
-## 33         SUB112861                   28 186.666667
-## 34         SUB112862                   28  11.666667
-## 35         SUB112863                   28  80.000000
-## 36         SUB112864                   28  61.666667
-## 37         SUB112865                   28  10.000000
-## 38         SUB112866                   28  35.000000
-## 39         SUB112867                   28   5.000000
-## 40         SUB112868                   28  35.000000
-## 41         SUB112869                   28  16.666667
-## 42         SUB112870                   28   5.000000
-## 43         SUB112871                   28  28.333333
-## 44         SUB112872                   28  33.333333
-## 45         SUB112873                   28   5.000000
-## 46         SUB112874                   28 110.000000
-## 47         SUB112875                   28  30.000000
-## 48         SUB112876                   28  56.666667
-## 49         SUB112877                   28  28.333333
-## 50         SUB112878                   28 106.666667
-## 51         SUB112879                   28  68.333333
-## 52         SUB112880                   28  30.000000
-## 53         SUB112881                   28   5.000000
-## 54         SUB112882                   28  35.000000
-## 55         SUB112883                   28  10.000000
-## 56         SUB112884                   28  35.000000
-## 57         SUB112885                   28   5.000000
-## 58         SUB112886                   28   5.000000
-## 59         SUB112887                   28  55.000000
-## 60         SUB112888                   28  53.333333</pre>
-
-</article></slide><slide class=''><hgroup><h2>Summary</h2></hgroup><article  id="summary-1" class="smaller ">
-
-<ul>
-<li><p>R base <code>data.frame</code>s are convenient but often not adapted to large dataset manipulation (e.g. genomics).</p></li>
-<li>Thankfully, there are good alternatives. My recommendtion is:
-
-<ul>
-<li>Use <code>data.table</code> for your day-to-day operations</li>
-<li>When you have many tables and a complex schema, use <code>sqlite</code>.</li>
+<li>source(&quot;<a href='http://bioconductor.org/biocLite.R' title=''>http://bioconductor.org/biocLite.R</a>&quot;)</li>
+<li>biocLite()</li>
+<li>getSQLiteFile() Note: this will take some time</li>
+<li>getGEOSuppFiles(&quot;GSE29617&quot;, makeDirectory = TRUE, baseDir = &quot;./&quot;)</li>
+<li>untar(&quot;./GSE29617/GSE29617_RAW.tar&quot;, exdir=&quot;./GSE29617&quot;, tar = Sys.getenv(&quot;TAR&quot;))</li>
 </ul></li>
 </ul>
 
-<p><strong>Note:</strong> There many other R packages for &quot;big data&quot; such the <code>bigmemory</code> suite, <code>biglm</code>, <code>ff</code>, <code>RNetcdf</code>, <code>rhdf5</code>, etc.</p></article></slide>
+<p>Note that I have updated the code so that you may not have to do what&#39;s described above.</p>
+
+</article></slide><slide class=''><hgroup><h2>Getting started</h2></hgroup><article  id="getting-started-1" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>source(&quot;http://bioconductor.org/biocLite.R&quot;)</pre>
+
+<pre >## Bioconductor version 2.14 (BiocInstaller 1.14.3), ?biocLite for
+##   help
+## A newer version of Bioconductor is available for this version of
+##   R, ?BiocUpgrade for help</pre>
+
+<pre class = 'prettyprint lang-r'># Install all core packages and update all installed packages
+biocLite()</pre>
+
+<pre >## BioC_mirror: http://bioconductor.org
+## Using Bioconductor version 2.14 (BiocInstaller 1.14.3), R version
+##   3.1.2.
+## Old packages: &#39;dplyr&#39;, &#39;robustbase&#39;</pre>
+
+<p>You can also install specific packages</p>
+
+<pre class = 'prettyprint lang-r'>biocLite(c(&quot;GEOmetadb&quot;, &quot;GEOquery&quot;))</pre>
+
+</article></slide><slide class=''><hgroup><h2>The Gene Expression Omnibus (GEO)</h2></hgroup><article  id="the-gene-expression-omnibus-geo" class="smaller ">
+
+<p>The <a href='http://www.ncbi.nlm.nih.gov/geo/' title=''>Gene Expression Omnibus</a> is an international public repository that archives and freely distributes microarray, next-generation sequencing, and other forms of high-throughput functional genomics data submitted by the research community.</p>
+
+<p>The three main goals of GEO are to:</p>
+
+<ul>
+<li>Provide a robust, versatile database in which to efficiently store high-throughput functional genomic data</li>
+<li>Offer simple submission procedures and formats that support complete and well-annotated data deposits from the research community</li>
+<li>Provide user-friendly mechanisms that allow users to query, locate, review and download studies and gene expression profiles of interest</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Getting data from GEO</h2></hgroup><article  id="getting-data-from-geo" class="smaller ">
+
+<p>Before getting data from GEO, we need to see what data we want. For that we can use the <code>GEOmetadb</code> package.</p>
+
+<pre class = 'prettyprint lang-r'>library(GEOmetadb)</pre>
+
+<p>Remember that packages in Bioconductor are well documented with a vignette that can be access as follows:</p>
+
+<pre class = 'prettyprint lang-r'>vignette(&quot;GEOmetadb&quot;)</pre>
+
+<p>or if the package contains multiple vignettes or a vignette with a non-standard name</p>
+
+<pre class = 'prettyprint lang-r'>browseVignettes(package = &quot;GEOmetadb&quot;)</pre>
+
+</article></slide><slide class=''><hgroup><h2>Finding the right data in GEO</h2></hgroup><article  id="finding-the-right-data-in-geo" class="smaller ">
+
+<p>Zhu, Y., Davis, S., Stephens, R., Meltzer, P. S., &amp; Chen, Y. (2008). GEOmetadb: powerful alternative search engine for the Gene Expression Omnibus. Bioinformatics (Oxford, England), 24(23), 2798–2800. <a href='doi:10.1093/bioinformatics/btn520' title=''>doi:10.1093/bioinformatics/btn520</a></p>
+
+<p>GEOmetadb uses a SQLite database to store all metadata associate with GEO.</p>
+
+<pre class = 'prettyprint lang-r'>## This will download the entire database, so can be slow
+if (!file.exists(&quot;GEOmetadb.sqlite&quot;)) {
+    # Download database only if it&#39;s not done already
+    getSQLiteFile()
+}</pre>
+
+</article></slide><slide class=''><hgroup><h2>Finding the right data in GEO</h2></hgroup><article  id="finding-the-right-data-in-geo-1" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>geo_con &lt;- dbConnect(SQLite(), &quot;GEOmetadb.sqlite&quot;)
+dbListTables(geo_con)</pre>
+
+<pre >##  [1] &quot;gds&quot;               &quot;gds_subset&quot;        &quot;geoConvert&quot;       
+##  [4] &quot;geodb_column_desc&quot; &quot;gpl&quot;               &quot;gse&quot;              
+##  [7] &quot;gse_gpl&quot;           &quot;gse_gsm&quot;           &quot;gsm&quot;              
+## [10] &quot;metaInfo&quot;          &quot;sMatrix&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>dbListFields(geo_con, &quot;gse&quot;)</pre>
+
+<pre >##  [1] &quot;ID&quot;                   &quot;title&quot;                &quot;gse&quot;                 
+##  [4] &quot;status&quot;               &quot;submission_date&quot;      &quot;last_update_date&quot;    
+##  [7] &quot;pubmed_id&quot;            &quot;summary&quot;              &quot;type&quot;                
+## [10] &quot;contributor&quot;          &quot;web_link&quot;             &quot;overall_design&quot;      
+## [13] &quot;repeats&quot;              &quot;repeats_sample_list&quot;  &quot;variable&quot;            
+## [16] &quot;variable_description&quot; &quot;contact&quot;              &quot;supplementary_file&quot;</pre>
+
+</article></slide><slide class=''><hgroup><h2>Finding a study</h2></hgroup><article  id="finding-a-study" class="smaller ">
+
+<p>The basic record types in GEO include Platforms (GPL), Samples (GSM), Series (GSE) and DataSets (GDS)</p>
+
+<pre class = 'prettyprint lang-r'>dbGetQuery(geo_con, &quot;SELECT gse.ID, gse.title, gse.gse FROM gse WHERE gse.pubmed_id=&#39;21743478&#39;;&quot;)</pre>
+
+<pre >##      ID
+## 1 26409
+## 2 26410
+## 3 26412
+## 4 26413
+## 5 26414
+##                                                                                                          title
+## 1                  Time Course of Young Adults Vaccinated with Influenza TIV Vaccine during 2007/08 Flu Season
+## 2                 Time Course of Young Adults Vaccinated with Influenza LAIV Vaccine during 2008/09 Flu Season
+## 3                  Time Course of Young Adults Vaccinated with Influenza TIV Vaccine during 2008/09 Flu Season
+## 4 FACS-sorted cells from Young Adults Vaccinated with Influenza TIV or LAIV Vaccines during 2008/09 Flu Season
+## 5                                              Systems biology of vaccination for seasonal influenza in humans
+##        gse
+## 1 GSE29614
+## 2 GSE29615
+## 3 GSE29617
+## 4 GSE29618
+## 5 GSE29619</pre>
+
+</article></slide><slide class=''><hgroup><h2>Finding a study</h2></hgroup><article  id="finding-a-study-1" class="smaller ">
+
+<p>What samples were used?</p>
+
+<pre class = 'prettyprint lang-r'>dbGetQuery(geo_con, &quot;SELECT gse.gse, gsm.gsm, gsm.title FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j JOIN gsm ON j.gsm=gsm.gsm WHERE gse.pubmed_id=&#39;21743478&#39; LIMIT 5;&quot;)</pre>
+
+<pre >##    gse.gse   gsm.gsm                                     gsm.title
+## 1 GSE29614 GSM733816 2007 TIV subject ID 12 at D0 post-vaccination
+## 2 GSE29614 GSM733817 2007 TIV subject ID 12 at D3 post-vaccination
+## 3 GSE29614 GSM733818 2007 TIV subject ID 12 at D7 post-vaccination
+## 4 GSE29614 GSM733819 2007 TIV subject ID 16 at D0 post-vaccination
+## 5 GSE29614 GSM733820 2007 TIV subject ID 16 at D3 post-vaccination</pre>
+
+<p>gse_gsm contains the gse number that is associated with the gsm number. j is the name of a table that is created by joining gse and ges_gsm. Then j is joined with table gsm.</p>
+
+</article></slide><slide class=''><hgroup><h2>Finding a study</h2></hgroup><article  id="finding-a-study-2" class="smaller ">
+
+<p>What about raw data?</p>
+
+<pre class = 'prettyprint lang-r'>res &lt;- dbGetQuery(geo_con, &quot;SELECT gsm.gsm, gsm.supplementary_file FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j JOIN gsm ON j.gsm=gsm.gsm WHERE gse.pubmed_id=&#39;21743478&#39; LIMIT 5;&quot;)
+head(res)</pre>
+
+<pre >##     gsm.gsm
+## 1 GSM733816
+## 2 GSM733817
+## 3 GSM733818
+## 4 GSM733819
+## 5 GSM733820
+##                                                                                                                                                  gsm.supplementary_file
+## 1 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
+## 2 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
+## 3 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733818/suppl/GSM733818.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733818/suppl/GSM733818.chp.gz
+## 4 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733819/suppl/GSM733819.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733819/suppl/GSM733819.chp.gz
+## 5 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733820/suppl/GSM733820.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733820/suppl/GSM733820.chp.gz</pre>
+
+<p>raw data is contained in the supplementary files, which are listed in the gsm file.</p>
+
+</article></slide><slide class=''><hgroup><h2>Finding specific data</h2></hgroup><article  id="finding-specific-data" class="smaller ">
+
+<p>To get list of manufacturers:</p>
+
+<pre class = 'prettyprint lang-r'>library(data.table)
+manu &lt;- data.table(dbGetQuery(geo_con, &quot;SELECT manufacturer FROM gpl&quot;))
+manu[, list(length(manufacturer)), by = manufacturer]</pre>
+
+<pre >##                                                           manufacturer V1
+##    1:                                                               NA  1
+##    2:                                                       Affymetrix  1
+##    3:                                          BD Biosciences Clontech  1
+##    4:                                                    Sigma Genosys  1
+##    5: Advanced Technology Center Microarray Facility (NIH/NCI/CCR/ATC)  1
+##   ---                                                                    
+## 2074:                                                Biovue Technology  1
+## 2075:                                     NanoString, Seattle, WA, USA  1
+## 2076:                                                         Homemade  1
+## 2077:                                           Qiagen (SABiosciences)  1
+## 2078:                                              Affymetrix Panomics  1</pre>
+
+</article></slide><slide class=''><hgroup><h2>Finding specific data</h2></hgroup><article  id="finding-specific-data-1" class="smaller ">
+
+<p>To get supplementary file names ending with cel.gz from only manufacturer Affymetrix</p>
+
+<pre class = 'prettyprint lang-r'>res &lt;- dbGetQuery(geo_con, &quot;SELECT gpl.bioc_package, gsm.title, gsm.series_id, gsm.gpl, gsm.supplementary_file FROM gsm JOIN gpl ON gsm.gpl=gpl.gpl WHERE gpl.manufacturer=&#39;Affymetrix&#39; AND gsm.supplementary_file like &#39;%CEL.gz&#39;;&quot;)
+head(res)</pre>
+
+<pre >##   bioc_package               title series_id   gpl
+## 1       hu6800          BM_CD34-1a    GSE500 GPL80
+## 2       hu6800          BM_CD34-1b    GSE500 GPL80
+## 3       hu6800           BM_CD34-2    GSE500 GPL80
+## 4       hu6800        GPBMC_CD34-1    GSE500 GPL80
+## 5       hu6800        GPBMC_CD34-2    GSE500 GPL80
+## 6       rgu34a CNS-SC_Inj24h-3A-s2    GSE464 GPL85
+##                                                            supplementary_file
+## 1    ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSMnnn/GSM575/suppl/GSM575.cel.gz
+## 2    ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSMnnn/GSM576/suppl/GSM576.cel.gz
+## 3    ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSMnnn/GSM577/suppl/GSM577.cel.gz
+## 4    ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSMnnn/GSM578/suppl/GSM578.cel.gz
+## 5    ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSMnnn/GSM579/suppl/GSM579.cel.gz
+## 6 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1nnn/GSM1136/suppl/GSM1136.CEL.gz</pre>
+
+</article></slide><slide class=''><hgroup><h2>Finding specific data</h2></hgroup><article  id="finding-specific-data-2" class="smaller ">
+
+<p>From previous table: bioc_package = bioconductor package hu6800 = Affymetrix HuGeneFL Genome Array annotation data (chip hu6800) rgu34a = Affymetrix Rat Genome U34 Set annotation data (chip rgu34a)</p>
+
+<p>title = data set title or study title For example BM_CD34-1a = bone marrow flow-sorted CD34+ cells (&gt;95% purity) and has GSM sample number GSM575.</p>
+
+</article></slide><slide class=''><hgroup><h2>Getting the data we want</h2></hgroup><article  id="getting-the-data-we-want" class="smaller ">
+
+<p>Now that we have our GSE ID we can use the GEOquery to download the corresponding data as follows,</p>
+
+<pre class = 'prettyprint lang-r'># Download the mapping information and processed data This
+# returns a list of eSets
+GSE29617_set &lt;- getGEO(&quot;GSE29617&quot;, destdir = &quot;Data/GEO/&quot;)[[1]]</pre>
+
+<pre >## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE29nnn/GSE29617/matrix/
+## Found 1 file(s)
+## GSE29617_series_matrix.txt.gz
+## File stored at: 
+## Data/GEO//GPL13158.soft</pre>
+
+<p>which returns (a list of) an ExpressionSet (eSet).</p>
+
+</article></slide><slide class=''><hgroup><h2>The eSet class</h2></hgroup><article  id="the-eset-class" class="smaller ">
+
+<p>What is an eSet? An S4 class that tries to: - Coordinate high through-put (e.g., gene expression) and phenotype data. - Provide common data container for diverse Bioconductor packages.</p>
+
+<pre class = 'prettyprint lang-r'>str(GSE29617_set, max.level = 2)</pre>
+
+<pre >## Formal class &#39;ExpressionSet&#39; [package &quot;Biobase&quot;] with 7 slots
+##   ..@ experimentData   :Formal class &#39;MIAME&#39; [package &quot;Biobase&quot;] with 13 slots
+##   ..@ assayData        :&lt;environment: 0x7ff331928540&gt; 
+##   ..@ phenoData        :Formal class &#39;AnnotatedDataFrame&#39; [package &quot;Biobase&quot;] with 4 slots
+##   ..@ featureData      :Formal class &#39;AnnotatedDataFrame&#39; [package &quot;Biobase&quot;] with 4 slots
+##   ..@ annotation       : chr &quot;GPL13158&quot;
+##   ..@ protocolData     :Formal class &#39;AnnotatedDataFrame&#39; [package &quot;Biobase&quot;] with 4 slots
+##   ..@ .__classVersion__:Formal class &#39;Versions&#39; [package &quot;Biobase&quot;] with 1 slot</pre>
+
+<p>str() is the command to get the internal structure of an R object. An eSet contains the necessary &quot;parts&quot; to summarize an experiment.</p>
+
+</article></slide><slide class=''><hgroup><h2>Classes and methods</h2></hgroup><article  id="classes-and-methods" class="smaller ">
+
+<p><strong>Everything in R is an OBJECT.</strong></p>
+
+<ul>
+<li>A class is the definition of an object.</li>
+<li>A method is a function that performs specific calculations on objects of a specific class. Generic functions are used to determine the class of its arguments and select the appropriate method. A generic function is a function with a collection of methods.</li>
+<li>See ?Classes and ?Methods for more information.</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Classes and methods</h2></hgroup><article  id="classes-and-methods-1" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>data(iris)
+class(iris)</pre>
+
+<pre >## [1] &quot;data.frame&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>summary(iris)</pre>
+
+<pre >##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
+##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
+##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
+##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
+##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
+##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
+##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
+##        Species  
+##  setosa    :50  
+##  versicolor:50  
+##  virginica :50  
+##                 
+##                 
+## </pre>
+
+</article></slide><slide class=''><hgroup><h2>Classes and methods</h2></hgroup><article  id="classes-and-methods-2" class="smaller ">
+
+<p>There are two types of classes in R: S3 Classes (old style, informal) and S4 Classes - (new style, more rigorous and formal)</p>
+
+<pre class = 'prettyprint lang-r'># S3 class
+head(methods(class = &quot;data.frame&quot;))</pre>
+
+<pre >## [1] &quot;[.data.frame&quot;    &quot;[[.data.frame&quot;   &quot;[[&lt;-.data.frame&quot; &quot;[&lt;-.data.frame&quot; 
+## [5] &quot;$.data.frame&quot;    &quot;$&lt;-.data.frame&quot;</pre>
+
+<pre class = 'prettyprint lang-r'># S4 class
+showMethods(class = &quot;eSet&quot;)</pre>
+
+<pre >## 
+## Function &quot;.DollarNames&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;.SEW&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: [ (package base)
+## x=&quot;eSet&quot;
+## 
+## Function: [[ (package base)
+## x=&quot;eSet&quot;
+## 
+## Function: [[&lt;- (package base)
+## x=&quot;eSet&quot;
+## 
+## 
+## Function &quot;%in%&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: $ (package base)
+## x=&quot;eSet&quot;
+## 
+## Function: $&lt;- (package base)
+## x=&quot;eSet&quot;
+## 
+## Function: abstract (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## 
+## Function &quot;active&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;active&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;addAttributes&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;aggregate&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;AIC&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: annotation (package BiocGenerics)
+## object=&quot;eSet&quot;
+## 
+## Function: annotation&lt;- (package BiocGenerics)
+## object=&quot;eSet&quot;, value=&quot;character&quot;
+## 
+## 
+## Function &quot;applyFun&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;applyFun&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;applyParams&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;applyParams&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;as.env&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;as.factor&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;as.matrix&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;as.table&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: assayData (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: assayData&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;AssayData&quot;
+## 
+## 
+## Function &quot;BIC&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;by&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;chartr&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;classNameForDisplay&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;clearMemoryManagement&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;clone&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;coef&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: coerce (package methods)
+## from=&quot;eSet&quot;, to=&quot;ExpressionSet&quot;
+## from=&quot;eSet&quot;, to=&quot;MultiSet&quot;
+## from=&quot;ExpressionSet&quot;, to=&quot;eSet&quot;
+## 
+## 
+## Function &quot;collapse&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;colnames&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;columnMetadata&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;columnMetadata&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: combine (package BiocGenerics)
+## x=&quot;eSet&quot;, y=&quot;eSet&quot;
+## 
+## 
+## Function &quot;comment.SAX&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;compare&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;compareRecursively&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;complete.cases&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;confint&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;cor&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;countMatches&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;countOverlaps&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;countQueryHits&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;countSubjectHits&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;cov&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;coverage&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;dbConn&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;dbiDataType&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;desc&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;desc&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: description (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: description&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;MIAME&quot;
+## 
+## 
+## Function &quot;diff&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: dim (package base)
+## x=&quot;eSet&quot;
+## 
+## Function: dimnames (package base)
+## x=&quot;eSet&quot;
+## 
+## Function: dimnames&lt;- (package base)
+## x=&quot;eSet&quot;
+## 
+## Function: dims (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## 
+## Function &quot;disjoin&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;disjointBins&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;distance&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;distanceToNearest&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;docName&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;docName&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;drop&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;droplevels&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;elementLengths&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;elementMetadata&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;elementMetadata&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;elementType&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;end&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;end&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;endElement.SAX&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;endoapply&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;entityDeclaration.SAX&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;evalSeparately&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;expand&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: experimentData (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: experimentData&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;MIAME&quot;
+## 
+## 
+## Function &quot;extractList&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;extractROWS&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: fData (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: fData&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;data.frame&quot;
+## 
+## Function: featureData (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: featureData&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;AnnotatedDataFrame&quot;
+## 
+## Function: featureNames (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: featureNames&lt;- (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## 
+## Function &quot;filterRules&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;filterRules&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;findMatches&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;findOverlaps&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;findRange&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;findRun&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;findXIncludeStartNodes&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;fixedColumnNames&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;flank&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;flatten&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;follow&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;formals&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;free&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;functions&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: fvarLabels (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: fvarLabels&lt;- (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: fvarMetadata (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: fvarMetadata&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;data.frame&quot;
+## 
+## 
+## Function &quot;gaps&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;getEffectiveNamespaces&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;getEncoding&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;getEncodingREnum&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;getListElement&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;getTableElementType&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;GPL&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;grouplength&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;grouprank&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;GSM&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;gsub&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;high2low&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;ifelse&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: initialize (package methods)
+## .Object=&quot;eSet&quot;
+## 
+## 
+## Function &quot;IQR&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;isConstant&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;isDisjoint&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;isEmpty&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;isNormal&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;iteratorFun&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;iteratorFun&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;levels&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;Lfilter&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;logLik&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;low2high&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;Ltablename&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;mad&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;map&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;maskedratio&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;maskedwidth&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;mcols&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;mcols&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;mean&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;median&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;members&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;mendoapply&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;merge&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;metadata&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;mid&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;mstack&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;na.exclude&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;na.omit&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;narrow&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;nchar&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;nearest&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;ngap&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;nir_list&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;nobj&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;nobs&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;normalizeSingleBracketReplacementValue&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: notes (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: notes&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;ANY&quot;
+## 
+## 
+## Function &quot;nrun&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;orderAsRanges&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;overlapsAny&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;packageName&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;params&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: pData (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: pData&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;data.frame&quot;
+## 
+## 
+## Function &quot;pgap&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: phenoData (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: phenoData&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;AnnotatedDataFrame&quot;
+## 
+## 
+## Function &quot;pintersect&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;plot&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;pmap&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;pop&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;precede&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: preproc (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: preproc&lt;- (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## 
+## Function &quot;processingInstruction.SAX&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;processSelfMatching&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;profile&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;promoters&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;prompt&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: protocolData (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: protocolData&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;AnnotatedDataFrame&quot;
+## 
+## 
+## Function &quot;psetdiff&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: pubMedIds (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: pubMedIds&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;character&quot;
+## 
+## 
+## Function &quot;punion&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;push&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;quantile&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;queryHits&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;queryLength&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;rangedData&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;rangedData&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;ranges&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;ranges&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;rdapply&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;readHTMLList&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;readHTMLTable&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;readKeyValueDB&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;readSolrDoc&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;reduce&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;reducerFun&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;reducerFun&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;reducerParams&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;reducerParams&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;reflect&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;relistToClass&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;removeAttributes&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;removeXMLNamespaces&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;rename&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;replaceROWS&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;reset&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;resize&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;restrict&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;rev&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;revElements&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;reverse&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;Rfilter&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;Rle&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;rownames&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;Rtablename&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;runLength&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;runLength&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;runmean&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;runmed&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;runq&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;runsum&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;runValue&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;runValue&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;runwtsum&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: sampleNames (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: sampleNames&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;ANY&quot;
+## 
+## 
+## Function &quot;saveXML&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;score&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;score&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;sd&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;selectSomeIndex&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;selfmatch&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;setListElement&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;shift&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;shiftApply&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: show (package methods)
+## object=&quot;eSet&quot;
+## 
+## 
+## Function &quot;showAsCell&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;simplify&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;simplify&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;simplifyNamespaces&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;slice&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;smoothEnds&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;source&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;space&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;split&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;split&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;splitAsListReturnedClass&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;splitRanges&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;stack&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;start&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;start&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;startElement.SAX&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: storageMode (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: storageMode&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;character&quot;
+## 
+## 
+## Function &quot;sub&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;subject&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;subjectHits&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;subjectLength&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;subsetByFilter&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;subsetByOverlaps&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;substr&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;substring&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;subviews&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;t&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;text.SAX&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;threebands&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;tile&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;togroup&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;togrouplength&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;togrouprank&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;toHTML&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;toList&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;toLList&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;tolower&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;toRList&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;toString&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;toupper&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;trim&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;universe&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;universe&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;unsplit&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;unstrsplit&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;update&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: updateObject (package BiocGenerics)
+## object=&quot;eSet&quot;
+## 
+## Function: updateObjectTo (package Biobase)
+## object=&quot;eSet&quot;, template=&quot;eSet&quot;
+## 
+## 
+## Function &quot;values&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;values&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;var&quot;:
+##  &lt;not an S4 generic function&gt;
+## Function: varLabels (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: varLabels&lt;- (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: varMetadata (package Biobase)
+## object=&quot;eSet&quot;
+## 
+## Function: varMetadata&lt;- (package Biobase)
+## object=&quot;eSet&quot;, value=&quot;data.frame&quot;
+## 
+## 
+## Function &quot;vcov&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;viewApply&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;viewMaxs&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;viewMeans&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;viewMins&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;viewRangeMaxs&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;viewRangeMins&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;Views&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;viewSums&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;viewWhichMaxs&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;viewWhichMins&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;vmembers&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;which&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;which.max&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;which.min&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;whichFirstNotNormal&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;width&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;width&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;window&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;window&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;with&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;within&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlAttrs&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlAttrsToDataFrame&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlChildren&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlClone&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlNamespace&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlNamespaces&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlParent&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlRoot&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlSource&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlSourceFunctions&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlSourceSection&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlSourceTask&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlSourceThread&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlToDataFrame&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlToS4&quot;:
+##  &lt;not an S4 generic function&gt;
+## 
+## Function &quot;xmlValue&lt;-&quot;:
+##  &lt;not an S4 generic function&gt;</pre>
+
+</article></slide><slide class=''><hgroup><h2>The eSet</h2></hgroup><article  id="the-eset" class="smaller ">
+
+<p>You can get a sense of the defined methods for an <code>eSet</code> as follows:</p>
+
+<pre class = 'prettyprint lang-r'>library(Biobase)
+showMethods(class = &quot;eSet&quot;)</pre>
+
+<p>in particular, the following methods are rather convenient: - assayData(obj); assayData(obj) <code>&lt;-</code> value: access or assign assayData - phenoData(obj); phenoData(obj) <code>&lt;-</code> value: access or assign phenoData - experimentData(obj); experimentData(obj) <code>&lt;-</code> value: access or assign experimentData - annotation(obj); annotation(obj) <code>&lt;-</code> value: access or assign annotation</p>
+
+</article></slide><slide class=''><hgroup><h2>The ExpressionSet subclass</h2></hgroup><article  id="the-expressionset-subclass" class="smaller ">
+
+<p>Similar to the <code>eSet</code> class but tailored to gene expression, with an expression matrix that can be accessed with the <code>exprs</code> method.</p>
+
+<pre class = 'prettyprint lang-r'>class(GSE29617_set)</pre>
+
+<pre >## [1] &quot;ExpressionSet&quot;
+## attr(,&quot;package&quot;)
+## [1] &quot;Biobase&quot;</pre>
+
+<pre class = 'prettyprint lang-r'>exprs(GSE29617_set)[1:2, 1:3]</pre>
+
+<pre >##              GSM733942 GSM733943 GSM733944
+## 1007_PM_s_at   4.62965   4.46083   4.54702
+## 1053_PM_at     4.41375   4.72417   4.48257</pre>
+
+<p>also provides additional methods such as <code>fData</code>.</p>
+
+</article></slide><slide class=''><hgroup><h2>The ExpressionSet subclass</h2></hgroup><article  id="the-expressionset-subclass-1" class="smaller ">
+
+<p><code>ExpressionSet</code> objects are meant to facilitate the adoption of MIAME standard. MIAME = &quot;Minimum Information about a Microarray experiment&quot;. Alvis Brazma et. al. (2001) Nature Genetics Unfortrunately, not all contributors will upload all the information.</p>
+
+<pre class = 'prettyprint lang-r'># Information about preprocessing Nothing in here!
+preproc(GSE29617_set)</pre>
+
+<pre >## list()</pre>
+
+</article></slide><slide class=''><hgroup><h2>The ExpressionSet subclass</h2></hgroup><article  id="the-expressionset-subclass-2" class="smaller ">
+
+<pre class = 'prettyprint lang-r'># A data.frame with number of rows equal to the number of
+# samples
+pData(GSE29617_set)[1:2, 1:2]</pre>
+
+<pre >##                                                  title geo_accession
+## GSM733942 2008 TIV subject ID 2 at D0 post-vaccination     GSM733942
+## GSM733943 2008 TIV subject ID 2 at D7 post-vaccination     GSM733943</pre>
+
+<pre class = 'prettyprint lang-r'># A data.frame with number of rows equal to the number of
+# features/probes
+fData(GSE29617_set)[1:2, 1:2]</pre>
+
+<pre >##                        ID GB_ACC
+## 1007_PM_s_at 1007_PM_s_at U48705
+## 1053_PM_at     1053_PM_at M87338</pre>
+
+</article></slide><slide class=''><hgroup><h2>The ExpressionSet subclass</h2></hgroup><article  id="the-expressionset-subclass-3" class="smaller ">
+
+<p>So the <code>ExpressionSet</code> objects facilitate the encapsulation of everything that&#39;s needed to summarize and analyze an experiment. Specific elements can be access with the <code>@</code> operator but many classes have convenient accessor methods.</p>
+
+<pre class = 'prettyprint lang-r'>fData(GSE29617_set)[1:2, 1:2]</pre>
+
+<pre >##                        ID GB_ACC
+## 1007_PM_s_at 1007_PM_s_at U48705
+## 1053_PM_at     1053_PM_at M87338</pre>
+
+<pre class = 'prettyprint lang-r'># Note that S4 classes can be nested!
+GSE29617_set@featureData@data[1:2, 1:2]</pre>
+
+<pre >##                        ID GB_ACC
+## 1007_PM_s_at 1007_PM_s_at U48705
+## 1053_PM_at     1053_PM_at M87338</pre>
+
+</article></slide><slide class=''><hgroup><h2>What if you want the raw data?</h2></hgroup><article  id="what-if-you-want-the-raw-data" class="smaller ">
+
+<p>GEO also provides access to raw data that can be downloaded with <code>GEOquery</code>.</p>
+
+<pre class = 'prettyprint lang-r'># Download all raw data. This should only be evaluated once
+# Then the data would be stored locally in the data directory
+# Make sure the directory exists
+if (length(dir(&quot;Data/GEO/&quot;, pattern = &quot;GSE29617&quot;)) == 0) {
+    getGEOSuppFiles(&quot;GSE29617&quot;, makeDirectory = FALSE, baseDir = &quot;./Data/GEO/&quot;)
+    untar(&quot;Data/GEO/GSE29617_RAW.tar&quot;, exdir = &quot;Data/GEO/GSE29617/&quot;, 
+        tar = Sys.getenv(&quot;TAR&quot;))
+}
+# untar downloaded data</pre>
+
+</article></slide><slide class=''><hgroup><h2>Starting from the raw data</h2></hgroup><article  id="starting-from-the-raw-data" class="smaller ">
+
+<p>Now that we have the Affymetrix raw data (CEL) files, we can apply some of the concepts we&#39;ve discussed related to normalization and probe summary. We first need to load the appropriate package</p>
+
+<pre class = 'prettyprint lang-r'>biocLite(&quot;affy&quot;)</pre>
+
+<pre class = 'prettyprint lang-r'>library(affy)</pre>
+
+<p>then we use the following commands</p>
+
+<pre class = 'prettyprint lang-r'># Read the CEL file and creates and AffyBatch
+GSE29617_affyBatch &lt;- ReadAffy(celfile.path = &quot;Data/GEO/GSE29617/&quot;)
+# Normalize and summarize the data
+GSE29617_set2 &lt;- rma(GSE29617_affyBatch)</pre>
+
+<pre >## Background correcting
+## Normalizing
+## Calculating Expression</pre>
+
+</article></slide><slide class=''><hgroup><h2>Starting from the raw data</h2></hgroup><article  id="starting-from-the-raw-data-1" class="smaller ">
+
+<p>Let&#39;s check the results and compare to the expression matrix that was submitted to GEO</p>
+
+<pre class = 'prettyprint lang-r'>exprs(GSE29617_set2)[1:2, 1:2]</pre>
+
+<pre >##              GSM733942.CEL.gz GSM733943.CEL.gz
+## 1007_PM_s_at         4.629650         4.460843
+## 1053_PM_at           4.413773         4.724213</pre>
+
+<p>The rows are the features (i.e., probes). Columns are the samples.</p>
+
+</article></slide><slide class=''><hgroup><h2>What are those probes?</h2></hgroup><article  id="what-are-those-probes" class="smaller ">
+
+<pre class = 'prettyprint lang-r'># We first need to install our annotation package
+library(BiocInstaller)
+# Note that you don&#39;t have to use source anymore!
+biocLite(&quot;hthgu133a.db&quot;)</pre>
+
+<pre class = 'prettyprint lang-r'>library(hthgu133a.db)
+probe_ids &lt;- rownames(GSE29617_set2)
+probe_data &lt;- select(hthgu133a.db, keys = probe_ids, columns = &quot;SYMBOL&quot;, 
+    keytype = &quot;PROBEID&quot;)
+probe_data[1, ]</pre>
+
+<pre >##        PROBEID SYMBOL
+## 1 1007_PM_s_at   &lt;NA&gt;</pre>
+
+<p>This didn&#39;t work very well, did it? The problem is that the probe IDs in hthgu133a.db have a different naming scheme than those in GSE29617_set2. This is fixed on the next slide.</p>
+
+</article></slide><slide class=''><hgroup><h2>What are those probes?</h2></hgroup><article  id="what-are-those-probes-1" class="smaller ">
+
+<p>Let&#39;s fix this: Replace _PM with <empty> for the probe id names in GSE29617_set2</p>
+
+<pre class = 'prettyprint lang-r'>probe_ids &lt;- gsub(&quot;_PM&quot;, &quot;&quot;, rownames(GSE29617_set2))
+probe_data &lt;- select(hthgu133a.db, keys = probe_ids, columns = &quot;SYMBOL&quot;, 
+    keytype = &quot;PROBEID&quot;)</pre>
+
+<pre >## Warning in .generateExtraRows(tab, keys, jointype): &#39;select&#39; resulted in
+## 1:many mapping between keys and return rows</pre>
+
+<pre class = 'prettyprint lang-r'>probe_data[1, ]</pre>
+
+<pre >##     PROBEID SYMBOL
+## 1 1007_s_at   DDR1</pre>
+
+<p>What&#39;s the warning? Some probes match up with multiple genes, therefore those probe IDs will have more than one record.</p>
+
+</article></slide><slide class=''><hgroup><h2>What are those probes?</h2></hgroup><article  id="what-are-those-probes-2" class="smaller ">
+
+<p>This gives us too many rows, what do we do? Concatenate the gene names so that there will be one row per probe ID.</p>
+
+<pre class = 'prettyprint lang-r'>library(data.table)
+probe_data_dt &lt;- data.table(probe_data)
+probe_data_dt_unique &lt;- probe_data_dt[, list(SYMBOL = paste(SYMBOL, 
+    collapse = &quot;;&quot;)), by = &quot;PROBEID&quot;]
+probe_data_dt_unique[SYMBOL %like% &quot;;&quot;]</pre>
+
+<pre >##           PROBEID                                  SYMBOL
+##    1:   1007_s_at                            DDR1;MIR4640
+##    2:     1294_at                            UBA7;MIR5193
+##    3:     1773_at                        FNTB;CHURC1-FNTB
+##    4: 200012_x_at         RPL21;SNORD102;SNORA27;RPL21P28
+##    5:   200018_at             RPS13;SNORD14B;LOC100508408
+##   ---                                                    
+## 1143:  65133_i_at                      INO80B;INO80B-WBP1
+## 1144:    65585_at FAM86C1;FAM86B1;FAM86FP;FAM86B2;FAM86DP
+## 1145:    66053_at                 HNRNPUL2;HNRNPUL2-BSCL2
+## 1146:    78495_at                        LOC155060;ZNF783
+## 1147:    91617_at                           DGCR8;MIR1306</pre>
+
+</article></slide><slide class=''><hgroup><h2>Completing our ExpressionSet</h2></hgroup><article  id="completing-our-expressionset" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>annotaded_probes &lt;- data.frame(probe_data_dt_unique)
+rownames(annotaded_probes) &lt;- rownames(GSE29617_set2)
+fData(GSE29617_set2) &lt;- annotaded_probes
+head(fData(GSE29617_set2))</pre>
+
+<pre >##                PROBEID       SYMBOL
+## 1007_PM_s_at 1007_s_at DDR1;MIR4640
+## 1053_PM_at     1053_at         RFC2
+## 117_PM_at       117_at        HSPA6
+## 121_PM_at       121_at         PAX8
+## 1255_PM_g_at 1255_g_at       GUCA1A
+## 1294_PM_at     1294_at UBA7;MIR5193</pre>
+
+<p>Now you&#39;re ready to get the data that you will have to analyze for your second homework.</p></article></slide>
 
 
   <slide class="backdrop"></slide>

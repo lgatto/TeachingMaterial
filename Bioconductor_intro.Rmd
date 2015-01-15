@@ -1,47 +1,59 @@
-Bioinformatics for Big Omics Data: Introduction to Bioconductor
-========================================================
-#width: 1440
-#height: 900
-autosize: true
-transition: none
-font-family: 'Helvetica'
-css: my_style.css
-author: Raphael Gottardo, PhD
-date: `r format(Sys.Date(), format="%B %d, %Y")`
+---
+title: 'Bioinformatics for Big Omics Data: Introduction to Bioconductor
+'
+author: "Raphael Gottardo"
+date: "January 15, 2014"
+output:
+  ioslides_presentation:
+    fig_caption: yes
+    fig_retina: 1
+    keep_md: yes
+    smaller: yes
+---
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
+## Setting up some options
 
-The Bioconductor project
-========================
+Let's first turn on the cache for increased performance and improved styling
+```{r, cache=FALSE}
+# Set some global knitr options
+library("knitr")
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), cache=TRUE, messages=FALSE)
+```
+
+
+## The Bioconductor project
 
 - [Bioconductor](http://www.bioconductor.org) is an open source, open development software project to provide tools for the analysis and comprehension of high-throughput genomic data. It is based primarily on the R programming language.
 
 - Most Bioconductor components are distributed as R packages. The functional scope of Bioconductor packages includes the analysis of DNA microarray, sequence, flow, SNP, and other data.
 
-Project Goals
-==============
+## Project Goals
+
 The broad goals of the Bioconductor project are:
+
 - To provide widespread access to a broad range of powerful statistical and graphical methods for the analysis of genomic data.
 - To facilitate the inclusion of biological metadata in the analysis of genomic data, e.g. literature data from PubMed, annotation data from Entrez genes.
 - To provide a common software platform that enables the rapid development and deployment of extensible, scalable, and interoperable software.
 - To further scientific understanding by producing high-quality documentation and reproducible research.
 - To train researchers on computational and statistical methods for the analysis of genomic data.
 
-Getting started
-================
-Before running this presentation, you will need to 
+## Getting started
+
+Before running this presentation, you will need to:
+
  - set the current directory in the console (go to session -> Set Working Directory -> To Source File Location)
- - run the following commands which take up time
+
+- run the following commands which take up time
     - source("http://bioconductor.org/biocLite.R")
     - biocLite()
     - getSQLiteFile() Note: this will take some time
     - getGEOSuppFiles("GSE29617", makeDirectory = TRUE, baseDir = "./")
     - untar("./GSE29617/GSE29617_RAW.tar", exdir="./GSE29617", tar = Sys.getenv("TAR"))
 
-Although you will have already connected to the bioconductor website, I have found that I need to keep the code on the next page running (i.e., don't use eval=FALSE)
+Note that I have updated the code so that you may not have to do what's described above.
 
-Getting started
-================
+
+## Getting started
 
 ```{r}
 source("http://bioconductor.org/biocLite.R")
@@ -56,8 +68,7 @@ biocLite(c("GEOmetadb", "GEOquery"))
 ```
 
 
-The Gene Expression Omnibus (GEO)
-==========================
+## The Gene Expression Omnibus (GEO)
 
 The [Gene Expression Omnibus](http://www.ncbi.nlm.nih.gov/geo/) is an international public repository that archives and freely distributes microarray, next-generation sequencing, and other forms of high-throughput functional genomics data submitted by the research community.
 
@@ -67,8 +78,7 @@ The three main goals of GEO are to:
 - Offer simple submission procedures and formats that support complete and well-annotated data deposits from the research community
 - Provide user-friendly mechanisms that allow users to query, locate, review and download studies and gene expression profiles of interest
 
-Getting data from GEO
-=====================
+## Getting data from GEO
 
 Before getting data from GEO, we need to see what data we want. For that we can use the `GEOmetadb` package. 
 
@@ -86,16 +96,21 @@ or if the package contains multiple vignettes or a vignette with a non-standard 
 browseVignettes(package = "GEOmetadb")
 ```
 
-Finding the right data in GEO
-==========================
+## Finding the right data in GEO
 
-<small>Zhu, Y., Davis, S., Stephens, R., Meltzer, P. S., & Chen, Y. (2008). GEOmetadb: powerful alternative search engine for the Gene Expression Omnibus. Bioinformatics (Oxford, England), 24(23), 2798–2800. doi:10.1093/bioinformatics/btn520</small>
+Zhu, Y., Davis, S., Stephens, R., Meltzer, P. S., & Chen, Y. (2008). GEOmetadb: powerful alternative search engine for the Gene Expression Omnibus. Bioinformatics (Oxford, England), 24(23), 2798–2800. doi:10.1093/bioinformatics/btn520
 
 GEOmetadb uses a SQLite database to store all metadata associate with GEO.
-```{r eval=FALSE}
+```{r}
 ## This will download the entire database, so can be slow
-getSQLiteFile()
+if(!file.exists("GEOmetadb.sqlite"))
+{
+  # Download database only if it's not done already
+  getSQLiteFile()
+}
 ```
+
+## Finding the right data in GEO
 
 ```{r}
 geo_con <- dbConnect(SQLite(),'GEOmetadb.sqlite')
@@ -106,8 +121,7 @@ dbListTables(geo_con)
 dbListFields(geo_con, 'gse')
 ```
 
-Finding a study
-===============
+## Finding a study
 
 The basic record types in GEO include Platforms (GPL), Samples (GSM), Series (GSE) and DataSets (GDS)
 
@@ -115,8 +129,7 @@ The basic record types in GEO include Platforms (GPL), Samples (GSM), Series (GS
 dbGetQuery(geo_con, "SELECT gse.ID, gse.title, gse.gse FROM gse WHERE gse.pubmed_id='21743478';")
 ```
 
-Finding a study (suite)
-===============
+## Finding a study
 
 What samples were used?
 
@@ -126,8 +139,7 @@ dbGetQuery(geo_con, "SELECT gse.gse, gsm.gsm, gsm.title FROM (gse JOIN gse_gsm O
 gse_gsm contains the gse number that is associated with the gsm number. 
 j is the name of a table that is created by joining gse and ges_gsm. Then j is joined with table gsm. 
 
-Finding a study (suite)
-===============
+## Finding a study
 
 What about raw data?
 
@@ -137,8 +149,8 @@ head(res)
 ```
 raw data is contained in the supplementary files, which are listed in the gsm file. 
 
-Finding specific data
-=====================
+## Finding specific data
+
 To get list of manufacturers:
 ```{r}
 library(data.table)
@@ -146,37 +158,36 @@ manu <- data.table(dbGetQuery(geo_con, "SELECT manufacturer FROM gpl"))
 manu[,list(length(manufacturer)), by=manufacturer]
 ```
 
-Finding specific data
-=====================
+## Finding specific data
+
 To get supplementary file names ending with cel.gz from only manufacturer Affymetrix
-```{r, cache=TRUE}
+```{r}
 res <- dbGetQuery(geo_con, "SELECT gpl.bioc_package, gsm.title, gsm.series_id, gsm.gpl, gsm.supplementary_file FROM gsm JOIN gpl ON gsm.gpl=gpl.gpl WHERE gpl.manufacturer='Affymetrix' AND gsm.supplementary_file like '%CEL.gz';")
 head(res)
 ```
-Finding specific data
-=====================
+
+## Finding specific data
+
 From previous table:
 bioc_package = bioconductor package
 hu6800 = Affymetrix HuGeneFL Genome Array annotation data (chip hu6800) 
 rgu34a = Affymetrix Rat Genome U34 Set annotation data (chip rgu34a)
 
-title = data set title (?)
+title = data set title or study title
 For example BM_CD34-1a = bone marrow flow-sorted CD34+ cells (>95% purity) and has GSM sample number GSM575. 
 
-Getting the data we want
-========================
-Now that we have our GSE ID we can use the GEOquery to download the corresponding data
-as follows,
+## Getting the data we want
+
+Now that we have our GSE ID we can use the GEOquery to download the corresponding data as follows,
+
 ```{r query-GEO, cache = TRUE}
 # Download the mapping information and processed data
 # This returns a list of eSets
-GSE29617_set <- getGEO("GSE29617")[[1]]
+GSE29617_set <- getGEO("GSE29617", destdir = "Data/GEO/")[[1]]
 ```
 which returns (a list of) an ExpressionSet (eSet).
 
-
-The eSet class
-==================
+## The eSet class
 
 What is an eSet? An S4 class that tries to:
 - Coordinate high through-put (e.g., gene expression) and phenotype data.
@@ -185,11 +196,11 @@ What is an eSet? An S4 class that tries to:
 ```{r}
 str(GSE29617_set,max.level=2)
 ```
+
 str() is the command to get the internal structure of an R object. 
 An eSet contains the necessary "parts" to summarize an experiment.
 
-Classes and methods
-====================
+## Classes and methods
 
 **Everything in R is an OBJECT.**
 
@@ -201,14 +212,15 @@ arguments and select the appropriate method. A generic function is a
 function with a collection of methods.
 - See ?Classes and ?Methods for more information.
 
+## Classes and methods
+
 ```{r}
 data(iris)
 class(iris)
 summary(iris)
 ```
 
-Classes and methods (suite)
-====================
+## Classes and methods
 
 There are two types of classes in R: S3 Classes (old style, informal) and S4 Classes - (new style, more rigorous and formal)
 
@@ -219,8 +231,7 @@ head(methods(class="data.frame"))
 showMethods(class="eSet")
 ```
 
-The eSet (suite)
-==========================
+## The eSet
 
 You can get a sense of the defined methods for an `eSet` as follows:
 ```{r, eval=FALSE}
@@ -233,8 +244,7 @@ in particular, the following methods are rather convenient:
 - experimentData(obj); experimentData(obj) `<-` value: access or assign experimentData
 - annotation(obj); annotation(obj) `<-` value: access or assign annotation
 
-The ExpressionSet subclass
-==========================
+## The ExpressionSet subclass
 
 Similar to the `eSet` class but tailored to gene expression, with an expression matrix that can be accessed with the `exprs` method.
 
@@ -245,23 +255,27 @@ exprs(GSE29617_set)[1:2,1:3]
 
 also provides additional methods such as `fData`.
 
-The ExpressionSet subclass (suite)
-==========================
-`ExpressionSet` objects are meant to facilitate the adoption of MIAME standard. MIAME = "Minimum Information about a Microarray experiment". Alvis Brazma et. al. (2001) Nature Genetics
+## The ExpressionSet subclass
 
+`ExpressionSet` objects are meant to facilitate the adoption of MIAME standard. MIAME = "Minimum Information about a Microarray experiment". Alvis Brazma et. al. (2001) Nature Genetics
 Unfortrunately, not all contributors will upload all the information.
 ```{r}
 # Information about preprocessing
 # Nothing in here!
 preproc(GSE29617_set)
+```
+
+## The ExpressionSet subclass
+
+```{r}
 # A data.frame with number of rows equal to the number of samples
 pData(GSE29617_set)[1:2,1:2]
 # A data.frame with number of rows equal to the number of features/probes
 fData(GSE29617_set)[1:2,1:2]
 ```
 
-The ExpressionSet subclass (suite)
-==========================
+## The ExpressionSet subclass 
+
 So the `ExpressionSet` objects facilitate the encapsulation of everything that's needed to summarize and analyze an experiment. Specific elements can be access with the `@` operator but many classes have convenient accessor methods.
 
 ```{r}
@@ -270,29 +284,29 @@ fData(GSE29617_set)[1:2,1:2]
 GSE29617_set@featureData@data[1:2,1:2]
 ```
 
-What if you want the raw data?
-==============================
+## What if you want the raw data?
 
 GEO also provides access to raw data that can be downloaded with `GEOquery`.
 
 
-```{r download-raw-data, eval = FALSE}
+```{r download-raw-data}
 # Download all raw data. This should only be evaluated once
 # Then the data would be stored locally in the data directory
 # Make sure the directory exists
-getGEOSuppFiles("GSE29617", makeDirectory = FALSE, baseDir = "./Data/GEO/")
+if(length(dir("Data/GEO/",pattern="GSE29617"))==0)
+{
+  getGEOSuppFiles("GSE29617", makeDirectory = FALSE, baseDir = "./Data/GEO/")
+  untar("Data/GEO/GSE29617_RAW.tar", exdir="Data/GEO/GSE29617/", tar=Sys.getenv("TAR"))
+}
 # untar downloaded data
-untar("Data/GEO/GSE29617_RAW.tar", exdir="Data/GEO/GSE29617/", tar=Sys.getenv("TAR"))
-# If the above commands do not work, try:
 ```
 
-Starting from the raw data
-==========================
+## Starting from the raw data
 
 Now that we have the Affymetrix raw data (CEL) files, we can apply some of the concepts we've discussed related to normalization and probe summary. We first need to load the appropriate package
 
 
-```{r}
+```{r, eval=FALSE}
 biocLite("affy")
 ```
 ```{r}
@@ -300,15 +314,14 @@ library(affy)
 ```
 
 then we use the following commands
-```{r cache=TRUE}
+```{r }
 # Read the CEL file and creates and AffyBatch
 GSE29617_affyBatch <- ReadAffy(celfile.path="Data/GEO/GSE29617/")
 # Normalize and summarize the data
 GSE29617_set2 <- rma(GSE29617_affyBatch)
 ```
 
-Starting from the raw data
-==========================
+## Starting from the raw data
 
 Let's check the results and compare to the expression matrix that was submitted to GEO
 ```{r}
@@ -317,10 +330,9 @@ exprs(GSE29617_set2)[1:2,1:2]
 
 The rows are the features (i.e., probes). Columns are the samples.
 
-What are those probes?
-======================
+## What are those probes?
 
-```{r}
+```{r, eval=FALSE}
 # We first need to install our annotation package
 library(BiocInstaller)
 # Note that you don't have to use source anymore!
@@ -337,8 +349,7 @@ probe_data[1,]
 This didn't work very well, did it?
 The problem is that the probe IDs in hthgu133a.db have a different naming scheme than those in GSE29617_set2. This is fixed on the next slide.
 
-What are those probes? (Suite)
-======================
+## What are those probes?
 
 Let's fix this: Replace _PM with <empty> for the probe id names in GSE29617_set2
 ```{r, warning=TRUE}
@@ -348,21 +359,19 @@ probe_data[1, ]
 ```
 What's the warning? Some probes match up with multiple genes, therefore those probe IDs will have more than one record.
 
-What are those probes? (Suite)
-======================
+## What are those probes?
 
 
 This gives us too many rows, what do we do? Concatenate the gene names so that there will be one row per probe ID.
 
-```{r, cache=TRUE}
+```{r}
 library(data.table)
 probe_data_dt <- data.table(probe_data)
 probe_data_dt_unique <- probe_data_dt[,list(SYMBOL=paste(SYMBOL,collapse=";")),by="PROBEID"]
 probe_data_dt_unique[SYMBOL%like%";"]
 ```
 
-Completing our ExpressionSet
-============================
+## Completing our ExpressionSet
 
 ```{r}
 annotaded_probes <- data.frame(probe_data_dt_unique)

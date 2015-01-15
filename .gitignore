@@ -21,3 +21,5 @@ Data/GEO/*
 *.sqlite
 
 Introduction_to_R.pdf
+
+*.sqlite
