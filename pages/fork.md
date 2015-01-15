@@ -61,8 +61,7 @@ Then try `git push origin HEAD:gh-pages` [stackoverflow.](http://stackoverflow.c
 - Note that your friend's repository will be on the left and _your
   repository_ will be on the right.
 
-- Give a short explaination of the changes and click the &ldquo;Send
-  pull request&rdquo; button.
+- Click the green button "Create pull request".  Give a succinct and informative title, in the comment field give a short explanation of the changes and click the green button "Create pull request" again.
 
 
 ### Pulling others' changes
