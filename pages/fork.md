@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Contribute to someone's repository
-description: Git/GitHub Guide: contributing to someone's repository
+description: Contributing to someone's GitHub repository
 ---
 
 Say you want to contribute changes to someone else's repository (eg,
@@ -104,10 +104,10 @@ Once they do that, you'll get an email about it.  How to handle it?
 
 - If you want them to make further changes before you merge
   the changes into your repository, add a comment.
-  
+
 - If you hate the whole idea, just click the &ldquo;Close&rdquo;
   button.
-  
+
 - If you want to merge the changes into your repository, click the
   &ldquo;Merge pull request&rdquo; button.
 
@@ -128,13 +128,13 @@ You don't have to use the github website for this.
 
 - Add a connection to your friend's version of the github repository,
   if you haven't already.
-  
+
       $ git remote add myfriend git://github.com/myfriend/the_repo
-    
+
 - Pull his/her changes.
 
       $ git pull myfriend master
-    
+
 - Push them back to your github repository.
 
       $ git push

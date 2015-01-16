@@ -2,7 +2,7 @@
 layout: page
 title: git/github guide
 tagline: a minimal tutorial
-description: Git/GitHub Guide: a minimal tutorial
+description: Git/GitHub Guide - a minimal tutorial
 ---
 
 All statistical/computational scientists should use

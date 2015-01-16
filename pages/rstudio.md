@@ -1,11 +1,11 @@
 ---
 layout: page
 title: git/github with RStudio
-description: Git/GitHub Guide: use of git/github in RStudio
+description: Use of git/GitHub in RStudio
 ---
 
 [RStudio](http://www.rstudio.com/ide) is a popular development
-environment for [R](http://www.r-project.org). 
+environment for [R](http://www.r-project.org).
 
 RStudio has built-in facilities for [knitr](http://yihui.name/knitr/)
 (the superb successor to [Sweave](http://www.stat.uni-muenchen.de/~leisch/Sweave/)) and [R Markdown](http://www.rstudio.com/ide/docs/r_markdown) (a

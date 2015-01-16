@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Exploring code and its history
-description: Git/GitHub Guide: exploring code and its history
+description: Exploring code and its history with git and GitHub
 ---
 
 For my own repositories, I like to use [gitx](http://gitx.frim.nl/) on
@@ -80,7 +80,7 @@ And again you can use this for a particular file:
 `git diff` has a ton of options; see the manual page:
 
     git diff --help
-    
+
 For example, you can get a brief summary of which files were changed with `--stat`:
 
     git diff 1.22-21 1.23-16 --stat

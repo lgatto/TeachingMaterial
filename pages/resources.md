@@ -1,7 +1,7 @@
 ---
 layout: page
 title: git/github resources
-description: Git/GitHub Guide: resources page
+description: git/GitHub resources page
 ---
 
 This tutorial is minimal.  It's probably considerably less than
@@ -17,7 +17,7 @@ Here are some examples.
 
 - The O'Reilly
   [Version Control with Git book](http://shop.oreilly.com/product/9780596520137.do)
-  
+
 - The [github help pages](https://help.github.com/)
 
 - [Git tutorials on github](http://learn.github.com/); you can even
@@ -33,7 +33,7 @@ Here are some examples.
   by [Kevin Markham](http://www.dataschool.io/about/)
 
 - Using GitHub with [RStudio](http://www.rstudio.com):
-  
+
   - [Using GitHub with R and Rstudio](http://markrchristie.wordpress.com/2013/11/26/using-github-with-r-and-rstudio/)
     by [Mark Christie](http://markrchristie.wordpress.com/)
 
@@ -41,7 +41,7 @@ Here are some examples.
     from materials for a
     [software carpentry](http://software-carpentry.org/)
     [course at UBC](http://jennybc.github.io/2014-05-12-ubc/)
-    
+
 - [Google](http://bit.ly/13lFEmG)
 
 - [Stackoverflow](http://stackoverflow.com/questions/tagged/git)
