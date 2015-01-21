@@ -1,4 +1,4 @@
-**This is your first homework due Tuesday Jan 22.**
+**This is your first homework due Tuesday Jan 29.**
 
 1. Create a repository on GitHub called "HW1_first_lastname" where `first` and `lastname` are your first and last names. This will avoid confusion when forking your partner's repo.
 
