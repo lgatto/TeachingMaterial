@@ -1102,6 +1102,27 @@ DT[, `:=`(Name, NULL)]
 ## 3:      4
 ```
 
+## Listing all tables
+
+With data.table you can always list the tables that you've created, which will also return basic information on this tables including size, keys, nrows, etc.
+
+
+```r
+tables()
+```
+
+```
+##      NAME        NROW NCOL MB COLS         KEY
+## [1,] big_dt 1,000,000    3 20 x,y,z           
+## [2,] dt             3    3  1 x,y,z           
+## [3,] DT             3    2  1 Name,Salary     
+## [4,] DT1            5    4  1 x,y,z,newcol x  
+## [5,] DT2            1    3  1 x,y,w        x  
+## [6,] tmp1     456,976    3 32 x,y,z        x  
+## [7,] tmp2     456,976    3 32 x,y,z        x  
+## Total: 88MB
+```
+
 
 ## Bonuses: fread
 
@@ -1123,8 +1144,8 @@ microbenchmark(fread = fread(file), r.t = read.table(file, header = TRUE, sep = 
 ```
 ## Unit: milliseconds
 ##   expr       min        lq      mean    median        uq       max neval
-##  fread  310.5437  310.5437  310.5437  310.5437  310.5437  310.5437     1
-##    r.t 7050.3093 7050.3093 7050.3093 7050.3093 7050.3093 7050.3093     1
+##  fread  331.6005  331.6005  331.6005  331.6005  331.6005  331.6005     1
+##    r.t 7447.6770 7447.6770 7447.6770 7447.6770 7447.6770 7447.6770     1
 ```
 
 ```r
@@ -1153,12 +1174,12 @@ microbenchmark(DT = rbindlist(dfs), DF = do.call(rbind, dfs), times = 5)
 
 ```
 ## Unit: milliseconds
-##  expr        min         lq       mean    median         uq       max
-##    DT   5.981805   8.551772   8.997102   9.64301   9.767579  11.04134
-##    DF 709.929230 843.444154 869.686238 884.76882 954.812659 955.47633
-##  neval cld
-##      5  a 
-##      5   b
+##  expr       min        lq      mean     median         uq       max neval
+##    DT  10.02123  10.46328   10.7023   10.62325   10.65706   11.7467     5
+##    DF 787.99593 984.21012 1088.7448 1060.43489 1142.37993 1468.7029     5
+##  cld
+##   a 
+##    b
 ```
 
 ## Summary
@@ -1222,46 +1243,6 @@ require(org.Hs.eg.db) || biocLite("org.Hs.eg.db")
 ```r
 # Now we can use the org.Hs.eg.db to load a database
 library(org.Hs.eg.db)
-```
-
-```
-## Loading required package: AnnotationDbi
-## Loading required package: BiocGenerics
-## Loading required package: parallel
-## 
-## Attaching package: 'BiocGenerics'
-## 
-## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB
-## 
-## The following object is masked from 'package:stats':
-## 
-##     xtabs
-## 
-## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
-## 
-## Loading required package: Biobase
-## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.
-## 
-## Loading required package: GenomeInfoDb
-## Loading required package: DBI
-```
-
-```r
 # Create a connection
 Hs_con <- org.Hs.eg_dbconn()
 ```
@@ -1327,9 +1308,9 @@ gc()
 ```
 
 ```
-##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1141630 61.0    2320208 124.0  1628720 87.0
-## Vcells 1261314  9.7    3648212  27.9  1986142 15.2
+##            used  (Mb) gc trigger  (Mb) max used  (Mb)
+## Ncells  1840419  98.3    4643607 248.0  4276538 228.4
+## Vcells 15889273 121.3   47075374 359.2 47071241 359.2
 ```
 
 ```r
@@ -1338,9 +1319,9 @@ gc()
 ```
 
 ```
-##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1245119 66.5    3288291 175.7  1628720 87.0
-## Vcells 1625283 12.4    3648212  27.9  2370850 18.1
+##            used  (Mb) gc trigger  (Mb) max used  (Mb)
+## Ncells  1943826 103.9    4643607 248.0  4276538 228.4
+## Vcells 16187585 123.6   47075374 359.2 47071241 359.2
 ```
 
 ```r
@@ -1357,9 +1338,9 @@ gc()
 ```
 
 ```
-##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1290972 69.0    3288291 175.7  1628720   87
-## Vcells 2112441 16.2    5187496  39.6  3004340   23
+##            used  (Mb) gc trigger  (Mb) max used  (Mb)
+## Ncells  1989679 106.3    4643607 248.0  4276538 228.4
+## Vcells 16674744 127.3   47075374 359.2 47071241 359.2
 ```
 
 ```r
@@ -1368,9 +1349,9 @@ gc()
 ```
 
 ```
-##           used (Mb) gc trigger  (Mb) max used (Mb)
-## Ncells 1290989 69.0    3288291 175.7  1628720   87
-## Vcells 2112537 16.2    5187496  39.6  3004340   23
+##            used  (Mb) gc trigger  (Mb) max used  (Mb)
+## Ncells  1989696 106.3    4643607 248.0  4276538 228.4
+## Vcells 16674841 127.3   47075374 359.2 47071241 359.2
 ```
 
 ## Some SQL Commands

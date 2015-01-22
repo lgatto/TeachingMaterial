@@ -10,7 +10,7 @@
 
 
 
-  <meta name="date" content="2014-01-15" />
+  <meta name="date" content="2014-01-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -89,7 +89,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">January 15, 2014</p>
+            <p style="margin-top: 6px; margin-left: -2px;">January 21, 2014</p>
           </hgroup>
   </slide>
 
@@ -324,9 +324,16 @@ head(res)</pre>
 
 </article></slide><slide class=''><hgroup><h2>Finding specific data</h2></hgroup><article  id="finding-specific-data-2" class="smaller ">
 
-<p>From previous table: bioc_package = bioconductor package hu6800 = Affymetrix HuGeneFL Genome Array annotation data (chip hu6800) rgu34a = Affymetrix Rat Genome U34 Set annotation data (chip rgu34a)</p>
+<p>From previous table:</p>
 
-<p>title = data set title or study title For example BM_CD34-1a = bone marrow flow-sorted CD34+ cells (&gt;95% purity) and has GSM sample number GSM575.</p>
+<ul>
+<li>bioc_package = bioconductor package</li>
+<li>hu6800 = Affymetrix HuGeneFL Genome Array annotation data (chip hu6800)</li>
+<li>rgu34a = Affymetrix Rat Genome U34 Set annotation data (chip rgu34a)</li>
+<li>title = data set title or study title</li>
+</ul>
+
+<p>For example BM_CD34-1a = bone marrow flow-sorted CD34+ cells (&gt;95% purity) and has GSM sample number GSM575.</p>
 
 </article></slide><slide class=''><hgroup><h2>Getting the data we want</h2></hgroup><article  id="getting-the-data-we-want" class="smaller ">
 
@@ -1432,7 +1439,14 @@ showMethods(class = &quot;eSet&quot;)</pre>
 <pre class = 'prettyprint lang-r'>library(Biobase)
 showMethods(class = &quot;eSet&quot;)</pre>
 
-<p>in particular, the following methods are rather convenient: - assayData(obj); assayData(obj) <code>&lt;-</code> value: access or assign assayData - phenoData(obj); phenoData(obj) <code>&lt;-</code> value: access or assign phenoData - experimentData(obj); experimentData(obj) <code>&lt;-</code> value: access or assign experimentData - annotation(obj); annotation(obj) <code>&lt;-</code> value: access or assign annotation</p>
+<p>in particular, the following methods are rather convenient:</p>
+
+<ul>
+<li>assayData(obj); assayData(obj) <code>&lt;-</code> value: access or assign assayData</li>
+<li>phenoData(obj); phenoData(obj) <code>&lt;-</code> value: access or assign phenoData</li>
+<li>experimentData(obj); experimentData(obj) <code>&lt;-</code> value: access or assign experimentData</li>
+<li>annotation(obj); annotation(obj) <code>&lt;-</code> value: access or assign annotation</li>
+</ul>
 
 </article></slide><slide class=''><hgroup><h2>The ExpressionSet subclass</h2></hgroup><article  id="the-expressionset-subclass" class="smaller ">
 

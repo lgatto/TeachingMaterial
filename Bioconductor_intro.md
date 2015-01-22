@@ -1,6 +1,6 @@
 # Bioinformatics for Big Omics Data: Introduction to Bioconductor 
 Raphael Gottardo  
-January 15, 2014  
+January 21, 2014  
 
 ## Setting up some options
 
@@ -283,11 +283,12 @@ head(res)
 ## Finding specific data
 
 From previous table:
-bioc_package = bioconductor package
-hu6800 = Affymetrix HuGeneFL Genome Array annotation data (chip hu6800) 
-rgu34a = Affymetrix Rat Genome U34 Set annotation data (chip rgu34a)
 
-title = data set title or study title
+- bioc_package = bioconductor package
+- hu6800 = Affymetrix HuGeneFL Genome Array annotation data (chip hu6800) 
+- rgu34a = Affymetrix Rat Genome U34 Set annotation data (chip rgu34a)
+- title = data set title or study title
+
 For example BM_CD34-1a = bone marrow flow-sorted CD34+ cells (>95% purity) and has GSM sample number GSM575. 
 
 ## Getting the data we want
@@ -1428,6 +1429,7 @@ library(Biobase)
 showMethods(class = "eSet")
 ```
 in particular, the following methods are rather convenient:
+
 - assayData(obj); assayData(obj) `<-` value: access or assign assayData
 - phenoData(obj); phenoData(obj) `<-` value: access or assign phenoData
 - experimentData(obj); experimentData(obj) `<-` value: access or assign experimentData

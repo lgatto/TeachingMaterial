@@ -669,6 +669,14 @@ DT
 DT[,Name:=NULL]
 ```
 
+## Listing all tables
+
+With data.table you can always list the tables that you've created, which will also return basic information on this tables including size, keys, nrows, etc.
+
+```{r}
+tables()
+```
+
 
 ## Bonuses: fread
 
