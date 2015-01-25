@@ -40,5 +40,7 @@ Notes are provided as the source file (.Rmd) and resulting html file for online 
 - 01/13/15 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rmd)
 - 01/15/15 Lab with Brian (in class). Use this opportunity to discuss HW1.
 - 01/20/15 [Advanced data manipulation in R (suite)](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rmd) & [Molecular Biology 101](https://github.com/raphg/Biostat-578/blob/master/Biology_basics.Rmd)
-- 01/22/15 [Introduction to Microarrays](Microarrays.Rmd) & [Normalization](Normalization.Rmd)
-- 01/29/15 [Probe summary](Probe_summary.Rmd) & [Introduction to Bioconductor](Bioconductor_intro.Rmd)
+- 01/22/15 [Introduction to Microarrays](Microarrays.Rmd) & [Probe summary](Probe_summary.Rmd)
+- 01/27/15 [Normalization](Normalization.Rmd) & [Introduction to Bioconductor](Bioconductor_intro.Rmd)
+- 01/29/15 [Introduction to Bioconductor](Bioconductor_intro.Rmd) & [Differential gene expression](Differential_expression.Rmd)
+- 02/03/13
