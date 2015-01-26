@@ -71,7 +71,7 @@ You can, however, use `\` for a continuation line, line so:
 
 Note that you still need to use the semicolon (`;`).
 
-### Using GNU make
+#### Using GNU make
 
 You probably already have GNU make installed on your computer.  Type
 `make --version` in a terminal/shell to see. (On Windows,
@@ -85,7 +85,7 @@ To use make:
 - In the example above, if you want to build `fig1.pdf` without
   building `mypaper.pdf`, just type `make fig1.pdf`.
 
-### Frills
+# Frills
 
 You can go along way with just simple make files as above, specifying
 the target files, their dependencies, and the commands to create
