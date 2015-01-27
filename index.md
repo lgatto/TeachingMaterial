@@ -92,10 +92,9 @@ the target files, their dependencies, and the commands to create
 them. But there are _a lot_ of frills you can add, to save some
 typing.
 
-I'll give a very brief introduction to some of the options that I
-use. See the
+Here are some of the options that I use. (See the
 [make documentation](http://www.gnu.org/software/make/manual/make.html)
-for further details.
+for further details.)
 
 #### Variables
 
