@@ -1,8 +1,7 @@
 ## Minimal make: A minimal tutorial on make
 
 I would argue that the most important tool for reproducible research
-is [make](http://www.gnu.org/software/make) (cf
-[rake](http://rake.rubyforge.org)).
+is [GNU Make](http://www.gnu.org/software/make).
 
 This is a minimal tutorial to get started.
 
