@@ -107,10 +107,11 @@ could then define a variable `R_OPTS`:
 
     R_OPTS=--vanilla
 
-You refer to this variable as `${R_OPTS}`, so in the R commands you
+You refer to this variable as `$(R_OPTS)` (or `${R_OPTS}`; either
+parentheses or curly braces is allowed), so in the R commands you
 would use something like
 
-    cd R;R CMD BATCH ${R_OPTS} fig1.R
+    cd R;R CMD BATCH $(R_OPTS) fig1.R
 
 An advantage of this is that you just need to type out the options you
 want once; if you change your mind about the R options you want to
