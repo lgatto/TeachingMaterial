@@ -85,7 +85,7 @@ To use make:
 - In the example above, if you want to build `fig1.pdf` without
   building `mypaper.pdf`, just type `make fig1.pdf`.
 
-# Frills
+### Frills
 
 You can go along way with just simple make files as above, specifying
 the target files, their dependencies, and the commands to create
