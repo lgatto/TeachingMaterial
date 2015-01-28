@@ -1,6 +1,5 @@
 ---
-title: 'Bioinformatics for Big Omics Data: Introduction to Bioconductor
-'
+title: 'Bioinformatics for Big Omics Data: Introduction to Bioconductor'
 author: "Raphael Gottardo"
 date: "January 21, 2014"
 output:
@@ -297,8 +296,9 @@ GEO also provides access to raw data that can be downloaded with `GEOquery`.
 # Make sure the directory exists
 if(length(dir("Data/GEO/",pattern="GSE29617"))==0)
 {
-  getGEOSuppFiles("GSE29617", makeDirectory = FALSE, baseDir = "./Data/GEO/")
-  untar("Data/GEO/GSE29617_RAW.tar", exdir="Data/GEO/GSE29617/", tar=Sys.getenv("TAR"))
+  getGEOSuppFiles("GSE29617", makeDirectory = TRUE, baseDir = "./Data/GEO/")
+  untar("./Data/GEO/GSE29617/GSE29617_RAW.tar", exdir="./Data/GEO/GSE29617/", 
+        tar=Sys.getenv("TAR"))
 }
 # untar downloaded data
 ```
