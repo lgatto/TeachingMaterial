@@ -1,7 +1,7 @@
 ---
-title: 'Bioinformatics for Big Omics Data: Probe summary for oligonucleotide arrays'
+title: 'Bioinformatics for Big Omics Data: Differential expression analysis'
 author: "Raphael Gottardo"
-date: "January 24, 2014"
+date: "January 28, 2014"
 output:
   ioslides_presentation:
     fig_caption: yes

@@ -1,6 +1,6 @@
-# Bioinformatics for Big Omics Data: Probe summary for oligonucleotide arrays
+# Bioinformatics for Big Omics Data: Differential expression analysis
 Raphael Gottardo  
-January 24, 2014  
+January 28, 2014  
 
 
 ## Setting up some options

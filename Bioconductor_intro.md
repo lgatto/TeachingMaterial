@@ -1,4 +1,4 @@
-# Bioinformatics for Big Omics Data: Introduction to Bioconductor 
+# Bioinformatics for Big Omics Data: Introduction to Bioconductor
 Raphael Gottardo  
 January 21, 2014  
 
@@ -1540,8 +1540,8 @@ GEO also provides access to raw data that can be downloaded with `GEOquery`.
 # Then the data would be stored locally in the data directory
 # Make sure the directory exists
 if (length(dir("Data/GEO/", pattern = "GSE29617")) == 0) {
-    getGEOSuppFiles("GSE29617", makeDirectory = FALSE, baseDir = "./Data/GEO/")
-    untar("Data/GEO/GSE29617_RAW.tar", exdir = "Data/GEO/GSE29617/", 
+    getGEOSuppFiles("GSE29617", makeDirectory = TRUE, baseDir = "./Data/GEO/")
+    untar("./Data/GEO/GSE29617/GSE29617_RAW.tar", exdir = "./Data/GEO/GSE29617/", 
         tar = Sys.getenv("TAR"))
 }
 # untar downloaded data

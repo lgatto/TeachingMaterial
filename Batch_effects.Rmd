@@ -1,35 +1,37 @@
-Bioinformatics for Big Omics Data: The danger of batch effects!
-===============================================================
-width: 1440
-height: 900
-transition: none
-font-family: 'Helvetica'
-css: my_style.css
-author: Raphael Gottardo, PhD
-date: `r format(Sys.Date(), format="%B %d, %Y")`
+---
+title: 'Bioinformatics for Big Omics Data: The danger of batch effects!'
+author: "Raphael Gottardo"
+date: "February 2, 2014"
+output:
+  ioslides_presentation:
+    fig_caption: yes
+    fig_retina: 1
+    keep_md: yes
+    smaller: yes
+---
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
 
+## Setting up some options
 
-
-```{r, cache=FALSE, echo=FALSE}
-# Let's first turn on the cache for increased performance.
+Let's first turn on the cache for increased performance and improved styling
+```{r, cache=FALSE}
 # Set some global knitr options
-library(knitr)
-opts_chunk$set(cache=TRUE)
+library("knitr")
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), cache=TRUE, messages=FALSE)
 ```
 
 
-Reading
-=======
+
+## Reading
+
 Before we start, you should read the following papers:
 
 1. Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007).
-2. Leek, J. T. et al. Tackling the widespread and critical impact of batch effects in high-throughput data. Nature Reviews Genetics 11, 733–739 (2010).
-3. Johnson, W. E., Li, C. & Rabinovic, A. Adjusting batch effects in microarray expression data using empirical Bayes methods. Biostatistics 8, 118–127 (2007).
+2. Leek, J. T. et al. Tackling the widespread and critical impact of batch effects in high-throughput data. Nature Reviews Genetics 11, 733-739 (2010).
+3. Johnson, W. E., Li, C. & Rabinovic, A. Adjusting batch effects in microarray expression data using empirical Bayes methods. Biostatistics 8, 118-127 (2007).
+4. Gagnon-Bartsch, J. A. & Speed, T. P. Using control genes to correct for unwanted variation in microarray data. Biostatistics 13, 539-552 (2012).
 
-Motivation
-==========
+## Motivation
 
 Batch effects are technical sources of variation that have been added to the samples during handling.
 Example of batch variables: lot number, technician, instrument settings, etc. 
@@ -37,16 +39,15 @@ Example of batch variables: lot number, technician, instrument settings, etc.
 If not adjusted for, these batch variables can have a substantial effects on downstream analysis
 
 
-Normalization and batch effects
-===============================
+## Normalization and batch effects
+
 Unfortunately, normalization will not always correct for batch effects. Technical variation due to batch effects might only affect a subset of the genes.
 
-![Batch effects](http://www.nature.com/nrg/journal/v11/n10/images/nrg2825-f1.jpg)
+<img src="http://www.nature.com/nrg/journal/v11/n10/images/nrg2825-f1.jpg" width=300>
 
-<small>For a published bladder cancer microarray data set obtained using an Affymetrix platform, we obtained the raw data for only the normal samples. Here, green and orange represent two different processing dates. </small>
+For a published bladder cancer microarray data set obtained using an Affymetrix platform, we obtained the raw data for only the normal samples. Here, green and orange represent two different processing dates. 
 
-Adjusting for batch effects
-===========================
+## Adjusting for batch effects
 
 **Two scenarios:**
 
@@ -56,8 +57,7 @@ Adjusting for batch effects
     - The batch effect needs to be estimated first and then corrected for, by adding the estimated variables as co-variates
 
 
-Singular value decomposition
-============================
+## Singular value decomposition
 
 Let $X$ be a matrix of size $m\times n$ ($m \ge n$) and rank $r\le n$
 then we can decompose $X$ as 
@@ -75,16 +75,14 @@ $S=diag(s_1, \dots, s_n)$ where $s_l\ge 0$ and $s_{r+1}=\dots=s_n=0$
 
 $X_i=\sum_j u_{ij}s_j\mathbf{v}_j$, which can be interpreted as a change of coordinate
 
-Relationship to principale component analysis
-=============================================
+## Relationship to principale component analysis
 
 $X=USV^T$, and we have $X^TX=VSU^TUSV^T=VS^2V^T$
 
 What happens if the rows of X are scaled?
 
 
-Surrogate variable analysis
-===========================
+## Surrogate variable analysis
 
 Let $X_{m\times n}=(x_1,..,x_m)^T$ be the matrix of normalized expression values, with $n$ arrays and $m$ genes. 
 Let $y=(y_1,..,y_n)^T$ be a vector of length $n$ representing the primary variable of interest (e.g covariates, vector of unknown coefficients). Without loss of generality model $x_{ij}=\mu_i+f_i( y_j) + e_{ij}$, where $\mu_i$ is the baseline level of expression, $f_i(y_j)=\mathbb{E}(x_{ij} | y_j)-\mu_i$ gives the relationship between measured variable of interest and gene $i$, and $e_{ij}$ is random noise with mean zero.
@@ -97,8 +95,7 @@ $$x_{ij}=\mu_i + f_i(y_j) +\sum_{l=1}^L \gamma_{l_i}g_{l_j} + e^*_{ij}$$
 
 and if factor $l$ does not influence the expression of gene $i$, we have $\gamma_{l_i}=0$.
 
-Surrogate variable analysis (Suite)
-===================================
+## Surrogate variable analysis
 
 In practice it is impossible to estimate $\sum_{l=1}^L \gamma_{l_i}g_{l_j}$, so Leek and Storey propose to use singular value decomposition to approximate the matrix $(\sum_{l=1}^L \gamma_{l_i}g_{l_j})_{ij}$ with by its singular value decomposition. Computationally, this is done in two steps:
 
@@ -106,18 +103,17 @@ In practice it is impossible to estimate $\sum_{l=1}^L \gamma_{l_i}g_{l_j}$, so 
 1. Detect unmodeled factors
 2. Construct surrogate variables
 
-Detect unmodel factor
-=====================
-
+## Detect unmodel factor
+  
 The main idea is as follows:
+
 - Compute the residual matrix $r_{ij} = x_{ij}- \hat{\mu}_i - \hat{f}_i(y_j)$
 - Perform the SVD of $R=(r_{ij})$
-- Permute the rows of the matrix $R$ to obtain $R*$. Regress  $r*_{ij} = x_{ij}- \hat{\mu}_i - \hat{f}_i(y_j)$ to get residual matrix $R_0$, and perform the SVD of $R_0$. Repeat this many times to generate a null distribution for the residuals, given that $y$ is accounted for. 
+- Permute the rows of the matrix $R$ to obtain $R^*$. Regress  $r^*_{ij} = x_{ij}- \hat{\mu}_i - \hat{f}_i(y_j)$ to get residual matrix $R_0$, and perform the SVD of $R_0$. Repeat this many times to generate a null distribution for the residuals, given that $y$ is accounted for. 
 - Compare the observed eigenvalues to those generated from the null distribution to obtain significance p-values
 - Record the $K$ significant variables
 
-Construct surrogate variables (suite)
-=============================
+## Construct surrogate variables (suite)
 
 1. Compute the residual matrix $r_{ij} = x_{ij} - \hat{\mu}_i - \hat{f}_i(y_j)$
 2. Perform the SVD of $R=(r_{ij})$
@@ -128,17 +124,16 @@ Let $e_k=(e_{k1},...,e_{kn})^T$ be the $k$-th column of $V$ (for $k=1,...,n$). T
 3. Use the selected genes to form a reduced expression matrix and repeat 1. The estimated factor will form the basis for the surrogate variables
 4. In any subsequent analysis include these factors in your model
 
-Using the sva package
-=====================
+## Using the sva package
 
 We're going to look at the dataset used in:
 
-<small>Nakaya, H. I., Wrammert, J., Lee, E. K., Racioppi, L., Marie-Kunze, S., Haining, W. N., et al. (2011). Systems biology of vaccination for seasonal influenza in humans. Nature Immunology, 12(8), 786–795. doi:10.1038/ni.2067</small>
+Nakaya, H. I., Wrammert, J., Lee, E. K., Racioppi, L., Marie-Kunze, S., Haining, W. N., et al. (2011). Systems biology of vaccination for seasonal influenza in humans. Nature Immunology, 12(8), 786795. doi:10.1038/ni.2067
 
 ```{r query-GEO, cache = TRUE}
 library(GEOquery)
 # Download the mapping information and processed data
-gds <- getGEO("GSE29619") 
+gds <- getGEO("GSE29619", destdir="Data/GEO/") 
 #main serie #gds[[1]] = LAIV/TIV 0809, gds[[2]] = FACS, gds[[3]] = TIV 0708
 ```
 
@@ -168,8 +163,8 @@ pData(gds_new[[2]]) <- sanitize_pdata(pData(gds_new[[2]]))
 pData(gds_new[[3]]) <- sanitize_pdata(pData(gds_new[[3]]))
 ```
 
-Using the sva package (suite)
-=====================
+## Using the sva package (suite)
+
 Let us estimate the (surrogate) factors as follows:
 ```{r}
 library(sva)
@@ -182,8 +177,8 @@ mm0_TIV_08 <- model.matrix(~ptid, TIV_08)
 sv_TIV_08 <- sva(exprs(TIV_08), mm_TIV_08, mod0 = mm0_TIV_08)
 ```
 
-Using the limma with estimated SVs
-=====================
+## Using the limma with estimated SVs
+
 Then we can use these variables in limma, as follows:
 ```{r}
 library(limma)
@@ -201,8 +196,7 @@ ebay_TIV_08 <- eBayes(fit_TIV_08)
 topT7 <- topTable(ebay_TIV_08, coef="timeD7", number=Inf)
 ```
 
-Using the limma with estimated SVs
-=====================
+## Using the limma with estimated SVs
 
 The result from the adjusted analysis:
 
@@ -210,8 +204,7 @@ The result from the adjusted analysis:
 topT7_sv[1:10, c("ID","Gene.Symbol")]
 ```
 
-Using the limma with estimated SVs
-=====================
+## Using the limma with estimated SVs
 
 The result from the un-adjusted analysis:
 

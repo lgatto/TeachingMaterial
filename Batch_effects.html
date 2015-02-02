@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Bioinformatics for Big Omics Data: Introduction to Bioconductor</title>
+  <title>Bioinformatics for Big Omics Data: The danger of batch effects!</title>
 
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -10,7 +10,6 @@
 
 
 
-  <meta name="date" content="2014-01-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -26,7 +25,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'Bioinformatics for Big Omics Data: Introduction to Bioconductor',
+                title: 'Bioinformatics for Big Omics Data: The danger of batch effects!',
                         useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -89,7 +88,7 @@
       <h1 data-config-title><!-- populated from slide_config.json --></h1>
       <h2 data-config-subtitle><!-- populated from slide_config.json --></h2>
       <p data-config-presenter><!-- populated from slide_config.json --></p>
-            <p style="margin-top: 6px; margin-left: -2px;">January 21, 2014</p>
+            <p style="margin-top: 6px; margin-left: -2px;">February 2, 2014</p>
           </hgroup>
   </slide>
 
@@ -101,1535 +100,285 @@
 library(&quot;knitr&quot;)
 opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), cache=TRUE, messages=FALSE)</pre>
 
-</article></slide><slide class=''><hgroup><h2>The Bioconductor project</h2></hgroup><article  id="the-bioconductor-project" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Reading</h2></hgroup><article  id="reading" class="smaller ">
+
+<p>Before we start, you should read the following papers:</p>
+
+<ol>
+<li>Leek, J. T. &amp; Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007).</li>
+<li>Leek, J. T. et al. Tackling the widespread and critical impact of batch effects in high-throughput data. Nature Reviews Genetics 11, 733-739 (2010).</li>
+<li>Johnson, W. E., Li, C. &amp; Rabinovic, A. Adjusting batch effects in microarray expression data using empirical Bayes methods. Biostatistics 8, 118-127 (2007).</li>
+<li>Gagnon-Bartsch, J. A. &amp; Speed, T. P. Using control genes to correct for unwanted variation in microarray data. Biostatistics 13, 539-552 (2012).</li>
+</ol>
+
+</article></slide><slide class=''><hgroup><h2>Motivation</h2></hgroup><article  id="motivation" class="smaller ">
+
+<p>Batch effects are technical sources of variation that have been added to the samples during handling. Example of batch variables: lot number, technician, instrument settings, etc.</p>
+
+<p>If not adjusted for, these batch variables can have a substantial effects on downstream analysis</p>
+
+</article></slide><slide class=''><hgroup><h2>Normalization and batch effects</h2></hgroup><article  id="normalization-and-batch-effects" class="smaller ">
+
+<p>Unfortunately, normalization will not always correct for batch effects. Technical variation due to batch effects might only affect a subset of the genes.</p>
+
+<p><img src="http://www.nature.com/nrg/journal/v11/n10/images/nrg2825-f1.jpg" width=300></p>
+
+<p>For a published bladder cancer microarray data set obtained using an Affymetrix platform, we obtained the raw data for only the normal samples. Here, green and orange represent two different processing dates.</p>
+
+</article></slide><slide class=''><hgroup><h2>Adjusting for batch effects</h2></hgroup><article  id="adjusting-for-batch-effects" class="smaller ">
+
+<p><strong>Two scenarios:</strong></p>
+
+<ol>
+<li>You have information about the batch variable
 
 <ul>
-<li><p><a href='http://www.bioconductor.org' title=''>Bioconductor</a> is an open source, open development software project to provide tools for the analysis and comprehension of high-throughput genomic data. It is based primarily on the R programming language.</p></li>
-<li><p>Most Bioconductor components are distributed as R packages. The functional scope of Bioconductor packages includes the analysis of DNA microarray, sequence, flow, SNP, and other data.</p></li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>Project Goals</h2></hgroup><article  id="project-goals" class="smaller ">
-
-<p>The broad goals of the Bioconductor project are:</p>
-
-<ul>
-<li>To provide widespread access to a broad range of powerful statistical and graphical methods for the analysis of genomic data.</li>
-<li>To facilitate the inclusion of biological metadata in the analysis of genomic data, e.g. literature data from PubMed, annotation data from Entrez genes.</li>
-<li>To provide a common software platform that enables the rapid development and deployment of extensible, scalable, and interoperable software.</li>
-<li>To further scientific understanding by producing high-quality documentation and reproducible research.</li>
-<li>To train researchers on computational and statistical methods for the analysis of genomic data.</li>
-</ul>
-
-</article></slide><slide class=''><hgroup><h2>Getting started</h2></hgroup><article  id="getting-started" class="smaller ">
-
-<p>Before running this presentation, you will need to:</p>
-
-<ul>
-<li><p>set the current directory in the console (go to session -&gt; Set Working Directory -&gt; To Source File Location)</p></li>
-<li>run the following commands which take up time
-
-<ul>
-<li>source(&quot;<a href='http://bioconductor.org/biocLite.R' title=''>http://bioconductor.org/biocLite.R</a>&quot;)</li>
-<li>biocLite()</li>
-<li>getSQLiteFile() Note: this will take some time</li>
-<li>getGEOSuppFiles(&quot;GSE29617&quot;, makeDirectory = TRUE, baseDir = &quot;./&quot;)</li>
-<li>untar(&quot;./GSE29617/GSE29617_RAW.tar&quot;, exdir=&quot;./GSE29617&quot;, tar = Sys.getenv(&quot;TAR&quot;))</li>
+<li>Use your batch effect as a covariate in your analysis (e.g. limma)</li>
 </ul></li>
-</ul>
-
-<p>Note that I have updated the code so that you may not have to do what&#39;s described above.</p>
-
-</article></slide><slide class=''><hgroup><h2>Getting started</h2></hgroup><article  id="getting-started-1" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>source(&quot;http://bioconductor.org/biocLite.R&quot;)</pre>
-
-<pre >## Bioconductor version 2.14 (BiocInstaller 1.14.3), ?biocLite for
-##   help
-## A newer version of Bioconductor is available for this version of
-##   R, ?BiocUpgrade for help</pre>
-
-<pre class = 'prettyprint lang-r'># Install all core packages and update all installed packages
-biocLite()</pre>
-
-<pre >## BioC_mirror: http://bioconductor.org
-## Using Bioconductor version 2.14 (BiocInstaller 1.14.3), R version
-##   3.1.2.
-## Old packages: &#39;dplyr&#39;, &#39;robustbase&#39;</pre>
-
-<p>You can also install specific packages</p>
-
-<pre class = 'prettyprint lang-r'>biocLite(c(&quot;GEOmetadb&quot;, &quot;GEOquery&quot;))</pre>
-
-</article></slide><slide class=''><hgroup><h2>The Gene Expression Omnibus (GEO)</h2></hgroup><article  id="the-gene-expression-omnibus-geo" class="smaller ">
-
-<p>The <a href='http://www.ncbi.nlm.nih.gov/geo/' title=''>Gene Expression Omnibus</a> is an international public repository that archives and freely distributes microarray, next-generation sequencing, and other forms of high-throughput functional genomics data submitted by the research community.</p>
-
-<p>The three main goals of GEO are to:</p>
+<li>You suspect a batch effect, but you don&#39;t know where it is coming from
 
 <ul>
-<li>Provide a robust, versatile database in which to efficiently store high-throughput functional genomic data</li>
-<li>Offer simple submission procedures and formats that support complete and well-annotated data deposits from the research community</li>
-<li>Provide user-friendly mechanisms that allow users to query, locate, review and download studies and gene expression profiles of interest</li>
-</ul>
+<li>The batch effect needs to be estimated first and then corrected for, by adding the estimated variables as co-variates</li>
+</ul></li>
+</ol>
 
-</article></slide><slide class=''><hgroup><h2>Getting data from GEO</h2></hgroup><article  id="getting-data-from-geo" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Singular value decomposition</h2></hgroup><article  id="singular-value-decomposition" class="smaller ">
 
-<p>Before getting data from GEO, we need to see what data we want. For that we can use the <code>GEOmetadb</code> package.</p>
+<p>Let \(X\) be a matrix of size \(m\times n\) (\(m \ge n\)) and rank \(r\le n\) then we can decompose \(X\) as</p>
 
-<pre class = 'prettyprint lang-r'>library(GEOmetadb)</pre>
-
-<p>Remember that packages in Bioconductor are well documented with a vignette that can be access as follows:</p>
-
-<pre class = 'prettyprint lang-r'>vignette(&quot;GEOmetadb&quot;)</pre>
-
-<p>or if the package contains multiple vignettes or a vignette with a non-standard name</p>
-
-<pre class = 'prettyprint lang-r'>browseVignettes(package = &quot;GEOmetadb&quot;)</pre>
-
-</article></slide><slide class=''><hgroup><h2>Finding the right data in GEO</h2></hgroup><article  id="finding-the-right-data-in-geo" class="smaller ">
-
-<p>Zhu, Y., Davis, S., Stephens, R., Meltzer, P. S., &amp; Chen, Y. (2008). GEOmetadb: powerful alternative search engine for the Gene Expression Omnibus. Bioinformatics (Oxford, England), 24(23), 2798–2800. <a href='doi:10.1093/bioinformatics/btn520' title=''>doi:10.1093/bioinformatics/btn520</a></p>
-
-<p>GEOmetadb uses a SQLite database to store all metadata associate with GEO.</p>
-
-<pre class = 'prettyprint lang-r'>## This will download the entire database, so can be slow
-if (!file.exists(&quot;GEOmetadb.sqlite&quot;)) {
-    # Download database only if it&#39;s not done already
-    getSQLiteFile()
-}</pre>
-
-</article></slide><slide class=''><hgroup><h2>Finding the right data in GEO</h2></hgroup><article  id="finding-the-right-data-in-geo-1" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>geo_con &lt;- dbConnect(SQLite(), &quot;GEOmetadb.sqlite&quot;)
-dbListTables(geo_con)</pre>
-
-<pre >##  [1] &quot;gds&quot;               &quot;gds_subset&quot;        &quot;geoConvert&quot;       
-##  [4] &quot;geodb_column_desc&quot; &quot;gpl&quot;               &quot;gse&quot;              
-##  [7] &quot;gse_gpl&quot;           &quot;gse_gsm&quot;           &quot;gsm&quot;              
-## [10] &quot;metaInfo&quot;          &quot;sMatrix&quot;</pre>
-
-<pre class = 'prettyprint lang-r'>dbListFields(geo_con, &quot;gse&quot;)</pre>
-
-<pre >##  [1] &quot;ID&quot;                   &quot;title&quot;                &quot;gse&quot;                 
-##  [4] &quot;status&quot;               &quot;submission_date&quot;      &quot;last_update_date&quot;    
-##  [7] &quot;pubmed_id&quot;            &quot;summary&quot;              &quot;type&quot;                
-## [10] &quot;contributor&quot;          &quot;web_link&quot;             &quot;overall_design&quot;      
-## [13] &quot;repeats&quot;              &quot;repeats_sample_list&quot;  &quot;variable&quot;            
-## [16] &quot;variable_description&quot; &quot;contact&quot;              &quot;supplementary_file&quot;</pre>
-
-</article></slide><slide class=''><hgroup><h2>Finding a study</h2></hgroup><article  id="finding-a-study" class="smaller ">
-
-<p>The basic record types in GEO include Platforms (GPL), Samples (GSM), Series (GSE) and DataSets (GDS)</p>
-
-<pre class = 'prettyprint lang-r'>dbGetQuery(geo_con, &quot;SELECT gse.ID, gse.title, gse.gse FROM gse WHERE gse.pubmed_id=&#39;21743478&#39;;&quot;)</pre>
-
-<pre >##      ID
-## 1 26409
-## 2 26410
-## 3 26412
-## 4 26413
-## 5 26414
-##                                                                                                          title
-## 1                  Time Course of Young Adults Vaccinated with Influenza TIV Vaccine during 2007/08 Flu Season
-## 2                 Time Course of Young Adults Vaccinated with Influenza LAIV Vaccine during 2008/09 Flu Season
-## 3                  Time Course of Young Adults Vaccinated with Influenza TIV Vaccine during 2008/09 Flu Season
-## 4 FACS-sorted cells from Young Adults Vaccinated with Influenza TIV or LAIV Vaccines during 2008/09 Flu Season
-## 5                                              Systems biology of vaccination for seasonal influenza in humans
-##        gse
-## 1 GSE29614
-## 2 GSE29615
-## 3 GSE29617
-## 4 GSE29618
-## 5 GSE29619</pre>
-
-</article></slide><slide class=''><hgroup><h2>Finding a study</h2></hgroup><article  id="finding-a-study-1" class="smaller ">
-
-<p>What samples were used?</p>
-
-<pre class = 'prettyprint lang-r'>dbGetQuery(geo_con, &quot;SELECT gse.gse, gsm.gsm, gsm.title FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j JOIN gsm ON j.gsm=gsm.gsm WHERE gse.pubmed_id=&#39;21743478&#39; LIMIT 5;&quot;)</pre>
-
-<pre >##    gse.gse   gsm.gsm                                     gsm.title
-## 1 GSE29614 GSM733816 2007 TIV subject ID 12 at D0 post-vaccination
-## 2 GSE29614 GSM733817 2007 TIV subject ID 12 at D3 post-vaccination
-## 3 GSE29614 GSM733818 2007 TIV subject ID 12 at D7 post-vaccination
-## 4 GSE29614 GSM733819 2007 TIV subject ID 16 at D0 post-vaccination
-## 5 GSE29614 GSM733820 2007 TIV subject ID 16 at D3 post-vaccination</pre>
-
-<p>gse_gsm contains the gse number that is associated with the gsm number. j is the name of a table that is created by joining gse and ges_gsm. Then j is joined with table gsm.</p>
-
-</article></slide><slide class=''><hgroup><h2>Finding a study</h2></hgroup><article  id="finding-a-study-2" class="smaller ">
-
-<p>What about raw data?</p>
-
-<pre class = 'prettyprint lang-r'>res &lt;- dbGetQuery(geo_con, &quot;SELECT gsm.gsm, gsm.supplementary_file FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j JOIN gsm ON j.gsm=gsm.gsm WHERE gse.pubmed_id=&#39;21743478&#39; LIMIT 5;&quot;)
-head(res)</pre>
-
-<pre >##     gsm.gsm
-## 1 GSM733816
-## 2 GSM733817
-## 3 GSM733818
-## 4 GSM733819
-## 5 GSM733820
-##                                                                                                                                                  gsm.supplementary_file
-## 1 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
-## 2 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
-## 3 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733818/suppl/GSM733818.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733818/suppl/GSM733818.chp.gz
-## 4 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733819/suppl/GSM733819.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733819/suppl/GSM733819.chp.gz
-## 5 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733820/suppl/GSM733820.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733820/suppl/GSM733820.chp.gz</pre>
-
-<p>raw data is contained in the supplementary files, which are listed in the gsm file.</p>
-
-</article></slide><slide class=''><hgroup><h2>Finding specific data</h2></hgroup><article  id="finding-specific-data" class="smaller ">
-
-<p>To get list of manufacturers:</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-manu &lt;- data.table(dbGetQuery(geo_con, &quot;SELECT manufacturer FROM gpl&quot;))
-manu[, list(length(manufacturer)), by = manufacturer]</pre>
-
-<pre >##                                                           manufacturer V1
-##    1:                                                               NA  1
-##    2:                                                       Affymetrix  1
-##    3:                                          BD Biosciences Clontech  1
-##    4:                                                    Sigma Genosys  1
-##    5: Advanced Technology Center Microarray Facility (NIH/NCI/CCR/ATC)  1
-##   ---                                                                    
-## 2074:                                                Biovue Technology  1
-## 2075:                                     NanoString, Seattle, WA, USA  1
-## 2076:                                                         Homemade  1
-## 2077:                                           Qiagen (SABiosciences)  1
-## 2078:                                              Affymetrix Panomics  1</pre>
-
-</article></slide><slide class=''><hgroup><h2>Finding specific data</h2></hgroup><article  id="finding-specific-data-1" class="smaller ">
-
-<p>To get supplementary file names ending with cel.gz from only manufacturer Affymetrix</p>
-
-<pre class = 'prettyprint lang-r'>res &lt;- dbGetQuery(geo_con, &quot;SELECT gpl.bioc_package, gsm.title, gsm.series_id, gsm.gpl, gsm.supplementary_file FROM gsm JOIN gpl ON gsm.gpl=gpl.gpl WHERE gpl.manufacturer=&#39;Affymetrix&#39; AND gsm.supplementary_file like &#39;%CEL.gz&#39;;&quot;)
-head(res)</pre>
-
-<pre >##   bioc_package               title series_id   gpl
-## 1       hu6800          BM_CD34-1a    GSE500 GPL80
-## 2       hu6800          BM_CD34-1b    GSE500 GPL80
-## 3       hu6800           BM_CD34-2    GSE500 GPL80
-## 4       hu6800        GPBMC_CD34-1    GSE500 GPL80
-## 5       hu6800        GPBMC_CD34-2    GSE500 GPL80
-## 6       rgu34a CNS-SC_Inj24h-3A-s2    GSE464 GPL85
-##                                                            supplementary_file
-## 1    ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSMnnn/GSM575/suppl/GSM575.cel.gz
-## 2    ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSMnnn/GSM576/suppl/GSM576.cel.gz
-## 3    ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSMnnn/GSM577/suppl/GSM577.cel.gz
-## 4    ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSMnnn/GSM578/suppl/GSM578.cel.gz
-## 5    ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSMnnn/GSM579/suppl/GSM579.cel.gz
-## 6 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM1nnn/GSM1136/suppl/GSM1136.CEL.gz</pre>
-
-</article></slide><slide class=''><hgroup><h2>Finding specific data</h2></hgroup><article  id="finding-specific-data-2" class="smaller ">
-
-<p>From previous table:</p>
+<p>\[X=USV^T\]</p>
 
 <ul>
-<li>bioc_package = bioconductor package</li>
-<li>hu6800 = Affymetrix HuGeneFL Genome Array annotation data (chip hu6800)</li>
-<li>rgu34a = Affymetrix Rat Genome U34 Set annotation data (chip rgu34a)</li>
-<li>title = data set title or study title</li>
+<li>U is the matrix of left singular vectors (eigenassays)</li>
+<li>V is the matrix of right singular vectors (eigengenes)</li>
+<li>S is the matrix of singular values (eigenvalues)</li>
 </ul>
 
-<p>For example BM_CD34-1a = bone marrow flow-sorted CD34+ cells (&gt;95% purity) and has GSM sample number GSM575.</p>
+<p>\(U^TU=VV^T=I\) (orthogonal vectors)</p>
 
-</article></slide><slide class=''><hgroup><h2>Getting the data we want</h2></hgroup><article  id="getting-the-data-we-want" class="smaller ">
+<p>\(S=diag(s_1, \dots, s_n)\) where \(s_l\ge 0\) and \(s_{r+1}=\dots=s_n=0\)</p>
 
-<p>Now that we have our GSE ID we can use the GEOquery to download the corresponding data as follows,</p>
+<p>\(X_i=\sum_j u_{ij}s_j\mathbf{v}_j\), which can be interpreted as a change of coordinate</p>
 
-<pre class = 'prettyprint lang-r'># Download the mapping information and processed data This
-# returns a list of eSets
-GSE29617_set &lt;- getGEO(&quot;GSE29617&quot;, destdir = &quot;Data/GEO/&quot;)[[1]]</pre>
+</article></slide><slide class=''><hgroup><h2>Relationship to principale component analysis</h2></hgroup><article  id="relationship-to-principale-component-analysis" class="smaller ">
 
-<pre >## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE29nnn/GSE29617/matrix/
-## Found 1 file(s)
-## GSE29617_series_matrix.txt.gz
-## File stored at: 
-## Data/GEO//GPL13158.soft</pre>
+<p>\(X=USV^T\), and we have \(X^TX=VSU^TUSV^T=VS^2V^T\)</p>
 
-<p>which returns (a list of) an ExpressionSet (eSet).</p>
+<p>What happens if the rows of X are scaled?</p>
 
-</article></slide><slide class=''><hgroup><h2>The eSet class</h2></hgroup><article  id="the-eset-class" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Surrogate variable analysis</h2></hgroup><article  id="surrogate-variable-analysis" class="smaller ">
 
-<p>What is an eSet? An S4 class that tries to: - Coordinate high through-put (e.g., gene expression) and phenotype data. - Provide common data container for diverse Bioconductor packages.</p>
+<p>Let \(X_{m\times n}=(x_1,..,x_m)^T\) be the matrix of normalized expression values, with \(n\) arrays and \(m\) genes. Let \(y=(y_1,..,y_n)^T\) be a vector of length \(n\) representing the primary variable of interest (e.g covariates, vector of unknown coefficients). Without loss of generality model \(x_{ij}=\mu_i+f_i( y_j) + e_{ij}\), where \(\mu_i\) is the baseline level of expression, \(f_i(y_j)=\mathbb{E}(x_{ij} | y_j)-\mu_i\) gives the relationship between measured variable of interest and gene \(i\), and \(e_{ij}\) is random noise with mean zero.</p>
 
-<pre class = 'prettyprint lang-r'>str(GSE29617_set, max.level = 2)</pre>
+<p>Suppose there are \(L\) biologically meaningful unmodeled factors, such as age, environmental exposure, genotype, etc. Let \(g_l = (g_{l1},...,g_{ln})\) be an <em>arbitrarily complicated function</em> of the lth factor across all \(n\) arrays, for \(l=1,2,...,L\). Our model becomes:</p>
 
-<pre >## Formal class &#39;ExpressionSet&#39; [package &quot;Biobase&quot;] with 7 slots
-##   ..@ experimentData   :Formal class &#39;MIAME&#39; [package &quot;Biobase&quot;] with 13 slots
-##   ..@ assayData        :&lt;environment: 0x7ff331928540&gt; 
-##   ..@ phenoData        :Formal class &#39;AnnotatedDataFrame&#39; [package &quot;Biobase&quot;] with 4 slots
-##   ..@ featureData      :Formal class &#39;AnnotatedDataFrame&#39; [package &quot;Biobase&quot;] with 4 slots
-##   ..@ annotation       : chr &quot;GPL13158&quot;
-##   ..@ protocolData     :Formal class &#39;AnnotatedDataFrame&#39; [package &quot;Biobase&quot;] with 4 slots
-##   ..@ .__classVersion__:Formal class &#39;Versions&#39; [package &quot;Biobase&quot;] with 1 slot</pre>
+<p>\[x_{ij}=\mu_i + f_i(y_j) +\sum_{l=1}^L \gamma_{l_i}g_{l_j} + e^*_{ij}\]</p>
 
-<p>str() is the command to get the internal structure of an R object. An eSet contains the necessary &quot;parts&quot; to summarize an experiment.</p>
+<p>and if factor \(l\) does not influence the expression of gene \(i\), we have \(\gamma_{l_i}=0\).</p>
 
-</article></slide><slide class=''><hgroup><h2>Classes and methods</h2></hgroup><article  id="classes-and-methods" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Surrogate variable analysis</h2></hgroup><article  id="surrogate-variable-analysis-1" class="smaller ">
 
-<p><strong>Everything in R is an OBJECT.</strong></p>
+<p>In practice it is impossible to estimate \(\sum_{l=1}^L \gamma_{l_i}g_{l_j}\), so Leek and Storey propose to use singular value decomposition to approximate the matrix \((\sum_{l=1}^L \gamma_{l_i}g_{l_j})_{ij}\) with by its singular value decomposition. Computationally, this is done in two steps:</p>
+
+<ol>
+<li>Detect unmodeled factors</li>
+<li>Construct surrogate variables</li>
+</ol>
+
+</article></slide><slide class=''><hgroup><h2>Detect unmodel factor</h2></hgroup><article  id="detect-unmodel-factor" class="smaller ">
+
+<p>The main idea is as follows:</p>
 
 <ul>
-<li>A class is the definition of an object.</li>
-<li>A method is a function that performs specific calculations on objects of a specific class. Generic functions are used to determine the class of its arguments and select the appropriate method. A generic function is a function with a collection of methods.</li>
-<li>See ?Classes and ?Methods for more information.</li>
+<li>Compute the residual matrix \(r_{ij} = x_{ij}- \hat{\mu}_i - \hat{f}_i(y_j)\)</li>
+<li>Perform the SVD of \(R=(r_{ij})\)</li>
+<li>Permute the rows of the matrix \(R\) to obtain \(R^*\). Regress \(r^*_{ij} = x_{ij}- \hat{\mu}_i - \hat{f}_i(y_j)\) to get residual matrix \(R_0\), and perform the SVD of \(R_0\). Repeat this many times to generate a null distribution for the residuals, given that \(y\) is accounted for.</li>
+<li>Compare the observed eigenvalues to those generated from the null distribution to obtain significance p-values</li>
+<li>Record the \(K\) significant variables</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Classes and methods</h2></hgroup><article  id="classes-and-methods-1" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Construct surrogate variables (suite)</h2></hgroup><article  id="construct-surrogate-variables-suite" class="smaller ">
 
-<pre class = 'prettyprint lang-r'>data(iris)
-class(iris)</pre>
+<ol>
+<li>Compute the residual matrix \(r_{ij} = x_{ij} - \hat{\mu}_i - \hat{f}_i(y_j)\)</li>
+<li>Perform the SVD of \(R=(r_{ij})\)</li>
+</ol>
 
-<pre >## [1] &quot;data.frame&quot;</pre>
+<p>Let \(e_k=(e_{k1},...,e_{kn})^T\) be the \(k\)-th column of \(V\) (for \(k=1,...,n\)). These \(e_k\) are the residual eigengenes and represent orthogonal residual signals independent of the signal due to the primary variable.</p>
 
-<pre class = 'prettyprint lang-r'>summary(iris)</pre>
+<ol>
+<li>Regress \(e_k\) on the \(x_i\) to access the significance of the \(k\)-th factor on gene \(i\)</li>
+<li>Use the selected genes to form a reduced expression matrix and repeat 1. The estimated factor will form the basis for the surrogate variables</li>
+<li>In any subsequent analysis include these factors in your model</li>
+</ol>
 
-<pre >##   Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   
-##  Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  
-##  1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  
-##  Median :5.800   Median :3.000   Median :4.350   Median :1.300  
-##  Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  
-##  3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  
-##  Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  
-##        Species  
-##  setosa    :50  
-##  versicolor:50  
-##  virginica :50  
-##                 
-##                 
-## </pre>
+</article></slide><slide class=''><hgroup><h2>Using the sva package</h2></hgroup><article  id="using-the-sva-package" class="smaller ">
 
-</article></slide><slide class=''><hgroup><h2>Classes and methods</h2></hgroup><article  id="classes-and-methods-2" class="smaller ">
+<p>We&#39;re going to look at the dataset used in:</p>
 
-<p>There are two types of classes in R: S3 Classes (old style, informal) and S4 Classes - (new style, more rigorous and formal)</p>
+<p>Nakaya, H. I., Wrammert, J., Lee, E. K., Racioppi, L., Marie-Kunze, S., Haining, W. N., et al. (2011). Systems biology of vaccination for seasonal influenza in humans. Nature Immunology, 12(8), 786795. <a href='doi:10.1038/ni.2067' title=''>doi:10.1038/ni.2067</a></p>
 
-<pre class = 'prettyprint lang-r'># S3 class
-head(methods(class = &quot;data.frame&quot;))</pre>
+<pre class = 'prettyprint lang-r'>library(GEOquery)</pre>
 
-<pre >## [1] &quot;[.data.frame&quot;    &quot;[[.data.frame&quot;   &quot;[[&lt;-.data.frame&quot; &quot;[&lt;-.data.frame&quot; 
-## [5] &quot;$.data.frame&quot;    &quot;$&lt;-.data.frame&quot;</pre>
+<pre >## Loading required package: Biobase
+## Loading required package: BiocGenerics
+## Loading required package: parallel
+## 
+## Attaching package: &#39;BiocGenerics&#39;
+## 
+## The following objects are masked from &#39;package:parallel&#39;:
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+## 
+## The following object is masked from &#39;package:stats&#39;:
+## 
+##     xtabs
+## 
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist
+## 
+## Welcome to Bioconductor
+## 
+##     Vignettes contain introductory material; view with
+##     &#39;browseVignettes()&#39;. To cite Bioconductor, see
+##     &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.
+## 
+## Setting options(&#39;download.file.method.GEOquery&#39;=&#39;auto&#39;)</pre>
 
-<pre class = 'prettyprint lang-r'># S4 class
-showMethods(class = &quot;eSet&quot;)</pre>
+<pre class = 'prettyprint lang-r'># Download the mapping information and processed data
+gds &lt;- getGEO(&quot;GSE29619&quot;, destdir = &quot;Data/GEO/&quot;)</pre>
+
+<pre >## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE29nnn/GSE29619/matrix/
+## Found 3 file(s)
+## GSE29619-GPL13158_series_matrix.txt.gz
+## Using locally cached version: Data/GEO//GSE29619-GPL13158_series_matrix.txt.gz
+## Using locally cached version of GPL13158 found here:
+## Data/GEO//GPL13158.soft 
+## GSE29619-GPL3921_series_matrix.txt.gz
+## Using locally cached version: Data/GEO//GSE29619-GPL3921_series_matrix.txt.gz
+## Using locally cached version of GPL3921 found here:
+## Data/GEO//GPL3921.soft 
+## GSE29619-GPL570_series_matrix.txt.gz
+## Using locally cached version: Data/GEO//GSE29619-GPL570_series_matrix.txt.gz
+## Using locally cached version of GPL570 found here:
+## Data/GEO//GPL570.soft</pre>
+
+<pre class = 'prettyprint lang-r'># main serie #gds[[1]] = LAIV/TIV 0809, gds[[2]] = FACS,
+# gds[[3]] = TIV 0708</pre>
+
+<p>but before we can use this, we need to clean up the pData a bit (see code in .Rpres file).</p>
+
+</article></slide><slide class=''><hgroup><h2>Using the sva package (suite)</h2></hgroup><article  id="using-the-sva-package-suite" class="smaller ">
+
+<p>Let us estimate the (surrogate) factors as follows:</p>
+
+<pre class = 'prettyprint lang-r'>library(sva)</pre>
+
+<pre >## Loading required package: corpcor
+## Loading required package: mgcv
+## Loading required package: nlme
+## This is mgcv 1.8-4. For overview type &#39;help(&quot;mgcv-package&quot;)&#39;.</pre>
+
+<pre class = 'prettyprint lang-r'>TIV_08 &lt;- gds_new[[1]][, grepl(&quot;2008-TIV&quot;, pData(gds_new[[1]])$description)]
+mm_TIV_08 &lt;- model.matrix(~ptid + time, TIV_08)
+mm0_TIV_08 &lt;- model.matrix(~ptid, TIV_08)
+# Estimate the surrogate variables
+sv_TIV_08 &lt;- sva(exprs(TIV_08), mm_TIV_08, mod0 = mm0_TIV_08)</pre>
+
+<pre >## Number of significant surrogate variables is:  12 
+## Iteration (out of 5 ):1  2  3  4  5</pre>
+
+</article></slide><slide class=''><hgroup><h2>Using the limma with estimated SVs</h2></hgroup><article  id="using-the-limma-with-estimated-svs" class="smaller ">
+
+<p>Then we can use these variables in limma, as follows:</p>
+
+<pre class = 'prettyprint lang-r'>library(limma)</pre>
 
 <pre >## 
-## Function &quot;.DollarNames&quot;:
-##  &lt;not an S4 generic function&gt;
+## Attaching package: &#39;limma&#39;
 ## 
-## Function &quot;.SEW&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: [ (package base)
-## x=&quot;eSet&quot;
+## The following object is masked from &#39;package:BiocGenerics&#39;:
 ## 
-## Function: [[ (package base)
-## x=&quot;eSet&quot;
-## 
-## Function: [[&lt;- (package base)
-## x=&quot;eSet&quot;
-## 
-## 
-## Function &quot;%in%&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: $ (package base)
-## x=&quot;eSet&quot;
-## 
-## Function: $&lt;- (package base)
-## x=&quot;eSet&quot;
-## 
-## Function: abstract (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## 
-## Function &quot;active&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;active&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;addAttributes&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;aggregate&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;AIC&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: annotation (package BiocGenerics)
-## object=&quot;eSet&quot;
-## 
-## Function: annotation&lt;- (package BiocGenerics)
-## object=&quot;eSet&quot;, value=&quot;character&quot;
-## 
-## 
-## Function &quot;applyFun&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;applyFun&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;applyParams&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;applyParams&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;as.env&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;as.factor&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;as.matrix&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;as.table&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: assayData (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: assayData&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;AssayData&quot;
-## 
-## 
-## Function &quot;BIC&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;by&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;chartr&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;classNameForDisplay&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;clearMemoryManagement&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;clone&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;coef&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: coerce (package methods)
-## from=&quot;eSet&quot;, to=&quot;ExpressionSet&quot;
-## from=&quot;eSet&quot;, to=&quot;MultiSet&quot;
-## from=&quot;ExpressionSet&quot;, to=&quot;eSet&quot;
-## 
-## 
-## Function &quot;collapse&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;colnames&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;columnMetadata&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;columnMetadata&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: combine (package BiocGenerics)
-## x=&quot;eSet&quot;, y=&quot;eSet&quot;
-## 
-## 
-## Function &quot;comment.SAX&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;compare&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;compareRecursively&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;complete.cases&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;confint&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;cor&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;countMatches&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;countOverlaps&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;countQueryHits&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;countSubjectHits&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;cov&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;coverage&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;dbConn&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;dbiDataType&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;desc&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;desc&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: description (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: description&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;MIAME&quot;
-## 
-## 
-## Function &quot;diff&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: dim (package base)
-## x=&quot;eSet&quot;
-## 
-## Function: dimnames (package base)
-## x=&quot;eSet&quot;
-## 
-## Function: dimnames&lt;- (package base)
-## x=&quot;eSet&quot;
-## 
-## Function: dims (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## 
-## Function &quot;disjoin&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;disjointBins&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;distance&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;distanceToNearest&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;docName&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;docName&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;drop&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;droplevels&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;elementLengths&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;elementMetadata&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;elementMetadata&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;elementType&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;end&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;end&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;endElement.SAX&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;endoapply&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;entityDeclaration.SAX&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;evalSeparately&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;expand&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: experimentData (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: experimentData&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;MIAME&quot;
-## 
-## 
-## Function &quot;extractList&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;extractROWS&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: fData (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: fData&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;data.frame&quot;
-## 
-## Function: featureData (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: featureData&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;AnnotatedDataFrame&quot;
-## 
-## Function: featureNames (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: featureNames&lt;- (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## 
-## Function &quot;filterRules&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;filterRules&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;findMatches&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;findOverlaps&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;findRange&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;findRun&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;findXIncludeStartNodes&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;fixedColumnNames&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;flank&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;flatten&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;follow&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;formals&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;free&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;functions&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: fvarLabels (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: fvarLabels&lt;- (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: fvarMetadata (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: fvarMetadata&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;data.frame&quot;
-## 
-## 
-## Function &quot;gaps&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;getEffectiveNamespaces&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;getEncoding&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;getEncodingREnum&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;getListElement&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;getTableElementType&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;GPL&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;grouplength&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;grouprank&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;GSM&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;gsub&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;high2low&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;ifelse&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: initialize (package methods)
-## .Object=&quot;eSet&quot;
-## 
-## 
-## Function &quot;IQR&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;isConstant&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;isDisjoint&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;isEmpty&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;isNormal&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;iteratorFun&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;iteratorFun&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;levels&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;Lfilter&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;logLik&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;low2high&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;Ltablename&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;mad&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;map&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;maskedratio&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;maskedwidth&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;mcols&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;mcols&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;mean&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;median&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;members&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;mendoapply&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;merge&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;metadata&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;mid&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;mstack&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;na.exclude&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;na.omit&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;narrow&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;nchar&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;nearest&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;ngap&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;nir_list&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;nobj&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;nobs&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;normalizeSingleBracketReplacementValue&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: notes (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: notes&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;ANY&quot;
-## 
-## 
-## Function &quot;nrun&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;orderAsRanges&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;overlapsAny&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;packageName&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;params&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: pData (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: pData&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;data.frame&quot;
-## 
-## 
-## Function &quot;pgap&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: phenoData (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: phenoData&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;AnnotatedDataFrame&quot;
-## 
-## 
-## Function &quot;pintersect&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;plot&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;pmap&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;pop&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;precede&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: preproc (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: preproc&lt;- (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## 
-## Function &quot;processingInstruction.SAX&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;processSelfMatching&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;profile&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;promoters&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;prompt&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: protocolData (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: protocolData&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;AnnotatedDataFrame&quot;
-## 
-## 
-## Function &quot;psetdiff&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: pubMedIds (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: pubMedIds&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;character&quot;
-## 
-## 
-## Function &quot;punion&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;push&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;quantile&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;queryHits&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;queryLength&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;rangedData&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;rangedData&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;ranges&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;ranges&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;rdapply&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;readHTMLList&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;readHTMLTable&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;readKeyValueDB&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;readSolrDoc&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;reduce&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;reducerFun&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;reducerFun&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;reducerParams&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;reducerParams&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;reflect&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;relistToClass&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;removeAttributes&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;removeXMLNamespaces&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;rename&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;replaceROWS&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;reset&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;resize&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;restrict&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;rev&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;revElements&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;reverse&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;Rfilter&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;Rle&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;rownames&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;Rtablename&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;runLength&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;runLength&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;runmean&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;runmed&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;runq&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;runsum&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;runValue&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;runValue&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;runwtsum&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: sampleNames (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: sampleNames&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;ANY&quot;
-## 
-## 
-## Function &quot;saveXML&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;score&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;score&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;sd&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;selectSomeIndex&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;selfmatch&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;setListElement&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;shift&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;shiftApply&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: show (package methods)
-## object=&quot;eSet&quot;
-## 
-## 
-## Function &quot;showAsCell&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;simplify&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;simplify&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;simplifyNamespaces&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;slice&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;smoothEnds&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;source&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;space&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;split&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;split&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;splitAsListReturnedClass&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;splitRanges&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;stack&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;start&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;start&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;startElement.SAX&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: storageMode (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: storageMode&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;character&quot;
-## 
-## 
-## Function &quot;sub&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;subject&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;subjectHits&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;subjectLength&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;subsetByFilter&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;subsetByOverlaps&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;substr&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;substring&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;subviews&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;t&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;text.SAX&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;threebands&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;tile&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;togroup&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;togrouplength&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;togrouprank&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;toHTML&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;toList&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;toLList&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;tolower&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;toRList&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;toString&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;toupper&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;trim&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;universe&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;universe&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;unsplit&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;unstrsplit&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;update&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: updateObject (package BiocGenerics)
-## object=&quot;eSet&quot;
-## 
-## Function: updateObjectTo (package Biobase)
-## object=&quot;eSet&quot;, template=&quot;eSet&quot;
-## 
-## 
-## Function &quot;values&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;values&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;var&quot;:
-##  &lt;not an S4 generic function&gt;
-## Function: varLabels (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: varLabels&lt;- (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: varMetadata (package Biobase)
-## object=&quot;eSet&quot;
-## 
-## Function: varMetadata&lt;- (package Biobase)
-## object=&quot;eSet&quot;, value=&quot;data.frame&quot;
-## 
-## 
-## Function &quot;vcov&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;viewApply&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;viewMaxs&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;viewMeans&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;viewMins&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;viewRangeMaxs&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;viewRangeMins&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;Views&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;viewSums&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;viewWhichMaxs&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;viewWhichMins&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;vmembers&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;which&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;which.max&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;which.min&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;whichFirstNotNormal&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;width&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;width&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;window&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;window&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;with&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;within&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlAttrs&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlAttrsToDataFrame&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlChildren&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlClone&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlNamespace&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlNamespaces&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlParent&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlRoot&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlSource&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlSourceFunctions&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlSourceSection&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlSourceTask&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlSourceThread&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlToDataFrame&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlToS4&quot;:
-##  &lt;not an S4 generic function&gt;
-## 
-## Function &quot;xmlValue&lt;-&quot;:
-##  &lt;not an S4 generic function&gt;</pre>
+##     plotMA</pre>
 
-</article></slide><slide class=''><hgroup><h2>The eSet</h2></hgroup><article  id="the-eset" class="smaller ">
+<pre class = 'prettyprint lang-r'># Add the surrogate variables to the design matrix
+modSv &lt;- cbind(mm_TIV_08, sv_TIV_08$sv)
+# Use the new design matrix
+fit_TIV_08 &lt;- lmFit(TIV_08, modSv)
+ebay_TIV_08 &lt;- eBayes(fit_TIV_08)
+topT7_sv &lt;- topTable(ebay_TIV_08, coef = &quot;timeD7&quot;, number = Inf)
+# Compare to the old analysis
+fit_TIV_08 &lt;- lmFit(TIV_08, mm_TIV_08)
+ebay_TIV_08 &lt;- eBayes(fit_TIV_08)
+topT7 &lt;- topTable(ebay_TIV_08, coef = &quot;timeD7&quot;, number = Inf)</pre>
 
-<p>You can get a sense of the defined methods for an <code>eSet</code> as follows:</p>
+</article></slide><slide class=''><hgroup><h2>Using the limma with estimated SVs</h2></hgroup><article  id="using-the-limma-with-estimated-svs-1" class="smaller ">
 
-<pre class = 'prettyprint lang-r'>library(Biobase)
-showMethods(class = &quot;eSet&quot;)</pre>
+<p>The result from the adjusted analysis:</p>
 
-<p>in particular, the following methods are rather convenient:</p>
+<pre class = 'prettyprint lang-r'>topT7_sv[1:10, c(&quot;ID&quot;, &quot;Gene.Symbol&quot;)]</pre>
 
-<ul>
-<li>assayData(obj); assayData(obj) <code>&lt;-</code> value: access or assign assayData</li>
-<li>phenoData(obj); phenoData(obj) <code>&lt;-</code> value: access or assign phenoData</li>
-<li>experimentData(obj); experimentData(obj) <code>&lt;-</code> value: access or assign experimentData</li>
-<li>annotation(obj); annotation(obj) <code>&lt;-</code> value: access or assign annotation</li>
-</ul>
+<pre >##                            ID
+## 211430_PM_s_at 211430_PM_s_at
+## 232991_PM_at     232991_PM_at
+## 219276_PM_x_at 219276_PM_x_at
+## 239401_PM_at     239401_PM_at
+## 239637_PM_at     239637_PM_at
+## 227999_PM_at     227999_PM_at
+## 226481_PM_at     226481_PM_at
+## 216801_PM_at     216801_PM_at
+## 241402_PM_at     241402_PM_at
+## 235180_PM_at     235180_PM_at
+##                                                          Gene.Symbol
+## 211430_PM_s_at IGH@ /// IGHG1 /// IGHM /// IGHV4-31 /// LOC100290146
+## 232991_PM_at                                                        
+## 219276_PM_x_at                                               C9orf82
+## 239401_PM_at                                                        
+## 239637_PM_at                                                        
+## 227999_PM_at                                                  PWWP2B
+## 226481_PM_at                                                   VPRBP
+## 216801_PM_at                                                        
+## 241402_PM_at                                                  TSEN54
+## 235180_PM_at                                                    STYX</pre>
 
-</article></slide><slide class=''><hgroup><h2>The ExpressionSet subclass</h2></hgroup><article  id="the-expressionset-subclass" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Using the limma with estimated SVs</h2></hgroup><article  id="using-the-limma-with-estimated-svs-2" class="smaller ">
 
-<p>Similar to the <code>eSet</code> class but tailored to gene expression, with an expression matrix that can be accessed with the <code>exprs</code> method.</p>
+<p>The result from the un-adjusted analysis:</p>
 
-<pre class = 'prettyprint lang-r'>class(GSE29617_set)</pre>
+<pre class = 'prettyprint lang-r'>topT7[1:10, c(&quot;ID&quot;, &quot;Gene.Symbol&quot;)]</pre>
 
-<pre >## [1] &quot;ExpressionSet&quot;
-## attr(,&quot;package&quot;)
-## [1] &quot;Biobase&quot;</pre>
+<pre >##                              ID
+## 211430_PM_s_at   211430_PM_s_at
+## 241824_PM_at       241824_PM_at
+## 216576_PM_x_at   216576_PM_x_at
+## 1559018_PM_at     1559018_PM_at
+## 216207_PM_x_at   216207_PM_x_at
+## 214669_PM_x_at   214669_PM_x_at
+## 1568768_PM_s_at 1568768_PM_s_at
+## 215946_PM_x_at   215946_PM_x_at
+## 211645_PM_x_at   211645_PM_x_at
+## 217157_PM_x_at   217157_PM_x_at
+##                                                           Gene.Symbol
+## 211430_PM_s_at  IGH@ /// IGHG1 /// IGHM /// IGHV4-31 /// LOC100290146
+## 241824_PM_at                                                         
+## 216576_PM_x_at              IGK@ /// IGKC /// LOC652493 /// LOC652694
+## 1559018_PM_at                                                   PTPRE
+## 216207_PM_x_at                                              IGKV1D-13
+## 214669_PM_x_at            IGK@ /// IGKC /// IGKV3-20 /// LOC100291682
+## 1568768_PM_s_at                                          LOC100302650
+## 215946_PM_x_at                           IGLL1 /// IGLL3 /// LOC91316
+## 211645_PM_x_at                                                       
+## 217157_PM_x_at                            IGK@ /// IGKC /// LOC652493</pre>
 
-<pre class = 'prettyprint lang-r'>exprs(GSE29617_set)[1:2, 1:3]</pre>
-
-<pre >##              GSM733942 GSM733943 GSM733944
-## 1007_PM_s_at   4.62965   4.46083   4.54702
-## 1053_PM_at     4.41375   4.72417   4.48257</pre>
-
-<p>also provides additional methods such as <code>fData</code>.</p>
-
-</article></slide><slide class=''><hgroup><h2>The ExpressionSet subclass</h2></hgroup><article  id="the-expressionset-subclass-1" class="smaller ">
-
-<p><code>ExpressionSet</code> objects are meant to facilitate the adoption of MIAME standard. MIAME = &quot;Minimum Information about a Microarray experiment&quot;. Alvis Brazma et. al. (2001) Nature Genetics Unfortrunately, not all contributors will upload all the information.</p>
-
-<pre class = 'prettyprint lang-r'># Information about preprocessing Nothing in here!
-preproc(GSE29617_set)</pre>
-
-<pre >## list()</pre>
-
-</article></slide><slide class=''><hgroup><h2>The ExpressionSet subclass</h2></hgroup><article  id="the-expressionset-subclass-2" class="smaller ">
-
-<pre class = 'prettyprint lang-r'># A data.frame with number of rows equal to the number of
-# samples
-pData(GSE29617_set)[1:2, 1:2]</pre>
-
-<pre >##                                                  title geo_accession
-## GSM733942 2008 TIV subject ID 2 at D0 post-vaccination     GSM733942
-## GSM733943 2008 TIV subject ID 2 at D7 post-vaccination     GSM733943</pre>
-
-<pre class = 'prettyprint lang-r'># A data.frame with number of rows equal to the number of
-# features/probes
-fData(GSE29617_set)[1:2, 1:2]</pre>
-
-<pre >##                        ID GB_ACC
-## 1007_PM_s_at 1007_PM_s_at U48705
-## 1053_PM_at     1053_PM_at M87338</pre>
-
-</article></slide><slide class=''><hgroup><h2>The ExpressionSet subclass</h2></hgroup><article  id="the-expressionset-subclass-3" class="smaller ">
-
-<p>So the <code>ExpressionSet</code> objects facilitate the encapsulation of everything that&#39;s needed to summarize and analyze an experiment. Specific elements can be access with the <code>@</code> operator but many classes have convenient accessor methods.</p>
-
-<pre class = 'prettyprint lang-r'>fData(GSE29617_set)[1:2, 1:2]</pre>
-
-<pre >##                        ID GB_ACC
-## 1007_PM_s_at 1007_PM_s_at U48705
-## 1053_PM_at     1053_PM_at M87338</pre>
-
-<pre class = 'prettyprint lang-r'># Note that S4 classes can be nested!
-GSE29617_set@featureData@data[1:2, 1:2]</pre>
-
-<pre >##                        ID GB_ACC
-## 1007_PM_s_at 1007_PM_s_at U48705
-## 1053_PM_at     1053_PM_at M87338</pre>
-
-</article></slide><slide class=''><hgroup><h2>What if you want the raw data?</h2></hgroup><article  id="what-if-you-want-the-raw-data" class="smaller ">
-
-<p>GEO also provides access to raw data that can be downloaded with <code>GEOquery</code>.</p>
-
-<pre class = 'prettyprint lang-r'># Download all raw data. This should only be evaluated once
-# Then the data would be stored locally in the data directory
-# Make sure the directory exists
-if (length(dir(&quot;Data/GEO/&quot;, pattern = &quot;GSE29617&quot;)) == 0) {
-    getGEOSuppFiles(&quot;GSE29617&quot;, makeDirectory = TRUE, baseDir = &quot;./Data/GEO/&quot;)
-    untar(&quot;./Data/GEO/GSE29617/GSE29617_RAW.tar&quot;, exdir = &quot;./Data/GEO/GSE29617/&quot;, 
-        tar = Sys.getenv(&quot;TAR&quot;))
-}
-# untar downloaded data</pre>
-
-</article></slide><slide class=''><hgroup><h2>Starting from the raw data</h2></hgroup><article  id="starting-from-the-raw-data" class="smaller ">
-
-<p>Now that we have the Affymetrix raw data (CEL) files, we can apply some of the concepts we&#39;ve discussed related to normalization and probe summary. We first need to load the appropriate package</p>
-
-<pre class = 'prettyprint lang-r'>biocLite(&quot;affy&quot;)</pre>
-
-<pre class = 'prettyprint lang-r'>library(affy)</pre>
-
-<p>then we use the following commands</p>
-
-<pre class = 'prettyprint lang-r'># Read the CEL file and creates and AffyBatch
-GSE29617_affyBatch &lt;- ReadAffy(celfile.path = &quot;Data/GEO/GSE29617/&quot;)
-# Normalize and summarize the data
-GSE29617_set2 &lt;- rma(GSE29617_affyBatch)</pre>
-
-<pre >## Background correcting
-## Normalizing
-## Calculating Expression</pre>
-
-</article></slide><slide class=''><hgroup><h2>Starting from the raw data</h2></hgroup><article  id="starting-from-the-raw-data-1" class="smaller ">
-
-<p>Let&#39;s check the results and compare to the expression matrix that was submitted to GEO</p>
-
-<pre class = 'prettyprint lang-r'>exprs(GSE29617_set2)[1:2, 1:2]</pre>
-
-<pre >##              GSM733942.CEL.gz GSM733943.CEL.gz
-## 1007_PM_s_at         4.629650         4.460843
-## 1053_PM_at           4.413773         4.724213</pre>
-
-<p>The rows are the features (i.e., probes). Columns are the samples.</p>
-
-</article></slide><slide class=''><hgroup><h2>What are those probes?</h2></hgroup><article  id="what-are-those-probes" class="smaller ">
-
-<pre class = 'prettyprint lang-r'># We first need to install our annotation package
-library(BiocInstaller)
-# Note that you don&#39;t have to use source anymore!
-biocLite(&quot;hthgu133a.db&quot;)</pre>
-
-<pre class = 'prettyprint lang-r'>library(hthgu133a.db)
-probe_ids &lt;- rownames(GSE29617_set2)
-probe_data &lt;- select(hthgu133a.db, keys = probe_ids, columns = &quot;SYMBOL&quot;, 
-    keytype = &quot;PROBEID&quot;)
-probe_data[1, ]</pre>
-
-<pre >##        PROBEID SYMBOL
-## 1 1007_PM_s_at   &lt;NA&gt;</pre>
-
-<p>This didn&#39;t work very well, did it? The problem is that the probe IDs in hthgu133a.db have a different naming scheme than those in GSE29617_set2. This is fixed on the next slide.</p>
-
-</article></slide><slide class=''><hgroup><h2>What are those probes?</h2></hgroup><article  id="what-are-those-probes-1" class="smaller ">
-
-<p>Let&#39;s fix this: Replace _PM with <empty> for the probe id names in GSE29617_set2</p>
-
-<pre class = 'prettyprint lang-r'>probe_ids &lt;- gsub(&quot;_PM&quot;, &quot;&quot;, rownames(GSE29617_set2))
-probe_data &lt;- select(hthgu133a.db, keys = probe_ids, columns = &quot;SYMBOL&quot;, 
-    keytype = &quot;PROBEID&quot;)</pre>
-
-<pre >## Warning in .generateExtraRows(tab, keys, jointype): &#39;select&#39; resulted in
-## 1:many mapping between keys and return rows</pre>
-
-<pre class = 'prettyprint lang-r'>probe_data[1, ]</pre>
-
-<pre >##     PROBEID SYMBOL
-## 1 1007_s_at   DDR1</pre>
-
-<p>What&#39;s the warning? Some probes match up with multiple genes, therefore those probe IDs will have more than one record.</p>
-
-</article></slide><slide class=''><hgroup><h2>What are those probes?</h2></hgroup><article  id="what-are-those-probes-2" class="smaller ">
-
-<p>This gives us too many rows, what do we do? Concatenate the gene names so that there will be one row per probe ID.</p>
-
-<pre class = 'prettyprint lang-r'>library(data.table)
-probe_data_dt &lt;- data.table(probe_data)
-probe_data_dt_unique &lt;- probe_data_dt[, list(SYMBOL = paste(SYMBOL, 
-    collapse = &quot;;&quot;)), by = &quot;PROBEID&quot;]
-probe_data_dt_unique[SYMBOL %like% &quot;;&quot;]</pre>
-
-<pre >##           PROBEID                                  SYMBOL
-##    1:   1007_s_at                            DDR1;MIR4640
-##    2:     1294_at                            UBA7;MIR5193
-##    3:     1773_at                        FNTB;CHURC1-FNTB
-##    4: 200012_x_at         RPL21;SNORD102;SNORA27;RPL21P28
-##    5:   200018_at             RPS13;SNORD14B;LOC100508408
-##   ---                                                    
-## 1143:  65133_i_at                      INO80B;INO80B-WBP1
-## 1144:    65585_at FAM86C1;FAM86B1;FAM86FP;FAM86B2;FAM86DP
-## 1145:    66053_at                 HNRNPUL2;HNRNPUL2-BSCL2
-## 1146:    78495_at                        LOC155060;ZNF783
-## 1147:    91617_at                           DGCR8;MIR1306</pre>
-
-</article></slide><slide class=''><hgroup><h2>Completing our ExpressionSet</h2></hgroup><article  id="completing-our-expressionset" class="smaller ">
-
-<pre class = 'prettyprint lang-r'>annotaded_probes &lt;- data.frame(probe_data_dt_unique)
-rownames(annotaded_probes) &lt;- rownames(GSE29617_set2)
-fData(GSE29617_set2) &lt;- annotaded_probes
-head(fData(GSE29617_set2))</pre>
-
-<pre >##                PROBEID       SYMBOL
-## 1007_PM_s_at 1007_s_at DDR1;MIR4640
-## 1053_PM_at     1053_at         RFC2
-## 117_PM_at       117_at        HSPA6
-## 121_PM_at       121_at         PAX8
-## 1255_PM_g_at 1255_g_at       GUCA1A
-## 1294_PM_at     1294_at UBA7;MIR5193</pre>
-
-<p>Now you&#39;re ready to get the data that you will have to analyze for your second homework.</p></article></slide>
+<p>What do you think?</p></article></slide>
 
 
   <slide class="backdrop"></slide>
