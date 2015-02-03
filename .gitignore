@@ -25,3 +25,7 @@ Introduction_to_R.pdf
 *.sqlite
 
 *.sqlite
+
+annotation.gtf
+
+Drosophila_melanogaster.BDGP5.78.gtf

@@ -27,9 +27,10 @@ opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), cache=TR
 Before we start, you should read the following papers:
 
 1. Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007).
-2. Leek, J. T. et al. Tackling the widespread and critical impact of batch effects in high-throughput data. Nature Reviews Genetics 11, 733-739 (2010).
-3. Johnson, W. E., Li, C. & Rabinovic, A. Adjusting batch effects in microarray expression data using empirical Bayes methods. Biostatistics 8, 118-127 (2007).
-4. Gagnon-Bartsch, J. A. & Speed, T. P. Using control genes to correct for unwanted variation in microarray data. Biostatistics 13, 539-552 (2012).
+2. Leek, J. T. & Storey, J. D. A general framework for multiple testing dependence. Proc. Natl. Acad. Sci. U.S.A. 105, 18718–18723 (2008).
+3. Leek, J. T. et al. Tackling the widespread and critical impact of batch effects in high-throughput data. Nature Reviews Genetics 11, 733-739 (2010).
+4. Johnson, W. E., Li, C. & Rabinovic, A. Adjusting batch effects in microarray expression data using empirical Bayes methods. Biostatistics 8, 118-127 (2007).
+5. Gagnon-Bartsch, J. A. & Speed, T. P. Using control genes to correct for unwanted variation in microarray data. Biostatistics 13, 539-552 (2012).
 
 ## Motivation
 
@@ -45,7 +46,7 @@ Unfortunately, normalization will not always correct for batch effects. Technica
 
 <img src="http://www.nature.com/nrg/journal/v11/n10/images/nrg2825-f1.jpg" width=300>
 
-For a published bladder cancer microarray data set obtained using an Affymetrix platform, we obtained the raw data for only the normal samples. Here, green and orange represent two different processing dates. 
+"For a published bladder cancer microarray data set obtained using an Affymetrix platform, we obtained the raw data for only the normal samples. Here, green and orange represent two different processing dates."
 
 ## Adjusting for batch effects
 
@@ -97,7 +98,7 @@ and if factor $l$ does not influence the expression of gene $i$, we have $\gamma
 
 ## Surrogate variable analysis
 
-In practice it is impossible to estimate $\sum_{l=1}^L \gamma_{l_i}g_{l_j}$, so Leek and Storey propose to use singular value decomposition to approximate the matrix $(\sum_{l=1}^L \gamma_{l_i}g_{l_j})_{ij}$ with by its singular value decomposition. Computationally, this is done in two steps:
+In practice it is impossible to estimate $\sum_{l=1}^L \gamma_{l_i}g_{l_j}$, so Leek and Storey propose to use singular value decomposition to approximate the matrix $(\sum_{l=1}^L \gamma_{l_i}g_{l_j})_{ij}$ by its singular value decomposition. Computationally, this is done in two steps:
 
 
 1. Detect unmodeled factors
@@ -113,7 +114,7 @@ The main idea is as follows:
 - Compare the observed eigenvalues to those generated from the null distribution to obtain significance p-values
 - Record the $K$ significant variables
 
-## Construct surrogate variables (suite)
+## Construct surrogate variables 
 
 1. Compute the residual matrix $r_{ij} = x_{ij} - \hat{\mu}_i - \hat{f}_i(y_j)$
 2. Perform the SVD of $R=(r_{ij})$
@@ -163,7 +164,7 @@ pData(gds_new[[2]]) <- sanitize_pdata(pData(gds_new[[2]]))
 pData(gds_new[[3]]) <- sanitize_pdata(pData(gds_new[[3]]))
 ```
 
-## Using the sva package (suite)
+## Using the sva package 
 
 Let us estimate the (surrogate) factors as follows:
 ```{r}

@@ -1,43 +1,46 @@
-Bioinformatics for Big Omics Data: Basics of sequence analysis and genomic interval manipulation in R
-========================================================
-width: 1440
-height: 900
-transition: none
-font-family: 'Helvetica'
-css: my_style.css
-author: Raphael Gottardo, PhD
-date: `r format(Sys.Date(), format="%B %d, %Y")`
+---
+title: 'Bioinformatics for Big Omics Data: Basics of sequence analysis and genomic interval manipulation in R'
+author: "Raphael Gottardo"
+date: "February 2, 2014"
+output:
+  ioslides_presentation:
+    fig_caption: yes
+    fig_retina: 1
+    keep_md: yes
+    smaller: yes
+---
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
+## Setting up some options
 
-
-```{r, cache=FALSE, echo=FALSE}
-# Let's first turn on the cache for increased performance.
+Let's first turn on the cache for increased performance and improved styling
+```{r, cache=FALSE}
 # Set some global knitr options
-library(knitr)
-opts_chunk$set(cache=TRUE)
+library("knitr")
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), cache=TRUE, messages=FALSE)
+```
+
+```{r, cache=FALSE, echo=TRUE}
 library(data.table)
 library(ggplot2)
 library(GenomicRanges)
 library(IRanges)
 library(reshape2)
+library(GenomicAlignments)
 ```
 
 
-Outline
-========
+## Outline
 
 Here we will discuss some of the core functionality in `Bioconductor` for manipulating sequence data and genomic intervals in R.
 You should read the following papers:
 
-1. Morgan, M. et al. ShortRead: a bioconductor package for input, quality assessment and exploration of high-throughput sequence data. Bioinformatics 25, 2607–2608 (2009).
+1. Morgan, M. et al. ShortRead: a bioconductor package for input, quality assessment and exploration of high-throughput sequence data. Bioinformatics 25, 2607-2608 (2009).
 
 2. Lawrence, M. et al. Software for computing and annotating genomic ranges. PLoS Comput. Biol. 9, e1003118 (2013).
 
-3. Li, H. et al. The Sequence Alignment/Map format and SAMtools. Bioinformatics 25, 2078–2079 (2009).
+3. Li, H. et al. The Sequence Alignment/Map format and SAMtools. Bioinformatics 25, 2078-2079 (2009).
 
-Some motivation
-==============
+## Some motivation
 
 The process of gene regulation is a lot more complex than what we originally discussed. 
 It's not as simple as DNA &#8594; RNA &#8594; Proteins. 
@@ -47,19 +50,16 @@ Gene expression = f(Transcription factors, Splicing, miRNA, Nucleosome, Methylat
 
 Fortunately, Next Generation Sequencing (NGS) can help us to learn about many of these fundamental processes. 
 
-Transcription factors
-=====================
+## Transcription factors
 
-![Transcription factor](http://howardhughes.trinity.duke.edu/uploads/assets/DAILYILLINI.jpg)
+<img src="http://howardhughes.trinity.duke.edu/uploads/assets/DAILYILLINI.jpg" width=600>
 
-Alternative splicing
-=====================
+## Alternative splicing
 
-![Alternative splicing](http://www.ncbi.nlm.nih.gov/Class/MLACourse/Modules/MolBioReview/images/alternative_splicing.gif)
+<img src="http://www.ncbi.nlm.nih.gov/Class/MLACourse/Modules/MolBioReview/images/alternative_splicing.gif" width=600>
 
 
-Next generation sequencing (NGS)
-==========================
+## Next generation sequencing (NGS)
 
 The sequencing revolution started with the Human Genome project. An international collaboration to generate a map of the human genome:
 
@@ -67,10 +67,8 @@ The sequencing revolution started with the Human Genome project. An internationa
 
 - Today the same can be done much more rapidly, at a fraction of the cost using next generation sequencing
 
-Let's read [this](http://www.bioinformatics.auckland.ac.nz/workshops/NGS-workshop-update.pdf)
 
-Sequencing types
-=================
+## Sequencing types
 
 - [Single end sequencing](http://www.illumina.com/technology/single_read_sequencing_assay.ilmn)
 
@@ -80,26 +78,25 @@ Single-read sequencing involves sequencing DNA from only one end, and is the sim
 
 Paired-end sequencing allows users to choose the length of the insert and sequence either end of the insert, generating high-quality, alignable sequence data. Paired-end sequencing can detect rearrangements, including insertions and deletions (indels) and inversions. Note that this is different from [mate pair sequencing](http://www.illumina.com/technology/mate_pair_sequencing_assay.ilmn)
 
-NGS aligment
-============
+## NGS aligment
 
 Next-generation sequencing generally produces short reads or short read pairs (e.g. $<200$ bases) as compared to long reads by Sanger sequencing, which cover ~1000 bases. We need to align these sequences to a reference genome (The exception being de-novo sequencing where we want to infer a new genome).
 
 This is called aligning or mapping the reads against the reference sequence/genome. This is not an easy task:
+
 - The short reads do not come with position information &#8594; need to find the corresponding region in the reference sequence.
 - The reference sequence can be quite long (~3 billion bases for human) &#8594; computationally intensive task
 - Reads are short &#8594; uncertainty with respect to where the reads can be aligned.
 - We need to allow some mismatches and small structural variation (InDels) in our reads. For RNA-seq we need to allow for splice junctions. 
 - Sequencing is not perfect &#8594; biological variation and sequencing errors can be confounded. 
 
-Aligners
-========
+## Aligners
 
 There exist a multitude of aligners that can be used for aligning short reads to a reference genome such as: Bowtie, BWA, GSNAP, TopHat, SOAP, STAR, etc. The choice of the aligner is usually guided by the actual application (e.g. RNA-seq, de novo, etc).
 
+More on this later.
 
-Common data formats
-===================
+## Common data formats
 
 (IMAGES &#8594;) FASTA/FASTQ &#8594; SAM/BAM &#8594; VCF
 
@@ -112,8 +109,7 @@ All of these data formats can be read in R.
 - All current alignment software can generate SAM/BAM as an output format. BAM files can be indexed to improve data accession. 
 
 
-Sequence manupulation using Biostrings
-======================================
+## Sequence manupulation using Biostrings
 
 Here we will see how to manipulate sequence data in R using the `Biostrings` package
 
@@ -128,16 +124,14 @@ Now, we are ready to use the package
 library(Biostrings)
 ```
 
-The Biostrings package
-======================
+## The Biostrings package
 
 `Biostrings` provides memory efficient string containers, string matching algorithms, and other utilities, for fast manipulation of large biological sequences or sets of sequences. 
 
 
 Most of the `Biostrings` functionalities are summarized [here](http://www.bioconductor.org/packages/2.12/bioc/vignettes/Biostrings/inst/doc/BiostringsQuickOverview.pdf).
 
-The XString class
-==================
+## The XString class
 
 The XString is in fact a virtual class and therefore cannot be instanciated. Only subclasses
 (or subtypes) BString, DNAString, RNAString and AAString can. These classes are direct
@@ -153,8 +147,7 @@ d
 length(d)
 ```
 
-The XString class (suite)
-========================
+## The XString class
 
 ```{r}
 d[3]
@@ -163,8 +156,7 @@ d[]
 b[length(b):1]
 ```
 
-The XStringViews class
-======================
+## The XStringViews class
 
 An XStringViews object contains a set of views on the same XString object called the subject
 string. Particularly useful for matches and alignments.
@@ -177,8 +169,8 @@ start(v4)
 end(v4)
 ```
 
-Summarizing SC genome
-=======================
+## Summarizing SC genome
+
 Let's look at the Scerevisiae genome:
 You will need the following package:
 ```{r, eval=FALSE}
@@ -198,8 +190,7 @@ alphabetFrequency(Scerevisiae[["chr1"]])/length(Scerevisiae[["chr1"]])
 
 **Exercise:** Do the same with the human genome and let me know what you get.
 
-Finding patterns
-=======================
+## Finding patterns
 
 ```{r}
 matchPattern(pattern = "GATAGA", subject = Scerevisiae[["chr1"]])
@@ -212,8 +203,7 @@ countPattern(pattern = "GATAGA", subject = Scerevisiae[["chr1"]])
 
 **Exercise:** Try to play with some of the options such as the number of mismatch and/or indels.
 
-Handling probe sequence information
-===================================
+## Handling probe sequence information
 
 Let's install the following packages
 ```{r eval=FALSE}
@@ -228,8 +218,7 @@ library(hgu133plus2probe)
 
 We now have access to the `hgu133plus2probe` dataset containing our probe information.
 
-Handling probe sequence information (suite)
-===================================
+## Handling probe sequence information
 
 Let's create a `DNAStringSet`
 
@@ -247,8 +236,7 @@ GSE29617_affyBatch <- ReadAffy(celfile.path="Data/GEO/GSE29617/")
 GSE29617_set2 <- rma(GSE29617_affyBatch)
 ```
 
-Handling probe sequence information (suite)
-===================================
+## Handling probe sequence information
 
 Let's calculate the GC content of each probe
 ```{r}
@@ -267,14 +255,11 @@ dt_merged_melt <- data.table(dt_merged_melt)
 dt_merged_melt_sum <- dt_merged_melt[,list(mean=mean(value)),by=GC_count]
 ```
 
-
-
-Handling probe sequence information (suite)
-===================================
+## Handling probe sequence information
 
 We now look at the effect of probe composition on observed intensities
 
-```{r}
+```{r fig.height=3}
 library(ggplot2)
 library(reshape2)
 ggplot(dt_merged_melt[variable=="GSM733942.CEL.gz"],aes(x=as.factor(GC_count), y=value))+geom_violin()+geom_point(data=dt_merged_melt_sum,aes(x=as.factor(GC_count), y=mean), col="red", size=6)+theme_minimal(base_size = 18)
@@ -284,15 +269,13 @@ ggplot(dt_merged_melt[variable=="GSM733942.CEL.gz"],aes(x=as.factor(GC_count), y
 What do you think about the GC content effect? 
 **Excercise:** Repeat the plot above with other sequence characteristics
 
-GenomicRanges
-=============
+## GenomicRanges
 
 Bioconductor possesses an infrastructure for representing and computing on annotated genomic ranges and integrating genomic data with the statistical computing features of R and its extensions. At the core of the infrastructure are three packages: `IRanges`, `GenomicRanges`, and `GenomicFeatures`. These packages provide scalable data structures for representing annotated ranges on the genome, and performing opperations on genomic intervals (e.g. overlaps, etc).
 
 Most of the text and examples used here are taken from the various `*Ranges` Bioconductor package vignettes.
 
-IRanges
-=======
+## IRanges
 
 The IRanges package is designed to represent sequences, ranges representing indices along those sequences,
 and data related to those ranges. IRanges makes use run-length encodings to provide increased performance.
@@ -305,8 +288,7 @@ as.vector(object.size(xRle) / object.size(xVector))
 identical(as.vector(xRle), xVector)
 ```
 
-IRanges (suite)
-=============
+## IRanges
 
 The `IRanges` class is a "simple" container where 2 integer vectors of the same length are used to store the start and width values. 
 ```{r}
@@ -325,8 +307,7 @@ mid(ir1)
 names(ir1)
 ```
 
-RangesList
-===========
+## RangesList
 
 An extension of `List` that holds only `Ranges` objects. Useful for storing ranges over a set of spaces (e.g. chromosomes), each of which requires a separate Ranges object. As a Vector, RangesList may be annotated with its universe identifier (e.g. a genome) in which all of its spaces exist.
 
@@ -343,8 +324,7 @@ universe(named) <- "hg18"
 universe(named)
 ```
 
-GRanges: Single Interval Range Features
-=======================================
+## GRanges: Single Interval Range Features
 
 `GRanges` are like `IRanges` but with a strand and a chromosome
 
@@ -361,8 +341,7 @@ strand(gr)
 mcols(gr)$score
 ```
 
-GRangesList: Multiple Interval Range Features
-=============================================
+## GRangesList: Multiple Interval Range Features
 
 Whenever genomic features consist of multiple ranges that are grouped by a parent
 feature, they can be represented as `GRangesList` object. Consider the simple example of the two transcript
@@ -379,16 +358,14 @@ ul <- unlist(grl)
 
 Most of the accessors that work for `GRanges` also work for `GRangesList`.
 
-GRanges API
-===========
+## GRanges API
 
 For more information about the GRanges API look at the following image
 ![API](http://www.ploscompbiol.org/article/fetchObject.action?uri=info:doi/10.1371/journal.pcbi.1003118.t001&representation=PNG_M)
 
 extracted from Lawrence et al. (2013)
 
-Load a BAM file into a GAlignments object
-=========================================
+## Load a BAM file into a GAlignments object
 
 ```{r}
 library(Rsamtools)
@@ -397,8 +374,8 @@ aln1 <- readGAlignments(aln1_file)
 aln1
 ```
 
-Load a BAM file into a GAlignments object
-=========================================
+## Load a BAM file into a GAlignments object
+
 What if you want the actual sequences too?
 
 ```{r}
@@ -409,33 +386,31 @@ aln1
 qseq(aln1)
 ```
 
-Converting to a GRanges
-=======================
+## Converting to a GRanges
 
 you can (almost) always convert a given object to a relevant class
 ```{r}
 gr1 <- as(aln1,"GRanges")
 ```
 
-Reduce
-======
+## Reduce
+
 Merge overlapping and adjacent ranges
 ```{r}
 reduce(gr1)
 ```
 
-Disjoin
-=======
+## Disjoin
+
 Ranges formed from union of endpoints
 ```{r}
 disjoin(gr1)
 ```
 
 
-Coverage
-========
+## Coverage
 
-```{r}
+```{r fig.height=5}
 gr1_list <- split(gr1, seqnames(gr1))
 cv <- coverage(gr1_list[[1]])
 cv_vec <- as.vector(cv$seq1)
@@ -443,8 +418,7 @@ qplot(x=1:1575, y=cv_vec)+geom_smooth()+theme_minimal(base_size = 18)
 ```
 
 
-Finding overlaps
-================
+## Finding overlaps
 
 `findOverlaps` and `countOverlaps` produce a mapping and a
 tabulation of interval overlaps, respectively. 
@@ -456,9 +430,7 @@ findOverlaps(query, subject, type = "start")
 countOverlaps(query, subject)
 ```
 
-
-Preparing data for RNA-seq analysis
-===================================
+## Preparing data for RNA-seq analysis
 
 Let's assume that we want to generate gene counts using the drosophilia genome.
 You first need to install the required transcript dataset.
@@ -472,8 +444,7 @@ TxDb.Dmelanogaster.UCSC.dm3.ensGene
 ```
 
 
-Preparing data for RNA-seq analysis (suite)
-===================================
+## Preparing data for RNA-seq analysis 
 
 As sample data we use pasillaBamSubset which contains both a single-end BAM (untreated1 chr4) and a paired-end
 BAM (untreated3 chr4). Each le is a subset of chr4 from the "Pasilla" experiment. See ?pasillaBamSubset for details, but we first need to install the package
@@ -487,8 +458,7 @@ un1 <- untreated1_chr4() ## single-end records
 ```
 
 
-Preparing data for RNA-seq analysis (suite)
-===================================
+## Preparing data for RNA-seq analysis 
 
 Let's also extract the exon ranges by genes as follows,
 ```{r}
@@ -502,8 +472,7 @@ se
 ```
 which is an object of class `SummarizedExperiment`.
 
-Preparing data for RNA-seq analysis (suite)
-===================================
+## Preparing data for RNA-seq analysis 
 
 We can easily extract the counts:
 ```{r}
@@ -515,7 +484,44 @@ The annotation is stored in the rowData slot:
 rowData(se)
 ```
 
+## Alternative approaches
+
+1. featureCounts: Liao, Y., Smyth, G. & Shi, W. featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. Bioinformatics 30, 923–930 (2014).
+
+2. RSEM: Li, B., Ruotti, V., Stewart, R. M., Thomson, J. A. & Dewey, C. N. RNA-Seq gene expression estimation with read mapping uncertainty. Bioinformatics 26, 493–500 (2010).
+
+## The Rsubread package
+
+```{r}
+# load the package
+library("Rsubread")
+library("R.utils")
+```
+
+The Rsubread package can be used to perform alignment and expression quantification.
+
+## featureCounts 
+
+```{r echo=FALSE}
+# We download an annotation file that's necessary here.
+if(!file.exists("annotation.gtf"))
+{
+  download.file("ftp://ftp.ensembl.org/pub/release-78/gtf/drosophila_melanogaster/Drosophila_melanogaster.BDGP5.78.gtf.gz", destfile = "annotation.gtf.gz")
+}
+```
 
 
+```{r}
+bam_file <- system.file("extdata", "untreated1_chr4.bam", package = "pasillaBamSubset")
+fc_counts <- featureCounts(files=bam_file,annot.ext="annotation.gtf", isGTFAnnotationFile=TRUE,GTF.featureType="exon",GTF.attrType="gene_id")
+```
 
+## featureCounts 
+
+```{r, fig.height=3}
+count1 <- data.table(exon_id=rownames(assays(se)$counts), count_se=as.vector(assays(se)$counts))
+count2 <- data.table(exon_id=rownames(fc_counts$counts), count_fc=as.vector(fc_counts$counts))
+count_dt <- merge(count1, count2, by="exon_id")
+qplot(log10(count_se+1), log10(count_fc+1), data=count_dt)
+```
 
