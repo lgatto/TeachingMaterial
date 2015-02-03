@@ -43,4 +43,5 @@ Notes are provided as the source file (.Rmd) and resulting html file for online 
 - 01/22/15 [Introduction to Microarrays](Microarrays.Rmd) & [Probe summary](Probe_summary.Rmd)
 - 01/27/15 [Normalization](Normalization.Rmd) & [Introduction to Bioconductor](Bioconductor_intro.Rmd)
 - 01/29/15 [Introduction to Bioconductor](Bioconductor_intro.Rmd) & [Differential gene expression](Differential_expression.Rmd)
-- 02/03/13
+- 02/03/15 [Differential gene expression](Differential_expression.Rmd) & [Batch correction](Batch_effects.Rmd)
+- 02/05/15 [Sequence analysis in R](Sequence_analysis.Rmd)
