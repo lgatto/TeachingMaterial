@@ -1,0 +1,229 @@
+---
+title: "Searching GEO"
+author: "Brian High"
+date: "2/3/2015"
+output:
+  ioslides_presentation:
+    fig_caption: yes
+    fig_retina: 1
+    keep_md: yes
+    smaller: yes
+---
+
+## Setting up some options
+
+Let's first turn on the cache for increased performance and improved styling.
+
+```{r, cache=FALSE}
+# Set some global knitr options
+library("knitr")
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), 
+               cache=FALSE, messages=FALSE)
+```
+
+## Prepare for HW2
+
+We will need to query the GEOmetadb database. Today we will explore this database and practice various ways to query it.
+
+## Load the `GEOmetadb` package
+
+First we load the `GEOmetadb` library.
+
+```{r}
+suppressMessages(library(GEOmetadb))
+```
+
+Let's also view the available methods.
+
+```{r}
+ls("package:GEOmetadb")
+```
+
+## Download the GEO database
+
+We should have already downloaded this database when viewing the lecture slides.
+
+```{r}
+## This will download the entire database, so can be slow
+if(!file.exists("GEOmetadb.sqlite"))
+{
+  # Download database only if it's not done already
+  getSQLiteFile()
+}
+```
+
+## List tables with `SQL`
+
+In `SQL`, you can query the database structure with ordinary `SQL` commands.
+
+```{r}
+geo_con <- dbConnect(SQLite(),'GEOmetadb.sqlite')
+dbGetQuery(geo_con, "SELECT name FROM sqlite_master WHERE type='table';")
+```
+
+## List `gse` fields with `SQL`
+
+The `PRAGMA` command is a standard `SQLite` command.
+
+```{r}
+dbGetQuery(geo_con, "PRAGMA table_info(gse);")
+```
+
+## List tables with `dbListTables`
+
+Instead of using `SQL` commands, we can list tables and fields with functions
+from the `GEOmetadb` package.
+
+```{r}
+geo_con <- dbConnect(SQLite(),'GEOmetadb.sqlite')
+dbListTables(geo_con)
+```
+
+```{r}
+dbListFields(geo_con, 'gse')
+```
+
+## Explore `gse`
+
+```{r}
+columnDescriptions()[1:5,]
+```
+
+## Load library `data.table`
+
+This will provide us with some practice querying with data.table.
+
+```{r}
+suppressMessages(library(data.table))
+```
+
+## Explore `gse` with `data.table`
+
+```{r}
+cd <- as.data.table(columnDescriptions())
+cd[TableName=="gse", FieldName]
+```
+
+## Load library `pander`
+
+```{r}
+suppressMessages(library(pander))
+```
+
+## List `gse` columns with `pandoc.table`
+
+```{r}
+gsefields <- as.data.frame(
+    cd[TableName=="gse" & 
+           FieldName %in% c("gse","title","pubmed_id","summary","contact")])
+pandoc.table(gsefields, style = "grid")
+```
+
+## Explore `gpl`
+
+```{r}
+cd[TableName=="gpl", FieldName]
+```
+
+## Explore columns in `gpl`
+
+```{r}
+gplfields <- as.data.frame(
+    cd[TableName=="gpl" & 
+           FieldName %in% c("gpl","organism","manufacturer")])
+pandoc.table(gplfields, style = "grid")
+```
+
+## Explore `gse_gpl`
+
+```{r}
+cd[TableName=="gse_gpl", FieldName]
+```
+
+## Explore columns in `gse_gpl`
+
+```{r}
+gse_gplfields <- as.data.frame(cd[TableName=="gse_gpl"])
+pandoc.table(gse_gplfields, style = "grid")
+```
+
+## List some data
+
+Let's look at some records in `gse`. What does a "contact" look like?
+
+```{r}
+query <- "SELECT contact FROM gse LIMIT 1;"
+res <- dbGetQuery(geo_con, query)
+strsplit(res$contact, '\t')
+```
+
+## Find manufacturer data
+
+Query the manufacturers with a `SQL` command, listed with `data.table`...
+
+```{r}
+manu <- data.table(dbGetQuery(geo_con, 
+    "SELECT DISTINCT manufacturer FROM gpl ORDER BY manufacturer ASC;"))
+manu[,list(length(manufacturer)), by=manufacturer]
+```
+
+## Our `SQL` command
+
+We just wanted a list of manufacturers so the `SQL` query is:
+
+```
+SELECT DISTINCT manufacturer FROM gpl 
+ORDER BY manufacturer ASC;
+```
+
+However, since we also grouped '`by=manufacturer` in our `data.table`, we could have simply use the `SQL` query:
+
+```
+SELECT DISTINCT manufacturer FROM gpl;
+```
+Let's try that...
+
+## Find manufacturer data
+
+Query the manufacturers with a simpler `SQL` command ... grouping with `by` and ordering with `setkey` in `data.table`...
+
+```{r}
+manu <- data.table(dbGetQuery(geo_con, 
+            "SELECT DISTINCT manufacturer FROM gpl;"))
+setkey(manu, manufacturer)
+manu[,list(length(manufacturer)), by=manufacturer]
+```
+
+
+## Finding data with a `JOIN`
+
+To get supplementary file names ending with cel.gz from only manufacturer Affymetrix...
+
+```
+SELECT 
+        gpl.bioc_package, 
+        gsm.title, 
+        gsm.series_id, 
+        gsm.gpl, 
+        gsm.supplementary_file 
+    FROM gsm 
+    JOIN gpl ON gsm.gpl=gpl.gpl 
+    WHERE gpl.manufacturer='Affymetrix' 
+        AND gsm.supplementary_file like '%CEL.gz';
+```
+
+## Now let's run that query
+
+```{r}
+res <- dbGetQuery(geo_con, 
+    "SELECT 
+        gpl.bioc_package, 
+        gsm.title, 
+        gsm.series_id, 
+        gsm.gpl, 
+        gsm.supplementary_file 
+    FROM gsm JOIN gpl ON gsm.gpl=gpl.gpl 
+    WHERE gpl.manufacturer='Affymetrix' 
+        AND gsm.supplementary_file like '%CEL.gz';")
+head(res)
+```
