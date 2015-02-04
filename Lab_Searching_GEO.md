@@ -311,7 +311,7 @@ pandoc.table(gse_gplfields, style = "grid")
 
 ## List "title" fields with `pandoc.table`
 
-Why do many tables include a "title" field? Are the the same?
+Why do many tables include a "title" field? Are they the same?
 
 
 ```r
