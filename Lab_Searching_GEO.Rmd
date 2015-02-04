@@ -107,6 +107,9 @@ cd[TableName=="gse", FieldName]
 
 ## Load library `pander`
 
+This will give us the `pandoc.table` function which will make nicer table 
+listings.
+
 ```{r}
 suppressMessages(library(pander))
 ```
