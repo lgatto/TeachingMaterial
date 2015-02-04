@@ -23,7 +23,8 @@ opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60),
 
 ## Prepare for HW2
 
-We will need to query the GEOmetadb database. Today we will explore this database and practice various ways to query it.
+We will need to query the GEOmetadb database. Today we will explore this 
+database and practice various ways to query it.
 
 ## Load the `GEOmetadb` package
 
@@ -176,7 +177,8 @@ SELECT DISTINCT manufacturer FROM gpl
 ORDER BY manufacturer ASC;
 ```
 
-However, since we also grouped '`by=manufacturer` in our `data.table`, we could have simply use the `SQL` query:
+However, since we also grouped `by=manufacturer` in our `data.table`, we could 
+have simply used the `SQL` query:
 
 ```
 SELECT DISTINCT manufacturer FROM gpl;
@@ -185,7 +187,8 @@ Let's try that...
 
 ## Find manufacturer data
 
-Query the manufacturers with a simpler `SQL` command ... grouping with `by` and ordering with `setkey` in `data.table`...
+Query the manufacturers with a simpler `SQL` command ... grouping with `by` and 
+ordering with `setkey` in `data.table`...
 
 ```{r}
 manu <- data.table(dbGetQuery(geo_con, 
@@ -197,7 +200,8 @@ manu[,list(length(manufacturer)), by=manufacturer]
 
 ## Finding data with a `JOIN`
 
-To get supplementary file names ending with cel.gz from only manufacturer Affymetrix...
+To get supplementary file names ending with `CEL.gz` from only manufacturer 
+Affymetrix...
 
 ```
 SELECT 
