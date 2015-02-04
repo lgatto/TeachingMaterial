@@ -270,13 +270,13 @@ Source: [Help: GEOmetadb Application, Meltzerlab/GB/CCR/NCI/NIH &copy;2008](http
 
 ```
 +------------+-------+------------------------------------------------+
-| Table      | Key   | Links to Table                                 |
+| Table      | Key   | Links to Table.Key                             |
 +============+=======+================================================+
 | gse        | gse   | gse_gpl.gse, gse_gsm.gse, gds.gse, sMatrix.gse |
 +------------+-------+------------------------------------------------+
 | gpl        | gpl   | gds.gpl, gse_gpl.gpl, sMatrix.gpl, gsm.gpl     |
 +------------+-------+------------------------------------------------+
-| gsm        | gsm   | gds_gse_gsm.gsm                                |
+| gsm        | gsm   | gse_gsm.gsm                                    |
 | gsm        | gpl   | gds.gpl, gse_gpl.gpl, sMatrix.gpl, gpl.gpl     |
 +------------+-------+------------------------------------------------+
 | gds        | gds   | gds_subset.gds                                 |
