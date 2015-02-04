@@ -177,7 +177,7 @@ strsplit(res$contact, '\t')
 
 Query the manufacturers with a `SQL` command, listed with `data.table`...
 
-```{r}
+```{r, tidy=FALSE}
 manu <- data.table(dbGetQuery(geo_con, 
     "SELECT DISTINCT manufacturer FROM gpl ORDER BY manufacturer ASC;"))
 manu[,list(length(manufacturer)), by=manufacturer]
@@ -205,7 +205,7 @@ Let's try that...
 Query the manufacturers with a simpler `SQL` command ... grouping with `by` and 
 ordering with `setkey` in `data.table`...
 
-```{r}
+```{r, tidy=FALSE}
 manu <- data.table(dbGetQuery(geo_con, 
             "SELECT manufacturer FROM gpl;"))
 setkey(manu, manufacturer)

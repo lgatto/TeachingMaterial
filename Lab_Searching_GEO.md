@@ -373,8 +373,9 @@ Query the manufacturers with a `SQL` command, listed with `data.table`...
 
 
 ```r
-manu <- data.table(dbGetQuery(geo_con, "SELECT DISTINCT manufacturer FROM gpl ORDER BY manufacturer ASC;"))
-manu[, list(length(manufacturer)), by = manufacturer]
+manu <- data.table(dbGetQuery(geo_con, 
+    "SELECT DISTINCT manufacturer FROM gpl ORDER BY manufacturer ASC;"))
+manu[,list(length(manufacturer)), by=manufacturer]
 ```
 
 ```
@@ -416,9 +417,10 @@ ordering with `setkey` in `data.table`...
 
 
 ```r
-manu <- data.table(dbGetQuery(geo_con, "SELECT manufacturer FROM gpl;"))
+manu <- data.table(dbGetQuery(geo_con, 
+            "SELECT manufacturer FROM gpl;"))
 setkey(manu, manufacturer)
-manu[, list(length(manufacturer)), by = manufacturer]
+manu[,list(length(manufacturer)), by=manufacturer]
 ```
 
 ```

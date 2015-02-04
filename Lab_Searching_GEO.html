@@ -373,8 +373,9 @@ strsplit(res$contact, &quot;\t&quot;)</pre>
 
 <p>Query the manufacturers with a <code>SQL</code> command, listed with <code>data.table</code>&#8230;</p>
 
-<pre class = 'prettyprint lang-r'>manu &lt;- data.table(dbGetQuery(geo_con, &quot;SELECT DISTINCT manufacturer FROM gpl ORDER BY manufacturer ASC;&quot;))
-manu[, list(length(manufacturer)), by = manufacturer]</pre>
+<pre class = 'prettyprint lang-r'>manu &lt;- data.table(dbGetQuery(geo_con, 
+    &quot;SELECT DISTINCT manufacturer FROM gpl ORDER BY manufacturer ASC;&quot;))
+manu[,list(length(manufacturer)), by=manufacturer]</pre>
 
 <pre >##                                         manufacturer V1
 ##    1:                                             NA  1
@@ -406,9 +407,10 @@ ORDER BY manufacturer ASC;</pre>
 
 <p>Query the manufacturers with a simpler <code>SQL</code> command &#8230; grouping with <code>by</code> and ordering with <code>setkey</code> in <code>data.table</code>&#8230;</p>
 
-<pre class = 'prettyprint lang-r'>manu &lt;- data.table(dbGetQuery(geo_con, &quot;SELECT manufacturer FROM gpl;&quot;))
+<pre class = 'prettyprint lang-r'>manu &lt;- data.table(dbGetQuery(geo_con, 
+            &quot;SELECT manufacturer FROM gpl;&quot;))
 setkey(manu, manufacturer)
-manu[, list(length(manufacturer)), by = manufacturer]</pre>
+manu[,list(length(manufacturer)), by=manufacturer]</pre>
 
 <pre >##                                         manufacturer V1
 ##    1:                                             NA  1
