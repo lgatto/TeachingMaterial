@@ -309,9 +309,11 @@ pandoc.table(gse_gplfields, style = "grid")
 ## +-------------+-------------+-------------------+
 ```
 
+Why are there only two fields in this table? What is this table for?
+
 ## List "title" fields with `pandoc.table`
 
-Why do many tables include a "title" field? Are they the same?
+Why do many tables include a "title" field? Are the titles the same?
 
 
 ```r
