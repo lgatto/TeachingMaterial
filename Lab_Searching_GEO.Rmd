@@ -151,7 +151,17 @@ gse_gplfields <- as.data.frame(cd[TableName=="gse_gpl"])
 pandoc.table(gse_gplfields, style = "grid")
 ```
 
-## List some data
+## List "title" fields with `pandoc.table`
+
+Why do many tables include a "title" field? Are the the same?
+
+```{r}
+gsefields <- as.data.frame(
+    cd[FieldName == "title"])
+pandoc.table(gsefields, style = "grid")
+```
+
+## List "contact" field structure
 
 Let's look at some records in `gse`. What does a "contact" look like?
 
@@ -184,7 +194,7 @@ However, since we also grouped `by=manufacturer` in our `data.table`, we could
 have simply used the `SQL` query:
 
 ```
-SELECT DISTINCT manufacturer FROM gpl;
+SELECT manufacturer FROM gpl;
 ```
 Let's try that...
 
@@ -195,16 +205,16 @@ ordering with `setkey` in `data.table`...
 
 ```{r}
 manu <- data.table(dbGetQuery(geo_con, 
-            "SELECT DISTINCT manufacturer FROM gpl;"))
+            "SELECT manufacturer FROM gpl;"))
 setkey(manu, manufacturer)
 manu[,list(length(manufacturer)), by=manufacturer]
 ```
 
 
-## Finding data with a `JOIN`
+## Finding data with a `join`
 
 To get supplementary file names ending with `CEL.gz` from only manufacturer 
-Affymetrix...
+Affymetrix, we need to `join` the `gsm` and `gpl` tables. 
 
 ```
 SELECT 
@@ -221,9 +231,8 @@ SELECT
 
 ## Now let's run that query
 
-```{r}
-res <- dbGetQuery(geo_con, 
-    "SELECT 
+```{r, tidy=FALSE}
+query<-"SELECT 
         gpl.bioc_package, 
         gsm.title, 
         gsm.series_id, 
@@ -231,6 +240,71 @@ res <- dbGetQuery(geo_con,
         gsm.supplementary_file 
     FROM gsm JOIN gpl ON gsm.gpl=gpl.gpl 
     WHERE gpl.manufacturer='Affymetrix' 
-        AND gsm.supplementary_file like '%CEL.gz';")
-head(res)
+        AND gsm.supplementary_file like '%CEL.gz';"
+res <- dbGetQuery(geo_con, query)
+head(res, 3)
+```
+
+## Why did we need a `join`?
+
+The 
+[GEOmetadb database](http://gbnci.abcc.ncifcrf.gov/geo/geo_help.php), 
+is a [relational database](http://en.wikipedia.org/wiki/Relational_database). 
+
+There are several tables which can be linked on common fields. 
+
+Since each table 
+contains data for only one type of record, tables must be linked to search for 
+fields pertaining to the various types of records. 
+
+We join on the common fields, 
+called [keys](http://en.wikipedia.org/wiki/Relational_database#Primary_key).
+
+## Table Relationships of `GEOmetadb`
+
+![Table Relationships](http://gbnci.abcc.ncifcrf.gov/geo/images/GEOmetadb_diagram.png)
+
+Source: [Help: GEOmetadb Application, Meltzerlab/GB/CCR/NCI/NIH &copy;2008](http://gbnci.abcc.ncifcrf.gov/geo/geo_help.php)
+
+## Keys of `GEOmetadb`
+
+```
++------------+-------+------------------------------------------------+
+| Table      | Key   | Links to Table                                 |
++============+=======+================================================+
+| gse        | gse   | gse_gpl.gse, gse_gsm.gse, gds.gse, sMatrix.gse |
++------------+-------+------------------------------------------------+
+| gpl        | gpl   | gds.gpl, gse_gpl.gpl, sMatrix.gpl, gsm.gpl     |
++------------+-------+------------------------------------------------+
+| gsm        | gsm   | gds_gse_gsm.gsm                                |
+| gsm        | gpl   | gds.gpl, gse_gpl.gpl, sMatrix.gpl, gpl.gpl     |
++------------+-------+------------------------------------------------+
+| gds        | gds   | gds_subset.gds                                 |
++------------+-------+------------------------------------------------+
+| gds_subset | gds   | gds.gds                                        |
++------------+-------+------------------------------------------------+
+| sMatrix    | gse   | gse_gpl.gse, gse_gsm.gse, gds.gse, gse.gse     |
+| sMatrix    | gpl   | gds.gpl, gse_gpl.gpl, gpl.gpl, gsm.gpl         |
++------------+-------+------------------------------------------------+
+| gse_gpl    | gse   | gse_gpl.gse, gse_gsm.gse, gds.gse, sMatrix.gse |
+| gse_gpl    | gpl   | gds.gpl, gse_gpl.gpl, gpl.gpl, sMatrix.gpl     |
++------------+-------+------------------------------------------------+
+| gse_gsm    | gse   | gse_gpl.gse, gse.gse, gds.gse, sMatrix.gse     |
+| gse_gsm    | gsm   | gsm.gsm                                        |
++------------+-------+------------------------------------------------+
+```
+
+Source: [Help: GEOmetadb Application, Meltzerlab/GB/CCR/NCI/NIH &copy;2008](http://gbnci.abcc.ncifcrf.gov/geo/geo_help.php)
+
+## A three-table `join`
+
+To get raw data, we need to `join` three tables with two `join` clauses...
+
+```{r, tidy=FALSE}
+query<-"SELECT gsm.gsm, gsm.supplementary_file 
+        FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j 
+        JOIN gsm ON j.gsm=gsm.gsm 
+        WHERE gse.pubmed_id='21743478' 
+        LIMIT 5;"
+dbGetQuery(geo_con, query)
 ```
