@@ -1,6 +1,6 @@
 # Searching GEO
 Brian High  
-2/3/2015  
+2/5/2015  
 
 ## Setting up some options
 
@@ -536,7 +536,9 @@ Source: [Help: GEOmetadb Application, Meltzerlab/GB/CCR/NCI/NIH &copy;2008](http
 
 ## A three-table `join`
 
-To get raw data, we need to `join` three tables with two `join` clauses...
+To get raw data, we need to `join` three tables with two `join` clauses. The first
+`join` is a subquery in the `from` clause, using `gse_gsm` to find `gsm` records
+corresponding to `gse` records. We then `join` this with `gsm` for those records.
 
 
 ```r
@@ -546,7 +548,7 @@ query<-"SELECT gsm.gsm, gsm.supplementary_file
         WHERE gse.pubmed_id='21743478' 
         LIMIT 2;"
 res <- as.data.table(dbGetQuery(geo_con, query))
-res[,strsplit(gsm.supplementary_file, ';\t'),by=gsm.gsm]
+res[,strsplit(gsm.supplementary_file, ';\t'), by=gsm.gsm]
 ```
 
 ```
@@ -564,14 +566,18 @@ res[,strsplit(gsm.supplementary_file, ';\t'),by=gsm.gsm]
 
 ## Joins in `data.table`
 
-We can repeat the same operation, using `data.table` once we have converted the GEO tables to data.tables and set keys.
+We can repeat the same operation, using `data.table` once we have converted the 
+GEO tables to `data.table`s and set their keys. The homework assignment asks that you
+try to fit the `data.table` manipulations (merge, subset, etc.) into a single line.
 
 
 ```r
 gseDT <- data.table(dbGetQuery(geo_con, "SELECT * from gse;"), key="gse")
 gsmDT <- data.table(dbGetQuery(geo_con, "SELECT * from gsm;"), key="gsm")
-gse_gsmDT <- data.table(dbGetQuery(geo_con, "SELECT * from gse_gsm;"), key=c("gse", "gsm"))
-gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2, list(gsm, supplementary_file)][,strsplit(supplementary_file, ';\t'), by=gsm]
+gse_gsmDT <- data.table(dbGetQuery(geo_con, "SELECT * from gse_gsm;"), 
+    key=c("gse", "gsm"))
+gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2, 
+    list(gsm, supplementary_file)][,strsplit(supplementary_file, ';\t'), by=gsm]
 ```
 
 ```
