@@ -531,14 +531,11 @@ res[,strsplit(gsm.supplementary_file, &#39;;\t&#39;),by=gsm.gsm]</pre>
 
 </article></slide><slide class=''><hgroup><h2>Joins in <code>data.table</code></h2></hgroup><article  id="joins-in-data.table" class="smaller ">
 
-<p>We can repeat the same operation, using <code>data.table</code> once we have coverted the GEO tables to data.tables.</p>
+<p>We can repeat the same operation, using <code>data.table</code> once we have converted the GEO tables to data.tables and set keys.</p>
 
-<pre class = 'prettyprint lang-r'>gseDT &lt;- as.data.table(dbGetQuery(geo_con, &quot;SELECT * from gse;&quot;))
-setkey(gseDT, gse)
-gsmDT &lt;- as.data.table(dbGetQuery(geo_con, &quot;SELECT * from gsm;&quot;))
-setkey(gsmDT, gsm)
-gse_gsmDT &lt;- as.data.table(dbGetQuery(geo_con, &quot;SELECT * from gse_gsm;&quot;))
-setkeyv(gse_gsmDT, c(&quot;gse&quot;, &quot;gsm&quot;))
+<pre class = 'prettyprint lang-r'>gseDT &lt;- data.table(dbGetQuery(geo_con, &quot;SELECT * from gse;&quot;), key=&quot;gse&quot;)
+gsmDT &lt;- data.table(dbGetQuery(geo_con, &quot;SELECT * from gsm;&quot;), key=&quot;gsm&quot;)
+gse_gsmDT &lt;- data.table(dbGetQuery(geo_con, &quot;SELECT * from gse_gsm;&quot;), key=c(&quot;gse&quot;, &quot;gsm&quot;))
 gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2, list(gsm, supplementary_file)][,strsplit(supplementary_file, &#39;;\t&#39;), by=gsm]</pre>
 
 <pre >##          gsm

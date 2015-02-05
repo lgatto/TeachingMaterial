@@ -564,16 +564,13 @@ res[,strsplit(gsm.supplementary_file, ';\t'),by=gsm.gsm]
 
 ## Joins in `data.table`
 
-We can repeat the same operation, using `data.table` once we have coverted the GEO tables to data.tables.
+We can repeat the same operation, using `data.table` once we have converted the GEO tables to data.tables and set keys.
 
 
 ```r
-gseDT <- as.data.table(dbGetQuery(geo_con, "SELECT * from gse;"))
-setkey(gseDT, gse)
-gsmDT <- as.data.table(dbGetQuery(geo_con, "SELECT * from gsm;"))
-setkey(gsmDT, gsm)
-gse_gsmDT <- as.data.table(dbGetQuery(geo_con, "SELECT * from gse_gsm;"))
-setkeyv(gse_gsmDT, c("gse", "gsm"))
+gseDT <- data.table(dbGetQuery(geo_con, "SELECT * from gse;"), key="gse")
+gsmDT <- data.table(dbGetQuery(geo_con, "SELECT * from gsm;"), key="gsm")
+gse_gsmDT <- data.table(dbGetQuery(geo_con, "SELECT * from gse_gsm;"), key=c("gse", "gsm"))
 gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2, list(gsm, supplementary_file)][,strsplit(supplementary_file, ';\t'), by=gsm]
 ```
 
