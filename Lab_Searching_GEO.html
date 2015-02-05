@@ -527,6 +527,29 @@ res[,strsplit(gsm.supplementary_file, &#39;;\t&#39;),by=gsm.gsm]</pre>
 ## 1: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz
 ## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
 ## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
+## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz</pre>
+
+</article></slide><slide class=''><hgroup><h2>Joins in <code>data.table</code></h2></hgroup><article  id="joins-in-data.table" class="smaller ">
+
+<p>We can repeat the same operation, using <code>data.table</code> once we have coverted the GEO tables to data.tables.</p>
+
+<pre class = 'prettyprint lang-r'>gseDT &lt;- as.data.table(dbGetQuery(geo_con, &quot;SELECT * from gse;&quot;))
+setkey(gseDT, gse)
+gsmDT &lt;- as.data.table(dbGetQuery(geo_con, &quot;SELECT * from gsm;&quot;))
+setkey(gsmDT, gsm)
+gse_gsmDT &lt;- as.data.table(dbGetQuery(geo_con, &quot;SELECT * from gse_gsm;&quot;))
+setkeyv(gse_gsmDT, c(&quot;gse&quot;, &quot;gsm&quot;))
+gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2, list(gsm, supplementary_file)][,strsplit(supplementary_file, &#39;;\t&#39;), by=gsm]</pre>
+
+<pre >##          gsm
+## 1: GSM733816
+## 2: GSM733816
+## 3: GSM733817
+## 4: GSM733817
+##                                                                                   V1
+## 1: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz
+## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
+## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
 ## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz</pre></article></slide>
 
 
