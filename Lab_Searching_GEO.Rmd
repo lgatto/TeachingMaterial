@@ -21,7 +21,7 @@ opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60),
                cache=FALSE, messages=FALSE)
 ```
 
-Load the `pandoc` package so we can make nicer table listings with `pandoc.table`.
+Load the `pander` package so we can make nicer table listings with `pandoc.table`.
 
 ```{r}
 suppressMessages(library(pander))
