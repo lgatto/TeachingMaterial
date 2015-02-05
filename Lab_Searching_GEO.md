@@ -441,8 +441,8 @@ manu[,list(length(manufacturer)), by=manufacturer]
 
 ## Finding data with a `join`
 
-To get supplementary file names ending with `CEL.gz` from only manufacturer 
-Affymetrix, we need to `join` the `gsm` and `gpl` tables. 
+To get supplementary file names ending with `CEL.gz` (case-insensitive) from 
+only manufacturer Affymetrix, we need to `join` the `gsm` and `gpl` tables. 
 
 ```
 SELECT 
@@ -462,14 +462,15 @@ SELECT
 
 ```r
 query<-"SELECT 
-        gpl.bioc_package, 
-        gsm.title, 
-        gsm.series_id, 
-        gsm.gpl, 
-        gsm.supplementary_file 
-    FROM gsm JOIN gpl ON gsm.gpl=gpl.gpl 
-    WHERE gpl.manufacturer='Affymetrix' 
-        AND gsm.supplementary_file like '%CEL.gz';"
+            gpl.bioc_package, 
+            gsm.title, 
+            gsm.series_id, 
+            gsm.gpl, 
+            gsm.supplementary_file 
+        FROM gsm 
+        JOIN gpl ON gsm.gpl=gpl.gpl 
+        WHERE gpl.manufacturer='Affymetrix' 
+            AND gsm.supplementary_file like '%CEL.gz';"
 res <- dbGetQuery(geo_con, query)
 head(res, 3)
 ```
@@ -546,21 +547,20 @@ query<-"SELECT gsm.gsm, gsm.supplementary_file
         FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j 
         JOIN gsm ON j.gsm=gsm.gsm 
         WHERE gse.pubmed_id='21743478' 
-        LIMIT 5;"
-dbGetQuery(geo_con, query)
+        LIMIT 2;"
+res <- as.data.table(dbGetQuery(geo_con, query))
+res[,strsplit(gsm.supplementary_file, ';\t'),by=gsm.gsm]
 ```
 
 ```
-##     gsm.gsm
-## 1 GSM733816
-## 2 GSM733817
-## 3 GSM733818
-## 4 GSM733819
-## 5 GSM733820
-##                                                                                                                                                  gsm.supplementary_file
-## 1 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
-## 2 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
-## 3 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733818/suppl/GSM733818.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733818/suppl/GSM733818.chp.gz
-## 4 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733819/suppl/GSM733819.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733819/suppl/GSM733819.chp.gz
-## 5 ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733820/suppl/GSM733820.CEL.gz;\tftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733820/suppl/GSM733820.chp.gz
+##      gsm.gsm
+## 1: GSM733816
+## 2: GSM733816
+## 3: GSM733817
+## 4: GSM733817
+##                                                                                   V1
+## 1: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz
+## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
+## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
+## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
 ```

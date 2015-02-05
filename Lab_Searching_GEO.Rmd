@@ -215,8 +215,8 @@ manu[,list(length(manufacturer)), by=manufacturer]
 
 ## Finding data with a `join`
 
-To get supplementary file names ending with `CEL.gz` from only manufacturer 
-Affymetrix, we need to `join` the `gsm` and `gpl` tables. 
+To get supplementary file names ending with `CEL.gz` (case-insensitive) from 
+only manufacturer Affymetrix, we need to `join` the `gsm` and `gpl` tables. 
 
 ```
 SELECT 
@@ -235,14 +235,15 @@ SELECT
 
 ```{r, tidy=FALSE}
 query<-"SELECT 
-        gpl.bioc_package, 
-        gsm.title, 
-        gsm.series_id, 
-        gsm.gpl, 
-        gsm.supplementary_file 
-    FROM gsm JOIN gpl ON gsm.gpl=gpl.gpl 
-    WHERE gpl.manufacturer='Affymetrix' 
-        AND gsm.supplementary_file like '%CEL.gz';"
+            gpl.bioc_package, 
+            gsm.title, 
+            gsm.series_id, 
+            gsm.gpl, 
+            gsm.supplementary_file 
+        FROM gsm 
+        JOIN gpl ON gsm.gpl=gpl.gpl 
+        WHERE gpl.manufacturer='Affymetrix' 
+            AND gsm.supplementary_file like '%CEL.gz';"
 res <- dbGetQuery(geo_con, query)
 head(res, 3)
 ```
@@ -307,6 +308,7 @@ query<-"SELECT gsm.gsm, gsm.supplementary_file
         FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j 
         JOIN gsm ON j.gsm=gsm.gsm 
         WHERE gse.pubmed_id='21743478' 
-        LIMIT 5;"
-dbGetQuery(geo_con, query)
+        LIMIT 2;"
+res <- as.data.table(dbGetQuery(geo_con, query))
+res[,strsplit(gsm.supplementary_file, ';\t'),by=gsm.gsm]
 ```
