@@ -21,7 +21,7 @@ opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60),
                cache=FALSE, messages=FALSE)
 ```
 
-Load the `pander` package so we can make nicer table listings.
+Load the `pandoc` package so we can make nicer table listings with `pandoc.table`.
 
 ```{r}
 suppressMessages(library(pander))
@@ -111,13 +111,13 @@ cd <- as.data.table(columnDescriptions())
 cd[TableName=="gse", FieldName]
 ```
 
-## List `gse` columns with `pander`
+## List `gse` columns with `pandoc.table`
 
 ```{r}
 gsefields <- as.data.frame(
     cd[TableName=="gse" & 
            FieldName %in% c("gse","title","pubmed_id","summary","contact")])
-pander(gsefields)
+pandoc.table(gsefields, style="grid")
 ```
 
 ## Explore `gpl`
@@ -132,7 +132,7 @@ cd[TableName=="gpl", FieldName]
 gplfields <- as.data.frame(
     cd[TableName=="gpl" & 
            FieldName %in% c("gpl","organism","manufacturer")])
-pander(gplfields)
+pandoc.table(gplfields, style="grid")
 ```
 
 ## Explore `gse_gpl`
@@ -143,21 +143,21 @@ cd[TableName=="gse_gpl", FieldName]
 
 ## Explore columns in `gse_gpl`
 
-```{r}
-gse_gplfields <- as.data.frame(cd[TableName=="gse_gpl"])
-pander(gse_gplfields)
-```
-
 Why are there only two fields in this table? What is this table for?
 
-## List "title" fields with `pander`
+```{r}
+gse_gplfields <- as.data.frame(cd[TableName=="gse_gpl"])
+pandoc.table(gse_gplfields, style="grid")
+```
+
+## List "title" fields with `pandoc.table`
 
 Why do many tables include a "title" field? Are the titles the same?
 
 ```{r}
 gsefields <- as.data.frame(
     cd[FieldName == "title"])
-pander(gsefields)
+pandoc.table(gsefields, style="grid")
 ```
 
 ## List "contact" field structure

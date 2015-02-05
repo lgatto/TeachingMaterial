@@ -101,7 +101,7 @@ library(&quot;knitr&quot;)
 opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), 
                cache=FALSE, messages=FALSE)</pre>
 
-<p>Load the <code>pander</code> package so we can make nicer table listings.</p>
+<p>Load the <code>pandoc</code> package so we can make nicer table listings with <code>pandoc.table</code>.</p>
 
 <pre class = 'prettyprint lang-r'>suppressMessages(library(pander))</pre>
 
@@ -234,47 +234,34 @@ cd[TableName == &quot;gse&quot;, FieldName]</pre>
 ## [13] &quot;repeats&quot;              &quot;repeats_sample_list&quot;  &quot;variable&quot;            
 ## [16] &quot;variable_description&quot; &quot;supplementary_file&quot;</pre>
 
-</article></slide><slide class=''><hgroup><h2>List <code>gse</code> columns with <code>pander</code></h2></hgroup><article  id="list-gse-columns-with-pander" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>List <code>gse</code> columns with <code>pandoc.table</code></h2></hgroup><article  id="list-gse-columns-with-pandoc.table" class="smaller ">
 
 <pre class = 'prettyprint lang-r'>gsefields &lt;- as.data.frame(cd[TableName == &quot;gse&quot; &amp; FieldName %in% 
     c(&quot;gse&quot;, &quot;title&quot;, &quot;pubmed_id&quot;, &quot;summary&quot;, &quot;contact&quot;)])
-pander(gsefields)</pre>
+pandoc.table(gsefields, style = &quot;grid&quot;)</pre>
 
-<table class = 'rmdtable'>
-<col width="16%" />
-<col width="16%" />
-<col width="41%" />
-<tr class="header">
-<th align="center">TableName</th>
-<th align="center">FieldName</th>
-<th align="center">Description</th>
-</tr>
-<tr class="odd">
-<td align="center">gse</td>
-<td align="center">title</td>
-<td align="center">unique name describing the overall study</td>
-</tr>
-<tr class="even">
-<td align="center">gse</td>
-<td align="center">gse</td>
-<td align="center">unique accession number approved and issued by GEO, NCBI</td>
-</tr>
-<tr class="odd">
-<td align="center">gse</td>
-<td align="center">pubmed_id</td>
-<td align="center">[Values separated by &#39;;tab&#39;, if more than one] NCBI PubMed identifier (PMID)</td>
-</tr>
-<tr class="even">
-<td align="center">gse</td>
-<td align="center">summary</td>
-<td align="center">a description of the goals and objectives of this study</td>
-</tr>
-<tr class="odd">
-<td align="center">gse</td>
-<td align="center">contact</td>
-<td align="center">contact information for this study</td>
-</tr>
-</table>
+<pre >## 
+## 
+## +-------------+-------------+--------------------------------+
+## |  TableName  |  FieldName  |          Description           |
+## +=============+=============+================================+
+## |     gse     |    title    |   unique name describing the   |
+## |             |             |         overall study          |
+## +-------------+-------------+--------------------------------+
+## |     gse     |     gse     |    unique accession number     |
+## |             |             |  approved and issued by GEO,   |
+## |             |             |              NCBI              |
+## +-------------+-------------+--------------------------------+
+## |     gse     |  pubmed_id  |  [Values separated by &#39;;tab&#39;,  |
+## |             |             | if more than one] NCBI PubMed  |
+## |             |             |       identifier (PMID)        |
+## +-------------+-------------+--------------------------------+
+## |     gse     |   summary   | a description of the goals and |
+## |             |             |    objectives of this study    |
+## +-------------+-------------+--------------------------------+
+## |     gse     |   contact   |  contact information for this  |
+## |             |             |             study              |
+## +-------------+-------------+--------------------------------+</pre>
 
 </article></slide><slide class=''><hgroup><h2>Explore <code>gpl</code></h2></hgroup><article  id="explore-gpl" class="smaller ">
 
@@ -292,33 +279,24 @@ pander(gsefields)</pre>
 
 <pre class = 'prettyprint lang-r'>gplfields &lt;- as.data.frame(cd[TableName == &quot;gpl&quot; &amp; FieldName %in% 
     c(&quot;gpl&quot;, &quot;organism&quot;, &quot;manufacturer&quot;)])
-pander(gplfields)</pre>
+pandoc.table(gplfields, style = &quot;grid&quot;)</pre>
 
-<table class = 'rmdtable'>
-<col width="16%" />
-<col width="18%" />
-<col width="40%" />
-<tr class="header">
-<th align="center">TableName</th>
-<th align="center">FieldName</th>
-<th align="center">Description</th>
-</tr>
-<tr class="odd">
-<td align="center">gpl</td>
-<td align="center">gpl</td>
-<td align="center">unique GEO Platfrom accession number approved and issued by GEO, NCBI</td>
-</tr>
-<tr class="even">
-<td align="center">gpl</td>
-<td align="center">organism</td>
-<td align="center">[Values separated by &#39;;tab&#39;, if more than one] Organism(s)</td>
-</tr>
-<tr class="odd">
-<td align="center">gpl</td>
-<td align="center">manufacturer</td>
-<td align="center">name of the company, facility or laboratory where the array was manufactured or produced</td>
-</tr>
-</table>
+<pre >## 
+## 
+## +-------------+--------------+-------------------------------+
+## |  TableName  |  FieldName   |          Description          |
+## +=============+==============+===============================+
+## |     gpl     |     gpl      | unique GEO Platfrom accession |
+## |             |              | number approved and issued by |
+## |             |              |           GEO, NCBI           |
+## +-------------+--------------+-------------------------------+
+## |     gpl     |   organism   | [Values separated by &#39;;tab&#39;,  |
+## |             |              | if more than one] Organism(s) |
+## +-------------+--------------+-------------------------------+
+## |     gpl     | manufacturer | name of the company, facility |
+## |             |              | or laboratory where the array |
+## |             |              | was manufactured or produced  |
+## +-------------+--------------+-------------------------------+</pre>
 
 </article></slide><slide class=''><hgroup><h2>Explore <code>gse_gpl</code></h2></hgroup><article  id="explore-gse_gpl" class="smaller ">
 
@@ -328,69 +306,44 @@ pander(gplfields)</pre>
 
 </article></slide><slide class=''><hgroup><h2>Explore columns in <code>gse_gpl</code></h2></hgroup><article  id="explore-columns-in-gse_gpl" class="smaller ">
 
-<pre class = 'prettyprint lang-r'>gse_gplfields &lt;- as.data.frame(cd[TableName == &quot;gse_gpl&quot;])
-pander(gse_gplfields)</pre>
-
-<table class = 'rmdtable'>
-<col width="16%" />
-<col width="16%" />
-<col width="23%" />
-<tr class="header">
-<th align="center">TableName</th>
-<th align="center">FieldName</th>
-<th align="center">Description</th>
-</tr>
-<tr class="odd">
-<td align="center">gse_gpl</td>
-<td align="center">gse</td>
-<td align="center">GEO Series name</td>
-</tr>
-<tr class="even">
-<td align="center">gse_gpl</td>
-<td align="center">gpl</td>
-<td align="center">GEO Platform name</td>
-</tr>
-</table>
-
 <p>Why are there only two fields in this table? What is this table for?</p>
 
-</article></slide><slide class=''><hgroup><h2>List &quot;title&quot; fields with <code>pander</code></h2></hgroup><article  id="list-title-fields-with-pander" class="smaller ">
+<pre class = 'prettyprint lang-r'>gse_gplfields &lt;- as.data.frame(cd[TableName == &quot;gse_gpl&quot;])
+pandoc.table(gse_gplfields, style = &quot;grid&quot;)</pre>
+
+<pre >## 
+## 
+## +-------------+-------------+-------------------+
+## |  TableName  |  FieldName  |    Description    |
+## +=============+=============+===================+
+## |   gse_gpl   |     gse     |  GEO Series name  |
+## +-------------+-------------+-------------------+
+## |   gse_gpl   |     gpl     | GEO Platform name |
+## +-------------+-------------+-------------------+</pre>
+
+</article></slide><slide class=''><hgroup><h2>List &quot;title&quot; fields with <code>pandoc.table</code></h2></hgroup><article  id="list-title-fields-with-pandoc.table" class="smaller ">
 
 <p>Why do many tables include a &quot;title&quot; field? Are the titles the same?</p>
 
 <pre class = 'prettyprint lang-r'>gsefields &lt;- as.data.frame(cd[FieldName == &quot;title&quot;])
-pander(gsefields)</pre>
+pandoc.table(gsefields, style = &quot;grid&quot;)</pre>
 
-<table class = 'rmdtable'>
-<col width="16%" />
-<col width="16%" />
-<col width="37%" />
-<tr class="header">
-<th align="center">TableName</th>
-<th align="center">FieldName</th>
-<th align="center">Description</th>
-</tr>
-<tr class="odd">
-<td align="center">gse</td>
-<td align="center">title</td>
-<td align="center">unique name describing the overall study</td>
-</tr>
-<tr class="even">
-<td align="center">gpl</td>
-<td align="center">title</td>
-<td align="center">unique name describing the Platform (GPL)</td>
-</tr>
-<tr class="odd">
-<td align="center">gsm</td>
-<td align="center">title</td>
-<td align="center">unique name describing this Sample</td>
-</tr>
-<tr class="even">
-<td align="center">gds</td>
-<td align="center">title</td>
-<td align="center">title of this GDS</td>
-</tr>
-</table>
+<pre >## 
+## 
+## +-------------+-------------+-----------------------------+
+## |  TableName  |  FieldName  |         Description         |
+## +=============+=============+=============================+
+## |     gse     |    title    | unique name describing the  |
+## |             |             |        overall study        |
+## +-------------+-------------+-----------------------------+
+## |     gpl     |    title    | unique name describing the  |
+## |             |             |       Platform (GPL)        |
+## +-------------+-------------+-----------------------------+
+## |     gsm     |    title    | unique name describing this |
+## |             |             |           Sample            |
+## +-------------+-------------+-----------------------------+
+## |     gds     |    title    |      title of this GDS      |
+## +-------------+-------------+-----------------------------+</pre>
 
 </article></slide><slide class=''><hgroup><h2>List &quot;contact&quot; field structure</h2></hgroup><article  id="list-contact-field-structure" class="smaller ">
 

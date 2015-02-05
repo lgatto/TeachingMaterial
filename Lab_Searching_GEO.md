@@ -14,7 +14,7 @@ opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60),
                cache=FALSE, messages=FALSE)
 ```
 
-Load the `pander` package so we can make nicer table listings.
+Load the `pandoc` package so we can make nicer table listings with `pandoc.table`.
 
 
 ```r
@@ -196,36 +196,39 @@ cd[TableName == "gse", FieldName]
 ## [16] "variable_description" "supplementary_file"
 ```
 
-## List `gse` columns with `pander`
+## List `gse` columns with `pandoc.table`
 
 
 ```r
 gsefields <- as.data.frame(cd[TableName == "gse" & FieldName %in% 
     c("gse", "title", "pubmed_id", "summary", "contact")])
-pander(gsefields)
+pandoc.table(gsefields, style = "grid")
 ```
 
-
-------------------------------------------------------
- TableName   FieldName           Description          
------------ ----------- ------------------------------
-    gse        title      unique name describing the  
-                                overall study         
-
-    gse         gse        unique accession number    
-                         approved and issued by GEO,  
-                                     NCBI             
-
-    gse      pubmed_id   [Values separated by ';tab', 
-                        if more than one] NCBI PubMed 
-                              identifier (PMID)       
-
-    gse       summary   a description of the goals and
-                           objectives of this study   
-
-    gse       contact    contact information for this 
-                                    study             
-------------------------------------------------------
+```
+## 
+## 
+## +-------------+-------------+--------------------------------+
+## |  TableName  |  FieldName  |          Description           |
+## +=============+=============+================================+
+## |     gse     |    title    |   unique name describing the   |
+## |             |             |         overall study          |
+## +-------------+-------------+--------------------------------+
+## |     gse     |     gse     |    unique accession number     |
+## |             |             |  approved and issued by GEO,   |
+## |             |             |              NCBI              |
+## +-------------+-------------+--------------------------------+
+## |     gse     |  pubmed_id  |  [Values separated by ';tab',  |
+## |             |             | if more than one] NCBI PubMed  |
+## |             |             |       identifier (PMID)        |
+## +-------------+-------------+--------------------------------+
+## |     gse     |   summary   | a description of the goals and |
+## |             |             |    objectives of this study    |
+## +-------------+-------------+--------------------------------+
+## |     gse     |   contact   |  contact information for this  |
+## |             |             |             study              |
+## +-------------+-------------+--------------------------------+
+```
 
 ## Explore `gpl`
 
@@ -250,24 +253,27 @@ cd[TableName == "gpl", FieldName]
 ```r
 gplfields <- as.data.frame(cd[TableName == "gpl" & FieldName %in% 
     c("gpl", "organism", "manufacturer")])
-pander(gplfields)
+pandoc.table(gplfields, style = "grid")
 ```
 
-
-------------------------------------------------------
- TableName   FieldName            Description         
------------ ------------ -----------------------------
-    gpl         gpl      unique GEO Platfrom accession
-                         number approved and issued by
-                                   GEO, NCBI          
-
-    gpl       organism   [Values separated by ';tab', 
-                         if more than one] Organism(s)
-
-    gpl     manufacturer name of the company, facility
-                         or laboratory where the array
-                         was manufactured or produced 
-------------------------------------------------------
+```
+## 
+## 
+## +-------------+--------------+-------------------------------+
+## |  TableName  |  FieldName   |          Description          |
+## +=============+==============+===============================+
+## |     gpl     |     gpl      | unique GEO Platfrom accession |
+## |             |              | number approved and issued by |
+## |             |              |           GEO, NCBI           |
+## +-------------+--------------+-------------------------------+
+## |     gpl     |   organism   | [Values separated by ';tab',  |
+## |             |              | if more than one] Organism(s) |
+## +-------------+--------------+-------------------------------+
+## |     gpl     | manufacturer | name of the company, facility |
+## |             |              | or laboratory where the array |
+## |             |              | was manufactured or produced  |
+## +-------------+--------------+-------------------------------+
+```
 
 ## Explore `gse_gpl`
 
@@ -282,48 +288,54 @@ cd[TableName == "gse_gpl", FieldName]
 
 ## Explore columns in `gse_gpl`
 
+Why are there only two fields in this table? What is this table for?
+
 
 ```r
 gse_gplfields <- as.data.frame(cd[TableName == "gse_gpl"])
-pander(gse_gplfields)
+pandoc.table(gse_gplfields, style = "grid")
 ```
 
+```
+## 
+## 
+## +-------------+-------------+-------------------+
+## |  TableName  |  FieldName  |    Description    |
+## +=============+=============+===================+
+## |   gse_gpl   |     gse     |  GEO Series name  |
+## +-------------+-------------+-------------------+
+## |   gse_gpl   |     gpl     | GEO Platform name |
+## +-------------+-------------+-------------------+
+```
 
------------------------------------------
- TableName   FieldName     Description   
------------ ----------- -----------------
-  gse_gpl       gse      GEO Series name 
-
-  gse_gpl       gpl     GEO Platform name
------------------------------------------
-
-Why are there only two fields in this table? What is this table for?
-
-## List "title" fields with `pander`
+## List "title" fields with `pandoc.table`
 
 Why do many tables include a "title" field? Are the titles the same?
 
 
 ```r
 gsefields <- as.data.frame(cd[FieldName == "title"])
-pander(gsefields)
+pandoc.table(gsefields, style = "grid")
 ```
 
-
----------------------------------------------------
- TableName   FieldName          Description        
------------ ----------- ---------------------------
-    gse        title    unique name describing the 
-                               overall study       
-
-    gpl        title    unique name describing the 
-                              Platform (GPL)       
-
-    gsm        title    unique name describing this
-                                  Sample           
-
-    gds        title         title of this GDS     
----------------------------------------------------
+```
+## 
+## 
+## +-------------+-------------+-----------------------------+
+## |  TableName  |  FieldName  |         Description         |
+## +=============+=============+=============================+
+## |     gse     |    title    | unique name describing the  |
+## |             |             |        overall study        |
+## +-------------+-------------+-----------------------------+
+## |     gpl     |    title    | unique name describing the  |
+## |             |             |       Platform (GPL)        |
+## +-------------+-------------+-----------------------------+
+## |     gsm     |    title    | unique name describing this |
+## |             |             |           Sample            |
+## +-------------+-------------+-----------------------------+
+## |     gds     |    title    |      title of this GDS      |
+## +-------------+-------------+-----------------------------+
+```
 
 ## List "contact" field structure
 
