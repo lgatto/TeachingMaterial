@@ -598,11 +598,11 @@ gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2
 <p>We can also use <code>%&gt;%</code> from <code>magrittr</code> to improve readability, again using the three DTs we made previously. Here we will use two &quot;lines&quot; of code.</p>
 
 <pre class = 'prettyprint lang-r'>library(magrittr)
-mergedDT &lt;- gseDT[pubmed_id==21743478, list(gse)] %&gt;% 
-            merge(y=gse_gsmDT, by=c(&quot;gse&quot;)) %&gt;% 
-            merge(y=gsmDT, by=c(&quot;gsm&quot;))
-unique(mergedDT[1:4, list(gsm, supplementary_file)])[,
-            strsplit(supplementary_file, &#39;;\t&#39;), by=gsm]</pre>
+mergedDT &lt;- unique(gseDT[pubmed_id==21743478, list(gse)] %&gt;% 
+                merge(y=gse_gsmDT, by=c(&quot;gse&quot;)) %&gt;% 
+                merge(y=gsmDT[,list(gsm,supplementary_file)], by=c(&quot;gsm&quot;)))
+mergedDT[1:2, list(gsm, gse, supplementary_file)][,
+                strsplit(supplementary_file, &#39;;\t&#39;), by=gsm]</pre>
 
 <pre >##          gsm
 ## 1: GSM733816

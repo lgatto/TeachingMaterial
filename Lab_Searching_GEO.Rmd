@@ -366,11 +366,11 @@ three DTs we made previously. Here we will use two "lines" of code.
 
 ```{r, tidy=FALSE}
 library(magrittr)
-mergedDT <- gseDT[pubmed_id==21743478, list(gse)] %>% 
-            merge(y=gse_gsmDT, by=c("gse")) %>% 
-            merge(y=gsmDT, by=c("gsm"))
-unique(mergedDT[1:4, list(gsm, supplementary_file)])[,
-            strsplit(supplementary_file, ';\t'), by=gsm]
+mergedDT <- unique(gseDT[pubmed_id==21743478, list(gse)] %>% 
+                merge(y=gse_gsmDT, by=c("gse")) %>% 
+                merge(y=gsmDT[,list(gsm,supplementary_file)], by=c("gsm")))
+mergedDT[1:2, list(gsm, gse, supplementary_file)][,
+                strsplit(supplementary_file, ';\t'), by=gsm]
 ```
 
 ## Only get what you need
