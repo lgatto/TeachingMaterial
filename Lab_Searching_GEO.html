@@ -549,7 +549,59 @@ gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2
 ## 1: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz
 ## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
 ## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
-## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz</pre></article></slide>
+## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz</pre>
+
+</article></slide><slide class=''><hgroup><h2>All in one line?</h2></hgroup><article  id="all-in-one-line" class="smaller ">
+
+<p>Can we do it all in one line of code? Yes, but it&#39;s ugly and hard to follow, even with line-wrap. Yuk!</p>
+
+<pre class = 'prettyprint lang-r'>data.table(dbGetQuery(geo_con, 
+    &quot;SELECT * from gsm;&quot;), key=&quot;gsm&quot;)[data.table(dbGetQuery(geo_con, 
+    &quot;SELECT * from gse_gsm;&quot;), key=c(&quot;gse&quot;, &quot;gsm&quot;))[data.table(dbGetQuery(geo_con, 
+    &quot;SELECT * from gse;&quot;), key=&quot;gse&quot;)[pubmed_id==21743478, gse], gsm, 
+    nomatch=0], nomatch=0][1:2, list(gsm, supplementary_file)][,
+    strsplit(supplementary_file, &#39;;\t&#39;), by=gsm]</pre>
+
+<pre >##          gsm
+## 1: GSM733816
+## 2: GSM733816
+## 3: GSM733817
+## 4: GSM733817
+##                                                                                   V1
+## 1: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz
+## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
+## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
+## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz</pre>
+
+</article></slide><slide class=''><hgroup><h2>Only <code>select</code> what we need</h2></hgroup><article  id="only-select-what-we-need" class="smaller ">
+
+<p>It makes sense to only <code>select</code> the data we need from the SQL database. Why pull in extra data, only to ignore it? We will still use <code>data.table</code> for the <code>join</code>, though, in keeping with the spirit of the assignment.</p>
+
+<pre class = 'prettyprint lang-r'>gseDT &lt;- data.table(dbGetQuery(geo_con, 
+    &quot;SELECT gse from gse WHERE pubmed_id = &#39;21743478&#39;;&quot;), key=&quot;gse&quot;)
+gsmDT &lt;- data.table(dbGetQuery(geo_con, 
+    &quot;SELECT gsm, supplementary_file from gsm;&quot;), key=&quot;gsm&quot;)
+gse_gsmDT &lt;- data.table(dbGetQuery(geo_con, 
+    &quot;SELECT * from gse_gsm;&quot;), key=c(&quot;gse&quot;, &quot;gsm&quot;))
+gsmDT[gse_gsmDT[gseDT, gsm, nomatch=0], nomatch=0][1:2, 
+    list(gsm, supplementary_file)][,strsplit(supplementary_file, &#39;;\t&#39;), by=gsm]</pre>
+
+<pre >##          gsm
+## 1: GSM733816
+## 2: GSM733816
+## 3: GSM733817
+## 4: GSM733817
+##                                                                                   V1
+## 1: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz
+## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
+## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
+## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz</pre>
+
+</article></slide><slide class=''><hgroup><h2>Cleanup</h2></hgroup><article  id="cleanup" class="smaller ">
+
+<pre class = 'prettyprint lang-r'>dbDisconnect(geo_con)</pre>
+
+<pre >## [1] TRUE</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

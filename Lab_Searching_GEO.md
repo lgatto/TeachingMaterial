@@ -592,3 +592,73 @@ gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2
 ## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
 ## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
 ```
+
+## All in one line?
+
+Can we do it all in one line of code? Yes, but it's ugly and hard to follow, 
+even with line-wrap. Yuk!
+
+
+```r
+data.table(dbGetQuery(geo_con, 
+    "SELECT * from gsm;"), key="gsm")[data.table(dbGetQuery(geo_con, 
+    "SELECT * from gse_gsm;"), key=c("gse", "gsm"))[data.table(dbGetQuery(geo_con, 
+    "SELECT * from gse;"), key="gse")[pubmed_id==21743478, gse], gsm, 
+    nomatch=0], nomatch=0][1:2, list(gsm, supplementary_file)][,
+    strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+```
+##          gsm
+## 1: GSM733816
+## 2: GSM733816
+## 3: GSM733817
+## 4: GSM733817
+##                                                                                   V1
+## 1: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz
+## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
+## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
+## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
+```
+
+## Only `select` what we need
+
+It makes sense to only `select` the data we need from the SQL database. Why pull 
+in extra data, only to ignore it? We will still use `data.table` for the `join`, 
+though, in keeping with the spirit of the assignment.
+
+
+```r
+gseDT <- data.table(dbGetQuery(geo_con, 
+    "SELECT gse from gse WHERE pubmed_id = '21743478';"), key="gse")
+gsmDT <- data.table(dbGetQuery(geo_con, 
+    "SELECT gsm, supplementary_file from gsm;"), key="gsm")
+gse_gsmDT <- data.table(dbGetQuery(geo_con, 
+    "SELECT * from gse_gsm;"), key=c("gse", "gsm"))
+gsmDT[gse_gsmDT[gseDT, gsm, nomatch=0], nomatch=0][1:2, 
+    list(gsm, supplementary_file)][,strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+```
+##          gsm
+## 1: GSM733816
+## 2: GSM733816
+## 3: GSM733817
+## 4: GSM733817
+##                                                                                   V1
+## 1: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz
+## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
+## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
+## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
+```
+
+## Cleanup
+
+
+```r
+dbDisconnect(geo_con)
+```
+
+```
+## [1] TRUE
+```
