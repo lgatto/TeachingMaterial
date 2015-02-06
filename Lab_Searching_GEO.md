@@ -1,6 +1,6 @@
 # Searching GEO
 Brian High  
-2/5/2015  
+2/6/2015  
 
 ## Setting up some options
 
@@ -626,12 +626,66 @@ data.table(dbGetQuery(geo_con,
 ## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
 ```
 
-## A hybrid approach
+## Joining with `merge`
+
+Some people like to use the familiar `merge`. There is a version of `merge`
+built into `data.table` for improved performance. We will use the three DTs we 
+made previously. To remove duplicates, we use `unique`. (Why are there duplicates?)
+
+
+```r
+unique(merge(gsmDT[,list(gsm,supplementary_file)], 
+      merge(gseDT[pubmed_id==21743478, list(gse)], 
+            gse_gsmDT)[,list(gsm)])[1:4, list(gsm, supplementary_file)])[,
+                    strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+```
+##          gsm
+## 1: GSM733816
+## 2: GSM733816
+## 3: GSM733817
+## 4: GSM733817
+##                                                                                   V1
+## 1: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz
+## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
+## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
+## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
+```
+
+## Joining with `merge` and `magrittr`
+
+We can also use `%>%` from `magrittr` to improve readability, again using the 
+three DTs we made previously. Here we will use two "lines" of code.
+
+
+```r
+library(magrittr)
+mergedDT <- gseDT[pubmed_id==21743478, list(gse)] %>% 
+            merge(y=gse_gsmDT, by=c("gse")) %>% 
+            merge(y=gsmDT, by=c("gsm"))
+unique(mergedDT[1:4, list(gsm, supplementary_file)])[,
+            strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+```
+##          gsm
+## 1: GSM733816
+## 2: GSM733816
+## 3: GSM733817
+## 4: GSM733817
+##                                                                                   V1
+## 1: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.CEL.gz
+## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
+## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
+## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
+```
+
+## Only get what you need
 
 It makes sense to only `select` the data we need from the SQL database. Why pull 
-in extra data, only to ignore it? (Well, one reason is if we plan to do many 
-different searches, they will be faster in `data.table`.) We will still use 
-`data.table` for the `join`, though, in keeping with the spirit of the assignment.
+in extra data, only to ignore it? We will still use `data.table` for the `join`, 
+though, in keeping with the spirit of the assignment.
 
 
 ```r

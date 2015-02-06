@@ -1,7 +1,7 @@
 ---
 title: "Searching GEO"
 author: "Brian High"
-date: "2/5/2015"
+date: "2/6/2015"
 output:
   ioslides_presentation:
     fig_caption: yes
@@ -346,12 +346,38 @@ data.table(dbGetQuery(geo_con,
     strsplit(supplementary_file, ';\t'), by=gsm]
 ```
 
-## A hybrid approach
+## Joining with `merge`
+
+Some people like to use the familiar `merge`. There is a version of `merge`
+built into `data.table` for improved performance. We will use the three DTs we 
+made previously. To remove duplicates, we use `unique`. (Why are there duplicates?)
+
+```{r, tidy=FALSE}
+unique(merge(gsmDT[,list(gsm,supplementary_file)], 
+      merge(gseDT[pubmed_id==21743478, list(gse)], 
+            gse_gsmDT)[,list(gsm)])[1:4, list(gsm, supplementary_file)])[,
+                    strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+## Joining with `merge` and `magrittr`
+
+We can also use `%>%` from `magrittr` to improve readability, again using the 
+three DTs we made previously. Here we will use two "lines" of code.
+
+```{r, tidy=FALSE}
+library(magrittr)
+mergedDT <- gseDT[pubmed_id==21743478, list(gse)] %>% 
+            merge(y=gse_gsmDT, by=c("gse")) %>% 
+            merge(y=gsmDT, by=c("gsm"))
+unique(mergedDT[1:4, list(gsm, supplementary_file)])[,
+            strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+## Only get what you need
 
 It makes sense to only `select` the data we need from the SQL database. Why pull 
-in extra data, only to ignore it? (Well, one reason is if we plan to do many 
-different searches, they will be faster in `data.table`.) We will still use 
-`data.table` for the `join`, though, in keeping with the spirit of the assignment.
+in extra data, only to ignore it? We will still use `data.table` for the `join`, 
+though, in keeping with the spirit of the assignment.
 
 ```{r, tidy=FALSE}
 gseDT <- data.table(dbGetQuery(geo_con, 
