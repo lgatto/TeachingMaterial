@@ -538,7 +538,9 @@ Source: [Help: GEOmetadb Application, Meltzerlab/GB/CCR/NCI/NIH &copy;2008](http
 
 To get raw data, we need to `join` three tables with two `join` clauses. The first
 `join` is a subquery in the `from` clause, using `gse_gsm` to find `gsm` records
-corresponding to `gse` records. We then `join` this with `gsm` for those records.
+corresponding to `gse` records. We then `join` this with `gsm` for those records. 
+This approach works well when you only have a few queries to make or you have 
+limited memory (RAM) available.
 
 
 ```r
@@ -566,9 +568,11 @@ res[,strsplit(gsm.supplementary_file, ';\t'), by=gsm.gsm]
 
 ## Joins in `data.table`
 
-We can repeat the same operation, using `data.table` once we have converted the 
-GEO tables to `data.table`s and set their keys. The homework assignment asks that you
-try to fit the `data.table` manipulations (merge, subset, etc.) into a single line.
+We can repeat the same operation using `data.table`, once we have converted the 
+GEO tables to `data.table`s and set their keys. The homework assignment asks 
+that you try to fit the `data.table` manipulations (merge, subset, etc.) into 
+a single line. This approach will allow us to do additional fast joins later, 
+since the tables are now in memory (RAM).
 
 
 ```r
@@ -596,7 +600,8 @@ gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2
 ## All in one line?
 
 Can we do it all in one line of code? Yes, but it's ugly and hard to follow, 
-even with line-wrap. Yuk!
+even with line-wrap. Plus, additional queries will have to reload the data from 
+the database. Yuk! (Don't do it this way.)
 
 
 ```r
@@ -621,11 +626,12 @@ data.table(dbGetQuery(geo_con,
 ## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
 ```
 
-## Only `select` what we need
+## A hybrid approach
 
 It makes sense to only `select` the data we need from the SQL database. Why pull 
-in extra data, only to ignore it? We will still use `data.table` for the `join`, 
-though, in keeping with the spirit of the assignment.
+in extra data, only to ignore it? (Well, one reason is if we plan to do many 
+different searches, they will be faster in `data.table`.) We will still use 
+`data.table` for the `join`, though, in keeping with the spirit of the assignment.
 
 
 ```r
