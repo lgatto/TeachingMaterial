@@ -726,8 +726,8 @@ AB <- data.table(f = c(4:5), g = c(8:9), key = c("f", "g"))
 
 ## Column Name Conflicts
 
-The default `join` is a "right outer `join`". They appear to work fine. Or do 
-they? What's with the "f" and "g" columns in `AB[B]`?
+The default `join` is a "right outer `join`". They appear to work
+fine. Or do they? What's with the "f" and "g" columns in `AB[B]`?
 
 
 ```r
@@ -776,7 +776,7 @@ AB[B]
 Even three-table `join`s (sort of) work, so long as we use the default `join`, 
 but we see that a column is renamed. "g" from table AB becomes "i.g". "f" from 
 table AB becomes "i.f". A's "f" gets relabled as "g". B's "g" gets relabled as 
-"f". It the `data.table` documentation, it says, "In all joins the names of the columns are irrelevant". Hmmm.
+"f". In the `data.table` documentation, it says, "In all joins the names of the columns are irrelevant". Hmmm. And what happened to "e"?
 
 
 ```r
@@ -847,6 +847,24 @@ B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h),
 ##    i.e i.f g  h
 ## 1:   1   4 8 11
 ## 2:   2   5 9 12
+```
+
+## Column Name Conflicts
+
+Using `merge`, we don't encounter these troubles. We can get the same 
+"inner join" result without the renaming columns and the need for explicit 
+"j expression" column lists. We just need to use `by=` in the 
+outer-nested `merge`.
+
+
+```r
+merge(B, merge(AB, A), by = "g")
+```
+
+```
+##    g  h f e
+## 1: 8 11 4 1
+## 2: 9 12 5 2
 ```
 
 ## Cleanup

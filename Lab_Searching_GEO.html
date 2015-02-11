@@ -679,7 +679,7 @@ AB[B]</pre>
 
 </article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-3" class="smaller ">
 
-<p>Even three-table <code>join</code>s (sort of) work, so long as we use the default <code>join</code>, but we see that a column is renamed. &quot;g&quot; from table AB becomes &quot;i.g&quot;. &quot;f&quot; from table AB becomes &quot;i.f&quot;. A&#39;s &quot;f&quot; gets relabled as &quot;g&quot;. B&#39;s &quot;g&quot; gets relabled as &quot;f&quot;. It the <code>data.table</code> documentation, it says, &quot;In all joins the names of the columns are irrelevant&quot;. Hmmm.</p>
+<p>Even three-table <code>join</code>s (sort of) work, so long as we use the default <code>join</code>, but we see that a column is renamed. &quot;g&quot; from table AB becomes &quot;i.g&quot;. &quot;f&quot; from table AB becomes &quot;i.f&quot;. A&#39;s &quot;f&quot; gets relabled as &quot;g&quot;. B&#39;s &quot;g&quot; gets relabled as &quot;f&quot;. In the <code>data.table</code> documentation, it says, &quot;In all joins the names of the columns are irrelevant&quot;. Hmmm. And what happened to &quot;e&quot;?</p>
 
 <pre class = 'prettyprint lang-r'>setkeyv(AB, c(&quot;f&quot;, &quot;g&quot;))
 B[AB[A]]</pre>
@@ -722,6 +722,16 @@ B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h),
 <pre >##    i.e i.f g  h
 ## 1:   1   4 8 11
 ## 2:   2   5 9 12</pre>
+
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-6" class="smaller ">
+
+<p>Using <code>merge</code>, we don&#39;t encounter these troubles. We can get the same &quot;inner join&quot; result without the renaming columns and the need for explicit &quot;j expression&quot; column lists. We just need to use <code>by=</code> in the outer-nested <code>merge</code>.</p>
+
+<pre class = 'prettyprint lang-r'>merge(B, merge(AB, A), by = &quot;g&quot;)</pre>
+
+<pre >##    g  h f e
+## 1: 8 11 4 1
+## 2: 9 12 5 2</pre>
 
 </article></slide><slide class=''><hgroup><h2>Cleanup</h2></hgroup><article  id="cleanup" class="smaller ">
 
