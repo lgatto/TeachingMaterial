@@ -10,6 +10,13 @@ Let's first turn on the cache for increased performance and improved styling.
 ```r
 # Set some global knitr options
 library("knitr")
+```
+
+```
+## Warning: package 'knitr' was built under R version 3.1.2
+```
+
+```r
 opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), 
                cache=FALSE, messages=FALSE)
 ```
@@ -19,6 +26,10 @@ Load the `pander` package so we can make nicer table listings with `pandoc.table
 
 ```r
 suppressMessages(library(pander))
+```
+
+```
+## Warning: package 'pander' was built under R version 3.1.2
 ```
 
 ## Prepare for HW2
@@ -33,6 +44,14 @@ First we load the `GEOmetadb` library.
 
 ```r
 suppressMessages(library(GEOmetadb))
+```
+
+```
+## Warning: package 'BiocGenerics' was built under R version 3.1.2
+```
+
+```
+## Warning: package 'RSQLite' was built under R version 3.1.2
 ```
 
 Let's also view the available methods.
@@ -383,11 +402,11 @@ manu[,list(length(manufacturer)), by=manufacturer]
 ##    4:                                            454  1
 ##    5:                              454 Life Sciences  1
 ##   ---                                                  
-## 2076: washington university microarray core facility  1
-## 2077:         www.MYcroarray.com, Ann Arbor, MI, USA  1
-## 2078:                                www.agilent.com  1
-## 2079:                           www.chem.agilent.com  1
-## 2080:                            www.combimatrix.com  1
+## 2075: washington university microarray core facility  1
+## 2076:         www.MYcroarray.com, Ann Arbor, MI, USA  1
+## 2077:                                www.agilent.com  1
+## 2078:                           www.chem.agilent.com  1
+## 2079:                            www.combimatrix.com  1
 ```
 
 ## Our `SQL` command
@@ -428,11 +447,11 @@ manu[,list(length(manufacturer)), by=manufacturer]
 ##    4:                                            454  1
 ##    5:                              454 Life Sciences  1
 ##   ---                                                  
-## 2076: washington university microarray core facility  1
-## 2077:         www.MYcroarray.com, Ann Arbor, MI, USA  1
-## 2078:                                www.agilent.com  1
-## 2079:                           www.chem.agilent.com  1
-## 2080:                            www.combimatrix.com  1
+## 2075: washington university microarray core facility  1
+## 2076:         www.MYcroarray.com, Ann Arbor, MI, USA  1
+## 2077:                                www.agilent.com  1
+## 2078:                           www.chem.agilent.com  1
+## 2079:                            www.combimatrix.com  1
 ```
 
 
@@ -661,6 +680,13 @@ three DTs we made previously. Here we will use two "lines" of code.
 
 ```r
 library(magrittr)
+```
+
+```
+## Warning: package 'magrittr' was built under R version 3.1.2
+```
+
+```r
 mergedDT <- unique(gseDT[pubmed_id==21743478, list(gse)] %>% 
                 merge(y=gse_gsmDT, by=c("gse")) %>% 
                 merge(y=gsmDT[,list(gsm,supplementary_file)], by=c("gsm")))
@@ -712,6 +738,17 @@ gsmDT[gse_gsmDT[gseDT, gsm, nomatch=0], nomatch=0][1:2,
 ## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
 ```
 
+## Cleanup
+
+
+```r
+dbDisconnect(geo_con)
+```
+
+```
+## [1] TRUE
+```
+
 ## Column Name Conflicts
 
 Let's set up an example which will lead to a column name conflict when we 
@@ -719,6 +756,7 @@ do a three-table `join` in one command (line).
 
 
 ```r
+suppressMessages(library(data.table))
 A <- data.table(e = c(1:3), f = c(4:6), key = "f")
 B <- data.table(g = c(7:9), h = c(10:12), key = "g")
 AB <- data.table(f = c(4:5), g = c(8:9), key = c("f", "g"))
@@ -776,7 +814,7 @@ AB[B]
 Even three-table `join`s (sort of) work, so long as we use the default `join`, 
 but we see that a column is renamed. "g" from table AB becomes "i.g". "f" from 
 table AB becomes "i.f". A's "f" gets relabled as "g". B's "g" gets relabled as 
-"f". In the `data.table` documentation, it says, "In all joins the names of the columns are irrelevant". Hmmm. And what happened to "e"?
+"f". In the `data.table` documentation, it says, "In all joins the names of the columns are irrelevant". And what happened to "e" and "h"?
 
 
 ```r
@@ -867,13 +905,31 @@ merge(B, merge(AB, A), by = "g")
 ## 2: 9 12 5 2
 ```
 
-## Cleanup
+## Column Name Conflicts
+
+Here is the same example using `%>%` pipes from `magrittr`.
 
 
 ```r
-dbDisconnect(geo_con)
+suppressMessages(library(magrittr))
+merge(x = AB, y = A, by = "f") %>% merge(y = B, by = "g")
 ```
 
 ```
-## [1] TRUE
+##    g f e  h
+## 1: 8 4 1 11
+## 2: 9 5 2 12
+```
+
+Or simply (but less explicitly)...
+
+
+```r
+merge(AB, A) %>% merge(B, by = "g")
+```
+
+```
+##    g f e  h
+## 1: 8 4 1 11
+## 2: 9 5 2 12
 ```
