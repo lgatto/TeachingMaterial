@@ -715,7 +715,7 @@ gsmDT[gse_gsmDT[gseDT, gsm, nomatch=0], nomatch=0][1:2,
 ## Column Name Conflicts
 
 Let's set up an example which will lead to a column name conflict when we 
-do a three-table join in one command (line).
+do a three-table `join` in one command (line).
 
 
 ```r
@@ -726,7 +726,8 @@ AB <- data.table(f = c(4:5), g = c(8:9), key = c("f", "g"))
 
 ## Column Name Conflicts
 
-Two-table joins works just fine. The default join is a "left join".
+The default `join` is a "right outer `join`". They appear to work fine. Or do 
+they? What's with the "f" and "g" columns in `AB[B]`?
 
 
 ```r
@@ -753,11 +754,33 @@ AB[B]
 
 ## Column Name Conflicts
 
-Even three-table joins will work, so long as we use the default join, but 
-we see that a column is renamed. "g" from table AB becomes "i.g".
+We can fix the `AB[B]` output by resetting the `key` for `AB`. We reverse the
+order of the key fields so that the key for B ("g") matches the first key for 
+AB ("g").
 
 
 ```r
+setkeyv(AB, c("g", "f"))
+AB[B]
+```
+
+```
+##     f g  h
+## 1: NA 7 10
+## 2:  4 8 11
+## 3:  5 9 12
+```
+
+## Column Name Conflicts
+
+Even three-table `join`s (sort of) work, so long as we use the default `join`, 
+but we see that a column is renamed. "g" from table AB becomes "i.g". "f" from 
+table AB becomes "i.f". A's "f" gets relabled as "g". B's "g" gets relabled as 
+"f". It the `data.table` documentation, it says, "In all joins the names of the columns are irrelevant". Hmmm.
+
+
+```r
+setkeyv(AB, c("f", "g"))
 B[AB[A]]
 ```
 
@@ -769,26 +792,28 @@ B[AB[A]]
 ```
 
 ```r
+setkeyv(AB, c("g", "f"))
 A[AB[B]]
 ```
 
 ```
-##     e f  g  h
-## 1: NA 7 NA 10
-## 2: NA 8 NA 11
-## 3: NA 9 NA 12
+##     e f i.f  h
+## 1: NA 7  NA 10
+## 2: NA 8   4 11
+## 3: NA 9   5 12
 ```
 
 ## Column Name Conflicts
 
-The problem comes when we try to use an inner join (intersection). Since 
+The problems get worse when we try to use an inner `join` (intersection). Since 
 "f" is in both A and AB and "g" is in both AB and B, we will have a 
-conflict if we try and join A, AB, and B in one command (line). The 
+conflict if we try and `join` A, AB, and B in one command (line). The 
 result is an "empty data.table", even though the intersection should have
 some rows of data.
 
 
 ```r
+setkeyv(AB, c("f", "g"))
 B[AB[A, nomatch = 0], nomatch = 0]
 ```
 
@@ -796,14 +821,24 @@ B[AB[A, nomatch = 0], nomatch = 0]
 ## Empty data.table (0 rows) of 4 cols: g,h,i.g,e
 ```
 
+```r
+setkeyv(AB, c("g", "f"))
+B[AB[A, nomatch = 0], nomatch = 0]
+```
+
+```
+## Empty data.table (0 rows) of 4 cols: g,h,f,e
+```
+
 ## Column Name Conflicts
 
-In the first (most nested) join, A is the "i expression". If we anticipate
-that "e" and "f" from A will be renamed "i.e" and "i.f" during the join, 
-then we can list them as such and avoid the problem.
+In the first (most nested) `join`, A is the "i expression". If we anticipate
+that "e" and "f" from A will be renamed "i.e" and "i.f" during the `join`, 
+then we can list them as such and avoid the "empty data.table" problem.
 
 
 ```r
+setkeyv(AB, c("f", "g"))
 B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h), 
     nomatch = 0]
 ```

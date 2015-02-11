@@ -641,7 +641,7 @@ gsmDT[gse_gsmDT[gseDT, gsm, nomatch=0], nomatch=0][1:2,
 
 </article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts" class="smaller ">
 
-<p>Let&#39;s set up an example which will lead to a column name conflict when we do a three-table join in one command (line).</p>
+<p>Let&#39;s set up an example which will lead to a column name conflict when we do a three-table <code>join</code> in one command (line).</p>
 
 <pre class = 'prettyprint lang-r'>A &lt;- data.table(e = c(1:3), f = c(4:6), key = &quot;f&quot;)
 B &lt;- data.table(g = c(7:9), h = c(10:12), key = &quot;g&quot;)
@@ -649,7 +649,7 @@ AB &lt;- data.table(f = c(4:5), g = c(8:9), key = c(&quot;f&quot;, &quot;g&quot;
 
 </article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-1" class="smaller ">
 
-<p>Two-table joins works just fine. The default join is a &quot;left join&quot;.</p>
+<p>The default <code>join</code> is a &quot;right outer <code>join</code>&quot;. They appear to work fine. Or do they? What&#39;s with the &quot;f&quot; and &quot;g&quot; columns in <code>AB[B]</code>?</p>
 
 <pre class = 'prettyprint lang-r'>AB[A]</pre>
 
@@ -667,35 +667,56 @@ AB &lt;- data.table(f = c(4:5), g = c(8:9), key = c(&quot;f&quot;, &quot;g&quot;
 
 </article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-2" class="smaller ">
 
-<p>Even three-table joins will work, so long as we use the default join, but we see that a column is renamed. &quot;g&quot; from table AB becomes &quot;i.g&quot;.</p>
+<p>We can fix the <code>AB[B]</code> output by resetting the <code>key</code> for <code>AB</code>. We reverse the order of the key fields so that the key for B (&quot;g&quot;) matches the first key for AB (&quot;g&quot;).</p>
 
-<pre class = 'prettyprint lang-r'>B[AB[A]]</pre>
+<pre class = 'prettyprint lang-r'>setkeyv(AB, c(&quot;g&quot;, &quot;f&quot;))
+AB[B]</pre>
+
+<pre >##     f g  h
+## 1: NA 7 10
+## 2:  4 8 11
+## 3:  5 9 12</pre>
+
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-3" class="smaller ">
+
+<p>Even three-table <code>join</code>s (sort of) work, so long as we use the default <code>join</code>, but we see that a column is renamed. &quot;g&quot; from table AB becomes &quot;i.g&quot;. &quot;f&quot; from table AB becomes &quot;i.f&quot;. A&#39;s &quot;f&quot; gets relabled as &quot;g&quot;. B&#39;s &quot;g&quot; gets relabled as &quot;f&quot;. It the <code>data.table</code> documentation, it says, &quot;In all joins the names of the columns are irrelevant&quot;. Hmmm.</p>
+
+<pre class = 'prettyprint lang-r'>setkeyv(AB, c(&quot;f&quot;, &quot;g&quot;))
+B[AB[A]]</pre>
 
 <pre >##    g  h i.g e
 ## 1: 4 NA   8 1
 ## 2: 5 NA   9 2
 ## 3: 6 NA  NA 3</pre>
 
-<pre class = 'prettyprint lang-r'>A[AB[B]]</pre>
+<pre class = 'prettyprint lang-r'>setkeyv(AB, c(&quot;g&quot;, &quot;f&quot;))
+A[AB[B]]</pre>
 
-<pre >##     e f  g  h
-## 1: NA 7 NA 10
-## 2: NA 8 NA 11
-## 3: NA 9 NA 12</pre>
-
-</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-3" class="smaller ">
-
-<p>The problem comes when we try to use an inner join (intersection). Since &quot;f&quot; is in both A and AB and &quot;g&quot; is in both AB and B, we will have a conflict if we try and join A, AB, and B in one command (line). The result is an &quot;empty data.table&quot;, even though the intersection should have some rows of data.</p>
-
-<pre class = 'prettyprint lang-r'>B[AB[A, nomatch = 0], nomatch = 0]</pre>
-
-<pre >## Empty data.table (0 rows) of 4 cols: g,h,i.g,e</pre>
+<pre >##     e f i.f  h
+## 1: NA 7  NA 10
+## 2: NA 8   4 11
+## 3: NA 9   5 12</pre>
 
 </article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-4" class="smaller ">
 
-<p>In the first (most nested) join, A is the &quot;i expression&quot;. If we anticipate that &quot;e&quot; and &quot;f&quot; from A will be renamed &quot;i.e&quot; and &quot;i.f&quot; during the join, then we can list them as such and avoid the problem.</p>
+<p>The problems get worse when we try to use an inner <code>join</code> (intersection). Since &quot;f&quot; is in both A and AB and &quot;g&quot; is in both AB and B, we will have a conflict if we try and <code>join</code> A, AB, and B in one command (line). The result is an &quot;empty data.table&quot;, even though the intersection should have some rows of data.</p>
 
-<pre class = 'prettyprint lang-r'>B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h), 
+<pre class = 'prettyprint lang-r'>setkeyv(AB, c(&quot;f&quot;, &quot;g&quot;))
+B[AB[A, nomatch = 0], nomatch = 0]</pre>
+
+<pre >## Empty data.table (0 rows) of 4 cols: g,h,i.g,e</pre>
+
+<pre class = 'prettyprint lang-r'>setkeyv(AB, c(&quot;g&quot;, &quot;f&quot;))
+B[AB[A, nomatch = 0], nomatch = 0]</pre>
+
+<pre >## Empty data.table (0 rows) of 4 cols: g,h,f,e</pre>
+
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-5" class="smaller ">
+
+<p>In the first (most nested) <code>join</code>, A is the &quot;i expression&quot;. If we anticipate that &quot;e&quot; and &quot;f&quot; from A will be renamed &quot;i.e&quot; and &quot;i.f&quot; during the <code>join</code>, then we can list them as such and avoid the &quot;empty data.table&quot; problem.</p>
+
+<pre class = 'prettyprint lang-r'>setkeyv(AB, c(&quot;f&quot;, &quot;g&quot;))
+B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h), 
     nomatch = 0]</pre>
 
 <pre >##    i.e i.f g  h
