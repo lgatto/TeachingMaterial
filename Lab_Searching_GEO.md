@@ -383,11 +383,11 @@ manu[,list(length(manufacturer)), by=manufacturer]
 ##    4:                                            454  1
 ##    5:                              454 Life Sciences  1
 ##   ---                                                  
-## 2075: washington university microarray core facility  1
-## 2076:         www.MYcroarray.com, Ann Arbor, MI, USA  1
-## 2077:                                www.agilent.com  1
-## 2078:                           www.chem.agilent.com  1
-## 2079:                            www.combimatrix.com  1
+## 2076: washington university microarray core facility  1
+## 2077:         www.MYcroarray.com, Ann Arbor, MI, USA  1
+## 2078:                                www.agilent.com  1
+## 2079:                           www.chem.agilent.com  1
+## 2080:                            www.combimatrix.com  1
 ```
 
 ## Our `SQL` command
@@ -428,11 +428,11 @@ manu[,list(length(manufacturer)), by=manufacturer]
 ##    4:                                            454  1
 ##    5:                              454 Life Sciences  1
 ##   ---                                                  
-## 2075: washington university microarray core facility  1
-## 2076:         www.MYcroarray.com, Ann Arbor, MI, USA  1
-## 2077:                                www.agilent.com  1
-## 2078:                           www.chem.agilent.com  1
-## 2079:                            www.combimatrix.com  1
+## 2076: washington university microarray core facility  1
+## 2077:         www.MYcroarray.com, Ann Arbor, MI, USA  1
+## 2078:                                www.agilent.com  1
+## 2079:                           www.chem.agilent.com  1
+## 2080:                            www.combimatrix.com  1
 ```
 
 
@@ -710,6 +710,108 @@ gsmDT[gse_gsmDT[gseDT, gsm, nomatch=0], nomatch=0][1:2,
 ## 2: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733816/suppl/GSM733816.chp.gz
 ## 3: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.CEL.gz
 ## 4: ftp://ftp.ncbi.nlm.nih.gov/geo/samples/GSM733nnn/GSM733817/suppl/GSM733817.chp.gz
+```
+
+## Column Name Conflicts
+
+Let's set up an example which will lead to a column name conflict when we 
+do a three-table join in one command (line).
+
+
+```r
+A <- data.table(e = c(1:3), f = c(4:6), key = "f")
+B <- data.table(g = c(7:9), h = c(10:12), key = "g")
+AB <- data.table(f = c(4:5), g = c(8:9), key = c("f", "g"))
+```
+
+## Column Name Conflicts
+
+Two-table joins works just fine. The default join is a "left join".
+
+
+```r
+AB[A]
+```
+
+```
+##    f  g e
+## 1: 4  8 1
+## 2: 5  9 2
+## 3: 6 NA 3
+```
+
+```r
+AB[B]
+```
+
+```
+##    f  g  h
+## 1: 7 NA 10
+## 2: 8 NA 11
+## 3: 9 NA 12
+```
+
+## Column Name Conflicts
+
+Even three-table joins will work, so long as we use the default join, but 
+we see that a column is renamed. "g" from table AB becomes "i.g".
+
+
+```r
+B[AB[A]]
+```
+
+```
+##    g  h i.g e
+## 1: 4 NA   8 1
+## 2: 5 NA   9 2
+## 3: 6 NA  NA 3
+```
+
+```r
+A[AB[B]]
+```
+
+```
+##     e f  g  h
+## 1: NA 7 NA 10
+## 2: NA 8 NA 11
+## 3: NA 9 NA 12
+```
+
+## Column Name Conflicts
+
+The problem comes when we try to use an inner join (intersection). Since 
+"f" is in both A and AB and "g" is in both AB and B, we will have a 
+conflict if we try and join A, AB, and B in one command (line). The 
+result is an "empty data.table", even though the intersection should have
+some rows of data.
+
+
+```r
+B[AB[A, nomatch = 0], nomatch = 0]
+```
+
+```
+## Empty data.table (0 rows) of 4 cols: g,h,i.g,e
+```
+
+## Column Name Conflicts
+
+In the first (most nested) join, A is the "i expression". If we anticipate
+that "e" and "f" from A will be renamed "i.e" and "i.f" during the join, 
+then we can list them as such and avoid the problem.
+
+
+```r
+B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h), 
+    nomatch = 0]
+```
+
+```
+##    i.e i.f g  h
+## 1:   1   4 8 11
+## 2:   2   5 9 12
 ```
 
 ## Cleanup
