@@ -657,7 +657,7 @@ gsmDT[gse_gsmDT[gseDT, gsm, nomatch=0], nomatch=0][1:2,
 
 <pre >## [1] TRUE</pre>
 
-</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts: An Example</h2></hgroup><article  id="column-name-conflicts-an-example" class="smaller ">
 
 <p>Let&#39;s set up an example which will lead to a column name conflict when we do a three-table <code>join</code> in one command (line).</p>
 
@@ -666,7 +666,7 @@ A &lt;- data.table(e = c(1:3), f = c(4:6), key = &quot;f&quot;)
 B &lt;- data.table(g = c(7:9), h = c(10:12), key = &quot;g&quot;)
 AB &lt;- data.table(f = c(4:5), g = c(8:9), key = c(&quot;f&quot;, &quot;g&quot;))</pre>
 
-</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-1" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts: <code>[</code> default <code>join</code></h2></hgroup><article  id="column-name-conflicts-default-join" class="smaller ">
 
 <p>The default <code>join</code> is a &quot;right outer <code>join</code>&quot;. They appear to work fine. Or do they? What&#39;s with the &quot;f&quot; and &quot;g&quot; columns in <code>AB[B]</code>?</p>
 
@@ -684,7 +684,7 @@ AB &lt;- data.table(f = c(4:5), g = c(8:9), key = c(&quot;f&quot;, &quot;g&quot;
 ## 2: 8 NA 11
 ## 3: 9 NA 12</pre>
 
-</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-2" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts: <code>setkeyv</code></h2></hgroup><article  id="column-name-conflicts-setkeyv" class="smaller ">
 
 <p>We can fix the <code>AB[B]</code> output by resetting the <code>key</code> for <code>AB</code>. We reverse the order of the key fields so that the key for B (&quot;g&quot;) matches the first key for AB (&quot;g&quot;).</p>
 
@@ -696,7 +696,7 @@ AB[B]</pre>
 ## 2:  4 8 11
 ## 3:  5 9 12</pre>
 
-</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-3" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts: 3-table <code>join</code></h2></hgroup><article  id="column-name-conflicts-3-table-join" class="smaller ">
 
 <p>Even three-table <code>join</code>s (sort of) work, so long as we use the default <code>join</code>, but we see that a column is renamed. &quot;g&quot; from table AB becomes &quot;i.g&quot;. &quot;f&quot; from table AB becomes &quot;i.f&quot;. A&#39;s &quot;f&quot; gets relabled as &quot;g&quot;. B&#39;s &quot;g&quot; gets relabled as &quot;f&quot;. In the <code>data.table</code> documentation, it says, &quot;In all joins the names of the columns are irrelevant&quot;. And what happened to &quot;e&quot; and &quot;h&quot;?</p>
 
@@ -716,7 +716,7 @@ A[AB[B]]</pre>
 ## 2: NA 8   4 11
 ## 3: NA 9   5 12</pre>
 
-</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-4" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts: <code>nomatch=0</code></h2></hgroup><article  id="column-name-conflicts-nomatch0" class="smaller ">
 
 <p>The problems get worse when we try to use an inner <code>join</code> (intersection). Since &quot;f&quot; is in both A and AB and &quot;g&quot; is in both AB and B, we will have a conflict if we try and <code>join</code> A, AB, and B in one command (line). The result is an &quot;empty data.table&quot;, even though the intersection should have some rows of data.</p>
 
@@ -730,7 +730,7 @@ B[AB[A, nomatch = 0], nomatch = 0]</pre>
 
 <pre >## Empty data.table (0 rows) of 4 cols: g,h,f,e</pre>
 
-</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-5" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts: <code>list</code></h2></hgroup><article  id="column-name-conflicts-list" class="smaller ">
 
 <p>In the first (most nested) <code>join</code>, A is the &quot;i expression&quot;. If we anticipate that &quot;e&quot; and &quot;f&quot; from A will be renamed &quot;i.e&quot; and &quot;i.f&quot; during the <code>join</code>, then we can list them as such and avoid the &quot;empty data.table&quot; problem.</p>
 
@@ -742,7 +742,7 @@ B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h),
 ## 1:   1   4 8 11
 ## 2:   2   5 9 12</pre>
 
-</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-6" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts: <code>merge</code></h2></hgroup><article  id="column-name-conflicts-merge" class="smaller ">
 
 <p>Using <code>merge</code>, we don&#39;t encounter these troubles. We can get the same &quot;inner join&quot; result without the renaming columns and the need for explicit &quot;j expression&quot; column lists. We just need to use <code>by=</code> in the outer-nested <code>merge</code>.</p>
 
@@ -752,7 +752,7 @@ B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h),
 ## 1: 8 11 4 1
 ## 2: 9 12 5 2</pre>
 
-</article></slide><slide class=''><hgroup><h2>Column Name Conflicts</h2></hgroup><article  id="column-name-conflicts-7" class="smaller ">
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts: <code>magrittr</code></h2></hgroup><article  id="column-name-conflicts-magrittr" class="smaller ">
 
 <p>Here is the same example using <code>%&gt;%</code> pipes from <code>magrittr</code>.</p>
 
@@ -769,7 +769,21 @@ merge(x = AB, y = A, by = &quot;f&quot;) %&gt;% merge(y = B, by = &quot;g&quot;)
 
 <pre >##    g f e  h
 ## 1: 8 4 1 11
-## 2: 9 5 2 12</pre></article></slide>
+## 2: 9 5 2 12</pre>
+
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts: <code>plyr</code></h2></hgroup><article  id="column-name-conflicts-plyr" class="smaller ">
+
+<p>We can also <code>join</code> with <code>plyr</code>, simply <em>and</em> explicitly.</p>
+
+<pre class = 'prettyprint lang-r'>suppressMessages(library(plyr))
+join(AB, A, type = &quot;inner&quot;) %&gt;% join(B)</pre>
+
+<pre >## Joining by: f
+## Joining by: g</pre>
+
+<pre >##    f g e  h
+## 1: 4 8 1 11
+## 2: 5 9 2 12</pre></article></slide>
 
 
   <slide class="backdrop"></slide>

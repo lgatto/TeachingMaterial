@@ -749,7 +749,7 @@ dbDisconnect(geo_con)
 ## [1] TRUE
 ```
 
-## Column Name Conflicts
+## Column Name Conflicts: An Example
 
 Let's set up an example which will lead to a column name conflict when we 
 do a three-table `join` in one command (line).
@@ -762,7 +762,7 @@ B <- data.table(g = c(7:9), h = c(10:12), key = "g")
 AB <- data.table(f = c(4:5), g = c(8:9), key = c("f", "g"))
 ```
 
-## Column Name Conflicts
+## Column Name Conflicts: `[` default `join`
 
 The default `join` is a "right outer `join`". They appear to work
 fine. Or do they? What's with the "f" and "g" columns in `AB[B]`?
@@ -790,7 +790,7 @@ AB[B]
 ## 3: 9 NA 12
 ```
 
-## Column Name Conflicts
+## Column Name Conflicts: `setkeyv`
 
 We can fix the `AB[B]` output by resetting the `key` for `AB`. We reverse the
 order of the key fields so that the key for B ("g") matches the first key for 
@@ -809,7 +809,7 @@ AB[B]
 ## 3:  5 9 12
 ```
 
-## Column Name Conflicts
+## Column Name Conflicts: 3-table `join`
 
 Even three-table `join`s (sort of) work, so long as we use the default `join`, 
 but we see that a column is renamed. "g" from table AB becomes "i.g". "f" from 
@@ -841,7 +841,7 @@ A[AB[B]]
 ## 3: NA 9   5 12
 ```
 
-## Column Name Conflicts
+## Column Name Conflicts: `nomatch=0`
 
 The problems get worse when we try to use an inner `join` (intersection). Since 
 "f" is in both A and AB and "g" is in both AB and B, we will have a 
@@ -868,7 +868,7 @@ B[AB[A, nomatch = 0], nomatch = 0]
 ## Empty data.table (0 rows) of 4 cols: g,h,f,e
 ```
 
-## Column Name Conflicts
+## Column Name Conflicts: `list`
 
 In the first (most nested) `join`, A is the "i expression". If we anticipate
 that "e" and "f" from A will be renamed "i.e" and "i.f" during the `join`, 
@@ -887,7 +887,7 @@ B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h),
 ## 2:   2   5 9 12
 ```
 
-## Column Name Conflicts
+## Column Name Conflicts: `merge`
 
 Using `merge`, we don't encounter these troubles. We can get the same 
 "inner join" result without the renaming columns and the need for explicit 
@@ -905,7 +905,7 @@ merge(B, merge(AB, A), by = "g")
 ## 2: 9 12 5 2
 ```
 
-## Column Name Conflicts
+## Column Name Conflicts: `magrittr`
 
 Here is the same example using `%>%` pipes from `magrittr`.
 
@@ -932,4 +932,25 @@ merge(AB, A) %>% merge(B, by = "g")
 ##    g f e  h
 ## 1: 8 4 1 11
 ## 2: 9 5 2 12
+```
+
+## Column Name Conflicts: `plyr`
+
+We can also `join` with `plyr`, simply *and* explicitly.
+
+
+```r
+suppressMessages(library(plyr))
+join(AB, A, type = "inner") %>% join(B)
+```
+
+```
+## Joining by: f
+## Joining by: g
+```
+
+```
+##    f g e  h
+## 1: 4 8 1 11
+## 2: 5 9 2 12
 ```
