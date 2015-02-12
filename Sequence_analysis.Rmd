@@ -1,7 +1,7 @@
 ---
 title: 'Bioinformatics for Big Omics Data: Basics of sequence analysis and genomic interval manipulation in R'
 author: "Raphael Gottardo"
-date: "February 2, 2014"
+date: "February 2, 2015"
 output:
   ioslides_presentation:
     fig_caption: yes
@@ -467,7 +467,7 @@ exbygene <- exonsBy(TxDb.Dmelanogaster.UCSC.dm3.ensGene, "gene")
 
 we are now ready to count the number of sequences that fall within each gene
 ```{r}
-se <- summarizeOverlaps(exbygene, un1, mode="IntersectionNotEmpty")
+se <- summarizeOverlaps(exbygene, un1, mode="IntersectionStrict")
 se
 ```
 which is an object of class `SummarizedExperiment`.
@@ -518,10 +518,18 @@ fc_counts <- featureCounts(files=bam_file,annot.ext="annotation.gtf", isGTFAnnot
 
 ## featureCounts 
 
-```{r, fig.height=3}
+```{r, fig.height=3, cache=FALSE}
 count1 <- data.table(exon_id=rownames(assays(se)$counts), count_se=as.vector(assays(se)$counts))
 count2 <- data.table(exon_id=rownames(fc_counts$counts), count_fc=as.vector(fc_counts$counts))
 count_dt <- merge(count1, count2, by="exon_id")
 qplot(log10(count_se+1), log10(count_fc+1), data=count_dt)
 ```
+
+## RSEM
+
+RSEM: Li, B., Ruotti, V., Stewart, R. M., Thomson, J. A. & Dewey, C. N. RNA-Seq gene expression estimation with read mapping uncertainty. Bioinformatics 26, 493–500 (2010).
+
+Let's look at these lecture notes:
+https://www.biostat.wisc.edu/bmi776/lectures/rnaseq.pdf
+
 

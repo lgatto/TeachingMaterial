@@ -1069,7 +1069,7 @@ exbygene <- exonsBy(TxDb.Dmelanogaster.UCSC.dm3.ensGene, "gene")
 we are now ready to count the number of sequences that fall within each gene
 
 ```r
-se <- summarizeOverlaps(exbygene, un1, mode = "IntersectionNotEmpty")
+se <- summarizeOverlaps(exbygene, un1, mode = "IntersectionStrict")
 se
 ```
 
@@ -1226,7 +1226,7 @@ fc_counts <- featureCounts(files = bam_file, annot.ext = "annotation.gtf",
 ## ||             Input files : 1 BAM file                                       ||
 ## ||                           S /Library/Frameworks/R.framework/Versions/3 ... ||
 ## ||                                                                            ||
-## ||             Output file : ./.Rsubread_featureCounts_pid65935               ||
+## ||             Output file : ./.Rsubread_featureCounts_pid10260               ||
 ## ||             Annotations : annotation.gtf (GTF)                             ||
 ## ||                                                                            ||
 ## ||                 Threads : 1                                                ||
@@ -1268,4 +1268,12 @@ qplot(log10(count_se + 1), log10(count_fc + 1), data = count_dt)
 ```
 
 ![](Sequence_analysis_files/figure-html/unnamed-chunk-43-1.png) 
+
+## RSEM
+
+RSEM: Li, B., Ruotti, V., Stewart, R. M., Thomson, J. A. & Dewey, C. N. RNA-Seq gene expression estimation with read mapping uncertainty. Bioinformatics 26, 493–500 (2010).
+
+Let's look at these lecture notes:
+https://www.biostat.wisc.edu/bmi776/lectures/rnaseq.pdf
+
 

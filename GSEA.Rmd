@@ -1,33 +1,41 @@
-Bioinformatics for Big Omics Data: Gene-set Enrichment Analysis
-========================================================
-width: 1440
-height: 900
-transition: none
-font-family: 'Helvetica'
-css: my_style.css
-author: Raphael Gottardo, PhD
-date: `r format(Sys.Date(), format="%B %d, %Y")`
+---
+title: 'Bioinformatics for Big Omics Data: RNA-seq data analysis'
+author: "Raphael Gottardo"
+date: "February 11, 2015"
+output:
+  ioslides_presentation:
+    fig_caption: yes
+    fig_retina: 1
+    keep_md: yes
+    smaller: yes
+---
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br /><tiny>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_US">Creative Commons Attribution-ShareAlike 3.0 Unported License</tiny></a>.
 
-```{r, cache=FALSE, echo=FALSE}
-# Let's first turn on the cache for increased performance.
+## Setting up some options
+
+Let's first turn on the cache for increased performance and improved styling
+```{r, cache=FALSE}
 # Set some global knitr options
-library(knitr)
-opts_chunk$set(cache=TRUE)
+library("knitr")
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), cache=TRUE, messages=FALSE)
+```
+
+We will be using the folliwng packages
+```{r, cache=FALSE, echo=TRUE}
 library(limma)
 library(GEOquery)
 ```
 
-Going from genes to gene sets
-=============================
+
+## Going from genes to gene sets
+
 
 So far we have seen how to use microarrays or RNA-seq to derive a list of signiﬁcantly differentially expressed genes, while controlling for false discovery. 
 
 Sometimes it can be comvenient to look at biological pathways, or more generally genesets to gain biological insights. 
 
-Goals of GSEA
-==============
+## Goals of GSEA
+
 
 Detecting changes in gene expression datasets can be hard due to
 - the large number of genes/probes,
@@ -40,8 +48,8 @@ Such a set might include all the genes in a speciﬁc pathway,
 for instance, or genes that have been shown to be coregulated based on previously published studies. 
 
 
-Competitive vs self-contained analyses
-====================
+## Competitive vs self-contained analyses
+
 As explained in Wu & Smyth (2012)
 
 Two approaches can be used to test the significance of a gene set:
@@ -51,15 +59,15 @@ Two approaches can be used to test the significance of a gene set:
 Competitive tests focus more on distinguishing the most important biological processes from those that are less important. Competitive tests are overwhelmingly more commonly used in the genomic literature. In particular, this is the approach used in the GSEA paper:
 Subramanian, A. et al. Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proc. Natl. Acad. Sci. U.S.A. 102, 15545–15550 (2005).
 
-Accounting for within set correlation
-=====================================
+## Accounting for within set correlation
+
 
 Most competitive gene set tests assume independence of genes, because they evaluate P-values by permutation of gene labels. However, these tests can be sensitive to inter-gene correlations. 
 
 In this lecture we will talk about geneset analysis using the approach of Wu and Smyth that accounts for inter-gene correlations. 
 
-CAMERA
-=====
+## CAMERA
+
 Camera, for competitive gene set test accounting for inter-gene correlation, makes heavy used of the limma framework. The same linear model is assumed for the mean gene expression level, namely, 
 
 $$ \mathbb{E}(\mathbf{y}_g)=\mathbf{X}\boldsymbol{\alpha}_g$$ 
@@ -74,8 +82,8 @@ $$\beta_g=\sum_{j=1}^p c_j \alpha_{gj}$$
 and we wish to test $H_0: \beta_g=0$, which can be done using the moderated $t$ statistics, $\tilde{t}$ that follows a t-statistics with $d+d_0$ degrees of freedom. 
 
 
-CAMERA (suite)
-==============
+## CAMERA (suite)
+
 
 Then W&S define a normalized version $z_g =F^{-1}F_t(\tilde{t}_g)$
 
@@ -91,8 +99,8 @@ $$\mathrm{var}(\overline{z})=\tau^2/m \mathrm{VIF}$$
 
 where VIF is the variance inflation factor $1+(m-1)\overline{\rho}$.
 
-CAMERA - Testing
-==============
+## CAMERA - Testing
+
 
 Now the idea of competitive gene-set analysis can be done by comparing two mean set statistics $\overline{z}_1$ and $\overline{z}_2$. Where $z_1$ is our set of interest and $z_2$ is the set composed of all other genes. The main idea behind CAMERA is to form a test-statistics that incorporates dependence between the genes in the first set. 
 
@@ -105,8 +113,8 @@ $$
 Now we just need a way to estimate the inter-gene correlation. W&S also propose a
 modified version of the wilcoxon-rank-sum test, which we won't discuss here.
 
-CAMERA - Estimating covariances
-================================
+## CAMERA - Estimating covariances
+
 
 Let's consider the QR decomposition of the design matrix $X=QR$, where $R$ is upper triangular ($n\times p$) and $Q$ ($n\times n$) is such that $Q^TQ=I$. An $m\times n$ matrix of independent residuals is obtained by $U = YQ_2$, where $Q_2$ represents the trailing $d$ columns of $Q$. The matrix $U$ is already available as a by-product of fitting genewise linear models to the expression values using standard numerical algorithms, so extracting it requires no extra computation in `limma`. 
 The residual standard error $s_g$ for gene $g$ is equal to the root mean square of the corresponding row of $U$. We standardize each row of $U$ by dividing by $s_g$.
@@ -118,8 +126,7 @@ $$
 
 If $m$ and $d$ are both reasonably large, and $\overline{\rho}$ is relatively small, then VIF is approximately distributed as VIF $\chi^2_d/d$. This can be used to find an asymptotic distribution for our test statistics. 
 
-Using CAMERA
-============
+## Using CAMERA
 
 Camera is readily available in the `limma` package. Let us go back to our RNA-seq example:
 
@@ -155,8 +162,8 @@ pd_small$subject <- sapply(strsplit(gsub(" \\[PBMC\\]", "", pd_small$title),"_")
 colnames(matrix) <- rownames(pd_small)
 ```
 
-CAMERA - Hands on
-==================
+## CAMERA - Hands on
+
 
 ```{r expression-set, dependson="get-data"}
 # Note that I add one to the count
@@ -178,8 +185,7 @@ eb <- eBayes(lm)
 topTable(eb, coef = "DayDay1", number = 5)
 ```
 
-MSigDB
-======
+## MSigDB
 
 The [Molecular Signatures Database](http://www.broadinstitute.org/gsea/msigdb/index.jsp) (MSigDB) is a collection of annotated gene sets for use with GSEA analysis. 
 
@@ -192,8 +198,8 @@ biocLite("GSEABase")
 ```
 note that `camera` is available as part of `limma`, so there is nothing to install.
 
-Getting started with GSEA analyses
-==================================
+## Getting started with GSEA analyses
+
 We load the `GSEAbase` package for loading gene sets.
 ```{r}
 library(GSEABase)
@@ -206,8 +212,8 @@ gene_ids <- geneIds(c2_set)
 sets_indices <- ids2indices(gene_ids, rownames(new_set))
 ```
 
-Finding enriched gene sets
-==========================
+## Finding enriched gene sets
+
 As with `limma`, we need to specify the contrast we wish to test at the set level:
 ```{r}
 # Note that camera works on voom objects
@@ -217,8 +223,8 @@ res[1:10, ]
 ```
 
 
-Finding enriched gene sets over time
-==========================
+## Finding enriched gene sets over time
+
 
 ```{r}
 res <- vector("list",length = 10)
@@ -230,8 +236,8 @@ for(i in 1:10)
 }
 ```
 
-Visualizing the results
-=======================
+## Visualizing the results
+
 
 ```{r}
 library(pheatmap)
@@ -244,8 +250,8 @@ rownames(anno) <- colnames(PValue_small)  <- paste0("Day",1:10)
 pheatmap(PValue_small, cluster_cols=FALSE)
 ```
 
-Using non GSEA gene_sets
-=========================
+## Using non GSEA gene_sets
+
 
 Any genesets can be used for a GSEA analysis. For example, we can use the sets published in:
 
@@ -268,8 +274,8 @@ for(i in 1:10)
 }
 ```
 
-Visualizing the results
-=======================
+## Visualizing the results
+
 
 ```{r}
 PValue <- sapply(res, function(x){ifelse(x$Direction=="Up", -10*log10(x$PValue), 10*log10(x$PValue))})
@@ -282,8 +288,8 @@ pheatmap(PValue_small, cluster_cols=FALSE)
 ```
 
 
-Conclusion
-==========
+## Conclusion
+
 - Gene sets provide a convenient way to summarize gene activities over known pathways, which facilitate biological interpretation
 
 - Gene set analysis are complementary to gene based analyses, as gene sets might masked gene level signal

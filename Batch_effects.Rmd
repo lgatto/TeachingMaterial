@@ -1,7 +1,7 @@
 ---
 title: 'Bioinformatics for Big Omics Data: The danger of batch effects!'
 author: "Raphael Gottardo"
-date: "February 2, 2014"
+date: "February 2, 2015"
 output:
   ioslides_presentation:
     fig_caption: yes
