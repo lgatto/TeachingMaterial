@@ -17,7 +17,7 @@
 
 - *Gene expression deconvolution*
     - Shen-Orr, S. S. et al. Cell type-specific gene expression differences in complex tissues. Nat. Methods 7, 287-289 (2010). 
-    - Zhong, Y. & Liu, Z. Gene expression deconvolution in linear space. Nat. Methods 9, 8–9– author reply 9 (2012).
+    - Zhong, Y. & Liu, Z. Gene expression deconvolution in linear space. Nat. Methods 9, 8–9– author reply 9 (2012). [TAKEN: Benjamin & Sara]
 
 - *Methylation*
     - Hansen, K. D., Langmead, B. & Irizarry, R. A. BSmooth: from whole genome bisulfite sequencing reads to differentially methylated regions. Genome Biol. (2012).
