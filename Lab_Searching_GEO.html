@@ -97,18 +97,13 @@
 <p>Let&#39;s first turn on the cache for increased performance and improved styling.</p>
 
 <pre class = 'prettyprint lang-r'># Set some global knitr options
-library(&quot;knitr&quot;)</pre>
-
-<pre >## Warning: package &#39;knitr&#39; was built under R version 3.1.2</pre>
-
-<pre class = 'prettyprint lang-r'>opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), 
+library(&quot;knitr&quot;)
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), 
                cache=FALSE, messages=FALSE)</pre>
 
 <p>Load the <code>pander</code> package so we can make nicer table listings with <code>pandoc.table</code>.</p>
 
 <pre class = 'prettyprint lang-r'>suppressMessages(library(pander))</pre>
-
-<pre >## Warning: package &#39;pander&#39; was built under R version 3.1.2</pre>
 
 </article></slide><slide class=''><hgroup><h2>Prepare for HW2</h2></hgroup><article  id="prepare-for-hw2" class="smaller ">
 
@@ -119,10 +114,6 @@ library(&quot;knitr&quot;)</pre>
 <p>First we load the <code>GEOmetadb</code> library.</p>
 
 <pre class = 'prettyprint lang-r'>suppressMessages(library(GEOmetadb))</pre>
-
-<pre >## Warning: package &#39;BiocGenerics&#39; was built under R version 3.1.2</pre>
-
-<pre >## Warning: package &#39;RSQLite&#39; was built under R version 3.1.2</pre>
 
 <p>Let&#39;s also view the available methods.</p>
 
@@ -606,11 +597,8 @@ gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2
 
 <p>We can also use <code>%&gt;%</code> from <code>magrittr</code> to improve readability, again using the three DTs we made previously. Here we will use two &quot;lines&quot; of code.</p>
 
-<pre class = 'prettyprint lang-r'>library(magrittr)</pre>
-
-<pre >## Warning: package &#39;magrittr&#39; was built under R version 3.1.2</pre>
-
-<pre class = 'prettyprint lang-r'>mergedDT &lt;- unique(gseDT[pubmed_id==21743478, list(gse)] %&gt;% 
+<pre class = 'prettyprint lang-r'>library(magrittr)
+mergedDT &lt;- unique(gseDT[pubmed_id==21743478, list(gse)] %&gt;% 
                 merge(y=gse_gsmDT, by=c(&quot;gse&quot;)) %&gt;% 
                 merge(y=gsmDT[,list(gsm,supplementary_file)], by=c(&quot;gsm&quot;)))
 mergedDT[1:2, list(gsm, gse, supplementary_file)][,
@@ -744,7 +732,7 @@ B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h),
 
 </article></slide><slide class=''><hgroup><h2>Column Name Conflicts: <code>merge</code></h2></hgroup><article  id="column-name-conflicts-merge" class="smaller ">
 
-<p>Using <code>merge</code>, we don&#39;t encounter these troubles. We can get the same &quot;inner join&quot; result without the renaming columns and the need for explicit &quot;j expression&quot; column lists. We just need to use <code>by=</code> in the outer-nested <code>merge</code>.</p>
+<p>Using <code>merge</code>, we don&#39;t encounter these troubles. We can get the same &quot;inner join&quot; result without the renaming of columns and the need for explicit &quot;j expression&quot; column lists. We just need to use <code>by=</code> in the outer-nested <code>merge</code>.</p>
 
 <pre class = 'prettyprint lang-r'>merge(B, merge(AB, A), by = &quot;g&quot;)</pre>
 
@@ -776,7 +764,20 @@ merge(x = AB, y = A, by = &quot;f&quot;) %&gt;% merge(y = B, by = &quot;g&quot;)
 <p>We can also <code>join</code> with <code>plyr</code>, simply <em>and</em> explicitly.</p>
 
 <pre class = 'prettyprint lang-r'>suppressMessages(library(plyr))
-join(AB, A, type = &quot;inner&quot;) %&gt;% join(B)</pre>
+join(AB, A, type = &quot;inner&quot;) %&gt;% join(B, type = &quot;inner&quot;)</pre>
+
+<pre >## Joining by: f
+## Joining by: g</pre>
+
+<pre >##    f g e  h
+## 1: 4 8 1 11
+## 2: 5 9 2 12</pre>
+
+</article></slide><slide class=''><hgroup><h2>Column Name Conflicts: <code>plyr</code> left <code>join</code></h2></hgroup><article  id="column-name-conflicts-plyr-left-join" class="smaller ">
+
+<p>In this <em>particular</em> case, we would get the same result using the default left <code>join</code>, but that would not always be true in <em>every</em> case. It works here because the left-hand table of each <code>join</code> contains only those rows we would want in the final result. (Try reversing the positions of A and AB and see the difference for yourself.)</p>
+
+<pre class = 'prettyprint lang-r'>join(AB, A) %&gt;% join(B)</pre>
 
 <pre >## Joining by: f
 ## Joining by: g</pre>

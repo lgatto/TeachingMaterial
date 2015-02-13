@@ -472,7 +472,7 @@ B[AB[A, list(g, i.e, i.f), nomatch=0], list(i.e, i.f, g, h), nomatch=0]
 ## Column Name Conflicts: `merge`
 
 Using `merge`, we don't encounter these troubles. We can get the same 
-"inner join" result without the renaming columns and the need for explicit 
+"inner join" result without the renaming of columns and the need for explicit 
 "j expression" column lists. We just need to use `by=` in the 
 outer-nested `merge`.
 
@@ -501,5 +501,16 @@ We can also `join` with `plyr`, simply *and* explicitly.
 
 ```{r, echo=TRUE}
 suppressMessages(library(plyr))
-join(AB, A, type="inner") %>% join(B)
+join(AB, A, type="inner") %>% join(B, type="inner")
+```
+
+## Column Name Conflicts: `plyr` left `join`
+
+In this *particular* case, we would get the same result using the default 
+left `join`, but that would not always be true in *every* case. It works here 
+because the left-hand table of each `join` contains only those rows we would 
+want in the final result. (Try reversing the positions of A and AB and see the difference for yourself.)
+
+```{r, echo=TRUE}
+join(AB, A) %>% join(B)
 ```

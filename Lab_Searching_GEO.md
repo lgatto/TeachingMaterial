@@ -10,13 +10,6 @@ Let's first turn on the cache for increased performance and improved styling.
 ```r
 # Set some global knitr options
 library("knitr")
-```
-
-```
-## Warning: package 'knitr' was built under R version 3.1.2
-```
-
-```r
 opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), 
                cache=FALSE, messages=FALSE)
 ```
@@ -26,10 +19,6 @@ Load the `pander` package so we can make nicer table listings with `pandoc.table
 
 ```r
 suppressMessages(library(pander))
-```
-
-```
-## Warning: package 'pander' was built under R version 3.1.2
 ```
 
 ## Prepare for HW2
@@ -44,14 +33,6 @@ First we load the `GEOmetadb` library.
 
 ```r
 suppressMessages(library(GEOmetadb))
-```
-
-```
-## Warning: package 'BiocGenerics' was built under R version 3.1.2
-```
-
-```
-## Warning: package 'RSQLite' was built under R version 3.1.2
 ```
 
 Let's also view the available methods.
@@ -680,13 +661,6 @@ three DTs we made previously. Here we will use two "lines" of code.
 
 ```r
 library(magrittr)
-```
-
-```
-## Warning: package 'magrittr' was built under R version 3.1.2
-```
-
-```r
 mergedDT <- unique(gseDT[pubmed_id==21743478, list(gse)] %>% 
                 merge(y=gse_gsmDT, by=c("gse")) %>% 
                 merge(y=gsmDT[,list(gsm,supplementary_file)], by=c("gsm")))
@@ -890,7 +864,7 @@ B[AB[A, list(g, i.e, i.f), nomatch = 0], list(i.e, i.f, g, h),
 ## Column Name Conflicts: `merge`
 
 Using `merge`, we don't encounter these troubles. We can get the same 
-"inner join" result without the renaming columns and the need for explicit 
+"inner join" result without the renaming of columns and the need for explicit 
 "j expression" column lists. We just need to use `by=` in the 
 outer-nested `merge`.
 
@@ -941,7 +915,30 @@ We can also `join` with `plyr`, simply *and* explicitly.
 
 ```r
 suppressMessages(library(plyr))
-join(AB, A, type = "inner") %>% join(B)
+join(AB, A, type = "inner") %>% join(B, type = "inner")
+```
+
+```
+## Joining by: f
+## Joining by: g
+```
+
+```
+##    f g e  h
+## 1: 4 8 1 11
+## 2: 5 9 2 12
+```
+
+## Column Name Conflicts: `plyr` left `join`
+
+In this *particular* case, we would get the same result using the default 
+left `join`, but that would not always be true in *every* case. It works here 
+because the left-hand table of each `join` contains only those rows we would 
+want in the final result. (Try reversing the positions of A and AB and see the difference for yourself.)
+
+
+```r
+join(AB, A) %>% join(B)
 ```
 
 ```
