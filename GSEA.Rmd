@@ -1,7 +1,7 @@
 ---
 title: 'Bioinformatics for Big Omics Data: RNA-seq data analysis'
 author: "Raphael Gottardo"
-date: "February 11, 2015"
+date: "February 12, 2015"
 output:
   ioslides_presentation:
     fig_caption: yes
@@ -43,10 +43,12 @@ Detecting changes in gene expression datasets can be hard due to
 - the limited number of samples.
 
 The goal of GSEA is to enable the detection of modest but coordinated
-changes in prespeciﬁed sets of related genes.
-Such a set might include all the genes in a speciﬁc pathway,
+changes in prespeciﬁed sets of related genes. Such a set might include all the genes in a speciﬁc pathway,
 for instance, or genes that have been shown to be coregulated based on previously published studies. 
 
+Most of what I'll be discussing here will be based on this paper:
+
+- Wu, D. & Smyth, G. Camera: a competitive gene set test accounting for inter-gene correlation. 40, e133-e133 (2012).
 
 ## Competitive vs self-contained analyses
 
@@ -57,7 +59,8 @@ Two approaches can be used to test the significance of a gene set:
 2) ‘competitive’ gene set tests compare genes in the test set relative to all other genes.
 
 Competitive tests focus more on distinguishing the most important biological processes from those that are less important. Competitive tests are overwhelmingly more commonly used in the genomic literature. In particular, this is the approach used in the GSEA paper:
-Subramanian, A. et al. Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proc. Natl. Acad. Sci. U.S.A. 102, 15545–15550 (2005).
+
+- Subramanian, A. et al. Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. Proc. Natl. Acad. Sci. U.S.A. 102, 15545-15550 (2005).
 
 ## Accounting for within set correlation
 
@@ -82,7 +85,7 @@ $$\beta_g=\sum_{j=1}^p c_j \alpha_{gj}$$
 and we wish to test $H_0: \beta_g=0$, which can be done using the moderated $t$ statistics, $\tilde{t}$ that follows a t-statistics with $d+d_0$ degrees of freedom. 
 
 
-## CAMERA (suite)
+## CAMERA 
 
 
 Then W&S define a normalized version $z_g =F^{-1}F_t(\tilde{t}_g)$
@@ -107,7 +110,7 @@ Now the idea of competitive gene-set analysis can be done by comparing two mean 
 This can simply be done by forming the following T-statistics
 
 $$
-T=(\overline{z}_1-\overline{z}_2)/(s_p\sqrt{VIF/m1+1/m2})
+T=(\overline{z}_1-\overline{z}_2)/(s_p\sqrt{VIF/m_1+1/m_2})
 $$
 
 Now we just need a way to estimate the inter-gene correlation. W&S also propose a
@@ -140,7 +143,11 @@ files <- list.files(path = "Data/GEO/", pattern = "GSE45735_T.*.gz", full.names 
 
 # Read in gzip-compressed, tab-delimited files
 file_list <- lapply(files, read.table, sep='\t', header=TRUE)
+```
 
+## Using CAMERA
+
+```{r}
 # Subset to only those rows where Gene contains only non-space characters
 # This addresses problems with T14 file containing 28 invalid rows at end of file
 file_list <- lapply(file_list, function(file_list)subset(file_list, grepl('^[^[:space:]]+$', Gene)))
@@ -162,6 +169,7 @@ pd_small$subject <- sapply(strsplit(gsub(" \\[PBMC\\]", "", pd_small$title),"_")
 colnames(matrix) <- rownames(pd_small)
 ```
 
+
 ## CAMERA - Hands on
 
 
@@ -177,6 +185,8 @@ we now need to set-up our design matrix to estimate our weights:
 design <- model.matrix(~subject+Day, new_set)
 new_set_voom <- voom(new_set,design = design)
 ```
+
+## CAMERA - Hands on
 
 ```{r}
 lm <- lmFit(new_set_voom, design)
@@ -209,7 +219,8 @@ and convert the gene sets to gene indices
 c2_set <- getGmt("GSEA-sets/c2.all.v4.0.symbols.gmt")
 gene_ids <- geneIds(c2_set)
 # Camera requires gene-indices
-sets_indices <- ids2indices(gene_ids, rownames(new_set))
+# sets_indices <- ids2indices(gene_ids, rownames(new_set))
+sets_indices <- symbols2indices(gene_ids, rownames(new_set))
 ```
 
 ## Finding enriched gene sets
@@ -225,7 +236,6 @@ res[1:10, ]
 
 ## Finding enriched gene sets over time
 
-
 ```{r}
 res <- vector("list",length = 10)
 for(i in 1:10)
@@ -238,7 +248,6 @@ for(i in 1:10)
 
 ## Visualizing the results
 
-
 ```{r}
 library(pheatmap)
 PValue <- sapply(res, function(x){ifelse(x$Direction=="Up", -10*log10(x$PValue), 10*log10(x$PValue))})
@@ -247,10 +256,16 @@ PValue_max <- rowMax(abs(PValue))
 PValue_small <- PValue[PValue_max>30, ]
 anno <- data.frame(Time=paste0("Day",1:10))
 rownames(anno) <- colnames(PValue_small)  <- paste0("Day",1:10)
-pheatmap(PValue_small, cluster_cols=FALSE)
 ```
 
-## Using non GSEA gene_sets
+## Visualizing the results
+
+```{r, echo=FALSE, fig.width=8, fig.height=5.5}
+pheatmap(PValue_small, cluster_cols=FALSE,fontsize_row = 5)
+```
+
+
+## Using non MSigDB gene_sets
 
 
 Any genesets can be used for a GSEA analysis. For example, we can use the sets published in:
@@ -261,7 +276,8 @@ Li, S. et al. Molecular signatures of antibody responses derived from a systems 
 BTM_set <- getGmt("GSEA-sets/BTM_for_GSEA_20131008.gmt")
 gene_ids <- geneIds(BTM_set)
 # Camera requires gene-indices
-sets_indices <- ids2indices(gene_ids, rownames(new_set))
+#sets_indices <- ids2indices(gene_ids, rownames(new_set))
+sets_indices <- symbols2indices(gene_ids, rownames(new_set))
 ```
 
 ```{r}
@@ -284,6 +300,11 @@ PValue_max <- rowMax(abs(PValue))
 PValue_small <- PValue[PValue_max>30, ]
 anno <- data.frame(Time=paste0("Day",1:10))
 rownames(anno) <- colnames(PValue_small)  <- paste0("Day",1:10)
+```
+
+## Visualizing the results
+
+```{r}
 pheatmap(PValue_small, cluster_cols=FALSE)
 ```
 
