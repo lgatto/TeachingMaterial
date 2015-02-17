@@ -6,8 +6,8 @@
 
 - *RNA-seq*
     - Anders, S., Reyes, A. & Huber, W. Detecting differential usage of exons from RNA-seq data. Genome Res. 22, 2008-2017 (2012). 
-    - Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. & Leek, J. T. Differential expression analysis of RNA-seq data at single-base resolution. Biostatistics kxt053 (2014). doi:10.1093/biostatistics/kxt053. 
-    - Risso, D., Ngai, J., Speed, T. P. & Dudoit, S. Normalization of RNA-seq data using factor analysis of control genes or samples. Nature Biotechnology 32, 896–902 (2014).
+    - Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. & Leek, J. T. Differential expression analysis of RNA-seq data at single-base resolution. Biostatistics kxt053 (2014). doi:10.1093/biostatistics/kxt053. [TAKEN: Yatong, Xiaowen and Kelsey]
+    - Risso, D., Ngai, J., Speed, T. P. & Dudoit, S. Normalization of RNA-seq data using factor analysis of control genes or samples. Nature Biotechnology 32, 896–902 (2014). [TAKEN: Ben and Aaron]
     
     
 - *Single-cell gene-expression*
