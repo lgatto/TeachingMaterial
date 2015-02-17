@@ -28,13 +28,7 @@ http://www.gnu.org/software/parallel/
 We first prepare the directory structure, these directory are created only if they don't exist, as follows,
 
 ```{r create-structure, engine='bash'}
-mkdir -p RSEM_test
-cd RSEM_test
-mkdir -p GEO
-mkdir -p SRA
-mkdir -p FASTQ
-mkdir -p RSEM
-mkdir -p Reference_Genome
+mkdir -p RSEM_test/{GEO,SRA,FASTQ,RSEM,Reference_Genome}
 ```
 
 
