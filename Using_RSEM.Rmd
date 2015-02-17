@@ -135,7 +135,7 @@ RSEM results are recomputed: `r !cond_eval`
 ```{r calculate-expression, engine='bash', eval=cond_eval, results='hide'}
 # Run in this directory:
 cd RSEM_test/RSEM
-parallel -j 2 rsem-calculate-expression --bowtie2 -p 2 {} ../Reference_Genome/hg19 {/.} ::: ../FASTQ/*.fastq
+parallel -j 2 rsem-calculate-expression --bowtie2 -p 4 {} ../Reference_Genome/hg19 {/.} ::: ../FASTQ/*.fastq
 ```
 
 We can now put all the RSEM counts/TPM results in one matrix, if it hasn't been done yet.
