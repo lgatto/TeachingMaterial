@@ -507,6 +507,7 @@ The Rsubread package can be used to perform alignment and expression quantificat
 if(!file.exists("annotation.gtf"))
 {
   download.file("ftp://ftp.ensembl.org/pub/release-78/gtf/drosophila_melanogaster/Drosophila_melanogaster.BDGP5.78.gtf.gz", destfile = "annotation.gtf.gz")
+  gunzip("annotation.gtf.gz")
 }
 ```
 

@@ -1,6 +1,6 @@
 # Bioinformatics for Big Omics Data: Basics of sequence analysis and genomic interval manipulation in R
 Raphael Gottardo  
-February 2, 2014  
+February 2, 2015  
 
 ## Setting up some options
 
@@ -37,20 +37,41 @@ library(GenomicRanges)
 ## 
 ## The following objects are masked from 'package:base':
 ## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
+##     Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+##     as.data.frame, as.vector, cbind, colnames, do.call,
+##     duplicated, eval, evalq, get, intersect, is.unsorted, lapply,
+##     mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+##     pmin.int, rank, rbind, rep.int, rownames, sapply, setdiff,
+##     sort, table, tapply, union, unique, unlist, unsplit
 ## 
+## Loading required package: S4Vectors
+## Loading required package: stats4
 ## Loading required package: IRanges
+## 
+## Attaching package: 'IRanges'
+## 
+## The following object is masked from 'package:data.table':
+## 
+##     shift
+## 
 ## Loading required package: GenomeInfoDb
 ```
 
 ```r
 library(IRanges)
 library(reshape2)
+```
+
+```
+## 
+## Attaching package: 'reshape2'
+## 
+## The following objects are masked from 'package:data.table':
+## 
+##     dcast, melt
+```
+
+```r
 library(GenomicAlignments)
 ```
 
@@ -58,7 +79,6 @@ library(GenomicAlignments)
 ## Loading required package: Biostrings
 ## Loading required package: XVector
 ## Loading required package: Rsamtools
-## Loading required package: BSgenome
 ## 
 ## Attaching package: 'GenomicAlignments'
 ## 
@@ -163,10 +183,6 @@ Now, we are ready to use the package
 
 ```r
 library(Biostrings)
-```
-
-```
-## Loading required package: XVector
 ```
 
 ## The Biostrings package
@@ -321,6 +337,7 @@ library("BSgenome.Scerevisiae.UCSC.sacCer1")
 
 ```
 ## Loading required package: BSgenome
+## Loading required package: rtracklayer
 ```
 
 here is a quick summary of the number of ACGT across the first chr1.
@@ -409,6 +426,10 @@ library(hgu133plus2probe)
 ## The following object is masked from 'package:BSgenome':
 ## 
 ##     species
+## 
+## The following object is masked from 'package:GenomeInfoDb':
+## 
+##     species
 ```
 
 We now have access to the `hgu133plus2probe` dataset containing our probe information.
@@ -431,16 +452,6 @@ library(affy)
 GSE29617_affyBatch <- ReadAffy(celfile.path = "Data/GEO/GSE29617/")
 # Normalize and summarize the data
 GSE29617_set2 <- rma(GSE29617_affyBatch)
-```
-
-```
-## Warning: replacing previous import by 'utils::head' when loading
-## 'hthgu133pluspmcdf'
-```
-
-```
-## Warning: replacing previous import by 'utils::tail' when loading
-## 'hthgu133pluspmcdf'
 ```
 
 ```
@@ -517,7 +528,7 @@ as.vector(object.size(xRle)/object.size(xVector))
 ```
 
 ```
-## [1] 0.04735265
+## [1] 0.04755245
 ```
 
 ```r
@@ -726,23 +737,21 @@ grl
 ```
 
 ```
-## GRangesList of length 2:
+## GRangesList object of length 2:
 ## $txA 
-## GRanges with 1 range and 2 metadata columns:
+## GRanges object with 1 range and 2 metadata columns:
 ##       seqnames    ranges strand |     score        GC
 ##          <Rle> <IRanges>  <Rle> | <integer> <numeric>
 ##   [1]     chr2    [3, 6]      + |         5      0.45
 ## 
 ## $txB 
-## GRanges with 2 ranges and 2 metadata columns:
+## GRanges object with 2 ranges and 2 metadata columns:
 ##       seqnames   ranges strand | score  GC
 ##   [1]     chr1 [ 7,  9]      + |     3 0.3
 ##   [2]     chr1 [13, 15]      - |     4 0.5
 ## 
-## ---
-## seqlengths:
-##  chr2 chr1
-##    NA   NA
+## -------
+## seqinfo: 2 sequences from an unspecified genome; no seqlengths
 ```
 
 ```r
@@ -770,7 +779,7 @@ aln1
 ```
 
 ```
-## GAlignments with 3271 alignments and 0 metadata columns:
+## GAlignments object with 3271 alignments and 0 metadata columns:
 ##          seqnames strand       cigar    qwidth     start       end
 ##             <Rle>  <Rle> <character> <integer> <integer> <integer>
 ##      [1]     seq1      +         36M        36         1        36
@@ -797,10 +806,8 @@ aln1
 ##   [3269]        35         0
 ##   [3270]        35         0
 ##   [3271]        35         0
-##   ---
-##   seqlengths:
-##    seq1 seq2
-##    1575 1584
+##   -------
+##   seqinfo: 2 sequences from an unspecified genome
 ```
 
 ## Load a BAM file into a GAlignments object
@@ -833,7 +840,7 @@ aln1
 ```
 
 ```
-## GappedReads with 3271 alignments and 0 metadata columns:
+## GappedReads object with 3271 alignments and 0 metadata columns:
 ##          seqnames strand       cigar    qwidth     start       end
 ##             <Rle>  <Rle> <character> <integer> <integer> <integer>
 ##      [1]     seq1      +         36M        36         1        36
@@ -860,10 +867,8 @@ aln1
 ##   [3269]        35         0
 ##   [3270]        35         0
 ##   [3271]        35         0
-##   ---
-##   seqlengths:
-##    seq1 seq2
-##    1575 1584
+##   -------
+##   seqinfo: 2 sequences from an unspecified genome
 ```
 
 ```r
@@ -903,7 +908,7 @@ reduce(gr1)
 ```
 
 ```
-## GRanges with 7 ranges and 0 metadata columns:
+## GRanges object with 7 ranges and 0 metadata columns:
 ##       seqnames       ranges strand
 ##          <Rle>    <IRanges>  <Rle>
 ##   [1]     seq1 [   1, 1408]      +
@@ -913,10 +918,8 @@ reduce(gr1)
 ##   [5]     seq2 [1509, 1558]      +
 ##   [6]     seq2 [   1,   35]      -
 ##   [7]     seq2 [ 197, 1567]      -
-##   ---
-##   seqlengths:
-##    seq1 seq2
-##    1575 1584
+##   -------
+##   seqinfo: 2 sequences from an unspecified genome
 ```
 
 ## Disjoin
@@ -928,7 +931,7 @@ disjoin(gr1)
 ```
 
 ```
-## GRanges with 3747 ranges and 0 metadata columns:
+## GRanges object with 3747 ranges and 0 metadata columns:
 ##          seqnames       ranges strand
 ##             <Rle>    <IRanges>  <Rle>
 ##      [1]     seq1      [1,  2]      +
@@ -942,10 +945,8 @@ disjoin(gr1)
 ##   [3745]     seq2 [1559, 1562]      -
 ##   [3746]     seq2 [1563, 1566]      -
 ##   [3747]     seq2 [1567, 1567]      -
-##   ---
-##   seqlengths:
-##    seq1 seq2
-##    1575 1584
+##   -------
+##   seqinfo: 2 sequences from an unspecified genome
 ```
 
 
@@ -1020,8 +1021,8 @@ TxDb.Dmelanogaster.UCSC.dm3.ensGene
 ```
 
 ```
-## TranscriptDb object:
-## | Db type: TranscriptDb
+## TxDb object:
+## | Db type: TxDb
 ## | Supporting package: GenomicFeatures
 ## | Data source: UCSC
 ## | Genome: dm3
@@ -1035,8 +1036,8 @@ TxDb.Dmelanogaster.UCSC.dm3.ensGene
 ## | exon_nrow: 76920
 ## | cds_nrow: 62135
 ## | Db created by: GenomicFeatures package from Bioconductor
-## | Creation time: 2014-03-17 16:24:54 -0700 (Mon, 17 Mar 2014)
-## | GenomicFeatures version at creation time: 1.15.11
+## | Creation time: 2014-09-26 11:22:16 -0700 (Fri, 26 Sep 2014)
+## | GenomicFeatures version at creation time: 1.17.17
 ## | RSQLite version at creation time: 0.11.4
 ## | DBSCHEMAVERSION: 1.0
 ```
@@ -1097,7 +1098,7 @@ head(table(assays(se)$counts))
 ```
 ## 
 ##     0     1     2     3     4     5 
-## 15593     1     3     1     4     1
+## 15594     2     1     3     3     1
 ```
 
 The annotation is stored in the rowData slot:
@@ -1107,15 +1108,15 @@ rowData(se)
 ```
 
 ```
-## GRangesList of length 15682:
+## GRangesList object of length 15682:
 ## $FBgn0000003 
-## GRanges with 1 range and 2 metadata columns:
+## GRanges object with 1 range and 2 metadata columns:
 ##       seqnames             ranges strand |   exon_id   exon_name
 ##          <Rle>          <IRanges>  <Rle> | <integer> <character>
 ##   [1]    chr3R [2648220, 2648518]      + |     45123        <NA>
 ## 
 ## $FBgn0000008 
-## GRanges with 13 ranges and 2 metadata columns:
+## GRanges object with 13 ranges and 2 metadata columns:
 ##        seqnames               ranges strand   | exon_id exon_name
 ##    [1]    chr2R [18024494, 18024531]      +   |   20314      <NA>
 ##    [2]    chr2R [18024496, 18024713]      +   |   20315      <NA>
@@ -1131,10 +1132,8 @@ rowData(se)
 ## 
 ## ...
 ## <15680 more elements>
-## ---
-## seqlengths:
-##      chr2L     chr2R     chr3L     chr3R ...   chrXHet   chrYHet chrUextra
-##   23011544  21146708  24543557  27905053 ...    204112    347038  29004656
+## -------
+## seqinfo: 15 sequences (1 circular) from dm3 genome
 ```
 
 ## Alternative approaches
@@ -1160,13 +1159,13 @@ library("R.utils")
 ## 
 ## Attaching package: 'R.oo'
 ## 
-## The following object is masked from 'package:IRanges':
+## The following object is masked from 'package:GenomicRanges':
 ## 
 ##     trim
 ## 
-## The following objects are masked from 'package:devtools':
+## The following object is masked from 'package:IRanges':
 ## 
-##     check, unload
+##     trim
 ## 
 ## The following objects are masked from 'package:methods':
 ## 
@@ -1219,14 +1218,14 @@ fc_counts <- featureCounts(files = bam_file, annot.ext = "annotation.gtf",
 ##             ====      \___ \| |  | |  _ <|  _  /|  __|   / /\ \ | |  | |
 ##               ====    ____) | |__| | |_) | | \ \| |____ / ____ \| |__| |
 ##         ==========   |_____/ \____/|____/|_|  \_\______/_/    \_\_____/
-##        Rsubread 1.14.2
+##        Rsubread 1.16.1
 ## 
 ## //========================== featureCounts setting ===========================\\
 ## ||                                                                            ||
 ## ||             Input files : 1 BAM file                                       ||
-## ||                           S /Library/Frameworks/R.framework/Versions/3 ... ||
+## ||                           S /usr/local/lib/R/site-library/pasillaBamSu ... ||
 ## ||                                                                            ||
-## ||             Output file : ./.Rsubread_featureCounts_pid10260               ||
+## ||             Output file : ./.Rsubread_featureCounts_pid11585               ||
 ## ||             Annotations : annotation.gtf (GTF)                             ||
 ## ||                                                                            ||
 ## ||                 Threads : 1                                                ||
@@ -1245,7 +1244,7 @@ fc_counts <- featureCounts(files = bam_file, annot.ext = "annotation.gtf",
 ## ||    Meta-features : 15682                                                   ||
 ## ||    Chromosomes : 15                                                        ||
 ## ||                                                                            ||
-## || Process BAM file /Library/Frameworks/R.framework/Versions/3.1/Resource ... ||
+## || Process BAM file /usr/local/lib/R/site-library/pasillaBamSubset/extdat ... ||
 ## ||    Single-end reads are included.                                          ||
 ## ||    Assign reads to features...                                             ||
 ## ||    Total reads : 204355                                                    ||
