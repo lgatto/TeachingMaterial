@@ -29,5 +29,27 @@ Introduction_to_R.pdf
 annotation.gtf
 
 Drosophila_melanogaster.BDGP5.78.gtf
-RSEM_test/*
+RSEM_test/SRAmetadb.sqlite
+RSEM_test/FASTQ/*
+RSEM_test/GEO/*
+RSEM_test/RSEM/*
+RSEM_test/SRA/*
+RSEM_test/Reference_Genome/*.bt2
 
+
+RSEM_test/Reference_Genome/hg19.chrlist
+RSEM_test/Reference_Genome/*.idx.fa
+
+*.grp
+
+RSEM_test/Reference_Genome/hg19.seq
+
+RSEM_test/Reference_Genome/hg19.ti
+
+RSEM_test/Reference_Genome/hg19.transcripts.fa
+
+RSEM_test/Reference_Genome/hg19.fa
+
+RSEM_test/Reference_Genome/knownIsoforms
+
+RSEM_test/Reference_Genome/UCSC.gtf
