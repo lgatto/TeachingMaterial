@@ -2,7 +2,7 @@
 
 
 - *Batch effect correction*
-    - Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007).
+    - Leek, J. T. & Storey, J. D. Capturing Heterogeneity in Gene Expression Studies by Surrogate Variable Analysis. PLoS Genet 3, e161 (2007). [TAKEN: Gloria and Marea]
 
 - *RNA-seq*
     - Anders, S., Reyes, A. & Huber, W. Detecting differential usage of exons from RNA-seq data. Genome Res. 22, 2008-2017 (2012). 
