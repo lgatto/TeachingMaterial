@@ -72,12 +72,12 @@ img {
 <h2>Overview</h2>
 <p>This short presentation will take you through a short example of RNA quantification using RSEM. You will need to have the following software installed on your machine (Brian should have those setup on the server):</p>
 <ul>
-<li>Bowtie2 (<a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">http://bowtie-bio.sourceforge.net/bowtie2/index.shtml</a>)</li>
-<li>RSEM (<a href="https://github.com/bli25wisc/RSEM">https://github.com/bli25wisc/RSEM</a>)</li>
-<li>sra toolkit for converting sra files to fastq files (<a href="http://www.ncbi.nlm.nih.gov/books/NBK158900/">http://www.ncbi.nlm.nih.gov/books/NBK158900/</a>)</li>
+<li>Bowtie2 (<a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml" class="uri">http://bowtie-bio.sourceforge.net/bowtie2/index.shtml</a>)</li>
+<li>RSEM (<a href="https://github.com/bli25wisc/RSEM" class="uri">https://github.com/bli25wisc/RSEM</a>)</li>
+<li>sra toolkit for converting sra files to fastq files (<a href="http://www.ncbi.nlm.nih.gov/books/NBK158900/" class="uri">http://www.ncbi.nlm.nih.gov/books/NBK158900/</a>)</li>
 <li>Curl for getting fa, gtf, and isoforms files from Dropbox</li>
-<li>aspera connect for downloading files from the SRA db (optional) (<a href="http://downloads.asperasoft.com/connect2/">http://downloads.asperasoft.com/connect2/</a>)</li>
-<li>GNU parallel (optional) <a href="http://www.gnu.org/software/parallel/">http://www.gnu.org/software/parallel/</a></li>
+<li>aspera connect for downloading files from the SRA db (optional) (<a href="http://downloads.asperasoft.com/connect2/" class="uri">http://downloads.asperasoft.com/connect2/</a>)</li>
+<li>GNU parallel (optional) <a href="http://www.gnu.org/software/parallel/" class="uri">http://www.gnu.org/software/parallel/</a></li>
 </ul>
 </div>
 <div id="setup-environment" class="section level2">
@@ -86,6 +86,7 @@ img {
 <pre class="bash"><code>mkdir -p RSEM_test/{GEO,SRA,FASTQ,RSEM,Reference_Genome}</code></pre>
 <pre class="r"><code># load libraries
 library(data.table)
+library(reshape2)
 library(GEOquery)
 library(SRAdb)</code></pre>
 <pre class="r"><code>gd &lt;- getGEO(&quot;GSE45735&quot;, destdir = &quot;RSEM_test/GEO/&quot;)</code></pre>
@@ -101,8 +102,9 @@ library(SRAdb)</code></pre>
   }
 sra_con &lt;- dbConnect(SQLite(),'RSEM_test/SRAmetadb.sqlite')
 sra_tables &lt;- dbListTables(sra_con)</code></pre>
-<div id="download-sra-files" class="section level3">
-<h3>Download SRA files</h3>
+</div>
+<div id="download-sra-files" class="section level2">
+<h2>Download SRA files</h2>
 <p>We now check whether SRA files have been downloaded already, and download the files if they haven’t been dowloaded yet</p>
 <p>SRA files have been downloaded: TRUE</p>
 <pre class="r"><code># Let's just use the first 2 files as an exercise
@@ -132,15 +134,15 @@ for(i in 1:nrow(pd_small)) {
 <pre class="r"><code>## Add the SRX_number information to the pd_small object
 pd_small$srx &lt;- SRX_number</code></pre>
 </div>
-<div id="convert-sra-files-to-fastq-files" class="section level3">
-<h3>Convert SRA files to FASTQ files</h3>
+<div id="convert-sra-files-to-fastq-files" class="section level2">
+<h2>Convert SRA files to FASTQ files</h2>
 <p>We now check whether SRA files have been converted already, and convert them otherwise</p>
 <p>SRA files are converted: TRUE</p>
 <pre class="bash"><code>### Convert to fastq in parallel
 parallel -j 2 fastq-dump {} -O RSEM_test/FASTQ/ ::: RSEM_test/SRA/*.sra</code></pre>
 </div>
-<div id="prepare-reference-genome" class="section level3">
-<h3>Prepare reference genome</h3>
+<div id="prepare-reference-genome" class="section level2">
+<h2>Prepare reference genome</h2>
 <p>We now prepare our reference genome if it hasn’t been done yet.</p>
 <p>Reference genome ready: TRUE</p>
 <pre class="bash"><code># This is already done, but I leave it here if we need to redo it
@@ -153,15 +155,14 @@ cd RSEM_test/Reference_Genome/
 
 rsem-prepare-reference --gtf UCSC.gtf --transcript-to-gene-map knownIsoforms --bowtie2 hg19.fa hg19 </code></pre>
 </div>
-<div id="align-fastq-files-to-reference-genome-using-rsem" class="section level3">
-<h3>Align FASTQ files to reference genome using RSEM</h3>
+<div id="align-fastq-files-to-reference-genome-using-rsem" class="section level2">
+<h2>Align FASTQ files to reference genome using RSEM</h2>
 <p>We now check whether RSEM results exists already, and compute them otherwise</p>
 <p>RSEM results are recomputed: TRUE</p>
 <pre class="bash"><code># Run in this directory:
 cd RSEM_test/RSEM
-parallel -j 2 rsem-calculate-expression --bowtie2 -p 2 {} ../Reference_Genome/hg19 {/.} ::: ../FASTQ/*.fastq</code></pre>
+parallel -j 2 rsem-calculate-expression --bowtie2 -p 4 {} ../Reference_Genome/hg19 {/.} ::: ../FASTQ/*.fastq</code></pre>
 <p>We can now put all the RSEM counts/TPM results in one matrix, if it hasn’t been done yet.</p>
-<p>RSEM results are assembled: TRUE</p>
 <pre class="r"><code>rsem_files &lt;- list.files(&quot;RSEM_test/RSEM/&quot;, pattern=&quot;genes.results&quot;, full.names = TRUE)
 
 # Read all files and create a list of data.tables
@@ -178,12 +179,12 @@ setnames(rsem_data_long, &quot;transcript_id(s)&quot;, &quot;transcript_ids&quot
 
 # Reshape the long data.table to create a matrix
 # Assume that missing entries would have a TPM value of 0
-rsem_tpm_matrix &lt;- dcast(rsem_data_long, gene_id+transcript_ids~sample_name, value.var = &quot;TPM&quot;, fill=0)
-rsem_count_matrix &lt;- dcast(rsem_data_long, gene_id+transcript_ids~sample_name, value.var = &quot;expected_count&quot;, fill=0)
+rsem_tpm_matrix &lt;- dcast.data.table(rsem_data_long, gene_id+transcript_ids~sample_name, value.var = &quot;TPM&quot;, fill=0)
+rsem_count_matrix &lt;- dcast.data.table(rsem_data_long, gene_id+transcript_ids~sample_name, value.var = &quot;expected_count&quot;, fill=0)
 
 # Keep track of the gene_id - transcript mapping 
 rsem_txs_table &lt;- rsem_tpm_matrix[, c(&quot;gene_id&quot;,&quot;transcript_ids&quot;), with=FALSE]
-save(rsem_txs_table, file=&quot;RSEM_test/RSEM/rsem_txs_table.Rda&quot;)
+#save(rsem_txs_table, file=&quot;RSEM_test/RSEM/rsem_txs_table.Rda&quot;)
 
 # Remove the transcript column (we create an annotation table in the next chunk)
 rsem_tpm_matrix &lt;- rsem_tpm_matrix[, transcript_ids:=NULL][order(gene_id)]
@@ -192,14 +193,14 @@ rsem_count_matrix &lt;- rsem_count_matrix[, transcript_ids:=NULL][order(gene_id)
 # Write to disc
 write.csv(rsem_tpm_matrix, file=&quot;RSEM_test/RSEM/rsem_tpm_matrix.csv&quot;, row.names=FALSE)
 write.csv(rsem_count_matrix, file=&quot;RSEM_test/RSEM/rsem_count_matrix.csv&quot;, row.names=FALSE)</code></pre>
-</div>
 <div id="get-sample-metadata" class="section level3">
 <h3>Get sample metadata</h3>
 <pre class="r"><code># Write the pdata data
 write.csv(pd_small, file=&quot;RSEM_test/RSEM/rsem_pdata.csv&quot;, row.names=FALSE)</code></pre>
 </div>
-<div id="get-transcript-annotation" class="section level3">
-<h3>Get transcript annotation</h3>
+</div>
+<div id="get-transcript-annotation" class="section level2">
+<h2>Get transcript annotation</h2>
 <p>Get feature annotations from BioC and create a feature annotation set file.</p>
 <pre class="r"><code># Install TxDb packages if you don't already have it.
 txdbpkg &lt;- &quot;TxDb.Hsapiens.UCSC.hg19.knownGene&quot;
@@ -208,53 +209,13 @@ require(txdbpkg, character.only=TRUE) || {
     biocLite(txdbpkg, suppressUpdates=TRUE, ask=FALSE)
     library(txdbpkg, character.only=TRUE)
 }</code></pre>
-<pre><code>## Loading required package: TxDb.Hsapiens.UCSC.hg19.knownGene
-## Loading required package: GenomicFeatures
-## Loading required package: S4Vectors
-## Loading required package: stats4
-## Loading required package: IRanges
-## 
-## Attaching package: 'IRanges'
-## 
-## The following object is masked from 'package:data.table':
-## 
-##     shift
-## 
-## The following object is masked from 'package:R.oo':
-## 
-##     trim
-## 
-## Loading required package: GenomeInfoDb
-## Loading required package: GenomicRanges
-## Loading required package: AnnotationDbi
-## 
-## Attaching package: 'AnnotationDbi'
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     species</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>library(annotate)</code></pre>
-<pre><code>## Loading required package: XML
-## 
-## Attaching package: 'XML'
-## 
-## The following object is masked from 'package:graph':
-## 
-##     addNode
-## 
-## 
-## Attaching package: 'annotate'
-## 
-## The following object is masked from 'package:GenomeInfoDb':
-## 
-##     organism</code></pre>
-<pre class="r"><code>library(org.Hs.eg.db)</code></pre>
-<pre><code>## </code></pre>
-<pre class="r"><code>txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
+<pre class="r"><code>library(annotate)
+library(org.Hs.eg.db)
+txdb &lt;- TxDb.Hsapiens.UCSC.hg19.knownGene
 
 # create a table with one transcript per line
-load(&quot;RSEM_test/RSEM/rsem_txs_table.Rda&quot;)
+#load(&quot;RSEM_test/RSEM/rsem_txs_table.Rda&quot;)
 tx_to_gid &lt;- rsem_txs_table[,list(transcript_id=strsplit(as.character(transcript_ids),&quot;,&quot;)[[1]]),by=&quot;gene_id&quot;]
 
 # map the transcripts to entrez gene ids
@@ -262,15 +223,25 @@ tx_to_eid &lt;- data.table(select(txdb, keys = tx_to_gid[,transcript_id], column
 setnames(tx_to_eid, c(&quot;TXNAME&quot;, &quot;GENEID&quot;), c(&quot;transcript_id&quot;, &quot;entrez_id&quot;))
 
 # Add gene symbol
-tx_to_eid[!is.na(entrez_id),gene_symbol:=getSYMBOL(tx_to_eid[!is.na(entrez_id),entrez_id], data='org.Hs.eg')]
-
-# merge all to map information to RSEM gene_ids
+tx_to_eid[!is.na(entrez_id),gene_symbol:=getSYMBOL(tx_to_eid[!is.na(entrez_id),entrez_id], data='org.Hs.eg')]</code></pre>
+<pre><code>##        transcript_id entrez_id gene_symbol
+##     1:    uc001aaa.3 100287102     DDX11L1
+##     2:    uc010nxq.1 100287102     DDX11L1
+##     3:    uc010nxr.1 100287102     DDX11L1
+##     4:    uc001aac.4    653635      WASH7P
+##     5:    uc001aae.4    653635      WASH7P
+##    ---                                    
+## 82956:    uc004fxn.1      3581        IL9R
+## 82957:    uc010nxr.2      3581        IL9R
+## 82958:    uc004fxo.1        NA          NA
+## 82959:    uc022cpg.1        NA          NA
+## 82960:    uc011ncc.1        NA          NA</code></pre>
+<pre class="r"><code># merge all to map information to RSEM gene_ids
 tx_table &lt;- merge(tx_to_gid, tx_to_eid, by=&quot;transcript_id&quot;)
 tx_table_reduced &lt;- tx_table[,list(entrez_id=paste(unique(entrez_id),collapse=&quot;,&quot;), transcript_id=paste(unique(transcript_id),collapse=&quot;,&quot;), gene_symbol=paste(unique(gene_symbol),collapse=&quot;,&quot;)),by=&quot;gene_id&quot;]
 
 # Write to disc and order by gene_id
 write.csv(tx_table_reduced[order(gene_id)], file=&quot;RSEM_test/RSEM/rsem_fdata.csv&quot;, row.names=FALSE)</code></pre>
-</div>
 </div>
 
 

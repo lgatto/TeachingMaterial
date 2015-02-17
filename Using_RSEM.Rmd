@@ -1,13 +1,8 @@
 ---
-title: 'Bioinformatics for Big Omics Data: Using RSEM, a hands-on example'
+title: "Bioinformatics for Big Omics Data: Using RSEM, a hands-on example"
 author: "Raphael Gottardo"
 date: "February 17, 2015"
-output:
-  ioslides_presentation:
-  fig_caption: yes
-fig_retina: 1
-keep_md: yes
-smaller: yes
+output: html_document
 ---
 
 ## Overview
@@ -36,6 +31,7 @@ mkdir -p RSEM_test/{GEO,SRA,FASTQ,RSEM,Reference_Genome}
 ```{r load-libraries, results='hide', message=FALSE}
 # load libraries
 library(data.table)
+library(reshape2)
 library(GEOquery)
 library(SRAdb)
 ```
@@ -53,7 +49,7 @@ sra_con <- dbConnect(SQLite(),'RSEM_test/SRAmetadb.sqlite')
 sra_tables <- dbListTables(sra_con)
 ```
 
-### Download SRA files
+## Download SRA files
 
 We now check whether SRA files have been downloaded already, and download the files if they haven't been dowloaded yet
 
@@ -95,7 +91,7 @@ for(i in 1:nrow(pd_small)) {
 pd_small$srx <- SRX_number
 ```
 
-### Convert SRA files to FASTQ files
+## Convert SRA files to FASTQ files
 
 We now check whether SRA files have been converted already, and convert them otherwise
 
@@ -107,7 +103,7 @@ SRA files are converted: `r !cond_eval`
 parallel -j 2 fastq-dump {} -O RSEM_test/FASTQ/ ::: RSEM_test/SRA/*.sra
 ```
 
-### Prepare reference genome
+## Prepare reference genome
 
 We now prepare our reference genome if it hasn't been done yet. 
 
@@ -126,7 +122,7 @@ cd RSEM_test/Reference_Genome/
 rsem-prepare-reference --gtf UCSC.gtf --transcript-to-gene-map knownIsoforms --bowtie2 hg19.fa hg19 
 ```
 
-### Align FASTQ files to reference genome using RSEM
+## Align FASTQ files to reference genome using RSEM
 
 We now check whether RSEM results exists already, and compute them otherwise
 `r cond_eval <- length(list.files("RSEM_test/RSEM/", pattern=".genes.results"))!=length(list.files("RSEM_test/FASTQ/", pattern=".fastq"))`
@@ -140,10 +136,7 @@ parallel -j 2 rsem-calculate-expression --bowtie2 -p 4 {} ../Reference_Genome/hg
 
 We can now put all the RSEM counts/TPM results in one matrix, if it hasn't been done yet.
 
-`r cond_eval <- length(list.files("RSEM_test/RSEM/", pattern="rsem_"))<3`
-RSEM results are assembled: `r !cond_eval`
-
-```{r assemble-expression-matrix, eval=cond_eval}
+```{r assemble-expression-matrix, cache=TRUE}
 rsem_files <- list.files("RSEM_test/RSEM/", pattern="genes.results", full.names = TRUE)
 
 # Read all files and create a list of data.tables
@@ -160,12 +153,12 @@ setnames(rsem_data_long, "transcript_id(s)", "transcript_ids")
 
 # Reshape the long data.table to create a matrix
 # Assume that missing entries would have a TPM value of 0
-rsem_tpm_matrix <- dcast(rsem_data_long, gene_id+transcript_ids~sample_name, value.var = "TPM", fill=0)
-rsem_count_matrix <- dcast(rsem_data_long, gene_id+transcript_ids~sample_name, value.var = "expected_count", fill=0)
+rsem_tpm_matrix <- dcast.data.table(rsem_data_long, gene_id+transcript_ids~sample_name, value.var = "TPM", fill=0)
+rsem_count_matrix <- dcast.data.table(rsem_data_long, gene_id+transcript_ids~sample_name, value.var = "expected_count", fill=0)
 
 # Keep track of the gene_id - transcript mapping 
 rsem_txs_table <- rsem_tpm_matrix[, c("gene_id","transcript_ids"), with=FALSE]
-save(rsem_txs_table, file="RSEM_test/RSEM/rsem_txs_table.Rda")
+#save(rsem_txs_table, file="RSEM_test/RSEM/rsem_txs_table.Rda")
 
 # Remove the transcript column (we create an annotation table in the next chunk)
 rsem_tpm_matrix <- rsem_tpm_matrix[, transcript_ids:=NULL][order(gene_id)]
@@ -184,11 +177,11 @@ write.csv(pd_small, file="RSEM_test/RSEM/rsem_pdata.csv", row.names=FALSE)
 ```
 
 
-### Get transcript annotation
+## Get transcript annotation
 
 Get feature annotations from BioC and create a feature annotation set file.
 
-```{r feature-annotation}
+```{r feature-annotation, cache=TRUE, dependson="assemble-expression-matrix"}
 # Install TxDb packages if you don't already have it.
 txdbpkg <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
 require(txdbpkg, character.only=TRUE) || {
@@ -202,7 +195,7 @@ library(org.Hs.eg.db)
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
 # create a table with one transcript per line
-load("RSEM_test/RSEM/rsem_txs_table.Rda")
+#load("RSEM_test/RSEM/rsem_txs_table.Rda")
 tx_to_gid <- rsem_txs_table[,list(transcript_id=strsplit(as.character(transcript_ids),",")[[1]]),by="gene_id"]
 
 # map the transcripts to entrez gene ids
