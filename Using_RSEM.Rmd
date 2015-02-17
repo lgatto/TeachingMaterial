@@ -17,6 +17,7 @@ This short presentation will take you through a short example of RNA quantificat
 - Bowtie2 (http://bowtie-bio.sourceforge.net/bowtie2/index.shtml)
 - RSEM (https://github.com/bli25wisc/RSEM)
 - sra toolkit for converting sra files to fastq files (http://www.ncbi.nlm.nih.gov/books/NBK158900/)
+- Curl for getting fa, gtf, and isoforms files from Dropbox
 - aspera connect for downloading files from the SRA db (optional)
 (http://downloads.asperasoft.com/connect2/)
 - GNU parallel (optional)
@@ -116,6 +117,12 @@ Reference genome ready: `r !cond_eval`
 ```{r build-reference, engine="bash", eval=cond_eval, results='hide'}
 # This is already done, but I leave it here if we need to redo it
 cd RSEM_test/Reference_Genome/
+
+# Download reference genome from dropbox.
+[ -f 'hg19.fa' ] || curl -L -o 'hg19.fa' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AAAP5PQh60sy83GF8i5lFOw0a/hg19.fa?dl=1'
+[ -f 'UCSC.gtf' ] || curl -L -o 'UCSC.gtf' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AACGDebvGSwK-EFsPa-9f5qEa/UCSC.gtf?dl=1'
+[ -f 'knownIsoforms' ] || curl -L -o 'knownIsoforms' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AAAfeTr5yKsRmnHd6XW-XhZUa/knownIsoforms?dl=1'
+
 rsem-prepare-reference --gtf UCSC.gtf --transcript-to-gene-map knownIsoforms --bowtie2 hg19.fa hg19 
 ```
 
@@ -158,6 +165,7 @@ rsem_count_matrix <- dcast(rsem_data_long, gene_id+transcript_ids~sample_name, v
 
 # Keep track of the gene_id - transcript mapping 
 rsem_txs_table <- rsem_tpm_matrix[, c("gene_id","transcript_ids"), with=FALSE]
+save(rsem_txs_table, file="RSEM_test/RSEM/rsem_txs_table.Rda")
 
 # Remove the transcript column (we create an annotation table in the next chunk)
 rsem_tpm_matrix <- rsem_tpm_matrix[, transcript_ids:=NULL][order(gene_id)]
@@ -194,6 +202,7 @@ library(org.Hs.eg.db)
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
 # create a table with one transcript per line
+load("RSEM_test/RSEM/rsem_txs_table.Rda")
 tx_to_gid <- rsem_txs_table[,list(transcript_id=strsplit(as.character(transcript_ids),",")[[1]]),by="gene_id"]
 
 # map the transcripts to entrez gene ids
