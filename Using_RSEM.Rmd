@@ -74,7 +74,7 @@ for(i in 1:nrow(pd_small)) {
     gd <- getGEO(pd_small$geo_accession[i], destdir="RSEM_test/GEO/")
     SRX_number[i] <- gsub(".*=SRX", "SRX", gd@header$relation[1])
   
-	# Convert to aspera address
+    # Convert to aspera address
 	run_accession <- listSRAfile(SRX_number[i], sra_con, fileType = "sra" )$run
 	aspera_url <- paste0("anonftp@ftp.ncbi.nlm.nih.gov:/sra/sra-instant/reads/ByRun/sra", "/", substr(run_accession,1,3), "/", substr(run_accession,1,6), "/", run_accession, "/", run_accession, ".sra")
     if(file.exists(sshkey)) {
@@ -212,5 +212,3 @@ tx_table_reduced <- tx_table[,list(entrez_id=paste(unique(entrez_id),collapse=",
 # Write to disc and order by gene_id
 write.csv(tx_table_reduced[order(gene_id)], file="RSEM_test/RSEM/rsem_fdata.csv", row.names=FALSE)
 ```
-
-
