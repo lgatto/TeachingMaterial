@@ -1,11 +1,6 @@
----
-title: "Bioinformatics for Big Omics Data: Using RSEM, a hands-on example"
-author: "Raphael Gottardo"
-date: "February 17, 2015"
-output: 
-    html_document:
-        keep_md: yes
----
+# Bioinformatics for Big Omics Data: Using RSEM, a hands-on example
+Raphael Gottardo  
+February 17, 2015  
 
 ## Overview
 
@@ -25,12 +20,14 @@ http://www.gnu.org/software/parallel/
 
 We first prepare the directory structure, these directory are created only if they don't exist, as follows,
 
-```{r create-structure, engine='bash'}
+
+```bash
 mkdir -p RSEM_test/{GEO,SRA,FASTQ,RSEM,Reference_Genome}
 ```
 
 
-```{r load-libraries, results='hide', message=FALSE}
+
+```r
 # load libraries
 library(data.table)
 library(reshape2)
@@ -38,12 +35,26 @@ library(GEOquery)
 library(SRAdb)
 ```
 
-```{r query-GEO}
+
+```r
 gd <- getGEO("GSE45735", destdir = "RSEM_test/GEO/")
+```
+
+```
+## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE45nnn/GSE45735/matrix/
+## Found 1 file(s)
+## GSE45735_series_matrix.txt.gz
+## Using locally cached version: RSEM_test/GEO//GSE45735_series_matrix.txt.gz
+## Using locally cached version of GPL10999 found here:
+## RSEM_test/GEO//GPL10999.soft
+```
+
+```r
 pd <- pData(gd[[1]])
 ```
 
-```{r query-SRA-db}
+
+```r
 if(!file.exists('RSEM_test/SRAmetadb.sqlite')) {
   sqlfile <- getSRAdbFile(destdir = "RSEM_test/")
   }
@@ -55,16 +66,18 @@ sra_tables <- dbListTables(sra_con)
 
 We now check whether SRA files have been downloaded already, and download the files if they haven't been dowloaded yet
 
-`r cond_eval <- length(list.files("RSEM_test/SRA/", pattern=".sra"))==0`
-SRA files have been downloaded: `r !cond_eval`
 
-```{r sra-download-pre, message=FALSE}
+SRA files have been downloaded: TRUE
+
+
+```r
 # Let's just use the first 2 files as an exercise
 pd_small <- pd[1:2,]
 SRX_number <- rep(NA, nrow(pd_small))
 ```
 
-```{r sra-download, eval=cond_eval, message=FALSE}
+
+```r
 # Find an SSH key for Aspera Connect
 sshkey <- '/etc/aspera/asperaweb_id_dsa.openssh' # Use this if not found in ~
 macsshkey <- '~/Applications/Aspera\\ Connect.app/Contents/Resources/asperaweb_id_dsa.openssh'
@@ -89,7 +102,8 @@ for(i in 1:nrow(pd_small)) {
 }
 ```
 
-```{r sra-download-post, message=FALSE}
+
+```r
 ## Add the SRX_number information to the pd_small object
 pd_small$srx <- SRX_number
 ```
@@ -98,10 +112,11 @@ pd_small$srx <- SRX_number
 
 We now check whether SRA files have been converted already, and convert them otherwise
 
-`r cond_eval <- length(list.files("RSEM_test/FASTQ/", pattern=".fast"))==0`
-SRA files are converted: `r !cond_eval`
 
-```{r sra-convert, engine="bash", eval=cond_eval, results='hide'}
+SRA files are converted: TRUE
+
+
+```bash
 ### Convert to fastq in parallel
 parallel -j 2 fastq-dump {} -O RSEM_test/FASTQ/ ::: RSEM_test/SRA/*.sra
 ```
@@ -110,10 +125,11 @@ parallel -j 2 fastq-dump {} -O RSEM_test/FASTQ/ ::: RSEM_test/SRA/*.sra
 
 We now prepare our reference genome if it hasn't been done yet. 
 
-`r cond_eval <- length(list.files("RSEM_test/Reference_Genome/", pattern=".idx.fa"))==0`
-Reference genome ready: `r !cond_eval`
 
-```{r build-reference, engine="bash", eval=cond_eval, results='hide'}
+Reference genome ready: TRUE
+
+
+```bash
 # This is already done, but I leave it here if we need to redo it
 cd RSEM_test/Reference_Genome/
 
@@ -128,10 +144,11 @@ rsem-prepare-reference --gtf UCSC.gtf --transcript-to-gene-map knownIsoforms --b
 ## Align FASTQ files to reference genome using RSEM
 
 We now check whether RSEM results exists already, and compute them otherwise
-`r cond_eval <- length(list.files("RSEM_test/RSEM/", pattern=".genes.results"))!=length(list.files("RSEM_test/FASTQ/", pattern=".fastq"))`
-RSEM results are recomputed: `r !cond_eval`
 
-```{r calculate-expression, engine='bash', eval=cond_eval, results='hide'}
+RSEM results are recomputed: TRUE
+
+
+```bash
 # Run in this directory:
 cd RSEM_test/RSEM
 parallel -j 2 rsem-calculate-expression --bowtie2 -p 4 {} ../Reference_Genome/hg19 {/.} ::: ../FASTQ/*.fastq
@@ -139,7 +156,8 @@ parallel -j 2 rsem-calculate-expression --bowtie2 -p 4 {} ../Reference_Genome/hg
 
 We can now put all the RSEM counts/TPM results in one matrix, if it hasn't been done yet.
 
-```{r assemble-expression-matrix, cache=TRUE}
+
+```r
 rsem_files <- list.files("RSEM_test/RSEM/", pattern="genes.results", full.names = TRUE)
 
 # Read all files and create a list of data.tables
@@ -174,7 +192,8 @@ write.csv(rsem_count_matrix, file="RSEM_test/RSEM/rsem_count_matrix.csv", row.na
 
 ### Get sample metadata
 
-```{r pdata, results='hide', message=FALSE}
+
+```r
 # Write the pdata data
 write.csv(pd_small, file="RSEM_test/RSEM/rsem_pdata.csv", row.names=FALSE)
 ```
@@ -184,7 +203,8 @@ write.csv(pd_small, file="RSEM_test/RSEM/rsem_pdata.csv", row.names=FALSE)
 
 Get feature annotations from BioC and create a feature annotation set file.
 
-```{r feature-annotation, cache=TRUE, dependson="assemble-expression-matrix"}
+
+```r
 # Install TxDb packages if you don't already have it.
 txdbpkg <- "TxDb.Hsapiens.UCSC.hg19.knownGene"
 require(txdbpkg, character.only=TRUE) || {
@@ -192,7 +212,13 @@ require(txdbpkg, character.only=TRUE) || {
     biocLite(txdbpkg, suppressUpdates=TRUE, ask=FALSE)
     library(txdbpkg, character.only=TRUE)
 }
+```
 
+```
+## [1] TRUE
+```
+
+```r
 library(annotate)
 library(org.Hs.eg.db)
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
