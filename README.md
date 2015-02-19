@@ -49,6 +49,7 @@ Notes are provided as the source file (.Rmd) and resulting html file for online 
 - 02/12/15 [Sequence analysis in R](Sequence_analysis.Rmd) (Note: We start at 8:30am) & [RNA-seq](RNA-seq.Rmd)
 - 02/17/15 [RNA-seq](RNA-seq.Rmd) & [GSEA](GSEA.Rmd) (Note: We start at 8:45am)
 - 02/19/15 Midterm (Note: Back to normal starting time, i.e 9am)
-- 02/24/15 ChIP-seq
-- 02/26/15 Final lecture and project presentations start
-- 03/03/15, 03/05/15, 03/10/15, 03/12/15: Final presentations
+- 02/24/15 Finish [GSEA](GSEA.Rmd) and start ChIP-seq
+- 02/26/15 Final lecture (Topic to be determined)
+- 03/03/15 Discuss last two assignments and provide help as needed
+- 03/05/15, 03/10/15, 03/12/15: Final presentations
