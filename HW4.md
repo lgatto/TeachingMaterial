@@ -1,4 +1,4 @@
-**This is your third and final homework due March 13.**
+**This is your third and final homework due March 2.**
   
 
 You will have to analyze the RNA-seq data presented in:
