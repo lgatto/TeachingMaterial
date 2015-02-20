@@ -1,12 +1,16 @@
 #!/bin/bash
 
-# This script prepares the three input files needed for Using _RSEM.Rmd.
+# This script prepares the three input files needed for Using_RSEM.Rmd.
 # Or you can download them (hg19.fa, UCSC.gtf, and knownIsoforms) from:
 # https://www.dropbox.com/sh/p4cosmsqwtmpce7/AADgXoeK4RwBTfDlDUr_dwQYa?dl=0
 # We do this in the "Prepare reference genome" section of Using_RSEM.Rmd.
 
 # Required utilities: 
-#     bash curl tar touch grep chmod ls rm gunzip genePredToGtf (kentUtils)
+#     bash which basename curl tar touch grep chmod ls rm gunzip genePredToGtf
+#
+# - genePredToGtf is from kentUtils: https://github.com/ENCODE-DCC/kentUtils
+# - The rest will be standard on a Unix, Linux, or Mac OSX system.
+# - This script has not been tested on a Windows/Cygwin system. 
 
 # Parts of this script were adapted from:
 #     http://watson.nci.nih.gov/~sdavis/tutorials/biowulf-2011/
