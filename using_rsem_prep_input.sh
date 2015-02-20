@@ -5,7 +5,8 @@
 # https://www.dropbox.com/sh/p4cosmsqwtmpce7/AADgXoeK4RwBTfDlDUr_dwQYa?dl=0
 # We do this in the "Prepare reference genome" section of Using_RSEM.Rmd.
 
-# Required utilities: bash curl tar genePredToGtf (kentUtils)
+# Required utilities: 
+#     bash curl tar touch grep chmod ls mv rm gunzip genePredToGtf (kentUtils)
 
 # Parts of this script were adapted from:
 #     http://watson.nci.nih.gov/~sdavis/tutorials/biowulf-2011/
@@ -18,7 +19,7 @@
 # 4. Create GTF file from known gene file
 
 # Make sure we have the tools we need
-for i in curl tar genePredToGtf; do \
+for i in curl tar touch grep chmod ls mv rm echo gunzip genePredToGtf; do \
     which $i >/dev/null
     if [ $? -ne 0 ]; then \
         echo "Can't find $i. Aborting!" && exit 1
@@ -34,7 +35,7 @@ FA="hg19.fa"
 
 # Download the chromosome files and extract (unless already done)
 [ -s "$TARBALL" ] || curl -O "$URL"
-ls chr*.fa 2>&1  > /dev/null || tar xvzf "$TARBALL"
+ls chr*.fa 2>/dev/null  1>/dev/null || tar xvzf "$TARBALL"
 
 # Combine the main chromosome files into one genome file
 [ -s "$FA" ] || (for i in $(seq 22) X Y M; do \
