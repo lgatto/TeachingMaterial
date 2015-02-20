@@ -58,7 +58,7 @@ grep -q 'db.host=genome-mysql.cse.ucsc.edu' "$HGCONF" || echo '
 db.host=genome-mysql.cse.ucsc.edu
 db.user=genomep
 db.password=password
-central.db=hgcentral' >> ~/.hg.conf
+central.db=hgcentral' >> "$HGCONF"
 genePredToGtf hg19 knownGene UCSC.gtf
 #
 # Alternatively, you can follow the steps from the URL below to get the GTF:
