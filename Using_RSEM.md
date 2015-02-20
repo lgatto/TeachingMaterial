@@ -138,6 +138,10 @@ cd RSEM_test/Reference_Genome/
 [ -f 'UCSC.gtf' ] || curl -L -o 'UCSC.gtf' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AACGDebvGSwK-EFsPa-9f5qEa/UCSC.gtf?dl=1'
 [ -f 'knownIsoforms' ] || curl -L -o 'knownIsoforms' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AAAfeTr5yKsRmnHd6XW-XhZUa/knownIsoforms?dl=1'
 
+#    Alternatively, you can download the input files from UCSC...
+#../../using_rsem_prep_input.sh
+#    ...but you will get slightly different results.
+
 rsem-prepare-reference --gtf UCSC.gtf --transcript-to-gene-map knownIsoforms --bowtie2 hg19.fa hg19 
 ```
 
