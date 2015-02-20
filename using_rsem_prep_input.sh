@@ -3,9 +3,9 @@
 # This script prepares the three input files needed for Using _RSEM.Rmd.
 # Or you can download them (hg19.fa, UCSC.gtf, and knownIsoforms) from:
 # https://www.dropbox.com/sh/p4cosmsqwtmpce7/AADgXoeK4RwBTfDlDUr_dwQYa?dl=0
-# We do this in the "Prepare reference genome" section of USing_RSEM.Rmd.
+# We do this in the "Prepare reference genome" section of Using_RSEM.Rmd.
 
-# Required utilities: bash curl tar samtools genePredToGtf (kentUtils)
+# Required utilities: bash curl tar genePredToGtf (kentUtils)
 
 # Parts of this script were adapted from:
 #     http://watson.nci.nih.gov/~sdavis/tutorials/biowulf-2011/
@@ -18,7 +18,7 @@
 # 4. Create GTF file from known gene file
 
 # Make sure we have the tools we need
-for i in curl tar samtools genePredToGtf; do \
+for i in curl tar genePredToGtf; do \
     which $i >/dev/null
     if [ $? -ne 0 ]; then \
         echo "Can't find $i. Aborting!" && exit 1
@@ -51,6 +51,7 @@ ISOFORMS=$(basename "$TARBALL" .gz)
 [ -s "$ISOFORMS" ] && mv "$ISOFORMS" $(basename "$ISOFORMS" .txt)
 
 # Download known gene file and create GTF file
+GTF='UCSC.gtf'
 HGCONF=~/'.hg.conf'
 touch "$HGCONF"
 chmod 600 "$HGCONF"
@@ -59,7 +60,7 @@ db.host=genome-mysql.cse.ucsc.edu
 db.user=genomep
 db.password=password
 central.db=hgcentral' >> "$HGCONF"
-genePredToGtf hg19 knownGene UCSC.gtf
+[ -s "$GTF" ] || genePredToGtf hg19 knownGene "$GTF"
 #
 # Alternatively, you can follow the steps from the URL below to get the GTF:
 # https://groups.google.com/a/soe.ucsc.edu/d/msg/genome/kyk7AAm4R-M/9LkE-CRjzioJ
