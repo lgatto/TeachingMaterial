@@ -6,7 +6,7 @@
 # We do this in the "Prepare reference genome" section of Using_RSEM.Rmd.
 
 # Required utilities: 
-#     bash curl tar touch grep chmod ls mv rm gunzip genePredToGtf (kentUtils)
+#     bash curl tar touch grep chmod ls rm gunzip genePredToGtf (kentUtils)
 
 # Parts of this script were adapted from:
 #     http://watson.nci.nih.gov/~sdavis/tutorials/biowulf-2011/
@@ -19,37 +19,40 @@
 # 4. Create GTF file from known gene file
 
 # Make sure we have the tools we need
-for i in curl tar touch grep chmod ls mv rm echo gunzip genePredToGtf; do \
-    which $i >/dev/null
+for i in curl tar touch grep chmod ls rm gunzip genePredToGtf; do \
+    which "$i" >/dev/null
     if [ $? -ne 0 ]; then \
         echo "Can't find $i. Aborting!" && exit 1
     fi
 done
 
-# Initialize variables
+# Set the path to get all human genome "hg19" data files from UCSC
 HG19PATH='http://hgdownload.cse.ucsc.edu/goldenPath/hg19'
+
+# Download, extract and combine chromosome files (unless already done)
 CHROMEPATH='bigZips/chromFa.tar.gz'
 URL="$HG19PATH/$CHROMEPATH"
 TARBALL=$(basename "$URL")
 FA="hg19.fa"
-
-# Download the chromosome files and extract (unless already done)
-[ -s "$TARBALL" ] || curl -O "$URL"
-ls chr*.fa 2>/dev/null  1>/dev/null || tar xvzf "$TARBALL"
-
-# Combine the main chromosome files into one genome file
-[ -s "$FA" ] || (for i in $(seq 22) X Y M; do \
-    cat "chr${i}.fa" >> "$FA"
-done)
-rm -f chr*.fa
+if [ ! -s "$FA" ]; then \
+    [ -s "$TARBALL" ] || curl -O "$URL"
+    ls chr*.fa 2>/dev/null 1>/dev/null || tar xvzf "$TARBALL"
+    if [ $? -eq 0 ]; then \
+        for i in $(seq 22) X Y M; do \
+            cat "chr${i}.fa" >> "$FA"
+        done
+        rm -f chr*.fa
+    else echo "Can't find chr*.fa files!"
+    fi
+fi
 
 # Download and extract known isoforms file (unless already done)
 ISOFORMSPATH='database/knownIsoforms.txt.gz'
 URL="$HG19PATH/$ISOFORMSPATH"
 TARBALL=$(basename "$URL")
 ISOFORMS=$(basename "$TARBALL" .gz)
-[ -s "$ISOFORMS" ] || (curl -O "$URL" && gunzip "$TARBALL")
-[ -s "$ISOFORMS" ] && mv "$ISOFORMS" $(basename "$ISOFORMS" .txt)
+ISOFILE=$(basename "$ISOFORMS" .txt)
+[ -s "$ISOFILE" ] || (curl "$URL" | gunzip -c - > "$ISOFILE")
 
 # Download known gene file and create GTF file
 GTF='UCSC.gtf'
@@ -73,6 +76,6 @@ central.db=hgcentral' >> "$HGCONF"
 # knownIsoforms.txt file for the appropriate genome."
 
 # Now you should be ready to run rsem-prepare-reference on these files:
-#     rsem-prepare-reference --gtf UCSC.gtf 
-#         --transcript-to-gene-map knownIsoforms 
+#     rsem-prepare-reference --gtf UCSC.gtf \
+#         --transcript-to-gene-map knownIsoforms \ 
 #         --bowtie2 hg19.fa hg19
