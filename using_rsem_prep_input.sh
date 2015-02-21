@@ -36,14 +36,14 @@ HG19PATH='http://hgdownload.cse.ucsc.edu/goldenPath/hg19'
 # Download, extract and combine chromosome files (unless already done)
 CHROMEPATH='bigZips/chromFa.tar.gz'
 URL="$HG19PATH/$CHROMEPATH"
-TARBALL=$(basename "$URL")
-FA="hg19.fa"
-if [ ! -s "$FA" ]; then \
-    [ -s "$TARBALL" ] || curl -O "$URL"
-    ls chr*.fa 2>/dev/null 1>/dev/null || tar xvzf "$TARBALL"
+CHROMEFILE=$(basename "$URL")
+BIGFA="hg19.fa"
+if [ ! -s "$BIGFA" ]; then \
+    [ -s "$CHROMEFILE" ] || curl -O "$URL"
+    ls chr*.fa 2>/dev/null 1>/dev/null || tar xvzf "$CHROMEFILE"
     if [ $? -eq 0 ]; then \
         for i in $(seq 22) X Y M; do \
-            cat "chr${i}.fa" >> "$FA"
+            cat "chr${i}.fa" >> "$BIGFA"
         done
         rm -f chr*.fa
     else echo "Can't find chr*.fa files!"
@@ -53,10 +53,8 @@ fi
 # Download and extract known isoforms file (unless already done)
 ISOFORMSPATH='database/knownIsoforms.txt.gz'
 URL="$HG19PATH/$ISOFORMSPATH"
-TARBALL=$(basename "$URL")
-ISOFORMS=$(basename "$TARBALL" .gz)
-ISOFILE=$(basename "$ISOFORMS" .txt)
-[ -s "$ISOFILE" ] || (curl "$URL" | gunzip -c - > "$ISOFILE")
+ISOFORMS=$(basename "$URL" .txt.gz)
+[ -s "$ISOFORMS" ] || (curl "$URL" | gunzip -c - > "$ISOFORMS")
 
 # Download known gene file and create GTF file
 GTF='UCSC.gtf'
