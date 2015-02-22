@@ -6,7 +6,7 @@
 # We do this in the "Prepare reference genome" section of Using_RSEM.Rmd.
 
 # Required utilities: 
-#     bash which basename curl tar touch grep chmod ls rm gunzip genePredToGtf
+# bash which basename curl tar cat touch grep chmod ls rm gunzip genePredToGtf
 #
 # - genePredToGtf is from kentUtils: https://github.com/ENCODE-DCC/kentUtils
 # - The rest will be standard on a Unix, Linux, or Mac OSX system.
@@ -23,7 +23,7 @@
 # 4. Create GTF file from known gene file
 
 # Make sure we have the tools we need
-for i in curl tar touch grep chmod ls rm gunzip genePredToGtf; do \
+for i in curl tar touch grep chmod ls cat rm gunzip genePredToGtf; do \
     which "$i" >/dev/null
     if [ $? -ne 0 ]; then \
         echo "Can't find $i. Aborting!" && exit 1
@@ -41,13 +41,7 @@ BIGFA="hg19.fa"
 if [ ! -s "$BIGFA" ]; then \
     [ -s "$CHROMEFILE" ] || curl -O "$URL"
     ls chr*.fa 2>/dev/null 1>/dev/null || tar xvzf "$CHROMEFILE"
-    if [ $? -eq 0 ]; then \
-        for i in $(seq 22) X Y M; do \
-            cat "chr${i}.fa" >> "$BIGFA"
-        done
-        rm -f chr*.fa
-    else echo "Can't find chr*.fa files!"
-    fi
+    [ $? -eq 0 ] && cat "chr*.fa" >> "$BIGFA" && rm -f chr*.fa
 fi
 
 # Download and extract known isoforms file (unless already done)
