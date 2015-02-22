@@ -35,18 +35,16 @@ for i in curl tar touch grep chmod cat gunzip genePredToGtf; do \
     fi
 done
 
-# Set the path to get all human genome "hg19" data files from UCSC
-HG19PATH='http://hgdownload.cse.ucsc.edu/goldenPath/hg19'
+# Set the parent URL hosting the human genome "hg19" data files
+PARENTURL='http://hgdownload.cse.ucsc.edu/goldenPath/hg19'
 
 # Download, extract and combine chromosome files (unless already done)
-CHROMEPATH='bigZips/chromFa.tar.gz'
-URL="$HG19PATH/$CHROMEPATH"
+URL="$PARENTURL/bigZips/chromFa.tar.gz"
 BIGFA="hg19.fa"
 [ -s "$BIGFA" ] || curl -s -o - "$URL" | tar xzf - -O > "$BIGFA"
 
 # Download and extract known isoforms file (unless already done)
-ISOFORMSPATH='database/knownIsoforms.txt.gz'
-URL="$HG19PATH/$ISOFORMSPATH"
+URL="$PARENTURL/database/knownIsoforms.txt.gz"
 ISOFORMS=$(basename "$URL" .txt.gz)
 [ -s "$ISOFORMS" ] || (curl -s "$URL" | gunzip -c - > "$ISOFORMS")
 
