@@ -70,7 +70,7 @@ ascp <- '/usr/local/bin/ascp'
 sshkey <- '/etc/aspera/asperaweb_id_dsa.openssh'
 if(! (file.exists(ascp) & (file.exists(sshkey)))) {
     switch(Sys.info()[['sysname']],
-    Linux  = {
+    Linux = {
              asperahome <- '~/.aspera/connect/'
              ascp <- paste0(asperahome, 'bin/ascp')
              sshkey <- paste0(asperahome, 'etc/asperaweb_id_dsa.openssh')
@@ -128,10 +128,9 @@ cd RSEM_test/Reference_Genome/
 [ -f 'hg19.fa' ] || curl -L -o 'hg19.fa' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AAAP5PQh60sy83GF8i5lFOw0a/hg19.fa?dl=1'
 [ -f 'UCSC.gtf' ] || curl -L -o 'UCSC.gtf' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AACGDebvGSwK-EFsPa-9f5qEa/UCSC.gtf?dl=1'
 [ -f 'knownIsoforms' ] || curl -L -o 'knownIsoforms' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AAAfeTr5yKsRmnHd6XW-XhZUa/knownIsoforms?dl=1'
-
-#    Alternatively, you can download the input files from UCSC...
-#../../using_rsem_prep_input.sh
-#    ...but you will get slightly different results.
+#
+# Alternatively, to download the input files from UCSC, use this script instead:
+# ../../using_rsem_prep_input.sh
 
 rsem-prepare-reference --gtf UCSC.gtf --transcript-to-gene-map knownIsoforms --bowtie2 hg19.fa hg19 
 ```
