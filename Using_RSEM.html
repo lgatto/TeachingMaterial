@@ -72,12 +72,12 @@ img {
 <h2>Overview</h2>
 <p>This short presentation will take you through a short example of RNA quantification using RSEM. You will need to have the following software installed on your machine (Brian should have those setup on the server):</p>
 <ul>
-<li>Bowtie2 (<a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml" class="uri">http://bowtie-bio.sourceforge.net/bowtie2/index.shtml</a>)</li>
-<li>RSEM (<a href="https://github.com/bli25wisc/RSEM" class="uri">https://github.com/bli25wisc/RSEM</a>)</li>
-<li>sra toolkit for converting sra files to fastq files (<a href="http://www.ncbi.nlm.nih.gov/books/NBK158900/" class="uri">http://www.ncbi.nlm.nih.gov/books/NBK158900/</a>)</li>
-<li>Curl for getting fa, gtf, and isoforms files from Dropbox</li>
-<li>aspera connect for downloading files from the SRA db (optional) (<a href="http://downloads.asperasoft.com/connect2/" class="uri">http://downloads.asperasoft.com/connect2/</a>)</li>
-<li>GNU parallel (optional) <a href="http://www.gnu.org/software/parallel/" class="uri">http://www.gnu.org/software/parallel/</a></li>
+<li>Bowtie2 (<a href="http://bowtie-bio.sourceforge.net/bowtie2/index.shtml">http://bowtie-bio.sourceforge.net/bowtie2/index.shtml</a>)</li>
+<li>RSEM (<a href="https://github.com/bli25wisc/RSEM">https://github.com/bli25wisc/RSEM</a>)</li>
+<li>sra toolkit for converting sra files to fastq files (<a href="http://www.ncbi.nlm.nih.gov/books/NBK158900/">http://www.ncbi.nlm.nih.gov/books/NBK158900/</a>)</li>
+<li>Curl for getting fa, gtf, and isoforms files from Dropbox (<a href="http://curl.haxx.se/">http://curl.haxx.se/</a>)</li>
+<li>aspera connect for downloading files from the SRA db (optional) (<a href="http://downloads.asperasoft.com/connect2/">http://downloads.asperasoft.com/connect2/</a>)</li>
+<li>GNU parallel (optional) <a href="http://www.gnu.org/software/parallel/">http://www.gnu.org/software/parallel/</a></li>
 </ul>
 </div>
 <div id="setup-environment" class="section level2">
@@ -110,26 +110,34 @@ sra_tables &lt;- dbListTables(sra_con)</code></pre>
 <pre class="r"><code># Let's just use the first 2 files as an exercise
 pd_small &lt;- pd[1:2,]
 SRX_number &lt;- rep(NA, nrow(pd_small))</code></pre>
-<pre class="r"><code># Find an SSH key for Aspera Connect
-sshkey &lt;- '/etc/aspera/asperaweb_id_dsa.openssh' # Use this if not found in ~
-macsshkey &lt;- '~/Applications/Aspera\\ Connect.app/Contents/Resources/asperaweb_id_dsa.openssh'
-if(file.exists(macsshkey)) { sshkey &lt;- macsshkey }
-linuxsshkey &lt;- '~/.aspera/connect/etc/asperaweb_id_dsa.openssh'
-if(file.exists(linuxsshkey)) { sshkey &lt;- linuxsshkey }
+<pre class="r"><code># Find ascp utility and SSH key for Aspera Connect
+ascp &lt;- '/usr/local/bin/ascp'
+sshkey &lt;- '/etc/aspera/asperaweb_id_dsa.openssh'
+if(! (file.exists(ascp) &amp; (file.exists(sshkey)))) {
+    switch(Sys.info()[['sysname']],
+    Linux = {
+             asperahome &lt;- '~/.aspera/connect/'
+             ascp &lt;- paste0(asperahome, 'bin/ascp')
+             sshkey &lt;- paste0(asperahome, 'etc/asperaweb_id_dsa.openssh')
+         },
+    Darwin = {
+             asperahome &lt;- '~/Applications/Aspera\\ Connect.app/Contents/Resources/'
+             ascp &lt;- paste0(asperahome, 'ascp')
+             sshkey &lt;- paste0(asperahome, 'asperaweb_id_dsa.openssh')
+         }
+    )
+}
 
 for(i in 1:nrow(pd_small)) {
     gd &lt;- getGEO(pd_small$geo_accession[i], destdir=&quot;RSEM_test/GEO/&quot;)
     SRX_number[i] &lt;- gsub(&quot;.*=SRX&quot;, &quot;SRX&quot;, gd@header$relation[1])
-  
+
     # Convert to aspera address
     run_accession &lt;- listSRAfile(SRX_number[i], sra_con, fileType = &quot;sra&quot; )$run
-    aspera_url &lt;- paste0(&quot;anonftp@ftp.ncbi.nlm.nih.gov:/sra/sra-instant/reads/ByRun/sra&quot;, &quot;/&quot;, substr(run_accession,1,3), &quot;/&quot;, substr(run_accession,1,6), &quot;/&quot;, run_accession, &quot;/&quot;, run_accession, &quot;.sra&quot;)
-    if(file.exists(sshkey)) {
-        system(paste0('ascp -i ', sshkey ,' -k 1 -T -l200m ', aspera_url, 
-                      &quot; RSEM_test/SRA&quot;))
-    } else { 
-        print(&quot;Can't find aspera connect sshkey!&quot;) 
-    }
+    aspera_url &lt;- paste0(&quot;anonftp@ftp.ncbi.nlm.nih.gov:/sra/sra-instant/reads/ByRun/sra&quot;,
+        &quot;/&quot;, substr(run_accession,1,3), &quot;/&quot;, substr(run_accession,1,6),
+        &quot;/&quot;, run_accession, &quot;/&quot;, run_accession, &quot;.sra&quot;)
+    system(paste0(ascp, ' -i ', sshkey ,' -k 1 -T -l200m ', aspera_url, &quot; RSEM_test/SRA&quot;))
 }</code></pre>
 <pre class="r"><code>## Add the SRX_number information to the pd_small object
 pd_small$srx &lt;- SRX_number</code></pre>
@@ -152,6 +160,9 @@ cd RSEM_test/Reference_Genome/
 [ -f 'hg19.fa' ] || curl -L -o 'hg19.fa' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AAAP5PQh60sy83GF8i5lFOw0a/hg19.fa?dl=1'
 [ -f 'UCSC.gtf' ] || curl -L -o 'UCSC.gtf' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AACGDebvGSwK-EFsPa-9f5qEa/UCSC.gtf?dl=1'
 [ -f 'knownIsoforms' ] || curl -L -o 'knownIsoforms' 'https://www.dropbox.com/sh/p4cosmsqwtmpce7/AAAfeTr5yKsRmnHd6XW-XhZUa/knownIsoforms?dl=1'
+#
+# Alternatively, to download the input files from UCSC, use this script instead:
+# ../../using_rsem_prep_input.sh
 
 rsem-prepare-reference --gtf UCSC.gtf --transcript-to-gene-map knownIsoforms --bowtie2 hg19.fa hg19 </code></pre>
 </div>
@@ -223,20 +234,9 @@ tx_to_eid &lt;- data.table(select(txdb, keys = tx_to_gid[,transcript_id], column
 setnames(tx_to_eid, c(&quot;TXNAME&quot;, &quot;GENEID&quot;), c(&quot;transcript_id&quot;, &quot;entrez_id&quot;))
 
 # Add gene symbol
-tx_to_eid[!is.na(entrez_id),gene_symbol:=getSYMBOL(tx_to_eid[!is.na(entrez_id),entrez_id], data='org.Hs.eg')]</code></pre>
-<pre><code>##        transcript_id entrez_id gene_symbol
-##     1:    uc001aaa.3 100287102     DDX11L1
-##     2:    uc010nxq.1 100287102     DDX11L1
-##     3:    uc010nxr.1 100287102     DDX11L1
-##     4:    uc001aac.4    653635      WASH7P
-##     5:    uc001aae.4    653635      WASH7P
-##    ---                                    
-## 82956:    uc004fxn.1      3581        IL9R
-## 82957:    uc010nxr.2      3581        IL9R
-## 82958:    uc004fxo.1        NA          NA
-## 82959:    uc022cpg.1        NA          NA
-## 82960:    uc011ncc.1        NA          NA</code></pre>
-<pre class="r"><code># merge all to map information to RSEM gene_ids
+tx_to_eid[!is.na(entrez_id),gene_symbol:=getSYMBOL(tx_to_eid[!is.na(entrez_id),entrez_id], data='org.Hs.eg')]
+
+# merge all to map information to RSEM gene_ids
 tx_table &lt;- merge(tx_to_gid, tx_to_eid, by=&quot;transcript_id&quot;)
 tx_table_reduced &lt;- tx_table[,list(entrez_id=paste(unique(entrez_id),collapse=&quot;,&quot;), transcript_id=paste(unique(transcript_id),collapse=&quot;,&quot;), gene_symbol=paste(unique(gene_symbol),collapse=&quot;,&quot;)),by=&quot;gene_id&quot;]
 
