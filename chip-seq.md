@@ -1,19 +1,12 @@
----
-title: 'Bioinformatics for Big Omics Data: ChIP-seq data analysis'
-author: "Raphael Gottardo"
-date: "February 12, 2015"
-output:
-  ioslides_presentation:
-    fig_caption: yes
-    fig_retina: 1
-    keep_md: yes
-    smaller: yes
----
+# Bioinformatics for Big Omics Data: ChIP-seq data analysis
+Raphael Gottardo  
+February 12, 2015  
 
 ## Setting up some options
 
 Let's first turn on the cache for increased performance and improved styling
-```{r, cache=FALSE}
+
+```r
 # Set some global knitr options
 library("knitr")
 opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), cache=TRUE, messages=FALSE)
@@ -66,14 +59,53 @@ Couple ChIP with NGS:
 There exist multiple packages for data analysis in R. Here we will explore one of the 
 simpler packages available on Bioconductor. As usual, you first need to install the package
 
-```{r eval=FALSE}
+
+```r
 library(BiocInstaller)
 biocLite("chipseq")
 ```
 
 and then load the package.
-```{r}
+
+```r
 library(chipseq)
+```
+
+```
+## Loading required package: BiocGenerics
+## Loading required package: parallel
+## 
+## Attaching package: 'BiocGenerics'
+## 
+## The following objects are masked from 'package:parallel':
+## 
+##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+##     clusterExport, clusterMap, parApply, parCapply, parLapply,
+##     parLapplyLB, parRapply, parSapply, parSapplyLB
+## 
+## The following object is masked from 'package:stats':
+## 
+##     xtabs
+## 
+## The following objects are masked from 'package:base':
+## 
+##     anyDuplicated, append, as.data.frame, as.vector, cbind,
+##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
+##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
+##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
+##     table, tapply, union, unique, unlist
+## 
+## Loading required package: IRanges
+## Loading required package: GenomicRanges
+## Loading required package: GenomeInfoDb
+## Loading required package: BSgenome
+## Loading required package: Biostrings
+## Loading required package: XVector
+## Loading required package: ShortRead
+## Loading required package: BiocParallel
+## Loading required package: Rsamtools
+## Loading required package: GenomicAlignments
 ```
 
 ## Getting stated with the chipseq package
@@ -82,31 +114,73 @@ The `chipseq` package contains a small dataset, `cstest`, that we will use here.
 The `cstest` dataset contains data for three chromosomes from Solexa lanes, one from a CTCF mouse ChIP-Seq, and one from a GFP mouse ChIP-Seq. The raw reads were already aligned to the mouse genome and read into R using `ShortReads`. The resulting data are stored in a `GRanges` object.
 
 
-```{r}
+
+```r
 data(cstest)
 ```
 
 let's look what's inside
 
-```{r}
+
+```r
 cstest
+```
+
+```
+## GRangesList of length 2:
+## $ctcf 
+## GRanges with 450096 ranges and 0 metadata columns:
+##            seqnames                 ranges strand
+##               <Rle>              <IRanges>  <Rle>
+##        [1]    chr10     [3012936, 3012959]      +
+##        [2]    chr10     [3012941, 3012964]      +
+##        [3]    chr10     [3012944, 3012967]      +
+##        [4]    chr10     [3012955, 3012978]      +
+##        [5]    chr10     [3012963, 3012986]      +
+##        ...      ...                    ...    ...
+##   [450092]    chr12 [121239376, 121239399]      -
+##   [450093]    chr12 [121245849, 121245872]      -
+##   [450094]    chr12 [121245895, 121245918]      -
+##   [450095]    chr12 [121246344, 121246367]      -
+##   [450096]    chr12 [121253499, 121253522]      -
+## 
+## ...
+## <1 more element>
+## ---
+## seqlengths:
+##          chr1         chr2         chr3 ...  chrY_random chrUn_random
+##     197195432    181748087    159599783 ...     58682461      5900358
 ```
 
 ## Extending reads
 
 The first step is to reconstruct the orginal DNA fragments by extending the shortreads
 
-```{r}
+
+```r
 # Estimate the fragment length
 fraglen <- estimate.mean.fraglen(cstest$ctcf)
 fraglen
 ```
 
-```{r}
+```
+##    chr10    chr11    chr12 
+## 179.6794 172.4884 181.6732
+```
+
+
+```r
 table(width(cstest$ctcf))
 ```
 
-```{r}
+```
+## 
+##     24 
+## 450096
+```
+
+
+```r
 # Now we can extend the fragments
 ctcf.ext <- resize(cstest$ctcf, width = 180)
 ```
@@ -115,7 +189,8 @@ ctcf.ext <- resize(cstest$ctcf, width = 180)
 
 Next we calculate the coverage
 
-```{r}
+
+```r
 ctcf_cov <- coverage(ctcf.ext)
 ```
 
@@ -125,52 +200,122 @@ ctcf_cov <- coverage(ctcf.ext)
 The regions of interest are contiguous segments of non-zero coverage, also known as islands.
 
 
-```{r}
+
+```r
 ctcf_peaks <- slice(ctcf_cov, lower = 50)
 ```
 
 For each island, we can compute the number of reads in the island, and the maximum coverage depth within that island.
 
-```{r}
+
+```r
 viewSums(ctcf_peaks)
+```
+
+```
+## IntegerList of length 35
+## [["chr1"]] integer(0)
+## [["chr2"]] integer(0)
+## [["chr3"]] integer(0)
+## [["chr4"]] integer(0)
+## [["chr5"]] integer(0)
+## [["chr6"]] integer(0)
+## [["chr7"]] integer(0)
+## [["chr8"]] integer(0)
+## [["chr9"]] integer(0)
+## [["chr10"]] 1425 2201 2317 1070 6753 3921 ... 6255 150 405 4282 100 2665
+## ...
+## <25 more elements>
+```
+
+```r
 viewMaxs(ctcf_peaks)
+```
+
+```
+## IntegerList of length 35
+## [["chr1"]] integer(0)
+## [["chr2"]] integer(0)
+## [["chr3"]] integer(0)
+## [["chr4"]] integer(0)
+## [["chr5"]] integer(0)
+## [["chr6"]] integer(0)
+## [["chr7"]] integer(0)
+## [["chr8"]] integer(0)
+## [["chr9"]] integer(0)
+## [["chr10"]] 52 53 53 52 66 55 58 50 50 65 50 51 54 50 54
+## ...
+## <25 more elements>
 ```
 
 ## Finding peaks
 
-```{r}
+
+```r
 ctcf_summary <- peakSummary(ctcf_peaks)
 # Subset chr10
 ctcf_summary_chr10 <- ctcf_summary["chr10"]
 # Order by score (max)
-ctcf_summary_chr10 <- ctcf_summary_chr10[order(-ctcf_summary_chr10$max),]
+ctcf_summary_chr10 <- ctcf_summary_chr10[order(-ctcf_summary_chr10$max), 
+    ]
 ```
 
 ## Validating peaks
 
 After identifying peaks, it might be useful to see if the peaks contain the expected binding site for the transcription factor in question. We first need to download the Mmusculus genome sequence, to extract the relevant sequences.
 
-```{r eval=FALSE}
+
+```r
 biocLite("BSgenome.Mmusculus.UCSC.mm10")
 ```
 
-```{r}
+
+```r
 library(BSgenome.Mmusculus.UCSC.mm10)
 Mmusculus[["chr10"]]
+```
+
+```
+##   130694993-letter "DNAString" instance
+## seq: NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN...NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+```
+
+```r
 # Create views for our peaks
-seq_views <- Views(Mmusculus[["chr10"]],start=ctcf_summary_chr10$maxpos-100, end=ctcf_summary_chr10$maxpos+100)
+seq_views <- Views(Mmusculus[["chr10"]], start = ctcf_summary_chr10$maxpos - 
+    100, end = ctcf_summary_chr10$maxpos + 100)
 ```
 
 ## Validating peaks
 
 Let's then scan for our expected motif:
 
-```{r}
+
+```r
 # CTCF logo
 CTCF_logo <- DNAString("GGCG")
 # matchPWM
-matchPattern(CTCF_logo, seq_views, max.mismatch=0)
-matchPattern(rev(CTCF_logo), seq_views, max.mismatch=0)
+matchPattern(CTCF_logo, seq_views, max.mismatch = 0)
+```
+
+```
+##   Views on a 130694993-letter DNAString subject
+## subject: NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN...NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+## views:
+##        start      end width
+## [1] 76298637 76298640     4 [GGCG]
+```
+
+```r
+matchPattern(rev(CTCF_logo), seq_views, max.mismatch = 0)
+```
+
+```
+##   Views on a 130694993-letter DNAString subject
+## subject: NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN...NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+## views:
+##        start      end width
+## [1] 76298638 76298641     4 [GCGG]
 ```
 
 ## Accounting for biases
