@@ -40,13 +40,13 @@ PARENTURL='http://hgdownload.cse.ucsc.edu/goldenPath/hg19'
 
 # Download, extract and combine chromosome files (unless already done)
 URL="$PARENTURL/bigZips/chromFa.tar.gz"
-BIGFA="hg19.fa"
-[ -s "$BIGFA" ] || (curl -s -o - "$URL" | tar xzf - -O > "$BIGFA")
+BIGFA='hg19.fa'
+[ -s "$BIGFA" ] || curl -s -o - "$URL" | tar xzf - -O > "$BIGFA"
 
 # Download and extract known isoforms file (unless already done)
 URL="$PARENTURL/database/knownIsoforms.txt.gz"
-ISOFORMS=$(basename "$URL" .txt.gz)
-[ -s "$ISOFORMS" ] || (curl -s "$URL" | gunzip -c - > "$ISOFORMS")
+ISOFORMS='knownIsoforms'
+[ -s "$ISOFORMS" ] || curl -s "$URL" | gunzip -c - > "$ISOFORMS"
 
 # Download known gene file and create GTF file
 GTF='UCSC.gtf'
