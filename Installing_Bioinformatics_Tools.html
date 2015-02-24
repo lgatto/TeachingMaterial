@@ -259,6 +259,8 @@
 
 <p>That <a href='https://github.com/raphg/Biostat-578/blob/master/using_rsem_prep_input.sh' title=''>script</a> will download the three files from UCSC. A little extra processing is done to extract, convert, or rename the files.</p>
 
+<p>The conversion of the GTF will not work on Windows, even using an environment like Cygwin, as some dependencies (namely, <code>genePredToGtf</code>) will not be met. How else can you get that file?</p>
+
 </article></slide><slide class=''><hgroup><h2>Example: Trinity and RSEM Test</h2></hgroup><article  id="example-trinity-and-rsem-test" class="smaller ">
 
 <p>Assuming you have already installed <a href='http://bowtie-bio.sourceforge.net/index.shtml' title=''>bowtie</a> and <a href='http://bowtie-bio.sourceforge.net/bowtie2/index.shtml' title=''>bowtie2</a>, you can run this shell script to compile and test <a href='http://trinityrnaseq.sourceforge.net/analysis/abundance_estimation.html' title=''>Trinity and RSEM</a>.</p>

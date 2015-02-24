@@ -27,8 +27,8 @@
 #        --transcript-to-gene-map knownIsoforms \ 
 #        --bowtie2 hg19.fa hg19
 
-# Make sure we have the tools we need
-for i in curl tar touch grep chmod cat gunzip genePredToGtf; do \
+# Make sure we have the tools we need (we check for genePredToGtf later on...)
+for i in curl tar touch grep chmod cat gunzip; do \
     which "$i" >/dev/null
     if [ $? -ne 0 ]; then \
         echo "Can't find $i. Aborting!" && exit 1
@@ -58,4 +58,7 @@ db.host=genome-mysql.cse.ucsc.edu
 db.user=genomep
 db.password=password
 central.db=hgcentral' >> "$HGCONF"
-[ -s "$GTF" ] || genePredToGtf hg19 knownGene "$GTF"
+which genePredToGtf >/dev/null
+if [ $? -ne 0 ]; then echo "Can't find genePredToGtf. Aborting!" && exit 1
+else [ -s "$GTF" ] || genePredToGtf hg19 knownGene "$GTF"
+fi

@@ -136,7 +136,9 @@ cd ./RSEM_test/Reference_Genome/
 ../../using_rsem_prep_input.sh
 ```
 
-That [script](https://github.com/raphg/Biostat-578/blob/master/using_rsem_prep_input.sh) will download the three files from UCSC. A little extra processing is done to extract, convert, or rename the files.
+That [script](https://github.com/raphg/Biostat-578/blob/master/using_rsem_prep_input.sh) will download the three files from UCSC. A little extra processing is done to extract, convert, or rename the files. 
+
+The conversion of the GTF will not work on Windows, even using an environment like Cygwin, as some dependencies (namely, `genePredToGtf`) will not be met. How else can you get that file?
 
 ## Example: Trinity and RSEM Test
 
