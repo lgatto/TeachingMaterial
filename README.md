@@ -52,6 +52,6 @@ Notes are provided as the source file (.Rmd) and resulting html file for online 
 - 02/24/15 Finish [GSEA](GSEA.Rmd) and start [ChIP-seq](chip-sep.Rmd)
 - 02/26/15 [Statistical prediction](Prediction.Rmd)
 - 03/03/15 Discuss last two assignments and provide help as needed
-- 03/05/15: 
-- 03/10/15: Xiaoliang & Ning; Sara, Aisha & Benjamin
-- 03/12/15: Ben & Aaron; Gloria & Marea
+- 03/05/15 Yatong, Xiaowen, and Kelsey
+- 03/10/15 Xiaoliang & Ning; Sara, Aisha & Benjamin
+- 03/12/15 Ben & Aaron; Gloria & Marea
