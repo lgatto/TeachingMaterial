@@ -129,6 +129,8 @@ The regions of interest are contiguous segments of non-zero coverage, also known
 ctcf_peaks <- slice(ctcf_cov, lower = 50)
 ```
 
+## Islands
+
 For each island, we can compute the number of reads in the island, and the maximum coverage depth within that island.
 
 ```{r}
@@ -144,6 +146,7 @@ ctcf_summary <- peakSummary(ctcf_peaks)
 ctcf_summary_chr10 <- ctcf_summary["chr10"]
 # Order by score (max)
 ctcf_summary_chr10 <- ctcf_summary_chr10[order(-ctcf_summary_chr10$max),]
+ctcf_summary_chr10
 ```
 
 ## Validating peaks

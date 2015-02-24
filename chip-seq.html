@@ -254,6 +254,8 @@ ctcf.ext &lt;- resize(cstest$ctcf, width = 180)</pre>
 
 <pre class = 'prettyprint lang-r'>ctcf_peaks &lt;- slice(ctcf_cov, lower = 50)</pre>
 
+</article></slide><slide class=''><hgroup><h2>Islands</h2></hgroup><article  id="islands-1" class="smaller ">
+
 <p>For each island, we can compute the number of reads in the island, and the maximum coverage depth within that island.</p>
 
 <pre class = 'prettyprint lang-r'>viewSums(ctcf_peaks)</pre>
@@ -295,7 +297,27 @@ ctcf.ext &lt;- resize(cstest$ctcf, width = 180)</pre>
 ctcf_summary_chr10 &lt;- ctcf_summary[&quot;chr10&quot;]
 # Order by score (max)
 ctcf_summary_chr10 &lt;- ctcf_summary_chr10[order(-ctcf_summary_chr10$max), 
-    ]</pre>
+    ]
+ctcf_summary_chr10</pre>
+
+<pre >## RangedData with 15 rows and 3 value columns across 1 space
+##       space                 ranges |       max    maxpos       sum
+##    &lt;factor&gt;              &lt;IRanges&gt; | &lt;integer&gt; &lt;integer&gt; &lt;integer&gt;
+## 1     chr10 [ 77875804,  77875916] |        66  77875869      6753
+## 2     chr10 [ 80750623,  80750729] |        65  80750665      6255
+## 3     chr10 [ 79627884,  79627977] |        58  79627932      5092
+## 4     chr10 [ 79388188,  79388262] |        55  79388212      3921
+## 5     chr10 [126356291, 126356372] |        54 126356304      4282
+## 6     chr10 [126950000, 126950051] |        54 126950015      2665
+## 7     chr10 [ 75295165,  75295207] |        53  75295177      2201
+## 8     chr10 [ 76298606,  76298650] |        53  76298642      2317
+## 9     chr10 [ 67476062,  67476089] |        52  67476067      1425
+## 10    chr10 [ 77090435,  77090455] |        52  77090438      1070
+## 11    chr10 [126356279, 126356286] |        51 126356282       405
+## 12    chr10 [ 79627987,  79627987] |        50  79627987        50
+## 13    chr10 [ 79909079,  79909083] |        50  79909081       250
+## 14    chr10 [ 80989722,  80989724] |        50  80989723       150
+## 15    chr10 [126356375, 126356376] |        50 126356375       100</pre>
 
 </article></slide><slide class=''><hgroup><h2>Validating peaks</h2></hgroup><article  id="validating-peaks" class="smaller ">
 
