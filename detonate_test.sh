@@ -1,7 +1,6 @@
 #!/bin/sh
 
-# Test detonate, rsem, and bowtie. Last modified on 2015-02-02 by Brian High
-# GitHub Repo: https://github.com/brianhigh/biotools/
+# Test detonate, rsem, and bowtie. Last modified on 2015-02-24 by Brian High
 
 # Works on 64-bit Linux or Mac OSX systems. You must have already installed
 # development tools like XCode (OSX). For Ubuntu Linux, you can install with:
