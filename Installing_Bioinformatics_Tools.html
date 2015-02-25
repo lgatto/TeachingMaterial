@@ -190,7 +190,7 @@
 <li>Anders, S., Reyes, A. &amp; Huber, W. <a href='http://www.ncbi.nlm.nih.gov/pubmed/22722343' title=''>Detecting differential usage of exons from RNA-seq data</a>. Genome Res. 22, 2008-2017 (2012).</li>
 </ol>
 
-<p>These all seem to use R packages. Which ones? How do we install them?</p>
+<pre class = 'prettyprint lang-r'>biocLite(c(&quot;sva&quot;, &quot;RUVSeq&quot;, &quot;openCyto&quot;, &quot;csSAM&quot;, &quot;DEXSeq&quot;))</pre>
 
 </article></slide><slide class=''><hgroup><h2>Examples from Research Papers: #2</h2></hgroup><article  id="examples-from-research-papers-2" class="smaller ">
 
@@ -202,6 +202,15 @@
 
 <p>This uses an R package. Do we install it with <code>install.packages</code> or <code>biocLite</code>?</p>
 
+<p>No, since the <a href='https://github.com/RGLab/SingleCellAssay' title=''>SingleCellAssay</a> package is not yet in Bioconductor. Instead, the README recommends:</p>
+
+<pre class = 'prettyprint lang-r'>install.packages(&#39;devtools&#39;)
+ library(devtools)
+ install_github(&#39;SingleCellAssay&#39;, &#39;RGLab&#39;)
+# *or* if you don&#39;t have a working latex setup
+ install_github(&#39;SingleCellAssay&#39;, &#39;RGLab&#39;, build_vignettes=FALSE)
+ vignette(&#39;SingleCellAssay-intro&#39;)</pre>
+
 </article></slide><slide class=''><hgroup><h2>Examples from Research Papers: #3</h2></hgroup><article  id="examples-from-research-papers-3" class="smaller ">
 
 <p>What software tools will you need to reproduce results from this paper?</p>
@@ -210,9 +219,17 @@
 <li>Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. &amp; Leek, J. T. <a href='http://biostatistics.oxfordjournals.org/content/early/2014/01/06/biostatistics.kxt053.full' title=''>Differential expression analysis of RNA-seq data at single-base resolution</a>. Biostatistics kxt053 (2014). <a href='doi:10.1093/biostatistics/kxt053' title=''>doi:10.1093/biostatistics/kxt053</a>.</li>
 </ul>
 
-<p>This study used a prototype version of an R package. What else is needed?</p>
+<p>This study used a <a href='https://github.com/alyssafrazee/derfinder' title=''>prototype version</a> of an R Bioconductor <a href='https://github.com/lcolladotor/derfinder' title=''>package</a>. Some <a href='https://github.com/alyssafrazee/derfinder/blob/master/analysis_code.R' title=''>sample analysis code</a> was provided. Since the sample code uses some packages no longer available in Bioconductor, we will have to install archived versions of them.</p>
 
-<p>Some sample analysis code was provided. Great! What will we need to run it?</p>
+<pre class = 'prettyprint lang-r'># Install old derfinder and dependencies
+install.packages(&quot;devtools&quot;, repos=&quot;http://cran.rstudio.com/&quot;)
+library(devtools)
+install_url(&quot;http://cran.r-project.org/src/contrib/Archive/locfdr/locfdr_1.1-7.tar.gz&quot;)
+install_url(&quot;http://cran.r-project.org/src/contrib/Archive/RSQLite.extfuns/RSQLite.extfuns_0.0.1.tar.gz&quot;)
+install_github(&#39;derfinder&#39;, &#39;alyssafrazee&#39;) # beta version
+library(derfinder)</pre>
+
+<p>These old packages may not be compatible with the rest of your R and Bioconductor packages due to verion conflicts. Also, there are some &quot;rda&quot; files to be loaded with the sample code that are not provided in the Github repo. And there are <a href='https://github.com/alyssafrazee/derfinder/issues' title=''>other issues</a>&#8230;</p>
 
 </article></slide><slide class=''><hgroup><h2>Examples from Research Papers: #4</h2></hgroup><article  id="examples-from-research-papers-4" class="smaller ">
 
@@ -224,6 +241,14 @@
 
 <p>This paper presents a &quot;pipeline&quot;. How do we get it to work?</p>
 
+<pre class = 'prettyprint lang-bash'>mkdir -p ~/src &amp;&amp; cd ~/src/ &amp;&amp; export BSMOOTH_HOME=~/src/bsmooth-align
+git clone https://github.com/BenLangmead/bsmooth-align.git
+cd $BSMOOTH_HOME/merman/ &amp;&amp; make</pre>
+
+<p>This gives a huge number of compiler errors on <a href='http://environmentalomics.org/whats-new-in-bio-linux-8/' title=''>Bio-Linux 8</a> / <a href='http://releases.ubuntu.com/14.04/' title=''>Ubuntu 14.04 LTS</a>.</p>
+
+<p>You will also need <a href='http://bowtie-bio.sourceforge.net/bowtie2/index.shtml' title=''>Bowtie2</a>.</p>
+
 </article></slide><slide class=''><hgroup><h2>Examples from Research Papers: #5</h2></hgroup><article  id="examples-from-research-papers-5" class="smaller ">
 
 <p>What software tools will you need to reproduce results from this paper?</p>
@@ -232,7 +257,16 @@
 <li>Amir, E.-A. D. et al. <a href='http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4076922/' title=''>viSNE enables visualization of high dimensional single-cell data and reveals phenotypic heterogeneity of leukemia</a>. Nature Biotechnology 31, 545–552 (2013).</li>
 </ul>
 
-<p>From within what environment do we use viSNE? How do we access it?</p>
+<p>From within what environment do we use <code>viSNE</code>? How do we access it?</p>
+
+<p><a href='http://www.c2b2.columbia.edu/danapeerlab/html/cyt.html' title=''>viSNE</a> runs within <a href='http://www.c2b2.columbia.edu/danapeerlab/html/cyt-download.html' title=''>cyt</a>. <code>cyt</code> <a href='www.c2b2.columbia.edu/danapeerlab/html/CYT/cyTutorial.ppt' title=''>requires</a>:</p>
+
+<ul>
+<li><a href='http://www.mathworks.com/products/matlab/index.html' title=''>MatLab</a> 2010b or higher on Windows or Mac OS X</li>
+<li><a href='http://www.mathworks.com/products/parallel-computing/' title=''>Parallel computing toolbox</a></li>
+</ul>
+
+<p>For a fee, you can also <a href='http://blog.cytobank.org/2014/11/13/visne/' title=''>run viSNE on CytoBank</a> (a website).</p>
 
 </article></slide><slide class=''><hgroup><h2>What about our RSEM example?</h2></hgroup><article  id="what-about-our-rsem-example" class="smaller ">
 

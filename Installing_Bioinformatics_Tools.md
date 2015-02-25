@@ -78,7 +78,10 @@ What software tools will you need to reproduce results from these papers?
 4. Zhong, Y. & Liu, Z. [Gene expression deconvolution in linear space](http://www.nature.com/nmeth/journal/v9/n1/full/nmeth.1830.html). Nat. Methods 9, 8–9– author reply 9 (2012).
 5. Anders, S., Reyes, A. & Huber, W. [Detecting differential usage of exons from RNA-seq data](http://www.ncbi.nlm.nih.gov/pubmed/22722343). Genome Res. 22, 2008-2017 (2012).
 
-These all seem to use R packages. Which ones? How do we install them?
+
+```r
+biocLite(c("sva", "RUVSeq", "openCyto", "csSAM", "DEXSeq"))
+```
 
 ## Examples from Research Papers: #2
 
@@ -88,15 +91,42 @@ What software tools will you need to reproduce results from this paper?
 
 This uses an R package. Do we install it with `install.packages` or `biocLite`?
 
+No, since the [SingleCellAssay](https://github.com/RGLab/SingleCellAssay) package is not yet in Bioconductor. Instead, the README recommends:
+
+
+```r
+install.packages('devtools')
+ library(devtools)
+ install_github('SingleCellAssay', 'RGLab')
+# *or* if you don't have a working latex setup
+ install_github('SingleCellAssay', 'RGLab', build_vignettes=FALSE)
+ vignette('SingleCellAssay-intro')
+```
+
 ## Examples from Research Papers: #3
 
 What software tools will you need to reproduce results from this paper?
 
 - Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. & Leek, J. T. [Differential expression analysis of RNA-seq data at single-base resolution](http://biostatistics.oxfordjournals.org/content/early/2014/01/06/biostatistics.kxt053.full). Biostatistics kxt053 (2014). doi:10.1093/biostatistics/kxt053.
 
-This study used a prototype version of an R package. What else is needed?
+This study used a [prototype version](https://github.com/alyssafrazee/derfinder) 
+of an R Bioconductor [package](https://github.com/lcolladotor/derfinder). Some 
+[sample analysis code](https://github.com/alyssafrazee/derfinder/blob/master/analysis_code.R) 
+was provided. Since the sample code uses some packages no longer available in Bioconductor, 
+we will have to install archived versions of them.
 
-Some sample analysis code was provided. Great! What will we need to run it?
+
+```r
+# Install old derfinder and dependencies
+install.packages("devtools", repos="http://cran.rstudio.com/")
+library(devtools)
+install_url("http://cran.r-project.org/src/contrib/Archive/locfdr/locfdr_1.1-7.tar.gz")
+install_url("http://cran.r-project.org/src/contrib/Archive/RSQLite.extfuns/RSQLite.extfuns_0.0.1.tar.gz")
+install_github('derfinder', 'alyssafrazee') # beta version
+library(derfinder)
+```
+
+These old packages may not be compatible with the rest of your R and Bioconductor packages due to verion conflicts. Also, there are some "rda" files to be loaded with the sample code that are not provided in the Github repo. And there are [other issues](https://github.com/alyssafrazee/derfinder/issues)...
 
 ## Examples from Research Papers: #4
 
@@ -106,13 +136,35 @@ What software tools will you need to reproduce results from this paper?
 
 This paper presents a "pipeline". How do we get it to work?
 
+
+```bash
+mkdir -p ~/src && cd ~/src/ && export BSMOOTH_HOME=~/src/bsmooth-align
+git clone https://github.com/BenLangmead/bsmooth-align.git
+cd $BSMOOTH_HOME/merman/ && make
+```
+
+This gives a huge number of compiler errors on [Bio-Linux 8](http://environmentalomics.org/whats-new-in-bio-linux-8/) / [Ubuntu 14.04 LTS](http://releases.ubuntu.com/14.04/).
+
+You will also need [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml).
+
 ## Examples from Research Papers: #5
 
 What software tools will you need to reproduce results from this paper?
 
 - Amir, E.-A. D. et al. [viSNE enables visualization of high dimensional single-cell data and reveals phenotypic heterogeneity of leukemia](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4076922/). Nature Biotechnology 31, 545–552 (2013).
 
-From within what environment do we use viSNE? How do we access it?
+From within what environment do we use `viSNE`? How do we access it?
+
+[viSNE](http://www.c2b2.columbia.edu/danapeerlab/html/cyt.html) runs within 
+[cyt](http://www.c2b2.columbia.edu/danapeerlab/html/cyt-download.html). `cyt` 
+[requires](www.c2b2.columbia.edu/danapeerlab/html/CYT/cyTutorial.ppt):
+
+- [MatLab](http://www.mathworks.com/products/matlab/index.html) 2010b or higher 
+on Windows or Mac OS X
+- [Parallel computing toolbox](http://www.mathworks.com/products/parallel-computing/)
+
+For a fee, you can also 
+[run viSNE on CytoBank](http://blog.cytobank.org/2014/11/13/visne/) (a website).
 
 ## What about our RSEM example?
 
