@@ -119,19 +119,19 @@ This study used a [prototype version](https://github.com/alyssafrazee/derfinder)
 of an R Bioconductor [package](https://github.com/lcolladotor/derfinder). Some 
 [sample analysis code](https://github.com/alyssafrazee/derfinder/blob/master/analysis_code.R) 
 was provided. Since the sample code uses some packages no longer available in Bioconductor, 
-we will have to install archived versions of them.
+we will have to use an older version of R: version 2.15.x.
 
 ```{r, eval=FALSE}
 # Install old derfinder and dependencies
-install.packages("devtools", repos="http://cran.rstudio.com/")
+source("http://bioconductor.org/biocLite.R")
+biocLite(c("Genominator", "limma", "HiddenMarkov", "locfdr", "RSQLite.extfuns"))
+install.packages("devtools")
 library(devtools)
-install_url("http://cran.r-project.org/src/contrib/Archive/locfdr/locfdr_1.1-7.tar.gz")
-install_url("http://cran.r-project.org/src/contrib/Archive/RSQLite.extfuns/RSQLite.extfuns_0.0.1.tar.gz")
 install_github('derfinder', 'alyssafrazee') # beta version
 library(derfinder)
 ```
 
-These old packages may not be compatible with the rest of your R and Bioconductor packages due to verion conflicts. Also, there are some "rda" files to be loaded with the sample code that are not provided in the Github repo. And there are [other issues](https://github.com/alyssafrazee/derfinder/issues)...
+Also, there are some "rda" files to be loaded with the sample code that are not provided in the Github repo. And there may be [other issues](https://github.com/alyssafrazee/derfinder/issues)...
 
 ## Examples from Research Papers: #4
 
