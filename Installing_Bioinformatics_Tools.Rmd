@@ -125,8 +125,8 @@ you will need to use version R 2.15.x (2.15.2 or above).
 # Install "beta" derfinder and dependencies
 source("http://bioconductor.org/biocLite.R")
 biocLite()
-biocLite(c("Genominator", "limma", "HiddenMarkov", "locfdr", "RSQLite.extfuns"))
-install.packages(c("proto", "devtools"))
+biocLite(c("Genominator", "limma", "GenomicFeatures", "rtracklayer"))
+install.packages(c("RSQLite.extfuns", "HiddenMarkov", "proto", "locfdr", "devtools"))
 library(devtools)
 install_github('derfinder', 'alyssafrazee') # beta version
 library(derfinder)
@@ -148,7 +148,7 @@ git clone https://github.com/BenLangmead/bsmooth-align.git
 cd $BSMOOTH_HOME/merman/ && make
 ```
 
-This gives a huge number of compiler errors on [Bio-Linux 8](http://environmentalomics.org/whats-new-in-bio-linux-8/) / [Ubuntu 14.04 LTS](http://releases.ubuntu.com/14.04/).
+This gives several compiler errors in `merman.cpp` when compiled on [Bio-Linux 8](http://environmentalomics.org/whats-new-in-bio-linux-8/) / [Ubuntu 14.04 LTS](http://releases.ubuntu.com/14.04/) using GCC 4.8.2 and also on OS X Mavericks (10.9) using XCode with GCC 4.2.1.
 
 You will also need [Bowtie2](http://bowtie-bio.sourceforge.net/bowtie2/index.shtml).
 
