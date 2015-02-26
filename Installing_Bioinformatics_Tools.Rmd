@@ -119,19 +119,20 @@ This study used a [prototype version](https://github.com/alyssafrazee/derfinder)
 of an R Bioconductor [package](https://github.com/lcolladotor/derfinder). Some 
 [sample analysis code](https://github.com/alyssafrazee/derfinder/blob/master/analysis_code.R) 
 was provided. Since the sample code uses some packages no longer available in Bioconductor, 
-we will have to use an older version of R: version 2.15.x.
+you will need to use version R 2.15.x (2.15.2 or above).
 
 ```{r, eval=FALSE}
-# Install old derfinder and dependencies
+# Install "beta" derfinder and dependencies
 source("http://bioconductor.org/biocLite.R")
+biocLite()
 biocLite(c("Genominator", "limma", "HiddenMarkov", "locfdr", "RSQLite.extfuns"))
-install.packages("devtools")
+install.packages(c("proto", "devtools"))
 library(devtools)
 install_github('derfinder', 'alyssafrazee') # beta version
 library(derfinder)
 ```
 
-Also, there are some "rda" files to be loaded with the sample code that are not provided in the Github repo. And there may be [other issues](https://github.com/alyssafrazee/derfinder/issues)...
+Also, there are some "rda" files to be loaded with the sample code that may not be provided in the Github repo. Check for any open [issues](https://github.com/alyssafrazee/derfinder/issues). Also, be sure to read the README, especially the "reproducing the manuscript's results" section. You will also need [samtools](http://www.htslib.org/). The entire process takes several hours and a few GB of RAM.
 
 ## Examples from Research Papers: #4
 

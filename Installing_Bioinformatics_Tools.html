@@ -219,17 +219,18 @@
 <li>Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. &amp; Leek, J. T. <a href='http://biostatistics.oxfordjournals.org/content/early/2014/01/06/biostatistics.kxt053.full' title=''>Differential expression analysis of RNA-seq data at single-base resolution</a>. Biostatistics kxt053 (2014). <a href='doi:10.1093/biostatistics/kxt053' title=''>doi:10.1093/biostatistics/kxt053</a>.</li>
 </ul>
 
-<p>This study used a <a href='https://github.com/alyssafrazee/derfinder' title=''>prototype version</a> of an R Bioconductor <a href='https://github.com/lcolladotor/derfinder' title=''>package</a>. Some <a href='https://github.com/alyssafrazee/derfinder/blob/master/analysis_code.R' title=''>sample analysis code</a> was provided. Since the sample code uses some packages no longer available in Bioconductor, we will have to use an older version of R: version 2.15.x.</p>
+<p>This study used a <a href='https://github.com/alyssafrazee/derfinder' title=''>prototype version</a> of an R Bioconductor <a href='https://github.com/lcolladotor/derfinder' title=''>package</a>. Some <a href='https://github.com/alyssafrazee/derfinder/blob/master/analysis_code.R' title=''>sample analysis code</a> was provided. Since the sample code uses some packages no longer available in Bioconductor, you will need to use version R 2.15.x (2.15.2 or above).</p>
 
-<pre class = 'prettyprint lang-r'># Install old derfinder and dependencies
+<pre class = 'prettyprint lang-r'># Install &quot;beta&quot; derfinder and dependencies
 source(&quot;http://bioconductor.org/biocLite.R&quot;)
+biocLite()
 biocLite(c(&quot;Genominator&quot;, &quot;limma&quot;, &quot;HiddenMarkov&quot;, &quot;locfdr&quot;, &quot;RSQLite.extfuns&quot;))
-install.packages(&quot;devtools&quot;)
+install.packages(c(&quot;proto&quot;, &quot;devtools&quot;))
 library(devtools)
 install_github(&#39;derfinder&#39;, &#39;alyssafrazee&#39;) # beta version
 library(derfinder)</pre>
 
-<p>Also, there are some &quot;rda&quot; files to be loaded with the sample code that are not provided in the Github repo. And there may be <a href='https://github.com/alyssafrazee/derfinder/issues' title=''>other issues</a>&#8230;</p>
+<p>Also, there are some &quot;rda&quot; files to be loaded with the sample code that may not be provided in the Github repo. Check for any open <a href='https://github.com/alyssafrazee/derfinder/issues' title=''>issues</a>. Also, be sure to read the README, especially the &quot;reproducing the manuscript&#39;s results&quot; section. You will also need <a href='http://www.htslib.org/' title=''>samtools</a>. The entire process takes several hours and a few GB of RAM.</p>
 
 </article></slide><slide class=''><hgroup><h2>Examples from Research Papers: #4</h2></hgroup><article  id="examples-from-research-papers-4" class="smaller ">
 
