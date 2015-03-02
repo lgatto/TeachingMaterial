@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Why git and github?
-description: Git/GitHub Guide: why use git and github?
+description: Why use git and GitHub?
 ---
 
 ### Why use [git](http://git-scm.com)?
@@ -52,16 +52,16 @@ example:
 - [Hadley Wickham](http://had.co.nz)'s
   [bigvis](https://github.com/hadley/bigvis),
   [ggplot2](https://github.com/hadley/ggplot2),
-  [lubridate](https://github.com/hadley/lubridate), 
-  [dplyr](https://github.com/hadley/dplyr) 
-  
+  [lubridate](https://github.com/hadley/lubridate),
+  [dplyr](https://github.com/hadley/dplyr)
+
 - [Yihui Xie](http://yihui.name)'s [knitr](https://github.com/yihui/knitr)
 
 - [Ramnath Vaidyanathan](https://github.com/ramnathv)'s [rCharts](https://github.com/ramnathv/rCharts), [rMaps](https://github.com/ramnathv/rMaps), [slidify](https://github.com/ramnathv/slidify)
 
 - My own [R/qtl](http://github.com/kbroman/qtl)
 
-Poke around in the files, and also the commits: 
+Poke around in the files, and also the commits:
 Click the &ldquo;Commits&rdquo; tab and then click on a given commit
 to see what changes were made.
 
