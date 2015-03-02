@@ -24,7 +24,11 @@ Say you want to contribute changes to someone else's repository (eg,
 
 - You'll now have a local copy of _your version_ of that repository.
 
-- Add a connection to the original owner's repository.  Change into the folder containing the_repo and type:
+- Change into that project directory (`the_repo`):
+
+      $ cd the_repo
+
+- Add a connection to the original owner's repository.
 
       $ git remote add myfriend git://github.com/myfriend/the_repo
 
