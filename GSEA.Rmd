@@ -218,9 +218,19 @@ and convert the gene sets to gene indices
 ```{r, cache=TRUE}
 c2_set <- getGmt("GSEA-sets/c2.all.v4.0.symbols.gmt")
 gene_ids <- geneIds(c2_set)
-# Camera requires gene-indices
-# sets_indices <- ids2indices(gene_ids, rownames(new_set))
-sets_indices <- symbols2indices(gene_ids, rownames(new_set))
+
+# Camera requires gene-indices. 
+# Which function to use will depend on which version of limma you have.
+#     http://bioconductor.org/packages/release/bioc/news/limma/NEWS
+#     "symbols2indices() renamed to ids2indices()."
+library(limma)
+if (exists("ids2indices")) { 
+    sets_indices <- ids2indices(gene_ids, rownames(new_set))
+}
+if (exists("symbols2indices")) {
+    sets_indices <- symbols2indices(gene_ids, rownames(new_set))    
+}
+
 ```
 
 ## Finding enriched gene sets
@@ -276,8 +286,8 @@ Li, S. et al. Molecular signatures of antibody responses derived from a systems 
 BTM_set <- getGmt("GSEA-sets/BTM_for_GSEA_20131008.gmt")
 gene_ids <- geneIds(BTM_set)
 # Camera requires gene-indices
-#sets_indices <- ids2indices(gene_ids, rownames(new_set))
-sets_indices <- symbols2indices(gene_ids, rownames(new_set))
+sets_indices <- ids2indices(gene_ids, rownames(new_set))
+#sets_indices <- symbols2indices(gene_ids, rownames(new_set))
 ```
 
 ```{r}

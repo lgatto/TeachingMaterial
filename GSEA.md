@@ -43,12 +43,12 @@ library(GEOquery)
 ## 
 ## The following objects are masked from 'package:base':
 ## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
+##     Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+##     as.data.frame, as.vector, cbind, colnames, do.call,
+##     duplicated, eval, evalq, get, intersect, is.unsorted, lapply,
+##     mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+##     pmin.int, rank, rbind, rep.int, rownames, sapply, setdiff,
+##     sort, table, tapply, union, unique, unlist, unsplit
 ## 
 ## Welcome to Bioconductor
 ## 
@@ -56,7 +56,7 @@ library(GEOquery)
 ##     'browseVignettes()'. To cite Bioconductor, see
 ##     'citation("Biobase")', and for packages 'citation("pkgname")'.
 ## 
-## Setting options('download.file.method.GEOquery'='auto')
+## Setting options('download.file.method.GEOquery'='curl')
 ```
 
 
@@ -286,14 +286,53 @@ We load the `GSEAbase` package for loading gene sets.
 ```r
 library(GSEABase)
 ```
+
+```
+## Loading required package: annotate
+## Loading required package: AnnotationDbi
+## Loading required package: stats4
+## Loading required package: GenomeInfoDb
+## Loading required package: S4Vectors
+## Loading required package: IRanges
+## 
+## Attaching package: 'AnnotationDbi'
+## 
+## The following object is masked from 'package:GenomeInfoDb':
+## 
+##     species
+## 
+## Loading required package: XML
+## 
+## Attaching package: 'annotate'
+## 
+## The following object is masked from 'package:GenomeInfoDb':
+## 
+##     organism
+## 
+## Loading required package: graph
+## 
+## Attaching package: 'graph'
+## 
+## The following object is masked from 'package:XML':
+## 
+##     addNode
+```
 and convert the gene sets to gene indices
 
 ```r
 c2_set <- getGmt("GSEA-sets/c2.all.v4.0.symbols.gmt")
 gene_ids <- geneIds(c2_set)
-# Camera requires gene-indices sets_indices <-
-# ids2indices(gene_ids, rownames(new_set))
-sets_indices <- symbols2indices(gene_ids, rownames(new_set))
+# Camera requires gene-indices.  Which function to use will
+# depend on which version of limma you have.
+# http://bioconductor.org/packages/release/bioc/news/limma/NEWS
+# 'symbols2indices() renamed to ids2indices().'
+library(limma)
+if (exists("ids2indices")) {
+    sets_indices <- ids2indices(gene_ids, rownames(new_set))
+}
+if (exists("symbols2indices")) {
+    sets_indices <- symbols2indices(gene_ids, rownames(new_set))
+}
 ```
 
 ## Finding enriched gene sets
@@ -457,9 +496,10 @@ Li, S. et al. Molecular signatures of antibody responses derived from a systems 
 ```r
 BTM_set <- getGmt("GSEA-sets/BTM_for_GSEA_20131008.gmt")
 gene_ids <- geneIds(BTM_set)
-# Camera requires gene-indices sets_indices <-
-# ids2indices(gene_ids, rownames(new_set))
-sets_indices <- symbols2indices(gene_ids, rownames(new_set))
+# Camera requires gene-indices
+sets_indices <- ids2indices(gene_ids, rownames(new_set))
+# sets_indices <- symbols2indices(gene_ids,
+# rownames(new_set))
 ```
 
 
