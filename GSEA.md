@@ -497,9 +497,12 @@ Li, S. et al. Molecular signatures of antibody responses derived from a systems 
 BTM_set <- getGmt("GSEA-sets/BTM_for_GSEA_20131008.gmt")
 gene_ids <- geneIds(BTM_set)
 # Camera requires gene-indices
-sets_indices <- ids2indices(gene_ids, rownames(new_set))
-# sets_indices <- symbols2indices(gene_ids,
-# rownames(new_set))
+if (exists("ids2indices")) {
+    sets_indices <- ids2indices(gene_ids, rownames(new_set))
+}
+if (exists("symbols2indices")) {
+    sets_indices <- symbols2indices(gene_ids, rownames(new_set))
+}
 ```
 
 
