@@ -1,0 +1,213 @@
+---
+title: "RNA-seq Pipeline: Rsubread, limma, and edgeR"
+output: 
+    html_document:
+        keep_md: yes
+---
+
+## Case study: using a Bioconductor R pipeline to analyze RNA-seq data
+
+This example has been adapted from the work of:
+
+Wei Shi (shi at wehi dot edu dot au), Yang Liao and Gordon K Smyth
+Bioinformatics Division, Walter and Eliza Hall Institute, Melbourne, Australia
+
+- Case: http://bioinf.wehi.edu.au/RNAseqCaseStudy/
+- Code: http://bioinf.wehi.edu.au/RNAseqCaseStudy/code.R
+- Data: http://bioinf.wehi.edu.au/RNAseqCaseStudy/data.tar.gz
+
+Requirements:
+
+- The version of Rsubread package should be 1.12.1 or later. 
+- You should run R version 3.0.2 or later. 
+
+## Record the start time
+
+```{r}
+print(Sys.time())
+```
+
+## Setup
+
+> Load libraries, read in names of FASTQ files and create a design matrix.
+
+### Set options
+
+Set global knitr options.
+
+```{r, cache=FALSE}
+library("knitr")
+opts_chunk$set(tidy=FALSE, cache=FALSE, messages=FALSE)
+```
+
+### Install packages
+
+```{r, echo=TRUE, quietly=TRUE}
+packages <- c("Rsubread", "limma", "edgeR")
+source("http://bioconductor.org/biocLite.R")
+for (pkg in packages)
+{
+    require(pkg, character.only = TRUE, quietly = TRUE) || biocLite(pkg) 
+}
+```
+
+### Load libraries
+
+```{r}
+library(Rsubread)
+library(limma)
+library(edgeR)
+print(Sys.time())
+```
+
+### Download data file
+
+```{r}
+# Create the data folder if it does not already exist
+datadir <- "./Data/rsubread_test"
+dir.create(file.path(datadir), showWarnings=FALSE, recursive=TRUE)
+
+# Enter data folder, first saving location of current folder
+projdir <- getwd()
+setwd(datadir)
+datadir <- getwd()
+
+# Get the file
+dataurl <- "http://bioinf.wehi.edu.au/RNAseqCaseStudy/data.tar.gz"
+datafile <- "data.tar.gz"
+if (! file.exists(datafile)) {
+    print("Downloading data file...")
+    download.file(dataurl, datafile) # 282.3 Mb
+}
+print(Sys.time())
+```
+
+### Extract data file
+
+```{r}
+setwd(datadir)
+targetsfile <- "Targets.txt"
+if (! file.exists(targetsfile)) {
+    print("Extracting data file...")
+    untar(datafile, tar="internal")
+}
+print(Sys.time())
+```
+
+### Read target file
+
+```{r}
+setwd(datadir)
+options(digits=2)
+targets <- readTargets(targetsfile)
+targets
+print(Sys.time())
+```
+
+### Create design matrix
+
+```{r}
+celltype <- factor(targets$CellType)
+design <- model.matrix(~celltype)
+print(Sys.time())
+```
+
+## Build reference
+
+> Build an index for human chromosome 1. This typically takes ~3 minutes. 
+Index files with basename 'chr1' will be generated in your current working 
+directory. 
+
+```{r}
+setwd(datadir)
+buildindex(basename="chr1",reference="hg19_chr1.fa")
+print(Sys.time())
+```
+
+## Align reads
+
+> Perform read alignment for all four libraries and report uniquely mapped 
+reads only. This typically takes ~5 minutes. The generated SAM files, which 
+include the mapping results, will be saved in your current working directory. 
+
+```{r}
+setwd(datadir)
+align(index="chr1", readfile1=targets$InputFile, 
+      input_format="gzFASTQ", output_format="BAM", 
+      output_file=targets$OutputFile, 
+      tieBreakHamming=TRUE, unique=TRUE, indels=5)
+print(Sys.time())
+```
+
+## Summarize mapped reads
+
+Count numbers of reads mapped to NCBI Refseq genes.
+
+> Summarize mapped reads to RefSeq genes. This will just take a few seconds. 
+Note that the featureCounts function has built-in annotation for Refseq genes. 
+featureCounts returns an R 'List' object, which includes raw read count for 
+each gene in each library and also annotation information for genes such as 
+gene identifiers and gene lengths. 
+
+```{r}
+setwd(datadir)
+fc <- featureCounts(files=targets$OutputFile,annot.inbuilt="hg19")
+x <- DGEList(counts=fc$counts, genes=fc$annotation[,c("GeneID","Length")])
+# Return to projdir
+setwd(projdir)
+print(Sys.time())
+```
+
+## Generate RPKM values
+
+Generate RPKM values if you need them.
+
+```{r}
+x_rpkm <- rpkm(x,x$genes$Length)
+print(Sys.time())
+```
+
+## Filter out low-count genes
+
+> Only keep in the analysis those genes which had >10 reads per million mapped 
+reads in at least two libraries. 
+
+```{r}
+isexpr <- rowSums(cpm(x) > 10) >= 2
+x <- x[isexpr,]
+print(Sys.time())
+```
+
+## Perform voom normalization
+
+> The figure below shows the mean-variance relationship estimated by voom for 
+the data. 
+
+```{r}
+y <- voom(x,design,plot=TRUE)
+print(Sys.time())
+```
+
+## Cluster libraries
+
+> The following multi-dimensional scaling plot shows that sample A libraries 
+are clearly separated from sample B libraries. 
+
+```{r}
+plotMDS(y,xlim=c(-2.5,2.5))
+print(Sys.time())
+```
+
+## Assess differential expression
+
+Fit linear model and assess differential expression.
+
+> Fit linear models to genes and assess differential expression using the 
+eBayes moderated t statistic. Here we list top 10 differentially expressed 
+genes between B vs A. 
+
+```{r}
+fit <- eBayes(lmFit(y,design))
+topTable(fit,coef=2)
+print(Sys.time())
+```
