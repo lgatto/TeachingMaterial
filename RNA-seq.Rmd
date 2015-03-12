@@ -130,15 +130,26 @@ The `voom`+`limma` approach can also be used for gene set analysis, which is dif
 
 ## RNA-seq example
 
+Get the data for GSE45735 from GEO.
 
-```{r}
-# You should make sure the directory Data/GEO exist
-gd <- getGEO("GSE45735", destdir = "Data/GEO/")
+```{r, message=FALSE}
+# You should make sure the directory Data/GEO exists
+datadir <- "Data/GEO/"
+dir.create(file.path(datadir), showWarnings = FALSE, recursive = TRUE)
+
+# Get the data from GEO
+gd <- getGEO("GSE45735", destdir = datadir)
 pd <- pData(gd[[1]])
-getGEOSuppFiles("GSE45735", makeDirectory=FALSE, baseDir = "Data/GEO/")
+getGEOSuppFiles("GSE45735", makeDirectory=FALSE, baseDir = datadir)
+```
 
+## RNA-seq example
+
+Clean up the data.
+
+```{r, message=FALSE}
 # Note the regular expression to grep file names
-files <- list.files(path = "Data/GEO/", pattern = "GSE45735_T.*.gz", full.names = TRUE)
+files <- list.files(path = datadir, pattern = "GSE45735_T.*.gz", full.names = TRUE)
 
 # Read in gzip-compressed, tab-delimited files
 file_list <- lapply(files, read.table, sep='\t', header=TRUE)
@@ -152,6 +163,13 @@ file_list_unique <- lapply(file_list, function(x){x<-x[!duplicated(x$Gene),];
                                                   x <- x[order(x$Gene),]; 
                                                   rownames(x) <- x$Gene;
                                                   x[,-1]})
+```
+
+## RNA-seq example
+
+Create a matrix from the intersection of all genes and clean up the pData.
+
+```{r, message=FALSE}
 # Take the intersection of all genes
 gene_list <- Reduce(intersect, lapply(file_list_unique, rownames))
 file_list_unique <- lapply(file_list_unique, "[", gene_list,)
@@ -166,7 +184,6 @@ colnames(matrix) <- rownames(pd_small)
 
 
 ## RNA-seq example 
-
 
 Note that raw data files for sequencing experiments are available from the SRA database, which can be queried using the SRAdb package:
 ```{r, eval=FALSE}

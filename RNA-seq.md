@@ -47,12 +47,12 @@ library(GEOquery)
 ## 
 ## The following objects are masked from 'package:base':
 ## 
-##     anyDuplicated, append, as.data.frame, as.vector, cbind,
-##     colnames, do.call, duplicated, eval, evalq, Filter, Find, get,
-##     intersect, is.unsorted, lapply, Map, mapply, match, mget,
-##     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
-##     rbind, Reduce, rep.int, rownames, sapply, setdiff, sort,
-##     table, tapply, union, unique, unlist
+##     Filter, Find, Map, Position, Reduce, anyDuplicated, append,
+##     as.data.frame, as.vector, cbind, colnames, do.call,
+##     duplicated, eval, evalq, get, intersect, is.unsorted, lapply,
+##     mapply, match, mget, order, paste, pmax, pmax.int, pmin,
+##     pmin.int, rank, rbind, rep.int, rownames, sapply, setdiff,
+##     sort, table, tapply, union, unique, unlist, unsplit
 ## 
 ## Welcome to Bioconductor
 ## 
@@ -60,7 +60,7 @@ library(GEOquery)
 ##     'browseVignettes()'. To cite Bioconductor, see
 ##     'citation("Biobase")', and for packages 'citation("pkgname")'.
 ## 
-## Setting options('download.file.method.GEOquery'='auto')
+## Setting options('download.file.method.GEOquery'='curl')
 ```
 
 
@@ -163,33 +163,27 @@ The `voom`+`limma` approach can also be used for gene set analysis, which is dif
 
 ## RNA-seq example
 
+Get the data for GSE45735 from GEO.
 
 
 ```r
-# You should make sure the directory Data/GEO exist
-gd <- getGEO("GSE45735", destdir = "Data/GEO/")
-```
-
-```
-## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE45nnn/GSE45735/matrix/
-## Found 1 file(s)
-## GSE45735_series_matrix.txt.gz
-## File stored at: 
-## Data/GEO//GPL10999.soft
-```
-
-```r
+# You should make sure the directory Data/GEO exists
+datadir <- "Data/GEO/"
+dir.create(file.path(datadir), showWarnings = FALSE, recursive = TRUE)
+# Get the data from GEO
+gd <- getGEO("GSE45735", destdir = datadir)
 pd <- pData(gd[[1]])
-getGEOSuppFiles("GSE45735", makeDirectory = FALSE, baseDir = "Data/GEO/")
+getGEOSuppFiles("GSE45735", makeDirectory = FALSE, baseDir = datadir)
 ```
 
-```
-## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE45nnn/GSE45735/suppl/
-```
+## RNA-seq example
+
+Clean up the data.
+
 
 ```r
 # Note the regular expression to grep file names
-files <- list.files(path = "Data/GEO/", pattern = "GSE45735_T.*.gz", 
+files <- list.files(path = datadir, pattern = "GSE45735_T.*.gz", 
     full.names = TRUE)
 # Read in gzip-compressed, tab-delimited files
 file_list <- lapply(files, read.table, sep = "\t", header = TRUE)
@@ -205,6 +199,14 @@ file_list_unique <- lapply(file_list, function(x) {
     rownames(x) <- x$Gene
     x[, -1]
 })
+```
+
+## RNA-seq example
+
+Create a matrix from the intersection of all genes and clean up the pData.
+
+
+```r
 # Take the intersection of all genes
 gene_list <- Reduce(intersect, lapply(file_list_unique, rownames))
 file_list_unique <- lapply(file_list_unique, "[", gene_list, 
@@ -221,7 +223,6 @@ colnames(matrix) <- rownames(pd_small)
 
 
 ## RNA-seq example 
-
 
 Note that raw data files for sequencing experiments are available from the SRA database, which can be queried using the SRAdb package:
 
@@ -304,7 +305,7 @@ detags <- rownames(topTags(lrt, n = 20))
 plotSmear(lrt, de.tags = detags)
 ```
 
-![](RNA-seq_files/figure-html/unnamed-chunk-9-1.png) 
+![](RNA-seq_files/figure-html/unnamed-chunk-11-1.png) 
 
 
 ## Normalization
