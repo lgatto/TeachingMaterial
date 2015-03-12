@@ -133,13 +133,16 @@ If $m$ and $d$ are both reasonably large, and $\overline{\rho}$ is relatively sm
 
 Camera is readily available in the `limma` package. Let us go back to our RNA-seq example:
 
-```{r get-data}
-gd <- getGEO("GSE45735", destdir = "Data/GEO/")
+```{r get-data, message=FALSE}
+datadir <- "Data/GEO/"
+dir.create(file.path(datadir), showWarnings = FALSE, recursive = TRUE)
+
+gd <- getGEO("GSE45735", destdir = datadir)
 pd <- pData(gd[[1]])
-getGEOSuppFiles("GSE45735", makeDirectory=FALSE, baseDir = "Data/GEO/")
+getGEOSuppFiles("GSE45735", makeDirectory=FALSE, baseDir = datadir)
 
 # Note the regular expression to grep file names
-files <- list.files(path = "Data/GEO/", pattern = "GSE45735_T.*.gz", full.names = TRUE)
+files <- list.files(path = datadir, pattern = "GSE45735_T.*.gz", full.names = TRUE)
 
 # Read in gzip-compressed, tab-delimited files
 file_list <- lapply(files, read.table, sep='\t', header=TRUE)

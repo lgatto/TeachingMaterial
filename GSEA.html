@@ -233,22 +233,13 @@ T=(\overline{z}_1-\overline{z}_2)/(s_p\sqrt{VIF/m_1+1/m_2})
 
 <p>Camera is readily available in the <code>limma</code> package. Let us go back to our RNA-seq example:</p>
 
-<pre class = 'prettyprint lang-r'>gd &lt;- getGEO(&quot;GSE45735&quot;, destdir = &quot;Data/GEO/&quot;)</pre>
-
-<pre >## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE45nnn/GSE45735/matrix/
-## Found 1 file(s)
-## GSE45735_series_matrix.txt.gz
-## Using locally cached version: Data/GEO//GSE45735_series_matrix.txt.gz
-## Using locally cached version of GPL10999 found here:
-## Data/GEO//GPL10999.soft</pre>
-
-<pre class = 'prettyprint lang-r'>pd &lt;- pData(gd[[1]])
-getGEOSuppFiles(&quot;GSE45735&quot;, makeDirectory = FALSE, baseDir = &quot;Data/GEO/&quot;)</pre>
-
-<pre >## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE45nnn/GSE45735/suppl/</pre>
-
-<pre class = 'prettyprint lang-r'># Note the regular expression to grep file names
-files &lt;- list.files(path = &quot;Data/GEO/&quot;, pattern = &quot;GSE45735_T.*.gz&quot;, 
+<pre class = 'prettyprint lang-r'>datadir &lt;- &quot;Data/GEO/&quot;
+dir.create(file.path(datadir), showWarnings = FALSE, recursive = TRUE)
+gd &lt;- getGEO(&quot;GSE45735&quot;, destdir = datadir)
+pd &lt;- pData(gd[[1]])
+getGEOSuppFiles(&quot;GSE45735&quot;, makeDirectory = FALSE, baseDir = datadir)
+# Note the regular expression to grep file names
+files &lt;- list.files(path = datadir, pattern = &quot;GSE45735_T.*.gz&quot;, 
     full.names = TRUE)
 # Read in gzip-compressed, tab-delimited files
 file_list &lt;- lapply(files, read.table, sep = &quot;\t&quot;, header = TRUE)</pre>

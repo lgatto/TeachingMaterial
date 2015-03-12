@@ -168,30 +168,13 @@ Camera is readily available in the `limma` package. Let us go back to our RNA-se
 
 
 ```r
-gd <- getGEO("GSE45735", destdir = "Data/GEO/")
-```
-
-```
-## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE45nnn/GSE45735/matrix/
-## Found 1 file(s)
-## GSE45735_series_matrix.txt.gz
-## Using locally cached version: Data/GEO//GSE45735_series_matrix.txt.gz
-## Using locally cached version of GPL10999 found here:
-## Data/GEO//GPL10999.soft
-```
-
-```r
+datadir <- "Data/GEO/"
+dir.create(file.path(datadir), showWarnings = FALSE, recursive = TRUE)
+gd <- getGEO("GSE45735", destdir = datadir)
 pd <- pData(gd[[1]])
-getGEOSuppFiles("GSE45735", makeDirectory = FALSE, baseDir = "Data/GEO/")
-```
-
-```
-## ftp://ftp.ncbi.nlm.nih.gov/geo/series/GSE45nnn/GSE45735/suppl/
-```
-
-```r
+getGEOSuppFiles("GSE45735", makeDirectory = FALSE, baseDir = datadir)
 # Note the regular expression to grep file names
-files <- list.files(path = "Data/GEO/", pattern = "GSE45735_T.*.gz", 
+files <- list.files(path = datadir, pattern = "GSE45735_T.*.gz", 
     full.names = TRUE)
 # Read in gzip-compressed, tab-delimited files
 file_list <- lapply(files, read.table, sep = "\t", header = TRUE)
