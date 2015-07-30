@@ -266,8 +266,9 @@ Also of interest is [`maker`](https://github.com/ComputationalProteomicsUnit/mak
 
 The source for this minimal tutorial is [on github](http://github.com/kbroman/minimal_make).
 
-Also see my [git/github guide](http://kbroman.org/github_tutorial),
-[knitr in a knutshell tutorial](http://kbroman.org/knitr_knutshell),
-[R package primer](http://kbroman.org/pkg_primer),
-[simple site tutorial](http://kbroman.org/simple_site),
-and [initial steps towards reproducible research](http://kbroman.org/steps2rr).
+Also see my [tutorials](http://kbroman.org/pages/tutorials) on
+[git/github](http://kbroman.org/github_tutorial),
+[knitr](http://kbroman.org/knitr_knutshell),
+[R packages](http://kbroman.org/pkg_primer),
+[making a web site with GitHub Pages](http://kbroman.org/simple_site),
+and [reproducible research](http://kbroman.org/steps2rr).
