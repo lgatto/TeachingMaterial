@@ -60,4 +60,5 @@ Also see my [tutorials](http://kbroman.org/pages/tutorials) on
 [knitr](http://kbroman.org/knitr_knutshell),
 [R packages](http://kbroman.org/pkg_primer),
 [making a web site with GitHub Pages](http://kbroman.org/simple_site),
+[data organization](http://kbroman.org/dataorg),
 and [reproducible research](http://kbroman.org/steps2rr).
