@@ -34,7 +34,7 @@
 #      ... where you should use the actual file path to this script.
 #
 # Author: Brian High with contributions from Rafael Gottardo
-# Date: 2015-01-04
+# Date: 2015-10-06
 # License: http://creativecommons.org/licenses/by-sa/3.0/deed.en_US
 
 # ----------------------------------------------------------------------
@@ -77,6 +77,9 @@ for (filename in filenames) {
 
 # Remove duplicates
 allpkgs <- unique(allpkgs)
+
+# Remove non-packages
+allpkgs <- allpkgs[allpkgs!="txdbpkg"]
 
 # Save a copy of the package list
 write(allpkgs, "packages_list.txt")
