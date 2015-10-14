@@ -1,8 +1,8 @@
 ## Best practices in bioinformatics research: open source software and reproducibility
 
 * 2015/16 Bioinfo NST Part II BBS Minor Subject 
-* When: 18/01/2016 15:00
-* Where: P-H/LEC/
+* When: 18/01/2016 15:00 - 16:00
+* Where: Pharmacology Lecture Theater, Tennis Court Road
 * Who: [Laurent Gatto](http://cpu.sysbiol.cam.ac.uk/)
 
 ### Lecture/practical content
