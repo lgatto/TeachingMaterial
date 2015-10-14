@@ -2,11 +2,11 @@
 
 2015/16 Bioinfo NST Part II BBS Minor Subject 
 
- When             | Where
-------------------|---------
-19/01/2016  17:00 | P-H/LEC
-21/01/2016  16:00 | P-H/LEC
-25/01/2016  15:00 | C-M/PRAC
+ When                     | Where                                                 | Type
+--------------------------|-------------------------------------------------------|---------
+19/01/2016  17:00 - 18:00 | Pharmacology Lecture Theater, Tennis Court Road       | Lecture
+21/01/2016  16:00 - 17:00 | Pharmacology Lecture Theater, Tennis Court Road       | Lecture
+25/01/2016  15:00 - 17:00 | Bioinformatics Training Room, Craik-Marshall building | Practical
 
 [Laurent Gatto](http://cpu.sysbiol.cam.ac.uk/)
 
