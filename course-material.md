@@ -13,18 +13,20 @@
 
 ## Reproducible research
 
-> [D. Donoho](http://statweb.stanford.edu/~donoho/): An article about
-> computational science in a scientific publication is not the
-> scholarship itself, it is merely advertising of the scholarship. The
-> actual scholarship is the complete software development environment
-> and the complete set of instructions which generated the figures.
-
 
 > D Knuth [Literate programming](http://literateprogramming.com/) is a
 > methodology that combines a programming language with a
 > documentation language, thereby making programs more robust, more
 > portable, more easily maintained, and arguably more fun to write
 > than programs that are written only in a high-level language.
+
+
+> [D. Donoho](http://statweb.stanford.edu/~donoho/): An article about
+> computational science in a scientific publication is not the
+> scholarship itself, it is merely advertising of the scholarship. The
+> actual scholarship is the complete software development environment
+> and the complete set of instructions which generated the figures.
+
 
 > R. Gentleman and D. Temple Land
 > [Statistical Analyses and Reproducible Research](http://biostats.bepress.com/bioconductor/paper2/) 2004. We
@@ -33,9 +35,28 @@
 > (i.e. text, code, data, ...), and as a means for distributing,
 > managing and updating the collection.
 
+## Tools
 
-## Best practice 
+#### R and Sweave/knitr
 
+```
+Rmd -> md -> html | pdf
+```
+
+```
+Rnw -> tex -> pdf
+```
+
+#### Jupyter notebook
+
+Previously known as IPython notebooks.
+
+#### Other
+
+`org-mode`
+
+
+### Best practice 
 
 Wilson G *et al.*
 [Best Practices for Scientific Computing](http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001745)
@@ -73,3 +94,19 @@ Wilson G *et al.*
    - Use pre-merge code reviews.
    - Use pair programming when bringing someone new up to speed and when tackling particularly tricky problems.
    - Use an issue tracking tool.
+
+## References
+
+
+
+Gentleman, Robert and Temple Lang, Duncan, "Statistical Analyses and
+Reproducible Research" (May 2004). Bioconductor Project Working
+Papers. [Working Paper 2](http://biostats.bepress.com/bioconductor/paper2).
+
+
+Wilson G, Aruliah DA, Brown CT, Chue Hong NP, Davis M, Guy RT, et
+al. (2014) Best Practices for Scientific Computing. PLoS Biol 12(1):
+e1001745. [doi:10.1371/journal.pbio.1001745](http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001745).
+
+
+
