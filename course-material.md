@@ -1,5 +1,7 @@
 # Best practices in bioinformatics research: open source software and reproducibility
 
+![See, don't trust](~/Pictures/CPcf52hWUAEDlF8.jpg)
+
 - What does *open* mean?
 - what should be, or must be open?
 - What is *reproducibility*?
@@ -13,13 +15,13 @@
 
 ## Reproducible research
 
-
 > D Knuth [Literate programming](http://literateprogramming.com/) is a
 > methodology that combines a programming language with a
 > documentation language, thereby making programs more robust, more
 > portable, more easily maintained, and arguably more fun to write
 > than programs that are written only in a high-level language.
 
+<br />
 
 > [D. Donoho](http://statweb.stanford.edu/~donoho/): An article about
 > computational science in a scientific publication is not the
@@ -27,6 +29,7 @@
 > actual scholarship is the complete software development environment
 > and the complete set of instructions which generated the figures.
 
+<br />
 
 > R. Gentleman and D. Temple Land
 > [Statistical Analyses and Reproducible Research](http://biostats.bepress.com/bioconductor/paper2/) 2004. We
@@ -34,6 +37,14 @@
 > different elements that make up the document and its computations
 > (i.e. text, code, data, ...), and as a means for distributing,
 > managing and updating the collection.
+
+- What
+- Why
+- For
+  [you](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0850-7)
+  and everybody else.
+
+
 
 ## Tools
 
@@ -97,16 +108,25 @@ Wilson G *et al.*
 
 ## References
 
-
-
 Gentleman, Robert and Temple Lang, Duncan, "Statistical Analyses and
 Reproducible Research" (May 2004). Bioconductor Project Working
 Papers. [Working Paper 2](http://biostats.bepress.com/bioconductor/paper2).
-
 
 Wilson G, Aruliah DA, Brown CT, Chue Hong NP, Davis M, Guy RT, et
 al. (2014) Best Practices for Scientific Computing. PLoS Biol 12(1):
 e1001745. [doi:10.1371/journal.pbio.1001745](http://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.1001745).
 
 
+Yihui Xie,
+[Dynamic Documents with R and knitr](https://github.com/yihui/knitr-book),
+Second Edition (Chapman & Hall/CRC The R Series) 2nd Edition, 2015.
+
+Victoria Stodden, Friedrich Leisch, Roger D. Peng,
+[Implementing Reproducible Research](https://osf.io/s9tya/) (Chapman &
+Hall/CRC: The R Series), 2014.
+
+
+Florian Markowetz, Five selfish reasons to work reproducibly. Genome
+Biology 2015 16:274
+[DOI:10.1186/s13059-015-0850-7](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0850-7).
 
