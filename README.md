@@ -20,3 +20,10 @@ research: Rmd/LaTeX, knitr/Sweave, Jupyter notebooks, org mode.
 
 Familiarise students with concepts and tools of open science and
 reproducible research. 
+
+
+### License
+
+This material is released under a
+[CC-BY-SA license](https://creativecommons.org/licenses/by-sa/4.0/)
+![license](https://licensebuttons.net/l/by-sa/3.0/88x31.png)
