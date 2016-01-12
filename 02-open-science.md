@@ -10,7 +10,7 @@ general public.
 any re-use restrictions (*free as in speech*).
 
 
-![Research workflow](research-workflow.png)
+![Research workflow](./figs/research-workflow.png)
 
 #### Open data
 
