@@ -47,11 +47,13 @@ CC-BY-SA, ...
 
 #### Also:
 
-Open peer review, open education, ... 
+Open peer review, open education, ... open scholarship 
 
 #### See also 
 
-- [Why Open Research?](http://whyopenresearch.org/)
+- [Why Open Research?](http://whyopenresearch.org/) - Advance your
+  career by sharing your work.
+
 - [The open research value proposition: How sharing can help researchers succeed](https://figshare.com/articles/The_open_research_value_proposition_How_sharing_can_help_researchers_succeed/1619902)
 
 If you are interested in *All things open* (science, education, ...),
