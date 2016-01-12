@@ -45,9 +45,15 @@ There exist
 [open access licenses](https://creativecommons.org/licenses/): CC-BY,
 CC-BY-SA, ...
 
-#### Also:
+**Also**: Open peer review, open education, ... open scholarship 
 
-Open peer review, open education, ... open scholarship 
+#### Open Science
+
+> Open science isn't a movement, it's just (good) science. It's also
+> the future. (from Watson M, 2015)
+
+- Moral argument
+- Better science
 
 #### See also 
 
