@@ -1,4 +1,4 @@
-## Best practices in bioinformatics research: open source software and reproducibility
+# Best practices in bioinformatics research: open source software and reproducibility
 
 * 2015/16 Bioinfo NST Part II BBS Minor Subject 
 * When: 18/01/2016 15:00 - 16:00
