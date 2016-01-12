@@ -21,6 +21,14 @@ research: Rmd/LaTeX, knitr/Sweave, Jupyter notebooks, org mode.
 Familiarise students with concepts and tools of open science and
 reproducible research. 
 
+### Course material
+
+1. [Introduction](01-intro.md)
+2. [Open Science](02-open-science.md)
+3. [Reproducible research](03-rr.md)
+4. [Conclusions](04-ccl.md)
+5. [References](05-refs.md)
+
 
 ### License
 
