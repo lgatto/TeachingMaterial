@@ -8,5 +8,4 @@
 
 - What is *reproducibility*? Why do we want reproducibility? Is it that way?
 
-
 [Next: Open Science](./02-open-science.md)

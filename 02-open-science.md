@@ -1,13 +1,16 @@
 # Open Science
 
-Science is supported by **public** funds. All outputs should this be
+> Who owns the research outputs? Who should have access to research outputs?
+
+Science is supported by **public** funds. All outputs should thus be
 made publicly and openly available - to the research community and the
 general public.
 
-Who owns the research outputs?
-
 **Open** means free from any fees (*free as in beer*) and free from
-any re-use restrictions (*free as in speech).
+any re-use restrictions (*free as in speech*).
+
+
+![Research workflow](research-workflow.png)
 
 #### Open data
 
@@ -52,5 +55,4 @@ See also
 If you are interested in *All things open* (science, education, ...),
 consider following/joining [OpenConCam](http://www.openconcam.org/)
 
-[Prev: Introduction](./01-intro.md)
-[Next: Reproducbile research](./03-rr.md)
+[Prev: Introduction](./01-intro.md) -- [Next: Reproducbile research](./03-rr.md)

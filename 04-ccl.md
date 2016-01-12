@@ -16,5 +16,4 @@
 
 [The Software Sustainability Institute](http://software.ac.uk/)
 
-[Prev: Reproducible research](./03-rr.md)
-[Next: References](./05-refs.md)
+[Prev: Reproducible research](./03-rr.md) -- [Next: References](./05-refs.md)
