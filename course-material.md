@@ -118,10 +118,6 @@ But also
 4. Reproducibility enables continuity of your work
 5. Reproducibility helps to build your reputation
 
-
-
-
-
 ## Tools
 
 #### R and Sweave/knitr
@@ -142,6 +138,18 @@ Previously known as IPython notebooks.
 
 `org-mode`
 
+### Reproducibility and the conduct of research
+
+![Reproducibility issues and possible strategies](./figs/Reproducibility_issues_and_possible_strategies.png)
+
+(as [pdf](./figs/Reproducibility_issues_and_possible_strategies.png))
+
+
+Figure taken from the report of the symposium, ‘Reproducibility and
+reliability of biomedical research’, organised by the Academy of
+Medical Sciences, BBSRC, MRC and Wellcome Trust in April 2015. The
+full report is available from
+http://www.acmedsci.ac.uk/researchreproducibility.
 
 ### Best practice 
 
