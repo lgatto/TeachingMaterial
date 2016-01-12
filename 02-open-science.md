@@ -14,9 +14,9 @@ any re-use restrictions (*free as in speech*).
 
 #### Open data
 
-The data, both in raw and processed form, and its annotation
-(metadata) that accompanies a scientific paper (discovery) should be
-freely/publicly available and should be free to re-use.
+The **data**, both in raw and processed form, and its annotation
+(**metadata**) that accompanies a scientific paper (discovery) should
+be freely/publicly available and should be free to re-use.
 
 #### Open methodology
 
@@ -25,8 +25,8 @@ freely/publicly available and should be free to re-use.
 > apply it elsewhere (from Waton M., 2015)
 
 Describe and release the process that lead raw data to processed data,
-and how the processed has been further analysed to lead to results,
-figures and conclusions.
+and how the processed data has been further analysed to lead to
+results, figures and conclusions.
 
 - **[Open source](http://opensource.org/osd)**: the source code of
   your (scienfic) software should be openly released, so that others
@@ -45,9 +45,11 @@ There exist
 [open access licenses](https://creativecommons.org/licenses/): CC-BY,
 CC-BY-SA, ...
 
-Also: open peer review, open education, ... 
+#### Also:
 
-See also 
+Open peer review, open education, ... 
+
+#### See also 
 
 - [Why Open Research?](http://whyopenresearch.org/)
 - [The open research value proposition: How sharing can help researchers succeed](https://figshare.com/articles/The_open_research_value_proposition_How_sharing_can_help_researchers_succeed/1619902)
