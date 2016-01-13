@@ -34,4 +34,4 @@ reproducible research.
 
 This material is released under a
 [CC-BY-SA licence](https://creativecommons.org/licenses/by-sa/4.0/)
-![license](https://licensebuttons.net/l/by-sa/3.0/88x31.png).
+![licence](https://licensebuttons.net/l/by-sa/3.0/88x31.png).
