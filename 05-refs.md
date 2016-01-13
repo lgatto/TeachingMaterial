@@ -21,11 +21,11 @@
   [DOI:10.1186/s13059-015-0850-7](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0850-7).
 
 - Peng, R. D. (2011). Reproducible Research in Computational
-  Science. Science (New York, N.y.), 334(6060),
-  1226–1227. http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3383002/
+  Science. Science (New York, N.y.),
+  [334(6060), 1226–1227](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3383002/).
 
 - Leek JT, Peng RD. Opinion: Reproducible research can still be wrong:
-  adopting a prevention approach. Proc Natl Acad Sci U S A. 2015 Feb
+  adopting a prevention approach. Proc Natl Acad Sci USA. 2015 Feb
   10;112(6):1645-6. [doi:10.1073/pnas.1421412111](http://www.pnas.org/content/112/6/1645).
 
 - Donoho DL. An invitation to reproducible computational

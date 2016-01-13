@@ -9,5 +9,31 @@ r-knitr.html: r-knitr.md
 
 clean:
 	rm -f r-knitr.html r-knitr.pdf r-knitr.md Rplots.pdf
+	rm -f 01-intro.pdf  02-open-science.pdf  03-rr.pdf  04-ccl.pdf  05-refs.pdf
 	rm -rf figure
 	rm -f *~
+
+01-intro.pdf: 01-intro.md
+	pandoc $^ -o $@
+
+02-open-science.pdf: 02-open-science.md
+	pandoc $^ -o $@
+
+03-rr.pdf: 03-rr.md
+	pandoc $^ -o $@
+
+04-ccl.pdf: 04-ccl.md
+	pandoc $^ -o $@
+
+05-refs.pdf: 05-refs.md
+	pandoc $^ -o $@
+
+all:
+	make 01-intro.pdf
+	make 02-open-science.pdf
+	make 03-rr.pdf
+	make 04-ccl.pdf
+	make 05-refs.pdf
+	pdftk 0*.pdf cat output open-rr-best-practice.pdf
+
+.PHONY: all clean
