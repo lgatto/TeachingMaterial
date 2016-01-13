@@ -51,7 +51,7 @@ Papers and supplementary material should be available to **read** and
 **mine** by all, researchers and public.
 
 There exist
-[open access licenses](https://creativecommons.org/licenses/): CC-BY,
+[open access licences](https://creativecommons.org/licenses/): CC-BY,
 CC-BY-SA, ...
 
 ### Also

@@ -30,8 +30,8 @@ reproducible research.
 5. [References](05-refs.md)
 
 
-### License
+### Licence
 
 This material is released under a
-[CC-BY-SA license](https://creativecommons.org/licenses/by-sa/4.0/)
+[CC-BY-SA licence](https://creativecommons.org/licenses/by-sa/4.0/)
 ![license](https://licensebuttons.net/l/by-sa/3.0/88x31.png).
