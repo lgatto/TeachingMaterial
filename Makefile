@@ -28,12 +28,11 @@ clean:
 05-refs.pdf: 05-refs.md
 	pandoc $^ -o $@
 
-all:
-	make 01-intro.pdf
-	make 02-open-science.pdf
-	make 03-rr.pdf
-	make 04-ccl.pdf
-	make 05-refs.pdf
+open-rr-best-practice.pdf: 01-intro.pdf 02-open-science.pdf 03-rr.pdf 04-ccl.pdf 05-refs.pdf
 	pdftk 0*.pdf cat output open-rr-best-practice.pdf
 
-.PHONY: all clean
+all:
+	make open-rr-best-practice.pdf
+	make clean
+
+.PHONY: clean all
