@@ -1,0 +1,31 @@
+/---------------------------------------------\
+| # Big Analysis report                       |
+|                                             |
+| ## Introduction                             |
+| Bla bla bla bla bla bla bla bla bla bla bla |
+|                                             |
+| ## Data processing                          |
+| This is how we do it...                     |
+|                                             |
+|   +-------------------------------------+   |
+|   | library("MSnbase")                  |   |
+|   | rw <- openMSfile("data.raw")        |   |
+|   | rw <- normalise(rw)                 |   |
+|   +-------------------------------------+   |
+|                                             |
+|                                             |
+| ## Results                                  |
+|                                             |
+|   +-------------------------------------+   |
+|   | xx <- stats(x)                      |   |
+|   | plot2D(xx)                          |   |
+|   |  {d}                                |   |
+|   +-------------------------------------+   |
+|                                             |
+| ## Conclusion                               |
+| Bla bla bla bla bla bla bla bla bla. Bla    |
+| bla bla bla bla bla bla bla bla bla bla bla |
+| bla bla. Bla bla bla.                       |
+|                                             |
+\---------------------------------------------/
+
