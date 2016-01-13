@@ -29,6 +29,7 @@ reproducible research.
 4. [Conclusions](04-ccl.md)
 5. [References](05-refs.md)
 
+As a [single pdf](./open-rr-best-practice.pdf).
 
 ### Licence
 
