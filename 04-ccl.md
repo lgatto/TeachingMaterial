@@ -13,7 +13,7 @@
 
   > A piece of software is being sustained if people are using it,
   > fixing it, and improving it rather than replacing it
-  > [ref](http://software-carpentry.org/blog/2014/08/sustainability.html).
+  > ([ref](http://software-carpentry.org/blog/2014/08/sustainability.html)).
 
   See the [Software Sustainability Institute](http://software.ac.uk/)
   for relevant activities and community.

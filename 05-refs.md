@@ -20,6 +20,10 @@
   Biology 2015 16:274
   [DOI:10.1186/s13059-015-0850-7](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0850-7).
 
+- Peng, R. D. (2011). Reproducible Research in Computational
+  Science. Science (New York, N.y.), 334(6060),
+  1226–1227. http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3383002/
+
 - Leek JT, Peng RD. Opinion: Reproducible research can still be wrong:
   adopting a prevention approach. Proc Natl Acad Sci U S A. 2015 Feb
   10;112(6):1645-6. [doi:10.1073/pnas.1421412111](http://www.pnas.org/content/112/6/1645).
@@ -31,5 +35,11 @@
 - Watson M. When will 'open science' become simply 'science'? Genome
   Biol. 2015 May
   19;16:101. [doi:10.1186/s13059-015-0669-2](http://genomebiology.biomedcentral.com/articles/10.1186/s13059-015-0669-2).
+
+- [Replication, psychology, and big science](http://simplystatistics.org/2012/04/18/replication-psychology-and-big-science/),
+  simplystats blog, 18 April 2015
+
+
+
 
 [Prev: Conclusions](./04-ccl.md)

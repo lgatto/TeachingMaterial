@@ -16,7 +16,7 @@ scientific publication.
 
 ![Research workflow](./figs/research-workflow.png)
 
-#### Open data
+### Open data
 
 The **data**, both in raw and processed form, and its annotation
 (**metadata**) that accompanies a scientific paper (discovery) should
@@ -27,7 +27,7 @@ data. [Governments](https://data.gov.uk/) and city councils are
 publicly releasing data *to help people understand how government
 works and how policies are made*.
 
-#### Open methodology
+### Open methodology
 
 > An open methodology is simply one which has been described in
 > sufficient detail to allow other researchers to repeat the work and
@@ -45,7 +45,7 @@ results, figures and conclusions.
 - **Open protocols**: openly share the hole sample processing, data
   acquisition.
 
-#### Open access
+### Open access
 
 Papers and supplementary material should be available to **read** and
 **mine** by all, researchers and public.
@@ -54,12 +54,14 @@ There exist
 [open access licenses](https://creativecommons.org/licenses/): CC-BY,
 CC-BY-SA, ...
 
-**Also**: Open peer review, open education
-  ([Software](http://software-carpentry.org/) and
-  [Data Carpentry](http://www.datacarpentry.org/), for example),
-  ... open scholarship
+### Also
 
-#### Open Science
+Open peer review, open education
+([Software](http://software-carpentry.org/) and
+[Data Carpentry](http://www.datacarpentry.org/), for example),
+... open scholarship
+
+### Open Science
 
 > Open science isn't a movement, it's just (good) science. It's also
 > the future. (from Watson M, 2015)
@@ -79,8 +81,10 @@ Arguments against open Science:
 (from the [Wikipedia Open Science page](Wikipedia Open Science page))
 
 Some have also raised arguments about specific aspects of Open
-Science, such as confusion open source and the lack commercial
-prospects in software, or open access and quality of publication.
+Science, often founded on confusions or mis-understandings:
+
+- open source and the lack commercial prospects in software
+- open access and quality of publication
 
 ### See also 
 
@@ -96,7 +100,7 @@ prospects in software, or open access and quality of publication.
 - [Open Access at the University of Cambridge](https://www.openaccess.cam.ac.uk/)
   (and [here](http://www.data.cam.ac.uk/open-access))
 
-If you are interested in *All things open* (science, education, ...),
-consider following/joining [OpenConCam](http://www.openconcam.org/). 
+- If you are interested in *All things open* (science, education,
+  ...), consider following/joining [OpenConCam](http://www.openconcam.org/).
 
 [Prev: Introduction](./01-intro.md) -- [Next: Reproducbile research](./03-rr.md)
