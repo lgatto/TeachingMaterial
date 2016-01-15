@@ -29,6 +29,8 @@ Familiarise students with basic statistical concepts and initiate them
 to statistical thinking. They should be able to critically assess an
 experimental design and the reporting of a simple statistical analysis.
 
-### Preliminary reading
+### Course material
 
-* ...
+1. Experimental designs
+   ([slides](https://github.com/lgatto/statistics-primer/blob/master/expdes-slides.pdf),
+   [sheets](https://github.com/lgatto/statistics-primer/blob/master/expdes-handouts.pdf))

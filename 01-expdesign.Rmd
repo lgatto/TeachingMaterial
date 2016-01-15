@@ -380,6 +380,12 @@ grid()
 abline(h = 3)
 ```
 
+##
+
+```{r}
+power.t.test(delta = 2, sd = 1,
+             sig.level = 0.01, power = 0.9)
+```
 
 ## Next steps
 
