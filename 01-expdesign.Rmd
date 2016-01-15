@@ -31,7 +31,7 @@ ends. Additionally, there can be ethical concerns in badly designed
 experiments.
 
 
-## **Hypothesis-driven** vs hypthesis-free (-generating) experiments
+## **Hypothesis-driven** vs hypothesis-free (-generating) experiments
 
 A **hypothesis** is a clearly defined description of how the system
 under study works, or is assumed to work.
@@ -43,12 +43,12 @@ NOT
 
 - Do cells treated with drug A for 20 or 40 min express protein X but
   not Y? 
-- Let's test all these drugs over as many timepoints as we can and see
+- Let's test all these drugs over as many time points as we can and see
   if something changes. (that's not even a question!)
 
 An experiment should then be designed to answer your hypothesis. 
 
-## Hypothesis-driven vs **hypthesis-free (-generating)** experiments
+## Hypothesis-driven vs **hypothesis-free (-generating)** experiments
 
 Other experiments can be designed to explore/describe a biological
 system, or generate new hypotheses:
@@ -68,7 +68,7 @@ stringent control over experimental variables and to draw very
 specific conclusions. Risk of lack of generalisation, such as
 extrapolating observations from cells or lab mice to humans.
 
-Study: *in the wild*, much more variablility in the data,
+Study: *in the wild*, much more variability in the data,
 un-controlled or even un-known variables (confounding effects) that
 affect what is studied. Requires **much bigger** sample size.
 
@@ -150,7 +150,7 @@ points(k$x, k$y, pch = 19)
 
 ## Variability and replication: what are we measuring?
 
-- Noise vs random variation vs systematic biais.
+- Noise vs random variation vs systematic bias.
 
 - Technical vs biological variability: the variability we measure is
   composed of technical and biological variability. If the former
@@ -219,7 +219,7 @@ reduce costs and variability). Never, ever do the following:
 - Multiplex 10 treated samples and control 10 samples.
 - Operator A runs the controls, operator B runs the treated samples.
 
-**Cofounding batch effect**: any observed differences between the
+**Co-founding batch effect**: any observed differences between the
 groups or interest could be due to technical variability between 2
 data acquisitions/operators. 
 
@@ -282,7 +282,7 @@ not been accounted for in the experimental design.
 - Balanced vs. non-balanced
 - One-way (one-factor) designs: one experimental factor, n levels
   (Treatments; drug A, drug B, control)  
-- Two-way design: treatent (A, B, control) x genetic background (WT, MT)
+- Two-way design: treatment (A, B, control) x genetic background (WT, MT)
 - Main effect (like 2 one-way designs) and interaction effects
 
 ## 
@@ -393,7 +393,7 @@ Once you have the data, explore it - Exploratory Data Analysis (EDA)
 using PCA plots, clustering, histograms, boxplots, ...
 
 - Does the variability match your design (within/between groups)?
-- Can you identify cofounding/batch effects?
+- Can you identify co-founding/batch effects?
 
 - Identify significant changes
 
