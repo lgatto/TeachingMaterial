@@ -31,19 +31,20 @@ works and how policies are made*.
 
 > An open methodology is simply one which has been described in
 > sufficient detail to allow other researchers to repeat the work and
-> apply it elsewhere (from Waton M., 2015)
+> apply it elsewhere (from Watson M., 2015)
 
-Describe and release the process that lead raw data to processed data,
+Describe and release the processes that lead raw data to processed data,
 and how the processed data has been further analysed to lead to
 results, figures and conclusions.
 
 - **[Open source](http://opensource.org/osd)**: the source code of
-  your (scienfic) software should be openly released, so that others
+  your (scientific) software should be openly released, so that others
   can read/understand/fix/re-use it. (see
   [software licences](http://opensource.org/licenses))
 
 - **Open protocols**: openly share the hole sample processing, data
-  acquisition.
+  acquisition (see for example
+  [protocols.io](https://www.protocols.io/)).
 
 ### Open access
 
@@ -81,7 +82,7 @@ Arguments against open Science:
 (from the [Wikipedia Open Science page](Wikipedia Open Science page))
 
 Some have also raised arguments about specific aspects of Open
-Science, often founded on confusions or mis-understandings:
+Science, often based on confusions or misunderstandings:
 
 - open source and the lack commercial prospects in software
 - open access and quality of publication
@@ -103,4 +104,4 @@ Science, often founded on confusions or mis-understandings:
 - If you are interested in *All things open* (science, education,
   ...), consider following/joining [OpenConCam](http://www.openconcam.org/).
 
-[Prev: Introduction](./01-intro.md) -- [Next: Reproducbile research](./03-rr.md)
+[Prev: Introduction](./01-intro.md) -- [Next: Reproducible research](./03-rr.md)
