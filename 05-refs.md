@@ -39,6 +39,11 @@
 - [Replication, psychology, and big science](http://simplystatistics.org/2012/04/18/replication-psychology-and-big-science/),
   simplystats blog, 18 April 2015
 
+- Nosek BA, Alter G, Banks GC, et al. Promoting an open research
+  culture: Author guidelines for journals could help to promote
+  transparency, openness, and
+  reproducibility. Science. 2015;348(6242):1422-1425
+  [doi:10.1126/science.aab2374](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4550299/).
 
 
 
