@@ -62,6 +62,8 @@ Open peer review, open education
 [Data Carpentry](http://www.datacarpentry.org/), for example),
 ... open scholarship
 
+**Funders now require publications and data to be openly released.**
+
 ### Open Science
 
 > Open science isn't a movement, it's just (good) science. It's also
