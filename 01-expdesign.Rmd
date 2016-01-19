@@ -152,22 +152,22 @@ points(k$x, k$y, pch = 19)
 
 - Noise vs random variation vs systematic bias.
 
-- Technical vs biological variability: the variability we measure is
-  composed of technical and biological variability. If the former
-  dominates, we won't learn anything about biology.
+- **Technical** vs **biological** variability: the variability we
+  measure is composed of technical and biological variability. If the
+  former dominates, we won't learn anything about biology.
 
-## 
+## Technical vs biological replicates [2]
 
 ![Technical vs biological replicates [2]](./figs/F3large.jpg) 
 
-## 
+## Assessing technical variability in N$^{15}$ labelling [3]
 
 ![Assessing technical variability in N$^{15}$ labelling [3]](./figs/N15var.jpg) 
 
 ## Replication
 
-We can only assess any effect if we consider the variability in our
-experiment.
+We can only assess an effect if we consider the variability in our
+experiment. How much change is there? 
 
 We can only observe variation if we repeat our measurement: repeat
 manipulation are take new measurement. Typically on different sample,
@@ -226,6 +226,9 @@ data acquisitions/operators.
 Assign samples to runs/operators at random.
 
 ## 
+
+Leek *et al.* Tackling the widespread and critical impact of batch
+effects in high-throughput data. Nat Rev Genet. 2010
 
 > One often overlooked complication with such studies is batch
 > effects, which occur because measurements are affected by laboratory
@@ -379,8 +382,33 @@ using PCA plots, clustering, histograms, boxplots, ...
 
 - Does the variability match your design (within/between groups)?
 - Can you identify co-founding/batch effects?
-
 - Identify significant changes
+
+## Examples
+
+Mulvey CM, Schröter C, Gatto L, Dikicioglu D, Fidaner IB, Christoforou
+A, Deery MJ, Cho LT, Niakan KK, Martinez-Arias A, Lilley KS. *Dynamic
+Proteomic Profiling of Extra-Embryonic Endoderm Differentiation in
+Mouse Embryonic Stem Cells.* Stem Cells. 2015
+Sep;33(9):2712-25. [doi:10.1002/stem.2067](http://www.ncbi.nlm.nih.gov/pubmed/26059426).
+
+> Here, we use this GATA-inducible system to quantitatively monitor
+> the dynamics of global proteomic changes during the early stages of
+> this differentiation event and also investigate the fully
+> differentiated phenotype, as represented by embryo-derived XEN
+> cells.
+
+## 
+
+![heatmaps](./figs/heatmaps.pdf)
+
+##
+
+![pairs](./figs/pairs.pdf)
+
+## 
+
+![pca](./figs/pca.pdf)
 
 ## Summary
 
