@@ -17,7 +17,7 @@ BUT
 > Designing effective experiments need thinking about biology more
 > than it does mathematical (statistical) calculations. [1]
 
-The first quote highlight the fact that
+The first quote highlights the fact that
 
 > **Myth**: It does not matter how you collect data, there will always
 > be a statistical 'fix' that will allow to analyse it. [1]
@@ -34,7 +34,8 @@ experiments.
 ## **Hypothesis-driven** vs hypothesis-free (-generating) experiments
 
 A **hypothesis** is a clearly defined description of how the system
-under study works, or is assumed to work.
+under study works, or is assumed to work. Ideally, use clear, single
+research questions, such as
 
 - What is the effect of drug A on the transcriptome/proteome?
 - Is drug A better than drug B in inducing a given effect?
@@ -42,7 +43,7 @@ under study works, or is assumed to work.
 NOT
 
 - Do cells treated with drug A for 20 or 40 min express protein X but
-  not Y? 
+  not Y? (accumulation of conditions, bad start)
 - Let's test all these drugs over as many time points as we can and see
   if something changes. (that's not even a question!)
 
@@ -85,21 +86,21 @@ different experimental conditions, including **controls**.
 - Effect of a drug over time. Time 0, no drug/effect vs time 1, time
   2, ... (these time points will need to be defined.)
 
+- **Positive control**: demonstrate that an experimental system works in
+  principle. 
+- **Negative control**: quantify the baseline condition, assure that what
+  we measure is not plain background.
+
 
 ## Experimental units
 
 - Mice, cultured cells, ...
 - Time points
-- Positive control: demonstrate that an experimental system works in
-  principle.
-- Negative control: quantify the baseline condition, assure that what
-  we measure is not plain background.
-
 
 ## Precision vs accuracy
 
-- **Accuracy** is how close a measured value is to the actual (true) value.
 - **Precision** is how close the measured values are to each other.
+- **Accuracy** is how close a measured value is to the actual (true) value.
 
 ```{r, echo=FALSE, fig.width = 8, fig.height = 3}
 
@@ -150,7 +151,7 @@ points(k$x, k$y, pch = 19)
 
 ## Variability and replication: what are we measuring?
 
-- Noise vs random variation vs systematic bias.
+- Noise/random variation vs systematic bias.
 
 - **Technical** vs **biological** variability: the variability we
   measure is composed of technical and biological variability. If the
@@ -249,8 +250,9 @@ experimental units. These homogeneous groups, referred to as
 increase the meaning of differences between conditions (as well as the
 power of statistics to detect them). [2]
 
-- measure as many (all) experimental conditions at the same time
-- risk of day-to-day variability between the measurements 
+- If possible, measure as many (all) experimental conditions at the
+  same time
+- Minimise risks of day-to-day variability between the measurements
 
 ## 
 
@@ -262,7 +264,11 @@ units), but you can fit only 5 mice per cage (i.e. block).
 \scriptsize{Illustration of batches and how to correct for them. All but
 	two treatments have been applied to mice in two different cages (=
 	batches). The batch/cage effect can now be computed based on the
-	treatments that are shared between the cages.}
+	treatments that are shared between the cages.
+
+	E and F are not directly comparable. However, the difference
+    between E and F can be computed as E - F - \textit{cage effect}.
+    }
 
 <!-- As an example, assume there are six treatment conditions you want to -->
 <!-- apply to mice (the experimental units), but you can fit only five mice -->
@@ -312,29 +318,31 @@ expecting to see?
 
 ```{r, echo=FALSE, fig.height = 4, fig.width=9, warning=FALSE}
 set.seed(123)
-A <- rnorm(5, 6.5, 1.7)
-B <- rnorm(5, 7, 1.7)
+n <- 10
+A <- rnorm(n, 6, 1)
+B <- rnorm(n, 7, 1)
 x <- data.frame(Variable = c(A, B),
-                Group = rep(LETTERS[1:2], each = 5))
+                Group = rep(LETTERS[1:2], each = n))
 
 .ylim <- ylim(5, 10)
 
-A <- rnorm(5, 6.5, 1.7)
-B <- rnorm(5, 7, 1.7)
+A <- rnorm(25, 6, 1)
+B <- rnorm(25, 7, 1)
 x2 <- data.frame(Variable = c(A, B),
-                Group = rep(LETTERS[1:2], each = 5))
+                Group = rep(LETTERS[1:2], each = 25))
 x2 <- rbind(x, x2)
 
-A <- rnorm(5, 6.5, 1)
-B <- rnorm(5, 7, 0.5)
+A <- rnorm(n, 6, 0.5)
+B <- rnorm(n, 7, 0.5)
 
 x3 <- data.frame(Variable = c(A, B),
-                Group = rep(LETTERS[1:2], each = 5))
+                Group = rep(LETTERS[1:2], each = n))
 
-A <- rnorm(5, 6, 1)
-B <- rnorm(5, 8.5, 1)
+set.seed(123)
+A <- rnorm(n, 6, 1)
+B <- rnorm(n, 8.5, 1)
 x4 <- data.frame(Variable = c(A, B),
-                Group = rep(LETTERS[1:2], each = 5))
+                Group = rep(LETTERS[1:2], each = n))
 
 p1 <- ggplot(aes(y = Variable, x = Group, colour = Group), data = x) +
     geom_boxplot() + geom_jitter() + theme(legend.position="none") + .ylim
@@ -347,6 +355,10 @@ p4 <- ggplot(aes(y = Variable, x = Group, colour = Group), data = x4) +
 
 grid.arrange(p1, p2, p3, p4, ncol = 4)
 ```
+
+\scriptsize{(A) 10 samples, means 6 and 7, sd 1. (B) Same as (A), but
+	25 additional samples. (C) Same as (A) but tighter distribution
+	(sd 0.5). (D) Bigger effect.}
 
 
 ## How many replicates? 
@@ -361,8 +373,8 @@ random variation and (3) sample size.
 - As many as possible
 - As many as you can afford
 - Educated guesswork 
-- Pilot study
 - Power analysis
+- Pilot study
 
 ##
 
@@ -412,16 +424,18 @@ Sep;33(9):2712-25. [doi:10.1002/stem.2067](http://www.ncbi.nlm.nih.gov/pubmed/26
 
 ## Summary
 
-When you designing an experiments, make sure you address:
+When designing an experiments, make sure you address:
 
-- hypothesis and experimental groups (controls, conditions) 
-- sources of variability and adequacy of replication
-- effect of technology (multiplexing to reduce/share technical
+- Hypothesis and experimental groups (controls, conditions) 
+- Sources of variability and adequacy of replication
+- Effect of technology (multiplexing to reduce/share technical
   variability, missing values, ...)
 - What is the question, does the design address it, how will you test
   it?
 - Enough samples to see any desired effect?
 - Keep it simple (n-way design vs one-way)
+- Think about EDA (how will you verify that things went according to
+  plan) and analysis beforehand.
 
 ## References
 
