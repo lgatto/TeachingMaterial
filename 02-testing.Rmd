@@ -5,6 +5,9 @@ output:
     fig_caption: true
 ---
 
+```{r, echo=FALSE}
+source("make-fdr-diagram.R")
+```
 ## Foreword
 
 > the function of significance tests is to prevent you from making a
@@ -170,6 +173,8 @@ power of a test = 1 - $type~II$
 
 (FP: false postitive, TP: true positive, FN: false negative, TN: true positive)
 
+**False discovery rate**: $\frac{FP}{FP+TP}$
+
 ## In R
 
 ```{r}
@@ -181,7 +186,47 @@ t.test(x, y)
 
 ## But
 
-Is the p-value really what we want? What about the power of our test?
+Is the p-value really what we want? What is the probability that we
+make a fool of ourselves?
+
+What about the power of our test? Let's calculate a false positive
+rate.
+
+##
+
+```{r, echo=FALSE}
+fdrdiagramme(sig.level = 0.01)
+```
+
+##
+
+```{r, echo=FALSE}
+fdrdiagramme(power = 0.5, preal = 0.05, sig.level = 0.05)
+```
+
+##
+
+```{r, echo=FALSE}
+fdrdiagramme(power = 0.5, preal = 0.9, sig.level = 0.05)
+```
+
+##
+
+```{r, echo=FALSE}
+preal <- seq(0.1, 0.9, 0.01)
+sig <- c(0.05, 0.01)
+power <- seq(0.1, 0.9, 0.01)
+res <- expand.grid(preal = preal, sig = sig, power = power)
+res$fdr <- apply(res, 1,
+	   	 function(x)
+		 fdrdiagramme(preal = x[1], sig.level = x[2], power = x[3], plot = FALSE))
+
+
+## ggplot(aes(x = power, y = preal), data = res) + geom_tile(aes(fill = fdr)) + scale_fill_gradientn(colours = c("white", "red")) + facet_wrap(~sig)
+ggplot(aes(x = power, y = preal), data = res) + geom_tile(aes(fill = fdr)) + scale_fill_gradientn(colours = c("white", "yellow", "orange", "red", "black")) + facet_wrap(~sig)
+```
+
+## Adjustment for multiple testing
 
 
 
