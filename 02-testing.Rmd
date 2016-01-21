@@ -55,7 +55,9 @@ and will pledge to not make (too frequently) fools of ourselves.
 - Gene set enrichment (is there an enrichment of genes with a specific
   function in my set of interesting genes): *hypergeometric*
 
-Check what is used in the literature!
+Check what is used in the literature. Use state-of-the-art
+methods/software that have been specifically developed for the
+desing/technology at hand.
 
 ## Type of tests: (non-)parametric
 
@@ -112,7 +114,7 @@ Measurements in two conditions are paired.
 ```{r, echo=FALSE}
 set.seed(123)
 d <- data.frame(y = c(sort(rnorm(15, 5)),
-     		      sort(rnorm(15, 6.5))),
+     		      sort(rnorm(15, 5.8))),
 		x = c(jitter(rep(1, 15), amount = 0.15),
 		      jitter(rep(2, 15), amount = 0.15)),
 		Group = rep(1:2, each = 15))
@@ -143,7 +145,7 @@ Assumptions:
 
 - t-test is robust to deviations.
 
-- (All models are wrong. Some are useful)
+(All models are wrong. Some are useful)
 
 ## Welch test (t-test with unequal variances)
 
@@ -185,7 +187,7 @@ more extreme under $H_0$.
 **p-value**: how (un)likely it would be to observe a value as extreme or
 more extreme under $H_0$.
 
-If p-value <= than (arbitrary) significance level, then we reject
+If p-value <= than (**arbitrary**) significance level, then we reject
 $H_0$.
 
 ## Avoid fallacy
@@ -200,10 +202,12 @@ Absence of evidence $\neq$ evidence of absence
 ## What can go wrong
 
 
-|                |        H0 is true   |    H0 is false 
-|----------------|---------------------|----------------	      
-|H0 is rejected  | Type I error, FP    |   correct TP
-|H0 not rejected |       correct TN    | Type II error, FN
+|                   |        $H_0$ is true   |    $H_0$ is false 
+|-------------------|---------------------|------------------------  
+|$H_0$ is rejected  | Type I error, FP    |   correct TP
+|$H_0$ not rejected |       correct TN    | Type II error, FN
+
+Type I and  II errors are not independent. One can't control both.
 
 power of a test = 1 - $type~II$
 
@@ -217,8 +221,11 @@ power of a test = 1 - $type~II$
 
 ## In R
 
-```{r}
+```{r, echo=FALSE}
 set.seed(1)
+```
+
+```{r}
 x <- rnorm(15, mean = 7, sd = 1)
 y <- rnorm(15, mean = 5, sd = 1.2)
 t.test(x, y)
@@ -285,8 +292,7 @@ more tests?
 
 ## Adjustment for multiple testing 
 
-A p-value informs us about a single test. What if we have 1000s or
-more tests?
+**A p-value informs us about a single test. What if we have 1000s or more tests?**
 
 As the number of comparisons increases, it becomes more likely that
 the some results will appear to differ by chance. Our confidence that
@@ -298,10 +304,8 @@ comparison.
 For example, if one test is performed at the 5% level, there is only a
 5% chance of incorrectly rejecting the null hypothesis if the null
 hypothesis is true. However, for 100 tests where all null hypotheses
-are true, the expected number of incorrect rejections is 5. If the
-tests are independent, the probability of at least one incorrect
-rejection is 99.4%. These errors are called **false positives** or
-Type I errors.
+are true, the expected number of incorrect rejections is 5.  These
+errors are **false positives**.
 
 ## Let's try it (1)
 
@@ -332,10 +336,11 @@ hist(pv)
 * **Family-wise error rate** (FWER) The probability of one or more
     false positives. **Bonferroni correction** For $m$ tests, multiply
     each p-value with $m$. Then see if anyone still remains below
-    $\alpha$.
+    significance threshold.
 
 * **False discovery rate** (FDR): The expected fraction of false
-  positives among all discoveries.
+  positives among all discoveries. Allows us to choose $n$ results
+  with a given FDR. Examples are Benjamini-Hochberg or q-values. 
 
 ## FDR adjustment
 
