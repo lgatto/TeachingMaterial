@@ -161,6 +161,7 @@ and $s_{xi}$ is the standard deviation of sample $i$
 
   $s_{x_i} = \sqrt{\frac{1}{N-1} \displaystyle\sum_{i = 1}^{N} (x_i - \bar{x})^2}$ 
 
+
 ## How to we estimate how different we are from *random*
 
 ```{r, echo = FALSE}
@@ -168,8 +169,8 @@ addseg <- function(x, ...) {
        segments(x, 0, x, dnorm(x), lty = "dotted", lwd = 2, ...)
        ## segments(-1000, dnorm(x), x, dnorm(x), lty = "dotted", ...)
 }
-x <- rnorm(1e6)
-plot(density(x), main = "N(0, 1)", xlab = "")
+x <- rt(1e6, df = 28)
+plot(density(x), main = "t-distribution", xlab = "")
 grid()
 addseg(0, col = "black")
 addseg(1, col = "blue")
@@ -181,6 +182,7 @@ addseg(qnorm(0.005), col = "red")
 
 **p-value**: how (un)likely it would be to observe a value as extreme or
 more extreme under $H_0$.
+
 
 ## P-value
 
@@ -229,6 +231,21 @@ set.seed(1)
 x <- rnorm(15, mean = 7, sd = 1)
 y <- rnorm(15, mean = 5, sd = 1.2)
 t.test(x, y)
+```
+
+##
+
+```{r, echo = FALSE}
+x <- rt(1e6, df = 28)
+plot(density(x), main = "t(28); t = 5.4214; p-value = 8.778e-6", xlab = "")
+grid()
+addseg(0, col = "black")
+addseg(1, col = "blue")
+addseg(qnorm(0.975), col = "orange")
+addseg(qnorm(0.025), col = "orange")
+addseg(qnorm(0.995), col = "red")
+addseg(qnorm(0.005), col = "red")
+abline(v = 5.4215)
 ```
 
 ## But
@@ -308,6 +325,10 @@ are true, the expected number of incorrect rejections is 5.  These
 errors are **false positives**.
 
 ## Let's try it (1)
+
+```{r, echo=FALSE}
+set.seed(1)
+```
 
 ```{r}
 t.test(rnorm(5), rnorm(5))
