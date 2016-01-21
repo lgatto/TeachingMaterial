@@ -19,7 +19,7 @@ at the end of the course, we will understand
 
 > Why Most Published Research Findings Are False. [3]
 
-and will pledge to not make fools of ourselves too frequently.
+and will pledge to not make (too frequently) fools of ourselves.
 
 ## Statistical hypothesis testing
 
@@ -153,21 +153,28 @@ Two samples of sizes $n_1$ and $n_2$
 
 where
 
-  $s_{\bar{x_1} - \bar{x_2}} = \sqrt{\frac{s_{x1}^2}{n_1} + \frac{s_{x2}^2}{n_2}}$
+  $s_{\bar{x_1} - \bar{x_2}} = \sqrt{\frac{s_{x_1}^2}{n_1} + \frac{s_{x_2}^2}{n_2}}$
+
+and $s_{xi}$ is the standard deviation of sample $i$
+
+  $s_{x_i} = \sqrt{\frac{1}{N-1} \displaystyle\sum_{i = 1}^{N} (x_i - \bar{x})^2}$ 
 
 ## How to we estimate how different we are from *random*
 
 ```{r, echo = FALSE}
 addseg <- function(x, ...) {
-       segments(x, 0, x, dnorm(x), lty = "dotted", ...)
-       segments(-1000, dnorm(x), x, dnorm(x), lty = "dotted", ...)
+       segments(x, 0, x, dnorm(x), lty = "dotted", lwd = 2, ...)
+       ## segments(-1000, dnorm(x), x, dnorm(x), lty = "dotted", ...)
 }
 x <- rnorm(1e6)
 plot(density(x), main = "N(0, 1)", xlab = "")
 grid()
-addseg(0.1, col = "black")
+addseg(0, col = "black")
 addseg(1, col = "blue")
-addseg(2.3, col = "red")
+addseg(qnorm(0.975), col = "orange")
+addseg(qnorm(0.025), col = "orange")
+addseg(qnorm(0.995), col = "red")
+addseg(qnorm(0.005), col = "red")
 ```
 
 **p-value**: how (un)likely it would be to observe a value as extreme or
@@ -178,7 +185,8 @@ more extreme under $H_0$.
 **p-value**: how (un)likely it would be to observe a value as extreme or
 more extreme under $H_0$.
 
-If p-value <= than (arbitrary) significance level $\alpha$, then we reject $H_0$.
+If p-value <= than (arbitrary) significance level, then we reject
+$H_0$.
 
 ## Avoid fallacy
 
@@ -202,6 +210,10 @@ power of a test = 1 - $type~II$
 (FP: false positive, TP: true positive, FN: false negative, TN: true positive)
 
 **False discovery rate**: $\frac{FP}{FP+TP}$
+
+##
+
+![Type I and II errors simplified. ](./figs/BnRtUkRCIAAn60g.jpg)
 
 ## In R
 
@@ -237,6 +249,12 @@ fdrdiagramme(power = 0.5, preal = 0.05, sig.level = 0.05)
 ```{r, echo=FALSE}
 fdrdiagramme(power = 0.5, preal = 0.9, sig.level = 0.05)
 ```
+
+##
+
+See also this interactive app http://shinyapps.org/apps/PPV/.
+
+![PPV app](./figs/ppvapp.png)
 
 ##
 
@@ -353,7 +371,10 @@ Also
 - Beware of **arbitrary thresholds**, look for **outliers**: does
   changing one parameter suddenly change your biological results
   substantially?
-  
+
+- The choice of level of significance should be based on the relative
+  consequences of the 2 types of errors.
+
 - Consider **p-value and effect** (for example volcano plot).
 
 - Look at **confidence intervals**.
