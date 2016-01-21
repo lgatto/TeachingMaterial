@@ -11,7 +11,7 @@ test-handouts.pdf: 02-testing.Rmd
 	Rscript -e "rmarkdown::render('02-testing.Rmd', output_file = 'test-handouts.pdf', output_format = 'pdf_document')"
 
 all: 
-	# make expdes-slides.pdf
-	# make expdes-handouts.pdf
+	make expdes-slides.pdf
+	make expdes-handouts.pdf
 	make test-slides.pdf
 	make test-handouts.pdf

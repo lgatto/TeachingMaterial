@@ -34,3 +34,6 @@ experimental design and the reporting of a simple statistical analysis.
 1. Experimental designs
    ([slides](https://github.com/lgatto/statistics-primer/blob/master/expdes-slides.pdf),
    [sheets](https://github.com/lgatto/statistics-primer/blob/master/expdes-handouts.pdf))
+2. Significance testing
+   ([slides](https://github.com/lgatto/statistics-primer/blob/master/test-slides.pdf),
+   [sheets](https://github.com/lgatto/statistics-primer/blob/master/test-handouts.pdf))

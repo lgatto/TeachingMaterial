@@ -16,7 +16,7 @@ fdrdiagramme <- function(ntests = 1000,
     
     arrow2 <- function(x, y, text = "") {
         text((x[1] + y[1])/2, (x[2] + y[2])/2, text, pos = 2, offset = 0.5)
-        arrows(x[1], x[2], y[1], y[2])
+        segments(x[1], x[2], y[1], y[2])
     }
 
 
@@ -58,7 +58,8 @@ fdrdiagramme <- function(ntests = 1000,
         text2(p6, paste(tn, "tests negative\nTN"))
         text2(p7, paste(fp, "tests positive\nFP"))
 
-        text(0, 1, paste("False discovery rate =", fdr), cex = 1.5)
+        title(main = paste0("False discovery rate: ",
+                            fp, "/(", tp, "+", fp, ") = ", fdr))
     }
 
     invisible(fdr)
