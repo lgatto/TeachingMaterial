@@ -40,7 +40,8 @@ results, figures and conclusions.
 - **[Open source](http://opensource.org/osd)**: the source code of
   your (scientific) software should be openly released, so that others
   can read/understand/fix/re-use it. (see
-  [software licences](http://opensource.org/licenses))
+  [software licences](http://opensource.org/licenses) and
+  [A Quick Guide to Software Licensing for the Scientist-Programmer](http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002598))
 
 - **Open protocols**: openly share the hole sample processing, data
   acquisition (see for example
