@@ -1,0 +1,182 @@
+---
+title: "Practical: Statistics with R"
+author: "Laurent Gatto"
+output: 
+  html_document
+---
+
+## Introduction
+
+- data types
+- refcard
+
+## Create a data set
+
+
+## Explore this design
+
+The data illustrated in the heatmap below is available in the
+`timecourse.csv` file, that can be read into R with the `read.csv`
+function. In this experiment,
+[Mulvey and colleagues](http://www.ncbi.nlm.nih.gov/pubmed/26059426),
+performed a time course experiment on mouse extra-embryonic endoderm
+(XEN) stem cells. Extra-embryonic endoderm differentiation can be
+modeled in vitro by induced expression of GATA transcription factors
+in mouse embryonic stem cells. They used this GATA-inducible system to
+quantitatively monitor the dynamics of global proteomic changes during
+the early stages of this differentiation event (at 0, 16, 24, 48 and
+72 hours) and also investigate the fully differentiated phenotype, as
+represented by embryo-derived XEN cells.
+
+
+```{r, cache = TRUE}
+x <- read.csv("./data/timecourse.csv", row.names = 1)
+heatmap(as.matrix(x))
+```
+
+> Describe the experimental design in terms of units, replicates,
+> experimental factors, controls. What is the hypothesis of the study?
+> The experiments were performed using tandem mass tags (TMT), which
+> allow to combine up to 6 units per mass-spectrometry run. Suggest
+> and motivate a design.
+
+> Read the file into R. How many experimental units and features
+> (proteins) are there?
+   
+```{r}
+x <- read.csv("./data/timecourse.csv", row.names = 1)
+dim(x)
+```   
+   
+> Use the `heatmap` function to produce the heatmap shown
+> above. Describe how and why this matches or contradicts the
+> experimental design.
+
+> Calculate and compare the variability within and between
+> experimental groups.
+
+```{r}
+xen <- grep("XEN", colnames(x))
+t48 <- grep("48hr", colnames(x))
+rep1 <- grep("rep1", colnames(x))
+
+summary(apply(x[, xen], 1, sd))
+summary(apply(x[, t48], 1, sd))
+summary(apply(x[, rep1], 1, sd))
+```
+
+## Power calculation
+
+The data set provided in the `cll.rda` file is a subset of the chronic
+lymphocytic leukemia (CLL) gene expression data from the
+[`CLL`](http://www.bioconductor.org/packages/3.2/data/experiment/html/CLL.html)
+package. It contains 10 (out of 24) sample samples that were either
+classified as progressive or stable in regards to disease progression.
+
+You are asked to perform a power analysis on this data. Estimate
+values for the effect size and standard deviation that are relevant
+for this kind of data.
+
+> Load the data with the `load` function, and verify that you have
+> 12625 rows and 10 columns.
+
+```{r}
+load("./data/cll.rda")
+dim(cll)
+```
+
+> To identify appropriate effect size and standard deviation for the
+> power analysis calculate generate two figures. 
+>
+> First, calculate the > standard deviations and means for all the
+> genes and visualise them a > scatter plot. Optional, to help you
+> choose these values, calculate a > regression of the means and
+> standard deviations.
+>
+> Then produce a so-called MA-plot (these plots were initially used to
+> visualise micro-array data) by plotting the mean intensities against
+> the $log_2$ fold-changes.
+
+
+```{r}
+mns <- rowMeans(cll)
+sds <- apply(cll, 1, sd)
+par(mfrow = c(1, 2))
+plot(mns, sds, log = "xy")
+grid()
+lines(lowess(mns, sds, f = 0.1), col = "red", lwd = 2)
+abline(v = c(100, 1000, 5000), col = "steelblue")
+abline(h = c(19, 400, 2000), col = "steelblue")
+m1 <- apply(cll, 1, function(x) mean(x[1:5]))
+m2 <- apply(cll, 1, function(x) mean(x[6:10]))
+plot(mns, log2(m1/m2), log = "x")
+grid()
+```
+
+> Estimate the number of samples required to obtain a power of 0.8 at
+> a significance level of 0.01 for low, medium and high expression
+> genes.
+
+```{r}
+power.t.test(delta = 100, sd = 19, power = 0.8, sig.level=0.01)
+power.t.test(delta = 1000, sd = 400, power = 0.8, sig.level=0.01)
+power.t.test(delta = 5000, sd = 2000, power = 0.8, sig.level=0.01)
+
+## Note that in general, low intensity measurements are very noisy and
+## small changes in the lower range are hard to detect. In this data,
+## this does not seem to be the case.
+```
+
+## Hypthesis testing
+
+It we toss a fair coin $n$ times, we expect to observe roughly
+$\frac{n}{2}$ times.  Such events, where one wants to quantify the
+number of $p$ successes in $n$ trials is modelled by the binomial
+distribution.
+
+> Quantify the probability to observe exactly 8 heads out of 12 trails
+> using the binomial mass function ${n \choose k} p^k (1-p)^{n-k}$
+> where $n$ is the size of the trial, $k$ is the number of successes,
+> $p$ is the probability of a success and ${n \choose k} =
+> \frac{n!}{k!(n-k)!}$. In R, $n!$ is calculated with
+> `factorial(n)`. Alternatively, use `choose(n, k)` to calculate ${n
+> \choose k}$.
+
+```{r}
+choose(12, 8)*0.5^8 * 0.5^4
+```
+
+> In R, every distribution has a set of density (`d*`), distribution
+> (`p*`), quantile (`q*`) and random generator (`r*`) functions. For
+> the normal distribution, `*` is `norm`. For the binomial
+> distribution, `*` is `binom`. See `?binom` for details.
+
+> Generate a histogram that shows the respective number of heads for
+> 12 trails.
+
+```{r}
+x <- rbinom(1e3, 12, 0.5)
+table(x)
+hist(x)
+```
+
+> Use the density function to verify your calculation above.
+
+```{r}
+dbinom(8, 12, 0.5)
+```
+
+> What is the probability to observe 10 or more heads $P(heads \ge 10)$.
+
+```{r}
+sum(dbinom(10:12, 12, 0.5))
+```
+
+## P-value interpretation
+
+> Match the following p-value histograms and volcano plots. 
+
+![p-values and volcano plots](./figs/pvex.png)
+
+
+
