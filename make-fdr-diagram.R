@@ -26,7 +26,7 @@ fdrdiagramme <- function(ntests = 1000,
     fn <- eff * (1 - power)
     tn <- noeff * (1 - sig.level)
     fp <- noeff * sig.level
-        fdr <- round(fp/(tp+fp), 3)
+    fdr <- round(fp/(tp+fp), 3)
     
     if (plot) {
         plot(0, type = "n", xlab = "", ylab = "",
