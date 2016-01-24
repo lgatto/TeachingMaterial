@@ -37,4 +37,7 @@ experimental design and the reporting of a simple statistical analysis.
 2. Significance testing
    ([slides](https://github.com/lgatto/statistics-primer/blob/master/test-slides.pdf),
    [handouts](https://github.com/lgatto/statistics-primer/blob/master/test-handouts.pdf))
-3. [Practical](https://htmlpreview.github.io/?https://github.com/lgatto/statistics-primer/blob/master/03-practical.html)
+
+3. Practical
+   ([html](https://htmlpreview.github.io/?https://github.com/lgatto/statistics-primer/blob/master/03-practical.html),
+   [pdf](https://github.com/lgatto/statistics-primer/blob/master/03-practical.pdf))
