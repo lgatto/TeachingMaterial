@@ -41,3 +41,5 @@ experimental design and the reporting of a simple statistical analysis.
 3. Practical
    ([html](https://htmlpreview.github.io/?https://github.com/lgatto/statistics-primer/blob/master/03-practical.html),
    [pdf](https://github.com/lgatto/statistics-primer/blob/master/03-practical.pdf))
+   and
+   [data](https://github.com/lgatto/statistics-primer/blob/master/data.zip)
