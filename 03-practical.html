@@ -99,8 +99,9 @@ img {
 </div>
 <div id="identify-relevant-groups" class="section level2">
 <h2>Identify relevant groups</h2>
+<p>The data set in <code>dataonly.csv</code> is comprised of 2 groups, A and B, each with equal numbers of technical and biological replicates (balanced design), but the person who run the samples lost the sheet matching samples to groups. They can only remember that sample A belonged to group A.</p>
 <blockquote>
-<p>The data set in <code>dataonly.csv</code> is comprised of 2 groups, A and B, each with equal numbers of technical and biological replicates, but the person who run the samples lost the sheet matching samples to groups. They can only remember that sample A belonged to group A. Report the different types of variability’s to motivate your answer.</p>
+<p>Infer the likely groups from the data. Report the different types of variability’s to motivate your answer.</p>
 </blockquote>
 </div>
 <div id="power-calculation" class="section level2">
@@ -108,11 +109,13 @@ img {
 <p>The data set provided in the <code>cll.rda</code> file is a subset of the chronic lymphocytic leukemia (CLL) gene expression data from the <a href="http://www.bioconductor.org/packages/3.2/data/experiment/html/CLL.html"><code>CLL</code></a> package. It contains 10 (out of 24) sample samples that were either classified as progressive or stable in regards to disease progression.</p>
 <p>You are asked to perform a power analysis on this data. Estimate values for the effect size and standard deviation that are relevant for this kind of data.</p>
 <blockquote>
-<p>Load the data with the <code>load</code> function, and verify that you have 12625 rows and 10 columns.</p>
+<p>Load the data and verify that you have 12625 rows and 10 columns.</p>
+</blockquote>
+<p>To identify appropriate effect size and standard deviation for the power analysis calculate generate two figures.</p>
+<blockquote>
+<p>First, calculate the standard deviations and means for all the genes and visualise them a scatter plot. Optional, to help you choose these values, calculate a regression of the means and standard deviations.</p>
 </blockquote>
 <blockquote>
-<p>To identify appropriate effect size and standard deviation for the power analysis calculate generate two figures.</p>
-<p>First, calculate the &gt; standard deviations and means for all the genes and visualise them a &gt; scatter plot. Optional, to help you choose these values, calculate a &gt; regression of the means and standard deviations.</p>
 <p>Then produce a so-called MA-plot (these plots were initially used to visualise micro-array data) by plotting the mean intensities against the <span class="math">\(log_2\)</span> fold-changes.</p>
 </blockquote>
 <blockquote>
@@ -178,13 +181,11 @@ img {
 </div>
 <div id="hypothesis-testing" class="section level2">
 <h2>Hypothesis testing</h2>
-<p>It we toss a fair coin <span class="math">\(n\)</span> times, we expect to observe roughly <span class="math">\(\frac{n}{2}\)</span> times. Such events, where one wants to quantify the number of <span class="math">\(p\)</span> successes in <span class="math">\(n\)</span> trials is modelled by the binomial distribution.</p>
+<p>It we toss a fair coin <span class="math">\(n\)</span> times, we expect to observe heads roughly <span class="math">\(\frac{n}{2}\)</span> times. Such events, where one wants to quantify the number of <span class="math">\(p\)</span> successes in <span class="math">\(n\)</span> trials is modelled by the binomial distribution.</p>
 <blockquote>
 <p>Quantify the probability to observe exactly 8 heads out of 12 trails using the binomial mass function <span class="math">\({n \choose k} p^k (1-p)^{n-k}\)</span> where <span class="math">\(n\)</span> is the size of the trial, <span class="math">\(k\)</span> is the number of successes, <span class="math">\(p\)</span> is the probability of a success and <span class="math">\({n \choose k} = \frac{n!}{k!(n-k)!}\)</span>. In R, <span class="math">\(n!\)</span> is calculated with <code>factorial(n)</code>. Alternatively, use <code>choose(n, k)</code> to calculate <span class="math">\({n \choose k}\)</span>.</p>
 </blockquote>
-<blockquote>
 <p>In R, every distribution has a set of density (<code>d*</code>), distribution (<code>p*</code>), quantile (<code>q*</code>) and random generator (<code>r*</code>) functions. For the normal distribution, <code>*</code> is <code>norm</code>. For the binomial distribution, <code>*</code> is <code>binom</code>. See <code>?binom</code> for details.</p>
-</blockquote>
 <blockquote>
 <p>Generate a histogram that shows the respective number of heads for 12 trails.</p>
 </blockquote>
