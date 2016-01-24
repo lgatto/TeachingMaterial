@@ -13,6 +13,10 @@ test-handouts.pdf: 02-testing.Rmd
 03-practical.html: 03-practical.Rmd
 	Rscript -e "rmarkdown::render('03-practical.Rmd')"
 
+03-practical.pdf: 03-practical.Rmd
+	Rscript -e "rmarkdown::render('03-practical.Rmd', output_file = '03-practical.pdf', output_format = 'pdf_document')"
+
+
 all: 
 	make expdes-slides.pdf
 	make expdes-handouts.pdf
