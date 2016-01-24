@@ -74,17 +74,11 @@ img {
 </div>
 <div id="create-a-data-set" class="section level2">
 <h2>Create a data set</h2>
-<p>Create and visualise datasets that matches the following experimental designs:</p>
+<p>Create and visualise a dataset that matches the following experimental designs:</p>
 <blockquote>
-<p>We used a SILAC quantitative proteomics approach to measure the effect of drug A on human embryonic kidney HEK-293 cells in triplicate. We will use a one sample t-test to analyse the fold-changes. Assume that 1000 proteins where measured.</p>
+<p>We used a SILAC quantitative proteomics approach to measure the effect of drug A on human embryonic kidney HEK-293 cells in triplicate. We used a one sample t-test to analyse the fold-changes.</p>
 </blockquote>
-</div>
-<div id="identify-relevant-groups" class="section level2">
-<h2>Identify relevant groups</h2>
-<blockquote>
-<p>The data set in <code>data/dataonly.csv</code> is comprised of 2 groups, A and B, each with equal numbers of technical and biological replicates, but the person who run the samples lost the annotation describing what sample is what. He can only remember that sample A belonged to group A. You can read the data into R with <code>read.csv</code>.</p>
-<p>Report the different types of variability’s to motivate your answer.</p>
-</blockquote>
+<p>Assume that 1000 proteins where measured.</p>
 </div>
 <div id="explore-this-design" class="section level2">
 <h2>Explore this design</h2>
@@ -100,7 +94,14 @@ img {
 <p>Use the <code>heatmap</code> function to produce the heatmap shown above. Describe how and why this matches or contradicts the experimental design.</p>
 </blockquote>
 <blockquote>
-<p>Calculate and compare the variability within and between experimental groups.</p>
+<p>Calculate and compare the variability within and between two experimental groups of your choice.</p>
+</blockquote>
+</div>
+<div id="identify-relevant-groups" class="section level2">
+<h2>Identify relevant groups</h2>
+<blockquote>
+<p>The data set in <code>data/dataonly.csv</code> is comprised of 2 groups, A and B, each with equal numbers of technical and biological replicates, but the person who run the samples lost the sheet matching samples to groups. They can only remember that sample A belonged to group A.</p>
+<p>Report the different types of variability’s to motivate your answer.</p>
 </blockquote>
 </div>
 <div id="power-calculation" class="section level2">
