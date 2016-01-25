@@ -19,9 +19,16 @@ test-handouts.pdf: 02-testing.Rmd
 data.zip:
 	zip data.zip data/*csv data/*rda
 
+practical:
+	make 03-practical.pdf
+	make 03-practical.html
+	make data.zip
+
 all: 
 	make expdes-slides.pdf
 	make expdes-handouts.pdf
 	make test-slides.pdf
 	make test-handouts.pdf
 
+
+.PHONY: all practical
