@@ -151,7 +151,7 @@ Assumptions:
 
 Two samples of sizes $n_1$ and $n_2$
 
-   $t = \frac{\bar{X_1} - \bar{X_2}}{s_{\bar{x_1} - \bar{x_2}}}$
+   $t = \frac{\bar{X_1} - \bar{X_2}}{s_{\bar{x_1}} - s_{\bar{x_2}}}$
 
 where
 
