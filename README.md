@@ -43,3 +43,5 @@ experimental design and the reporting of a simple statistical analysis.
    [pdf](https://github.com/lgatto/statistics-primer/raw/master/03-practical.pdf))
    and
    [data](https://github.com/lgatto/statistics-primer/raw/master/data.zip)
+   (download `data.zip` and unzip it; it contains a `data` directory
+   with the `cvs` and `rda` files.)
