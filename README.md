@@ -22,3 +22,29 @@ The material will focus on:
 The course is aimed at those with experience of scripting, who want to
 learn more about writing robust and efficient code and who may want to
 develop and release packages in the future.
+
+### Content
+
+#### Part I:
+- Coding style(s)
+- Interactive use and programming
+- Environments
+- Computing on the language
+- Tiny data
+
+#### Part II: Functional programming
+
+#### Part III: Debugging
+- Debbugging: techniques and tools
+- Condition handling: try/tryCatch
+- Defensive programming
+- Testing
+
+#### Part IV: Performance
+- Benchmarking
+- Profiling
+- Optimisation
+- Memory
+- Parallelisation
+- Rcpp
+
