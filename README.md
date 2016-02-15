@@ -30,7 +30,7 @@ develop and release packages in the future.
 - Interactive use and programming
 - Environments
 - Computing on the language
-- Tiny data
+- Tidy data
 
 #### Part II: Functional programming
 
