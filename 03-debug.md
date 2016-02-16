@@ -3,7 +3,17 @@ title: "Part III: Debugging"
 author: "Laurent Gatto"
 ---
 
-## Deb bugging: techniques and tools
+## Overview
+
+- Debbugging: techniques and tools
+- Condition handling: try/tryCatch
+- Defensive programming
+- Testing
+
+## Debugging: techniques and tools
+
 ## Condition handling: try/tryCatch
+
 ## Defensive programming
+
 ## Testing

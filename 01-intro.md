@@ -10,6 +10,15 @@ author: "Laurent Gatto"
 - [An Introduction to the Interactive Debugging Tools in R](http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf), Roger D. Peng.
 - [R Programming for Bioinformatics](http://master.bioconductor.org/help/publications/books/r-programming-for-bioinformatics/), Robert Gentleman.
 
+## Overview
+
+- Coding style(s)
+- Interactive use and programming
+- Environments
+- Computing on the language
+- Tidy data
+
+
 ## Introduction
 
 > Computers are cheap, and thinking hurts. -- Use Ligges
@@ -64,11 +73,11 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
 ## 
 ## matrix(rnorm(10), 5)
 ## ##             [,1]       [,2]
-## ## [1,]  0.05311106  1.7299880
-## ## [2,] -2.05183925 -1.0051033
-## ## [3,]  0.48617588 -0.4617837
-## ## [4,]  0.09148370 -0.5319526
-## ## [5,]  0.97996636 -0.5400873
+## ## [1,]  0.05206506  0.3597278
+## ## [2,] -1.58935766 -0.6262696
+## ## [3,]  0.86780729  0.2880777
+## ## [4,]  1.44777459 -0.3521537
+## ## [5,]  0.13499766 -0.8765335
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
@@ -93,7 +102,8 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
 
 ## Interactive use vs programming: `drop`
 
-```
+
+```r
 head(cars)
 head(cars[, 1])
 head(cars[, 1, drop = FALSE])
@@ -107,10 +117,15 @@ sapply(df1, class)
 df2 <- data.frame(x = 1:3, y = Sys.time() + 1:3)
 sapply(df2, class)
 ```
-## Interactive use vs programming
+## Ineractive use vs programming
 
 Moving from using R to programming R is *abstraction*, *automation*,
 *generalisation*.
+
+## Semantics
+
+- *pass-by-value* copy-on-modify
+- *pass-by-reference*: environments, S4 Reference Classes
 
 ## Environments
 
@@ -118,18 +133,194 @@ Moving from using R to programming R is *abstraction*, *automation*,
 
 - Data structure that enables *scoping* (see later).
 - Have reference semantics
+- Useful data structure on their own
 
-### Definition
+### Definition (1)
 
 An environment associates, or *binds*, names to values in memory.
 Variables in an environment are hence called *bindings*.
 
-## Semantics
+## Creating and populate environments
 
-- pass-by-ref: environments, S4 Reference Classes
-- pass-by-value (copy-on-modify)
+
+```r
+e <- new.env()
+e$a <- 1
+e$b <- LETTERS[1:5]
+e$c <- TRUE
+e$d <- mean
+```
+
+
+```r
+e$a <- e$b
+e$a <- LETTERS[1:5]
+```
+
+- Objects in environments have unique names
+- Objects in different environments can of course have identical names
+- Objects in an environment have no order
+- Environments have parents
+
+## Definition (2)
+
+An environment is composed of a *frame* that contains the name-object
+bindings and a parent (enclosing) environment.
+
+## Relationship between environments
+
+Every environment has a parent (enclosing) environment
+
+
+```r
+e <- new.env()
+parent.env(e)
+```
+Current environment
+
+
+```r
+environment()
+```
+
+```
+## <environment: R_GlobalEnv>
+```
+
+Noteworthy environments
+
+
+```r
+globalenv()
+emptyenv()
+baseenv()
+```
+
+All parent of `R_GlobalEnv`:
+
+
+```r
+search()
+```
+
+```
+## [1] ".GlobalEnv"        "package:formatR"   "package:stats"    
+## [4] "package:graphics"  "package:grDevices" "package:utils"    
+## [7] "package:datasets"  "Autoloads"         "package:base"
+```
+
+```r
+as.environment("package:stats")
+```
+
+```
+## <environment: package:stats>
+## attr(,"name")
+## [1] "package:stats"
+## attr(,"path")
+## [1] "/usr/local/lib64/R/library/stats"
+```
+
+Listing objects in an environment
+
+
+```r
+ls() ## default is R_GlobalEnv
+```
+
+```
+## character(0)
+```
+
+```r
+ls(envir = e)
+```
+
+```
+## Error in ls(envir = e): object 'e' not found
+```
+
+```r
+ls(pos = 1)
+```
+
+```
+## character(0)
+```
+
+
+```r
+search()
+```
+
+```
+## [1] ".GlobalEnv"        "package:formatR"   "package:stats"    
+## [4] "package:graphics"  "package:grDevices" "package:utils"    
+## [7] "package:datasets"  "Autoloads"         "package:base"
+```
+
+Note: Every time a package is loaded with `library`, it is inserted in
+the search path after the `R_GlobalEnv`.
+
+## Accessors and setters
+
+- In addition to `$`, one can also use `[[`, `get` and `assign`.
+- To check if a name exists in an environmet (or in any or its parents), one can use `exists`.
+- Compare two environments with `identical` (not `==`).
+
+## Exercise
+
+- Draw a few environments with variables and ask to reproduce in R.
+
+## Where is a symbol defined?
+
+`pryr::where()`
+
+## Lexical scoping
+
+- Objects in environments have unique names
+- Objects in different environments can of course have identical names.
+- If a name is not found in the current environment, it is looked up
+  in the parent (enclosing) from. 
+- If it is not found in the parent (enclosing) frame, it is looked up
+  in the parent's parent frame, and so on...
+
+
+```r
+search()
+mean <- function(x) cat("The mean is", sum(x)/length(x), "\n")
+mean(1:10)
+base::mean(1:10)
+rm(mean)
+mean(1:10)
+```
+
+## Assignments
+
+- `<-` assigns/creates in the current environment
+
+- `<<-` (deep assignment) never creates a variable in the current
+  environment, but modifies an existing variable in the current or
+  first enclosing environment where that name is defined. 
+  
+- If `<<-` does not find the name, it will create the variable in the global environment.
+
+## Using environments
+
+Most environments are created when creating and calling functions. They are also used in packages:
+
+- Used in packages: *package* and *namespace* environments
+
+There are several reasons to create then manually.
+
+- Reference semantics
+- Avoiding copies
+- Package state
+- As a hashmap
 
 ## Computing on the language
+
+
 
 ## Tidy data
 
