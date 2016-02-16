@@ -43,10 +43,25 @@ for **consistency** and **readability**.
 
 ## [`formatR`](https://cran.rstudio.com/web/packages/formatR/index.html)
 
-```{r}
+
+```r
 library("formatR")
 tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
           arrow = TRUE)
+```
+
+```
+## a <- 1 + 1
+## a  # print the value
+## ## [1] 2
+## 
+## matrix(rnorm(10), 5)
+## ##            [,1]         [,2]
+## ## [1,] -1.4667074  0.109601352
+## ## [2,]  2.3879977 -0.001741281
+## ## [3,]  0.3004284  1.078886704
+## ## [4,] -1.0106071 -0.473581455
+## ## [5,] -1.5194370 -0.592679401
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
