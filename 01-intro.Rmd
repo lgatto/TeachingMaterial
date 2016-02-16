@@ -65,6 +65,10 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
       (2%) are not.
 ```
 
+## Style changes over time
+
+![Style changes over time](./figs/style.png)
+
 ## Interactive use vs programming: `drop`
 
 ```

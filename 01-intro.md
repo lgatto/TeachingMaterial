@@ -56,12 +56,12 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
 ## ## [1] 2
 ## 
 ## matrix(rnorm(10), 5)
-## ##            [,1]         [,2]
-## ## [1,] -1.4667074  0.109601352
-## ## [2,]  2.3879977 -0.001741281
-## ## [3,]  0.3004284  1.078886704
-## ## [4,] -1.0106071 -0.473581455
-## ## [5,] -1.5194370 -0.592679401
+## ##            [,1]       [,2]
+## ## [1,] -0.5534786 -0.1645489
+## ## [2,]  1.2068485 -0.3915816
+## ## [3,] -1.1493449 -0.3609628
+## ## [4,]  0.4614043  1.6619569
+## ## [5,]  0.6742575 -0.3147386
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
@@ -79,6 +79,10 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
     * CONSIDER: Indenting lines with a multiple of 4 spaces; 162 lines
       (2%) are not.
 ```
+
+## Style changes over time
+
+![Style changes over time](./figs/style.png)
 
 ## Interactive use vs programming: `drop`
 
