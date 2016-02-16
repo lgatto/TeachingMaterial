@@ -10,6 +10,13 @@ author: "Laurent Gatto"
 - [An Introduction to the Interactive Debugging Tools in R](http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf), Roger D. Peng.
 - [R Programming for Bioinformatics](http://master.bioconductor.org/help/publications/books/r-programming-for-bioinformatics/), Robert Gentleman.
 
+## Introduction
+
+> Computers are cheap, and thinking hurts. -- Use Ligges
+
+Simplicity, readability and consistency are a long way towards
+robust code.
+
 ## Coding style(s)
 
 Why?
@@ -56,12 +63,12 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
 ## ## [1] 2
 ## 
 ## matrix(rnorm(10), 5)
-## ##            [,1]       [,2]
-## ## [1,] -0.5534786 -0.1645489
-## ## [2,]  1.2068485 -0.3915816
-## ## [3,] -1.1493449 -0.3609628
-## ## [4,]  0.4614043  1.6619569
-## ## [5,]  0.6742575 -0.3147386
+## ##             [,1]       [,2]
+## ## [1,]  0.05311106  1.7299880
+## ## [2,] -2.05183925 -1.0051033
+## ## [3,]  0.48617588 -0.4617837
+## ## [4,]  0.09148370 -0.5319526
+## ## [5,]  0.97996636 -0.5400873
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
@@ -107,7 +114,17 @@ Moving from using R to programming R is *abstraction*, *automation*,
 
 ## Environments
 
-## Semantincs
+### Motivation
+
+- Data structure that enables *scoping* (see later).
+- Have reference semantics
+
+### Definition
+
+An environment associates, or *binds*, names to values in memory.
+Variables in an environment are hence called *bindings*.
+
+## Semantics
 
 - pass-by-ref: environments, S4 Reference Classes
 - pass-by-value (copy-on-modify)

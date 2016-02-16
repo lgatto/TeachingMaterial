@@ -10,6 +10,13 @@ author: "Laurent Gatto"
 - [An Introduction to the Interactive Debugging Tools in R](http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf), Roger D. Peng.
 - [R Programming for Bioinformatics](http://master.bioconductor.org/help/publications/books/r-programming-for-bioinformatics/), Robert Gentleman.
 
+## Introduction
+
+> Computers are cheap, and thinking hurts. -- Use Ligges
+
+Simplicity, readability and consistency are a long way towards
+robust code.
+
 ## Coding style(s)
 
 Why?
@@ -92,7 +99,17 @@ Moving from using R to programming R is *abstraction*, *automation*,
 
 ## Environments
 
-## Semantincs
+### Motivation
+
+- Data structure that enables *scoping* (see later).
+- Have reference semantics
+
+### Definition
+
+An environment associates, or *binds*, names to values in memory.
+Variables in an environment are hence called *bindings*.
+
+## Semantics
 
 - pass-by-ref: environments, S4 Reference Classes
 - pass-by-value (copy-on-modify)
