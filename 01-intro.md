@@ -73,11 +73,11 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
 ## 
 ## matrix(rnorm(10), 5)
 ## ##            [,1]       [,2]
-## ## [1,] -1.8003512 -1.1687211
-## ## [2,] -0.1137611 -0.1334278
-## ## [3,] -0.7691496  2.2468862
-## ## [4,] -0.3293126  1.1016042
-## ## [5,]  1.8148963  0.5160454
+## ## [1,] -0.1366365  1.7361156
+## ## [2,] -0.2361091 -0.5469096
+## ## [3,] -0.7019853 -0.6514337
+## ## [4,] -0.4159157  0.4958135
+## ## [5,] -0.7996917 -0.9635818
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
@@ -641,7 +641,12 @@ surveys %>%
 
 ## Application to other data structures
 
+> Hadley Wickham (@hadleywickham) tweeted at 8:45 pm on Fri, Feb 12,
+> 2016: @mark_scheuerell @drob **the importance of tidy data is not the
+> specific form, but the consistency**
+> (https://twitter.com/hadleywickham/status/698246671629549568?s=09)
 
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/mark_scheuerell">@mark_scheuerell</a> <a href="https://twitter.com/drob">@drob</a> the importance of tidy data is not the specific form, but the consistency</p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/698246671629549568">February 12, 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+- Well-formatted and well-documented `S4` class 
+- `S4` as input -function-> `S4` as output
 
+![MSnSet schematics](https://raw.githubusercontent.com/lgatto/pRoloc/master/vignettes/Figures/msnset.png)

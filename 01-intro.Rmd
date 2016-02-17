@@ -546,7 +546,12 @@ surveys %>%
 
 ## Application to other data structures
 
+> Hadley Wickham (@hadleywickham) tweeted at 8:45 pm on Fri, Feb 12,
+> 2016: @mark_scheuerell @drob **the importance of tidy data is not the
+> specific form, but the consistency**
+> (https://twitter.com/hadleywickham/status/698246671629549568?s=09)
 
-<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/mark_scheuerell">@mark_scheuerell</a> <a href="https://twitter.com/drob">@drob</a> the importance of tidy data is not the specific form, but the consistency</p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/698246671629549568">February 12, 2016</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+- Well-formatted and well-documented `S4` class 
+- `S4` as input -function-> `S4` as output
 
+![MSnSet schematics](https://raw.githubusercontent.com/lgatto/pRoloc/master/vignettes/Figures/msnset.png)
