@@ -73,11 +73,11 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
 ## 
 ## matrix(rnorm(10), 5)
 ## ##             [,1]       [,2]
-## ## [1,]  0.05206506  0.3597278
-## ## [2,] -1.58935766 -0.6262696
-## ## [3,]  0.86780729  0.2880777
-## ## [4,]  1.44777459 -0.3521537
-## ## [5,]  0.13499766 -0.8765335
+## ## [1,]  1.38638805 -1.3706727
+## ## [2,]  0.07883949  0.1035580
+## ## [3,]  0.69016555 -0.5032149
+## ## [4,]  0.68413264 -0.1069257
+## ## [5,] -0.21501487 -1.7810788
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
@@ -265,7 +265,8 @@ the search path after the `R_GlobalEnv`.
 ## Accessors and setters
 
 - In addition to `$`, one can also use `[[`, `get` and `assign`.
-- To check if a name exists in an environmet (or in any or its parents), one can use `exists`.
+- To check if a name exists in an environmet (or in any or its
+  parents), one can use `exists`.
 - Compare two environments with `identical` (not `==`).
 
 ## Exercise
@@ -277,6 +278,10 @@ the search path after the `R_GlobalEnv`.
 `pryr::where()`
 
 ## Lexical scoping
+
+[Lexical comes from *lexical analysis* in computer science, which is the conversion of characters (code) into a sequence of meaningful (for the computer) tokens.]
+
+**Definition**: Rules that define how R looks up values for a given name/symbol.
 
 - Objects in environments have unique names
 - Objects in different environments can of course have identical names.
@@ -295,6 +300,118 @@ rm(mean)
 mean(1:10)
 ```
 
+## Exercises
+
+Start by mentally running the code chunks below - what do the functions return? 
+
+After testing new code chunks, don't forget to clean up your
+workspace, to avoid unexpected results.
+
+
+```r
+f <- function() {
+    x <- 1
+    y <- 2
+    c(x, y)
+}
+f()
+```
+
+
+```r
+x <- 2
+g <- function(){
+    y <- 1
+    c(x, y)
+}
+g()
+```
+
+
+```r
+x <- 1
+h <- function() {
+    y <- 2
+    i <- function() {
+        z <- 3
+        c(x, y, z)
+    }
+    i()
+}
+h()
+```
+
+
+```r
+j <- function(x) {
+    y <- 2
+    function(){
+        c(x, y)
+    }
+}
+k <- j(1)
+k()
+```
+
+```
+## [1] 1 2
+```
+
+
+```r
+j <- function() {
+    if (!exists("a")) {
+        a <- 1
+    } else {
+        a <- a + 1
+    }
+    print(a)
+}
+j() ## First call
+```
+
+```
+## [1] 1
+```
+
+```r
+j() ## Secong call
+```
+
+```
+## [1] 1
+```
+
+
+```r
+f <- function() x
+x <- 1
+f() 
+```
+
+```
+## [1] 1
+```
+
+```r
+x <- 2
+f()
+```
+
+```
+## [1] 2
+```
+
+## Scoping
+
+(See also later functions)
+
+*Lexical scoping*: default behaviour, current environment, then
+traversing *enclosing/parent environments*.
+
+*Dynamic scoping*: looking up variables in the *calling environment*,
+used in non-standard evaluation.
+
 ## Assignments
 
 - `<-` assigns/creates in the current environment
@@ -307,7 +424,8 @@ mean(1:10)
 
 ## Using environments
 
-Most environments are created when creating and calling functions. They are also used in packages:
+Most environments are created when creating and calling
+functions. They are also used in packages:
 
 - Used in packages: *package* and *namespace* environments
 
@@ -318,9 +436,165 @@ There are several reasons to create then manually.
 - Package state
 - As a hashmap
 
+## Reference semantics
+
+
+```r
+modify <- function(x) {
+	x$a <- 2
+	invisible(TRUE)
+}
+```
+
+
+```r
+x_l <- list(a = 1)
+modify(x_l)
+x_l$a
+```
+
+
+```r
+x_e <- new.env()
+x_e$a <- 1
+modify(x_e)
+x_e$a
+```
+
+Tip: when setting up environments, it is advised to set to parent
+(enclosing) environment to be `emptyenv()`, to avoid accidentally
+inheriting objects from somewhere else on the search path.
+
+
+```r
+e <- new.env(parent.env = empty.env())
+```
+
+```
+## Error in new.env(parent.env = empty.env()): unused argument (parent.env = empty.env())
+```
+
+### Exercise
+
+What is going to happen when we access `"x"` in the four cases below?
+
+
+```r
+x <- 1
+e1 <- new.env()
+get("x", envir = e1)
+```
+
+
+```r
+get("x", envir = e1, inherits = FALSE)
+```
+
+
+```r
+e2 <- new.env(parent = emptyenv())
+get("x", envir = e2)
+```
+
+
+```r
+get("x", envir = e1, inherits = FALSE)
+```
+
+## Avoiding copies
+
+Since environments have reference semantics, they are not copied.
+When passing an environment as function argument (directly, or as part
+of a more complex data structure), it is **not** copied: all its
+values are accessible within the function and can be persistently
+modified.
+
+
+```r
+e <- new.env()
+e$x <- 1
+f <- function(myenv) myenv$x <- 2
+f(e)
+e$x
+```
+
+This is used in the `eSet` class family to store the expression data.
+
+
+```r
+library("Biobase")
+getClass("eSet")
+getClass("AssayData")
+new("ExpressionSet")
+```
+
+## Preserving state in packages
+
+Explicit envirionments are also useful to preserve state or define
+constants-like variables in a package. One can then set getters and
+setters for users to access the variables within that private
+envionment.
+
+#### Use case
+
+Colour management in [`pRoloc`](https://github.com/lgatto/pRoloc/blob/master/R/environment.R):
+
+
+```r
+.pRolocEnv <- new.env(parent=emptyenv(), hash=TRUE)
+
+stockcol <- c("#E41A1C", "#377EB8", "#238B45", "#FF7F00", "#FFD700", "#333333",
+              "#00CED1", "#A65628", "#F781BF", "#984EA3", "#9ACD32", "#B0C4DE",
+              "#00008A", "#8B795E", "#FDAE6B", "#66C2A5", "#276419", "#CD8C95",
+              "#6A51A3", "#EEAD0E", "#0000FF", "#9ACD32", "#CD6090", "#CD5B45",
+              "#8E0152", "#808000", "#67000D", "#3F007D", "#6BAED6", "#FC9272")
+
+assign("stockcol", stockcol, envir = .pRolocEnv)
+
+getStockcol <- function() get("stockcol", envir = .pRolocEnv)
+
+setStockcol <- function(cols) {
+    if (is.null(cols)) {
+        assign("stockcol", stockcol, envir = .pRolocEnv)
+    } else { 
+		assign("stockcol", cols, envir = .pRolocEnv)
+	}
+}
+```
+
+and in plotting functions:
+
+
+```r
+...
+if (missing(col))
+  col <- getStockcol()
+...
+```
+
+Hadley's tip: Invisibly returning the old value from 
+
+
+```r
+setStockcol <- function(cols) {
+	prevcols <- getStockcol()
+    if (is.null(cols)) {
+        assign("stockcol", stockcol, envir = .pRolocEnv)
+    } else { 
+		assign("stockcol", cols, envir = .pRolocEnv)
+	}
+	invisible(prevcols)
+}
+```
+
+## Fast name lookup
+
+Names are looked up using hash maps (default).
+
 ## Computing on the language
 
-
+- character containing variables names
+- use arguments to name things
 
 ## Tidy data
 
