@@ -3,13 +3,6 @@ title: "Part I: Introduction"
 author: "Laurent Gatto"
 ---
 
-## References
-
-- [Advanced R](http://adv-r.had.co.nz/), Hadley Wickham.
-- [The R Inferno](http://www.burns-stat.com/documents/books/the-r-inferno/), Patrick Burns.
-- [An Introduction to the Interactive Debugging Tools in R](http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf), Roger D. Peng.
-- [R Programming for Bioinformatics](http://master.bioconductor.org/help/publications/books/r-programming-for-bioinformatics/), Robert Gentleman.
-
 ## Overview
 
 - Coding style(s)
