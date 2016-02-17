@@ -3,13 +3,6 @@ title: "Part I: Introduction"
 author: "Laurent Gatto"
 ---
 
-## References
-
-- [Advanced R](http://adv-r.had.co.nz/), Hadley Wickham.
-- [The R Inferno](http://www.burns-stat.com/documents/books/the-r-inferno/), Patrick Burns.
-- [An Introduction to the Interactive Debugging Tools in R](http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf), Roger D. Peng.
-- [R Programming for Bioinformatics](http://master.bioconductor.org/help/publications/books/r-programming-for-bioinformatics/), Robert Gentleman.
-
 ## Overview
 
 - Coding style(s)
@@ -72,12 +65,12 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
 ## ## [1] 2
 ## 
 ## matrix(rnorm(10), 5)
-## ##            [,1]       [,2]
-## ## [1,] -2.0245731 -1.8094424
-## ## [2,] -0.1774965 -0.6503638
-## ## [3,]  1.8089644  1.8159333
-## ## [4,] -0.7694361 -0.8446164
-## ## [5,]  0.4566914  0.5566013
+## ##            [,1]        [,2]
+## ## [1,]  0.6419232  0.17986759
+## ## [2,] -0.6011440 -1.44659956
+## ## [3,]  1.0445561 -0.02096216
+## ## [4,]  0.8183651  1.36804043
+## ## [5,]  0.6121690 -0.84996206
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
