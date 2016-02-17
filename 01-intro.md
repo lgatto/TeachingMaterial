@@ -8,9 +8,8 @@ author: "Laurent Gatto"
 - Coding style(s)
 - Interactive use and programming
 - Environments
-- Computing on the language
 - Tidy data
-
+- Computing on the language
 
 ## Introduction
 
@@ -535,12 +534,6 @@ setStockcol <- function(cols) {
 }
 ```
 
-## Computing on the language
-
-- character containing variables names
-- use arguments to name things
-- loading data
-
 ## Tidy data
 
 (interactive use)
@@ -610,3 +603,9 @@ surveys %>%
 - `S4` as input -(function)-> `S4` as output
 
 ![MSnSet schematics](https://raw.githubusercontent.com/lgatto/pRoloc/master/vignettes/Figures/msnset.png)
+
+## Computing on the language
+
+- character containing variables names
+- use arguments to name things
+- loading data
