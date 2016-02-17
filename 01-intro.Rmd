@@ -52,7 +52,7 @@ for **consistency** and **readability**.
 
 ## [`formatR`](https://cran.rstudio.com/web/packages/formatR/index.html)
 
-```{r}
+```{r, eval=FALSE}
 library("formatR")
 tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
           arrow = TRUE)
@@ -152,7 +152,7 @@ parent.env(e)
 ```
 Current environment
 
-```{r}
+```{r, eval=FALSE}
 environment()
 ```
 
@@ -166,20 +166,20 @@ baseenv()
 
 All parent of `R_GlobalEnv`:
 
-```{r}
+```{r, eval=FALSE}
 search()
 as.environment("package:stats")
 ```
 
 Listing objects in an environment
 
-```{r}
+```{r, eval=FALSE}
 ls() ## default is R_GlobalEnv
 ls(envir = e)
 ls(pos = 1)
 ```
 
-```{r}
+```{r, eval=FALSE}
 search()
 ```
 
@@ -366,7 +366,7 @@ Tip: when setting up environments, it is advised to set to parent
 (enclosing) environment to be `emptyenv()`, to avoid accidentally
 inheriting objects from somewhere else on the search path.
 
-```{r}
+```{r, eval=FALSE}
 e <- new.env(parent.env = empty.env())
 ```
 

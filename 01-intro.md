@@ -59,20 +59,6 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
           arrow = TRUE)
 ```
 
-```
-## a <- 1 + 1
-## a  # print the value
-## ## [1] 2
-## 
-## matrix(rnorm(10), 5)
-## ##            [,1]        [,2]
-## ## [1,]  0.6419232  0.17986759
-## ## [2,] -0.6011440 -1.44659956
-## ## [3,]  1.0445561 -0.02096216
-## ## [4,]  0.8183651  1.36804043
-## ## [5,]  0.6121690 -0.84996206
-```
-
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
 
 ```
@@ -176,10 +162,6 @@ Current environment
 environment()
 ```
 
-```
-## <environment: R_GlobalEnv>
-```
-
 Noteworthy environments
 
 
@@ -194,24 +176,7 @@ All parent of `R_GlobalEnv`:
 
 ```r
 search()
-```
-
-```
-## [1] ".GlobalEnv"        "package:formatR"   "package:stats"    
-## [4] "package:graphics"  "package:grDevices" "package:utils"    
-## [7] "package:datasets"  "Autoloads"         "package:base"
-```
-
-```r
 as.environment("package:stats")
-```
-
-```
-## <environment: package:stats>
-## attr(,"name")
-## [1] "package:stats"
-## attr(,"path")
-## [1] "/usr/local/lib64/R/library/stats"
 ```
 
 Listing objects in an environment
@@ -219,37 +184,13 @@ Listing objects in an environment
 
 ```r
 ls() ## default is R_GlobalEnv
-```
-
-```
-## character(0)
-```
-
-```r
 ls(envir = e)
-```
-
-```
-## Error in ls(envir = e): object 'e' not found
-```
-
-```r
 ls(pos = 1)
-```
-
-```
-## character(0)
 ```
 
 
 ```r
 search()
-```
-
-```
-## [1] ".GlobalEnv"        "package:formatR"   "package:stats"    
-## [4] "package:graphics"  "package:grDevices" "package:utils"    
-## [7] "package:datasets"  "Autoloads"         "package:base"
 ```
 
 Note: Every time a package is loaded with `library`, it is inserted in
@@ -449,10 +390,6 @@ inheriting objects from somewhere else on the search path.
 
 ```r
 e <- new.env(parent.env = empty.env())
-```
-
-```
-## Error in new.env(parent.env = empty.env()): unused argument (parent.env = empty.env())
 ```
 
 ### Exercise
