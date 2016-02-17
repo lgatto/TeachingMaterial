@@ -344,6 +344,36 @@ used in non-standard evaluation.
   
 - If `<<-` does not find the name, it will create the variable in the global environment.
 
+
+```r
+rm(list = ls())
+x
+f1 <- function() x <<- 1
+f1()
+x
+```
+
+
+```r
+f2 <- function() x <<- 2
+f2()
+x
+```
+
+
+```r
+f3 <- function() x <- 10
+f3()
+x
+```
+
+
+```r
+f4 <- function(x) x <-10
+f4(x)
+x
+```
+
 ## Using environments
 
 Most environments are created when creating and calling
