@@ -72,12 +72,12 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
 ## ## [1] 2
 ## 
 ## matrix(rnorm(10), 5)
-## ##             [,1]       [,2]
-## ## [1,]  1.38638805 -1.3706727
-## ## [2,]  0.07883949  0.1035580
-## ## [3,]  0.69016555 -0.5032149
-## ## [4,]  0.68413264 -0.1069257
-## ## [5,] -0.21501487 -1.7810788
+## ##            [,1]       [,2]
+## ## [1,] -1.8003512 -1.1687211
+## ## [2,] -0.1137611 -0.1334278
+## ## [3,] -0.7691496  2.2468862
+## ## [4,] -0.3293126  1.1016042
+## ## [5,]  1.8148963  0.5160454
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
@@ -353,10 +353,6 @@ k <- j(1)
 k()
 ```
 
-```
-## [1] 1 2
-```
-
 
 ```r
 j <- function() {
@@ -368,18 +364,7 @@ j <- function() {
     print(a)
 }
 j() ## First call
-```
-
-```
-## [1] 1
-```
-
-```r
 j() ## Secong call
-```
-
-```
-## [1] 1
 ```
 
 
@@ -387,19 +372,22 @@ j() ## Secong call
 f <- function() x
 x <- 1
 f() 
-```
-
-```
-## [1] 1
-```
-
-```r
 x <- 2
 f()
 ```
 
-```
-## [1] 2
+
+```rm
+f <- function(x) {
+    f <- function(x) {
+        f <- function(x) {
+            x^2
+        }
+        f(x) + 1
+    }
+    f(x) * 2
+}
+f(10)
 ```
 
 ## Scoping
@@ -434,7 +422,7 @@ There are several reasons to create then manually.
 - Reference semantics
 - Avoiding copies
 - Package state
-- As a hashmap
+- As a hashmap for fast name lookup
 
 ## Reference semantics
 
@@ -587,18 +575,73 @@ setStockcol <- function(cols) {
 }
 ```
 
-## Fast name lookup
-
-Names are looked up using hash maps (default).
-
 ## Computing on the language
 
 - character containing variables names
 - use arguments to name things
+- loading data
 
 ## Tidy data
 
 (interactive use)
-- tidy data
-- pipe operator
+
+> Hadley Wickham, Tidy Data, Vol. 59, Issue 10, Sep 2014, Journal of
+> Statistical Software. http://www.jstatsoft.org/v59/i10.
+
+Tidy datasets are easy to manipulate, model and visualize, and have a
+specific structure: each variable is a column, each observation is a
+row, and each type of observational unit is a table.
+
+
+## Tidy tools
+
+Tidy data also makes it easier to develop tidy tools for data
+analysis, tools that both input and output tidy datasets.
+
+- `dply::select` select columns
+- `dlpy::filter` select rows
+- `dplyr:mutate` create new columns
+- `dpplyr:group_by` split-apply-combine
+- `dlpyr:summarise` collapse each group into a single-row summary of
+  that group
+- `magrittr::%>%` piping
+
+
+## Examples
+
+
+```r
+library("dplyr")
+surveys <- read.csv("http://datacarpentry.github.io/dc_zurich/data/portal_data_joined.csv")
+head(surveys)
+
+surveys %>%
+  filter(weight < 5) %>%
+  select(species_id, sex, weight)
+  
+surveys %>%
+  mutate(weight_kg = weight / 1000) %>%
+  filter(!is.na(weight)) %>%
+  head
+
+surveys %>%
+  group_by(sex) %>%
+  tally()
+  
+surveys %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight, na.rm = TRUE))
+  
+surveys %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight, na.rm = TRUE),
+            min_weight = min(weight, na.rm = TRUE)) %>%
+  filter(!is.nan(mean_weight))
+```
+
+## Application to other data structures
+
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr"><a href="https://twitter.com/mark_scheuerell">@mark_scheuerell</a> <a href="https://twitter.com/drob">@drob</a> the importance of tidy data is not the specific form, but the consistency</p>&mdash; Hadley Wickham (@hadleywickham) <a href="https://twitter.com/hadleywickham/status/698246671629549568">February 12, 2016</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
