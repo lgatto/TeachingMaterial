@@ -73,11 +73,11 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
 ## 
 ## matrix(rnorm(10), 5)
 ## ##            [,1]       [,2]
-## ## [1,] -0.1366365  1.7361156
-## ## [2,] -0.2361091 -0.5469096
-## ## [3,] -0.7019853 -0.6514337
-## ## [4,] -0.4159157  0.4958135
-## ## [5,] -0.7996917 -0.9635818
+## ## [1,] -2.0245731 -1.8094424
+## ## [2,] -0.1774965 -0.6503638
+## ## [3,]  1.8089644  1.8159333
+## ## [4,] -0.7694361 -0.8446164
+## ## [5,]  0.4566914  0.5566013
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
@@ -647,6 +647,6 @@ surveys %>%
 > (https://twitter.com/hadleywickham/status/698246671629549568?s=09)
 
 - Well-formatted and well-documented `S4` class 
-- `S4` as input -function-> `S4` as output
+- `S4` as input -(function)-> `S4` as output
 
 ![MSnSet schematics](https://raw.githubusercontent.com/lgatto/pRoloc/master/vignettes/Figures/msnset.png)

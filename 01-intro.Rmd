@@ -552,6 +552,6 @@ surveys %>%
 > (https://twitter.com/hadleywickham/status/698246671629549568?s=09)
 
 - Well-formatted and well-documented `S4` class 
-- `S4` as input -function-> `S4` as output
+- `S4` as input -(function)-> `S4` as output
 
 ![MSnSet schematics](https://raw.githubusercontent.com/lgatto/pRoloc/master/vignettes/Figures/msnset.png)
