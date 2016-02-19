@@ -54,7 +54,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "H" "E" "T" "S" "V"
+## [1] "F" "P" "N" "V" "E"
 ```
 But
 
@@ -65,7 +65,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "H" "E" "T" "S" "V" NA
+## [1] "F" "P" "N" "V" "E" NA
 ```
 
 ### Solution
@@ -277,11 +277,11 @@ y <- rnorm(5)
 
 ```
 ##               x          y
-## [1,] -0.5622809 -2.6371032
-## [2,]  1.3363465  0.1836465
-## [3,] -0.2165881 -1.1039676
-## [4,] -0.7174155  0.6853975
-## [5,]  0.1762033 -1.1709886
+## [1,]  1.2478343  0.2830822
+## [2,] -0.7335809  1.5656868
+## [3,] -0.5391952 -0.9620514
+## [4,] -0.8432953 -1.6166617
+## [5,]  0.5616652 -1.4646415
 ```
 
 ```r
@@ -289,8 +289,8 @@ y <- rnorm(5)
 ```
 
 ```
-##          x          y 
-## -0.5622809 -2.6371032
+##         x         y 
+## 1.2478343 0.2830822
 ```
 
 ```r
@@ -298,7 +298,7 @@ distances(p, m)
 ```
 
 ```
-## [1] 0.000000 3.400208 1.571626 3.326121 1.641600
+## [1] 0.000000 2.360314 2.178034 2.825217 1.877596
 ```
 
 ```r
@@ -308,11 +308,11 @@ distances(p, m)
 
 ```
 ##            x          y
-## 1 -0.5622809 -2.6371032
-## 2  1.3363465  0.1836465
-## 3 -0.2165881 -1.1039676
-## 4 -0.7174155  0.6853975
-## 5  0.1762033 -1.1709886
+## 1  1.2478343  0.2830822
+## 2 -0.7335809  1.5656868
+## 3 -0.5391952 -0.9620514
+## 4 -0.8432953 -1.6166617
+## 5  0.5616652 -1.4646415
 ```
 
 ```r
@@ -320,8 +320,8 @@ distances(p, m)
 ```
 
 ```
-##            x         y
-## 1 -0.5622809 -2.637103
+##          x         y
+## 1 1.247834 0.2830822
 ```
 
 ```r
@@ -442,3 +442,42 @@ test_that("ccpp code", {
   expect_true(identical(gccount2(x), gccountr(x)))
 })
 ```
+
+## Exercise
+
+Choose any data package of your choice and write a unit test that
+tests the validity of all the its data. 
+
+Hints: 
+
+- To get all the data distributed with a package, use `data(package = "packageName")`
+
+
+```r
+library("pRolocdata")
+data(package = "pRolocdata")
+```
+
+- To test the validity of an object, use `validObject`
+
+
+
+
+```r
+data(andy2011)
+validObject(andy2011)
+```
+
+```
+## [1] TRUE
+```
+
+- Using the `testthat` syntax, the actual test for that data set would be 
+
+
+```r
+library("testthat")
+expect_true(validObject(andy2011))
+```
+
+

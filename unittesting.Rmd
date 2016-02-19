@@ -378,3 +378,37 @@ test_that("ccpp code", {
   expect_true(identical(gccount2(x), gccountr(x)))
 })
 ```
+
+## Exercise
+
+Choose any data package of your choice and write a unit test that
+tests the validity of all the its data. 
+
+Hints: 
+
+- To get all the data distributed with a package, use `data(package = "packageName")`
+
+```{r datatest0, eval=FALSE}
+library("pRolocdata")
+data(package = "pRolocdata")
+```
+
+- To test the validity of an object, use `validObject`
+
+```{r dataset1, echo=FALSE}
+suppressPackageStartupMessages(library("pRolocdata"))
+```
+
+```{r datatest2, eval=FALSE, eval=TRUE}
+data(andy2011)
+validObject(andy2011)
+```
+
+- Using the `testthat` syntax, the actual test for that data set would be 
+
+```{r datatest3, eval=TRUE}
+library("testthat")
+expect_true(validObject(andy2011))
+```
+
+
