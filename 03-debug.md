@@ -491,7 +491,14 @@ workspace.
 
 ### Debugging with IDEs
 
-- RSudio
+- RSudio: `Show Traceback`, `Rerun with Debug` and interactive debugging.
+
+![RStudio debugging 1](./figs/debugRStudio1.png)
+![RStudio debugging 2](./figs/debugRStudio2.png)
+
+- StatET (Eclipse plugin)
+
+- [emacs ESS and tracebug](http://ess.r-project.org/Manual/ess.html#Developing-with-ESS)
 
 ### Exercise
 
