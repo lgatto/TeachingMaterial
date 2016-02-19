@@ -229,6 +229,13 @@ assert_that(is.numeric(x))
 assert_that(length(x) == 2)
 ```
 
+* `assert_that()` signal an error.
+* `see_if()` returns a logical value, with the error message as an attribute.
+* `validate_that()` returns `TRUE` on success, otherwise returns the error as
+  a string.
+
+  
+  
 * `is.flag(x)`: is x `TRUE` or `FALSE`? (a boolean flag)
 * `is.string(x)`: is x a length 1 character vector?
 * `has_name(x, nm)`, `x %has_name% nm`: does `x` have component `nm`?
@@ -240,11 +247,7 @@ assert_that(length(x) == 2)
 * `is.dir(path)`: is `path` a directory?
 * `is.writeable(path)`/`is.readable(path)`: is `path` writeable/readable?
 * `has_extension(path, extension)`: does `file` have given `extension`?
-  
-* `assert_that()` signal an error
-* `see_if()` returns a logical value, with the error message as an attribute.
-* `validate_that()` returns `TRUE` on success, otherwise returns the error as
-  a string.
+
 
 ## Consistency and predictability
 
@@ -331,9 +334,7 @@ col_means(as.list(mtcars))
 mtcars2 <- mtcars
 mtcars2[-1] <- lapply(mtcars2[-1], as.character)
 col_means(mtcars2)
-```
-
-
+`
 # Debugging: techniques and tools
 
 ### Shit happens
@@ -371,7 +372,7 @@ and record the results.
 ### Manually
 
 Inserting `print` and `cat` statements in the code. Works, but time
-consuming. Better use `debug`, explained later. 
+consuming. 
 
 ### Finding the bug
 
@@ -390,10 +391,86 @@ f <- function() sapply(1:10, e)
 g <- function() f()
 ```
 
-```{r, eval=TRUE}
+`traceback`: lists the sequence of calls that lead to the error
+
+```{r, eval=FALSE}
+g()
+traceback()
+```
+
+If the source code is available (for example for `source()`d code),
+then traceback will display the exact location in the function, in the
+form `filename.R#linenum`.
+
+### Browsing the error
+
+- Register the function for debugging: `debug(g)`. This adds a call to
+  the `browser()` function (see also below) and the very beginning of
+  the function `g`.
+  
+- Every call to `g()` will not be run interactively.
+
+- To finish debugging: `undebug(g)`.
+
+
+```{r, eval=FALSE}
+debug(g)
 g()
 ```
 
+How to debug:
+
+- `n` executes the next step of the function. Use `print(n)` or
+  `get(n)` to print/access the variable `n`.
+- `s` to step into the next function. If it is not a function, same as
+  `n`.
+- `f` to finish execution of the current loop of function.
+- `c` to leave interactive debugging and continue regular execution of
+  the function. 
+- `Q` to stop debugging, terminate the function and return to the
+  global workspace.
+
+
+To fix a function when the source code is not directly available, use
+`fix(fun)`. This will open the function's source code for editing and,
+after saving and closing, store the updated function in the global
+workspace.
+
+### Breakpoints
+
+- Add a call to `browser()` anywhere in the source code to execute the
+  rest of the code interactively.
+  
+- To run breakpoints conditionally, wrap the call to `browser()` in a
+  condition.
+
+### Setting options
+
+- `options(error = recover)`: display the call stack and choose where
+  to step in.
+
+- `options(error = stop)` or `options(error = NULL)`: reset to default
+  behaviour.
+
+- `options(warn = 'numeric')`: sets the handling of warning
+  messages. If `warn` is negative all warnings are ignored.  If `warn`
+  is zero (the default) warnings are stored until the top-level
+  function returns.  If 10 or fewer warnings were signalled they will
+  be printed otherwise a message saying how many were signalled. An
+  object called `last.warning` is created and can be printed through
+  the function `warnings`.  If `warn` is one, warnings are printed as
+  they occur.  If `warn` is two or larger all warnings are turned into
+  errors.
+
+- `options(error = dump.frames)`: like `recover` but for
+  non-interactive use. Will create a `last.dump.rda` file in the
+  current working directory, which can then be reloaded in an
+  interactive session to re-inter interactive debugging (using
+  `debugger()`).
+
+### Debugging at the C level with `ddd`
+
+Wolfgang: demo?
 
 ### Exercise
 
@@ -426,15 +503,171 @@ readFasta2(f)
 
 ## Condition handling
 
-- withCallingHandlers
-- try/tryCatch
+### `try` and `tryCatch`
+
+The function `f` will never terminate.
 
 ```{r, eval=FALSE}
+f <- function() {
+    x <- "1"
+    log(x)
+    message("x was the ", class(x), " ", x)
+}
+f()
+```
+
+Use `try` to proceed with the execution even when an error occurs.
+
+```{r, eval=FALSE}
+f <- function() {
+    x <- "1"
+    try(log(x))
+    message("x was the ", class(x), " ", x)
+}
+f()
+```
+
+```{r, eval=FALSE}
+try({
+    a <- 1
+    b <- "2"
+    a + b
+})
+```
+
+In case of error, `try` returns a object of class `try-error`:
+
+```{r, eval=FALSE}
+success <- try(1 + 2)
+failure <- try(1 + "2", silent = TRUE)
+class(success)
+class(failure)
+```
+
+```{r, eval=FALSE}
+inherits(failure, "try-error")
+
+if (inherits(failure, "try-error"))
+	message("There was an error here.")
+```
+Handling errors is particularly useful to iterate over all elements of
+an input, despite errors (and inspecting/handling/fixing the errors
+afterwards).
+
+```{r, eval=FALSE}
+el <- list(1:10, c(-1, 1), TRUE, "1")
+res <- lapply(el, log)
+res
+res <- lapply(el, function(x) try(log(x)))
+res
+```
+
+#### Hadley's tip
+
+> Another useful `try()` idiom is using a default value if an
+> expression fails. Simply assign the default outside the `try` block,
+> and then run the risky code:
+
+```{r, eval=FALSE}
+default <- NULL
+try(default <- read.csv("possibly-bad-input.csv"), silent = TRUE)
+```
+
+> There is also `plyr::failwith()`, which makes this strategy even
+> easier to implement.
+
+```{r, eval=FALSE}
+f <- function(x)
+    if (x == 1) stop("Error!") else 1
+
+f(1)
+f(2)
+     
+     
+safef <- failwith(NULL, f)
+safef(1)
+safef(2)
+```
+
+Use `tryCatch` to specify a behaviour (handler function) in case of
+error, warning or message.
+
+```{r, eval=FALSE}
+f <- function() {
+    x <- "1"
+    tryCatch(log(x),
+             error = function(e) cat("There was an error!\n"))
+    message("x was the ", class(x), " ", x)
+}
+f()
+```
+
+More example from Hadleys' *Advanced R* book.
+
+```{r, eval=FALSE}
+show_condition <- function(code) {
+  tryCatch(code,
+    error = function(c) "error",
+    warning = function(c) "warning",
+    message = function(c) "message"
+  )
+}
+show_condition(stop("!"))
+show_condition(warning("?!"))
+show_condition(message("?"))
+show_condition(0)
+```
+
+A more informative `read.csv` version:
+
+```{r, eval=FALSE}
+read.csv2 <- function(file, ...) {
+  tryCatch(read.csv(file, ...), error = function(c) {
+    c$message <- paste0(c$message, " (in ", file, ")")
+    stop(c)
+  })
+}
+read.csv("code/dummy.csv")
+read.csv2("code/dummy.csv")
+```
+
+`tryCatch` has a `finally` argument that specifies a code block to be
+executed regardless of whether the initial expression succeeds or
+fails. Usefull, for example, to clean up (deleting files, closing
+connections, ...).
+
+
+### `withCallingHandlers`
+
+
+
+
+### Exercise
+
+```{r, eval=TRUE, echo=FALSE}
 safelog <- function(x) {
   tryCatch(log(x),
-           error = function(e) "an error",
-           warning = function(e) "a warning")
+           error = function(e) paste("an error with input", x),
+           warning = function(e) paste("a warning with input", x))
 }
 ```
+
+
+Write a new `safelog` function that catches and handles errors and
+warnings to emulate the following behaviour.
+
+```{r, echo=TRUE, eval=TRUE}
+log(1)
+safelog(1)
+log(-1)
+safelog(-1)
+log("a")
+safelog("a")
+```
+
+## Tracing code
+
+
+
 
 ## Testing
