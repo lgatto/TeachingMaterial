@@ -448,7 +448,9 @@ How to debug:
   the function. 
 - `Q` to stop debugging, terminate the function and return to the
   global workspace.
-
+- `where` print a stack trace of all active function calls.
+- `Enter` same as `n` (or `s`, if it was used most recently), unless
+  `options(browserNLdisabled = TRUE)` is set.
 
 To fix a function when the source code is not directly available, use
 `fix(fun)`. This will open the function's source code for editing and,
@@ -676,7 +678,305 @@ connections, ...).
 ### `withCallingHandlers`
 
 
+The `withCallingHandlers` function allows to defined special behaviour
+in case of *unusual conditions*, including warnings and errors. In the
+example below, we start a browser in case of (obscure) warnings.
 
+
+```r
+f <- function(x = 10) {
+    lapply(seq_len(x), function(i) {
+        ## make an example 2x2 contingency table
+        d = matrix(sample(4:10, 4), nrow=2, ncol=2)
+        ## will produce warning if there is a 5 or less 
+        ## in the contingency table
+        chisq.test(d)
+    })
+}
+```
+
+
+```r
+set.seed(1)
+f()
+set.seed(1)
+withCallingHandlers(f(), warning=function(e) recover())
+```
+
+### Difference between `tryCatch` and `withCallingHandlers`
+
+(From [*Advanced R*](http://adv-r.had.co.nz/Exceptions-Debugging.html#condition-handling))
+
+The handlers in `withCallingHandlers()` are called in the context of
+the call that generated the condition whereas the handlers in
+`tryCatch()` are called in the context of `tryCatch()`. This is shown
+here with `sys.calls()`, which is the run-time equivalent of
+`traceback()` -- it lists all calls leading to the current function.
+
+
+```r
+f <- function() g()
+g <- function() h()
+h <- function() stop("!")
+
+tryCatch(f(), error = function(e) print(sys.calls()))
+```
+
+```
+## [[1]]
+## knitr::knit("03-debug.Rmd")
+## 
+## [[2]]
+## process_file(text, output)
+## 
+## [[3]]
+## withCallingHandlers(if (tangle) process_tangle(group) else process_group(group), 
+##     error = function(e) {
+##         setwd(wd)
+##         cat(res, sep = "\n", file = output %n% "")
+##         message("Quitting from lines ", paste(current_lines(i), 
+##             collapse = "-"), " (", knit_concord$get("infile"), 
+##             ") ")
+##     })
+## 
+## [[4]]
+## process_group(group)
+## 
+## [[5]]
+## process_group.block(group)
+## 
+## [[6]]
+## call_block(x)
+## 
+## [[7]]
+## block_exec(params)
+## 
+## [[8]]
+## in_dir(opts_knit$get("root.dir") %n% input_dir(), evaluate::evaluate(code, 
+##     envir = env, new_device = FALSE, keep_warning = !isFALSE(options$warning), 
+##     keep_message = !isFALSE(options$message), stop_on_error = if (options$error && 
+##         options$include) 0L else 2L, output_handler = knit_handlers(options$render, 
+##         options)))
+## 
+## [[9]]
+## evaluate::evaluate(code, envir = env, new_device = FALSE, keep_warning = !isFALSE(options$warning), 
+##     keep_message = !isFALSE(options$message), stop_on_error = if (options$error && 
+##         options$include) 0L else 2L, output_handler = knit_handlers(options$render, 
+##         options))
+## 
+## [[10]]
+## evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
+##     debug = debug, last = i == length(out), use_try = stop_on_error != 
+##         2L, keep_warning = keep_warning, keep_message = keep_message, 
+##     output_handler = output_handler)
+## 
+## [[11]]
+## handle(ev <- withCallingHandlers(withVisible(eval(expr, envir, 
+##     enclos)), warning = wHandler, error = eHandler, message = mHandler))
+## 
+## [[12]]
+## try(f, silent = TRUE)
+## 
+## [[13]]
+## tryCatch(expr, error = function(e) {
+##     call <- conditionCall(e)
+##     if (!is.null(call)) {
+##         if (identical(call[[1L]], quote(doTryCatch))) 
+##             call <- sys.call(-4L)
+##         dcall <- deparse(call)[1L]
+##         prefix <- paste("Error in", dcall, ": ")
+##         LONG <- 75L
+##         msg <- conditionMessage(e)
+##         sm <- strsplit(msg, "\n")[[1L]]
+##         w <- 14L + nchar(dcall, type = "w") + nchar(sm[1L], type = "w")
+##         if (is.na(w)) 
+##             w <- 14L + nchar(dcall, type = "b") + nchar(sm[1L], 
+##                 type = "b")
+##         if (w > LONG) 
+##             prefix <- paste0(prefix, "\n  ")
+##     }
+##     else prefix <- "Error : "
+##     msg <- paste0(prefix, conditionMessage(e), "\n")
+##     .Internal(seterrmessage(msg[1L]))
+##     if (!silent && identical(getOption("show.error.messages"), 
+##         TRUE)) {
+##         cat(msg, file = stderr())
+##         .Internal(printDeferredWarnings())
+##     }
+##     invisible(structure(msg, class = "try-error", condition = e))
+## })
+## 
+## [[14]]
+## tryCatchList(expr, classes, parentenv, handlers)
+## 
+## [[15]]
+## tryCatchOne(expr, names, parentenv, handlers[[1L]])
+## 
+## [[16]]
+## doTryCatch(return(expr), name, parentenv, handler)
+## 
+## [[17]]
+## withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, 
+##     error = eHandler, message = mHandler)
+## 
+## [[18]]
+## withVisible(eval(expr, envir, enclos))
+## 
+## [[19]]
+## eval(expr, envir, enclos)
+## 
+## [[20]]
+## eval(expr, envir, enclos)
+## 
+## [[21]]
+## tryCatch(f(), error = function(e) print(sys.calls()))
+## 
+## [[22]]
+## tryCatchList(expr, classes, parentenv, handlers)
+## 
+## [[23]]
+## tryCatchOne(expr, names, parentenv, handlers[[1L]])
+## 
+## [[24]]
+## value[[3L]](cond)
+```
+
+```r
+withCallingHandlers(f(), error = function(e) print(sys.calls()))
+```
+
+```
+## [[1]]
+## knitr::knit("03-debug.Rmd")
+## 
+## [[2]]
+## process_file(text, output)
+## 
+## [[3]]
+## withCallingHandlers(if (tangle) process_tangle(group) else process_group(group), 
+##     error = function(e) {
+##         setwd(wd)
+##         cat(res, sep = "\n", file = output %n% "")
+##         message("Quitting from lines ", paste(current_lines(i), 
+##             collapse = "-"), " (", knit_concord$get("infile"), 
+##             ") ")
+##     })
+## 
+## [[4]]
+## process_group(group)
+## 
+## [[5]]
+## process_group.block(group)
+## 
+## [[6]]
+## call_block(x)
+## 
+## [[7]]
+## block_exec(params)
+## 
+## [[8]]
+## in_dir(opts_knit$get("root.dir") %n% input_dir(), evaluate::evaluate(code, 
+##     envir = env, new_device = FALSE, keep_warning = !isFALSE(options$warning), 
+##     keep_message = !isFALSE(options$message), stop_on_error = if (options$error && 
+##         options$include) 0L else 2L, output_handler = knit_handlers(options$render, 
+##         options)))
+## 
+## [[9]]
+## evaluate::evaluate(code, envir = env, new_device = FALSE, keep_warning = !isFALSE(options$warning), 
+##     keep_message = !isFALSE(options$message), stop_on_error = if (options$error && 
+##         options$include) 0L else 2L, output_handler = knit_handlers(options$render, 
+##         options))
+## 
+## [[10]]
+## evaluate_call(expr, parsed$src[[i]], envir = envir, enclos = enclos, 
+##     debug = debug, last = i == length(out), use_try = stop_on_error != 
+##         2L, keep_warning = keep_warning, keep_message = keep_message, 
+##     output_handler = output_handler)
+## 
+## [[11]]
+## handle(ev <- withCallingHandlers(withVisible(eval(expr, envir, 
+##     enclos)), warning = wHandler, error = eHandler, message = mHandler))
+## 
+## [[12]]
+## try(f, silent = TRUE)
+## 
+## [[13]]
+## tryCatch(expr, error = function(e) {
+##     call <- conditionCall(e)
+##     if (!is.null(call)) {
+##         if (identical(call[[1L]], quote(doTryCatch))) 
+##             call <- sys.call(-4L)
+##         dcall <- deparse(call)[1L]
+##         prefix <- paste("Error in", dcall, ": ")
+##         LONG <- 75L
+##         msg <- conditionMessage(e)
+##         sm <- strsplit(msg, "\n")[[1L]]
+##         w <- 14L + nchar(dcall, type = "w") + nchar(sm[1L], type = "w")
+##         if (is.na(w)) 
+##             w <- 14L + nchar(dcall, type = "b") + nchar(sm[1L], 
+##                 type = "b")
+##         if (w > LONG) 
+##             prefix <- paste0(prefix, "\n  ")
+##     }
+##     else prefix <- "Error : "
+##     msg <- paste0(prefix, conditionMessage(e), "\n")
+##     .Internal(seterrmessage(msg[1L]))
+##     if (!silent && identical(getOption("show.error.messages"), 
+##         TRUE)) {
+##         cat(msg, file = stderr())
+##         .Internal(printDeferredWarnings())
+##     }
+##     invisible(structure(msg, class = "try-error", condition = e))
+## })
+## 
+## [[14]]
+## tryCatchList(expr, classes, parentenv, handlers)
+## 
+## [[15]]
+## tryCatchOne(expr, names, parentenv, handlers[[1L]])
+## 
+## [[16]]
+## doTryCatch(return(expr), name, parentenv, handler)
+## 
+## [[17]]
+## withCallingHandlers(withVisible(eval(expr, envir, enclos)), warning = wHandler, 
+##     error = eHandler, message = mHandler)
+## 
+## [[18]]
+## withVisible(eval(expr, envir, enclos))
+## 
+## [[19]]
+## eval(expr, envir, enclos)
+## 
+## [[20]]
+## eval(expr, envir, enclos)
+## 
+## [[21]]
+## withCallingHandlers(f(), error = function(e) print(sys.calls()))
+## 
+## [[22]]
+## f()
+## 
+## [[23]]
+## g()
+## 
+## [[24]]
+## h()
+## 
+## [[25]]
+## stop("!")
+## 
+## [[26]]
+## .handleSimpleError(function (e) 
+## print(sys.calls()), "!", quote(h()))
+## 
+## [[27]]
+## h(simpleError(msg, call))
+```
+
+```
+## Error in h(): !
+```
 
 ### Exercise
 
@@ -741,7 +1041,58 @@ safelog("a")
 
 ## Tracing code
 
+From `?trace`:
+
+> A call to `trace` allows you to insert debugging code (e.g., a call
+> to `browser` or `recover`) at chosen places in any function. A call
+> to `untrace` cancels the tracing.  Specified methods can be traced
+> the same way, without tracing all calls to the function. Trace code
+> can be any R expression.  Tracing can be temporarily turned on or
+> off globally by calling `tracingState`.
 
 
+```r
+## Report whenever e invoked
+trace(sum)
+hist(rnorm(100))
+untrace(sum)
+```
+
+
+```r
+## Evaluate arbitrary code whenever e invoked
+trace(e, quote(cat("i am", i, "\n")))
+## Another way to enter browser whenver e invoked
+trace(e, browser)
+## stop tracing
+untrace(e)
+```
+
+### Debugging S4 methods
+
+
+```r
+library("MSnbase")
+data(itraqdata)
+x <- itraqdata[[1]]
+plot(x, full=TRUE)
+```
+
+Not helpful:
+
+
+```r
+debug(plot)
+plot(x, full=TRUE)
+```
+
+Try again:
+
+
+```r
+trace("plot", browser, exit = browser,
+      signature = c("Spectrum", "missing"))
+plot(x, full=TRUE)
+```
 
 ## Testing
