@@ -384,7 +384,7 @@ test_that("ccpp code", {
 Choose any data package of your choice and write a unit test that
 tests the validity of all the its data. 
 
-Hints: 
+Tips 
 
 - To get all the data distributed with a package, use `data(package = "packageName")`
 

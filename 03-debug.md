@@ -1095,4 +1095,7 @@ trace("plot", browser, exit = browser,
 plot(x, full=TRUE)
 ```
 
-## Testing
+## Unit testing
+
+See [here](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/unittesting.md).
+
