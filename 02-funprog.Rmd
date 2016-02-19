@@ -12,3 +12,14 @@ author: "Laurent Gatto"
 - Closures
 - Higher order functions
 
+
+## Functions
+
+
+## Function environments
+
+## More about functions
+
+## Closures
+
+## Higher order functions
