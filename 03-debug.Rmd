@@ -334,7 +334,7 @@ col_means(as.list(mtcars))
 mtcars2 <- mtcars
 mtcars2[-1] <- lapply(mtcars2[-1], as.character)
 col_means(mtcars2)
-`
+```
 # Debugging: techniques and tools
 
 ### Shit happens
@@ -470,9 +470,9 @@ workspace.
   interactive session to re-inter interactive debugging (using
   `debugger()`).
 
-### Debugging at the C level with `ddd`
+### Debugging with IDEs
 
-Wolfgang: demo?
+- RSudio
 
 ### Exercise
 
@@ -683,6 +683,10 @@ h <- function() stop("!")
 tryCatch(f(), error = function(e) print(sys.calls()))
 withCallingHandlers(f(), error = function(e) print(sys.calls()))
 ```
+
+### Debugging at the C level with `ddd`
+
+Wolfgang: demo?
 
 ### Exercise
 

@@ -359,7 +359,7 @@ col_means(as.list(mtcars))
 mtcars2 <- mtcars
 mtcars2[-1] <- lapply(mtcars2[-1], as.character)
 col_means(mtcars2)
-`
+```
 # Debugging: techniques and tools
 
 ### Shit happens
@@ -405,7 +405,7 @@ consuming.
 
 Bugs are shy, and are generally hidden, deep down in your code, to
 make it as difficult as possible for you to find them.
-```
+
 
 
 `traceback`: lists the sequence of calls that lead to the error
@@ -489,9 +489,9 @@ workspace.
   interactive session to re-inter interactive debugging (using
   `debugger()`).
 
-### Debugging at the C level with `ddd`
+### Debugging with IDEs
 
-Wolfgang: demo?
+- RSudio
 
 ### Exercise
 
@@ -977,6 +977,10 @@ withCallingHandlers(f(), error = function(e) print(sys.calls()))
 ```
 ## Error in h(): !
 ```
+
+### Debugging at the C level with `ddd`
+
+Wolfgang: demo?
 
 ### Exercise
 
