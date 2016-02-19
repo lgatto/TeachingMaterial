@@ -1,3 +1,8 @@
+---
+title: "Unit testing"
+author: "Laurent Gatto"
+---
+
 These exercises were written by Martin Morgan and Laurent Gatto for a
 [Bioconductor Developer Day workshop](http://bioconductor.org/help/course-materials/2013/BioC2013/developer-day-debug/).
 
@@ -49,7 +54,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "Y" "U" "J" "F" "S"
+## [1] "H" "E" "T" "S" "V"
 ```
 But
 
@@ -60,7 +65,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "Y" "U" "J" "F" "S" NA
+## [1] "H" "E" "T" "S" "V" NA
 ```
 
 ### Solution
@@ -110,6 +115,34 @@ test_isIn() ## the bug is fixed and monitored
 ## [1] TRUE
 ```
 
+## The `testthat` syntax
+
+`expect_that(object_or_expression, condition)` with conditions
+- equals: `expect_that(1+2,equals(3))` or `expect_equal(1+2,3)`
+- gives warning: `expect_that(warning("a")`, `gives_warning())`
+- is a: `expect_that(1, is_a("numeric"))` or `expect_is(1,"numeric")`
+- is true: `expect_that(2 == 2, is_true())` or `expect_true(2==2)`
+- matches: `expect_that("Testing is fun", matches("fun"))` or `expect_match("Testing is fun", "f.n")`
+- takes less: `than expect_that(Sys.sleep(1), takes_less_than(3))`
+
+and
+
+```r
+test_that("description", {
+    a <- foo()
+    b <- bar()
+    expect_equal(a, b)
+})
+```
+
+## Interactive unit testing
+
+```r
+library("testthat")
+test_dir("./unittests/")
+test_file("./unittests/test_foo.R")
+```
+
 # Exercises
 
 ## Character matching
@@ -153,25 +186,9 @@ isExactIn(c("a", "z"), c("abc", letters))
 ## [1] "abc" "a"
 ```
 
-### Solution
+<!-- ### Solution -->
 
-<!-- ```{r} -->
-<!-- ## Unit test: -->
-<!-- library("RUnit") -->
-<!-- test_isExactIn <- function() { -->
-<!--     checkIdentical("a", isExactIn("a", letters)) -->
-<!--     checkIdentical("a", isExactIn("a", c("abc", letters))) -->
-<!--     checkIdentical(c("a", "z"), isExactIn(c("a", "z"), c("abc", letters))) -->
-<!-- } -->
 
-<!-- test_isExactIn() -->
-
-<!-- ## updated function: -->
-<!-- isExactIn <- function(x, y) -->
-<!--     x[x %in% y] -->
-
-<!-- test_isExactIn() -->
-<!-- ``` -->
 
 ## If conditions with length > 1
 
@@ -229,26 +246,9 @@ ifcond(3:1, c(2, 2, 2))
 ## [1]  5  0 -3
 ```
 
-### Solution
+<!-- ### Solution -->
 
-<!-- ```{r} -->
-<!-- ## Unit test: -->
-<!-- library("RUnit") -->
-<!-- test_ifcond <- function() { -->
-<!--     checkIdentical(5, ifcond(3, 2)) -->
-<!--     checkIdentical(8, ifcond(2, 2)) -->
-<!--     checkIdentical(5, ifcond(1, 2)) -->
-<!--     checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2))) -->
-<!-- } -->
 
-<!-- test_ifcond() -->
-
-<!-- ## updated function: -->
-<!-- ifcond <- function(x, y) -->
-<!--     ifelse(x > y, x*x - y*y, x*x + y*y) -->
-
-<!-- test_ifcond() -->
-<!-- ``` -->
 
 ## Know your inputs
 
@@ -276,12 +276,12 @@ y <- rnorm(5)
 ```
 
 ```
-##                x          y
-## [1,] -1.48789307  0.2426264
-## [2,]  0.37444767 -0.9166544
-## [3,] -0.09318294  0.2108818
-## [4,] -0.26216056  0.2372384
-## [5,] -1.50598130 -0.1880284
+##               x          y
+## [1,] -0.5622809 -2.6371032
+## [2,]  1.3363465  0.1836465
+## [3,] -0.2165881 -1.1039676
+## [4,] -0.7174155  0.6853975
+## [5,]  0.1762033 -1.1709886
 ```
 
 ```r
@@ -290,7 +290,7 @@ y <- rnorm(5)
 
 ```
 ##          x          y 
-## -1.4878931  0.2426264
+## -0.5622809 -2.6371032
 ```
 
 ```r
@@ -298,7 +298,7 @@ distances(p, m)
 ```
 
 ```
-## [1] 0.0000000 2.1936830 1.3950713 1.2257443 0.4310345
+## [1] 0.000000 3.400208 1.571626 3.326121 1.641600
 ```
 
 ```r
@@ -307,12 +307,12 @@ distances(p, m)
 ```
 
 ```
-##             x          y
-## 1 -1.48789307  0.2426264
-## 2  0.37444767 -0.9166544
-## 3 -0.09318294  0.2108818
-## 4 -0.26216056  0.2372384
-## 5 -1.50598130 -0.1880284
+##            x          y
+## 1 -0.5622809 -2.6371032
+## 2  1.3363465  0.1836465
+## 3 -0.2165881 -1.1039676
+## 4 -0.7174155  0.6853975
+## 5  0.1762033 -1.1709886
 ```
 
 ```r
@@ -320,8 +320,8 @@ distances(p, m)
 ```
 
 ```
-##           x         y
-## 1 -1.487893 0.2426264
+##            x         y
+## 1 -0.5622809 -2.637103
 ```
 
 ```r
@@ -333,37 +333,9 @@ distances(q, dd)
 ## 1 0
 ```
 
-### Solution
+<!-- ### Solution -->
 
-<!-- ```{r} -->
-<!-- ## Unit test: -->
-<!-- library("RUnit") -->
-<!-- test_distances <- function() { -->
-<!--     x <- y <- c(0, 1, 2) -->
-<!--     m <- cbind(x, y) -->
-<!--     p <- m[1, ] -->
-<!--     dd <- data.frame(x, y) -->
-<!--     q <- dd[1, ] -->
-<!--     expct <- c(0, sqrt(c(2, 8))) -->
-<!--     checkIdentical(expct, distances(p, m)) -->
-<!--     checkIdentical(expct, distances(q, dd)) -->
-<!-- } -->
 
-<!-- test_distances() -->
-
-<!-- ## updated function -->
-<!-- distances <- function(point, pointVec) { -->
-<!--     point <- as.numeric(point) -->
-<!--     x <- point[1] -->
-<!--     y <- point[2] -->
-<!--     xVec <- pointVec[,1] -->
-<!--     yVec <- pointVec[,2] -->
-<!--     dist <- sqrt((xVec - x)^2 + (yVec - y)^2) -->
-<!--     return(dist) -->
-<!-- } -->
-
-<!-- test_distances() -->
-<!-- ``` -->
 
 ## Iterate on 0 length
 
@@ -399,60 +371,12 @@ sqrtabs(numeric())
 ## numeric(0)
 ```
 
-### Solution
+<!-- ### Solution -->
 
-<!-- ```{r} -->
-<!-- ## Unit test: -->
-<!-- library(RUnit) -->
-<!-- test_sqrtabs <- function() { -->
-<!--     checkIdentical(c(2, 0, 2), sqrtabs(c(-4, 0, 4))) -->
-<!--     checkIdentical(numeric(), sqrtabs(numeric())) -->
-<!-- } -->
-<!-- test_sqrtabs() -->
 
-<!-- ## updated function: -->
-<!-- sqrtabs <- function(x) { -->
-<!--   v <- abs(x) -->
-<!--   sapply(seq_along(v), function(i) sqrt(v[i])) -->
-<!-- } -->
-<!-- test_sqrtabs()                          # nope! -->
-
-<!-- sqrtabs <- function(x) { -->
-<!--   v <- abs(x) -->
-<!--   vapply(seq_along(v), function(i) sqrt(v[i]), 0) -->
-<!-- } -->
-<!-- test_sqrtabs()                          # yes! -->
-<!-- ``` -->
 
 # Unit testing in a package 
 
-## The `testthat` syntax
-
-`expect_that(object_or_expression, condition)` with conditions
-- equals: `expect_that(1+2,equals(3))` or `expect_equal(1+2,3)`
-- gives warning: `expect_that(warning("a")`, `gives_warning())`
-- is a: `expect_that(1, is_a("numeric"))` or `expect_is(1,"numeric")`
-- is true: `expect_that(2 == 2, is_true())` or `expect_true(2==2)`
-- matches: `expect_that("Testing is fun", matches("fun"))` or `expect_match("Testing is fun", "f.n")`
-- takes less: `than expect_that(Sys.sleep(1), takes_less_than(3))`
-
-and
-
-```r
-test_that("description", {
-    a <- foo()
-    b <- bar()
-    expect_equal(a, b)
-})
-```
-
-## Interactive unit testing
-
-```r
-library("testthat")
-test_dir("./unittests/")
-test_file("./unittests/test_foo.R")
-```
 
 ## In a package
 
