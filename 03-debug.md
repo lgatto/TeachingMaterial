@@ -3,14 +3,14 @@ title: "Part III: Debugging"
 author: "Laurent Gatto"
 ---
 
-## Overview
+# Overview
 
-- Debbugging: techniques and tools
-- Condition handling: try/tryCatch
 - Defensive programming
+- Debbugging: techniques and tools
+- Condition handling
 - Testing
 
-## Defensive programming
+# Defensive programming
 
 Before we begin with debugging, let's look at ways to prevent bugs
 (more at the end of this part). 
@@ -358,7 +358,8 @@ mtcars2[-1] <- lapply(mtcars2[-1], as.character)
 col_means(mtcars2)
 ```
 
-## Debugging: techniques and tools
+
+# Debugging: techniques and tools
 
 ### Shit happens
 
@@ -389,7 +390,67 @@ and record the results.
 - `browser()`
 - `options(error = )`, `options(warn = )`
 - `trace`
-- RStudio
+- IDE: RStudio, StatET, emacs' ess tracebug.
+
+
+### Manually
+
+Inserting `print` and `cat` statements in the code. Works, but time
+consuming. Better use `debug`, explained later. 
+
+### Finding the bug
+
+> Many bugs are subtle and hard to find. -- Hadley Wickham
+
+Bugs are shy, and are generally hidden, deep down in your code, to
+make it as difficult as possible for you to find them.
+
+
+
+
+```r
+g()
+```
+
+```
+## Error in x[-1:2]: only 0's may be mixed with negative subscripts
+```
+
+
+### Exercise
+
+1. Your turn - play with `traceback`, `recover` and `debug`:
+
+(Example originally by Martin Morgan and Robert Gentleman.)
+
+
+```r
+e <- function(i) {
+  x <- 1:4
+  if (i < 5) x[1:2]
+  else x[-1:2] # oops! x[-(1:2)]
+}
+f <- function() sapply(1:10, e)
+g <- function() f()
+```
+
+2. Fix `readFasta2`.
+
+
+```r
+## make sure you have the 'sequences' package.
+## Get readFasta2, the function to debug
+sequences:::debugme()
+## Get an example file
+f <- dir(system.file("extdata", package = "sequences"),
+         full.names=TRUE, pattern = "moreDnaSeqs.fasta")
+## BANG!
+readFasta2(f)
+```
+
+```
+## Error: could not find function "new"
+```
 
 ## Condition handling
 

@@ -13,8 +13,19 @@ author: "Laurent Gatto"
 - Higher order functions
 
 
-## Functions
+## Introduction
 
+- Side effects
+- Abstraction
+- Think about default inputs and outputs
+- Streamline code
+
+![Messy code hides bugs](./figs/funs.png)
+
+- Easier to debug
+- Easier to parallelise
+
+## Functions
 
 ## Function environments
 
