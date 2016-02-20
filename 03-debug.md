@@ -1101,7 +1101,7 @@ Try again:
 
 
 ```r
-trace("plot", browser, exit = browser,
+trace("plot", browser, 
       signature = c("Spectrum", "missing"))
 plot(x, full=TRUE)
 ```

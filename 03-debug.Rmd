@@ -764,7 +764,7 @@ plot(x, full=TRUE)
 Try again:
 
 ```{r, eval=FALSE}
-trace("plot", browser, exit = browser,
+trace("plot", browser, 
       signature = c("Spectrum", "missing"))
 plot(x, full=TRUE)
 ```
