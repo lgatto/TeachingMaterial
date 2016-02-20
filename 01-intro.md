@@ -606,6 +606,6 @@ surveys %>%
 
 ## Computing on the language
 
-- character containing variables names
-- use arguments to name things
-- loading data
+- characters as variables names 
+- Explain `quote` (used in `trace`)
+- use arguments to name things (rather in funs part)

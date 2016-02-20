@@ -15,6 +15,8 @@ author: "Laurent Gatto"
 
 ## Introduction
 
+![messy code](./figs/funs.png)
+
 - Side effects
 - Abstraction
 - Think about default inputs and outputs

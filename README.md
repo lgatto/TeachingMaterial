@@ -29,8 +29,8 @@ develop and release packages in the future.
 - Coding style(s)
 - Interactive use and programming
 - Environments
-- Computing on the language
 - Tidy data
+- Computing on the language
 
 #### [Part II: Functional programming](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/02-funprog.md)
 
