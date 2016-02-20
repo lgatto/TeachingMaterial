@@ -15,8 +15,6 @@ author: "Laurent Gatto"
 
 ## Introduction
 
-![messy code](./figs/funs.png)
-
 - Side effects
 - Abstraction
 - Think about default inputs and outputs
@@ -24,8 +22,9 @@ author: "Laurent Gatto"
 
 ![Messy code hides bugs](./figs/funs.png)
 
-- Easier to debug
-- Easier to parallelise
+- Easier to debug (part III)
+- Easier to profile (part IV)
+- Easier to parallelise (part IV)
 
 ## Functions
 
