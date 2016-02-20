@@ -213,7 +213,7 @@ the search path after the `R_GlobalEnv`.
 - If it is not found in the parent (enclosing) frame, it is looked up
   in the parent's parent frame, and so on...
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 search()
 mean <- function(x) cat("The mean is", sum(x)/length(x), "\n")
 mean(1:10)
@@ -292,7 +292,7 @@ x <- 2
 f()
 ```
 
-```{rm, eval=FALSE}
+```{r, eval=FALSE}
 f <- function(x) {
     f <- function(x) {
         f <- function(x) {
@@ -367,7 +367,7 @@ There are several reasons to create then manually.
 
 ## Reference semantics
 
-```{r, eval = TRUE}
+```{r, eval=TRUE}
 modify <- function(x) {
 	x$a <- 2
 	invisible(TRUE)
@@ -478,7 +478,7 @@ setStockcol <- function(cols) {
 
 and in plotting functions:
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 ...
 if (missing(col))
   col <- getStockcol()
@@ -487,7 +487,7 @@ if (missing(col))
 
 Hadley's tip: Invisibly returning the old value from 
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 setStockcol <- function(cols) {
 	prevcols <- getStockcol()
     if (is.null(cols)) {

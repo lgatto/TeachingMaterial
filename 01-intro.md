@@ -310,7 +310,7 @@ f()
 ```
 
 
-```rm
+```r
 f <- function(x) {
     f <- function(x) {
         f <- function(x) {
