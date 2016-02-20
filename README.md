@@ -25,22 +25,22 @@ develop and release packages in the future.
 
 ## Content
 
-#### Part I:
+#### [Part I:](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/01-intro.md)
 - Coding style(s)
 - Interactive use and programming
 - Environments
 - Computing on the language
 - Tidy data
 
-#### Part II: Functional programming
+#### [Part II: Functional programming](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/02-funprog.md)
 
-#### Part III: Debugging
+#### [Part III: Debugging](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/03-debug.md)
+- Defensive programming
 - Debbugging: techniques and tools
 - Condition handling: try/tryCatch
-- Defensive programming
-- Testing
+- [Unit testing](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/unittesting.md)
 
-#### Part IV: Performance
+#### [Part IV: Performance](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/04-perf.md)
 - Benchmarking
 - Profiling
 - Optimisation
