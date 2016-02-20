@@ -351,7 +351,7 @@ Is it a robust function? What happens if there are unusual inputs.
 col_means(mtcars)
 col_means(mtcars[, 0])
 col_means(mtcars[0, ])
-col_means(mtcars[, "mpg", drop = F])
+col_means(mtcars[, "mpg", drop = FALSE])
 col_means(1:10)
 col_means(as.matrix(mtcars))
 col_means(as.list(mtcars))
@@ -531,10 +531,6 @@ f <- dir(system.file("extdata", package = "sequences"),
 readFasta2(f)
 ```
 
-```
-## Error: could not find function "new"
-```
-
 ## Condition handling
 
 ### `try` and `tryCatch`
@@ -694,7 +690,7 @@ example below, we start a browser in case of (obscure) warnings.
 f <- function(x = 10) {
     lapply(seq_len(x), function(i) {
         ## make an example 2x2 contingency table
-        d = matrix(sample(4:10, 4), nrow=2, ncol=2)
+        d <- matrix(sample(4:10, 4), nrow = 2, ncol = 2)
         ## will produce warning if there is a 5 or less 
         ## in the contingency table
         chisq.test(d)
@@ -1079,6 +1075,60 @@ trace(e, browser)
 untrace(e)
 ```
 
+### Inserting code dynamically
+
+
+```r
+f <- function() {
+    ## make an example 2x2 contingency table
+    d <- matrix(sample(4:10, 4), nrow=2, ncol=2)
+     chisq.test(d)
+}
+set.seed(1)
+f() ## no warning
+
+set.seed(11)
+f() ## warning
+```
+
+We want to conditionally enter brower mode, when an element of `d` is
+smaller than 5.
+
+
+```r
+if (any(d < 5))
+  browser()
+```
+
+This expression must be executed at a specific location in our function `f`:
+
+
+```r
+as.list(body(f))
+```
+
+
+```r
+trace("f", quote(if (any(d < 5)) browser()), at = 3)
+```
+
+We can now run our updated function `f`
+
+
+```r
+f
+body(f)
+```
+
+
+```r
+set.seed(1)
+f() ## normal execution
+
+set.seed(11)
+f() ## enters browser mode
+```
+
 ### Debugging S4 methods
 
 
@@ -1105,6 +1155,7 @@ trace("plot", browser,
       signature = c("Spectrum", "missing"))
 plot(x, full=TRUE)
 ```
+
 
 ## Unit testing
 
