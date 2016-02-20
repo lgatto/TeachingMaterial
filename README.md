@@ -51,6 +51,7 @@ develop and release packages in the future.
 
 ## References
 
+- [Previous courses](https://github.com/lgatto/teachingmaterial) and [here](https://github.com/DataProgrammers/2015-01-15-EMBLHeidelberg).
 - [Advanced R](http://adv-r.had.co.nz/), Hadley Wickham.
 - [The R Inferno](http://www.burns-stat.com/documents/books/the-r-inferno/), Patrick Burns.
 - [An Introduction to the Interactive Debugging Tools in R](http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf), Roger D. Peng.
