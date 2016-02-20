@@ -325,7 +325,7 @@ f(10)
 
 ## Scoping
 
-(See also later functions)
+(See also later about functions)
 
 *Lexical scoping*: default behaviour, current environment, then
 traversing *enclosing/parent environments*.
