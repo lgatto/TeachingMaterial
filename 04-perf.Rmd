@@ -234,5 +234,5 @@ microbenchmark:::autoplot.microbenchmark(mb)
 
 # Rcpp
 
-See `rccpp/rc.Rmd`.
+See [here](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/rc.md)).
 

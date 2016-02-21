@@ -13,7 +13,8 @@ chapter of the *Advanced R* book by Hadley Wickham.
 
 We will focus on short simple code snippets using [`Rcpp`](http://rcpp.org/):
 
-```{r, eval=FALSE}
+
+```r
 install.packages("Rcpp")
 ```
 We need a C compiler:
@@ -23,7 +24,8 @@ We need a C compiler:
 
 (see [here](https://github.com/lgatto/teachingmaterial/wiki/R-and-C-code) for relevant links)
 
-```{r}
+
+```r
 library("Rcpp")
 ```
 
@@ -54,7 +56,8 @@ In C++, we need to
 - define `for` loops explicitly
 - call a method using `.`: `x.size()` to get the size (length) of `x`
 
-```{r}
+
+```r
 sumR <- function(x) {
   total <- 0
   for (i in seq_along(x)) {
@@ -79,7 +82,8 @@ double sumC(NumericVector x) {
 
 ### Inline
 
-```{r}
+
+```r
 cppFunction('double sumC(NumericVector x) {
   int n = x.size();
   double total = 0;
@@ -89,7 +93,19 @@ cppFunction('double sumC(NumericVector x) {
   return total;
 }')
 sumC
+```
+
+```
+## function (x) 
+## .Primitive(".Call")(<pointer: 0x2b8b4b56b800>, x)
+```
+
+```r
 sumC(c(1, 2, 1:4, rnorm(3)))
+```
+
+```
+## [1] 12.2787
 ```
 
 ### Sourcing C++ code
@@ -102,20 +118,70 @@ The `./src/ex_sumC.cpp` file contains:
 - the C++ code
 - as comment, R code that will be evaluated
 
-```{r, echo=FALSE, comment = ''}
-cat(readLines("./src/ex_sumC.cpp"), sep = "\n")
+
+```
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+double sumC(NumericVector x) {
+  int n = x.size();
+  double total = 0;
+  for(int i = 0; i < n; ++i) {
+    total += x[i];
+  }
+  return total;
+}
+
+/*** R
+# Comparing with R
+(x <- c(1, 3, rnorm(10)))
+sumC(x)
+sum(x)
+*/
 ```
 
 To compile the code and create the R wrapper, we use:
 
-```{r}
+
+```r
 sourceCpp("./src/ex_sumC.cpp")
+```
+
+```
+## 
+## > (x <- c(1, 3, rnorm(10)))
+##  [1]  1.0000000  3.0000000 -0.9579911  1.5910696  0.7777410 -0.1100265
+##  [7]  0.2748101  0.2884605 -0.1255166 -0.5585634 -0.1734308 -0.2955388
+## 
+## > sumC(x)
+## [1] 4.711014
+## 
+## > sum(x)
+## [1] 4.711014
 ```
 
 ## An example with a matrix
 
-```{r, echo=FALSE, comment = ''}
-cat(readLines("./src/ex_rowSumsC.cpp"), sep = "\n")
+
+```
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+NumericVector rowSumsC(NumericMatrix x) {
+  int nrow = x.nrow(), ncol = x.ncol();
+  NumericVector out(nrow);
+
+  for (int i = 0; i < nrow; i++) {
+    double total = 0;
+    for (int j = 0; j < ncol; j++) {
+      total += x(i, j);
+    }
+    out[i] = total;
+  }
+  return out;
+}
 ```
 
 Note:
@@ -124,7 +190,8 @@ Note:
 
 ## An example with `if`/`else`
 
-```{r}
+
+```r
 signR <- function(x) {
   if (x > 0) {
     1
@@ -155,7 +222,8 @@ functions above.
 
 Try and implement the following R functions.
 
-```{r}
+
+```r
 fibR <- function(n) {
     if (n == 0) return(0)
     if (n == 1) return(1)
@@ -307,7 +375,8 @@ usual `package.skeleton`, initialise the appropriate package
 structure, including specific `Rcpp` requirements. In particular, this
 code
 
-```{r, eval=FALSE}
+
+```r
 library("Rcpp")
 Rcpp.package.skeleton("NewCppPackage", example_code = FALSE,
                       cpp_files = "code.cpp")
@@ -355,8 +424,4 @@ and/or
 - [Rcpp.org](http://rcpp.org/)
 - [Rcpp book](http://www.rcpp.org/book/)
 
-```{r, echo=FALSE}
-## testing solutions
-sourceCpp("./src/ex_sln1.cpp")
-sourceCpp("./src/ex_sln2.cpp")
-```
+

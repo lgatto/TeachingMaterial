@@ -46,7 +46,7 @@ develop and release packages in the future.
 - Optimisation
 - Memory
 - Parallelisation
-- Rcpp
+- [Rcpp](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/rc.md).
 
 
 ## References
