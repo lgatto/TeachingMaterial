@@ -1052,10 +1052,7 @@ From `?trace`:
 
 > A call to `trace` allows you to insert debugging code (e.g., a call
 > to `browser` or `recover`) at chosen places in any function. A call
-> to `untrace` cancels the tracing.  Specified methods can be traced
-> the same way, without tracing all calls to the function. Trace code
-> can be any R expression.  Tracing can be temporarily turned on or
-> off globally by calling `tracingState`.
+> to `untrace` cancels the tracing.
 
 
 ```r
@@ -1076,6 +1073,10 @@ untrace(e)
 ```
 
 ### Inserting code dynamically
+
+> The `trace` function operates by constructing a revised version of
+> the function (or of the method, if ‘signature’ is supplied), and
+> assigning the new object back where the original was found.
 
 
 ```r
@@ -1130,6 +1131,10 @@ f() ## enters browser mode
 ```
 
 ### Debugging S4 methods
+
+> The `trace` function operates by constructing a revised version of
+> the function (or of the method, if ‘signature’ is supplied), and
+> assigning the new object back where the original was found.
 
 
 ```r
