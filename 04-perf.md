@@ -10,7 +10,7 @@ author: "Laurent Gatto"
 - Optimisation
 - Memory
 - Rcpp
-
+- Big data
 
 # A word of caution
 
@@ -248,4 +248,28 @@ microbenchmark:::autoplot.microbenchmark(mb)
 # Rcpp
 
 See [here](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/rc.md).
+
+# Big data
+
+- [CRAN High-Performance and Parallel Computing task view](http://cran.r-project.org/web/views/HighPerformanceComputing.html).
+- Storing data in database or databases-like structures: `RMySQL`,
+      `RdbiPgSQL`, \ldots, `RSQLite`, `qldf`, `data.table` (the
+      `data.table::fread`, when `read.table` is slow, also `scan`),
+      `dplyr`, ... packages
+- The `ff` package by Adler et al. offers file-based access to data
+  sets that are too large to be loaded into memory, along with a
+  number of higher-level functions
+- The `bigmemory` package by Kane and Emerson permits storing large
+  objects such as matrices in memory (as well as via files) and uses
+  `external pointer` objects to refer to them
+- `netCDF` data files: `ncdf` and `RNetCDF` packages
+- `hdf5` format: `rhdf5` package
+- `mmap` memory-mapped files/devices I/O
+- hadoop and R
+- See http://r-pbd.org/ and the
+  [pbdDemo](http://cran.r-project.org/web/packages/pbdDEMO/)
+  package/vignette.
+- [Bioconductor in the cloud](http://bioconductor.org/help/bioconductor-cloud-ami/)
+- [Bioconductor docker containers](http://bioconductor.org/help/docker/)
+- ...
 

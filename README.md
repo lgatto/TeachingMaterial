@@ -45,8 +45,8 @@ develop and release packages in the future.
 - Profiling
 - Optimisation
 - Memory
-- Parallelisation
-- [Rcpp](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/rc.md).
+- [Rcpp](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/rc.md)
+- Other solutions for *big data*
 
 #### Other topics
 
