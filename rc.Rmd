@@ -64,7 +64,7 @@ sumR <- function(x) {
 }
 ```
 
-```{c}
+```
 double sumC(NumericVector x) {
   int n = x.size();
   double total = 0;
@@ -136,7 +136,7 @@ signR <- function(x) {
 }
 ```
 
-```{c}
+```
 int signC(int x) {
   if (x > 0) {
     return 1;
@@ -191,7 +191,7 @@ vectorised expression. Looks like R with the C++ efficiency (see the
 
 `+ *, -, /, pow, <, <=, >, >=, ==, !=, !'
 
-```{c}
+```
 NumericVector pdistC2(double x, NumericVector ys) {
   return sqrt(pow((x - ys), 2));
 }
@@ -242,7 +242,7 @@ rowSums pdist lgl_bigger foo
 For example, the `sumC` function above can be rewritten
 
 
-```{c}
+```
 // [[Rcpp::export]]
 double sumC2(NumericVector x) {
   double ans = sum(x);
@@ -250,7 +250,7 @@ double sumC2(NumericVector x) {
 }
 ```
 
-# An package with `Rcpp` code
+# A package with `Rcpp` code
 
 Starting a new package. The `Rcpp.pacakage.skeleton` will, like the
 usual `package.skeleton`, initialise the appropriate package
@@ -313,7 +313,7 @@ Library** (STL) provides such facilities.
 
 - For example, iterators, i.e. iteration (`for` loop) abstraction
 
-```{c}
+```
 #include <Rcpp.h>
 using namespace Rcpp;
 

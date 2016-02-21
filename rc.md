@@ -67,7 +67,7 @@ sumR <- function(x) {
 }
 ```
 
-```{c}
+```
 double sumC(NumericVector x) {
   int n = x.size();
   double total = 0;
@@ -97,7 +97,7 @@ sumC
 
 ```
 ## function (x) 
-## .Primitive(".Call")(<pointer: 0x2b09359e1d60>, x)
+## .Primitive(".Call")(<pointer: 0x2b3eaed42800>, x)
 ```
 
 ```r
@@ -105,7 +105,7 @@ sumC(c(1, 2, 1:4, rnorm(3)))
 ```
 
 ```
-## [1] 10.03978
+## [1] 10.48782
 ```
 
 ### Sourcing C++ code
@@ -151,15 +151,14 @@ sourceCpp("./src/ex_sumC.cpp")
 ```
 ## 
 ## > (x <- c(1, 3, rnorm(10)))
-##  [1]  1.00000000  3.00000000 -0.34321383 -0.06583524  1.35844772
-##  [6]  0.11544398  1.47693880  1.38057156  0.17528749  1.62468629
-## [11] -0.47150602 -1.10324033
+##  [1]  1.0000000  3.0000000 -0.9513605  0.3844195  1.2479595  0.6119155
+##  [7] -0.6696151  0.6277860 -0.6215492 -0.9240938  0.2876943 -0.8959995
 ## 
 ## > sumC(x)
-## [1] 8.14758
+## [1] 3.097157
 ## 
 ## > sum(x)
-## [1] 8.14758
+## [1] 3.097157
 ```
 
 ## An example with a matrix
@@ -204,7 +203,7 @@ signR <- function(x) {
 }
 ```
 
-```{c}
+```
 int signC(int x) {
   if (x > 0) {
     return 1;
@@ -260,7 +259,7 @@ vectorised expression. Looks like R with the C++ efficiency (see the
 
 `+ *, -, /, pow, <, <=, >, >=, ==, !=, !'
 
-```{c}
+```
 NumericVector pdistC2(double x, NumericVector ys) {
   return sqrt(pow((x - ys), 2));
 }
@@ -311,7 +310,7 @@ rowSums pdist lgl_bigger foo
 For example, the `sumC` function above can be rewritten
 
 
-```{c}
+```
 // [[Rcpp::export]]
 double sumC2(NumericVector x) {
   double ans = sum(x);
@@ -319,7 +318,7 @@ double sumC2(NumericVector x) {
 }
 ```
 
-# An package with `Rcpp` code
+# A package with `Rcpp` code
 
 Starting a new package. The `Rcpp.pacakage.skeleton` will, like the
 usual `package.skeleton`, initialise the appropriate package
@@ -383,7 +382,7 @@ Library** (STL) provides such facilities.
 
 - For example, iterators, i.e. iteration (`for` loop) abstraction
 
-```{c}
+```
 #include <Rcpp.h>
 using namespace Rcpp;
 
