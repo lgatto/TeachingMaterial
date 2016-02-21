@@ -155,11 +155,12 @@ Journal Computing Surveys, Vol 6, No. 4, Dec. 1974. p.268.
 
 
 ```r
+x <- runif(100)
 all.equal(sqrt(x), x ^ 0.5)
 ```
 
 ```
-## Error in all.equal(sqrt(x), x^0.5): object 'x' not found
+## [1] TRUE
 ```
 and unit tests.
 

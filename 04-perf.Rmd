@@ -150,6 +150,7 @@ Journal Computing Surveys, Vol 6, No. 4, Dec. 1974. p.268.
 ### Make sure the code remains correct
 
 ```{r, eval=TRUE}
+x <- runif(100)
 all.equal(sqrt(x), x ^ 0.5)
 ```
 and unit tests.
