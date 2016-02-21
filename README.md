@@ -48,6 +48,12 @@ develop and release packages in the future.
 - Parallelisation
 - [Rcpp](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/rc.md).
 
+#### Other topics
+
+- Packages and documentation
+- Reproducible research and vignettes (`Rmarkdown`)
+- Source code versioning with (for example) git and GitHub
+- Automation with `Make`
 
 ## References
 
