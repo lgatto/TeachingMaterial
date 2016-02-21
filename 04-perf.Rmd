@@ -14,7 +14,7 @@ author: "Laurent Gatto"
 
 # A word of caution
 
-Knuth, Donald. /Structured Programming with `go to` Statements/, ACM
+Knuth, Donald. *Structured Programming with `go to` Statements*, ACM
 Journal Computing Surveys, Vol 6, No. 4, Dec. 1974. p.268.
 
 > We should forget about small efficiencies, say about 97% of the
@@ -137,7 +137,7 @@ Example of *deferred evaluation*.
 > wise to look carefully at the critical code; but only after that
 > code has been identified
 
-Knuth, Donald. /Structured Programming with `go to` Statements/, ACM
+Knuth, Donald. *Structured Programming with `go to` Statements*, ACM
 Journal Computing Surveys, Vol 6, No. 4, Dec. 1974. p.268.
 
 ### Optimisation
