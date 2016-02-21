@@ -682,7 +682,7 @@ the call that generated the condition whereas the handlers in
 here with `sys.calls()`, which is the run-time equivalent of
 `traceback()` -- it lists all calls leading to the current function.
 
-```{r, eval=TRUE}
+```{r, eval=FALSE}
 f <- function() g()
 g <- function() h()
 h <- function() stop("!")
