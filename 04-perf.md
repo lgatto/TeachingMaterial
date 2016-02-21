@@ -144,14 +144,23 @@ Example of *deferred evaluation*.
 Knuth, Donald. /Structured Programming with `go to` Statements/, ACM
 Journal Computing Surveys, Vol 6, No. 4, Dec. 1974. p.268.
 
-### Before optimising
+### Optimisation
+
+Pat Burns reminds us that 
+
+> Our first duty is to create clear, correct code. Only consider
+> optimising your code when:
+
+- The code is debugged and stable.
+- Optimisation is likely to make a significant impact. 
+
+then
 
 1. Find the major bottleneck: code *profiling*.
 2. Try to eliminate it.
 3. Repeat until *fast enough*: ideally, define fast enough in advance.
 
-
-### Make sure the code remains correct
+#### Make sure the code remains correct
 
 
 ```r
@@ -162,9 +171,12 @@ all.equal(sqrt(x), x ^ 0.5)
 ```
 ## [1] TRUE
 ```
-and unit tests.
 
-### Are implementations really equivalent?
+and/or [unit
+tests](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/unittesting.md)
+to compare different implementations.
+
+#### Are implementations really equivalent?
 
 
 ```r
