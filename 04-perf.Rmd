@@ -336,29 +336,59 @@ microbenchmark:::autoplot.microbenchmark(mb)
 
 - `Rprof` and `summaryRprof` functions: records timings at fixed
   intervals (default `interval` is 0.02 seconds)
-- [`proftools`](https://cran.rstudio.com/web/packages/proftools/index.html)
-  package:
-- [`profr`](https://cran.rstudio.com/web/packages/profr/index.html)
-  package:
 - [`lineprof`](https://cran.rstudio.com/web/packages/lineprof/index.html)
   package: each *line of code* is profiled. This is less precise (than
   `Rprof`) but easier to interprete. Code must be sourced with
   `source()`.
+- [`proftools`](https://cran.rstudio.com/web/packages/proftools/index.html)
+  package.
+- [`profr`](https://cran.rstudio.com/web/packages/profr/index.html)
+  package.
 
 # Optimisation
 
-- look for existing solutions
-- Do as little as possible: `gccountr` vs `gccountr2` example above;
-  avoid names when not needed (`unlist`); simpler data.structures; use
-  any assumptions about the data, at the cost of
-  generalisation. Trade-off fast vs dangerous,
-  flexibility/functionality vs performance.
-- vectorisation: see  *R-vectorisation*
-- parallelisation: see *R-parallel*
-- avoid copies
-- byte-code compilation: see section in *R-bmark-prof-optim*
-- Re-implementing the code in C/C++ (see below)
-- Case study: t-test in *Advanced R* - compare with `genefilter::rowttests`.
+- Trade-off fast vs dangerous, flexibility/functionality vs performance.
+
+- Use any assumptions about the data, at the cost of generalisation. 
+
+## Look for existing solutions
+
+## Do as little as possible
+
+- `gccountr` vs `gccountr2` example above
+
+- avoid names when not needed (`unlist`)
+- simpler data structures
+
+## Vectorisation
+
+- It's not about getting rid of for loops and replacing them by `apply`.
+
+- Think about whole object, think in terms of vectors, not individual
+  items (scalars).
+
+- see  *R-vectorisation*
+
+- Difference between vectorisation in high level code, to improve
+  clarity (`apply`, `Vectorise`, ...) and, vectorise to improve
+  performance, which involved writing for loops in C.
+
+
+## Parallelisation
+- see *R-parallel*
+
+## Avoid copies
+
+## Byte-code compilation
+- see section in *R-bmark-prof-optim*
+
+## Re-implementing the code in C/C++ 
+- see below
+
+## Case study
+
+- t-test in *Advanced R* 
+- compare with `genefilter::rowttests`.
 
 # Memory
 
