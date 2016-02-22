@@ -202,6 +202,37 @@ the search path after the `R_GlobalEnv`.
   parents), one can use `exists`.
 - Compare two environments with `identical` (not `==`).
 
+## Locking environments and bindings
+
+
+```r
+e <- new.env()
+e$a <- 1
+e$b <- 2  ## add
+e$a <- 10 ## modify
+```
+
+Locking an environment stops from adding new bindings:
+
+
+```r
+lockEnvironment(e)
+e$k <- 1
+e$a <- 100
+```
+
+Locking bindings stops from modifying bindings with en envionment:
+
+
+```r
+lockBinding("a", e)
+e$a <- 10
+e$b <- 10
+
+lockEnvironment(e, bindings = TRUE)
+e$b <- 1
+```
+
 ## Exercise
 
 - Draw a few environments with variables and ask to reproduce in R.
