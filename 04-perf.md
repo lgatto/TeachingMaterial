@@ -65,7 +65,7 @@ system.time(sqrt(x))
 system.time(x^0.5)
 ```
 
-Does this work? 
+Does this work? Try
 
 
 ```r
@@ -82,7 +82,7 @@ summary(replicate(10, system.time(x^0.5)[["elapsed"]]))
 ```
 
 A better approach for such cases is the
-[`microbenchmark` package](https://cran.rstudio.com/web/packages/microbenchmark/index.html)),
+[`microbenchmark` package](https://cran.rstudio.com/web/packages/microbenchmark/index.html),
 which is ideal to accurately benchmark small pieces of code, in
 particular sub-millisecond (nanoseconds) executions (see units below). 
 
@@ -228,7 +228,7 @@ f()
 ## [1] 3
 ```
 
-And by **everything**, we mean **everything**: `+`, `^`, `(`, and `{`
+And by **everything**, we mean really nearly **everything**: `+`, `^`, `(`, and `{` in
 
 
 ```r
@@ -264,7 +264,8 @@ R implementation:
 - [CXXR](http://www.cs.kent.ac.uk/project/cxxr/)
 
 Several of these projects implement *deferred evaluation*,
-i.e. evaluations are only executed if they really need to be.
+i.e. evaluations are only executed if they really need to be. We will
+see (and implement) and example in the `Rcpp` section.
 
 # Profiling
 
@@ -310,7 +311,7 @@ all.equal(sqrt(x), x ^ 0.5)
 
 and/or [unit
 tests](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/unittesting.md)
-to compare different implementations.
+to compare different implementations (and regression test).
 
 #### Are implementations really equivalent?
 
@@ -364,7 +365,7 @@ microbenchmark:::autoplot.microbenchmark(mb)
 
 - `Rprof` and `summaryRprof` functions: records timings at fixed
   intervals (default `interval` is 0.02 seconds)
-- [`lineprof`](https://cran.rstudio.com/web/packages/lineprof/index.html)
+- [`lineprof`](https://github.com/hadley/lineprof)/[`profvis`](https://github.com/rstudio/profvis) [\*]
   package: each *line of code* is profiled. This is less precise (than
   `Rprof`) but easier to interprete. Code must be sourced with
   `source()`.
@@ -372,6 +373,8 @@ microbenchmark:::autoplot.microbenchmark(mb)
   package.
 - [`profr`](https://cran.rstudio.com/web/packages/profr/index.html)
   package.
+
+[\*] `lineprof` is now deprecated in favour of `profvis`. 
 
 # Optimisation
 
