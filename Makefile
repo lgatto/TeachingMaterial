@@ -6,6 +6,6 @@
 	# Rscript -e "rmarkdown::render('$^', output_format=rmarkdown::html_document())"
 
 all: 
-	make 01-intro.md 02-funprog.md 03-debug.md 04-perf.md  unittesting.md rc.md deferred-eval.Rmd
+	make 01-intro.md 02-funprog.md 03-debug.md 04-perf.md  unittesting.md rc.md deferred-eval.md
 
 .PHONY: all

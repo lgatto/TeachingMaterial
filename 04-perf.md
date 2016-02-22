@@ -559,7 +559,6 @@ x <- 1:10
 x[5] <- 0
 ```
 
-
 # Rcpp
 
 See [here](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/rc.md).
