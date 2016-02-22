@@ -108,13 +108,153 @@ microbenchmark(sqrt(x),
 <!-- as.list(body(function(x) sqrt(x))) ## 3 symbols -->
 <!-- ``` -->
 
-## Extreme dynamism
+Below are some illustrations of R's language designs and
+implementations that account for some cuts in performance (taken from
+*Advanced R*).
+
+## Extreme dynamism 
+
+R is an extremely dynamics language where almost any symbol (there are
+a few reserved key words such as `TRUE`, `if`, `for`, ..., package
+namespaces, locked environment with locked binding) can be modified at
+any points; in particular
+
+
+- body, arguments, and environments of functions
+
+
+```r
+f <- function() 1
+f()
+body(f)
+body(f) <- 2
+f()
+formals(f) <- pairlist(x = 1)
+body(f) <- quote(x + 1)
+f()
+f(10)
+```
+
+- Change the S4 methods for a generic
+
+
+```r
+setMethod(...)
+```
+
+- Add new fields to an S3 object
+
+
+```r
+ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
+trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
+group <- gl(2, 10, 20, labels = c("Ctl","Trt"))
+weight <- c(ctl, trt)
+mod <- lm(weight ~ group)
+mod
+mod$foo <- 1
+mod
+summary(mod)
+names(mod)
+```
+
+- Change the class of an object
+
+
+```r
+class(mod) <- c("mod", "foo")
+```
+- modify objects outside or the local environment with `<<-`, or
+  anywhere with `assign(..., envir)`.
+
+While this dynamism gives a lot of flexibility, the interpreter can
+not make any assumptions or optimisations. For example, let's assess
+the cost of methods lookup:
+
+
+```r
+## function
+f <- function(x) NULL
+
+## S3 method
+s3 <- function(x) UseMethod("s3")
+s3.integer <- f
+
+## S4 method
+A <- setClass("A", slots = c(a = "list"))
+setGeneric("s4", function(x) standardGeneric("s4"))
+setMethod("s4", "A", f)
+a <- A()
+
+## S4 Reference Class
+B <- setRefClass("B", methods = list(rc = f))
+b <- B$new()
+```
+
+
+```r
+(disp <- microbenchmark(
+     fun = f(),
+     S3 = s3(1L),
+     S4 = s4(a),
+     RC = b$rc()
+ ))
+```
 
 ## Name lookup
 
-## Lazy evaluation
+To find the value of a symbol is difficult, given that **everything**
+can be modified (extreme dynamics, see above) and lexical scoping.
+
+
+```r
+a <- 1
+f <- function() {
+    g <- function() {
+        print(a) ## from global workspace
+        assign("a", 2, envir = parent.frame())
+        print(a) ## f's environment
+        a <- 3
+        print(a) ## g's environment
+    }
+    g()
+}
+f()
+```
+
+```
+## [1] 1
+## [1] 2
+## [1] 3
+```
+
+And by **everything**, we mean **everything**: `+`, `^`, `(`, and `{`
+
+
+```r
+f <- function(x, y) {
+    (x + y) ^ 2
+}
+```
 
 ## Extracting a single value from a data frame
+
+
+```r
+microbenchmark(
+    "[32, 11]"      = mtcars[32, 11],
+    "$carb[32]"     = mtcars$carb[32],
+    "[[c(11, 32)]]" = mtcars[[c(11, 32)]],
+    "[[11]][32]"    = mtcars[[11]][32],
+    ".subset"       = .subset(mtcars, 11)[32],
+    ".subset2"      = .subset2(mtcars, 11)[32]
+)
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "microbenchmark"
+```
+
 
 ## Improving R's performance
 
@@ -127,10 +267,10 @@ R implementation:
 - [Riposte](https://github.com/jtalbot/riposte)
 - [CXXR](http://www.cs.kent.ac.uk/project/cxxr/)
 
-Example of *deferred evaluation*.
+Several of these projects implement *deferred evaluation*,
+i.e. evaluations are only executed if they really need to be.
 
 # Profiling
-
 
 ### Reminder
 
