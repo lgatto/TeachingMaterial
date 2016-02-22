@@ -97,7 +97,7 @@ sumC
 
 ```
 ## function (x) 
-## .Primitive(".Call")(<pointer: 0x2ac329e1c800>, x)
+## .Primitive(".Call")(<pointer: 0x2b9659817800>, x)
 ```
 
 ```r
@@ -105,7 +105,7 @@ sumC(c(1, 2, 1:4, rnorm(3)))
 ```
 
 ```
-## [1] 9.395262
+## [1] 14.27197
 ```
 
 ### Sourcing C++ code
@@ -151,15 +151,14 @@ sourceCpp("./src/ex_sumC.cpp")
 ```
 ## 
 ## > (x <- c(1, 3, rnorm(10)))
-##  [1]  1.00000000  3.00000000  0.01346689 -0.94251381 -0.16676328
-##  [6]  0.10447776  0.00657700  0.03539709 -0.24101794  1.58283819
-## [11]  0.29261432 -0.73047555
+##  [1]  1.0000000  3.0000000  1.6586915  0.4177508  1.3518853  0.2386402
+##  [7] -1.3764443  2.0035246  1.6145667  1.0270121  0.7959044 -0.2211089
 ## 
 ## > sumC(x)
-## [1] 3.954601
+## [1] 11.51042
 ## 
 ## > sum(x)
-## [1] 3.954601
+## [1] 11.51042
 ```
 
 ## An example with a matrix
@@ -310,10 +309,6 @@ rowSums pdist lgl_bigger foo
 
 For example, the `sumC` function above can be rewritten
 
-Implement
-[deferred evaluation](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/deferred-eval.md)
-in C++.
-
 ```
 // [[Rcpp::export]]
 double sumC2(NumericVector x) {
@@ -321,6 +316,11 @@ double sumC2(NumericVector x) {
   return ans;
 }
 ```
+
+Implement
+[deferred evaluation](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/deferred-eval.md)
+in C++.
+
 
 # Other
 

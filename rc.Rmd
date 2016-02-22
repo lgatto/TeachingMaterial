@@ -241,10 +241,6 @@ rowSums pdist lgl_bigger foo
 
 For example, the `sumC` function above can be rewritten
 
-Implement
-[deferred evaluation](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/deferred-eval.md)
-in C++.
-
 ```
 // [[Rcpp::export]]
 double sumC2(NumericVector x) {
@@ -252,6 +248,11 @@ double sumC2(NumericVector x) {
   return ans;
 }
 ```
+
+Implement
+[deferred evaluation](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/deferred-eval.md)
+in C++.
+
 
 # Other
 
