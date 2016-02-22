@@ -419,7 +419,6 @@ microbenchmark:::autoplot.microbenchmark(mb)
 - compare with `genefilter::rowttests`.
 
 # Memory
-
 (See Chapter 18 in *Advanced R* for more details)
 
 Assessimg memory needs is useful to save memory in general and limit
@@ -532,13 +531,27 @@ mem_change(rm(y))
 
 #### Garbage collection
 
+When objects in memory are not accessed from R anymore, there is no
+need to explicitly free up that memory chunk explicity. This is done
+automatically by the garbage collector, as illustrated in the examples
+above. There is no need to call it explicityly with `gc()`; the only
+effect of this is for R to explicitly return memory to the OS. 
 
 ## Memory profiling
 
-- `tracemem`
 - `lineprof`
+- `tracemem`
 
 ## Modifiation in place
+
+What happens in this cas? Is `x` copied, or is it modified in place?
+
+
+```r
+x <- 1:10
+x[5] <- 0
+```
+
 
 # Rcpp
 
