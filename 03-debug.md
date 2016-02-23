@@ -270,7 +270,7 @@ assert_that(length(x) == 2)
 
 ## Consistency and predictability
 
-Reminder of the innteractive use vs programming examples: 
+Reminder of the interactive use vs programming examples: 
 - `[` and `drop` 
 - `sapply`, `lapply`, `vapply`
 
