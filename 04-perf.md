@@ -432,10 +432,12 @@ h <- function() {
 
 
 ```r
-library("profv")
+library("profvis")
 source("./src/lineprof-example.R")
 profvis(f())
 ```
+
+![profviz inteface](./figs/profvis.png)
 
 ## Limitations
 
