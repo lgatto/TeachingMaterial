@@ -407,6 +407,15 @@ Bugs are shy, and are generally hidden, deep down in your code, to
 make it as difficult as possible for you to find them.
 
 
+```r
+e <- function(i) {
+  x <- 1:4
+  if (i < 5) x[1:2]
+  else x[-1:2]
+}
+f <- function() sapply(1:10, e)
+g <- function() f()
+```
 
 `traceback`: lists the sequence of calls that lead to the error
 
