@@ -43,7 +43,7 @@ develop and release packages in the future.
 #### [Part IV: Performance](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/04-perf.md)
 - Benchmarking
 - Profiling
-- Optimisation (including [parallel processing](https://github.com/lgatto/rbc/tree/2014-11-06-Zurich/R-parallel))
+- Optimisation
 - Memory
 - [Rcpp](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/rc.md)
 

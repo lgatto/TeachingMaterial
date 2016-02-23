@@ -1,0 +1,3 @@
+[submodule "R-parallel"]
+	path = R-parallel
+	url = git@github.com:lgatto/R-parallel.git
