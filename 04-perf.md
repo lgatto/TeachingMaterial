@@ -402,12 +402,11 @@ are now deprecated in favour of
 - Think about whole object, think in terms of vectors, not individual
   items (scalars).
 
-- see  *R-vectorisation*
+- see  *R-vectorisation* -> rather in functional programming.
 
 - Difference between vectorisation in high level code, to improve
   clarity (`apply`, `Vectorise`, ...) and, vectorise to improve
   performance, which involved writing for loops in C.
-
 
 ## Parallelisation
 - see *R-parallel*
@@ -436,8 +435,11 @@ Requirement:
 
 ```r
 library("pryr")
-library("lineprof")
+library("profvis")
 ```
+
+
+
 
 ## Object size
 
@@ -546,7 +548,7 @@ effect of this is for R to explicitly return memory to the OS.
 
 ## Memory profiling
 
-- `lineprof`
+- `profvis`
 - `tracemem`
 
 ## Modifiation in place
@@ -556,7 +558,34 @@ What happens in this cas? Is `x` copied, or is it modified in place?
 
 ```r
 x <- 1:10
-x[5] <- 0
+c(address(x), refs(x))
+x[5] <- 0L
+c(address(x), refs(x))
+
+y <- x
+c(address(x), refs(x))
+c(address(y), refs(y))
+
+x <- 1:5
+y <- x
+c(address(x), refs(x))
+rm(y)
+c(address(x), refs(x)) ## should be 1
+
+x <- 1:5
+y <- x
+z <- x
+c(address(x), refs(x)) ## should be 3
+```
+
+
+```r
+x <- 1:10
+tracemem(x)
+x[5] <- 0L
+
+y <- x
+x[5] <- 10L
 ```
 
 # Rcpp
