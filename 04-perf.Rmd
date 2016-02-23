@@ -264,6 +264,11 @@ Journal Computing Surveys, Vol 6, No. 4, Dec. 1974. p.268.
 
 ### Optimisation
 
+Optimisations often have their own costs:
+
+- Trade-off fast vs dangerous, flexibility/functionality vs performance.
+- Use any assumptions about the data, at the cost of generalisation. 
+
 Pat Burns reminds us that 
 
 > Our first duty is to create clear, correct code. Only consider
@@ -431,18 +436,110 @@ profvis({
 
 # Optimisation
 
-- Trade-off fast vs dangerous, flexibility/functionality vs performance.
-
-- Use any assumptions about the data, at the cost of generalisation. 
-
 ## Look for existing solutions
 
 ## Do as little as possible
 
 - `gccountr` vs `gccountr2` example above
-
-- avoid names when not needed (`unlist`)
 - simpler data structures
+
+## Usual suspects
+
+### Names
+
+```{r, eval=TRUE, cache=TRUE}
+make_id2GO <- function(n = 1e3) { ## could be 1e4 - 1e5
+    gn <- sprintf(paste0("ENSG%0", 10, "d"), sample(1e6, n))
+    goid <- function(n = 10) sprintf(paste0("GO:%0", 10, "d"), sample(1e6, n))
+    structure(replicate(n, goid(sample(50, 1))),
+              names = gn)
+}
+id2GO <- make_id2GO()
+```
+
+We have a list of `r length(id2GO)` genes, and each of these genes is
+characterised by a set of `r min(lengths(id2GO))` to `r
+max(lengths(id2GO))` GO terms. To obtain the go terms, we `unlist` the
+gene list.
+
+```{r, eval=FALSE}
+length(id2GO)
+str(head(id2GO))
+str(unlist(id2GO))
+```
+
+This can be executed much faster if we ignore the names in the
+original list.
+
+```{r, eval=FALSE}
+library(microbenchmark)
+microbenchmark(unlist(l),
+               unlist(l, use.names = FALSE),
+               times = 10)
+```
+
+### Initialise, do not grow dynamically
+
+```{r, echo=TRUE, echo=TRUE}
+f1 <- function(n) {
+  a <- NULL 
+  for (i in 1:n) a <- c(a, sqrt(i))
+  a
+}
+
+f2 <- function(n) {
+  a <- numeric(n)
+  for (i in 1:n) a[i] <- sqrt(i)
+  a
+}
+```
+
+```{r, eval=TRUE, echo=FALSE, cache=TRUE}
+n <- 10^(2:5)
+t1 <- sapply(n, function(.n) system.time(f1(.n))[["elapsed"]])
+t2 <- sapply(n, function(.n) system.time(f2(.n))[["elapsed"]])
+t3 <- sapply(n, function(.n) system.time(f3(.n))[["elapsed"]])
+t4 <- sapply(n, function(.n) system.time(f4(.n))[["elapsed"]])
+  
+elapsed <- data.frame(t1, t2, t3, t4)
+rownames(elapsed) <- n
+  
+colnames(elapsed) <-
+    c("for loop\nwithout init",
+      "for loop\nwith init",
+      "wrapped in\napply",
+      "built-in sqrt\n(vectorised)")
+	  
+suppressPackageStartupMessages(library("grid"))
+suppressPackageStartupMessages(library("reshape2"))
+suppressPackageStartupMessages(library("scales"))
+suppressPackageStartupMessages(library("ggplot2"))
+
+mainvp <- viewport(width = 1,
+                   height = 1,
+                   x = 0.5, y = 0.5)
+subvp <- viewport(width = 6/9,
+                  height = 5/9,
+                  x = .1,
+                  y = .95,
+                  just = c("left","top"))
+df <- melt(elapsed)
+colnames(df) <- c("Implementation", "Elapsed")
+df$Iterations <- rep(n, 4)
+ymax <- max(elapsed[, -1])
+p <- ggplot(data=df, aes(x=Iterations, y=Elapsed, col=Implementation)) +
+    geom_line() + geom_point() +
+        theme(legend.position="bottom") +
+            scale_x_continuous(trans=log10_trans()) + 
+                coord_trans(x="log2")
+q <- p + coord_cartesian(ylim=c(0, (ymax+.05))) +
+    theme_gray(8) +
+        labs(x = NULL, y = NULL) +
+            theme(plot.margin = unit(rep(0.3, 4), "lines")) +
+                theme(legend.position="none")
+print(p, vp = mainvp)
+print(q, vp = subvp)
+```
 
 ## Vectorisation
 

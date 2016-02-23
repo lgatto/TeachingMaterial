@@ -283,6 +283,11 @@ Journal Computing Surveys, Vol 6, No. 4, Dec. 1974. p.268.
 
 ### Optimisation
 
+Optimisations often have their own costs:
+
+- Trade-off fast vs dangerous, flexibility/functionality vs performance.
+- Use any assumptions about the data, at the cost of generalisation. 
+
 Pat Burns reminds us that 
 
 > Our first duty is to create clear, correct code. Only consider
@@ -462,18 +467,131 @@ profvis({
 
 # Optimisation
 
-- Trade-off fast vs dangerous, flexibility/functionality vs performance.
-
-- Use any assumptions about the data, at the cost of generalisation. 
-
 ## Look for existing solutions
 
 ## Do as little as possible
 
 - `gccountr` vs `gccountr2` example above
-
-- avoid names when not needed (`unlist`)
 - simpler data structures
+
+## Usual suspects
+
+### Names
+
+
+```r
+make_id2GO <- function(n = 1e3) { ## could be 1e4 - 1e5
+    gn <- sprintf(paste0("ENSG%0", 10, "d"), sample(1e6, n))
+    goid <- function(n = 10) sprintf(paste0("GO:%0", 10, "d"), sample(1e6, n))
+    structure(replicate(n, goid(sample(50, 1))),
+              names = gn)
+}
+id2GO <- make_id2GO()
+```
+
+We have a list of 1000 genes, and each of these genes is
+characterised by a set of 1 to `r
+max(lengths(id2GO))` GO terms. To obtain the go terms, we `unlist` the
+gene list.
+
+
+```r
+length(id2GO)
+str(head(id2GO))
+str(unlist(id2GO))
+```
+
+This can be executed much faster if we ignore the names in the
+original list.
+
+
+```r
+library(microbenchmark)
+microbenchmark(unlist(l),
+               unlist(l, use.names = FALSE),
+               times = 10)
+```
+
+### Initialise, do not grow dynamically
+
+
+```r
+f1 <- function(n) {
+  a <- NULL 
+  for (i in 1:n) a <- c(a, sqrt(i))
+  a
+}
+
+f2 <- function(n) {
+  a <- numeric(n)
+  for (i in 1:n) a[i] <- sqrt(i)
+  a
+}
+```
+
+
+```
+## Error in system.time(f3(.n)): could not find function "f3"
+```
+
+```
+## Timing stopped at: 0 0.001 0
+```
+
+```
+## Error in system.time(f4(.n)): could not find function "f4"
+```
+
+```
+## Timing stopped at: 0 0 0
+```
+
+```
+## Error in data.frame(t1, t2, t3, t4): object 't3' not found
+```
+
+```
+## Error in rownames(elapsed) <- n: object 'elapsed' not found
+```
+
+```
+## Error in colnames(elapsed) <- c("for loop\nwithout init", "for loop\nwith init", : object 'elapsed' not found
+```
+
+```
+## Error in melt(elapsed): object 'elapsed' not found
+```
+
+```
+## Error in `colnames<-`(`*tmp*`, value = c("Implementation", "Elapsed")): attempt to set 'colnames' on an object with less than two dimensions
+```
+
+```
+## Error in df$Iterations <- rep(n, 4): object of type 'closure' is not subsettable
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'elapsed' not found
+```
+
+```
+## Error: ggplot2 doesn't know how to deal with data of class function
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'p' not found
+```
+
+```
+## Error in print(p, vp = mainvp): object 'p' not found
+```
+
+```
+## function (save = "default", status = 0, runLast = TRUE) 
+## .Internal(quit(save, status, runLast))
+## <bytecode: 0x259ac28>
+## <environment: namespace:base>
+```
 
 ## Vectorisation
 
