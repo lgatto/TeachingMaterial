@@ -97,7 +97,7 @@ sumC
 
 ```
 ## function (x) 
-## .Primitive(".Call")(<pointer: 0x2b9659817800>, x)
+## .Primitive(".Call")(<pointer: 0x2b36c444a800>, x)
 ```
 
 ```r
@@ -105,7 +105,7 @@ sumC(c(1, 2, 1:4, rnorm(3)))
 ```
 
 ```
-## [1] 14.27197
+## [1] 6.413787
 ```
 
 ### Sourcing C++ code
@@ -151,14 +151,15 @@ sourceCpp("./src/ex_sumC.cpp")
 ```
 ## 
 ## > (x <- c(1, 3, rnorm(10)))
-##  [1]  1.0000000  3.0000000  1.6586915  0.4177508  1.3518853  0.2386402
-##  [7] -1.3764443  2.0035246  1.6145667  1.0270121  0.7959044 -0.2211089
+##  [1]  1.00000000  3.00000000 -1.44813490  0.93993783  0.64942111
+##  [6] -0.93153149  0.44234071  0.08212589  0.01747364 -0.71900542
+## [11] -0.27146137 -0.86713044
 ## 
 ## > sumC(x)
-## [1] 11.51042
+## [1] 1.894036
 ## 
 ## > sum(x)
-## [1] 11.51042
+## [1] 1.894036
 ```
 
 ## An example with a matrix
@@ -217,10 +218,10 @@ int signC(int x) {
 
 # Exercises
 
-Get familiar with the syntax and write/test the `sumC` and `rowSumsC`
-functions above.
+- Get familiar with the syntax and write/test the `sumC` and
+  `rowSumsC` functions above.
 
-Try and implement the following R functions.
+- Try and implement the following R functions.
 
 
 ```r
@@ -244,6 +245,29 @@ biggerY <- function(x, y) x[x > y]
 
 foo <- function(x, y) ifelse(x < y, x*x, -(y*y))
 ```
+
+## Fibonacci
+
+- Once you have a C++ version for the fibonacci function, compare the
+  R, byte-compiled R and C implementions.
+
+
+- Instead of using recursion, which is particularly slow in R, compare
+  with the following implementation in R, byte-compiled R and your C++
+  version.
+  
+
+```r
+fib <- function(n) {
+    res <- c(1, 1, numeric(n-2))
+    for (i in 3:length(res))
+        res[i] <- res[i-1] + res[i-2]
+    return(res)
+}
+```
+
+If you are interested in more implementations and timings, see this
+[post](http://lgatto.github.io/fibo/).
 
 # Rcpp sugar
 

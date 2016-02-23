@@ -10,7 +10,6 @@ author: "Laurent Gatto"
 - Optimisation
 - Memory
 - Rcpp
-- Big data
 
 # A word of caution
 

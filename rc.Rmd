@@ -150,10 +150,10 @@ int signC(int x) {
 
 # Exercises
 
-Get familiar with the syntax and write/test the `sumC` and `rowSumsC`
-functions above.
+- Get familiar with the syntax and write/test the `sumC` and
+  `rowSumsC` functions above.
 
-Try and implement the following R functions.
+- Try and implement the following R functions.
 
 ```{r}
 fibR <- function(n) {
@@ -176,6 +176,28 @@ biggerY <- function(x, y) x[x > y]
 
 foo <- function(x, y) ifelse(x < y, x*x, -(y*y))
 ```
+
+## Fibonacci
+
+- Once you have a C++ version for the fibonacci function, compare the
+  R, byte-compiled R and C implementions.
+
+
+- Instead of using recursion, which is particularly slow in R, compare
+  with the following implementation in R, byte-compiled R and your C++
+  version.
+  
+```{r}
+fib <- function(n) {
+    res <- c(1, 1, numeric(n-2))
+    for (i in 3:length(res))
+        res[i] <- res[i-1] + res[i-2]
+    return(res)
+}
+```
+
+If you are interested in more implementations and timings, see this
+[post](http://lgatto.github.io/fibo/).
 
 # Rcpp sugar
 
