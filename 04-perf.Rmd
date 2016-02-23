@@ -590,7 +590,7 @@ See below
 
 ## Parallelisation
 
-See the [R-parallel](./R-parallel/parallel.pdf) material.
+See the [R-parallel](https://github.com/lgatto/R-parallel/blob/f83667f3ef62ca3f82a7f2ef58b05db497da4b75/parallel.pdf) material.
 
 ## Byte-code compilation
 
