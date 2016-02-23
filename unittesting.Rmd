@@ -415,3 +415,10 @@ expect_true(validObject(andy2011))
 ```
 
 
+## Testing coverage in a package
+
+The [covr](https://github.com/jimhester/covr) package:
+
+![package coverage](./figs/covr.png)
+
+[Coverage for all Bioconductor packages](https://codecov.io/github/Bioconductor-mirror).
