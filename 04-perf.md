@@ -413,30 +413,20 @@ Needs to `source()` the code or directly input the code to have access
 to the individual lines.
 
 
-```
-## library("lineprof")
-## 
-## f <- function() {
-##   pause(0.1)
-##   g()
-##   h()
-## }
-## 
-## g <- function() {
-##   pause(0.1)
-##   h()
-## }
-## 
-## h <- function() {
-##   pause(0.1)
-## }
-```
 
 
 ```r
+library("profv")
 source("./src/lineprof-example.R")
 profvis(f())
 ```
+
+## Limitations
+
+- Not profiling of C/C++ code, or primitive functions, or byte
+  compiled code.
+- Anonymous functions are labelled as *anonymous*; name them
+  explicitly in such cases.
 
 ## Exercise
 
