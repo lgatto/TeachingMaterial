@@ -16,6 +16,7 @@ author: "Laurent Gatto"
 ## Introduction
 
 - Side effects
+- no global variables
 - Abstraction
 - Think about default inputs and outputs
 - Streamline code
