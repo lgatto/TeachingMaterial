@@ -604,14 +604,10 @@ automatically by the garbage collector, as illustrated in the examples
 above. There is no need to call it explicityly with `gc()`; the only
 effect of this is for R to explicitly return memory to the OS. 
 
-## Memory profiling
-
-- `profvis`
-- `tracemem`
-
 ## Modifiation in place
 
-What happens in this cas? Is `x` copied, or is it modified in place?
+What happens in this cas? Is `x` copied (and hence more memory is used
+up), or is it modified in place?
 
 
 ```r
@@ -620,9 +616,15 @@ c(address(x), refs(x))
 x[5] <- 0L
 c(address(x), refs(x))
 
+
 y <- x
 c(address(x), refs(x))
 c(address(y), refs(y))
+
+x[5] <- 1L
+c(address(x), refs(x))
+c(address(y), refs(y))
+
 
 x <- 1:5
 y <- x
@@ -636,6 +638,8 @@ z <- x
 c(address(x), refs(x)) ## should be 3
 ```
 
+`tracemem` tracks memory location of objects:
+
 
 ```r
 x <- 1:10
@@ -644,6 +648,9 @@ x[5] <- 0L
 
 y <- x
 x[5] <- 10L
+
+address(x)
+address(y)
 ```
 
 # Rcpp
