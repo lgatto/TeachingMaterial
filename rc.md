@@ -97,7 +97,7 @@ sumC
 
 ```
 ## function (x) 
-## .Primitive(".Call")(<pointer: 0x2b3eaed42800>, x)
+## .Primitive(".Call")(<pointer: 0x2b36c444a800>, x)
 ```
 
 ```r
@@ -105,7 +105,7 @@ sumC(c(1, 2, 1:4, rnorm(3)))
 ```
 
 ```
-## [1] 10.48782
+## [1] 6.413787
 ```
 
 ### Sourcing C++ code
@@ -151,14 +151,15 @@ sourceCpp("./src/ex_sumC.cpp")
 ```
 ## 
 ## > (x <- c(1, 3, rnorm(10)))
-##  [1]  1.0000000  3.0000000 -0.9513605  0.3844195  1.2479595  0.6119155
-##  [7] -0.6696151  0.6277860 -0.6215492 -0.9240938  0.2876943 -0.8959995
+##  [1]  1.00000000  3.00000000 -1.44813490  0.93993783  0.64942111
+##  [6] -0.93153149  0.44234071  0.08212589  0.01747364 -0.71900542
+## [11] -0.27146137 -0.86713044
 ## 
 ## > sumC(x)
-## [1] 3.097157
+## [1] 1.894036
 ## 
 ## > sum(x)
-## [1] 3.097157
+## [1] 1.894036
 ```
 
 ## An example with a matrix
@@ -217,10 +218,10 @@ int signC(int x) {
 
 # Exercises
 
-Get familiar with the syntax and write/test the `sumC` and `rowSumsC`
-functions above.
+- Get familiar with the syntax and write/test the `sumC` and
+  `rowSumsC` functions above.
 
-Try and implement the following R functions.
+- Try and implement the following R functions.
 
 
 ```r
@@ -244,6 +245,29 @@ biggerY <- function(x, y) x[x > y]
 
 foo <- function(x, y) ifelse(x < y, x*x, -(y*y))
 ```
+
+## Fibonacci
+
+- Once you have a C++ version for the fibonacci function, compare the
+  R, byte-compiled R and C implementions.
+
+
+- Instead of using recursion, which is particularly slow in R, compare
+  with the following implementation in R, byte-compiled R and your C++
+  version.
+  
+
+```r
+fib <- function(n) {
+    res <- c(1, 1, numeric(n-2))
+    for (i in 3:length(res))
+        res[i] <- res[i-1] + res[i-2]
+    return(res)
+}
+```
+
+If you are interested in more implementations and timings, see this
+[post](http://lgatto.github.io/fibo/).
 
 # Rcpp sugar
 
@@ -309,7 +333,6 @@ rowSums pdist lgl_bigger foo
 
 For example, the `sumC` function above can be rewritten
 
-
 ```
 // [[Rcpp::export]]
 double sumC2(NumericVector x) {
@@ -318,52 +341,10 @@ double sumC2(NumericVector x) {
 }
 ```
 
-# A package with `Rcpp` code
+Implement
+[deferred evaluation](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/deferred-eval.md)
+in C++.
 
-Starting a new package. The `Rcpp.pacakage.skeleton` will, like the
-usual `package.skeleton`, initialise the appropriate package
-structure, including specific `Rcpp` requirements. In particular, this
-code
-
-
-```r
-library("Rcpp")
-Rcpp.package.skeleton("NewCppPackage", example_code = FALSE,
-                      cpp_files = "code.cpp")
-```
-
-will copy `code.cpp` into `NewCppPackage/src/.`, run `sourceCpp` and
-properly generate the export wrappers for the C++ code. The resulting
-package will also have
-
-In the `DESCRIPTION` file:
-
-```
-LinkingTo: Rcpp
-Imports: Rcpp
-```
-
-In the `NAMESPACE` file:
-
-```
-useDynLib(mypackage)
-importFrom(Rcpp, sourceCpp)
-```
-
-Whenever any existing C++ function's signature is modified, new C++
-functions are removed or added, one needs to run
-`Rcpp::compileAttributes("/path/to/NewCppPackage")` to update the
-export wrappers.
-
-### Exercise
-
-- Use `Rcpp.package.skeleton` as descibed above and any C++ function
-  witten so far and create a package as outlined above.
-
-and/or
-
-- Add a C++ function of your choice to an existing package (for
-  example, add your own `gccount` to the `sequences` package).
 
 # Other
 
@@ -414,6 +395,54 @@ testing.
 
 [Modules](http://dirk.eddelbuettel.com/code/rcpp/Rcpp-modules.pdf)
 enables to expose C++ classes and methods to R.
+
+# A package with `Rcpp` code
+
+Starting a new package. The `Rcpp.pacakage.skeleton` will, like the
+usual `package.skeleton`, initialise the appropriate package
+structure, including specific `Rcpp` requirements. In particular, this
+code
+
+
+```r
+library("Rcpp")
+Rcpp.package.skeleton("NewCppPackage", example_code = FALSE,
+                      cpp_files = "code.cpp")
+```
+
+will copy `code.cpp` into `NewCppPackage/src/.`, run `sourceCpp` and
+properly generate the export wrappers for the C++ code. The resulting
+package will also have
+
+In the `DESCRIPTION` file:
+
+```
+LinkingTo: Rcpp
+Imports: Rcpp
+```
+
+In the `NAMESPACE` file:
+
+```
+useDynLib(mypackage)
+importFrom(Rcpp, sourceCpp)
+```
+
+Whenever any existing C++ function's signature is modified, new C++
+functions are removed or added, one needs to run
+`Rcpp::compileAttributes("/path/to/NewCppPackage")` to update the
+export wrappers.
+
+### Exercise
+
+- Use `Rcpp.package.skeleton` as descibed above and any C++ function
+  witten so far and create a package as outlined above.
+
+and/or
+
+- Add a C++ function of your choice to an existing package (for
+  example, add your own `gccount` to the `sequences` package).
+
 
 # References
 
