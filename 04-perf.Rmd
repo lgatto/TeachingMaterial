@@ -446,9 +446,9 @@ profvis({
 - simpler data structures
 - set `colClasses` in `read.csv`
 
-##  Usual suspects
+- Usual suspects: names, growing objects:
 
-### Names
+## Names
 
 ```{r, eval=TRUE, cache=TRUE}
 make_id2GO <- function(n = 1e3) { ## could be 1e4 - 1e5
@@ -481,7 +481,7 @@ microbenchmark(unlist(l),
                times = 10)
 ```
 
-### Initialise, do not grow dynamically
+## Initialise, do not grow dynamically (to avoid copies)
 
 ```{r, echo=TRUE, echo=TRUE}
 f1 <- function(n) {
@@ -501,6 +501,23 @@ f2 <- function(n) {
 microbenchmark(f1(1e3), f2(1e3))
 microbenchmark(f1(1e4), f2(1e4))
 ```
+
+## Pass-by-reference with environments
+
+When passing an environment as function argument, it is **not**
+copied: all its values are accessible within the function and can be
+persistently modified.
+
+```{r, eval=TRUE}
+e <- new.env()
+e$x <- 1
+f <- function(myenv) myenv$x <- 2
+f(e)
+e$x
+```
+
+This is used in the `eSet` et al. microarray data structures to store
+the expression data.
 
 ## Vectorisation
 
@@ -564,30 +581,49 @@ Code vectorisation is not only about avoiding loops at all cost, and
 replacing them with `*apply`. As we have seen, this does not make any
 real difference in terms of speed.
 
-- Think about whole object, think in terms of vectors, not individual
-  items (scalars).
-
-- Difference between vectorisation in high level code, to improve
-  clarity (`apply`, `Vectorise`, ...) and, vectorise to improve
-  performance, which involved writing for loops in C.
-
-
-
-## Parallelisation
-- see *R-parallel*
-
-## Avoid copies
-
-## Byte-code compilation
-- see section in *R-bmark-prof-optim*
+Difference between vectorisation in high level code, to improve
+clarity (`apply`, `Vectorise`, ...) and, vectorise to improve
+performance, which involved re-writing for loops in C/C++ (see below).
 
 ## Re-implementing the code in C/C++ 
-- see below
 
-## Case study
+See below
 
-- t-test in *Advanced R* 
-- compare with `genefilter::rowttests`.
+## Parallelisation
+
+See the
+[R-parallel](https://github.com/lgatto/rbc/tree/2014-11-06-Zurich/R-parallel)
+material.
+
+## Byte-code compilation
+
+The `compile::cmpfun` function compiles the body of a closure and
+returns a new closure with the same formals and the body replaced by
+the compiled body expression. It does not always provide a speed
+improvement, but is very easy to implement.
+
+```{r, eval=FALSE}
+lapply2 <- function(x, f, ...) {
+  out <- vector("list", length(x))
+  for (i in seq_along(x)) {
+    out[[i]] <- f(x[[i]], ...)
+  }
+  out
+}
+
+lapply2_c <- compiler::cmpfun(lapply2)
+
+x <- list(1:10, letters, c(FALSE, TRUE), NULL)
+
+
+microbenchmark(
+  lapply2(x, is.null),
+  lapply2_c(x, is.null),
+  lapply(x, is.null))
+```
+
+Note that all base R functions are aleady byte compiled. This can be
+observed with the `<bytecode: 0x3858bb8>` attribute of a function.
 
 # Memory
 (See Chapter 18 in *Advanced R* for more details)
