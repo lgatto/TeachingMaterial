@@ -438,10 +438,13 @@ profvis({
 
 ## Look for existing solutions
 
+- `readr::read_csv` or  `data.table::fread` instead of `read_csv`
+
 ## Do as little as possible
 
 - `gccountr` vs `gccountr2` example above
 - simpler data structures
+- set `colClasses` in `read.csv`
 
 ##  Usual suspects
 
@@ -557,9 +560,13 @@ print(p, vp = mainvp)
 print(q, vp = subvp)
 ```
 
+Code vectorisation is not only about avoiding loops at all cost, and
+replacing them with `*apply`. As we have seen, this does not make any
+real difference in terms of speed.
+
 - Think about whole object, think in terms of vectors, not individual
   items (scalars).
-- It's not about getting rid of for loops and replacing them by `apply`.
+
 - Difference between vectorisation in high level code, to improve
   clarity (`apply`, `Vectorise`, ...) and, vectorise to improve
   performance, which involved writing for loops in C.
@@ -658,6 +665,31 @@ object_size(e)
 <!-- plot(0:50, sz - 40, type = "s", xlab = "Bytes", ylab = "Length") -->
 <!-- abline(h = c(0, 8, 16, 32, 48, 64, 128), col = "grey") -->
 <!-- abline(0, 4) -->
+<!-- ``` -->
+
+- Assess the impact of dynamically growing a vector on the memory. You
+  can use `f1()` and `f2()` above, and trace `a`.
+  
+<!-- ```{r} -->
+<!-- f1 <- function(n) { -->
+<!--     a <- numeric() -->
+<!--     print(tracemem(a)) -->
+<!--     for (i in 1:n) { -->
+<!--         a <- c(a, sqrt(i)) -->
+<!--         print(tracemem(a)) -->
+<!--     } -->
+<!--     a -->
+<!-- } -->
+
+<!-- f2 <- function(n) { -->
+<!--     a <- numeric(n) -->
+<!--     print(tracemem(a)) -->
+<!--     for (i in 1:n) { -->
+<!--         a[i] <- sqrt(i) -->
+<!--         print(tracemem(a)) -->
+<!--     } -->
+<!--     a -->
+<!-- } -->
 <!-- ``` -->
 
 ## Memory usage
