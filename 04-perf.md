@@ -413,6 +413,22 @@ Needs to `source()` the code or directly input the code to have access
 to the individual lines.
 
 
+```r
+f <- function() {
+  pause(0.1)
+  g()
+  h()
+}
+
+g <- function() {
+  pause(0.1)
+  h()
+}
+
+h <- function() {
+  pause(0.1)
+}
+```
 
 
 ```r

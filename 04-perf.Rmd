@@ -383,7 +383,7 @@ summaryRprof("rprof")
 Needs to `source()` the code or directly input the code to have access
 to the individual lines.
 
-```{r, eval=TRUE, echo=FALSE}
+```{r, eval=TRUE, echo=TRUE}
 f <- function() {
   pause(0.1)
   g()
