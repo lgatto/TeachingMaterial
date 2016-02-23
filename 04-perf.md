@@ -474,7 +474,7 @@ profvis({
 - `gccountr` vs `gccountr2` example above
 - simpler data structures
 
-## Usual suspects
+##  Usual suspects
 
 ### Names
 
@@ -530,81 +530,33 @@ f2 <- function(n) {
 ```
 
 
-```
-## Error in system.time(f3(.n)): could not find function "f3"
-```
-
-```
-## Timing stopped at: 0 0.001 0
-```
-
-```
-## Error in system.time(f4(.n)): could not find function "f4"
-```
-
-```
-## Timing stopped at: 0 0 0
-```
-
-```
-## Error in data.frame(t1, t2, t3, t4): object 't3' not found
-```
-
-```
-## Error in rownames(elapsed) <- n: object 'elapsed' not found
-```
-
-```
-## Error in colnames(elapsed) <- c("for loop\nwithout init", "for loop\nwith init", : object 'elapsed' not found
-```
-
-```
-## Error in melt(elapsed): object 'elapsed' not found
-```
-
-```
-## Error in `colnames<-`(`*tmp*`, value = c("Implementation", "Elapsed")): attempt to set 'colnames' on an object with less than two dimensions
-```
-
-```
-## Error in df$Iterations <- rep(n, 4): object of type 'closure' is not subsettable
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'elapsed' not found
-```
-
-```
-## Error: ggplot2 doesn't know how to deal with data of class function
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'p' not found
-```
-
-```
-## Error in print(p, vp = mainvp): object 'p' not found
-```
-
-```
-## function (save = "default", status = 0, runLast = TRUE) 
-## .Internal(quit(save, status, runLast))
-## <bytecode: 0x259ac28>
-## <environment: namespace:base>
+```r
+microbenchmark(f1(1e3), f2(1e3))
+microbenchmark(f1(1e4), f2(1e4))
 ```
 
 ## Vectorisation
 
-- It's not about getting rid of for loops and replacing them by `apply`.
+
+```r
+f3 <- function(n)
+  sapply(seq_len(n), sqrt)
+
+f4 <- function(n) sqrt(n)
+```
+
+![Initialisation and vectorisation](./figs/vectimings.png)
+
+
 
 - Think about whole object, think in terms of vectors, not individual
   items (scalars).
-
-- see  *R-vectorisation* -> rather in functional programming.
-
+- It's not about getting rid of for loops and replacing them by `apply`.
 - Difference between vectorisation in high level code, to improve
   clarity (`apply`, `Vectorise`, ...) and, vectorise to improve
   performance, which involved writing for loops in C.
+
+
 
 ## Parallelisation
 - see *R-parallel*

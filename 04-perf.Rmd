@@ -443,7 +443,7 @@ profvis({
 - `gccountr` vs `gccountr2` example above
 - simpler data structures
 
-## Usual suspects
+##  Usual suspects
 
 ### Names
 
@@ -494,7 +494,23 @@ f2 <- function(n) {
 }
 ```
 
-```{r, eval=TRUE, echo=FALSE, cache=TRUE}
+```{r, eval=FALSE}
+microbenchmark(f1(1e3), f2(1e3))
+microbenchmark(f1(1e4), f2(1e4))
+```
+
+## Vectorisation
+
+```{r, eval=TRUE}
+f3 <- function(n)
+  sapply(seq_len(n), sqrt)
+
+f4 <- function(n) sqrt(n)
+```
+
+![Initialisation and vectorisation](./figs/vectimings.png)
+
+```{r, eval=FALSE, echo=FALSE}
 n <- 10^(2:5)
 t1 <- sapply(n, function(.n) system.time(f1(.n))[["elapsed"]])
 t2 <- sapply(n, function(.n) system.time(f2(.n))[["elapsed"]])
@@ -541,18 +557,14 @@ print(p, vp = mainvp)
 print(q, vp = subvp)
 ```
 
-## Vectorisation
-
-- It's not about getting rid of for loops and replacing them by `apply`.
-
 - Think about whole object, think in terms of vectors, not individual
   items (scalars).
-
-- see  *R-vectorisation* -> rather in functional programming.
-
+- It's not about getting rid of for loops and replacing them by `apply`.
 - Difference between vectorisation in high level code, to improve
   clarity (`apply`, `Vectorise`, ...) and, vectorise to improve
   performance, which involved writing for loops in C.
+
+
 
 ## Parallelisation
 - see *R-parallel*
