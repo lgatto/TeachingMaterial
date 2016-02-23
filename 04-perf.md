@@ -587,7 +587,7 @@ See below
 
 ## Parallelisation
 
-See the [R-parallel](./R-parallel/parall.pdf) material.
+See the [R-parallel](./R-parallel/parallel.pdf) material.
 
 ## Byte-code compilation
 
