@@ -10,5 +10,9 @@ activities.
 See the [TeachingMaterial](https://github.com/lgatto/TeachingMaterial)
 repository for more material.
 
+See also this [more extensive debugging material](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/03-debug.md).
+
+
 This material is licensed under the
 [Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/).
+
