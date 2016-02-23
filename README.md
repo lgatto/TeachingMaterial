@@ -62,3 +62,7 @@ develop and release packages in the future.
 - [An Introduction to the Interactive Debugging Tools in R](http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf), Roger D. Peng.
 - [R Programming for Bioinformatics](http://master.bioconductor.org/help/publications/books/r-programming-for-bioinformatics/), Robert Gentleman.
 
+
+## License
+
+This work is licensed under a CC BY-SA 3.0 License.
