@@ -493,9 +493,9 @@ id2GO <- make_id2GO()
 ```
 
 We have a list of 1000 genes, and each of these genes is
-characterised by a set of 1 to `r
-max(lengths(id2GO))` GO terms. To obtain the go terms, we `unlist` the
-gene list.
+characterised by a set of 1 to 50 GO terms. 
+
+To obtain the go terms, we `unlist` the gene list.
 
 
 ```r

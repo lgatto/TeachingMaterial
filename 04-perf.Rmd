@@ -461,9 +461,9 @@ id2GO <- make_id2GO()
 ```
 
 We have a list of `r length(id2GO)` genes, and each of these genes is
-characterised by a set of `r min(lengths(id2GO))` to `r
-max(lengths(id2GO))` GO terms. To obtain the go terms, we `unlist` the
-gene list.
+characterised by a set of `r min(lengths(id2GO))` to `r max(lengths(id2GO))` GO terms. 
+
+To obtain the go terms, we `unlist` the gene list.
 
 ```{r, eval=FALSE}
 length(id2GO)
