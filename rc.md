@@ -97,7 +97,7 @@ sumC
 
 ```
 ## function (x) 
-## .Primitive(".Call")(<pointer: 0x2b36c444a800>, x)
+## .Primitive(".Call")(<pointer: 0x2b9ae9289800>, x)
 ```
 
 ```r
@@ -105,7 +105,7 @@ sumC(c(1, 2, 1:4, rnorm(3)))
 ```
 
 ```
-## [1] 6.413787
+## [1] 15.0746
 ```
 
 ### Sourcing C++ code
@@ -151,15 +151,14 @@ sourceCpp("./src/ex_sumC.cpp")
 ```
 ## 
 ## > (x <- c(1, 3, rnorm(10)))
-##  [1]  1.00000000  3.00000000 -1.44813490  0.93993783  0.64942111
-##  [6] -0.93153149  0.44234071  0.08212589  0.01747364 -0.71900542
-## [11] -0.27146137 -0.86713044
+##  [1]  1.0000000  3.0000000  0.8753302  1.1256683 -1.3785914  0.1004121
+##  [7] -0.3551323 -0.5603329  0.4887765 -0.2999009 -0.8863011  0.8116788
 ## 
 ## > sumC(x)
-## [1] 1.894036
+## [1] 3.921607
 ## 
 ## > sum(x)
-## [1] 1.894036
+## [1] 3.921607
 ```
 
 ## An example with a matrix
@@ -341,10 +340,8 @@ double sumC2(NumericVector x) {
 }
 ```
 
-Implement
-[deferred evaluation](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/deferred-eval.md)
+Implement [deferred evaluation](https://github.com/lgatto/rccpp/blob/master/deferred-eval.md)
 in C++.
-
 
 # Other
 

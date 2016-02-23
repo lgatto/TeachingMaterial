@@ -271,10 +271,8 @@ double sumC2(NumericVector x) {
 }
 ```
 
-Implement
-[deferred evaluation](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/deferred-eval.md)
+Implement [deferred evaluation](https://github.com/lgatto/rccpp/blob/master/deferred-eval.md)
 in C++.
-
 
 # Other
 
