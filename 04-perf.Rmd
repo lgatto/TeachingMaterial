@@ -667,30 +667,6 @@ object_size(e)
 <!-- abline(0, 4) -->
 <!-- ``` -->
 
-- Assess the impact of dynamically growing a vector on the memory. You
-  can use `f1()` and `f2()` above, and trace `a`.
-  
-<!-- ```{r} -->
-<!-- f1 <- function(n) { -->
-<!--     a <- numeric() -->
-<!--     print(tracemem(a)) -->
-<!--     for (i in 1:n) { -->
-<!--         a <- c(a, sqrt(i)) -->
-<!--         print(tracemem(a)) -->
-<!--     } -->
-<!--     a -->
-<!-- } -->
-
-<!-- f2 <- function(n) { -->
-<!--     a <- numeric(n) -->
-<!--     print(tracemem(a)) -->
-<!--     for (i in 1:n) { -->
-<!--         a[i] <- sqrt(i) -->
-<!--         print(tracemem(a)) -->
-<!--     } -->
-<!--     a -->
-<!-- } -->
-<!-- ``` -->
 
 ## Memory usage
 
@@ -770,6 +746,33 @@ x[5] <- 10L
 address(x)
 address(y)
 ```
+
+## Exercise
+
+We have quantified the substantial cost in execution time when growing
+data dynamically. Trace the impact of dynamically growing a vector on
+the memory. You can use `f1()` and `f2()` above, and trace `a`.
+  
+```{r, eval=FALSE, echo=FALSE}
+f1 <- function(n) {
+  a <- NULL 
+  for (i in 1:n) {
+      a <- c(a, sqrt(i))
+      print(address(a))
+  }
+  invisible(a)
+}
+
+f2 <- function(n) {
+  a <- numeric(n)
+  for (i in 1:n) {
+      a[i] <- sqrt(i)
+      print(address(a))
+  }
+  invisible(a)
+}
+```
+
 
 # Rcpp
 
