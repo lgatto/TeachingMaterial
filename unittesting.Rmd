@@ -421,4 +421,13 @@ The [covr](https://github.com/jimhester/covr) package:
 
 ![package coverage](./figs/covr.png)
 
+We can use `type="all"` to examine the coverage in unit tests, examples and vignettes. This can
+also be done interactively with Shiny:
+
+```{r, eval=FALSE}
+library(covr)
+coverage <- package_coverage("/path/to/package/source", type="all")
+shine(coverage)
+```
+
 [Coverage for all Bioconductor packages](https://codecov.io/github/Bioconductor-mirror).

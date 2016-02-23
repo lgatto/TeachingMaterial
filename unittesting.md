@@ -57,7 +57,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "O" "E" "V" "N" "K"
+## [1] "K" "E" "G" "S" "V"
 ```
 But
 
@@ -68,7 +68,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "O" "E" "V" "N" "K" NA
+## [1] "K" "E" "G" "S" "V" NA
 ```
 
 ### Solution
@@ -279,12 +279,12 @@ y <- rnorm(5)
 ```
 
 ```
-##               x          y
-## [1,]  1.9577923 1.88219553
-## [2,] -1.7640350 0.01826717
-## [3,]  1.4198724 0.52570044
-## [4,]  1.2564640 0.25780745
-## [5,] -0.5890392 0.07549769
+##               x             y
+## [1,]  0.5365683  1.6602057690
+## [2,] -0.1665628 -0.2975653902
+## [3,] -0.7467376  1.8558080246
+## [4,]  0.7382947 -0.6899443868
+## [5,] -0.9602598 -0.0008467193
 ```
 
 ```r
@@ -292,8 +292,8 @@ y <- rnorm(5)
 ```
 
 ```
-##        x        y 
-## 1.957792 1.882196
+##         x         y 
+## 0.5365683 1.6602058
 ```
 
 ```r
@@ -301,7 +301,7 @@ distances(p, m)
 ```
 
 ```
-## [1] 0.000000 4.162479 1.459259 1.769321 3.122580
+## [1] 0.000000 2.080207 1.298127 2.358792 2.235976
 ```
 
 ```r
@@ -310,12 +310,12 @@ distances(p, m)
 ```
 
 ```
-##            x          y
-## 1  1.9577923 1.88219553
-## 2 -1.7640350 0.01826717
-## 3  1.4198724 0.52570044
-## 4  1.2564640 0.25780745
-## 5 -0.5890392 0.07549769
+##            x             y
+## 1  0.5365683  1.6602057690
+## 2 -0.1665628 -0.2975653902
+## 3 -0.7467376  1.8558080246
+## 4  0.7382947 -0.6899443868
+## 5 -0.9602598 -0.0008467193
 ```
 
 ```r
@@ -323,8 +323,8 @@ distances(p, m)
 ```
 
 ```
-##          x        y
-## 1 1.957792 1.882196
+##           x        y
+## 1 0.5365683 1.660206
 ```
 
 ```r
@@ -464,6 +464,20 @@ data(package = "pRolocdata")
 - To test the validity of an object, use `validObject`
 
 
+```
+## Warning: replacing previous import by 'ggplot2::Position' when loading
+## 'MSnbase'
+```
+
+```
+## Warning: replacing previous import by 'ggplot2::unit' when loading
+## 'MSnbase'
+```
+
+```
+## Warning: replacing previous import by 'ggplot2::arrow' when loading
+## 'MSnbase'
+```
 
 
 ```r
@@ -489,5 +503,15 @@ expect_true(validObject(andy2011))
 The [covr](https://github.com/jimhester/covr) package:
 
 ![package coverage](./figs/covr.png)
+
+We can use `type="all"` to examine the coverage in unit tests, examples and vignettes. This can
+also be done interactively with Shiny:
+
+
+```r
+library(covr)
+coverage <- package_coverage("/path/to/package/source", type="all")
+shine(coverage)
+```
 
 [Coverage for all Bioconductor packages](https://codecov.io/github/Bioconductor-mirror).

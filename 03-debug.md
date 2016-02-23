@@ -79,42 +79,6 @@ f3()
 f3(verbose = FALSE)
 ```
 
-### Progress bars
-
-- `utils::txtProgressBar` function
-
-
-```r
-n <- 10
-pb <- txtProgressBar(min = 0, max = n, style = 3)
-for (i in 1:n) {
-    setTxtProgressBar(pb, i)
-    Sys.sleep(0.5)
-}
-close(pb)
-```
-
-- [`progress`](https://github.com/gaborcsardi/progress) package
-
-
-```r
-library("progress")
-pb <- progress_bar$new(total = n)
-for (i in 1:n) {
-    pb$tick()
-    Sys.sleep(0.5)
-}
-```
-
-Tip: do not over use progress bars. Ideally, a user should be
-confident that everything is under control and progress is made while
-waiting for a function to return. In my experience, a progress bar is
-usefull when there is a specific and/or user-defined number of
-iterations, such a *iterating over n files*, or *running a simulation
-n times*.
-
-**Question**: What about mixing progress bars and verbosity.
-
 ### Warning
 
 > There is a problem with warnings. No one reads them. Pat Burns, in
@@ -194,6 +158,43 @@ warn(logger, 'A Warning Message')
 error(logger, 'An Error Message')
 fatal(logger, 'A Fatal Error Message')
 ```
+
+### Progress bars
+
+- `utils::txtProgressBar` function
+
+
+```r
+n <- 10
+pb <- txtProgressBar(min = 0, max = n, style = 3)
+for (i in 1:n) {
+    setTxtProgressBar(pb, i)
+    Sys.sleep(0.5)
+}
+close(pb)
+```
+
+- [`progress`](https://github.com/gaborcsardi/progress) package
+
+
+```r
+library("progress")
+pb <- progress_bar$new(total = n)
+for (i in 1:n) {
+    pb$tick()
+    Sys.sleep(0.5)
+}
+```
+
+Tip: do not over use progress bars. Ideally, a user should be
+confident that everything is under control and progress is made while
+waiting for a function to return. In my experience, a progress bar is
+usefull when there is a specific and/or user-defined number of
+iterations, such a *iterating over n files*, or *running a simulation
+n times*.
+
+**Question**: What about mixing progress bars and verbosity.
+
 
 ## KISS
 
@@ -532,6 +533,8 @@ g <- function() f()
 ```r
 ## make sure you have the 'sequences' package.
 ## Get readFasta2, the function to debug
+library(devtools)
+install_github("lgatto/sequences")
 sequences:::debugme()
 ## Get an example file
 f <- dir(system.file("extdata", package = "sequences"),
