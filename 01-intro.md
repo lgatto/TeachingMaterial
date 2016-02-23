@@ -637,6 +637,100 @@ surveys %>%
 
 ## Computing on the language
 
-- characters as variables names 
-- Explain `quote` (used in `trace`)
-- use arguments to name things (rather in funs part)
+
+#### Quoting and evaluating expressions
+
+Quote an expression, don't evaluate it:
+
+
+```r
+quote(1:10)
+quote(paste(letters, LETTERS, sep = "-"))
+```
+Evaluate an expression in a specific environment:
+
+
+```r
+eval(quote(1 + 1))
+eval(quote(1:10))
+
+x <- 10
+eval(quote(x + 1))
+
+e <- new.env()
+e$x <- 1
+eval(quote(x + 1), env = e)
+
+eval(quote(x), list(x = 30))
+
+dfr <- data.frame(x = 1:10, y = LETTERS[1:10])
+eval(quote(sum(x)), dfr)
+```
+
+Substitute any variables bound in `env`, but don't evaluate the
+expression:
+
+
+```r
+x <- 10
+substitute(sqrt(x))
+
+e <- new.env()
+e$x <- 1
+substitute(sqrt(x), env = e)
+```
+
+Parse, but don't evaluate an expression:
+
+
+```r
+parse(text = "1:10")
+parse(file = "lineprof-example.R")
+```
+
+Turn an unevaluated expressions into character strings:
+
+
+```r
+x <- 123
+deparse(substitute(x))
+```
+
+#### Characters as variables names 
+
+
+
+```r
+foo <- "bar"
+as.name(foo)
+string <- "1:10"
+parse(text=string)
+eval(parse(text=string))
+```
+      
+
+And with `assign` and `get`
+
+
+```r
+varName1 <- "varName2"
+assign(varName1, "123")
+varName1
+get(varName1)
+varName2
+```
+
+Using `substitute` and `deparse`
+
+
+```r
+test <- function(x) {
+    y <- deparse(substitute(x))
+    print(y)
+    print(x)
+}
+var <- c("one","two","three")
+test(var)
+```
+
+
