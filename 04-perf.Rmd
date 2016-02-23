@@ -407,7 +407,7 @@ h <- function() {
 
 ```{r, eval=FALSE}
 library("profvis")
-source("./src/lineprof-example.R")
+source("lineprof-example.R")
 profvis(f())
 ```
 

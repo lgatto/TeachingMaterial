@@ -45,7 +45,7 @@ develop and release packages in the future.
 - Profiling
 - Optimisation
 - Memory
-- [Rcpp](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/rc.md)
+- [Rcpp](https://github.com/lgatto/rccpp/blob/master/rc.md)
 
 #### Other topics
 
