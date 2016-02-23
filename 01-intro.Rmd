@@ -529,8 +529,6 @@ setStockcol <- function(cols) {
 
 ## Tidy data
 
-(interactive use)
-
 > Hadley Wickham, Tidy Data, Vol. 59, Issue 10, Sep 2014, Journal of
 > Statistical Software. http://www.jstatsoft.org/v59/i10.
 
