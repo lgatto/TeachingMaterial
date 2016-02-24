@@ -29,7 +29,7 @@ Also
 
 A function is made of
 - a name
-- some inputs (formal paramters)
+- some inputs (formal parameters)
 - a single output (return value)
 - a body
 - an environment, the map of the location of the functions variable
@@ -210,7 +210,7 @@ j <- function() {
     print(a)
 }
 j() ## First call
-j() ## Secong call
+j() ## Second call
 ```
 
 
