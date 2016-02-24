@@ -89,6 +89,12 @@ $ R CMD BiocCheck package_1.0.0.tgz
 
 ![Style changes over time](./figs/style.png)
 
+
+## Ineractive use vs programming
+
+Moving from using R to programming R is *abstraction*, *automation*,
+*generalisation*.
+
 ## Interactive use vs programming: `drop`
 
 
@@ -123,11 +129,6 @@ or that will break if the result is not what is exected
 vapply(df1, class, "1")
 vapply(df2, class, "1")
 ```
-
-## Ineractive use vs programming
-
-Moving from using R to programming R is *abstraction*, *automation*,
-*generalisation*.
 
 ## Semantics
 
