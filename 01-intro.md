@@ -135,6 +135,18 @@ vapply(df2, class, "1")
 - *pass-by-value* copy-on-modify
 - *pass-by-reference*: environments, S4 Reference Classes
 
+
+```r
+x <- 1
+f <- function(x) {
+    x <- 2
+    x
+}
+x
+f(x)
+x
+```
+
 ## Environments
 
 ### Motivation
