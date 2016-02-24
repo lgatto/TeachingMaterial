@@ -13,7 +13,7 @@ author: "Laurent Gatto"
 - Higher order functions
 
 
-## Writing functions
+# Functions
 
 > To understand compuations in R, two slogans are helpful:
 > - Everything that exists is an object.
@@ -293,10 +293,17 @@ f4 <- function() {
 }
 ```
 
+- Anonymous functions, created on-the-flight and passed to `lapply` or
+  other high-level functions.
 
-## More about scoping and environments
+```{r, eval=FALSE}
+function(x) x + y
+body(function(x) x + y)
+args(function(x) x + y)
+environment(function(x) x + y)
+```
 
-### Scoping
+## More about scoping
 
 *Lexical scoping*: default behaviour, current environment, then
 traversing *enclosing/parent environments*.
@@ -306,9 +313,225 @@ traversing *enclosing/parent environments*.
 used in non-standard evaluation.
 
 
+# Functional programming
 
-## More about functions
+**First-class functions** - a function is a value just like any other
+variable. Functions can thus be used as arguments to other
+functions. Functions are considered *first-class citizens*.
+
+**Higher-order functions** - refers to functions that take functions
+as parameters (input) or return functions (output).
 
 ## Closures
 
-## Higher order functions
+> "An object is data with functions. A closure is a function with
+> data." - John D. Cool
+
+Closures: functions written by functions. They enclose the envionment
+of the parent function and can access all its variables. 
+
+```{r, eval=FALSE}
+make.power <- function(n) 
+    function(x) x^n
+
+  
+cube <- make.power(3)
+square <- make.power(2)
+cube(2)
+square(2)
+environment(cube)
+environment(square)
+```
+
+Mutable state: a counter function
+
+```{r, eval=FALSE}
+new_counter <- function() {
+    i <- 0
+    function() {
+        i <<- i + 1
+        i 
+    }
+}
+
+count1 <- new_counter()
+count2 <- new_counter()
+
+count1()
+count1()
+count2()
+
+environment(count1)
+environment(count2)
+environment(count1)$i
+environment(count2)$i
+```
+
+The `colorRampPallette`
+
+```{r, eval=FALSE}
+colramp <- colorRampPalette(c("blue", "yellow"))
+colramp(5)
+plot(1:10, col = colramp(10), pch = 19, cex = 2,
+     main = "colramp(10)")
+```
+
+## Functional
+
+Take a function as input or return a function as output.
+
+- `Reduce(f, x)` uses a binary function to successively combine the
+  elements of a given vector and a possibly given initial value.
+
+```{r, eval=FALSE}
+L <- replicate(3, matrix(rnorm(9), 3), simplify = FALSE)
+Reduce("+", L)
+try(sum(L))
+```
+
+```{r, eval=FALSE}
+Reduce("+", list(1, 2, 3), init = 10)
+Reduce("+", list(1, 2, 3), accumulate = TRUE)
+Reduce("+", list(1, 2, 3), right = TRUE, accumulate = TRUE)
+```
+
+- `Filter(f, x)` extracts the elements of a vector for which a
+  predicate (logical) function gives true.
+
+- `Negate(f)`  creates the negation of a given function.
+
+```{r, eval=FALSE}
+even <- function(x) x %% 2 == 0
+(y <- sample(100, 10))
+Filter(even, y)
+Filter(Negate(even), y)
+```
+
+- `Map(f, ...)` applies a function to the corresponding elements of
+  given vectors. Similar to `mapply` without any attempt to simplify.
+
+```{r, eval=FALSE}
+Map(even, 1:3)
+```
+
+- `Find(f, x)` and `Position(f, x)` give the first (or last elements)
+  and its position in the vector, for which a predicate (logical)
+  function gives true.
+
+```{r, eval=FALSE}
+Find(even, 10:15)
+Find(even, 10:15, right = TRUE)
+Position(Negate(even), 10:15)
+Position(Negate(even), 10:15, right = TRUE)
+```
+
+## References
+
+- R Gentleman, *R Programming for Bioinformatics*, CRC Press, 2008
+- `?Map`, or any other of the higher order functions
+- Blog post, *Higher Order Functions in R*, John Myles White
+		http://www.johnmyleswhite.com/notebook/2010/09/23/higher-order-functions-in-r/
+
+# Vectorisation
+
+
+> Many operations in R are vectorized, and understanding and using
+> vectorization is an essential component of becoming a proficient
+> programmer. -  R Gentleman in *R Programming for Bioinformatics*.
+
+A *vectorised computation* is one that, when applied to a vector (of
+length greater than 1), automatically operates directly on all
+elements of the input vector.
+
+
+```{r, eval=FALSE}
+(x <- 1:5)
+(y <- 5:1)
+x + y
+```
+
+## Recycling rule
+
+What is `x` and `y` are of different length: the shorter vector is
+replicate so that its length matches the longer ones.
+
+```{r, eval=FALSE}
+(x <- 1:6)
+(y <- 1:2)
+x+y
+```
+
+If the shorter vector is not an even multiple of the longer, a warning
+is issued.
+
+## Example
+
+Compute difference between times of events, `e`. Given `n` events,
+there will be `n-1` inter-event times. `interval[i] <- e[i+1] - e[i]`
+
+Procedural implementation:
+
+```{r, eval=FALSE}
+diff1 <- function(e) {
+  n <- length(e)
+  interval <- rep(0, n - 1) 
+  for (i in 1:(n - 1)) 
+      interval[i] <- e[i + 1] - e[i]
+  interval
+}
+e <- c(2, 5, 10.2, 12, 19)
+diff1(e)
+```
+
+Vectorised implementation:
+
+```{r, eval=FALSE}
+diff2 <- function(e) {
+  n <- length(e)
+  e[-1] - e[-n]
+}
+e <- c(2, 5, 10.2, 12, 19)
+diff2(e)
+```
+
+## `*apply` functions
+
+How to apply a function, iteratively, on a set of elements?
+
+`apply(X, MARGIN, FUN, ...)`
+
+
+- `MARGIN` = 1 for row, 2 for cols.
+- `FUN` = function to apply
+- `...` = extra args to function.
+- `simplify` =  should the result be simplified if possible.
+
+
+`*apply` functions are (generally) **NOT** faster than loops, but more
+succint and thus clearer.
+
+```{r, eval=FALSE}
+v <- rnorm(1000) ## or a list
+res <- numeric(length(v))
+
+for (i in 1:length(v)) 
+  res[i] <- f(v[i])
+
+res <- sapply(v, f)
+
+## if f is vectorised
+f(v)
+```
+
+function | use case
+-------|---------------------------------------
+apply  | matrices, arrays, data.frames
+lapply | lists, vectors
+sapply | lists, vectors
+vapply | with a pre-specified type of return value
+tapply | atomic objects, typically vectors
+by     | similar to tapply
+eapply | environments
+mapply | multiple values
+rapply | recursive version of lapply
+esApply | `ExpressionSet`, defined in `Biobase`
