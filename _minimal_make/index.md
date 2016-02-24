@@ -2,6 +2,7 @@
 layout: page
 title: minimal make
 tagline: A minimal tutorial on make
+description: A minimal tutorial on GNU Make, the most important tool for reproducible research.
 ---
 
 I would argue that the most important tool for reproducible research
@@ -91,10 +92,9 @@ the target files, their dependencies, and the commands to create
 them. But there are _a lot_ of frills you can add, to save some
 typing.
 
-I'll give a very brief introduction to some of the options that I
-use. See the
+Here are some of the options that I use. (See the
 [make documentation](http://www.gnu.org/software/make/manual/make.html)
-for further details.
+for further details.)
 
 #### Variables
 
@@ -107,10 +107,11 @@ could then define a variable `R_OPTS`:
 
     R_OPTS=--vanilla
 
-You refer to this variable as `${R_OPTS}`, so in the R commands you
+You refer to this variable as `$(R_OPTS)` (or `${R_OPTS}`; either
+parentheses or curly braces is allowed), so in the R commands you
 would use something like
 
-    cd R;R CMD BATCH ${R_OPTS} fig1.R
+    cd R;R CMD BATCH $(R_OPTS) fig1.R
 
 An advantage of this is that you just need to type out the options you
 want once; if you change your mind about the R options you want to
@@ -265,7 +266,10 @@ Also of interest is [`maker`](https://github.com/ComputationalProteomicsUnit/mak
 
 The source for this minimal tutorial is [on github](http://github.com/kbroman/minimal_make).
 
-Also see my [git/github guide](http://kbroman.org/github_tutorial),
-[knitr in a knutshell tutorial](http://kbroman.org/knitr_knutshell),
-[R package primer](http://kbroman.org/pkg_primer),
-and [simple site tutorial](http://kbroman.org/simple_site).
+Also see my [tutorials](http://kbroman.org/pages/tutorials) on
+[git/github](http://kbroman.org/github_tutorial),
+[knitr](http://kbroman.org/knitr_knutshell),
+[R packages](http://kbroman.org/pkg_primer),
+[making a web site with GitHub Pages](http://kbroman.org/simple_site),
+[data organization](http://kbroman.org/dataorg),
+and [reproducible research](http://kbroman.org/steps2rr).
