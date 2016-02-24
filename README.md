@@ -1,5 +1,7 @@
 # R debugging and robust programming
 
+**Short link to this page: http://bit.ly/advrEMBL2016**  
+
 25-26 February 2016 (Thursday-Friday), EMBL Heidelberg  
 Instructors: Laurent Gatto, Robert Stojnic (University of Cambridge)  
 Organiser: Wolfgang Huber (EMBL)  
