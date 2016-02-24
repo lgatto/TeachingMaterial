@@ -53,6 +53,7 @@ with your colleagues.
   programming, Debbugging: techniques and tools, Condition handling:
   try/tryCatch, Unit testing. Part IV: Benchmarking, Profiling,
   Optimisation, Memory, Rcpp.
+- More details: https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/README.md
 
 ### rbc
 - Description:
