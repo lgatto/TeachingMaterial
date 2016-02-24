@@ -92,7 +92,7 @@ head(cars[, 1, drop = FALSE])
 
 ## Interactive use vs programming: `sapply/lapply`
 
-```(r, eval=FALSE)
+```{r, eval=FALSE}
 df1 <- data.frame(x = 1:3, y = LETTERS[1:3])
 sapply(df1, class)
 df2 <- data.frame(x = 1:3, y = Sys.time() + 1:3)
