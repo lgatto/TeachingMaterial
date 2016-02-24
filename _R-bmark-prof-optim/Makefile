@@ -1,8 +1,8 @@
-code.md: code.Rmd
-		R --vanilla -e "library(knitr); knit('code.Rmd')"
+bmark-prof-optim.md: bmark-prof-optim.Rmd
+		R --vanilla -e "library(knitr); knit('bmark-prof-optim.Rmd')"
 
 all:
-	make code.md
+	make bmark-prof-optim.md
 
 clean:
 	rm -fr cache

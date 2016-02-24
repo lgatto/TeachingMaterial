@@ -338,6 +338,7 @@ This is used in the `eSet` et al. microarray data structures to store the expres
   [pbdDemo](http://cran.r-project.org/web/packages/pbdDEMO/)
   package/vignette.
 - [Bioconductor in the cloud](http://bioconductor.org/help/bioconductor-cloud-ami/)
+- [Bioconductor docker containers](http://bioconductor.org/help/docker/)
 - ...
 
 
