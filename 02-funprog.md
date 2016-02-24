@@ -663,7 +663,8 @@ Integrate(f, lower=lo, upper=hi)
 ## **Efficient** apply-like functions
 
 These functions combine high-level vectorised syntax for clarity
-**and** efficient C-level vectorised imputation.
+**and** efficient C-level vectorised imputation (see *Performance*
+section).
 
 - In `base`: rowSums, rowMeans, colSums, colMeans
 - In `Biobase`: rowQ, rowMax, rowMin, rowMedias, ...
@@ -675,7 +676,7 @@ instances.
 ## Parallelisation
 
 Vectorised operations are natural candidats for parallel execution.
-See later, \emph{Parallel computation} topic.
+See later, *Parallel computation* topic.
 
 ## References
 
