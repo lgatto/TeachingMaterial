@@ -14,7 +14,15 @@ author: "Laurent Gatto"
 
 # Functions
 
-> To understand compuations in R, two slogans are helpful:
+Among the R's strong points, Hadley Whickham cites:
+
+> [R has] a strong foundation in functional programming. The ideas of
+> functional programming are well suited to solving many of the
+> challenges of data analysis. R provides a powerful and flexible
+> toolkit which allows you to write concise yet descriptive code.
+
+Also
+> To understand computations in R, two slogans are helpful:
 > - Everything that exists is an object.
 > - Everything that happens is a function call.
 > John Chambers
@@ -238,8 +246,10 @@ f <- function(x = 1, y = x + 2) x * y
 
 ```{r, eval=FALSE}
 f <- function(x = 1, y) {
-	c(misssing(x), missing(y))
+	c(missing(x), missing(y))
 }
+f()
+f(x = 1)
 ```
 
 - Passing non-matched parameters `...` to an inner function
@@ -365,6 +375,13 @@ environment(count2)
 environment(count1)$i
 environment(count2)$i
 ```
+
+Questions:
+
+- What happens of we place the code `i <- 0` and the function
+  definition outside of a function, i.e in the global environment?
+
+- What happens if we use `<-` instead of `<<-`?
 
 The `colorRampPallette`
 
@@ -543,11 +560,11 @@ as well as parallel versions in the `parallel` package (see
 See also the `plyr` package, that offers its own flavour of `apply`
 functions.
 
-          |  list 	| data frame| 	array
-----------|---------|-----------|------------
-list 	  | llply() |	ldply() |	laply()
-data frame|	dlply() |	ddply() |	daply()
-array 	  | alply() |	adply() |	aaply()
+  in/out    |  list   | data frame | array
+------------|---------|------------|---------
+ list       | llply() |	ldply()    | laply()
+ data frame | dlply() |	ddply()    | daply()
+ array      | alply() |	adply()    | aaply()
 
 
 ## Other functions
@@ -619,7 +636,7 @@ mapply(function(lo, hi) integrate(f, lo, hi)$value,
 3. Create a vectorised form using `Vectorize`. It takes a function
    (here, an anonymous function) as input and returns a function.
 
-```{r}
+```{r, eval=FALSE}
 Integrate <- Vectorize(
   function(fn, lower, upper)
   integrate(fn, lower, upper)$value,
