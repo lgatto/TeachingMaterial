@@ -535,3 +535,17 @@ eapply | environments
 mapply | multiple values
 rapply | recursive version of lapply
 esApply | `ExpressionSet`, defined in `Biobase`
+
+See also the `BiocGenerics` package for `[l|m|s|t]apply` S4 generics,
+as well as parallel versions in the `parallel` package (see
+`Performance` section).
+
+
+See also the `plyr` package, that offers its own flavour of `apply`
+functions.
+
+          |  list 	| data frame| 	array
+----------|---------|-----------|------------
+list 	  | llply() |	ldply() |	laply()
+data frame|	dlply() |	ddply() |	daply()
+array 	  | alply() |	adply() |	aaply()
