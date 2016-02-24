@@ -36,6 +36,24 @@ with your colleagues.
 
 ## Material
 
+### R debugging and robust programming
+
+- Description: A 2-day workshop taught on the 25-26 February 2016 at
+  the EMBL, Heidelberg. The course aims at teaching participants
+  debugging techniques and good practice in writing reliable, robust
+  code.
+- Author: [Laurent Gatto](https://github.com/lgatto), based on
+  previous content and [*Advanced R*](http://adv-r.had.co.nz/), by
+  Hadley Wickham.
+- Original repository: https://github.com/lgatto/2016-02-25-adv-programming-EMBL
+- Content: Part I: Coding style(s), Interactive use and programming,
+  Environments, Tidy data, Computing on the language. Part II:
+  Functions, Robust programming with functions, Scoping, Closures,
+  High-level functions, Vectorisation. Part III: Defensive
+  programming, Debbugging: techniques and tools, Condition handling:
+  try/tryCatch, Unit testing. Part IV: Benchmarking, Profiling,
+  Optimisation, Memory, Rcpp.
+
 ### rbc
 - Description:
   [Software carpentry R bootcamp](http://github.com/lgatto/rbc), Jan
