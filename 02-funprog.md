@@ -27,8 +27,6 @@ Also
 > - Everything that happens is a function call.
 > John Chambers
 
-## Important
-
 ![Messy code hides bugs](./figs/funs.png) 
 
 - Functions are a means of **abstraction**. A concept/computation is
