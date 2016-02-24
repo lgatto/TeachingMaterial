@@ -53,8 +53,8 @@ for **consistency** and **readability**.
 
 ```{r, eval=TRUE}
 library("formatR")
-tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
-          arrow = TRUE)
+tidy_source(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
+            arrow = TRUE)
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
