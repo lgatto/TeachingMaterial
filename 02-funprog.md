@@ -27,35 +27,6 @@ Also
 > - Everything that happens is a function call.
 > John Chambers
 
-A function is made of
-- a name
-- some inputs (formal parameters)
-- a single output (return value)
-- a body
-- an environment, the map of the location of the functions variable
-
-
-```r
-f <- function(x) {
-    y <- x + 1
-    return(x * y)
-}
-```
-
-And these can be accessed and modified indivdually
-
-
-```r
-body(f)
-args(f)
-environment(f)
-
-body(f) <- quote({
-    y <- x * y
-    return(x + y)
-})
-```
-
 ## Important
 
 ![Messy code hides bugs](./figs/funs.png) 
@@ -107,6 +78,38 @@ Finally, functions are
 - Easier to parallelise (part IV)
 
 Functions are an central part of robust R programming.
+
+## Function parts
+
+A function is made of
+- a name
+- some inputs (formal parameters)
+- a single output (return value)
+- a body
+- an environment, the map of the location of the functions variable
+
+
+```r
+f <- function(x) {
+    y <- x + 1
+    return(x * y)
+}
+```
+
+And these can be accessed and modified indivdually
+
+
+```r
+body(f)
+args(f)
+environment(f)
+
+body(f) <- quote({
+    y <- x * y
+    return(x + y)
+})
+```
+
 
 ## Lexical scoping
 
