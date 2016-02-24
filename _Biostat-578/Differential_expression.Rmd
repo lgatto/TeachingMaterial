@@ -1,0 +1,481 @@
+---
+title: 'Bioinformatics for Big Omics Data: Differential expression analysis'
+author: "Raphael Gottardo"
+date: "January 28, 2015"
+output:
+  ioslides_presentation:
+    fig_caption: yes
+    fig_retina: 1
+    keep_md: yes
+    smaller: yes
+---
+
+
+## Setting up some options
+
+Let's first turn on the cache for increased performance and improved styling
+```{r, cache=FALSE}
+# Set some global knitr options
+library("knitr")
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), cache=TRUE, messages=FALSE)
+```
+
+## Outline
+
+
+- Classical approaches (t/F-test, adjusted p-values)
+- Two conditions (t-test) 
+- Multiple testing (FWER, FDR) 
+- Alternative to the t-test
+- Bayesian and Empirical Bayesian approaches
+
+## The two condition problem
+
+
+Let's assume that our data have been normalized and probes summarized.
+
+
+Condition | 1 | -- | 1 | 2 | -- | 2 |
+---|---|---|---|---|---|--- |
+Replicate | 1 | -- | $R_1$ | 1 | -- | $R_2$ | 
+Gene 1 | x | -- | x | y | -- | y |
+Gene 2 | x | -- | x | y | -- | y |
+Gene G | x | -- | x | y | -- | y |
+
+
+ 
+Our goal here is to find genes that are _differentially expressed_ between the two conditions. 
+
+## Goal
+
+
+**Note:** Here I will focus on oligo based arrays
+
+- For each gene: Is gene g differentially expressed between the two conditions?
+- Is the mean expression level under condition 1 different from the mean expression level under condition 2?
+- Test an hypothesis about the equality of the means of the two distributions
+
+## Two-sample t-tests
+
+
+- For each gene, are the mean log expression values equal?
+
+Welch's t-test: $$t_g=(\bar{y}_{1g}-\bar{y}_{2g})/\sqrt{s^2_{1g}/R_1+s^2_{2g}/R_2}$$
+
+If the means are equal, $t$ approximately follows a t-distribution with $R_1 + R_2 - 1$ degrees of freedom.
+
+p-value $p = 2\cdot P(|t_{R_1+R_2-1}| > |t_g|)$
+
+## Error rates
+
+
+<img src="./Images/Error-rate.png" width=600>
+
+## Multiple testing
+
+
+- Fix the type I error rate (0.05)
+- Minimize the type II
+- This is what we do for each gene with a p-value cut off of 0.05
+- Problem?
+    - Look at many genes!
+
+## Multiple testing
+
+- 1000 t-tests, all null hypothesis are true ($\mu_1=\mu_2$) 
+    - For one test, Pr of making an error is 0.05.
+    - For 1000 tests, Pr of making at least one error is 1-(1-0.05)^1000 which is `r 1-(1-0.05)^1000`!
+
+## Multiple testing
+
+
+- The error probability is much greater when looking at many genes!
+- We look at $G$ genes with $G$ very large! For each gene, $\alpha$ error probability
+- Multiple testing is used to control an overall measure of error (FWER, FDR)
+
+## Family Wise Error Rate
+
+
+Controls the probability of making at least one type I error 
+
+
+**Example:** Bonferroni multiple adjustment
+
+$$\tilde p_g = G \cdot p_g$$
+
+If $\tilde p_g \le \alpha$ then $FWER \le \alpha$
+
+
+Many other (more powerful) FWER procedures exist (Holm's step-down, Hochberg's step-up).
+
+## False Discovery Rate
+
+Proportion of false positive among the genes called DE
+
+First procedure introduced by Benjamini and Hochberg (1995)
+
+- Order the p-values $p_{(1)} \le \dots \le p_{(g)} \le \dots \le p_{(G)}$
+
+Let $k$ be the largest $g$ such that $p_{(g)} \le g/G\alpha$ then the 
+
+FDR is controlled at $\alpha$
+
+- Hypothesis need to be independent!
+- Alternative approaches exist for dealing with the dependence at the cost of losing 
+some power when the test are in fact independent. 
+
+## False Discovery Rate
+
+```{r, eval=TRUE, fig.height=3}
+library(ggplot2)
+p <- rbeta(1000,.1,.1)
+p_sorted <- sort(p)
+qplot(1:1000, p_sorted, )+ geom_abline(intercept=0, slope=0.05/1000)+xlim(c(0,500))+ylim(c(0,.1))
+```
+
+- Look at the `p.adjust` function in R!
+
+
+## t-test - revisited
+
+Microarray experiments are expensive, and as such the number of replicates is usually small. These can lead to the following issues:
+
+- The test statistic is not normally distributed
+- The variance estimates are noisy, with thousands of test, some of the estimated variances can be extremely small!
+
+
+## Modified t-test
+
+
+- Small variance problem: 
+
+Regularized t-test: $$t_g=(\bar{y}_{1g}-\bar{y}_{2g})/\sqrt{s^2_{1g}/R_1+s^2_{2g}/R_2+c}$$
+
+where $c$ is a positive constant used to regularize the variance estimate (e.g. 95% of all standard deviations $S_g$)
+
+- Small sample size and distributional assumption:
+
+Estimate the null distribution by permutation. Under the assumption of no differential expression we can permute the columns of the data matrix. 
+
+This is the main idea behind SAM. 
+
+Tusher, V. G., Tibshirani, R., & Chu, G. (2001). Significance analysis of microarrays applied to the ionizing radiation response. Proceedings of the National Academy of Sciences of the United States of America, 98(9), 5116–5121. doi:10.1073/pnas.091062498
+
+
+## Linear Models for Microarray Data - LIMMA
+
+
+LIMMA is popular Bioconductor package for the analysis of microarray data that provides a flexible linear modeling framework for assessing differential expression.
+
+Smyth, G. K. (2004). Linear models and empirical bayes methods for assessing differential expression in microarray experiments. Statistical Applications in Genetics and Molecular Biology, 3(1), Article3. doi:10.2202/1544-6115.1027
+
+## Linear Models for Microarray Data - LIMMA 
+
+
+Let $\mathbf{y}^T_g=(y_{g1}, y_{g2},\dots, y_{gn})$ be the expression vector of gene $g$. 
+The response would be log-ratios for 2-color microarrays or log-intensities for single-channel data. 
+
+Smyth (2004) assumes that the mean expression value of $\mathbf{y}_g$ can be described through a linear model:
+
+$$ \mathbb{E}(\mathbf{y}_g)=\mathbf{X}\boldsymbol{\alpha}_g$$ 
+
+where $\mathbf{X}$ is a full column rank design matrix and $\boldsymbol{\alpha}_g$ is a coefficient vector. 
+
+## Linear Models for Microarray Data - LIMMA 
+
+It is futher assume that 
+
+$$\mathrm{var}(\mathbf{y}_g)=\mathbf{W}_g\sigma_g^2$$ 
+
+where $\mathbf{W}_g$ is a weight matrix. Certain constrasts $\mathbf{C}$ of the vector $\boldsymbol{\alpha}_g$ are of biological interest, and these are defined as:
+
+$$\boldsymbol{\beta}_g=\mathbf{C}^T\boldsymbol{\alpha}_g.$$
+
+The goal here will be to test if some of these contrats are equal to zero. 
+
+## Linear Models for Microarray Data - LIMMA 
+
+As an example of the difference between the design matrix $\mathbf{X}$ and the contrast matrix $\mathbf{C}$ consider a time course experiment for times $t_0$, $t_1$ and $t_2$ in which there are two replicates for each time point. A design matrix for this experiment would be:
+
+$$\mathbf{X} = \left(\begin{array}{ccc}
+        1 & 0 & 0\\
+        1 & 0 & 0\\
+        0 & 1 & 0\\
+        0 & 1 & 0\\
+        0 & 0 & 1\\
+        0 & 0 & 1\end{array}\right)$$
+        
+If we are interested in the difference between $t_0$ and $t_1$, as well as the difference between $t_1$ and $t_2$, the transpose of the contrast matrix would be:
+
+$$\mathbf{C^T} = \left(\begin{array}{ccc}
+              -1 & 1 & 0 \\
+               0 & -1 & 1 \end{array}\right)$$
+
+
+## Linear Models for Microarray Data - LIMMA 
+
+
+It is assumed that the linear model is fitted for each gene to obtain an estimator $\hat{\boldsymbol{\alpha}}_g$ of $\boldsymbol{\alpha}_g$, and estimator $s^2_g$ of $\sigma_g^2$ and estimated covariance matrix:
+
+$$\mathrm{var}(\hat{\alpha}_g ) = \mathbf{V}_g s^2_g$$
+
+where $\mathbf{V}_g$ is positive definite and does not depend on $s_g^2$. Then we have
+$$ \mathrm{var}( \hat{\boldsymbol{\beta}}_g ) = \mathbf{C}^T \mathbf{V}_g \mathbf{C} s^2_g $$
+
+**Note:** So far no distributional assumptions are made, and the fitting is not necessarily done by least-squares. However the contrast estimator will be assumed to be approximately normal with mean $\boldsymbol{\beta}_g$ and covariance $\mathbf{C}^T \mathbf{V}_g \mathbf{C} \sigma^2_g$
+
+
+## Linear Models for Microarray Data - LIMMA 
+
+
+
+ Let $v_{gj}$ be the $j^{th}$ diagonal element of $\mathbf{C}^T \mathbf{V}_g \mathbf{C}$, then the distributional assumptions made are equivalent to: 
+ 
+ $$ \hat{\beta}_{gj} | \beta_{gj} , \sigma_g^2 \sim \mathrm{N}(\beta_{gj} , v_{gj} \sigma_g^2)$$
+ 
+ and 
+ 
+ $$ s^2_g|\sigma_g^2 \sim \frac{\sigma_g^2}{d_g}\chi^2_{d_g}$$
+ 
+ where $d_g$ is the residual degrees of freedom for the linear model for gene $g$. Under these
+assumptions the ordinary t-statistic
+
+$$ t_{gj}=\frac{\hat{\beta}_{gj}}{s_g\sqrt{v_{gj}}}$$
+
+follows an approximate t-distribution on $d_g$ degrees of freedom, which can be used to test the null hypothesis:
+$H_0 : \beta_{gj} = 0.$
+
+## Linear Models for Microarray Data - LIMMA 
+
+
+This approach still suffers from the small sample size problem mentioned previously. One solution is to use a hierarchical model to borrow strength across genes. In particular, we will place a prior distribution on the inverse variances as follows:
+
+$$\sigma_g^{-2}\sim \frac{1}{d_0 s_0^2}\chi^2_{d_0}$$ 
+
+where ${d_0}$ and $s_0$ are fixed hyper-parameters. Similarly, a prior distribution can be placed on the unknown contrast parameters:
+
+$$\beta_{gj} |\sigma_g^2,\beta_{gj}\ne 0 \sim \mathrm{N}(0,v_{0j}\sigma_g^2)$$
+
+with $\mathrm{Pr}(\beta_{gj}\ne 0) = p_j$ where $v_{0j}$ and $p_j$ are given hyperparameters.
+
+## LIMMA - Hierarchical model
+
+
+Under the above hierarchical model, the posterior mean of $\sigma_g^2$ given $s_g^2$ is
+
+$$\tilde{s}^2_g=\mathbb{E}(\sigma^2_g|s^2_g)= \frac{d_0s_0^2+d_gs_g^2}{d_0+d_g}$$
+
+and we can define the following moderated t-statistics:
+
+$$ \tilde{t}_{gj}=\frac{\hat{\beta}_{gj}}{\tilde{s}_g\sqrt{v_{gj}}}$$
+
+The moderated t-statistics $\tilde{t}_{gj}$ and the residual sample variances $s^2$
+are shown to be distributed independently. The moderated t is shown to follow a t-
+distribution under the null hypothesis $H_0 : \beta_{gj}$ = 0 with degrees of freedom $d_g +d_0$.
+
+## LIMMA - Estimation of hyperparameters
+
+
+All parameters except $p_j$ are shared across genes and can easily be estimated using an empirical Bayes approach using all genes. The most difficult parameter to estimate is $p_j$, but this parameter is only used in the calculation of the posterior odds and is not required for inference via the moderated t-statistics. 
+
+This is typical of frequentist inference where the alternative does not matter. 
+
+## Other Bayesian approaches
+
+
+Here are a few other Bayesian approaches that are available for the analysis of gene expression microarray data:
+- Kendziorski, C. M., Newton, M. A., Lan, H., & Gould, M. N. (2003). On parametric empirical Bayes methods for comparing multiple groups using replicated gene expression profiles. Statistics in Medicine, 22(24), 3899–3914. doi:10.1002/sim.1548
+
+- Gottardo, R., Raftery, A. E., Yeung, K. Y., & Bumgarner, R. E. (2006). Bayesian robust inference for differential gene expression in microarrays with multiple samples. Biometrics, 62(1), 10–18. doi:10.1111/j.1541-0420.2005.00397.x
+
+- Lewin, A., Bochkina, N., & Richardson, S. (2007). Fully Bayesian mixture model for differential gene expression: simulations and model checks. Statistical Applications in Genetics and Molecular Biology, 6(1), Article36. doi:10.2202/1544-6115.1314
+
+However, in my opinion, LIMMA provides the best user experience in terms of analysis in R and Bioconductor.
+
+## The LIMMA package
+
+
+Let's first install Limma:
+
+```{r}
+source("http://bioconductor.org/biocLite.R")
+biocLite("limma")
+```
+
+Now we're ready to start using Limma
+
+```{r}
+library(limma)
+library(Biobase)
+library(data.table)
+```
+
+but we need some data!
+
+
+## Getting some data with GEOquery
+
+
+We're going to look at the dataset used in:
+
+Nakaya, H. I., Wrammert, J., Lee, E. K., Racioppi, L., Marie-Kunze, S., Haining, W. N., et al. (2011). Systems biology of vaccination for seasonal influenza in humans. Nature Immunology, 12(8), 786–795. doi:10.1038/ni.2067
+
+```{r query-GEO, cache = TRUE}
+library(GEOquery)
+# Download the mapping information and processed data
+#main serie #gds[[1]] = LAIV/TIV 0809, gds[[2]] = FACS, gds[[3]] = TIV 0708
+gds <- getGEO("GSE29619", destdir = "Data/GEO/") 
+```
+
+## Getting some data with GEOquery
+
+but before we can use this, we need to clean up the pData a bit (see code in .Rmd file by clicking on the pencil icon above, which will bring you to this slide in the .Rmd file). 
+
+```{r sanitize-pdata, cache=TRUE, echo=TRUE}
+### Sanitize data and metadata
+gds_new <- gds
+sanitize_pdata <- function(pd){
+keepCols <- c(
+  "characteristics_ch1.1", "characteristics_ch1.2",
+  "description", 
+  "supplementary_file")
+pd <- pd[, keepCols]
+colnames(pd) <- c("ptid", "time", "description", "filename")
+pd$ptid <- gsub(".*: ", "", pd$ptid)
+pd$time <- gsub(".*: ", "", pd$time)
+pd$time<-gsub("Day", "D", pd$time)
+pd$description<-gsub("(-\\w*){2}$", "", pd$description)
+pd$filename<-basename(as.character(pd$filename))
+pd$filename<-gsub(".CEL.gz", "", pd$filename)
+pd
+}
+
+pData(gds_new[[1]]) <- sanitize_pdata(pData(gds_new[[1]]))
+pData(gds_new[[2]]) <- sanitize_pdata(pData(gds_new[[2]]))
+pData(gds_new[[3]]) <- sanitize_pdata(pData(gds_new[[3]]))
+```
+
+
+## Model set-up and estimation
+
+
+Let's create seperate `ExpressionSet`s for the datasets of interests.
+
+```{r data-setup, cache=TRUE}
+TIV_08 <- gds_new[[1]][ , grepl("2008-TIV", pData(gds_new[[1]])$description)]
+LAIV_08 <- gds_new[[1]][ , grepl("2008-LAIV", pData(gds_new[[1]])$description)]
+TIV_07 <- gds_new[[3]][ , grepl("2007-TIV", pData(gds_new[[3]])$description)]
+```
+
+TIV_08, LAIV_08 and TIV_07 are expression sets containing data from three time points (variable name is "time", with values D0, D3 and D7), for several probes (i.e., of form GSMXXXX) and patients (variable name "ptid"). 
+
+We then use the limma R package to identify genes that are differentially expressed at D3 and D7 compared to baseline for each study. 
+
+
+```{r, cache=TRUE}
+mm_TIV_08 <- model.matrix(~ptid+time, TIV_08) # design matrix
+fit_TIV_08 <- lmFit(TIV_08, mm_TIV_08) #Fit linear model for each gene given a series of arrays
+ebay_TIV_08 <- eBayes(fit_TIV_08) # compute moderated t-statistics, moderated F-statistic, and log-odds of differential expression
+```
+
+## Testing specific hypothesis
+
+
+Let's first look at the estimated coefficients
+
+```{r}
+colnames(fit_TIV_08$coef)
+```
+In this case, the design matrix contains 1's and 0's, indicating which patient and time point matches up to a given measurement in the vector, $\mathbf{Y}$. There is no column for timeD0, since it is the reference point. When both timeD3 and timeD7 are zero, than we know that the measurement is from timeD0. 
+
+Now we can test specific hypotheses.
+
+## Testing specific hypothesis 
+
+
+Here we look for genes differentially expressed at day 3 and day 7 wrt baseline:
+
+```{r}
+# Test t3=t0
+topT3 <- topTable(ebay_TIV_08, coef="timeD3", number=Inf, sort.by="none")
+# Test t7=t0
+topT7 <- topTable(ebay_TIV_08, coef="timeD7", number=Inf, sort.by="none")
+```
+
+
+`topTable()` extracts a table of the top-ranked genes from a linear model fit and outputs a `data.frame` with the following columns:
+```{r}
+colnames(topT7)
+```
+as you can see it contains information about the probes contained in the `ExpressionSet` as well as values calculated by LIMMA. 
+
+
+## MA plot d7 vs d0
+
+
+```{r}
+lm7  <- rowMeans(exprs(TIV_08)[,grepl("D7", pData(TIV_08)$time)])
+lm0  <- rowMeans(exprs(TIV_08)[,grepl("D0", pData(TIV_08)$time)])
+M <- lm7 - lm0
+A <- (lm7 + lm0)/2
+```
+
+```{r, fig.height=3}
+dt <- data.table(A, M, abs_t=abs(topT7$t), p=topT7$adj.P.Val)
+ggplot(dt, aes(x=A, y=M, color=abs_t, shape=p<.01))+geom_point()+geom_point(data=dt[p<.01], aes(x=A, y=M), color="red")
+```
+
+## MA plot d7 vs d0 
+
+Let's compare to ordinary t-statistics
+
+```{r}
+#  Ordinary t-statistic
+ordinary_t <- fit_TIV_08$coef / fit_TIV_08$stdev.unscaled / fit_TIV_08$sigma
+ordinary_t <- ordinary_t[,"timeD7"]
+# p-values based on normal approx with BH fdr adjustment
+ordinary_p <- p.adjust(2*pnorm(abs(ordinary_t), lower.tail=FALSE), method="BH")
+```
+
+```{r ,fig.height=2}
+dt <- data.table(A, M, abs_t=abs(ordinary_t), p=ordinary_p)
+ggplot(dt[is.finite(abs_t)], aes(x=A, y=M, color=abs_t, shape=p<.01))+geom_point()+geom_point(data=dt[p<.01], aes(x=A, y=M), color="red")
+```
+
+## Setting up your own contrast
+
+
+Suppose you want to look at the difference between timeD7 and timeD3. We need to create a contrast matrix that will get this information from the design matrix. This can easily be done using the `makeContrats` function as follows,
+
+```{r}
+cont_matrix <- makeContrasts(timeD7-timeD3,levels=mm_TIV_08)
+fit2 <- contrasts.fit(fit_TIV_08, cont_matrix)
+fit2 <- eBayes(fit2)
+topTable(fit2, adjust = "fdr")
+```
+
+## Your turn!
+
+
+Ok, let's try to repeat what we've done with the TIV07 cohort. 
+
+```{r, eval=FALSE, echo=FALSE}
+pd <- pData(gds[[1]][, grepl("2008-TIV", pData(gds[[1]])$description)])
+hai_0 <- sapply(strsplit(as.character(pd$characteristics_ch1.8), ": "), "[", 2)
+hai_28 <- sapply(strsplit(as.character(pd$characteristics_ch1.9), ":"), "[", 2)
+hai_fold <- log2(as.double(hai_28))-log2(as.double(hai_0))
+pData(TIV_08)$hai_fold <- hai_fold
+```
+
+
+```{r, eval=FALSE, echo=FALSE}
+mm_TIV_08 <- model.matrix(~time+hai_fold+ptid, TIV_08)
+fit_TIV_08 <- lmFit(TIV_08, mm_TIV_08)
+ebay_TIV_08 <- eBayes(fit_TIV_08)
+topTable(ebay_TIV_08, coef = "hai_fold")
+responder <- as.factor(hai_fold>1)
+pData(TIV_08)$responder <- responder
+mm_TIV_08 <- model.matrix(~time+responder, TIV_08)
+fit_TIV_08 <- lmFit(TIV_08, mm_TIV_08)
+ebay_TIV_08 <- eBayes(fit_TIV_08)
+```

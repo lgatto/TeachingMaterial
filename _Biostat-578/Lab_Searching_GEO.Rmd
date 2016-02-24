@@ -1,0 +1,516 @@
+---
+title: "Searching GEO"
+author: "Brian High"
+date: "2/6/2015"
+output:
+  ioslides_presentation:
+    fig_caption: yes
+    fig_retina: 1
+    keep_md: yes
+    smaller: yes
+---
+
+## Setting up some options
+
+Let's first turn on the cache for increased performance and improved styling.
+
+```{r, cache=FALSE}
+# Set some global knitr options
+library("knitr")
+opts_chunk$set(tidy=TRUE, tidy.opts=list(blank=FALSE, width.cutoff=60), 
+               cache=FALSE, messages=FALSE)
+```
+
+Load the `pander` package so we can make nicer table listings with `pandoc.table`.
+
+```{r}
+suppressMessages(library(pander))
+```
+
+## Prepare for HW2
+
+We will need to query the GEOmetadb database. Today we will explore this 
+database and practice various ways to query it.
+
+## Load the `GEOmetadb` package
+
+First we load the `GEOmetadb` library.
+
+```{r}
+suppressMessages(library(GEOmetadb))
+```
+
+Let's also view the available methods.
+
+```{r}
+ls("package:GEOmetadb")
+```
+
+## Download the GEO database
+
+We should have already downloaded this database when viewing the lecture slides.
+
+```{r}
+## This will download the entire database, so can be slow
+if(!file.exists("GEOmetadb.sqlite"))
+{
+  # Download database only if it's not done already
+  getSQLiteFile()
+}
+```
+
+## List tables with `SQL`
+
+In `SQL`, you can query the database structure with ordinary `SQL` commands.
+
+```{r}
+geo_con <- dbConnect(SQLite(), 'GEOmetadb.sqlite')
+dbGetQuery(geo_con, "SELECT name FROM sqlite_master WHERE type='table';")
+```
+
+## List `gse` fields with `SQL`
+
+The `PRAGMA` command is a standard `SQLite` command.
+
+```{r}
+dbGetQuery(geo_con, "PRAGMA table_info(gse);")
+```
+
+## List tables with `dbListTables`
+
+Instead of using `SQL` commands, we can list tables and fields with functions
+from the `GEOmetadb` package.
+
+```{r}
+geo_con <- dbConnect(SQLite(), 'GEOmetadb.sqlite')
+dbListTables(geo_con)
+```
+
+```{r}
+dbListFields(geo_con, 'gse')
+```
+
+## Explore `gse`
+
+```{r}
+columnDescriptions()[1:5,]
+```
+
+## Load library `data.table`
+
+This will provide us with some practice querying with data.table.
+
+```{r}
+suppressMessages(library(data.table))
+```
+
+## Explore `gse` with `data.table`
+
+```{r}
+cd <- as.data.table(columnDescriptions())
+cd[TableName=="gse", FieldName]
+```
+
+## List `gse` columns with `pandoc.table`
+
+```{r}
+gsefields <- as.data.frame(
+    cd[TableName=="gse" & 
+           FieldName %in% c("gse","title","pubmed_id","summary","contact")])
+pandoc.table(gsefields, style="grid")
+```
+
+## Explore `gpl`
+
+```{r}
+cd[TableName=="gpl", FieldName]
+```
+
+## Explore columns in `gpl`
+
+```{r}
+gplfields <- as.data.frame(
+    cd[TableName=="gpl" & 
+           FieldName %in% c("gpl","organism","manufacturer")])
+pandoc.table(gplfields, style="grid")
+```
+
+## Explore `gse_gpl`
+
+```{r}
+cd[TableName=="gse_gpl", FieldName]
+```
+
+## Explore columns in `gse_gpl`
+
+Why are there only two fields in this table? What is this table for?
+
+```{r}
+gse_gplfields <- as.data.frame(cd[TableName=="gse_gpl"])
+pandoc.table(gse_gplfields, style="grid")
+```
+
+## List "title" fields with `pandoc.table`
+
+Why do many tables include a "title" field? Are the titles the same?
+
+```{r}
+gsefields <- as.data.frame(
+    cd[FieldName == "title"])
+pandoc.table(gsefields, style="grid")
+```
+
+## List "contact" field structure
+
+Let's look at some records in `gse`. What does a "contact" look like?
+
+```{r}
+query <- "SELECT contact FROM gse LIMIT 1;"
+res <- dbGetQuery(geo_con, query)
+strsplit(res$contact, '\t')
+```
+
+## Find manufacturer data
+
+Query the manufacturers with a `SQL` command, listed with `data.table`...
+
+```{r, tidy=FALSE}
+manu <- data.table(dbGetQuery(geo_con, 
+    "SELECT DISTINCT manufacturer FROM gpl ORDER BY manufacturer ASC;"))
+manu[,list(length(manufacturer)), by=manufacturer]
+```
+
+## Our `SQL` command
+
+We just wanted a list of manufacturers so the `SQL` query is:
+
+```
+SELECT DISTINCT manufacturer FROM gpl 
+ORDER BY manufacturer ASC;
+```
+
+However, since we also grouped `by=manufacturer` in our `data.table`, we could 
+have simply used the `SQL` query:
+
+```
+SELECT manufacturer FROM gpl;
+```
+Let's try that...
+
+## Find manufacturer data
+
+Query the manufacturers with a simpler `SQL` command ... grouping with `by` and 
+ordering with `setkey` in `data.table`...
+
+```{r, tidy=FALSE}
+manu <- data.table(dbGetQuery(geo_con, 
+            "SELECT manufacturer FROM gpl;"))
+setkey(manu, manufacturer)
+manu[,list(length(manufacturer)), by=manufacturer]
+```
+
+
+## Finding data with a `join`
+
+To get supplementary file names ending with `CEL.gz` (case-insensitive) from 
+only manufacturer Affymetrix, we need to `join` the `gsm` and `gpl` tables. 
+
+```
+SELECT 
+        gpl.bioc_package, 
+        gsm.title, 
+        gsm.series_id, 
+        gsm.gpl, 
+        gsm.supplementary_file 
+    FROM gsm 
+    JOIN gpl ON gsm.gpl=gpl.gpl 
+    WHERE gpl.manufacturer='Affymetrix' 
+        AND gsm.supplementary_file like '%CEL.gz';
+```
+
+## Now let's run that query
+
+```{r, tidy=FALSE}
+query<-"SELECT 
+            gpl.bioc_package, 
+            gsm.title, 
+            gsm.series_id, 
+            gsm.gpl, 
+            gsm.supplementary_file 
+        FROM gsm 
+        JOIN gpl ON gsm.gpl=gpl.gpl 
+        WHERE gpl.manufacturer='Affymetrix' 
+            AND gsm.supplementary_file like '%CEL.gz';"
+res <- dbGetQuery(geo_con, query)
+head(res, 3)
+```
+
+## Why did we need a `join`?
+
+The 
+[GEOmetadb database](http://gbnci.abcc.ncifcrf.gov/geo/geo_help.php), 
+is a [relational database](http://en.wikipedia.org/wiki/Relational_database). 
+
+There are several tables which can be linked on common fields. 
+
+Since each table 
+contains data for only one type of record, tables must be linked to search for 
+fields pertaining to the various types of records. 
+
+We join on the common fields, 
+called [keys](http://en.wikipedia.org/wiki/Relational_database#Primary_key).
+
+## Table Relationships of `GEOmetadb`
+
+![Table Relationships](http://gbnci.abcc.ncifcrf.gov/geo/images/GEOmetadb_diagram.png)
+
+Source: [Help: GEOmetadb Application, Meltzerlab/GB/CCR/NCI/NIH &copy;2008](http://gbnci.abcc.ncifcrf.gov/geo/geo_help.php)
+
+## Keys of `GEOmetadb`
+
+```
++------------+-------+------------------------------------------------+
+| Table      | Key   | Links to Table.Key                             |
++============+=======+================================================+
+| gse        | gse   | gse_gpl.gse, gse_gsm.gse, gds.gse, sMatrix.gse |
++------------+-------+------------------------------------------------+
+| gpl        | gpl   | gds.gpl, gse_gpl.gpl, sMatrix.gpl, gsm.gpl     |
++------------+-------+------------------------------------------------+
+| gsm        | gsm   | gse_gsm.gsm                                    |
+| gsm        | gpl   | gds.gpl, gse_gpl.gpl, sMatrix.gpl, gpl.gpl     |
++------------+-------+------------------------------------------------+
+| gds        | gds   | gds_subset.gds                                 |
++------------+-------+------------------------------------------------+
+| gds_subset | gds   | gds.gds                                        |
++------------+-------+------------------------------------------------+
+| sMatrix    | gse   | gse_gpl.gse, gse_gsm.gse, gds.gse, gse.gse     |
+| sMatrix    | gpl   | gds.gpl, gse_gpl.gpl, gpl.gpl, gsm.gpl         |
++------------+-------+------------------------------------------------+
+| gse_gpl    | gse   | gse_gpl.gse, gse_gsm.gse, gds.gse, sMatrix.gse |
+| gse_gpl    | gpl   | gds.gpl, gse_gpl.gpl, gpl.gpl, sMatrix.gpl     |
++------------+-------+------------------------------------------------+
+| gse_gsm    | gse   | gse_gpl.gse, gse.gse, gds.gse, sMatrix.gse     |
+| gse_gsm    | gsm   | gsm.gsm                                        |
++------------+-------+------------------------------------------------+
+```
+
+Source: [Help: GEOmetadb Application, Meltzerlab/GB/CCR/NCI/NIH &copy;2008](http://gbnci.abcc.ncifcrf.gov/geo/geo_help.php)
+
+## A three-table `join`
+
+To get raw data, we need to `join` three tables with two `join` clauses. The first
+`join` is a subquery in the `from` clause, using `gse_gsm` to find `gsm` records
+corresponding to `gse` records. We then `join` this with `gsm` for those records. 
+This approach works well when you only have a few queries to make or you have 
+limited memory (RAM) available.
+
+```{r, tidy=FALSE}
+query<-"SELECT gsm.gsm, gsm.supplementary_file 
+        FROM (gse JOIN gse_gsm ON gse.gse=gse_gsm.gse) j 
+        JOIN gsm ON j.gsm=gsm.gsm 
+        WHERE gse.pubmed_id='21743478' 
+        LIMIT 2;"
+res <- as.data.table(dbGetQuery(geo_con, query))
+res[,strsplit(gsm.supplementary_file, ';\t'), by=gsm.gsm]
+```
+
+## Joins in `data.table`
+
+We can repeat the same operation using `data.table`, once we have converted the 
+GEO tables to `data.table`s and set their keys. The homework assignment asks 
+that you try to fit the `data.table` manipulations (merge, subset, etc.) into 
+a single line. This approach will allow us to do additional fast joins later, 
+since the tables are now in memory (RAM).
+
+```{r, tidy=FALSE}
+gseDT <- data.table(dbGetQuery(geo_con, "SELECT * from gse;"), key="gse")
+gsmDT <- data.table(dbGetQuery(geo_con, "SELECT * from gsm;"), key="gsm")
+gse_gsmDT <- data.table(dbGetQuery(geo_con, "SELECT * from gse_gsm;"), 
+    key=c("gse", "gsm"))
+gsmDT[gse_gsmDT[gseDT[pubmed_id==21743478, gse], gsm, nomatch=0], nomatch=0][1:2, 
+    list(gsm, supplementary_file)][,strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+## All in one line?
+
+Can we do it all in one line of code? Yes, but it's ugly and hard to follow, 
+even with line-wrap. Plus, additional queries will have to reload the data from 
+the database. Yuk! (Don't do it this way.)
+
+```{r, tidy=FALSE}
+data.table(dbGetQuery(geo_con, 
+    "SELECT * from gsm;"), key="gsm")[data.table(dbGetQuery(geo_con, 
+    "SELECT * from gse_gsm;"), key=c("gse", "gsm"))[data.table(dbGetQuery(geo_con, 
+    "SELECT * from gse;"), key="gse")[pubmed_id==21743478, gse], gsm, 
+    nomatch=0], nomatch=0][1:2, list(gsm, supplementary_file)][,
+    strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+## Joining with `merge`
+
+Some people like to use the familiar `merge`. There is a version of `merge`
+built into `data.table` for improved performance. We will use the three DTs we 
+made previously. To remove duplicates, we use `unique`. (Why are there duplicates?)
+
+```{r, tidy=FALSE}
+unique(merge(gsmDT[,list(gsm,supplementary_file)], 
+      merge(gseDT[pubmed_id==21743478, list(gse)], 
+            gse_gsmDT)[,list(gsm)])[1:4, list(gsm, supplementary_file)])[,
+                    strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+## Joining with `merge` and `magrittr`
+
+We can also use `%>%` from `magrittr` to improve readability, again using the 
+three DTs we made previously. Here we will use two "lines" of code.
+
+```{r, tidy=FALSE}
+library(magrittr)
+mergedDT <- unique(gseDT[pubmed_id==21743478, list(gse)] %>% 
+                merge(y=gse_gsmDT, by=c("gse")) %>% 
+                merge(y=gsmDT[,list(gsm,supplementary_file)], by=c("gsm")))
+mergedDT[1:2, list(gsm, gse, supplementary_file)][,
+                strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+## Only get what you need
+
+It makes sense to only `select` the data we need from the SQL database. Why pull 
+in extra data, only to ignore it? We will still use `data.table` for the `join`, 
+though, in keeping with the spirit of the assignment.
+
+```{r, tidy=FALSE}
+gseDT <- data.table(dbGetQuery(geo_con, 
+    "SELECT gse from gse WHERE pubmed_id = '21743478';"), key="gse")
+gsmDT <- data.table(dbGetQuery(geo_con, 
+    "SELECT gsm, supplementary_file from gsm;"), key="gsm")
+gse_gsmDT <- data.table(dbGetQuery(geo_con, 
+    "SELECT * from gse_gsm;"), key=c("gse", "gsm"))
+gsmDT[gse_gsmDT[gseDT, gsm, nomatch=0], nomatch=0][1:2, 
+    list(gsm, supplementary_file)][,strsplit(supplementary_file, ';\t'), by=gsm]
+```
+
+## Cleanup
+
+```{r}
+dbDisconnect(geo_con)
+```
+
+## Column Name Conflicts: An Example
+
+Let's set up an example which will lead to a column name conflict when we 
+do a three-table `join` in one command (line).
+
+```{r, echo=TRUE}
+suppressMessages(library(data.table))
+A <- data.table(e=c(1:3), f=c(4:6), key="f")
+B <- data.table(g=c(7:9), h=c(10:12), key="g")
+AB <- data.table(f=c(4:5), g=c(8:9), key=c("f", "g"))
+```
+
+## Column Name Conflicts: `[` default `join`
+
+The default `join` is a "right outer `join`". They appear to work
+fine. Or do they? What's with the "f" and "g" columns in `AB[B]`?
+
+```{r, echo=TRUE}
+AB[A]
+AB[B]
+```
+
+## Column Name Conflicts: `setkeyv`
+
+We can fix the `AB[B]` output by resetting the `key` for `AB`. We reverse the
+order of the key fields so that the key for B ("g") matches the first key for 
+AB ("g").
+
+```{r, echo=TRUE}
+setkeyv(AB, c("g", "f"))
+AB[B]
+```
+
+## Column Name Conflicts: 3-table `join`
+
+Even three-table `join`s (sort of) work, so long as we use the default `join`, 
+but we see that a column is renamed. "g" from table AB becomes "i.g". "f" from 
+table AB becomes "i.f". A's "f" gets relabled as "g". B's "g" gets relabled as 
+"f". In the `data.table` documentation, it says, "In all joins the names of the columns are irrelevant". And what happened to "e" and "h"?
+
+```{r, echo=TRUE}
+setkeyv(AB, c("f", "g"))
+B[AB[A]]
+setkeyv(AB, c("g", "f"))
+A[AB[B]]
+```
+
+## Column Name Conflicts: `nomatch=0`
+
+The problems get worse when we try to use an inner `join` (intersection). Since 
+"f" is in both A and AB and "g" is in both AB and B, we will have a 
+conflict if we try and `join` A, AB, and B in one command (line). The 
+result is an "empty data.table", even though the intersection should have
+some rows of data.
+
+```{r, echo=TRUE}
+setkeyv(AB, c("f", "g"))
+B[AB[A, nomatch=0], nomatch=0]
+setkeyv(AB, c("g", "f"))
+B[AB[A, nomatch=0], nomatch=0]
+```
+
+## Column Name Conflicts: `list`
+
+In the first (most nested) `join`, A is the "i expression". If we anticipate
+that "e" and "f" from A will be renamed "i.e" and "i.f" during the `join`, 
+then we can list them as such and avoid the "empty data.table" problem.
+
+```{r, echo=TRUE}
+setkeyv(AB, c("f", "g"))
+B[AB[A, list(g, i.e, i.f), nomatch=0], list(i.e, i.f, g, h), nomatch=0]
+```
+
+## Column Name Conflicts: `merge`
+
+Using `merge`, we don't encounter these troubles. We can get the same 
+"inner join" result without the renaming of columns and the need for explicit 
+"j expression" column lists. We just need to use `by=` in the 
+outer-nested `merge`.
+
+```{r, echo=TRUE}
+merge(B, merge(AB, A), by="g")
+```
+
+## Column Name Conflicts: `magrittr`
+
+Here is the same example using `%>%` pipes from `magrittr`.
+
+```{r, echo=TRUE}
+suppressMessages(library(magrittr))
+merge(x=AB, y=A, by="f") %>% merge(y=B, by="g")
+```
+
+Or simply (but less explicitly)...
+
+```{r, echo=TRUE}
+merge(AB, A) %>% merge(B, by="g")
+```
+
+## Column Name Conflicts: `plyr`
+
+We can also `join` with `plyr`, simply *and* explicitly.
+
+```{r, echo=TRUE}
+suppressMessages(library(plyr))
+join(AB, A, type="inner") %>% join(B, type="inner")
+```
+
+## Column Name Conflicts: `plyr` left `join`
+
+In this *particular* case, we would get the same result using the default 
+left `join`, but that would not always be true in *every* case. It works here 
+because the left-hand table of each `join` contains only those rows we would 
+want in the final result. (Try reversing the positions of A and AB and see the difference for yourself.)
+
+```{r, echo=TRUE}
+join(AB, A) %>% join(B)
+```

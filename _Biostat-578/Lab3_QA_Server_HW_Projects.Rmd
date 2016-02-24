@@ -1,0 +1,150 @@
+---
+title: 'Bioinformatics for Big Omics Data: Lab #3'
+author: "Brian High"
+date: "January 15, 2015"
+output:
+  ioslides_presentation:
+    fig_caption: yes
+    fig_retina: 1
+    keep_md: yes
+    smaller: yes
+---
+
+## Lab Session #3
+
+- Your instructor, Rafael, could not come to class today.
+- Brian will fill in for him.
+- Rafael requests that we focus on any questions you might have.
+- The main priority is computing/IT questions or problems.
+- But we can try to address any sort of questions or problems after that.
+- We will also talk about the server, how to access it and why.
+- A major reason to use the server is for your course projects.
+- Let's be sure and use Canvas for discussions/questions, okay?
+
+
+## Any Computing/IT Questions?
+
+- Software installation and operation
+    * RStudio
+    * Markdown
+    * Git
+    * GitHub
+    * ???
+    
+We can talk about R too, but let's first cover computing support issues.
+
+## RStudio Server: Phage
+
+As you know, we have a RStudio server devoted to use in this course:
+
+- http://phage.deohs.washington.edu
+
+It is loaded with lots of other Bioinformatics software.
+
+- [BioLinux 8](http://environmentalomics.org/bio-linux/)
+    * [Ubuntu 14](http://www.ubuntu.com/)
+
+You can access it with SSH, SFTP, and [X2Go](http://wiki.x2go.org/doku.php) also.
+
+- phage.deohs.washington.edu port 54322
+
+## RStudio Server
+
+Looks and works almost exactly like RStudio desktop.
+
+- Has built-in graphical Git client
+- Fast network connection
+- Lots of RAM and CPU
+- Has "shell" (Terminal) access for running commands like "git".
+
+## Tip: Rendering Presentation Files
+
+To get the presentations to render properly in HTML:
+
+- Clone the [Biostat-578](https://github.com/raphg/Biostat-578) repo.
+- Pre-install all R packages with `installallpkgs.R`
+- Open a Rmd presentation file in RStudio.
+- Put your cursor at top of the editor pane.
+- Step through the code chunks with Ctrl-Alt-N (Cmd-Opt-N on a Mac).
+- Make sure all code runs without error.
+- Then render the HTML presentation (Knit HTML).
+
+## Other uses for the Server: Term Projects
+
+Since *Phage* has SSH, SFTP, and X2Go access, plus a ton of software, it will
+be most useful for your [term projects](https://github.com/raphg/Biostat-578/blob/master/Final-project.md).
+
+Examples from last year: Reproduce analysis from a research paper.
+
+- [Count-based differential expression analysis of RNA sequencing data using R and Bioconductor](http://www.nature.com/nprot/journal/v8/n9/full/nprot.2013.099.html)
+- [Bisulfighter: accurate detection of methylated cytosines and differentially methylated regions.](http://www.ncbi.nlm.nih.gov/pubmed/24423865)
+
+Both of these projects required lots of RAM (over 30 GB), and one required as 
+many CPU cores as we could allocate (32).
+
+
+## Differential expression analysis (RNA-seq): Materials
+
+<img src="http://www.nature.com/nprot/journal/v8/n9/images/nprot.2013.099-I4.gif" alt="materials" style="width: 425px;"/>
+
+## Differential expression analysis (RNA-seq): Materials
+
+- [R](http://www.r-project.org/)
+- [Bowtie2](http://bowtie-bio.sourceforge.net/index.shtml)
+- [Tophat2](http://tophat.cbcb.umd.edu/)
+- [htseq-count](http://www-huber.embl.de/HTSeq/doc/overview.html)
+- [samtools](http://samtools.sourceforge.net/)
+
+
+## Differential expression analysis (RNA-seq): Materials
+
+The following is quoted from the [article](http://www.nature.com/nprot/journal/v8/n9/full/nprot.2013.099.html#materials)^1^:
+
+> *This protocol assumes users have a Unix-like operating system (i.e., Linux or MacOS X), with a bash shell or similar. All commands given here are meant to be run in a terminal window. Although it is possible to follow this protocol with a Microsoft Windows machine (e.g., using the Unix-like Cygwin; http://www.cygwin.com/), the additional steps required are **not discussed here**.*
+
+1. Anders, S. et al. Count-based differential expression analysis of RNA sequencing data using R and Bioconductor. Nat Protoc 8, 1765–1786 (2013).
+
+## Detection of mCs and DMRs
+
+Article: *[Bisulfighter: accurate detection of methylated cytosines and differentially methylated regions.](http://www.ncbi.nlm.nih.gov/pubmed/24423865)*
+
+The following is quoted from the [Bisulfighter website](http://epigenome.cbrc.jp/bisulfighter):
+
+> *Requirements*
+> 
+> *bsf-call (Last) requires a large free memory area larger than 30GB for mapping. bsf-call requires Python 2.7 or later. ComMet requires Boost C++ library to compile. There are pre-compiled executables available in Download page.*
+>
+> *Download*
+> 
+> *Please visit Github to get the Bisulfighter source code.*
+
+**They do not actually offer binary downloads any more. You need to compile this software from source code. We can do any software compilation for you.**
+
+## Using X2Go Client
+
+- [Download it](http://wiki.x2go.org/doku.php/download:start)
+- Install it (OSX uses will also need [XQuartz](http://xquartz.macosforge.org/landing/))
+- Approve firewall access
+    * "Allow Access" prompts in Windows or System Preferences in OSX
+- Configure it:
+    * Session name: phage.deohs.washington.edu
+    * Host: phage.deohs.washington.edu
+    * SSH Port: 54322
+    * Session Type: XFCE (or use MATE if using OSX)
+- Host Key verification: Click "Yes"
+- Log in with your UW NetID credentials
+- Log out when you are done. (Don't just close the window.)
+
+## File Transfer and SSH (Terminal)
+
+* host: phage.deohs.washington.edu
+* port: 54322
+
+To transfer files to and from Phage, use SFTP ...
+
+- [FileZilla](https://filezilla-project.org/)
+
+If you just need to access a command-line terminal, use SSH:
+
+- OSX: Use Terminal and type "ssh -p 54322 yournetid@phage.washington.edu"
+- Windows: use [PuTTY](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)

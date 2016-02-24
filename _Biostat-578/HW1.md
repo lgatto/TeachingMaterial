@@ -1,10 +1,13 @@
-**This is your first homework due Tuesday Feb 4.**
+**This is your first homework due Tuesday Jan 29.**
 
-1. Use the GEOmetabd package to find all HCV gene expression data using the Illumina platform submitted by an investigator at Yale. This should be done with a single query, showing the title, the GSE accession number, the GPL accession number and the manufacturer and the description of the platform used.
+1. Create a repository on GitHub called "HW1_first_lastname" where `first` and `lastname` are your first and last names. This will avoid confusion when forking your partner's repo.
 
-2. Reproduce your above query using the data.table package. Again, try to use a single line of code. [Hint: You first need to convert all db tables to data.table tables].
+2. Initialize your repo with a README file to explain its content. You may wish to chose a license.
 
+3. Use the ggplot2 package to plot the Iris data showing length vs width facetting petal/sepal vs flower type, basically reproducing slide 27 of the lecture notes. Feel free to customize the styling as you see fit (color, font size, etc).
 
-Please submit your code as an Rmd file that can be used to check your queries and show the results. You need to make sure you ignore all output files. For consistency, please name your repository HW1-yourusername.
+Please submit your code as an Rmd file that can be used to check your queries and show the results. 
 
 Remember to comment your code as much as possible and use good coding standards. 
+
+Your partner will work with you to check that he/she can reproduce the submitted html file, and will perform a pull request to fix any issues or improve the code.

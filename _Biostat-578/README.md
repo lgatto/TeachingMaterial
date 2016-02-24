@@ -1,19 +1,22 @@
 BIOSTAT 578A: Bioinformatics for Big Omics Data
 ===============================================
 
+**Important Note:** I am in the process of modifying the content of this repository in preparation for Winter 2015. Stay tuned (I have now updated the first few lectures). If you want to be informed of all changes, please create a github account and watch the repository. Please also make sure you look at the "Getting Started" section below, as I expect you to do some things before the course actually starts. Please also login to `myuw` and look for other information on `canvas`.
+
 **Instructor:** Raphael Gottardo, PhD, Fred Hutchinson Cancer Research Center
 
 If you need to contact me, please email me at <rgottard@fhcrc.org>.
 
 **Time and location:**
-T	10:30-11:50	HST T531
-Th	10:30-11:50	HST T747
+T & Th	9:00-10:20	HST T439
 
 **Prerequisite:** BIOSTAT 511/12 or permission of the instructor. Please email me if you're unsure.
 
+**Getting Started:** Please look at [this document](https://github.com/raphg/Biostat-578/blob/master/getting_started.md) to get you all set-up before the first class. This will include doing some reading/learning about R/Bioconductor/git/GitHub. 
+
 **Grading scheme (Tentative):** HW (40%), Midterm (30%), Final project (30%)
 
-**Important dates:** Midterm (Feb 20), Final project presentations: last 2 weeks of class (March 4,6,11&13).
+**Important dates:** Midterm (Feb 19), Final project presentations: last 2 weeks of class (March 3, 5, 10 & 12).
 
 **Scope:** This practical "hands-on" course in Bioinformatics for high dimensional omics will emphasize on how to use statistical methods, as well as the R programming language and the Bioconductor project, as tools to manipulate, visualize and analyze real world omics datasets. The course will be organized around the following topics:
 - Introduction to computing for Bioinformatics using R: Introduction to R/RStudio, review of main data structures and tools for efficient and reproducible research, data manipulation and visualization
@@ -31,21 +34,24 @@ Th	10:30-11:50	HST T747
 *Note that this is tentative ouline and minor modifications are likely to occur. Please watch this page regularly for updates.*
 
 **Lecture notes:**
-
-- 01/07/14 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rpres) 
-- 01/08/14 Same as above and [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rpres)
-- 01/14/14 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres)
-- 01/16/14 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rpres) & [Biology basics](https://github.com/raphg/Biostat-578/blob/master/Biology_basics.Rpres) 
-- 01/21/14 [Intro to Microarrays](https://github.com/raphg/Biostat-578/blob/master/Microarrays.Rpres) & [Normalization](https://github.com/raphg/Biostat-578/blob/master/Normalization.Rpres) & [Probe summary](https://github.com/raphg/Biostat-578/blob/master/Probe_summary.Rpres)
-- 01/23/14 [Probe summary](https://github.com/raphg/Biostat-578/blob/master/Probe_summary.Rpres) & [Intro to Bioconductor](https://github.com/raphg/Biostat-578/blob/master/Bioconductor_intro.Rpres)
-- 01/28/14 [Differential expression](https://github.com/raphg/Biostat-578/blob/master/Differential_expression.Rpres) 
-- 02/03/14 [Differential expression](https://github.com/raphg/Biostat-578/blob/master/Differential_expression.Rpres) & [Batch correction](https://github.com/raphg/Biostat-578/blob/master/Batch_effects.Rpres)
-- 02/06/14 [Sequence analysis in R](Sequence_analysis.Rpres)
-- 02/11/14 [RNA-Seq Data analysis](RNA-seq.Rpres)
-- 02/13/14 [RNA-Seq Data analysis](RNA-seq.Rpres)
-- 02/18/14 [Gene set enrichment analysis](GSEA.Rpres)
-- 02/20/14 In class midterm. Andrew McDavid will proctor the exam
-- 02/25/14 In class discussion of the final projects
-- 02/27/14 [ChIP-seq](chip-seq.Rpres) and perhaps start talking about prediction
-- 03/04/14 Finish talking about predictions and talk about projects
-- 03/06/14, 03/10/14, 03/13/14 Project presentations
+Notes are provided as the source file (.Rmd) and resulting html file for online viewing. If you'd like to print these notes, please use the intermediate md file and [gitprint](http://gitprint.com/).
+- 01/06/15 [Introduction to R](https://github.com/raphg/Biostat-578/blob/master/Introduction_to_R.Rmd) 
+- 01/08/15 [Advanced graphics in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_graphics_in_R.Rmd)
+- 01/13/15 [Advanced data manipulation in R](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rmd)
+- 01/15/15 Lab with Brian (in class). Use this opportunity to discuss HW1.
+- 01/20/15 [Advanced data manipulation in R (suite)](https://github.com/raphg/Biostat-578/blob/master/Advanced_data_manipulation.Rmd) & [Molecular Biology 101](https://github.com/raphg/Biostat-578/blob/master/Biology_basics.Rmd)
+- 01/22/15 [Introduction to Microarrays](Microarrays.Rmd) & [Probe summary](Probe_summary.Rmd)
+- 01/27/15 [Normalization](Normalization.Rmd) & [Introduction to Bioconductor](Bioconductor_intro.Rmd)
+- 01/29/15 [Introduction to Bioconductor](Bioconductor_intro.Rmd) & [Differential gene expression](Differential_expression.Rmd)
+- 02/03/15 [Differential gene expression](Differential_expression.Rmd) & [Batch correction](Batch_effects.Rmd)
+- 02/05/15 No class (Sick)
+- 02/10/15 [Sequence analysis in R](Sequence_analysis.Rmd) (Note: We start at 8:30am)
+- 02/12/15 [Sequence analysis in R](Sequence_analysis.Rmd) (Note: We start at 8:30am) & [RNA-seq](RNA-seq.Rmd)
+- 02/17/15 [RNA-seq](RNA-seq.Rmd) & [GSEA](GSEA.Rmd) (Note: We start at 8:45am)
+- 02/19/15 Midterm (Note: Back to normal starting time, i.e 9am)
+- 02/24/15 Finish [GSEA](GSEA.Rmd) and start [ChIP-seq](chip-sep.Rmd)
+- 02/26/15 [Statistical prediction](Prediction.Rmd)
+- 03/03/15 Discuss last two assignments and provide help as needed
+- 03/05/15 Yatong, Xiaowen, and Kelsey
+- 03/10/15 Xiaoliang & Ning; Sara, Aisha & Benjamin
+- 03/12/15 Ben & Aaron; Gloria & Marea
