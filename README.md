@@ -33,6 +33,12 @@ develop and release packages in the future.
 - Computing on the language
 
 #### [Part II: Functional programming](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/02-funprog.md)
+- Functions 
+- Robust programming with functions
+- Scoping
+- Closures
+- High-level functions
+- Vectorisation
 
 #### [Part III: Debugging](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/03-debug.md)
 - Defensive programming

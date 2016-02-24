@@ -5,13 +5,12 @@ author: "Laurent Gatto"
 
 ## Content
 
-- Side effects
-- Functions
-- Functions environments
-- More about functions
+- Functions 
+- Robust programming with functions
+- Scoping
 - Closures
-- Higher order functions
-
+- High-level functions
+- Vectorisation
 
 # Functions
 
