@@ -14,14 +14,22 @@ author: "Laurent Gatto"
 
 # Functions
 
-> To understand compuations in R, two slogans are helpful:
+Among the R's strong points, Hadley Whickham cites:
+
+> [R has] a strong foundation in functional programming. The ideas of
+> functional programming are well suited to solving many of the
+> challenges of data analysis. R provides a powerful and flexible
+> toolkit which allows you to write concise yet descriptive code.
+
+Also
+> To understand computations in R, two slogans are helpful:
 > - Everything that exists is an object.
 > - Everything that happens is a function call.
 > John Chambers
 
 A function is made of
 - a name
-- some inputs (formal paramters)
+- some inputs (formal parameters)
 - a single output (return value)
 - a body
 - an environment, the map of the location of the functions variable
@@ -202,7 +210,7 @@ j <- function() {
     print(a)
 }
 j() ## First call
-j() ## Secong call
+j() ## Second call
 ```
 
 
@@ -252,8 +260,10 @@ f <- function(x = 1, y = x + 2) x * y
 
 ```r
 f <- function(x = 1, y) {
-	c(misssing(x), missing(y))
+	c(missing(x), missing(y))
 }
+f()
+f(x = 1)
 ```
 
 - Passing non-matched parameters `...` to an inner function
@@ -386,6 +396,13 @@ environment(count2)
 environment(count1)$i
 environment(count2)$i
 ```
+
+Questions:
+
+- What happens of we place the code `i <- 0` and the function
+  definition outside of a function, i.e in the global environment?
+
+- What happens if we use `<-` instead of `<<-`?
 
 The `colorRampPallette`
 
@@ -575,11 +592,11 @@ as well as parallel versions in the `parallel` package (see
 See also the `plyr` package, that offers its own flavour of `apply`
 functions.
 
-          |  list 	| data frame| 	array
-----------|---------|-----------|------------
-list 	  | llply() |	ldply() |	laply()
-data frame|	dlply() |	ddply() |	daply()
-array 	  | alply() |	adply() |	aaply()
+  in/out    |  list   | data frame | array
+------------|---------|------------|---------
+ list       | llply() |	ldply()    | laply()
+ data frame | dlply() |	ddply()    | daply()
+ array      | alply() |	adply()    | aaply()
 
 
 ## Other functions
@@ -653,10 +670,6 @@ Integrate <- Vectorize(
   vectorize.args=c("lower", "upper")
   )
 Integrate(f, lower=lo, upper=hi)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'f' not found
 ```
 
 ## **Efficient** apply-like functions

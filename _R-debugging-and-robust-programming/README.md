@@ -54,11 +54,13 @@ develop and release packages in the future.
 - [Rcpp](https://github.com/lgatto/rccpp/blob/master/rc.md)
 
 #### Other topics
-
 - Packages and documentation
 - Reproducible research and vignettes (`Rmarkdown`)
 - Source code versioning with (for example) git and GitHub
 - Automation with `Make`
+
+See the [TeachingMaterial](http://lgatto.github.io/TeachingMaterial/)
+repository for content.
 
 ## References
 

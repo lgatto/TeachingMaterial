@@ -39,7 +39,7 @@ for **consistency** and **readability**.
 
 - Place spaces around all infix operators (`=`, `+`, `-`, `<-`, etc., but *not* `:`)
   and after a comma (`x[i, j]`).
-- Spaces before `(` and after `)`.
+- Spaces before `(` and after `)`; not for function.
 - Use `<-` rather than `=`.
 - Limit your code to 80 characters per line
 - Indentation: do not use tabs, use 2 (HW)/4 (Bioc) spaces
@@ -54,11 +54,22 @@ for **consistency** and **readability**.
 
 ```r
 library("formatR")
-tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
-          arrow = TRUE)
+tidy_source(text = "a=1+1;a  # print the value
+                    matrix ( rnorm(10),5)",
+            arrow = TRUE)
+```
+
+```
+## a <- 1 + 1
+## a  # print the value
+## matrix(rnorm(10), 5)
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
+
+```
+$ R CMD BiocCheck package_1.0.0.tgz
+```
 
 ```
 * Checking function lengths................
@@ -78,6 +89,12 @@ tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
 
 ![Style changes over time](./figs/style.png)
 
+
+## Ineractive use vs programming
+
+Moving from using R to programming R is *abstraction*, *automation*,
+*generalisation*.
+
 ## Interactive use vs programming: `drop`
 
 
@@ -89,21 +106,46 @@ head(cars[, 1, drop = FALSE])
 
 ## Interactive use vs programming: `sapply/lapply`
 
-```
+
+```r
 df1 <- data.frame(x = 1:3, y = LETTERS[1:3])
 sapply(df1, class)
 df2 <- data.frame(x = 1:3, y = Sys.time() + 1:3)
 sapply(df2, class)
 ```
-## Ineractive use vs programming
 
-Moving from using R to programming R is *abstraction*, *automation*,
-*generalisation*.
+Rather use a form where the return data structure is known...
+
+
+```r
+lapply(df1, class)
+lapply(df2, class)
+```
+
+or that will break if the result is not what is exected
+
+
+```r
+vapply(df1, class, "1")
+vapply(df2, class, "1")
+```
 
 ## Semantics
 
 - *pass-by-value* copy-on-modify
 - *pass-by-reference*: environments, S4 Reference Classes
+
+
+```r
+x <- 1
+f <- function(x) {
+    x <- 2
+    x
+}
+x
+f(x)
+x
+```
 
 ## Environments
 
@@ -159,6 +201,8 @@ Current environment
 
 ```r
 environment()
+parent.env(globalenv())
+parent.env(parent.env(globalenv()))
 ```
 
 Noteworthy environments
@@ -202,6 +246,26 @@ the search path after the `R_GlobalEnv`.
   parents), one can use `exists`.
 - Compare two environments with `identical` (not `==`).
 
+**Question** Are `e1` and `e2` below identical?
+
+
+```r
+e1 <- new.env()
+e2 <- new.env()
+e1$a <- 1:10
+e2$a <- e1$a
+```
+
+What about `e1` and `e3`?
+
+
+```r
+e3 <- e1
+e3
+e1
+identical(e1, e3)
+```
+
 ## Locking environments and bindings
 
 
@@ -239,11 +303,25 @@ e$b <- 1
 
 ## Where is a symbol defined?
 
-`pryr::where()`
+`pryr::where()` implements the regular scoping rules to find in which
+environment a binding is defined.
+
+
+```r
+e <- new.env()
+e$foo <- 1
+bar <- 2
+where("foo")
+where("bar")
+where("foo", env = e)
+where("bar", env = e)
+```
 
 ## Lexical scoping
 
-[Lexical comes from *lexical analysis* in computer science, which is the conversion of characters (code) into a sequence of meaningful (for the computer) tokens.]
+[Lexical comes from *lexical analysis* in computer science, which is
+the conversion of characters (code) into a sequence of meaningful (for
+the computer) tokens.]
 
 **Definition**: Rules that define how R looks up values for a given name/symbol.
 
@@ -307,9 +385,8 @@ x
 ## Using environments
 
 Most environments are created when creating and calling
-functions. They are also used in packages:
-
-- Used in packages: *package* and *namespace* environments
+functions. They are also used in packages as *package* and *namespace*
+environments.
 
 There are several reasons to create then manually.
 
@@ -346,6 +423,20 @@ x_e$a
 Tip: when setting up environments, it is advised to set to parent
 (enclosing) environment to be `emptyenv()`, to avoid accidentally
 inheriting objects from somewhere else on the search path.
+
+
+```r
+e <- new.env()
+e$a <- 1
+e
+parent.env(e)
+
+parent.env(e) <- emptyenv()
+parent.env(e)
+e
+```
+
+or directly
 
 
 ```r
@@ -440,7 +531,7 @@ setStockcol <- function(cols) {
 }
 ```
 
-and in plotting functions:
+and in plotting functions (we will see the `missing` in more details later):
 
 
 ```r
@@ -524,8 +615,8 @@ surveys %>%
 ## Application to other data structures
 
 > Hadley Wickham (@hadleywickham) tweeted at 8:45 pm on Fri, Feb 12,
-> 2016: @mark_scheuerell @drob **the importance of tidy data is not the
-> specific form, but the consistency**
+> 2016: @mark_scheuerell @drob the importance of tidy data is not the
+> specific form, but the consistency
 > (https://twitter.com/hadleywickham/status/698246671629549568?s=09)
 
 - Well-formatted and well-documented `S4` class 
