@@ -68,6 +68,10 @@ tidy_source(text = "a=1+1;a  # print the value
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
 
 ```
+$ R CMD BiocCheck package_1.0.0.tgz
+```
+
+```
 * Checking function lengths................
   The longest function is 677 lines long
   The longest 5 functions are:
