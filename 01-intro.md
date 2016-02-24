@@ -39,7 +39,7 @@ for **consistency** and **readability**.
 
 - Place spaces around all infix operators (`=`, `+`, `-`, `<-`, etc., but *not* `:`)
   and after a comma (`x[i, j]`).
-- Spaces before `(` and after `)`.
+- Spaces before `(` and after `)`; not for function.
 - Use `<-` rather than `=`.
 - Limit your code to 80 characters per line
 - Indentation: do not use tabs, use 2 (HW)/4 (Bioc) spaces
@@ -56,6 +56,20 @@ for **consistency** and **readability**.
 library("formatR")
 tidy_eval(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
           arrow = TRUE)
+```
+
+```
+## a <- 1 + 1
+## a  # print the value
+## ## [1] 2
+## 
+## matrix(rnorm(10), 5)
+## ##             [,1]       [,2]
+## ## [1,] -0.56261979 -0.6960836
+## ## [2,]  0.87724695  0.5963860
+## ## [3,] -2.02714259  0.9925840
+## ## [4,] -0.02479458  0.1498081
+## ## [5,]  0.04786811 -1.9658849
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
