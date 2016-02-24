@@ -619,12 +619,6 @@ f <- function(x, a = 1) sin(x^2)/ (a + abs(x))
 integrate(f, lower = -2, upper = 2)
 ```
 
-```
-## 0.8077645 with absolute error < 1.5e-13
-```
-
-
-
 It is not vectorised.
 
 
@@ -634,9 +628,59 @@ hi <- c(0, 2)
 integrate(f, lower = lo, upper = hi)
 ```
 
+## How to vectorise
+
+1. To vectorise a function, we can explicitly wrap it inside a helper
+   function that will take care of argument recycling (via `rep`),
+   then loop over the inputs and call the non-vectorised function.
+
+2. To vectorise a function, we can explicitate the vectorised
+   calculation using `mapply`.
+
+
+```r
+mapply(function(lo, hi) integrate(f, lo, hi)$value,
+       lo, hi)
 ```
-## 0.4038823 with absolute error < 7.4e-14
+
+3. Create a vectorised form using `Vectorize`. It takes a function
+   (here, an anonymous function) as input and returns a function.
+
+
+```r
+Integrate <- Vectorize(
+  function(fn, lower, upper)
+  integrate(fn, lower, upper)$value,
+  vectorize.args=c("lower", "upper")
+  )
+Integrate(f, lower=lo, upper=hi)
 ```
 
+```
+## Error in eval(expr, envir, enclos): object 'f' not found
+```
 
+## **Efficient** apply-like functions
 
+These functions combine high-level vectorised syntax for clarity
+**and** efficient C-level vectorised imputation.
+
+- In `base`: rowSums, rowMeans, colSums, colMeans
+- In `Biobase`: rowQ, rowMax, rowMin, rowMedias, ...
+- In `genefilter`: rowttests, rowFtests, rowSds, rowVars, ...
+
+Generalisable on other data structures, like `ExpressionSet`
+instances.
+
+## Parallelisation
+
+Vectorised operations are natural candidats for parallel execution.
+See later, \emph{Parallel computation} topic.
+
+## References
+
+- R Gentleman, *R Programming for Bioinformatics*, CRC Press, 2008
+- Ligges and Fox, *R Help Desk, How Can I Avoid This Loop or Make It
+  Faster?* R News, Vol 8/1. May 2008.
+- Grouping functions: sapply vs. lapply vs. apply. vs. tapply
+  vs. by vs. aggregate ... http://stackoverflow.com/questions/3505701/
