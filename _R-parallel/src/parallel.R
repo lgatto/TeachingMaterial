@@ -16,7 +16,7 @@ print(t1)
 ## multicore
 cores <- detectCores()
 print(cores)
-t2 <- system.time(res2 <- mclapply(ll, f, mc.cores = cores))
+t2 <- system.time(res2 <- mclapply(ll, f, mc.cores = 8L))
 stopifnot(all.equal(res1, res2))
 print(t2)
 
@@ -32,7 +32,7 @@ stopCluster(cl)
 
 library(doMC)
 library(foreach)
-registerDoMC(2)
+registerDoMC(8L)
 
 foreach(i = ll) %dopar% f(i)
 ##foreach(i = ll) %do% f(i) ## serial version

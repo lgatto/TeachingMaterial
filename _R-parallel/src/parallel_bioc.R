@@ -1,5 +1,13 @@
 library(BiocParallel)
 
+bpparam()
+
+MulticoreParam()
+MulticoreParam(8L)
+
+SnowParam()
+SnowParam(type = "MPI")
+
 ll <- replicate(8, matrix(rnorm(1e6),1000), simplify=FALSE)
 f <- function(x) mean(solve(x), trim=0.7)
 
