@@ -201,6 +201,8 @@ Current environment
 
 ```r
 environment()
+parent.env(globalenv())
+parent.env(parent.env(globalenv()))
 ```
 
 Noteworthy environments
@@ -244,6 +246,26 @@ the search path after the `R_GlobalEnv`.
   parents), one can use `exists`.
 - Compare two environments with `identical` (not `==`).
 
+**Question** Are `e1` and `e2` below identical?
+
+
+```r
+e1 <- new.env()
+e2 <- new.env()
+e1$a <- 1:10
+e2$a <- e1$a
+```
+
+What about `e1` and `e3`?
+
+
+```r
+e3 <- e1
+e3
+e1
+identical(e1, e3)
+```
+
 ## Locking environments and bindings
 
 
@@ -281,11 +303,25 @@ e$b <- 1
 
 ## Where is a symbol defined?
 
-`pryr::where()`
+`pryr::where()` implements the regular scoping rules to find in which
+environment a binding is defined.
+
+
+```r
+e <- new.env()
+e$foo <- 1
+bar <- 2
+where("foo")
+where("bar")
+where("foo", env = e)
+where("bar", env = e)
+```
 
 ## Lexical scoping
 
-[Lexical comes from *lexical analysis* in computer science, which is the conversion of characters (code) into a sequence of meaningful (for the computer) tokens.]
+[Lexical comes from *lexical analysis* in computer science, which is
+the conversion of characters (code) into a sequence of meaningful (for
+the computer) tokens.]
 
 **Definition**: Rules that define how R looks up values for a given name/symbol.
 
@@ -349,9 +385,8 @@ x
 ## Using environments
 
 Most environments are created when creating and calling
-functions. They are also used in packages:
-
-- Used in packages: *package* and *namespace* environments
+functions. They are also used in packages as *package* and *namespace*
+environments.
 
 There are several reasons to create then manually.
 
@@ -388,6 +423,20 @@ x_e$a
 Tip: when setting up environments, it is advised to set to parent
 (enclosing) environment to be `emptyenv()`, to avoid accidentally
 inheriting objects from somewhere else on the search path.
+
+
+```r
+e <- new.env()
+e$a <- 1
+e
+parent.env(e)
+
+parent.env(e) <- emptyenv()
+parent.env(e)
+e
+```
+
+or directly
 
 
 ```r
@@ -482,7 +531,7 @@ setStockcol <- function(cols) {
 }
 ```
 
-and in plotting functions:
+and in plotting functions (we will see the `missing` in more details later):
 
 
 ```r
@@ -566,8 +615,8 @@ surveys %>%
 ## Application to other data structures
 
 > Hadley Wickham (@hadleywickham) tweeted at 8:45 pm on Fri, Feb 12,
-> 2016: @mark_scheuerell @drob **the importance of tidy data is not the
-> specific form, but the consistency**
+> 2016: @mark_scheuerell @drob the importance of tidy data is not the
+> specific form, but the consistency
 > (https://twitter.com/hadleywickham/status/698246671629549568?s=09)
 
 - Well-formatted and well-documented `S4` class 
