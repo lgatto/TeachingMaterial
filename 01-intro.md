@@ -100,12 +100,29 @@ head(cars[, 1, drop = FALSE])
 
 ## Interactive use vs programming: `sapply/lapply`
 
-```
+```(r, eval=FALSE)
 df1 <- data.frame(x = 1:3, y = LETTERS[1:3])
 sapply(df1, class)
 df2 <- data.frame(x = 1:3, y = Sys.time() + 1:3)
 sapply(df2, class)
 ```
+
+Rather use a form where the return data structure is known...
+
+
+```r
+lapply(df1, class)
+lapply(df2, class)
+```
+
+or that will break if the result is not what is exected
+
+
+```r
+vapply(df1, class, "1")
+vapply(df2, class, "1")
+```
+
 ## Ineractive use vs programming
 
 Moving from using R to programming R is *abstraction*, *automation*,
