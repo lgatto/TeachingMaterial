@@ -67,7 +67,7 @@ sumR <- function(x) {
 }
 ```
 
-```{c}
+```
 double sumC(NumericVector x) {
   int n = x.size();
   double total = 0;
@@ -97,7 +97,7 @@ sumC
 
 ```
 ## function (x) 
-## .Primitive(".Call")(<pointer: 0x2b09359e1d60>, x)
+## .Primitive(".Call")(<pointer: 0x2b9ae9289800>, x)
 ```
 
 ```r
@@ -105,7 +105,7 @@ sumC(c(1, 2, 1:4, rnorm(3)))
 ```
 
 ```
-## [1] 10.03978
+## [1] 15.0746
 ```
 
 ### Sourcing C++ code
@@ -151,15 +151,14 @@ sourceCpp("./src/ex_sumC.cpp")
 ```
 ## 
 ## > (x <- c(1, 3, rnorm(10)))
-##  [1]  1.00000000  3.00000000 -0.34321383 -0.06583524  1.35844772
-##  [6]  0.11544398  1.47693880  1.38057156  0.17528749  1.62468629
-## [11] -0.47150602 -1.10324033
+##  [1]  1.0000000  3.0000000  0.8753302  1.1256683 -1.3785914  0.1004121
+##  [7] -0.3551323 -0.5603329  0.4887765 -0.2999009 -0.8863011  0.8116788
 ## 
 ## > sumC(x)
-## [1] 8.14758
+## [1] 3.921607
 ## 
 ## > sum(x)
-## [1] 8.14758
+## [1] 3.921607
 ```
 
 ## An example with a matrix
@@ -204,7 +203,7 @@ signR <- function(x) {
 }
 ```
 
-```{c}
+```
 int signC(int x) {
   if (x > 0) {
     return 1;
@@ -218,10 +217,10 @@ int signC(int x) {
 
 # Exercises
 
-Get familiar with the syntax and write/test the `sumC` and `rowSumsC`
-functions above.
+- Get familiar with the syntax and write/test the `sumC` and
+  `rowSumsC` functions above.
 
-Try and implement the following R functions.
+- Try and implement the following R functions.
 
 
 ```r
@@ -246,6 +245,29 @@ biggerY <- function(x, y) x[x > y]
 foo <- function(x, y) ifelse(x < y, x*x, -(y*y))
 ```
 
+## Fibonacci
+
+- Once you have a C++ version for the fibonacci function, compare the
+  R, byte-compiled R and C implementions.
+
+
+- Instead of using recursion, which is particularly slow in R, compare
+  with the following implementation in R, byte-compiled R and your C++
+  version.
+  
+
+```r
+fib <- function(n) {
+    res <- c(1, 1, numeric(n-2))
+    for (i in 3:length(res))
+        res[i] <- res[i-1] + res[i-2]
+    return(res)
+}
+```
+
+If you are interested in more implementations and timings, see this
+[post](http://lgatto.github.io/fibo/).
+
 # Rcpp sugar
 
 /sugar/ (for syntactic sugar ) is a set of C++ functions that (mostly)
@@ -260,7 +282,7 @@ vectorised expression. Looks like R with the C++ efficiency (see the
 
 `+ *, -, /, pow, <, <=, >, >=, ==, !=, !'
 
-```{c}
+```
 NumericVector pdistC2(double x, NumericVector ys) {
   return sqrt(pow((x - ys), 2));
 }
@@ -310,8 +332,7 @@ rowSums pdist lgl_bigger foo
 
 For example, the `sumC` function above can be rewritten
 
-
-```{c}
+```
 // [[Rcpp::export]]
 double sumC2(NumericVector x) {
   double ans = sum(x);
@@ -319,7 +340,60 @@ double sumC2(NumericVector x) {
 }
 ```
 
-# An package with `Rcpp` code
+Implement [deferred evaluation](https://github.com/lgatto/rccpp/blob/master/deferred-eval.md)
+in C++.
+
+# Other
+
+## Missing values
+
+Will require extra care to emulate the standard `R` behaviour. See
+[Advanced R Rcpp section](http://adv-r.had.co.nz/Rcpp.html#rcpp-na).
+
+## More C++ 
+
+### STL
+
+C++ is a widely used for complex data structures and algorithms, which
+can be leveraged via the `Rcpp` package. The **Standard Template
+Library** (STL) provides such facilities.
+
+- For example, iterators, i.e. iteration (`for` loop) abstraction
+
+```
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+double sum3(NumericVector x) {
+  double total = 0;
+  
+  NumericVector::iterator it;
+  for(it = x.begin(); it != x.end(); ++it) {
+    total += *it;
+  }
+  return total;
+}
+```
+
+- [Standard Template Library Algorithms](http://www.cplusplus.com/reference/algorithm/):
+  Thef header `<algorithm>` defines a collection of functions especially
+  designed to be used on ranges of elements.
+
+## Boost
+
+[Boost](http://www.boost.org/) is a set of libraries for the C++
+programming language that provide support for tasks and structures
+such as linear algebra, pseudorandom number generation,
+multithreading, image processing, regular expressions, and unit
+testing.
+
+## Modules
+
+[Modules](http://dirk.eddelbuettel.com/code/rcpp/Rcpp-modules.pdf)
+enables to expose C++ classes and methods to R.
+
+# A package with `Rcpp` code
 
 Starting a new package. The `Rcpp.pacakage.skeleton` will, like the
 usual `package.skeleton`, initialise the appropriate package
@@ -366,55 +440,6 @@ and/or
 - Add a C++ function of your choice to an existing package (for
   example, add your own `gccount` to the `sequences` package).
 
-# Other
-
-## Missing values
-
-Will require extra care to emulate the standard `R` behaviour. See
-[Advanced R Rcpp section](http://adv-r.had.co.nz/Rcpp.html#rcpp-na).
-
-## More C++ 
-
-### STL
-
-C++ is a widely used for complex data structures and algorithms, which
-can be leveraged via the `Rcpp` package. The **Standard Template
-Library** (STL) provides such facilities.
-
-- For example, iterators, i.e. iteration (`for` loop) abstraction
-
-```{c}
-#include <Rcpp.h>
-using namespace Rcpp;
-
-// [[Rcpp::export]]
-double sum3(NumericVector x) {
-  double total = 0;
-  
-  NumericVector::iterator it;
-  for(it = x.begin(); it != x.end(); ++it) {
-    total += *it;
-  }
-  return total;
-}
-```
-
-- [Standard Template Library Algorithms](http://www.cplusplus.com/reference/algorithm/):
-  Thef header `<algorithm>` defines a collection of functions especially
-  designed to be used on ranges of elements.
-
-## Boost
-
-[Boost](http://www.boost.org/) is a set of libraries for the C++
-programming language that provide support for tasks and structures
-such as linear algebra, pseudorandom number generation,
-multithreading, image processing, regular expressions, and unit
-testing.
-
-## Modules
-
-[Modules](http://dirk.eddelbuettel.com/code/rcpp/Rcpp-modules.pdf)
-enables to expose C++ classes and methods to R.
 
 # References
 
