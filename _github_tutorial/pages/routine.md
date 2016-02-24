@@ -1,11 +1,12 @@
 ---
 layout: page
 title: Routine use of git and github
+description: Day-to-day use of git and GitHub
 ---
 
 The routine use of [git](http://git-scm.com) involves just a few commands:
 principally `add`, `commit`, and `push`, but also `status` and
-`diff`. 
+`diff`.
 
 You can deal with git and github via a [GUI](http://mac.github.com/),
 but I prefer the command line, and so that's all I'll discuss.
@@ -14,7 +15,7 @@ but I prefer the command line, and so that's all I'll discuss.
 
 After you've made some small modifications to your project and
 checked that they work, use `git add` to indicate that they're ready.
-  
+
     $ git add R/modified.R man/modified.Rd
 
 Then use `git commit` to add the modifications to the repository.
@@ -28,7 +29,7 @@ To abandon your commit, exit the editor without adding text.
 
 Note that `git add` is used to add completely new files as well as to
 &ldquo;add&rdquo; modifications to files that already exist in the
-repository.  
+repository.
 
 The commit message should be short (40 or 60 characters) so it's easy
 to read in a list.  For a more complex commit, write an initial line
@@ -78,7 +79,7 @@ changes, they may not get to github for months.
 You've made some changes to a project, but you're not sure what.  Type
 
     git status
-    
+
 It'll give you a list of files that have been changed, plus new
 files that haven't been formally added.
 
@@ -88,7 +89,7 @@ files that haven't been formally added.
 Exactly what changes have you made?  Type
 
     git diff
-    
+
 Or to see your changes to a particular file, type
 
     git diff R/modified.R
@@ -142,7 +143,7 @@ in git should be indicated in a `.gitignore` file.
 You don't _have_ to have a `.gitignore` file, but if you don't, those
 files will show up every time you type `git status`.
 
-Each subdirectory can have its own `.gitignore` file, too.  
+Each subdirectory can have its own `.gitignore` file, too.
 
 Also, you can have a global such in your home directory; I use
 `~/.gitignore_global`, which contains:

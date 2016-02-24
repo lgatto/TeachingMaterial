@@ -1,15 +1,16 @@
 ---
 layout: page
 title: Handling merge conflicts
+description: Handling git merge conflicts
 ---
 
 One of the best features of [git](http://git-scm.com) is its ability
-to easily merge multiple changes by different people.  
+to easily merge multiple changes by different people.
 
 Say you and a
-friend have both made changes to the same file at the same time.  
+friend have both made changes to the same file at the same time.
 When you pull your friend's changes, git will often be able to combine
-them without any problem.  
+them without any problem.
 
 Sometimes, though, after you do
 

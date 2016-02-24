@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Contribute to someone's repository
+description: Contributing to someone's GitHub repository
 ---
 
 Say you want to contribute changes to someone else's repository (eg,
@@ -23,6 +24,10 @@ Say you want to contribute changes to someone else's repository (eg,
 
 - You'll now have a local copy of _your version_ of that repository.
 
+- Change into that project directory (`the_repo`):
+
+      $ cd the_repo
+
 - Add a connection to the original owner's repository.
 
       $ git remote add myfriend git://github.com/myfriend/the_repo
@@ -31,12 +36,27 @@ Say you want to contribute changes to someone else's repository (eg,
   `git://github.com/` in the second case.  I'm not sure why these need
   to be the way they are, but that's what works for me.
 
+- Also note the first myfriend does not need to be the same as the username of `myfriend`.  You could very well choose:
+
+      $ git remote add repo_nickname git://github.com/myfriend/the_repo
+
+- To check this `remote add` set up:
+
+      $ git remote -v
+
 - Make changes to files.
 
 - `git add` and `git commit` those changes
 
 - `git push` them back to [github](http://github.com).  These will go
   to _your version_ of the repository.
+
+- Note: if you get an error like:
+
+      error: src refspec master does not match any.
+      error: failed to push some refs to 'git@github.com:username/the_repo'
+
+Then try `git push origin HEAD:gh-pages` (see [stackoverflow.](http://stackoverflow.com/questions/4181861/src-refspec-master-does-not-match-any-when-pushing-commits-in-git)). Typing `git show-ref` can show what reference to put after HEAD.
 
 - Go to _your version_ of the repository on github.
 
@@ -45,8 +65,7 @@ Say you want to contribute changes to someone else's repository (eg,
 - Note that your friend's repository will be on the left and _your
   repository_ will be on the right.
 
-- Give a short explaination of the changes and click the &ldquo;Send
-  pull request&rdquo; button.
+- Click the green button "Create pull request".  Give a succinct and informative title, in the comment field give a short explanation of the changes and click the green button "Create pull request" again.
 
 
 ### Pulling others' changes
@@ -89,10 +108,10 @@ Once they do that, you'll get an email about it.  How to handle it?
 
 - If you want them to make further changes before you merge
   the changes into your repository, add a comment.
-  
+
 - If you hate the whole idea, just click the &ldquo;Close&rdquo;
   button.
-  
+
 - If you want to merge the changes into your repository, click the
   &ldquo;Merge pull request&rdquo; button.
 
@@ -113,13 +132,13 @@ You don't have to use the github website for this.
 
 - Add a connection to your friend's version of the github repository,
   if you haven't already.
-  
+
       $ git remote add myfriend git://github.com/myfriend/the_repo
-    
+
 - Pull his/her changes.
 
       $ git pull myfriend master
-    
+
 - Push them back to your github repository.
 
       $ git push

@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Branching and merging
+description: Git branching and merging
 ---
 
 I touched on just a few things about git.  Get yourself going with git and
@@ -21,13 +22,13 @@ To create a branch called `new_feature`:
 Then &ldquo;check it out&rdquo;:
 
     $ git checkout new_feature
-    
+
 Make various modifications, and then add and commit.
 
 To go back to the master branch, check it out:
 
     $ git checkout master
-    
+
 To push the branch to github, use this:
 
     $ git push origin new_feature
@@ -37,13 +38,13 @@ into your exploratory one:
 
     $ git checkout new_feature
     $ git merge master
-    
+
 If you're satisfied with your changes in the exploratory branch, merge
 them into the master:
 
     $ git checkout master
     $ git merge new_feature
-    
+
 If you're done with the branch and want to delete it:
 
     $ git branch -d new_feature
@@ -52,12 +53,12 @@ But if you pushed it to github, it will still exist there.  This is
 how to delete the branch from github:
 
     $ git push origin --delete new_feature
-    
+
 After pulling from github, use the following to get access to a branch
 that is only on github:
 
     $ git checkout -b new_feature origin/new_feature
-    
+
 If you want to pull a particular branch from a collaborator's
 repository, do this:
 

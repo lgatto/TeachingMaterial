@@ -1,6 +1,7 @@
 ---
 layout: page
 title: Start a new git repository
+description: Creating a new git repository
 ---
 
 Your first instinct, when you start to do something new, should be
@@ -24,7 +25,7 @@ start exploring it.
 The first file to create (and add and commit) is probably a ReadMe
 file, either as plain text or with
 [Markdown](http://daringfireball.net/projects/markdown/), describing
-the project. 
+the project.
 
 Markdown allows you to add a bit of text markup, like
 [hyperlinks](http://en.wikipedia.org/wiki/Hyperlink),
@@ -70,7 +71,7 @@ repository...&rdquo;
 Actually, the first line of the instructions will say
 
     $ git remote add origin https://github.com/username/new_repo
-    
+
 But I use `git@github.com:username/new_repo` rather than `https://github.com/username/new_repo`, as the
 former is for use with
 [ssh](http://en.wikipedia.org/wiki/Secure_Shell) (if you set up ssh as
@@ -80,6 +81,3 @@ you use the latter construction, you'll have to type your github
 password every time you push to github.
 
 **Next**: [Contribute to someone's repository](fork.html)
-
-
-
