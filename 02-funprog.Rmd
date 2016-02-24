@@ -549,3 +549,61 @@ functions.
 list 	  | llply() |	ldply() |	laply()
 data frame|	dlply() |	ddply() |	daply()
 array 	  | alply() |	adply() |	aaply()
+
+
+## Other functions
+
+- `replicate` - repeated evaluation of an expression
+- `aggregate` - compute summary statistics of data subsets
+- `ave` - group averages over level combinations of factors
+- `sweep` - sweep out array summaries
+
+## Anonymous functions
+
+A function defined/called without being assigned to an identifier and
+generally passed as argument to other functions.
+
+
+```{r, eval=FALSE}
+M <- matrix(rnorm(100), 10)
+apply(M, 1, function(Mrow) 'do something with Mrow')
+apply(M, 2, function(Mcol) 'do something with Mcol')
+```
+
+## Use case: integration
+
+```{r, echo=FALSE, eval=FALSE}
+f <- function(x, a = 1) sin(x^2)/ (a + abs(x))
+x <- seq(-7, 7, 0.02 )
+x0 <- seq(-2, 2, 0.02)
+y0 <- f(x0)
+y0[y0 < 0] <- 0
+plot(x, f(x), type = "l", main = expression(f(x) ==  frac(sin(x^2),(a + abs(x)))))
+grid()
+abline(v = c(-2, 2), lty = "dotted")
+polygon(x0, y0, col = "#00000010")
+```
+
+![`sin(x^2)/ (a + abs(x))`](./figs/sinfun.png)
+
+The `integrate` function approximates definite integrals by
+adaptive quadrature.
+
+
+```{r}
+f <- function(x, a = 1) sin(x^2)/ (a + abs(x))
+integrate(f, lower = -2, upper = 2)
+```
+
+
+
+It is not vectorised.
+
+```{r}
+lo <- c(-2, 0)
+hi <- c(0, 2)
+integrate(f, lower = lo, upper = hi)
+```
+
+
+

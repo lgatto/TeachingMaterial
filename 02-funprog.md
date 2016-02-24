@@ -581,3 +581,62 @@ functions.
 list 	  | llply() |	ldply() |	laply()
 data frame|	dlply() |	ddply() |	daply()
 array 	  | alply() |	adply() |	aaply()
+
+
+## Other functions
+
+- `replicate` - repeated evaluation of an expression
+- `aggregate` - compute summary statistics of data subsets
+- `ave` - group averages over level combinations of factors
+- `sweep` - sweep out array summaries
+
+## Anonymous functions
+
+A function defined/called without being assigned to an identifier and
+generally passed as argument to other functions.
+
+
+
+```r
+M <- matrix(rnorm(100), 10)
+apply(M, 1, function(Mrow) 'do something with Mrow')
+apply(M, 2, function(Mcol) 'do something with Mcol')
+```
+
+## Use case: integration
+
+
+
+![`sin(x^2)/ (a + abs(x))`](./figs/sinfun.png)
+
+The `integrate` function approximates definite integrals by
+adaptive quadrature.
+
+
+
+```r
+f <- function(x, a = 1) sin(x^2)/ (a + abs(x))
+integrate(f, lower = -2, upper = 2)
+```
+
+```
+## 0.8077645 with absolute error < 1.5e-13
+```
+
+
+
+It is not vectorised.
+
+
+```r
+lo <- c(-2, 0)
+hi <- c(0, 2)
+integrate(f, lower = lo, upper = hi)
+```
+
+```
+## 0.4038823 with absolute error < 7.4e-14
+```
+
+
+
