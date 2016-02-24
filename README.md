@@ -43,8 +43,8 @@ with your colleagues.
   debugging techniques and good practice in writing reliable, robust
   code.
 - Author: [Laurent Gatto](https://github.com/lgatto), based on
-  previous content and [*Advanced R*](http://adv-r.had.co.nz/), by
-  Hadley Wickham.
+  previous content by Laurent Gatto and Robert Stojnic, and
+  [*Advanced R*](http://adv-r.had.co.nz/), by Hadley Wickham.
 - Original repository: https://github.com/lgatto/2016-02-25-adv-programming-EMBL
 - Content: Part I: Coding style(s), Interactive use and programming,
   Environments, Tidy data, Computing on the language. Part II:
