@@ -54,7 +54,8 @@ for **consistency** and **readability**.
 
 ```r
 library("formatR")
-tidy_source(text = c("a=1+1;a  # print the value", "matrix ( rnorm(10),5)"),
+tidy_source(text = "a=1+1;a  # print the value
+                    matrix ( rnorm(10),5)",
             arrow = TRUE)
 ```
 
