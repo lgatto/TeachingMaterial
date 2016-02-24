@@ -2,6 +2,7 @@
 \Rdversion{1.1}
 \docType{class}
 \alias{GenericSeq-class}
+\alias{GenericSeq}
 \alias{class:GenericSeq}
 
 \alias{alphabet}

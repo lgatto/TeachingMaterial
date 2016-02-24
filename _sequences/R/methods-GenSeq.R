@@ -26,7 +26,7 @@ setMethod("print",
           })
 
 
-setMethod("id", "GenericSeq", function(object) object@id)
+setMethod("id", "GenericSeq", function(object, ...) object@id)
 setMethod("id<-", "GenericSeq",
           function(object,value) object@id <- value)
 setReplaceMethod("id",
@@ -39,12 +39,9 @@ setReplaceMethod("id",
                  })
 
 
-setMethod("alphabet", "GenericSeq", function(object) object@alphabet)
+setMethod("alphabet", "GenericSeq", function(object, ...) object@alphabet)
 setMethod("length", "GenericSeq", function(x) nchar(x@sequence))
-setMethod("seq", "GenericSeq", function(object,...) object@sequence)
-
-setMethod("seq<-", "GenericSeq",
-          function(object,value) object@sequence <- toupper(value))
+setMethod("seq", "GenericSeq", function(object, ...) object@sequence)
 
 setReplaceMethod("seq",
                  signature(object="GenericSeq",

@@ -1,15 +1,16 @@
 Package: sequences
-Title: Generic and biological sequences.
-Version: 0.5.9
+Title: Generic and Biological Sequences
+Version: 0.5.11
 Authors@R: c(person(given = "Laurent", family = "Gatto",
 	            email = "lg390@cam.ac.uk",
  		    role = c("aut", "cre")),
              person(given = "Robert", family ="Stojnic",
   	            email = "rs550@cam.ac.uk",
 		    role = "aut"))
-Description: Educational package used in R courses to illustrate OO programming 
-       	     and package development. Using biological sequences (DNA and RNA) 
-	     as a working example.
+Description: Educational package used in R courses to illustrate
+       	     object-oriented programming and package
+       	     development. Using biological sequences (DNA and RNA) as
+       	     a working example.
 Depends: methods, Rcpp
 LinkingTo: Rcpp
 Suggests: testthat, knitr

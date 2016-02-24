@@ -10,7 +10,7 @@ test_that("readFasta", {
   data(dnaseq)
   ## reading fasta sequence
   f <- dir(system.file("extdata",package="sequences"),pattern="fasta",full.names=TRUE)
-  xx <- readFasta(f)
+  xx <- readFasta(f[1])
   expect_true(all.equal(xx, dnaseq))
 })
 
