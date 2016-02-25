@@ -280,7 +280,7 @@ f <- function(...) list(...)
 ```
 
 - Return values: last statement, explicit `return`, make output
-  `invivisble`
+  `invisible`
   
 
 ```r
@@ -647,12 +647,12 @@ integrate(f, lower = lo, upper = hi)
 
 ## How to vectorise
 
-1. To vectorise a function, we can explicitly wrap it inside a helper
-   function that will take care of argument recycling (via `rep`),
-   then loop over the inputs and call the non-vectorised function.
+- To vectorise a function, we can explicitly wrap it inside a helper
+  function that will take care of argument recycling (via `rep`), then
+  loop over the inputs and call the non-vectorised function.
 
-2. To vectorise a function, we can explicitate the vectorised
-   calculation using `mapply`.
+- To vectorise a function, we can explicitate the vectorised
+  calculation using `mapply`.
 
 
 ```r
@@ -660,8 +660,8 @@ mapply(function(lo, hi) integrate(f, lo, hi)$value,
        lo, hi)
 ```
 
-3. Create a vectorised form using `Vectorize`. It takes a function
-   (here, an anonymous function) as input and returns a function.
+- Create a vectorised form using `Vectorize`. It takes a function
+  (here, an anonymous function) as input and returns a function.
 
 
 ```r
