@@ -356,6 +356,21 @@ mean(1:10)
 
 
 ```r
+library("fortunes")
+fortune(174)
+```
+
+```
+## 
+## I wish <<- had never been invented, as it makes an esoteric and dangerous
+## feature of the language *seem* normal and reasonable. If you want to dumb
+## down R/S into a macro language, this is the operator for you.
+##    -- Bill Venables
+##       R-help (July 2001)
+```
+
+
+```r
 rm(list = ls())
 x
 f1 <- function() x <<- 1

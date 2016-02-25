@@ -119,6 +119,10 @@ rm(mean)
 mean(1:10)
 
 
+library("fortunes")
+fortune(174)
+
+
 rm(list = ls())
 x
 f1 <- function() x <<- 1
