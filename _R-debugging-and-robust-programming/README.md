@@ -59,7 +59,7 @@ develop and release packages in the future.
 - Packages and documentation
 - Reproducible research and vignettes (`Rmarkdown`)
 - Source code versioning with (for example) git and GitHub
-- Automation with `Make`
+- Automation with (for example) `Make`
 
 See the [TeachingMaterial](http://lgatto.github.io/TeachingMaterial/)
 repository for content.
