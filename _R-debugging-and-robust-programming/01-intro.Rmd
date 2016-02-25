@@ -327,6 +327,11 @@ mean(1:10)
   
 - If `<<-` does not find the name, it will create the variable in the global environment.
 
+```{r, eval=TRUE}
+library("fortunes")
+fortune(174)
+```
+
 ```{r, eval=FALSE}
 rm(list = ls())
 x
