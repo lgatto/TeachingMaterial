@@ -348,11 +348,12 @@ mean(1:10)
 
 - `<-` assigns/creates in the current environment
 
-- `<<-` (deep assignment) never creates a variable in the current
-  environment, but modifies an existing variable in the current or
-  first enclosing environment where that name is defined. 
+- `<<-` (deep assignment) never creates/updates a variable in the
+  current environment, but modifies an existing variable in the
+  current or first enclosing environment where that name is defined.
   
-- If `<<-` does not find the name, it will create the variable in the global environment.
+- If `<<-` does not find the name, it will create the variable in the
+  global environment.
 
 
 ```r
