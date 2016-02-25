@@ -299,7 +299,9 @@ e$b <- 1
 
 ## Exercise
 
-- Draw a few environments with variables and ask to reproduce in R.
+Reproduce the following environments and variables in R.
+
+![envionments and variables exercise](./figs/envex.png)
 
 ## Where is a symbol defined?
 
