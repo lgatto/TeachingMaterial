@@ -214,14 +214,13 @@ j() ## First call
 j() ## Second call
 ```
 
-
-```r
-f <- function() x
-x <- 1
-f() 
-x <- 2
-f()
-```
+<!-- ```{r, eval=FALSE} -->
+<!-- f <- function() x -->
+<!-- x <- 1 -->
+<!-- f()  -->
+<!-- x <- 2 -->
+<!-- f() -->
+<!-- ``` -->
 
 
 ```r

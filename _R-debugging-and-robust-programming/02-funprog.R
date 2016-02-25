@@ -86,13 +86,6 @@ j() ## First call
 j() ## Second call
 
 
-f <- function() x
-x <- 1
-f()
-x <- 2
-f()
-
-
 f <- function(x) {
     f <- function(x) {
         f <- function(x) {
