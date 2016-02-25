@@ -13,7 +13,7 @@ author: "Laurent Gatto"
 
 ## Introduction
 
-> Computers are cheap, and thinking hurts. -- Use Ligges
+> Computers are cheap, and thinking hurts. -- Uwe Ligges
 
 Simplicity, readability and consistency are a long way towards
 robust code.
