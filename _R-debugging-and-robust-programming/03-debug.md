@@ -534,7 +534,9 @@ g <- function() f()
 ## make sure you have the 'sequences' package.
 ## Get readFasta2, the function to debug
 library(devtools)
-install_github("lgatto/sequences")
+install_github("lgatto/sequences") ## from github
+## or 
+install.packages("sequences") ## from CRAN
 sequences:::debugme()
 ## Get an example file
 f <- dir(system.file("extdata", package = "sequences"),
