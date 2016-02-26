@@ -164,9 +164,9 @@ isExactIn("a", c("abc", letters))
 isExactIn(c("a", "z"), c("abc", letters))
 ```
 
-<!-- ### Solution -->
+### Solution
 
-```{r, echo=FALSE, eval=FALSE}
+```{r}
 ## Unit test:
 library("RUnit")
 test_isExactIn <- function() {
@@ -210,9 +210,9 @@ ifcond(1, 2)
 ifcond(3:1, c(2, 2, 2))
 ```
 
-<!-- ### Solution -->
+### Solution
 
-```{r, echo=FALSE, eval=FALSE}
+```{r}
 ## Unit test:
 library("RUnit")
 test_ifcond <- function() {
@@ -264,9 +264,9 @@ distances(p, m)
 distances(q, dd)
 ```
 
-<!-- ### Solution -->
+### Solution
 
-```{r, echo=FALSE, eval=FALSE}
+```{r}
 ## Unit test:
 library("RUnit")
 test_distances <- function() {
@@ -315,9 +315,9 @@ all(sqrtabs(c(-4, 0, 4)) == c(2, 0, 2))
 sqrtabs(numeric())
 ```
 
-<!-- ### Solution -->
+### Solution
 
-```{r, echo=FALSE, eval=FALSE}
+```{r}
 ## Unit test:
 library(RUnit)
 test_sqrtabs <- function() {
