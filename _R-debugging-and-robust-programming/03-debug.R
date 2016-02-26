@@ -337,6 +337,13 @@ log("a")
 safelog("a")
 
 
+safelog <- function(x) {
+  tryCatch(log(x),
+           error = function(e) paste("an error with input", x),
+           warning = function(e) paste("a warning with input", x))
+}
+
+
 ## Report whenever e invoked
 trace(sum)
 hist(rnorm(100))

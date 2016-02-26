@@ -806,6 +806,17 @@ safelog("a")
 ## [1] "an error with input a"
 ```
 
+**Answer**
+
+
+```r
+safelog <- function(x) {
+  tryCatch(log(x),
+           error = function(e) paste("an error with input", x),
+           warning = function(e) paste("a warning with input", x))
+}
+```
+
 ## Tracing code
 
 From `?trace`:
