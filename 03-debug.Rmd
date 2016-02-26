@@ -694,9 +694,9 @@ tryCatch(f(), error = function(e) print(sys.calls()))
 withCallingHandlers(f(), error = function(e) print(sys.calls()))
 ```
 
-### Debugging at the C level with `ddd`
+### Debugging at the C level with `ddd` or `gdb`
 
-Wolfgang: demo?
+Demo
 
 ### Exercise
 
