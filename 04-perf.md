@@ -799,7 +799,7 @@ the memory. You can use `f1()` and `f2()` above, and trace `a`.
 
 # Rcpp
 
-See [here](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/rc.md).
+See [here](https://github.com/lgatto/rccpp/blob/b59a1ee23dd1ace7c45bb9e2239e853c93e9ca0c/rc.md).
 
 # Big data
 
