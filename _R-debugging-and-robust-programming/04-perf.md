@@ -623,7 +623,7 @@ observed with the `<bytecode: 0x3858bb8>` attribute of a function.
 # Memory
 (See Chapter 18 in *Advanced R* for more details)
 
-Assessimg memory needs is useful to save memory in general and limit
+Assessing memory needs is useful to save memory in general and limit
 memory access (read/write), which is one common bottleneck in R.
 
 Requirement: 
