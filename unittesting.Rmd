@@ -164,9 +164,9 @@ isExactIn("a", c("abc", letters))
 isExactIn(c("a", "z"), c("abc", letters))
 ```
 
-<!-- ### Solution -->
+### Solution
 
-```{r, echo=FALSE, eval=FALSE}
+```{r}
 ## Unit test:
 library("RUnit")
 test_isExactIn <- function() {
