@@ -692,7 +692,7 @@ object_size(e)
 <!-- - "true" length, actual allocated space (4 bytes) -->
 <!-- - the data (0 bytes in this case) -->
 
-- How does the memory of a numeric vector grow with it size (say from
+- How does the size of a numeric vector grow with it size (say from
   0 to 50)?
 
 <!-- ```{r, eval=FALSE} -->
