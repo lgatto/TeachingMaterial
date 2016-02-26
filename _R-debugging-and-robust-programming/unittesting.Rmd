@@ -110,7 +110,7 @@ test_that("description", {
 })
 ```
 
-## Interactive unit testing
+## Batch unit testing
 
 ```r
 library("testthat")
