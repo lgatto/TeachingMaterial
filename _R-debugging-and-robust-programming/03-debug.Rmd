@@ -507,6 +507,7 @@ library(devtools)
 install_github("lgatto/sequences") ## from github
 ## or 
 install.packages("sequences") ## from CRAN
+library("sequences")
 sequences:::debugme()
 ## Get an example file
 f <- dir(system.file("extdata", package = "sequences"),
