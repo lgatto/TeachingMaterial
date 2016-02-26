@@ -57,7 +57,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "U" "S" "L" "D" "O"
+## [1] "B" "Y" "A" "T" "J"
 ```
 But
 
@@ -68,7 +68,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "U" "S" "L" "D" "O" NA
+## [1] "B" "Y" "A" "T" "J" NA
 ```
 
 ### Solution
@@ -323,9 +323,43 @@ ifcond(3:1, c(2, 2, 2))
 ## [1]  5  0 -3
 ```
 
-<!-- ### Solution -->
+### Solution
 
 
+```r
+## Unit test:
+library("RUnit")
+test_ifcond <- function() {
+    checkIdentical(5, ifcond(3, 2))
+    checkIdentical(8, ifcond(2, 2))
+    checkIdentical(5, ifcond(1, 2))
+    checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2)))
+}
+
+test_ifcond()
+```
+
+```
+## Warning in if (x > y) {: the condition has length > 1 and only the first
+## element will be used
+```
+
+```
+## Error in checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2))): FALSE 
+## 
+```
+
+```r
+## updated function:
+ifcond <- function(x, y)
+    ifelse(x > y, x*x - y*y, x*x + y*y)
+
+test_ifcond()
+```
+
+```
+## [1] TRUE
+```
 
 ## Know your inputs
 
@@ -353,12 +387,12 @@ y <- rnorm(5)
 ```
 
 ```
-##                x          y
-## [1,]  0.43869553 -0.3399889
-## [2,] -0.06406455  0.2270320
-## [3,] -1.27446180  0.3888273
-## [4,]  0.66013277 -0.5077365
-## [5,]  0.08794117 -0.8331329
+##              x           y
+## [1,]  2.301199  0.60939751
+## [2,]  1.380715  1.49984771
+## [3,]  1.237685  0.58034293
+## [4,] -1.723762 -0.45066731
+## [5,] -1.389801 -0.05480788
 ```
 
 ```r
@@ -366,8 +400,8 @@ y <- rnorm(5)
 ```
 
 ```
-##          x          y 
-##  0.4386955 -0.3399889
+##         x         y 
+## 2.3011991 0.6093975
 ```
 
 ```r
@@ -375,7 +409,7 @@ distances(p, m)
 ```
 
 ```
-## [1] 0.0000000 0.7578129 1.8617414 0.2778016 0.6051608
+## [1] 0.000000 1.280700 1.063910 4.162217 3.750287
 ```
 
 ```r
@@ -384,12 +418,12 @@ distances(p, m)
 ```
 
 ```
-##             x          y
-## 1  0.43869553 -0.3399889
-## 2 -0.06406455  0.2270320
-## 3 -1.27446180  0.3888273
-## 4  0.66013277 -0.5077365
-## 5  0.08794117 -0.8331329
+##           x           y
+## 1  2.301199  0.60939751
+## 2  1.380715  1.49984771
+## 3  1.237685  0.58034293
+## 4 -1.723762 -0.45066731
+## 5 -1.389801 -0.05480788
 ```
 
 ```r
@@ -397,8 +431,8 @@ distances(p, m)
 ```
 
 ```
-##           x          y
-## 1 0.4386955 -0.3399889
+##          x         y
+## 1 2.301199 0.6093975
 ```
 
 ```r
@@ -410,9 +444,49 @@ distances(q, dd)
 ## 1 0
 ```
 
-<!-- ### Solution -->
+### Solution
 
 
+```r
+## Unit test:
+library("RUnit")
+test_distances <- function() {
+    x <- y <- c(0, 1, 2)
+    m <- cbind(x, y)
+    p <- m[1, ]
+    dd <- data.frame(x, y)
+    q <- dd[1, ]
+    expct <- c(0, sqrt(c(2, 8)))
+    checkIdentical(expct, distances(p, m))
+    checkIdentical(expct, distances(q, dd))
+}
+
+test_distances()
+```
+
+```
+## Error in checkIdentical(expct, distances(q, dd)): FALSE 
+## 
+```
+
+```r
+## updated function
+distances <- function(point, pointVec) {
+    point <- as.numeric(point)
+    x <- point[1]
+    y <- point[2]
+    xVec <- pointVec[,1]
+    yVec <- pointVec[,2]
+    dist <- sqrt((xVec - x)^2 + (yVec - y)^2)
+    return(dist)
+}
+
+test_distances()
+```
+
+```
+## [1] TRUE
+```
 
 ## Iterate on 0 length
 
@@ -448,9 +522,49 @@ sqrtabs(numeric())
 ## numeric(0)
 ```
 
-<!-- ### Solution -->
+### Solution
 
 
+```r
+## Unit test:
+library(RUnit)
+test_sqrtabs <- function() {
+    checkIdentical(c(2, 0, 2), sqrtabs(c(-4, 0, 4)))
+    checkIdentical(numeric(), sqrtabs(numeric()))
+}
+test_sqrtabs()
+```
+
+```
+## Error in checkIdentical(numeric(), sqrtabs(numeric())): FALSE 
+## 
+```
+
+```r
+## updated function:
+sqrtabs <- function(x) {
+  v <- abs(x)
+  sapply(seq_along(v), function(i) sqrt(v[i]))
+}
+test_sqrtabs()                          # nope!
+```
+
+```
+## Error in checkIdentical(numeric(), sqrtabs(numeric())): FALSE 
+## 
+```
+
+```r
+sqrtabs <- function(x) {
+  v <- abs(x)
+  vapply(seq_along(v), function(i) sqrt(v[i]), 0)
+}
+test_sqrtabs()                          # yes!
+```
+
+```
+## [1] TRUE
+```
 
 # Unit testing in a package 
 
