@@ -57,7 +57,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "K" "E" "G" "S" "V"
+## [1] "V" "Z" "E" "G" "W"
 ```
 But
 
@@ -68,7 +68,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "K" "E" "G" "S" "V" NA
+## [1] "V" "Z" "E" "G" "W" NA
 ```
 
 ### Solution
@@ -147,6 +147,80 @@ test_file("./unittests/test_foo.R")
 ```
 
 # Exercises
+
+## Column means
+
+## Problem
+
+The `col_means` function computes the means of all numeric columns in
+a data frame (example from *Advanced R*, to illustrate defensive
+programming).
+
+
+```r
+col_means <- function(df) {
+  numeric <- sapply(df, is.numeric)
+  numeric_cols <- df[, numeric]
+  data.frame(lapply(numeric_cols, mean))
+}
+
+## Expected
+col_means(mtcars)
+```
+
+```
+##        mpg    cyl     disp       hp     drat      wt     qsec     vs
+## 1 20.09062 6.1875 230.7219 146.6875 3.596563 3.21725 17.84875 0.4375
+##        am   gear   carb
+## 1 0.40625 3.6875 2.8125
+```
+
+```r
+## Bugs
+col_means(mtcars[, "mpg"])
+```
+
+```
+## Error in df[, numeric]: incorrect number of dimensions
+```
+
+```r
+col_means(mtcars[, "mpg", drop=FALSE])
+```
+
+```
+##   X21 X21.1 X22.8 X21.4 X18.7 X18.1 X14.3 X24.4 X22.8.1 X19.2 X17.8 X16.4
+## 1  21    21  22.8  21.4  18.7  18.1  14.3  24.4    22.8  19.2  17.8  16.4
+##   X17.3 X15.2 X10.4 X10.4.1 X14.7 X32.4 X30.4 X33.9 X21.5 X15.5 X15.2.1
+## 1  17.3  15.2  10.4    10.4  14.7  32.4  30.4  33.9  21.5  15.5    15.2
+##   X13.3 X19.2.1 X27.3 X26 X30.4.1 X15.8 X19.7 X15 X21.4.1
+## 1  13.3    19.2  27.3  26    30.4  15.8  19.7  15    21.4
+```
+
+```r
+col_means(mtcars[, 0])
+```
+
+```
+## Error in .subset(x, j): invalid subscript type 'list'
+```
+
+```r
+col_means(mtcars[0, ])
+```
+
+```
+##   mpg cyl disp  hp drat  wt qsec  vs  am gear carb
+## 1 NaN NaN  NaN NaN  NaN NaN  NaN NaN NaN  NaN  NaN
+```
+
+```r
+col_means(as.list(mtcars))
+```
+
+```
+## Error in df[, numeric]: incorrect number of dimensions
+```
 
 ## Character matching
 
@@ -279,12 +353,12 @@ y <- rnorm(5)
 ```
 
 ```
-##               x             y
-## [1,]  0.5365683  1.6602057690
-## [2,] -0.1665628 -0.2975653902
-## [3,] -0.7467376  1.8558080246
-## [4,]  0.7382947 -0.6899443868
-## [5,] -0.9602598 -0.0008467193
+##               x           y
+## [1,] -0.7302789  1.41529114
+## [2,]  1.5499547 -0.76196247
+## [3,]  0.2118003  1.11505334
+## [4,] -0.5818516 -1.41958661
+## [5,]  0.2510727  0.06363576
 ```
 
 ```r
@@ -292,8 +366,8 @@ y <- rnorm(5)
 ```
 
 ```
-##         x         y 
-## 0.5365683 1.6602058
+##          x          y 
+## -0.7302789  1.4152911
 ```
 
 ```r
@@ -301,7 +375,7 @@ distances(p, m)
 ```
 
 ```
-## [1] 0.000000 2.080207 1.298127 2.358792 2.235976
+## [1] 0.0000000 3.1527604 0.9887648 2.8387607 1.6703363
 ```
 
 ```r
@@ -310,12 +384,12 @@ distances(p, m)
 ```
 
 ```
-##            x             y
-## 1  0.5365683  1.6602057690
-## 2 -0.1665628 -0.2975653902
-## 3 -0.7467376  1.8558080246
-## 4  0.7382947 -0.6899443868
-## 5 -0.9602598 -0.0008467193
+##            x           y
+## 1 -0.7302789  1.41529114
+## 2  1.5499547 -0.76196247
+## 3  0.2118003  1.11505334
+## 4 -0.5818516 -1.41958661
+## 5  0.2510727  0.06363576
 ```
 
 ```r
@@ -323,8 +397,8 @@ distances(p, m)
 ```
 
 ```
-##           x        y
-## 1 0.5365683 1.660206
+##            x        y
+## 1 -0.7302789 1.415291
 ```
 
 ```r
@@ -464,20 +538,6 @@ data(package = "pRolocdata")
 - To test the validity of an object, use `validObject`
 
 
-```
-## Warning: replacing previous import by 'ggplot2::Position' when loading
-## 'MSnbase'
-```
-
-```
-## Warning: replacing previous import by 'ggplot2::unit' when loading
-## 'MSnbase'
-```
-
-```
-## Warning: replacing previous import by 'ggplot2::arrow' when loading
-## 'MSnbase'
-```
 
 
 ```r

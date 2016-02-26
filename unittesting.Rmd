@@ -120,6 +120,32 @@ test_file("./unittests/test_foo.R")
 
 # Exercises
 
+## Column means
+
+## Problem
+
+The `col_means` function computes the means of all numeric columns in
+a data frame (example from *Advanced R*, to illustrate defensive
+programming).
+
+```{r}
+col_means <- function(df) {
+  numeric <- sapply(df, is.numeric)
+  numeric_cols <- df[, numeric]
+  data.frame(lapply(numeric_cols, mean))
+}
+
+## Expected
+col_means(mtcars)
+
+## Bugs
+col_means(mtcars[, "mpg"])
+col_means(mtcars[, "mpg", drop=FALSE])
+col_means(mtcars[, 0])
+col_means(mtcars[0, ])
+col_means(as.list(mtcars))
+```
+
 ## Character matching
 
 ### Problem
