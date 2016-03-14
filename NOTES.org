@@ -1,0 +1,32 @@
+- A simple series of BPI chromatograms, usually shown as a bitmap -
+  why not plot them from exported data?
+
+- A series of panels that show the MS spectrum of a a SILAC
+  heavy/light pair, in a nice diagram
+
+- A set of protein LFQ data let’s say - two conditions, with 6
+  replicates of each, and with a list of protein accession number and
+  the LFQ data:
+
+- This is a fabulous dataset for 
+
+- S curves for means of both, with errors Matrix plot of all against
+  all
+
+- Normalisation strategies
+
+- Heatmap plot
+
+- Hierarchical clustering (with or without heatmap)
+
+- Volcano plots
+
+- PCA analysis and plots
+
+- Abundance histograms
+
+- From a simpler set (e.g. Dean’s kdeg/protein/abundance) data, plot a
+  2d plot with colour as a third scaling variable
+
+
+
