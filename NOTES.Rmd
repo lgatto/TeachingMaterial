@@ -41,7 +41,7 @@ plot(itraqdata[[10]], reporters = iTRAQ4, full=TRUE)
 > S curves for means of both, with errors Matrix plot of all against
 > all
 
-S curve?
+log(Abundance) vs. protein index.
 
 ```{r}
 data(msnset)
