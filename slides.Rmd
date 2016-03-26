@@ -11,10 +11,8 @@ output:
 
 # Quantitative Proteomics and Data Analysis
 
-* Slides: 
+* Slides: http://bit.ly/qprotda
 * Ask questions!
-
-
 
 # What is data analysis
 
