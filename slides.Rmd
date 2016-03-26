@@ -1,0 +1,43 @@
+---
+title: "Quantitative Proteomics and Data Analysis"
+author: "Laurent Gatto"
+ratio: 16x10
+output:
+  rmdshower::shower:
+    self_contained: true
+    katex: true
+    theme: ribbon
+---
+
+# Quantitative Proteomics and Data Analysis
+
+* Slides: 
+* Ask questions!
+
+
+
+# What is data analysis
+
+The ability to prepare and **explore** data, identify **patterns**
+(good and pathological ones) and convince oneself that the pattern are
+**genuine** (rather than random).
+
+# To analyse data, you need
+
+* ~~Programming skills~~
+* ~~Be a statistician/machine learner~~
+
+# To analyse data, you need
+
+* ~~Programming skills~~
+* ~~Be a statistician/machine learner~~
+* Knowledge about the domain
+* Know about your data
+* Be able to manipulate/visualise it
+* How good do we need to be? Good enough! 
+
+# References 
+
+* [Visualisation of proteomics data using R and Bioconductor](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4510819/)
+* [Using R and Bioconductor for proteomics data analysis](http://arxiv.org/pdf/1305.6559v1.pdf)
+* `RforProteomics` guide: http://bioconductor.org/packages/RforProteomics
