@@ -4,15 +4,31 @@ author: "Laurent Gatto"
 ratio: 16x10
 output:
   rmdshower::shower:
-    self_contained: true
+    self_contained: false
     katex: true
     theme: ribbon
 ---
 
 # Quantitative Proteomics and Data Analysis
 
+Laurent Gatto -- https://lgatto.github.io
+
 * Slides: http://bit.ly/qprotda
 * Ask questions!
+
+**Acknowledgements** BBSRC for funding; Sebastian Gibb and Lisa
+Breckels for coding.
+
+
+# 
+
+These slides are available under a **creative common CC-BY**
+license. You are free to **share** (copy and redistribute the material
+in any medium or format) and **adapt** (remix, transform, and build
+upon the material) for any purpose, even commercially. 
+
+<img src="Figures/cc1.jpg">
+
 
 # What is data analysis
 
@@ -34,8 +50,64 @@ The ability to prepare and **explore** data, identify **patterns**
 * Be able to manipulate/visualise it
 * How good do we need to be? Good enough! 
 
+# Data analysis
+
+<img src="./Figures/qprotda.png" class="cover">
+
+# Definitions
+
+**Variability**: technical vs biological
+
+**Replicates**: ...
+
+**Normalisation**: remove unwanted (technical) variation while retaining
+biological variability.
+
+(see also stats course)
+
+# Visualisation
+
+> A picture is worth a thousand words.
+
+> Graphics reveal data.
+
+# 
+
+<img src="./Figures/choosing-a-good-chart.jpg" class="cover">
+
+# 
+
+<img src="./Figures/qprotda-with-plots.png" class="cover">
+
+# Proteomics data analysis
+
+
+# Data analysis basics
+
+* Storing data as *computational objects* (rigorously defined data
+  structures): knowing where to find things
+* *Application programming interface*
+* Tidy data: consistency in data structures (and conventions)
+
+
+
+# The `MSnSet` class for quantitative data
+
+<div class="double">
+<p class="double-flow">
+* Expression/quantitative data
+* Feature meta-data
+* Sample meta-data
+* Dimension constrains
+
+</p><p class="double-flow">
+<img src="Figures/msnset.png" class="one-col-image">
+</p>
+</div>
+
+
 # References 
 
 * [Visualisation of proteomics data using R and Bioconductor](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4510819/)
 * [Using R and Bioconductor for proteomics data analysis](http://arxiv.org/pdf/1305.6559v1.pdf)
-* `RforProteomics` guide: http://bioconductor.org/packages/RforProteomics
+* `RforProteomics`: http://bioconductor.org/packages/RforProteomics
