@@ -1,0 +1,465 @@
+---
+title: "Statistics primer: Experimental designs"
+author: "Laurent Gatto"
+output:
+    fig_caption: true
+---
+
+
+## Introduction
+
+> To consult the statistician after an experiment is finished is often
+> merely to ask him to conduct a post mortem examination. He can
+> perhaps say what the experiment died of. -- Ronald Fisher
+
+BUT
+
+> Designing effective experiments need thinking about biology more
+> than it does mathematical (statistical) calculations. [1]
+
+The first quote highlights the fact that
+
+> **Myth**: It does not matter how you collect data, there will always
+> be a statistical 'fix' that will allow to analyse it. [1]
+
+## Poor experimental design
+
+Badly designed experiments can lead to completely useless data, or
+worse, to completely erroneous conclusions that could lead to more
+waste of time, money, resources and scientific dead
+ends. Additionally, there can be ethical concerns in badly designed
+experiments.
+
+
+## **Hypothesis-driven** vs hypothesis-free (-generating) experiments
+
+A **hypothesis** is a clearly defined description of how the system
+under study works, or is assumed to work. Ideally, use clear, single
+research questions, such as
+
+- What is the effect of drug A on the transcriptome/proteome?
+- Is drug A better than drug B in inducing a given effect?
+
+NOT
+
+- Do cells treated with drug A for 20 or 40 min express protein X but
+  not Y? (accumulation of conditions, bad start)
+- Let's test all these drugs over as many time points as we can and see
+  if something changes. (that's not even a question!)
+
+An experiment should then be designed to answer your hypothesis. 
+
+## Hypothesis-driven vs **hypothesis-free (-generating)** experiments
+
+Other experiments can be designed to explore/describe a biological
+system, or generate new hypotheses:
+
+- genome sequencing
+- the genome-wide binding site mapping of a transcription factor
+- sub-cellular protein map 
+
+These experiments must still be carefully designed!
+
+
+## Experiment vs. study 
+
+Experiment: typically in a lab, highly controlled conditions,
+well-designed interventions, controlled times and intensities,
+stringent control over experimental variables and to draw very
+specific conclusions. Risk of lack of generalisation, such as
+extrapolating observations from cells or lab mice to humans.
+
+Study: *in the wild*, much more variability in the data,
+un-controlled or even un-known variables (confounding effects) that
+affect what is studied. Requires **much bigger** sample size.
+
+## 
+
+To test our **hypothesis**, we need to perform a comparison that will
+highlight the effect we are interested in. To do so, we will need
+different experimental conditions, including **controls**.
+
+- What are the differences in expression between a control group and a
+  group treated with drug A? Everything being equal, we will attribute
+  observed changes to the drug.
+
+- Effect of a drug over time. Time 0, no drug/effect vs time 1, time
+  2, ... (these time points will need to be defined.)
+
+- **Positive control**: demonstrate that an experimental system works in
+  principle. 
+- **Negative control**: quantify the baseline condition, assure that what
+  we measure is not plain background.
+
+
+## Experimental units
+
+- Mice, cultured cells, ...
+- Time points
+
+## Precision vs accuracy
+
+- **Precision** is how close the measured values are to each other.
+- **Accuracy** is how close a measured value is to the actual (true) value.
+
+```{r, echo=FALSE, fig.width = 8, fig.height = 3}
+
+par(mar = c(0, 0, 0, 0))
+par(oma = c(0, 0, 0, 0))
+plot(0, type = "n",
+     xlim = c(0, 4),
+     ylim = c(0.4, 0.6),
+     xlab = "", ylab = "",
+     bty = "n",
+     xaxt = "n", yaxt = "n")
+symbols(rep(0.8, 5), rep(0.5, 5), circle = seq(0.2, 1, 0.2), add = TRUE)
+symbols(rep(2, 5), rep(0.5, 5), circle = seq(0.2, 1, 0.2), add = TRUE)
+symbols(rep(3.2, 5), rep(0.5, 5), circle = seq(0.2, 1, 0.2), add = TRUE)
+points(c(0.8, 2, 3.2), rep(0.5, 3), col = "red")
+
+i <- structure(list(x = c(0.516619968696257, 0.55835829259338,
+                          0.620965778439064, 0.605313906977643,
+                          0.594879326003362, 0.547923711619099,
+                          0.631400359413345),
+                    y = c(0.545776161348983, 0.548875847247479,
+                          0.551355595966275, 0.547016035708382,
+                          0.540196726731691, 0.543916349809886,
+                          0.543296412630187)), .Names = c("x", "y"))
+points(i$x, i$y, pch = 19)
+
+j <- structure(list(x = c(1.89920194778845, 2.14441460068404,
+                          2.20702208652973, 2.05572066240266,
+                          1.82094259048134, 1.80529071901992,
+                          1.86789820486561, 2.1131108577612),
+                    y = c(0.525938171598611, 0.522218548520417,
+                          0.492461563894859, 0.467664076706894,
+                          0.478203008761779, 0.503000495949744,
+                          0.51291949082493, 0.488122003636965)), .Names = c("x", "y"))
+points(j$x, j$y, pch = 19)
+
+k <- structure(list(x = c(3.14613437421499, 3.16700353616355,
+                          3.23482831249638, 3.19830727908639,
+                          3.17743811713783, 3.24004560298352,
+                          3.28178392688064, 3.23482831249638),
+                    y = c(0.501760621590346, 0.507959993387337,
+                          0.513539428004629, 0.501140684410646,
+                          0.494941312613655, 0.493701438254257,
+                          0.500520747230947, 0.499900810051248)),
+               .Names = c("x", "y"))
+points(k$x, k$y, pch = 19)
+```
+
+## Variability and replication: what are we measuring?
+
+- Noise/random variation vs systematic bias.
+
+- **Technical** vs **biological** variability: the variability we
+  measure is composed of technical and biological variability. If the
+  former dominates, we won't learn anything about biology.
+
+## Technical vs biological replicates [2]
+
+![Technical vs biological replicates [2]](./figs/F3large.jpg) 
+
+## Assessing technical variability in N$^{15}$ labelling [3]
+
+![Assessing technical variability in N$^{15}$ labelling [3]](./figs/N15var.jpg) 
+
+## Replication
+
+We can only assess an effect if we consider the variability in our
+experiment. How much change is there? 
+
+We can only observe variation if we repeat our measurement: repeat
+manipulation are take new measurement. Typically on different sample,
+because we are interested in biological variation. 
+
+## 
+
+Comparison of two groups: the difference is strong relative to the
+variability between the measurements within each group.
+
+
+```{r, echo=FALSE, fig.height = 3, fig.width=8}
+set.seed(123)
+A <- rnorm(15, 5, 1.25)
+B <- rnorm(15, 7, 1.25)
+x <- data.frame(Variable = c(A, B),
+                Group = rep(LETTERS[1:2], each = 15))
+
+xi <- x[c(6, 29), ]
+xj <- x[c(6, 30), ]
+
+library(ggplot2)
+library(gridExtra)
+
+.ylim <- ylim(3.2, 9.5)
+
+p1 <- ggplot(aes(y = Variable, x = Group, colour = Group), data = xi) +
+    geom_point() + .ylim+ theme(legend.position="none")
+p2 <- ggplot(aes(y = Variable, x = Group, colour = Group), data = xj) +
+    geom_point() + .ylim + theme(legend.position="none")
+p3 <- ggplot(aes(y = Variable, x = Group, colour = Group), data = x) +
+    geom_boxplot() + geom_jitter() + .ylim + theme(legend.position="none")
+grid.arrange(p1, p2, p3, ncol = 3)
+```
+
+## 
+
+```{r, eval = TRUE}
+rnorm(n = 5, mean = 5, sd = 1.25)
+summary(rnorm(n = 25, mean = 5, sd = 1.25))
+summary(rnorm(n = 25, mean = 7, sd = 2))
+```
+
+## Designing an experiment
+
+We have 20 samples, 10 in each group. We can multiplex 10 samples (to
+reduce costs and variability). Never, ever do the following:
+
+- Multiplex 10 treated samples and control 10 samples.
+- Operator A runs the controls, operator B runs the treated samples.
+
+**Co-founding batch effect**: any observed differences between the
+groups or interest could be due to technical variability between 2
+data acquisitions/operators. 
+
+Assign samples to runs/operators at random.
+
+## 
+
+Leek *et al.* Tackling the widespread and critical impact of batch
+effects in high-throughput data. Nat Rev Genet. 2010
+
+> One often overlooked complication with such studies is batch
+> effects, which occur because measurements are affected by laboratory
+> conditions, reagent lots and personnel differences. This becomes a
+> major problem when batch effects are correlated with an outcome of
+> interest and lead to incorrect conclusions. Using both published
+> studies and our own analyses, we argue that batch effects (as well
+> as other technical and biological artefacts) are widespread and
+> critical to address. [5]
+
+
+
+## Blocks/batches
+
+We aim to perform experiments within a **homogeneous group** of
+experimental units. These homogeneous groups, referred to as
+**blocks**, help to reduce the variability between the units and
+increase the meaning of differences between conditions (as well as the
+power of statistics to detect them). [2]
+
+- If possible, measure as many (all) experimental conditions at the
+  same time
+- Minimise risks of day-to-day variability between the measurements
+
+## 
+
+6 treatment conditions you want to apply to mice (the experimental
+units), but you can fit only 5 mice per cage (i.e. block).
+
+![Example of a simple batch effect correction [2]](./figs/F1small.jpg)
+
+\scriptsize{Illustration of batches and how to correct for them. All but
+	two treatments have been applied to mice in two different cages (=
+	batches). The batch/cage effect can now be computed based on the
+	treatments that are shared between the cages.
+
+	E and F are not directly comparable. However, the difference
+    between E and F can be computed as E - F - \textit{cage effect}.
+    }
+
+<!-- As an example, assume there are six treatment conditions you want to -->
+<!-- apply to mice (the experimental units), but you can fit only five mice -->
+<!-- per cage (i.e. block). In this case, not all treatments can be applied -->
+<!-- simultaneously in each cage/block. You can, however, apply four -->
+<!-- identical treatments to each of the cages and only alternate the fifth -->
+<!-- condition each time (see Fig 1). Now, the “cage effect” can be -->
+<!-- estimated by computing the mean of the differences between the four -->
+<!-- treatments that are identical, as given by the formula in Fig 1. A -->
+<!-- priori the conditions E and F are not directly comparable since they -->
+<!-- were measured on mice from two different cages. However, the -->
+<!-- replicated treatments allow a computation of a “cage effect” that -->
+<!-- corresponds to the average difference between the identical conditions -->
+<!-- measured in the two cages. Then, the difference between E and F can be -->
+<!-- computed as E − F − “cage effect”. -->
+
+## Randomisation revisited
+
+Even after blocking, other factors, such as age, generic background,
+sex differences, etc.  can influence the experimental outcome.
+
+
+**Randomise** within blocks, to reduce confounding effects by
+equalising variables that influence experimental units and that have
+not been accounted for in the experimental design.
+
+## More designs
+
+![More designs](./figs/moredesigns.pdf)
+
+## 
+
+- Balanced vs. non-balanced
+- One-way (one-factor) designs: one experimental factor, n levels
+  (Treatments; drug A, drug B, control)  
+- Two-way design: treatment (A, B, control) x genetic background (WT, MT)
+- Main effect (like 2 one-way designs) and interaction effects
+
+## 
+
+![Main effects and interactions](./figs/interactions.pdf)
+
+## How many replicates? 
+
+How variable are your groups? What effect size (magnitude) are you
+expecting to see?
+
+```{r, echo=FALSE, fig.height = 4, fig.width=9, warning=FALSE}
+set.seed(123)
+n <- 10
+A <- rnorm(n, 6, 1)
+B <- rnorm(n, 7, 1)
+x <- data.frame(Variable = c(A, B),
+                Group = rep(LETTERS[1:2], each = n))
+
+.ylim <- ylim(5, 10)
+
+A <- rnorm(25, 6, 1)
+B <- rnorm(25, 7, 1)
+x2 <- data.frame(Variable = c(A, B),
+                Group = rep(LETTERS[1:2], each = 25))
+x2 <- rbind(x, x2)
+
+A <- rnorm(n, 6, 0.5)
+B <- rnorm(n, 7, 0.5)
+
+x3 <- data.frame(Variable = c(A, B),
+                Group = rep(LETTERS[1:2], each = n))
+
+set.seed(123)
+A <- rnorm(n, 6, 1)
+B <- rnorm(n, 8.5, 1)
+x4 <- data.frame(Variable = c(A, B),
+                Group = rep(LETTERS[1:2], each = n))
+
+p1 <- ggplot(aes(y = Variable, x = Group, colour = Group), data = x) +
+    geom_boxplot() + geom_jitter() + theme(legend.position="none") + .ylim
+p2 <- ggplot(aes(y = Variable, x = Group, colour = Group), data = x2) +
+    geom_boxplot() + geom_jitter() + theme(legend.position="none") + .ylim
+p3 <- ggplot(aes(y = Variable, x = Group, colour = Group), data = x3) +
+    geom_boxplot() + geom_jitter() + theme(legend.position="none") + .ylim
+p4 <- ggplot(aes(y = Variable, x = Group, colour = Group), data = x4) +
+    geom_boxplot() + geom_jitter() + theme(legend.position="none") + .ylim
+
+grid.arrange(p1, p2, p3, p4, ncol = 4)
+```
+
+\scriptsize{(A) 10 samples, means 6 and 7, sd 1. (B) Same as (A), but
+	25 additional samples. (C) Same as (A) but tighter distribution
+	(sd 0.5). (D) Bigger effect.}
+
+
+## How many replicates? 
+
+If too few samples are used, real difference will not be detected. The
+study is said to be under powered.
+
+Statistical power is the probability of a test to detect an effect, if
+the effect actually exists. Power is affected by (1) effect size, (2)
+random variation and (3) sample size.
+
+- As many as possible
+- As many as you can afford
+- Educated guesswork 
+- Power analysis
+- Pilot study
+
+##
+
+![Power analysis](./figs/power.pdf)
+
+##
+
+```{r}
+power.t.test(delta = 2, sd = 1,
+             sig.level = 0.01, power = 0.9)
+```
+
+## Next steps
+
+Once you have the data, explore it - Exploratory Data Analysis (EDA)
+using PCA plots, clustering, histograms, boxplots, ...
+
+- Does the variability match your design (within/between groups)?
+- Can you identify co-founding/batch effects?
+- Identify significant changes
+
+## Examples
+
+Mulvey CM, Schröter C, Gatto L, Dikicioglu D, Fidaner IB, Christoforou
+A, Deery MJ, Cho LT, Niakan KK, Martinez-Arias A, Lilley KS. *Dynamic
+Proteomic Profiling of Extra-Embryonic Endoderm Differentiation in
+Mouse Embryonic Stem Cells.* Stem Cells. 2015
+Sep;33(9):2712-25. [doi:10.1002/stem.2067](http://www.ncbi.nlm.nih.gov/pubmed/26059426).
+
+> Here, we use this GATA-inducible system to quantitatively monitor
+> the dynamics of global proteomic changes during the early stages of
+> this differentiation event and also investigate the fully
+> differentiated phenotype, as represented by embryo-derived XEN
+> cells.
+
+## 
+
+![heatmaps](./figs/heatmaps.pdf)
+
+##
+
+![pairs](./figs/pairs.pdf)
+
+##
+
+![pairs](./figs/ma.pdf)
+
+## 
+
+![pca](./figs/pca.pdf)
+
+## Summary
+
+When designing an experiments, make sure you address:
+
+- Hypothesis and experimental groups (controls, conditions) 
+- Sources of variability and adequacy of replication
+- Effect of technology (multiplexing to reduce/share technical
+  variability, missing values, ...)
+- What is the question, does the design address it, how will you test
+  it?
+- Enough samples to see any desired effect?
+- Keep it simple (n-way design vs one-way)
+- Think about EDA (how will you verify that things went according to
+  plan) and analysis beforehand.
+
+## References
+
+[1] Ruxton GD, Colegrave N (2010) Experimental Design for the Life
+Sciences, 3rd edn. Oxford: Oxford University Press.
+
+[2] Klaus
+B. [Statistical relevance-relevant statistics, part I](http://emboj.embopress.org/content/34/22/2727). EMBO
+J. 2015 Nov 12;34(22):2727-30. 
+
+[3] Russell M, Lilley KS.,
+[Pipeline to assess the greatest source of technical variance in quantitative proteomics using metabolic labelling](http://www.sciencedirect.com/science/article/pii/S1874391912006641), Journal of Proteomics, Dec 2012;77:441-454
+
+[4] Cairns
+DA. [Statistical issues in quality control of proteomic analyses: good experimental design and planning](http://www.ncbi.nlm.nih.gov/pubmed/21298792). Proteomics. 2011
+Mar;11(6):1037-48. doi: 10.1002/pmic.201000579.
+
+[5] Leek JT, Scharpf RB, Bravo HC, Simcha D, Langmead B, Johnson WE,
+Geman D, Baggerly K, Irizarry RA. Tackling the widespread and critical
+impact of batch effects in high-throughput data. Nat Rev Genet. 2010
+Oct;11(10):733-9. doi: 10.1038/nrg2825. Epub 2010
+Sep 14. PMID:20838408;
+[PMC3880143](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3880143/).
