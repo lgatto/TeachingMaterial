@@ -232,9 +232,9 @@ install_github("sequences", "lgatto")
 - Description: A short course for a Bioinformatics minor at the
   University of Cambridge. Introducing basic concepts in statistics:
   experimental design, randomisation, technical and biological
-  variation, power analysis, hypthesis testing, confidence interval,
+  variation, power analysis, hypothesis testing, confidence interval,
   what is a p-value, false discovery rate, multiple testing
-  adjustment, dangers of uninformed statistical pratice. The objective
+  adjustment, dangers of uninformed statistical practice. The objective
   is familiarise students with basic statistical concepts and initiate
   them to statistical thinking. They should be able to critically
   assess an experimental design and the reporting of a simple
