@@ -4,7 +4,7 @@ author: "Laurent Gatto"
 ratio: 16x10
 output:
   rmdshower::shower:
-    self_contained: false
+    self_contained: true
     katex: true
     theme: ribbon
 ---
