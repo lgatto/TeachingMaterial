@@ -215,3 +215,34 @@ with your colleagues.
 library(devtools)
 install_github("sequences", "lgatto")
 ```
+
+### Best practices in bioinformatics research: open source software and reproducibility
+
+- Description: A short course for a Bioinformatics minor at the
+  University of Cambridge. What is open science (data, source/code,
+  access), and how can we enable it? What is reproducible research,
+  and why do we need it and how can we implement it? The objective is
+  to familiarise students with concepts and tools of open science and
+  reproducible research.
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/open-rr-bioinfo-best-practice
+
+### Statistics primer
+
+- Description: A short course for a Bioinformatics minor at the
+  University of Cambridge. Introducing basic concepts in statistics:
+  experimental design, randomisation, technical and biological
+  variation, power analysis, hypthesis testing, confidence interval,
+  what is a p-value, false discovery rate, multiple testing
+  adjustment, dangers of uninformed statistical pratice. The objective
+  is familiarise students with basic statistical concepts and initiate
+  them to statistical thinking. They should be able to critically
+  assess an experimental design and the reporting of a simple
+  statistical analysis.
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/statistics-primer
+- Slides on
+  [experimental desing](https://github.com/lgatto/statistics-primer/blob/master/expdes-slides.pdf),
+  [significance testing](https://github.com/lgatto/statistics-primer/blob/master/test-slides.pdf), 
+  and
+  [practical](https://htmlpreview.github.io/?https://github.com/lgatto/statistics-primer/blob/master/03-practical.html).
