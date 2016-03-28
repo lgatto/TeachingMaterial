@@ -24,6 +24,8 @@ data analysis. Biochim Biophys Acta. 2014 Jan;1844(1 Pt A):42-51. doi:
 [RforProteomics](http://bioconductor.org/packages/devel/data/experiment/html/RforProteomics.html)
 
 
+### License
+
 These slides are available under a **creative common CC-BY**
 license. You are free to **share** (copy and redistribute the material
 in any medium or format) and **adapt** (remix, transform, and build
