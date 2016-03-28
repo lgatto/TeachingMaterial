@@ -19,9 +19,15 @@ Gatto L. and Christoforou A. Using R and Bioconductor for proteomics
 data analysis. Biochim Biophys Acta. 2014 Jan;1844(1 Pt A):42-51. doi:
 [10.1016/j.bbapap.2013.04.032](http://www.ncbi.nlm.nih.gov/pubmed/23692960).
 
+## Resources
 
-**Software**:
-[RforProteomics](http://bioconductor.org/packages/devel/data/experiment/html/RforProteomics.html)
+* `RforProteomics`: http://bioconductor.org/packages/RforProteomics
+* [R/Bioconductor workflow](http://bioconductor.org/help/workflows/proteomics/)
+* [Teaching material](http://lgatto.github.io/TeachingMaterial/) for
+  R and more
+* Workshops: [Software](http://software-carpentry.org/) and
+  [Data Carpentry](http://www.datacarpentry.org/), 
+  [Data Programmers](http://www.dataprogrammers.net/)
 
 
 ### License
