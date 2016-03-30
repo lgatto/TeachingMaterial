@@ -7,8 +7,21 @@ Course. 4 - 5 April 2016, Queen Hotel, Chester, UK
 Table D - Inspection, visualisation and analysis of quantitative
 proteomics data, Laurent Gatto (University of Cambridge)
 
-## References
+## Material
 
+* Slides: http://bit.ly/qprotda
+* Details: [code](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/code.md) 
+
+### License
+
+These slides are available under a **creative common CC-BY**
+license. You are free to **share** (copy and redistribute the material
+in any medium or format) and **adapt** (remix, transform, and build
+upon the material) for any purpose, even commercially.   
+![CC1](Figures/cc1.jpg)
+
+
+### References
 
 Gatto L, Breckels LM, Naake T and Gibb S Visualisation of proteomics
 data using R and Bioconductor. Proteomics. 2015
@@ -19,7 +32,7 @@ Gatto L. and Christoforou A. Using R and Bioconductor for proteomics
 data analysis. Biochim Biophys Acta. 2014 Jan;1844(1 Pt A):42-51. doi:
 [10.1016/j.bbapap.2013.04.032](http://www.ncbi.nlm.nih.gov/pubmed/23692960).
 
-## Resources
+### Resources
 
 * `RforProteomics`: http://bioconductor.org/packages/RforProteomics
 * [R/Bioconductor workflow](http://bioconductor.org/help/workflows/proteomics/)
@@ -28,13 +41,4 @@ data analysis. Biochim Biophys Acta. 2014 Jan;1844(1 Pt A):42-51. doi:
 * Workshops: [Software](http://software-carpentry.org/) and
   [Data Carpentry](http://www.datacarpentry.org/), 
   [Data Programmers](http://www.dataprogrammers.net/)
-
-
-### License
-
-These slides are available under a **creative common CC-BY**
-license. You are free to **share** (copy and redistribute the material
-in any medium or format) and **adapt** (remix, transform, and build
-upon the material) for any purpose, even commercially.   
-![CC1](Figures/cc1.jpg)
 

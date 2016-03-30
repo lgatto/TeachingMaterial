@@ -3,3 +3,4 @@
 
 slides.html: slides.md
 	Rscript -e "rmarkdown::render('slides.Rmd')"
+
