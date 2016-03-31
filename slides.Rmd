@@ -9,15 +9,22 @@ output:
     theme: ribbon
 ---
 
-# Quantitative Proteomics and Data Analysis
+# Inspection, visualisation and analysis of quantitative proteomics data
 
-Laurent Gatto -- https://lgatto.github.io
+```
+Laurent Gatto                      Computational Proteomics Unit
+https://lgatto.github.io           University of Cambridge
+```
 
-* Slides: http://bit.ly/qprotda
-* Ask questions!
+Slides: http://bit.ly/qprotda -- [all material](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis)
 
-**Acknowledgements** BBSRC for funding; Sebastian Gibb and Lisa
-Breckels for coding.
+**Ask questions!**  
+
+**Acknowledgements**  BBSRC for funding; Sebastian Gibb and Lisa Breckels for coding.
+
+
+```
+```
 
 (Last update `r date()`)
 
@@ -42,9 +49,30 @@ upon the material) for any purpose, even commercially.
 
 # What is data analysis
 
+> Data analysis is the process by which data becomes understanding,
+> knowledge and insight. Hadley Wickham
+
 The ability to prepare and **explore** data, identify **patterns**
-(good and pathological ones) and convince oneself that the pattern are
-**genuine** (rather than random).
+(good and pathological ones) and convincingly demonstrate that the
+pattern are **genuine** (rather than random).
+
+Requires flexible tools.
+
+# 
+
+<img src="./Figures/Data_Analysis_Hadley_Wickham.png" class="cover">  
+
+
+# Why programme
+
+* Reproducibility/replicability
+* Automation
+* Plain text: tracking, re-use, share, communicable
+
+But: 
+
+* Learning curve (although, I would argue that the reflection about
+the data and analysis is the really challenging part)
 
 # To analyse data, you need
 
@@ -67,12 +95,13 @@ The ability to prepare and **explore** data, identify **patterns**
 * Knowledge about the domain
 * Know about your data
 * Be able to manipulate/visualise it
-* How good do we need to be? **Good enough!**
+* How good do we need to be? **Good enough**
 
 # Quantitative proteomics data analysis
 
-* What data do we have?
+* What data do we have? 
 * What analyses can we apply?
+* Track/check the data throughout the analysis.
 
 # 
 
@@ -80,6 +109,7 @@ The ability to prepare and **explore** data, identify **patterns**
 
 # Quantitative proteomics data analysis
 
+* **Data** Ratios or intenstities - do not let the software decide for you!
 * **Replicates**: technical and biological
 * **Variability**: technical vs biological
 * **Normalisation**: remove unwanted (technical) variation while
@@ -90,7 +120,11 @@ The ability to prepare and **explore** data, identify **patterns**
 
 > A picture is worth a thousand words.
 
+> Visualization can surprise you, but it doesn’t scale well. Modeling
+> scales well, but it can’t surprise you. Hadley Wickham
+
 > Graphics reveal data.
+
 
 # 
 
@@ -100,7 +134,16 @@ The ability to prepare and **explore** data, identify **patterns**
 
 <img src="./Figures/qprotda-with-plots.png" class="cover">
 
-# Proteomics data analysis
+# Proteomics data analysis - examples
+
+- chomatogram
+- xic
+- spectum (iTRAQ)
+- **peptide-protein graph**
+- see NOTES
+- see *Statistics primer* practical
+- MA plots
+
 
 # Data analysis tools
 
@@ -110,13 +153,13 @@ of the data, visualise them, enable transformation of the data, give
 access to infrastucture for statistical analysis, and enable
 annotation of the data. 
 
-# Data analysis basics
+# Data analysis tools to
 
-* Storing data as *computational objects* (rigorously defined data
+* Store data as *computational objects* (rigorously defined data
   structures): knowing where to find things
 * Consistency in data structures (and conventions)
-* *Application programming interface*: how to
-  manipluate/transform/visualise these data
+* Easily manipluate/transform/visualise these data (*Application
+  programming interface*)
 
 # The `MSnSet` class for quantitative data
 
@@ -134,17 +177,17 @@ annotation of the data.
 
 Can be subsetted, transformed, visualised, annotated, statistics, ...
 
-# References 
+# References, resources
 
 * [Visualisation of proteomics data using R and Bioconductor](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4510819/)
 * [Using R and Bioconductor for proteomics data analysis](http://arxiv.org/pdf/1305.6559v1.pdf)
 * `RforProteomics`: http://bioconductor.org/packages/RforProteomics
-
-# Resources
-
+* [R/Bioconductor workflow](http://bioconductor.org/help/workflows/proteomics/)
 * [Teaching material](http://lgatto.github.io/TeachingMaterial/) for
   R and more
-* [R/Bioconductor workflow](http://bioconductor.org/help/workflows/proteomics/)
 * Workshops: [Software](http://software-carpentry.org/) and
   [Data Carpentry](http://www.datacarpentry.org/), 
   [Data Programmers](http://www.dataprogrammers.net/)
+
+
+**Thank you for your attention**
