@@ -1,3 +1,255 @@
+# Inspection, visualisation and analysis of quantitative proteomics data
+
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  document.querySelector("h1").className = "title";
+});
+</script>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  var links = document.links;  
+  for (var i = 0, linksLength = links.length; i < linksLength; i++)
+    if (links[i].hostname != window.location.hostname)
+      links[i].target = '_blank';
+});
+</script>
+<style type="text/css" scoped>
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1em 1em 2em;
+  line-height: 20px;
+}
+
+/* Table of contents style */
+
+div#TOC li {
+    list-style:none;
+    background-image:none;
+    background-repeat:none;
+    background-position:0;
+}
+
+/* element spacing */
+
+p, pre { 
+  margin: 0em 0em 1em;
+}
+
+/* center images and tables */
+img, table {
+  margin: 0em auto 1em;
+}
+
+p {
+  text-align: justify;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1, h2, h3, h4, h5, h6 { 
+  font-family: Helvetica, Arial, sans-serif;
+  margin: 1.2em 0em 0.6em 0em;
+  font-weight: bold;
+}
+
+h1.title {
+  font-size: 250%;
+  font-weight: normal;
+  color: #87b13f;
+  line-height: 1.1em;
+  margin-top: 0px;
+  border-bottom: 0px;
+}
+
+h1 {
+  font-size: 160%;
+  font-weight: normal;
+  line-height: 1.4em;
+  border-bottom: 1px #1a81c2 solid;
+}
+
+h2 {
+  font-size: 130%;  
+}
+
+h1, h2, h3 {
+  color: #1a81c2;
+}
+
+h3, h4, h5, h6 {
+  font-size:115%;
+} /* not expecting to dive deeper than four levels on a single page */
+
+/* links are simply blue, hovering slightly less blue */
+a { color: #1a81c2; }
+a:active { outline: none; }
+a:visited { color: #1a81c2; }
+a:hover { color: #4c94c2; }
+
+pre, img {
+  max-width: 100%;
+  display: block;
+}
+
+pre {
+  border: 0px none;
+  background-color: #F8F8F8;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+pre code {
+  border: 1px #aaa dashed;
+  background-color: white;
+  display: block;
+  padding: 1em;  
+  color: #111;
+  overflow-x: inherit;
+}
+
+/* markdown v1 */
+pre code[class] {
+  background-color: inherit;
+}
+
+/* markdown v2 */
+pre[class] code {
+  background-color: inherit;
+}
+
+/* formatting of inline code */
+code { 
+  background-color: transparent;
+  color: #87b13f;
+  font-size: 92%;
+}
+
+/* formatting of tables */
+
+table, td, th {
+  border: none;
+  padding: 0 0.5em;
+}
+
+/* alternating row colors */
+tbody tr:nth-child(odd) td {
+  background-color: #F8F8F8;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+span.header-section-number {
+  padding-right: 1em;
+}
+
+span.toc-section-number::after {
+    content: "  ";
+    white-space: pre;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+## Introduction
+
+This document provides the details to reproduce the data analysis
+figures in the course
+[slides](http://lgatto.github.io/Quantitative-Proteomics-and-Data-Analysis/slides.html).
+
+To be able to execute the code below, you will need to have a working
+R installation. I also recommend using the
+[RStudio editor](https://www.rstudio.com/products/RStudio/). To
+install the proteomics add-on packages required for this tutorial, you
+will need to run the following code:
+
+
+```r
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
+biocLite("RforProteomics", dependencies = TRUE)
+biocLite("AnnotationHub")
+```
+
+For a more thorough introduction to R for proteomics, please read the
+`RforProteomics` vignette
+([online](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RforProteomics.pdf)
+or off-line with `vignette("RforProteomics")` after installing as
+described above). 
+
+We first need to load the proteomics packages:
+
 
 ```r
 library("MSnbase")
@@ -9,7 +261,12 @@ library("msmsTests")
 library("AnnotationHub")
 ```
 
-Getting data form `AnnotationHub`:
+## Getting example data
+
+*[AnnotationHub](http://bioconductor.org/packages/AnnotationHub)* is a cloud resource set up and managed by
+the Bioconductor project that programmatically disseminates omics
+data. I am working on contributing
+[proteomics data](http://bioconductor.org/packages/devel/bioc/vignettes/ProteomicsAnnotationHubData/inst/doc/ProteomicsAnnotationHubData.html).
 
 
 ```r
@@ -46,7 +303,7 @@ ms
 x <- xic(ms, mz = 636.925, width = 0.01)
 ```
 
-![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png)
+![plot of chunk xic](figure/xic-1.png)
 
 ```r
 head(x)
@@ -73,7 +330,7 @@ data(itraqdata)
 plot(itraqdata[[10]], reporters = iTRAQ4, full=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png)
+![plot of chunk itraqdata](figure/itraqdata-1.png)
 
 > A set of protein LFQ data let’s say - two conditions, with 6
 > replicates of each, and with a list of protein accession number and
@@ -82,7 +339,7 @@ plot(itraqdata[[10]], reporters = iTRAQ4, full=TRUE)
 > S curves for means of both, with errors Matrix plot of all against
 > all
 
-S curve?
+log(Abundance) vs. protein index.
 
 
 ```r
@@ -90,7 +347,7 @@ data(msnset)
 pairs(exprs(msnset))
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+![plot of chunk msnset](figure/msnset-1.png)
 
 > Normalisation strategies
 
@@ -100,28 +357,32 @@ data(dunkley2006)
 boxplot(exprs(dunkley2006))
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+![plot of chunk normbxplot](figure/normbxplot-1.png)
 
 ```r
 boxplot(exprs(normalise(dunkley2006, method = "vsn")),
         main = "Variance stabilisation normalisation")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-2.png)
+```
+## vsn2: 689 x 16 matrix (1 stratum). Please use 'meanSdPlot' to verify the fit.
+```
+
+![plot of chunk normbxplot](figure/normbxplot-2.png)
 
 ```r
 boxplot(exprs(normalise(dunkley2006, method = "center.median")),
         main = "Median")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-3.png)
+![plot of chunk normbxplot](figure/normbxplot-3.png)
 
 ```r
 boxplot(exprs(normalise(dunkley2006, method = "quantiles")),
         main = "Quantile")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-4.png)
+![plot of chunk normbxplot](figure/normbxplot-4.png)
 
 > Heatmap plot
 
@@ -131,13 +392,13 @@ data(msnset)
 heatmap(exprs(msnset))
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
+![plot of chunk heatmap](figure/heatmap-1.png)
 
 ```r
 image(msnset)
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-2.png)
+![plot of chunk heatmap](figure/heatmap-2.png)
 
 > Hierarchical clustering (with or without heatmap)
 
@@ -147,14 +408,14 @@ data(dunkley2006)
 heatmap(exprs(msnset))
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
+![plot of chunk hclust](figure/hclust-1.png)
 
 ```r
 hc <- hclust(dist(exprs(dunkley2006)))
 plot(hc)
 ```
 
-![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-2.png)
+![plot of chunk hclust](figure/hclust-2.png)
 
 > Volcano plots
 
@@ -174,7 +435,7 @@ res.volcanoplot(lst$tres, max.pval = 0.05,
                 ylbls = 4)
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
+![plot of chunk volc](figure/volc-1.png)
 
 
 > PCA analysis and plots
@@ -182,10 +443,21 @@ res.volcanoplot(lst$tres, max.pval = 0.05,
 
 ```r
 plot2D(dunkley2006)
+```
+
+```
+## Error in plot.xy(xy.coords(x, y), type = type, ...): invalid RGB specification
+```
+
+![plot of chunk pca](figure/pca-1.png)
+
+```r
 addLegend(dunkley2006, where = "topleft")
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+```
+## Error in plot.xy(xy.coords(x, y), type = type, ...): invalid RGB specification
+```
 
 > Abundance histograms
 
@@ -203,5 +475,9 @@ plot2D(hyperLOPIT2015,
        cex = exp(fData(hyperLOPIT2015)$svm.score) - 1)
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
+```
+## Error in plot.xy(xy.coords(x, y), type = type, ...): invalid RGB specification
+```
+
+![plot of chunk pcacex](figure/pcacex-1.png)
 

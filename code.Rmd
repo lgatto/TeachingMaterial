@@ -1,3 +1,36 @@
+# Inspection, visualisation and analysis of quantitative proteomics data
+
+```{r style, echo = FALSE, results = 'asis', message=FALSE}
+BiocStyle::markdown()
+```
+
+## Introduction
+
+This document provides the details to reproduce the data analysis
+figures in the course
+[slides](http://lgatto.github.io/Quantitative-Proteomics-and-Data-Analysis/slides.html).
+
+To be able to execute the code below, you will need to have a working
+R installation. I also recommend using the
+[RStudio editor](https://www.rstudio.com/products/RStudio/). To
+install the proteomics add-on packages required for this tutorial, you
+will need to run the following code:
+
+```{r install, eval=FALSE}
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
+biocLite("RforProteomics", dependencies = TRUE)
+biocLite("AnnotationHub")
+```
+
+For a more thorough introduction to R for proteomics, please read the
+`RforProteomics` vignette
+([online](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RforProteomics.pdf)
+or off-line with `vignette("RforProteomics")` after installing as
+described above). 
+
+We first need to load the proteomics packages:
+
 ```{r env, message=FALSE}
 library("MSnbase")
 library("mzR")
@@ -8,9 +41,14 @@ library("msmsTests")
 library("AnnotationHub")
 ```
 
-Getting data form `AnnotationHub`:
+## Getting example data
 
-```{r}
+`r Biocpkg("AnnotationHub")` is a cloud resource set up and managed by
+the Bioconductor project that programmatically disseminates omics
+data. I am working on contributing
+[proteomics data](http://bioconductor.org/packages/devel/bioc/vignettes/ProteomicsAnnotationHubData/inst/doc/ProteomicsAnnotationHubData.html).
+
+```{r ah}
 ah <- AnnotationHub()
 ms <- ah[["AH49008"]]
 ms
@@ -19,7 +57,7 @@ ms
 > A simple series of BPI chromatograms, usually shown as a bitmap -
 > why not plot them from exported data?
 
-```{r}
+```{r xic}
 x <- xic(ms, mz = 636.925, width = 0.01)
 head(x)
 ```
@@ -29,7 +67,7 @@ head(x)
 
 (iTRAQ, don't have a SILAC data at hand for now)
 
-```{r}
+```{r itraqdata}
 data(itraqdata)
 plot(itraqdata[[10]], reporters = iTRAQ4, full=TRUE)
 ```
@@ -43,14 +81,14 @@ plot(itraqdata[[10]], reporters = iTRAQ4, full=TRUE)
 
 log(Abundance) vs. protein index.
 
-```{r}
+```{r msnset}
 data(msnset)
 pairs(exprs(msnset))
 ```
 
 > Normalisation strategies
 
-```{r}
+```{r normbxplot}
 data(dunkley2006)
 boxplot(exprs(dunkley2006))
 boxplot(exprs(normalise(dunkley2006, method = "vsn")),
@@ -63,7 +101,7 @@ boxplot(exprs(normalise(dunkley2006, method = "quantiles")),
 
 > Heatmap plot
 
-```{r}
+```{r heatmap}
 data(msnset)
 heatmap(exprs(msnset))
 image(msnset)
@@ -71,7 +109,7 @@ image(msnset)
 
 > Hierarchical clustering (with or without heatmap)
 
-```{r}
+```{r hclust}
 data(dunkley2006)
 heatmap(exprs(msnset))
 hc <- hclust(dist(exprs(dunkley2006)))
@@ -80,7 +118,7 @@ plot(hc)
 
 > Volcano plots
 
-```{r}
+```{r volc}
 data(msms.dataset)
 e <- pp.msms.data(msms.dataset)
 null.f <- "y~batch"
@@ -98,7 +136,7 @@ res.volcanoplot(lst$tres, max.pval = 0.05,
 
 > PCA analysis and plots
 
-```{r}
+```{r pca}
 plot2D(dunkley2006)
 addLegend(dunkley2006, where = "topleft")
 ```
@@ -110,7 +148,7 @@ See normalisation above.
 > From a simpler set (e.g. Dean’s kdeg/protein/abundance) data, plot a
 > 2d plot with colour as a third scaling variable
 
-```{r}
+```{r pcacex}
 data(hyperLOPIT2015)
 setStockcol(paste0(getStockcol(), 60))
 plot2D(hyperLOPIT2015,
