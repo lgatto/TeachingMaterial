@@ -39,7 +39,8 @@ For a more thorough introduction to R for proteomics, please read the
 `RforProteomics` vignette
 ([online](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RforProteomics.pdf)
 or off-line with `vignette("RforProteomics")` after installing as
-described above). 
+described above), the
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html) and the corresonding papers [1, 2]
 
 We first need to load the proteomics packages:
 
@@ -148,7 +149,8 @@ Below, we use data downloaded from ProteomeXchange (see above) to
 generate additional raw data visualisations. These examples are taken
 from the `r Biocannopkg("RforProteomics")`
 [visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html). The
-code, which is not displayed here, can also be seen in the [source document](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/code.Rmd).
+code, which is not displayed here, can also be seen in the
+[source document](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/code.Rmd).
 
 ```{r pxd1, echo=FALSE}
 ms <- openMSfile(mzf)
