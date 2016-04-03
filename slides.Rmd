@@ -27,10 +27,11 @@ Slides: http://bit.ly/qprotda -- Code: http://bit.ly/qprotdar
 
 # 
 
-These slides are available under a **creative common CC-BY**
+These slides are available under a
+[**creative common CC-BY**](http://creativecommons.org/licenses/by/4.0/)
 license. You are free to **share** (copy and redistribute the material
 in any medium or format) and **adapt** (remix, transform, and build
-upon the material) for any purpose, even commercially. 
+upon the material) for any purpose, even commercially.
 
 <img src="Figures/cc1.jpg">
 
@@ -125,11 +126,9 @@ reflecting/investigating/analysing the data is the real challenge)
 
 <img src="./Figures/qprotda-with-plots.png" class="cover">
 
-# Proteomics data analysis - examples
-
-Include here figures from the [vignette](http://bit.ly/qprotdar).
-
 # 
+
+[Inspection, visualisation and analysis of quantitative proteomics data](http://bit.ly/qprotdar)
 
 <div class="double">
 <p class="double-flow">
@@ -138,6 +137,8 @@ Include here figures from the [vignette](http://bit.ly/qprotdar).
 <img src="./Figures/msanim2.gif" class="one-col-image">
 </p>
 </div>
+
+
 # Data analysis tools
 
 should enables you to manipulate your data, give some guarantees about

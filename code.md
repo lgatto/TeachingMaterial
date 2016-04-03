@@ -7,7 +7,7 @@ output:
      toc_depth: 1
 ---
 
-Last update: Sun Apr  3 21:18:59 2016
+Last update: Sun Apr  3 22:54:24 2016
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -233,6 +233,13 @@ span.toc-section-number::after {
 
 ------------
 
+> These slides are available under a
+> [**creative common CC-BY**](http://creativecommons.org/licenses/by/4.0/)
+> license. You are free to **share** (copy and redistribute the
+> material in any medium or format) and **adapt** (remix, transform,
+> and build upon the material) for any purpose, even commercially.
+
+------------
 
 # Introduction
 
@@ -258,7 +265,11 @@ For a more thorough introduction to R for proteomics, please read the
 `RforProteomics` vignette
 ([online](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RforProteomics.pdf)
 or off-line with `vignette("RforProteomics")` after installing as
-described above). 
+described above), the
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)
+and the corresonding papers
+[[1](http://www.ncbi.nlm.nih.gov/pubmed/25690415),
+[2](http://www.ncbi.nlm.nih.gov/pubmed/23692960)]
 
 We first need to load the proteomics packages:
 
@@ -352,7 +363,7 @@ f3
 
 # Visualising raw data
 
-A full chromatogam:
+## A full chromatogam
 
 
 ```r
@@ -361,7 +372,7 @@ chromatogram(ms)
 
 ![plot of chunk chromato](figure/chromato-1.png)
 
-Multiple chromatograms:
+## Multiple chromatograms
 
 
 ```r
@@ -374,7 +385,7 @@ lines(c3, col = "orange", lty = "dotted")
 
 ![plot of chunk chromato3](figure/chromato3-1.png)
 
-An extracted ion chromatogram:
+## An extracted ion chromatogram
 
 
 ```r
@@ -385,15 +396,63 @@ x <- xic(ms, mz = 636.925, width = 0.01, rtlim = c(2120, 2200))
 
 ![plot of chunk xic](figure/xic-1.png)
 
-Spectra:
+## Spectra
+
+We first load a test iTRAQ data called `itraqdata` and distributed as
+part of the *[MSnbase](http://bioconductor.org/packages/MSnbase)* package using the `data`
+function. This is a pre-packaged data that comes as a dedicated data
+structure called `MSnExp`. We then `plot` the 10th spectum using
+specific code that recognizes what to do with an element of an
+`MSnExp`.
 
 
 ```r
 data(itraqdata)
-plot(itraqdata[[10]], reporters = iTRAQ4, full=TRUE)
+itraqdata
+```
+
+```
+## Object of class "MSnExp"
+##  Object size in memory: 1.88 Mb
+## - - - Spectra data - - -
+##  MS level(s): 2 
+##  Number of MS1 acquisitions: 1 
+##  Number of MSn scans: 55 
+##  Number of precursor ions: 55 
+##  55 unique MZs
+##  Precursor MZ's: 401.74 - 1236.1 
+##  MSn M/Z range: 100 2069.27 
+##  MSn retention times: 19:9 - 50:18 minutes
+## - - - Processing information - - -
+## Data loaded: Wed May 11 18:54:39 2011 
+##  MSnbase version: 1.1.22 
+## - - - Meta data  - - -
+## phenoData
+##   rowNames: 1
+##   varLabels: sampleNames sampleNumbers
+##   varMetadata: labelDescription
+## Loaded from:
+##   dummyiTRAQ.mzXML 
+## protocolData: none
+## featureData
+##   featureNames: X1 X10 ... X9 (55 total)
+##   fvarLabels: spectrum ProteinAccession ProteinDescription
+##     PeptideSequence
+##   fvarMetadata: labelDescription
+## experimentData: use 'experimentData(object)'
+```
+
+```r
+plot(itraqdata[[10]], reporters = iTRAQ4, full=TRUE) 
 ```
 
 ![plot of chunk itraqdata](figure/itraqdata-1.png)
+
+The `ms` data is not pre-packaged as an `MSnExp` data. It is a more
+bare-bone mzRramp object, a pointer to a raw data
+file (here 55314): we need first to extract a
+spectrum of interest (here the 3071st spectrum, an MS1 spectrum), and
+use the generic `plot` function to visualise the spectrum.
 
 
 ```r
@@ -408,27 +467,110 @@ Below, we use data downloaded from ProteomeXchange (see above) to
 generate additional raw data visualisations. These examples are taken
 from the *[RforProteomics](http://bioconductor.org/packages/RforProteomics)*
 [visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html). The
-code, which is not displayed here, can also be seen in the [source document](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/code.Rmd).
+code, which is not displayed here, can also be seen in the
+[source document](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/code.Rmd).
 
+
+
+The importance of flexible access to specialised data becomes visible
+in the figure below (taken from the *[RforProteomics](http://bioconductor.org/packages/RforProteomics)*
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)). 
+**Not only can we access specific data and understand/visualise them, but we
+can transverse all the data and extracted/visualise/understand
+structured slices of data.**
+
+The upper panel represents the chomatogram of the TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzML raw
+data file. We concentrate at a specific retention time, 
+30:1 minutes (1800.6836 seconds) 
+corresponding to the 2807th MS1 spectrum, shown on the second row of
+figures. On the right, we zoom on the isotopic envelope of one peptide
+in particular. All vertical lines (red and grey) represent all the
+ions that were selected for a second round of MS analysis; these are
+represented in the bottom part of the figure.
 
 
 ![plot of chunk mslayout](figure/mslayout-1.png)
 
+Below, we illustrate some additional visualisation and animations of
+raw MS data, also taken from the *[RforProteomics](http://bioconductor.org/packages/RforProteomics)*
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html). On
+the left, we have a heatmap like visualisation of a MS map and a 3
+dimensional representation of the same data. On the right, 2 MS1
+spectra in blue and the set of interleaves 10 MS2 spectra.
+
 ![plot of chunk msmap1](figure/msmap1-1.png)
 
+Below, we have animations build from extracting successive slices as above.
+
+<table class='container'><tr><td>
+![MS animation 1](./Figures/msanim1.gif)
+</td><td>
+ ![MS animation 2](./Figures/msanim2.gif)
+</td></tr></table>
+
+
 # Identification data
+
+Annotated spectra and comparing spectra. 
 
 
 ```r
 par(mfrow = c(1, 2))
 itraqdata2 <- pickPeaks(itraqdata, verbose = FALSE)
-i <- 14
-s <- as.character(fData(itraqdata2)[i, "PeptideSequence"])
-plot(itraqdata2[[i]], s, main = s)
+s <- "SIGFEGDSIGR"
+plot(itraqdata2[[14]], s, main = s)
 plot(itraqdata2[[25]], itraqdata2[[28]], sequences = rep("IMIDLDGTENK", 2))
 ```
 
 ![plot of chunk id1](figure/id1-1.png)
+
+The annotation of spectra is obtained by simulating fragmentation of a
+peptide and matching observed peaks to fragments:
+
+
+```r
+calculateFragments("SIGFEGDSIGR")
+```
+
+```
+## The mass listed in "modifications" is now added to the amino acid/peptide.
+## In MSnbase < 1.17.6 the mass was replaced. Please see '?calculateFragments' for details.
+```
+
+```
+## Modifications used: C=57.02146
+```
+
+```
+##            mz  ion type pos z         seq
+## 1    88.03931   b1    b   1 1           S
+## 2   201.12337   b2    b   2 1          SI
+## 3   258.14483   b3    b   3 1         SIG
+## 4   405.21324   b4    b   4 1        SIGF
+## 5   534.25583   b5    b   5 1       SIGFE
+## 6   591.27729   b6    b   6 1      SIGFEG
+## 7   706.30423   b7    b   7 1     SIGFEGD
+## 8   793.33626   b8    b   8 1    SIGFEGDS
+## 9   906.42032   b9    b   9 1   SIGFEGDSI
+## 10  963.44178  b10    b  10 1  SIGFEGDSIG
+## 11 1119.54289  b11    b  11 1 SIGFEGDSIGR
+## 12  175.11895   y1    y   1 1           R
+## 13  232.14041   y2    y   2 1          GR
+## 14  345.22447   y3    y   3 1         IGR
+## 15  432.25650   y4    y   4 1        SIGR
+## 16  547.28344   y5    y   5 1       DSIGR
+##  [ reached getOption("max.print") -- omitted 20 rows ]
+```
+
+Visualising a pair of spectra means that we can access them, and that,
+in addition to plotting, we can manipluate them and perform
+computations. The two spectra corresponding to the `IMIDLDGTENK`
+peptide, for example have 22 common peaks, a correlation of `r
+round(compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "cor"),
+3)` and a dot product of 0.21 (see `?compareSpectra` for
+details).
+
+
 
 See also the *[MSGFgui](http://bioconductor.org/packages/MSGFgui)* package.
 

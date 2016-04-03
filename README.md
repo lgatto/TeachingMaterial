@@ -14,12 +14,12 @@ proteomics data, Laurent Gatto (University of Cambridge)
 
 ### License
 
-These slides are available under a **creative common CC-BY**
+The content of this repository is available under a
+[**creative common CC-BY**](http://creativecommons.org/licenses/by/4.0/)
 license. You are free to **share** (copy and redistribute the material
 in any medium or format) and **adapt** (remix, transform, and build
 upon the material) for any purpose, even commercially.   
 ![CC1](Figures/cc1.jpg)
-
 
 ### References
 

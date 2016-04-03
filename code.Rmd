@@ -15,6 +15,13 @@ BiocStyle::markdown()
 
 ------------
 
+> This vignette available under a
+> [**creative common CC-BY**](http://creativecommons.org/licenses/by/4.0/)
+> license. You are free to **share** (copy and redistribute the
+> material in any medium or format) and **adapt** (remix, transform,
+> and build upon the material) for any purpose, even commercially.
+
+------------
 
 # Introduction
 
@@ -40,7 +47,10 @@ For a more thorough introduction to R for proteomics, please read the
 ([online](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RforProteomics.pdf)
 or off-line with `vignette("RforProteomics")` after installing as
 described above), the
-[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html) and the corresonding papers [1, 2]
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)
+and the corresonding papers
+[[1](http://www.ncbi.nlm.nih.gov/pubmed/25690415),
+[2](http://www.ncbi.nlm.nih.gov/pubmed/23692960)]
 
 We first need to load the proteomics packages:
 
@@ -108,13 +118,13 @@ f3
 
 # Visualising raw data
 
-A full chromatogam:
+## A full chromatogam
 
 ```{r chromato}
 chromatogram(ms)
 ```
 
-Multiple chromatograms:
+## Multiple chromatograms
 
 ```{r chromato3, cache=TRUE}
 c1 <- chromatogram(f1)
@@ -124,20 +134,34 @@ c3 <- chromatogram(f3, plot = FALSE)
 lines(c3, col = "orange", lty = "dotted")
 ```
 
-An extracted ion chromatogram:
+## An extracted ion chromatogram
 
-```{r xic, cache=TRUE}
+```{r xic, cache=TRUE, fig.width=12}
 par(mfrow = c(1, 2))
 xic(ms, mz = 636.925, width = 0.01)
 x <- xic(ms, mz = 636.925, width = 0.01, rtlim = c(2120, 2200))
 ```
 
-Spectra:
+## Spectra
+
+We first load a test iTRAQ data called `itraqdata` and distributed as
+part of the `r Biocpkg("MSnbase")` package using the `data`
+function. This is a pre-packaged data that comes as a dedicated data
+structure called `MSnExp`. We then `plot` the 10th spectum using
+specific code that recognizes what to do with an element of an
+`MSnExp`.
 
 ```{r itraqdata}
 data(itraqdata)
-plot(itraqdata[[10]], reporters = iTRAQ4, full=TRUE)
+itraqdata
+plot(itraqdata[[10]], reporters = iTRAQ4, full=TRUE) 
 ```
+
+The `ms` data is not pre-packaged as an `MSnExp` data. It is a more
+bare-bone `r as.character(class(ms))` object, a pointer to a raw data
+file (here `r basename(fileName(ms))`): we need first to extract a
+spectrum of interest (here the 3071st spectrum, an MS1 spectrum), and
+use the generic `plot` function to visualise the spectrum.
 
 ```{r ms1}
 plot(peaks(ms, 3071), type = "h",
@@ -159,7 +183,27 @@ hd <- header(ms)
 ms1 <- which(hd$msLevel == 1)
 
 rtsel <- hd$retentionTime[ms1] / 60 > 30 & hd$retentionTime[ms1] / 60 < 35
+
+i <- ms1[which(rtsel)][1]
+j <- ms1[which(rtsel)][2]
 ```
+
+The importance of flexible access to specialised data becomes visible
+in the figure below (taken from the `r Biocannopkg("RforProteomics")`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)). 
+**Not only can we access specific data and understand/visualise them, but we
+can transverse all the data and extracted/visualise/understand
+structured slices of data.**
+
+The upper panel represents the chomatogram of the `r fileName(ms)` raw
+data file. We concentrate at a specific retention time, 
+`r formatRt(hd[i, "retentionTime"])` minutes (`r hd[i, "retentionTime"]` seconds) 
+corresponding to the `r i`th MS1 spectrum, shown on the second row of
+figures. On the right, we zoom on the isotopic envelope of one peptide
+in particular. All vertical lines (red and grey) represent all the
+ions that were selected for a second round of MS analysis; these are
+represented in the bottom part of the figure.
+
 
 ```{r mslayout, echo=FALSE}
 lout <- matrix(NA, ncol = 10, nrow = 8)
@@ -171,8 +215,6 @@ lout[6, ] <- rep(4:8, each = 2)
 lout[7, ] <- rep(9:13, each = 2)
 lout[8, ] <- rep(9:13, each = 2)
 
-i <- ms1[which(rtsel)][1]
-j <- ms1[which(rtsel)][2]
 ms2 <- (i+1):(j-1)
 
 layout(lout)
@@ -210,6 +252,13 @@ for (ii in ms2) {
 }
 ```
 
+Below, we illustrate some additional visualisation and animations of
+raw MS data, also taken from the `r Biocannopkg("RforProteomics")`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html). On
+the left, we have a heatmap like visualisation of a MS map and a 3
+dimensional representation of the same data. On the right, 2 MS1
+spectra in blue and the set of interleaves 10 MS2 spectra.
+
 ```{r msmap1, message=FALSE, fig.width=15, echo=FALSE}
 M <- MSmap(ms, ms1[rtsel], 521, 523, .005, hd)
 ff <- colorRampPalette(c("yellow", "steelblue"))
@@ -224,16 +273,54 @@ m3 <- plot3D(M2)
 grid.arrange(m1, m2, m3, ncol = 3)
 ```
 
+Below, we have animations build from extracting successive slices as above.
+
+```{r two-col-1, results='asis', echo=FALSE, out.extra=''}
+cat("<table class='container'><tr>")
+cat("<td>")
+```
+![MS animation 1](./Figures/msanim1.gif)
+```{r two-col-2, results='asis', echo=FALSE, out.extra=''}
+cat("</td>")
+cat("<td>")
+```
+ ![MS animation 2](./Figures/msanim2.gif)
+```{r two-col-3, results='asis', echo=FALSE, out.extra=''}
+cat("</td>")
+cat("</tr></table>")
+```
+
+
 # Identification data
 
-```{r id1, message=FALSE, fig.width=15}
+Annotated spectra and comparing spectra. 
+
+```{r id1, message=FALSE, fig.width=15, message=FALSE}
 par(mfrow = c(1, 2))
 itraqdata2 <- pickPeaks(itraqdata, verbose = FALSE)
-i <- 14
-s <- as.character(fData(itraqdata2)[i, "PeptideSequence"])
-plot(itraqdata2[[i]], s, main = s)
+s <- "SIGFEGDSIGR"
+plot(itraqdata2[[14]], s, main = s)
 plot(itraqdata2[[25]], itraqdata2[[28]], sequences = rep("IMIDLDGTENK", 2))
 ```
+
+The annotation of spectra is obtained by simulating fragmentation of a
+peptide and matching observed peaks to fragments:
+
+```{r fag}
+calculateFragments("SIGFEGDSIGR")
+```
+
+Visualising a pair of spectra means that we can access them, and that,
+in addition to plotting, we can manipluate them and perform
+computations. The two spectra corresponding to the `IMIDLDGTENK`
+peptide, for example have `r compareSpectra(itraqdata2[[25]],
+itraqdata2[[28]], fun = "common")` common peaks, a correlation of `r
+round(compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "cor"),
+3)` and a dot product of `r round(compareSpectra(itraqdata2[[25]],
+itraqdata2[[28]], fun = "dotproduct"), 3)` (see `?compareSpectra` for
+details).
+
+
 
 See also the `r Biocpkg("MSGFgui")` package.
 
