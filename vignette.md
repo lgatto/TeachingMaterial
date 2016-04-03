@@ -7,7 +7,7 @@ output:
      toc_depth: 1
 ---
 
-Last update: Sun Apr  3 23:12:20 2016
+Last update: Sun Apr  3 23:49:51 2016
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -468,7 +468,7 @@ generate additional raw data visualisations. These examples are taken
 from the *[RforProteomics](http://bioconductor.org/packages/RforProteomics)*
 [visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html). The
 code, which is not displayed here, can also be seen in the
-[source document](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/code.Rmd).
+[source document](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/vignette.Rmd).
 
 
 
@@ -769,7 +769,7 @@ res.volcanoplot(lst$tres, max.pval = 0.05,
 # About this document
 
 The source used to generate this document is available
-[here](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/code.Rmd).
+[here](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/vignette.Rmd).
 
 Software used:
 

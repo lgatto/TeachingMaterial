@@ -16,7 +16,7 @@ Laurent Gatto                      Computational Proteomics Unit
 https://lgatto.github.io           University of Cambridge
 ```
 
-Slides: http://bit.ly/qprotda -- Code: http://bit.ly/qprotdar
+Slides: http://bit.ly/qprotda -- Vignette: http://bit.ly/qprotdavig
 
 **Acknowledgements**  BBSRC for funding; Sebastian Gibb and Lisa Breckels for coding.
 
@@ -128,7 +128,7 @@ reflecting/investigating/analysing the data is the real challenge)
 
 # 
 
-[Inspection, visualisation and analysis of quantitative proteomics data](http://bit.ly/qprotdar)
+[Inspection, visualisation and analysis of quantitative proteomics data](http://bit.ly/qprotdavig)
 
 <div class="double">
 <p class="double-flow">
