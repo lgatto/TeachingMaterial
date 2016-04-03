@@ -25,12 +25,12 @@ upon the material) for any purpose, even commercially.
 
 Gatto L, Breckels LM, Naake T and Gibb S Visualisation of proteomics
 data using R and Bioconductor. Proteomics. 2015
-Feb 18. doi:[10.1002/pmic.201400392](http://www.ncbi.nlm.nih.gov/pubmed/25690415).
+Feb 18. [10.1002/pmic.201400392](http://www.ncbi.nlm.nih.gov/pubmed/25690415).
 
 
 Gatto L. and Christoforou A. Using R and Bioconductor for proteomics
 data analysis. Biochim Biophys Acta. 2014 Jan;1844(1 Pt
-A):42-51. doi:[10.1016/j.bbapap.2013.04.032](http://www.ncbi.nlm.nih.gov/pubmed/23692960).
+A):42-51. [10.1016/j.bbapap.2013.04.032](http://www.ncbi.nlm.nih.gov/pubmed/23692960).
 
 ### Resources
 
