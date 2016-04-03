@@ -7,7 +7,7 @@ output:
      toc_depth: 1
 ---
 
-Last update: Sun Apr  3 23:49:51 2016
+Last update: Sun Apr  3 23:56:38 2016
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -243,9 +243,12 @@ span.toc-section-number::after {
 
 # Introduction
 
-This document provides the details to reproduce the data analysis
-figures in the course
-[slides](http://lgatto.github.io/Quantitative-Proteomics-and-Data-Analysis/slides.html).
+This document provides annotated and reproducible quantitative
+proteomics data analysis examples for the *Quantitative Proteomics And
+Data Analysis*
+[course](http://lgatto.githiub.io/Quantitative-Proteomics-And-Data-Analysis)
+(intro
+[slides](http://lgatto.github.io/Quantitative-Proteomics-and-Data-Analysis/slides.html)).
 
 To be able to execute the code below, you will need to have a working
 R installation. I also recommend using the
