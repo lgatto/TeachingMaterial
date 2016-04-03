@@ -10,7 +10,7 @@ proteomics data, Laurent Gatto (University of Cambridge)
 ## Material
 
 * Slides: http://bit.ly/qprotda
-* Details: [code](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/code.md) 
+* Details: http://bit.ly/qprotdar
 
 ### License
 
