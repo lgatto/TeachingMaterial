@@ -53,7 +53,7 @@ The ability to prepare and **explore** data, identify **patterns**
 (good and pathological ones) and convincingly demonstrate that the
 pattern are **genuine** (rather than random).
 
-Requires flexible tools.
+It's not analysing data, it's *investigating* data - requires flexibility.
 
 # 
 
@@ -68,8 +68,9 @@ Requires flexible tools.
 
 But: 
 
-* Learning curve (although, I would argue that the reflection about
-the data and analysis is the really challenging part)
+* Learning curve (although, I would argue that the
+reflecting/investigating/analysing the data is the real challenge)
+
 
 # To analyse data, you need
 
@@ -104,23 +105,16 @@ the data and analysis is the really challenging part)
 
 <img src="./Figures/qprotda.png" class="cover">
 
-# Quantitative proteomics data analysis
-
-* **Data** Ratios or intenstities - do not let the software decide for you!
-* **Replicates**: technical and biological
-* **Variability**: technical vs biological
-* **Normalisation**: remove unwanted (technical) variation while
-  retaining biological variability.
-
-
 # Visualisation
 
 > A picture is worth a thousand words.
 
+> Graphics reveal data.
+
+
 > Visualization can surprise you, but it doesn’t scale well. Modeling
 > scales well, but it can’t surprise you. Hadley Wickham
 
-> Graphics reveal data.
 
 
 # 
@@ -133,15 +127,17 @@ the data and analysis is the really challenging part)
 
 # Proteomics data analysis - examples
 
-- chomatogram
-- xic
-- spectum (iTRAQ)
-- **peptide-protein graph**
-- see NOTES
-- see *Statistics primer* practical
-- MA plots
+Include here figures from the [vignette](http://bit.ly/qprotdar).
 
+# 
 
+<div class="double">
+<p class="double-flow">
+<img src="./Figures/msanim1.gif" class="one-col-image">
+</p><p class="double-flow">
+<img src="./Figures/msanim2.gif" class="one-col-image">
+</p>
+</div>
 # Data analysis tools
 
 should enables you to manipulate your data, give some guarantees about
