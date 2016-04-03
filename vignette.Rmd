@@ -174,7 +174,7 @@ generate additional raw data visualisations. These examples are taken
 from the `r Biocannopkg("RforProteomics")`
 [visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html). The
 code, which is not displayed here, can also be seen in the
-[source document](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/code.Rmd).
+[source document](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/vignette.Rmd).
 
 ```{r pxd1, echo=FALSE}
 ms <- openMSfile(mzf)
@@ -328,8 +328,12 @@ See also the `r Biocpkg("MSGFgui")` package.
 
 # Quantitation data
 
-**Data** Ratios or intenstities - do not let the software decide for
-you!
+> What does the quantitative data encode: ratios or intenstities? Do
+> not let the software decide for you!
+
+Here's where the experimental design becomes essential: what are
+**replicates**: technical and biological, what **variability**
+(technical vs biological vs different conditions) are we exploring.
 
 
 > A set of protein LFQ data let’s say - two conditions, with 6
@@ -369,8 +373,6 @@ boxplot(exprs(normalise(dunkley2006, method = "quantiles")),
 
 ## Heatmap plot
 
-* **Replicates**: technical and biological
-* **Variability**: technical vs biological
 
 
 ```{r heatmap}
@@ -410,11 +412,9 @@ plot2D(hyperLOPIT2015,
        cex = exp(fData(hyperLOPIT2015)$svm.score) - 1)
 ```
 
-## Statistical analyses
+# Statistical analyses
 
-## Volcano plots
-
-```{r volc, cache=TRUE}
+```{r msmsstats, cache=TRUE}
 data(msms.dataset)
 e <- pp.msms.data(msms.dataset)
 null.f <- "y~batch"
@@ -424,16 +424,45 @@ res <- msms.glm.qlll(e, alt.f, null.f,div = div)
 lst <- test.results(res, e, pData(e)$treat, "U600", "U200", div,
                     alpha = 0.05, minSpC = 2, minLFC = log2(1.8),
                     method = "BH")
+```
+
+## p-values
+
+```{r pvhist}
+summary(lst[["tres"]]$p.values)
+hist(lst[["tres"]]$p.value)
+```
+
+```{r adjphist}
+summary(lst[["tres"]]$adjp)
+hist(lst[["tres"]]$adjp)
+```
+
+## Volcano plots
+
+````{r volc}
 res.volcanoplot(lst$tres, max.pval = 0.05,
                 min.LFC = 1, maxx = 3, maxy = NULL,
                 ylbls = 4)
 ```
 
+# References and resources
+
+* [Visualisation of proteomics data using R and Bioconductor](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4510819/)
+* [Using R and Bioconductor for proteomics data analysis](http://arxiv.org/pdf/1305.6559v1.pdf)
+* `RforProteomics`: http://bioconductor.org/packages/RforProteomics
+* [R/Bioconductor workflow](http://bioconductor.org/help/workflows/proteomics/)
+* [Teaching material](http://lgatto.github.io/TeachingMaterial/) for
+  R and more
+* Workshops: [Software](http://software-carpentry.org/) and
+  [Data Carpentry](http://www.datacarpentry.org/), 
+  [Data Programmers](http://www.dataprogrammers.net/)
+
 
 # About this document
 
 The source used to generate this document is available
-[here](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/code.Rmd).
+[here](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/vignette.Rmd).
 
 Software used:
 

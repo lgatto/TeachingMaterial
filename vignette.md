@@ -7,7 +7,7 @@ output:
      toc_depth: 1
 ---
 
-Last update: Sun Apr  3 22:54:24 2016
+Last update: Sun Apr  3 23:12:20 2016
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -233,7 +233,7 @@ span.toc-section-number::after {
 
 ------------
 
-> These slides are available under a
+> This vignette available under a
 > [**creative common CC-BY**](http://creativecommons.org/licenses/by/4.0/)
 > license. You are free to **share** (copy and redistribute the
 > material in any medium or format) and **adapt** (remix, transform,
@@ -578,8 +578,12 @@ See also the *[MSGFgui](http://bioconductor.org/packages/MSGFgui)* package.
 
 # Quantitation data
 
-**Data** Ratios or intenstities - do not let the software decide for
-you!
+> What does the quantitative data encode: ratios or intenstities? Do
+> not let the software decide for you!
+
+Here's where the experimental design becomes essential: what are
+**replicates**: technical and biological, what **variability**
+(technical vs biological vs different conditions) are we exploring.
 
 
 > A set of protein LFQ data let’s say - two conditions, with 6
@@ -628,8 +632,6 @@ boxplot(exprs(normalise(dunkley2006, method = "quantiles")),
 
 ## Heatmap plot
 
-* **Replicates**: technical and biological
-* **Variability**: technical vs biological
 
 
 
@@ -691,9 +693,7 @@ plot2D(hyperLOPIT2015,
 
 ![plot of chunk pcacex](figure/pcacex-1.png)
 
-## Statistical analyses
-
-## Volcano plots
+# Statistical analyses
 
 
 ```r
@@ -706,12 +706,64 @@ res <- msms.glm.qlll(e, alt.f, null.f,div = div)
 lst <- test.results(res, e, pData(e)$treat, "U600", "U200", div,
                     alpha = 0.05, minSpC = 2, minLFC = log2(1.8),
                     method = "BH")
+```
+
+## p-values
+
+
+```r
+summary(lst[["tres"]]$p.values)
+```
+
+```
+## Length  Class   Mode 
+##      0   NULL   NULL
+```
+
+```r
+hist(lst[["tres"]]$p.value)
+```
+
+![plot of chunk pvhist](figure/pvhist-1.png)
+
+
+```r
+summary(lst[["tres"]]$adjp)
+```
+
+```
+##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## 0.0000003 0.3107000 0.5896000 0.5536000 0.7959000 0.9886000
+```
+
+```r
+hist(lst[["tres"]]$adjp)
+```
+
+![plot of chunk adjphist](figure/adjphist-1.png)
+
+## Volcano plots
+
+
+```r
 res.volcanoplot(lst$tres, max.pval = 0.05,
                 min.LFC = 1, maxx = 3, maxy = NULL,
                 ylbls = 4)
 ```
 
 ![plot of chunk volc](figure/volc-1.png)
+
+# References and resources
+
+* [Visualisation of proteomics data using R and Bioconductor](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4510819/)
+* [Using R and Bioconductor for proteomics data analysis](http://arxiv.org/pdf/1305.6559v1.pdf)
+* `RforProteomics`: http://bioconductor.org/packages/RforProteomics
+* [R/Bioconductor workflow](http://bioconductor.org/help/workflows/proteomics/)
+* [Teaching material](http://lgatto.github.io/TeachingMaterial/) for
+  R and more
+* Workshops: [Software](http://software-carpentry.org/) and
+  [Data Carpentry](http://www.datacarpentry.org/), 
+  [Data Programmers](http://www.dataprogrammers.net/)
 
 
 # About this document
