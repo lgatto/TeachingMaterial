@@ -14,6 +14,7 @@ output:
 ```
 Laurent Gatto                      Computational Proteomics Unit
 https://lgatto.github.io           University of Cambridge
+lg390@cam.ac.uk                    @lgatt0
 ```
 
 Slides: http://bit.ly/qprotda -- Vignette: http://bit.ly/qprotdavig
@@ -23,7 +24,7 @@ Slides: http://bit.ly/qprotda -- Vignette: http://bit.ly/qprotdavig
 ```
 ```
 
-(Last update Sun Apr  3 23:50:40 2016)
+(Last update Mon Apr  4 11:49:12 2016)
 
 # 
 
@@ -52,7 +53,7 @@ upon the material) for any purpose, even commercially.
 
 The ability to prepare and **explore** data, identify **patterns**
 (good and pathological ones) and convincingly demonstrate that the
-pattern are **genuine** (rather than random).
+patterns are **genuine** (rather than random).
 
 It's not analysing data, it's *investigating* data - requires flexibility.
 
@@ -61,13 +62,14 @@ It's not analysing data, it's *investigating* data - requires flexibility.
 <img src="./Figures/Data_Analysis_Hadley_Wickham.png" class="cover">  
 
 
-# Why programme
+# And also
 
 * Reproducibility/replicability
 * Automation
 * Plain text: tracking, re-use, share, communicable
 
-But: 
+
+`Programming`,  but: 
 
 * Learning curve (although, I would argue that the
 reflecting/investigating/analysing the data is the real challenge)
@@ -108,10 +110,9 @@ reflecting/investigating/analysing the data is the real challenge)
 
 # Visualisation
 
-> A picture is worth a thousand words.
-
 > Graphics reveal data.
 
+  
 
 > Visualization can surprise you, but it doesn’t scale well. Modeling
 > scales well, but it can’t surprise you. Hadley Wickham
@@ -141,11 +142,11 @@ reflecting/investigating/analysing the data is the real challenge)
 
 # Data analysis tools
 
-should enables you to manipulate your data, give some guarantees about
-the integrity of the data, support effective extract/subset components
-of the data, visualise them, enable transformation of the data, give
-access to infrastucture for statistical analysis, and enable
-annotation of the data. 
+should enables you to **manipulate** your data, give some guarantees
+about the **integrity** of the data, support effective
+**extract/subset** components of the data, **visualise** them, enable
+**transformation** of the data, give access to infrastucture for
+**statistical analysis**, and enable **annotation** of the data.
 
 # Data analysis tools 
 

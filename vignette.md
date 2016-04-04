@@ -7,7 +7,7 @@ output:
      toc_depth: 1
 ---
 
-Last update: Mon Apr  4 10:37:11 2016
+Last update: Mon Apr  4 11:47:37 2016
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -800,6 +800,16 @@ heatmap.2(exprs(x), col = c("lightgray", "black"),
 
 ![plot of chunk naheatmap](figure/naheatmap-1.png)
 
+One solution is to remove all or part of the features that have
+missing values (see `?filterNA`) and/or impute missing values
+(`?impute`). The latter is not a straighforward thing, as is likely to
+dramatically fail when a high proportion of data is missing (10s of
+%). 
+
+Different imputation methods are more appropriate to different classes
+of missing values (as documented in this
+[paper](http://pubs.acs.org/doi/abs/10.1021/acs.jproteome.5b00981)).
+
 ## Normalisation strategies
 
 **Normalisation**: remove unwanted (technical) variation while
@@ -1015,6 +1025,16 @@ res.volcanoplot(lst$tres, max.pval = 0.05,
 ```
 
 ![plot of chunk volc](figure/volc-1.png)
+
+# Annotation
+
+Context is essential in biology: we need to be able to pull
+annotations from *[GO](http://bioconductor.org/packages/GO)*, Biomart (*[biomaRt](http://bioconductor.org/packages/biomaRt)*),
+UniProt (*[UniProt.ws](http://bioconductor.org/packages/UniProt.ws)*), and many specialised databases as
+well as decorate the data (samples, features) with additional values
+we calculate (such as p-values, classification results, number of
+missing values, ...).
+
 
 # Gene-set/pathway enrichment analyses
 

@@ -486,6 +486,16 @@ heatmap.2(exprs(x), col = c("lightgray", "black"),
           ColSideColors = rep(c("steelblue", "darkolivegreen"), each = 8))
 ```
 
+One solution is to remove all or part of the features that have
+missing values (see `?filterNA`) and/or impute missing values
+(`?impute`). The latter is not a straighforward thing, as is likely to
+dramatically fail when a high proportion of data is missing (10s of
+%). 
+
+Different imputation methods are more appropriate to different classes
+of missing values (as documented in this
+[paper](http://pubs.acs.org/doi/abs/10.1021/acs.jproteome.5b00981)).
+
 ## Normalisation strategies
 
 **Normalisation**: remove unwanted (technical) variation while
@@ -643,6 +653,16 @@ res.volcanoplot(lst$tres, max.pval = 0.05,
                 min.LFC = 1, maxx = 3, maxy = NULL,
                 ylbls = 4)
 ```
+
+# Annotation
+
+Context is essential in biology: we need to be able to pull
+annotations from `r Biocpkg("GO")`, Biomart (`r Biocpkg("biomaRt")`),
+UniProt (`r Biocpkg("UniProt.ws")`), and many specialised databases as
+well as decorate the data (samples, features) with additional values
+we calculate (such as p-values, classification results, number of
+missing values, ...).
+
 
 # Gene-set/pathway enrichment analyses
 
