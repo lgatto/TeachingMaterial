@@ -7,7 +7,7 @@ output:
      toc_depth: 1
 ---
 
-Last update: Sun Apr  3 23:56:38 2016
+Last update: Mon Apr  4 03:16:54 2016
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -262,6 +262,8 @@ will need to run the following code:
 source("https://bioconductor.org/biocLite.R")
 biocLite("RforProteomics", dependencies = TRUE)
 biocLite("AnnotationHub")
+biocLite("genefilter")
+biocLite("qvalue")
 ```
 
 For a more thorough introduction to R for proteomics, please read the
@@ -287,7 +289,9 @@ library("pRolocdata")
 library("msmsTests")
 library("AnnotationHub")
 library("lattice")
- require("gridExtra") 
+library("gridExtra")
+library("genefilter")
+library("qvalue")
 ```
 
 # Getting example data
@@ -568,14 +572,20 @@ calculateFragments("SIGFEGDSIGR")
 Visualising a pair of spectra means that we can access them, and that,
 in addition to plotting, we can manipluate them and perform
 computations. The two spectra corresponding to the `IMIDLDGTENK`
-peptide, for example have 22 common peaks, a correlation of `r
-round(compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "cor"),
-3)` and a dot product of 0.21 (see `?compareSpectra` for
-details).
+peptide, for example have 
+22 
+common peaks, a correlation of 
+0.198 
+and a dot product of 
+0.21 
+(see `?compareSpectra` for details).
 
+There are 2 Bioconductor packages for peptide-spectrum matching
+directly in R, namely *[MSGFplus](http://bioconductor.org/packages/MSGFplus)* and *[rTANDEM](http://bioconductor.org/packages/rTANDEM)*,
+replying on `MSGF+` and `X!TANDEM` respectively.
 
-
-See also the *[MSGFgui](http://bioconductor.org/packages/MSGFgui)* package.
+See also the *[MSGFgui](http://bioconductor.org/packages/MSGFgui)* package for visualisation of
+identification data.
 
 ![MSGFgui screenshot](./Figures/03-2-msgfgui_panel_BW.png)
 
@@ -588,35 +598,185 @@ Here's where the experimental design becomes essential: what are
 **replicates**: technical and biological, what **variability**
 (technical vs biological vs different conditions) are we exploring.
 
+<!-- > A set of protein LFQ data let’s say - two conditions, with 6 -->
+<!-- > replicates of each, and with a list of protein accession number and -->
+<!-- > the LFQ data: This is a fabulous dataset for  -->
 
-> A set of protein LFQ data let’s say - two conditions, with 6
-> replicates of each, and with a list of protein accession number and
-> the LFQ data: This is a fabulous dataset for 
+<!-- > S curves for means of both, with errors Matrix plot of all against -->
+<!-- all log(Abundance) vs. protein index. -->
 
-> S curves for means of both, with errors Matrix plot of all against
-> all
 
-log(Abundance) vs. protein index.
+The data illustrated in the heatmap below is available as the
+`mulvey2015norm` `MSnSet` data. In this experiment,
+[Mulvey and colleagues](http://www.ncbi.nlm.nih.gov/pubmed/26059426),
+performed a time course experiment on mouse extra-embryonic endoderm
+(XEN) stem cells. Extra-embryonic endoderm differentiation can be
+modelled in vitro by induced expression of GATA transcription factors
+in mouse embryonic stem cells. They used this GATA-inducible system to
+quantitatively monitor the dynamics of global proteomic changes during
+the early stages of this differentiation event (at 0, 16, 24, 48 and
+72 hours) and also investigate the fully differentiated phenotype, as
+represented by embryo-derived XEN cells.
+
+## Heatmaps 
 
 
 ```r
-data(msnset)
-pairs(exprs(msnset))
+data(mulvey2015norm)
+heatmap(exprs(mulvey2015norm))
 ```
 
-![plot of chunk msnset](figure/msnset-1.png)
+![plot of chunk mulveyhm](figure/mulveyhm-1.png)
+
+**Note:** Often, heatmap illustrating the results of a statistical
+analysis show very distinctive coloured patterns. While stinking,
+these patterns *only* display the obvious, i.e. a set of features that
+have been selected for differences between experimental conditions. It
+would be very worrying in no pattern was to be observed and, in case
+of such a pattern, the figure itself does not enable to assess the
+validity of the results.
+
+## Images
+
 
 ```r
-## pairs(exprs(msnset), log = "xy")
+i0 <- image(mulvey2015norm, plot = FALSE)
+i1 <- image(mulvey2015norm, facetBy = "rep", plot = FALSE)
+i2 <- image(mulvey2015norm, facetBy = "times", plot = FALSE)
+grid.arrange(i0, i1, i2, ncol = 3)
 ```
+
+![plot of chunk imacefacet](figure/imacefacet-1.png)
+
+## Pair plots with all vs all scatterplots
+
+
+```r
+i <- c(grep("0hr", sampleNames(mulvey2015norm)),
+       grep("XEN", sampleNames(mulvey2015norm)))
+
+## plot all pairs with correlations - see ?pairs for details
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor = 1) {
+    usr <- par("usr"); on.exit(par(usr))
+    par(usr = c(0, 1, 0, 1))
+    r <- cor(x, y)
+    txt <- format(c(r, 0.123456789), digits = digits)[1]
+    txt <- paste0(prefix, txt)
+    text(0.5, 0.5, txt, cex = cex.cor)
+}
+
+pairs(exprs(mulvey2015norm[, i]), lower.panel = panel.cor)
+```
+
+![plot of chunk pairplot](figure/pairplot-1.png)
+
+
+## Hierarchical clustering only
+
+
+```r
+par(mfrow = c(1, 2))
+hc <- hclust(dist(exprs(mulvey2015norm)))
+plot(hc)
+hc2 <- hclust(dist(t(exprs(mulvey2015norm))))
+plot(hc2)
+```
+
+![plot of chunk hclust](figure/hclust-1.png)
 
 ## MA plots
+
+
+```r
+mztab <- pxget(px1, "PXD000001_mztab.txt")
+qnt <- readMzTabData(mztab, what = "PEP", version = "0.9")
+sampleNames(qnt) <- reporterNames(TMT6)
+qnt <- filterNA(qnt)
+spikes <- c("P02769", "P00924", "P62894", "P00489")
+protclasses <- as.character(fData(qnt)$accession)
+protclasses[!protclasses %in% spikes] <- "Background"
+```
+
+
+```r
+MAplot(qnt[, 1:2], col = factor(protclasses), pch = 19)
+```
+
+![plot of chunk maplots](figure/maplots-1.png)
+
+```r
+MAplot(qnt, cex = .8)
+```
+
+![plot of chunk maplots](figure/maplots-2.png)
+
+
+The *[RforProteomics](http://bioconductor.org/packages/RforProteomics)*
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)
+has a dedicated section about
+[MA plots](http://www.bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html#the-ma-plot-example),
+describing the different R plotting systems and various customisations
+that can be applied to improve such figures and scatterplots in
+general.
+
+
+The `shinyMA` interactive application enables to navigate an MA plot
+an a linked expression plot. It can be tested online
+(https://lgatto.shinyapps.io/shinyMA/) or offline (as part of the 
+*[RforProteomics](http://bioconductor.org/packages/RforProteomics)* package), as shown below:
+
+
+```r
+shinyMA()
+```
 
 
 ## Normalisation strategies
 
 **Normalisation**: remove unwanted (technical) variation while
 retaining biological variability.
+
+### Ratios (SILAC)
+
+
+```r
+sf <- downloadData("http://proteome.sysbiol.cam.ac.uk/lgatto/files/silac.rda")
+load(sf)
+ns1 <- s1; ns2 <- s2; ns3 <- s3
+exprs(ns1) <- exprs(s1) - median(exprs(s1))
+exprs(ns2) <- exprs(s2) - median(exprs(s2))
+exprs(ns3) <- exprs(s3) - median(exprs(s3))
+```
+
+
+```r
+par(mfrow = c(1, 2))
+
+plot(density(exprs(s1)), col = "red", main = expression(SILAC~log[2]~ratios))
+rug(exprs(s1))
+lines(density(exprs(s2)), col = "green")
+lines(density(exprs(s3)), col = "blue")
+grid()
+abline(v = 0)
+
+plot(density(exprs(ns1)), col = "red", main = expression(Normalised~SILAC~log[2]~ratios))
+rug(exprs(ns1))
+lines(density(exprs(ns2)), col = "green")
+lines(density(exprs(ns3)), col = "blue")
+grid()
+abline(v = 0)
+```
+
+![plot of chunk silacnormplot](figure/silacnormplot-1.png)
+
+Other approaches for ratio normalisation: 
+
+* `loess` polynomial regression that uses the raw intensities.
+* `quantile` (as below) for between acquisition normalisation.
+
+See the *[limma](http://bioconductor.org/packages/limma)* package.
+
+### Intensities (iTRAQ)
 
 
 ```r
@@ -633,42 +793,15 @@ boxplot(exprs(normalise(dunkley2006, method = "quantiles")),
 
 ![plot of chunk normbxplot](figure/normbxplot-1.png)
 
-## Heatmap plot
-
-
-
-
-```r
-data(msnset)
-heatmap(exprs(msnset))
-```
-
-![plot of chunk heatmap](figure/heatmap-1.png)
-
-```r
-image(msnset)
-```
-
-![plot of chunk heatmap](figure/heatmap-2.png)
-
-## Hierarchical clustering (with or without heatmap)
-
-
-```r
-data(dunkley2006)
-heatmap(exprs(msnset))
-```
-
-![plot of chunk hclust](figure/hclust-1.png)
-
-```r
-hc <- hclust(dist(exprs(dunkley2006)))
-plot(hc)
-```
-
-![plot of chunk hclust](figure/hclust-2.png)
-
 ## PCA analysis and plots
+
+
+```r
+plot2D(t(mulvey2015norm), fcol = "times", fpch = "rep")
+addLegend(t(mulvey2015norm), where = "bottomright", fcol = "times")
+```
+
+![plot of chunk pca1](figure/pca1-1.png)
 
 
 ```r
@@ -678,12 +811,8 @@ addLegend(dunkley2006, where = "topleft")
 
 ![plot of chunk pca](figure/pca-1.png)
 
-## Abundance histograms
-
-See normalisation above.
-
-> From a simpler set (e.g. Dean’s kdeg/protein/abundance) data, plot a
-> 2d plot with colour as a third scaling variable
+<!-- > From a simpler set (e.g. Dean’s kdeg/protein/abundance) data, plot a -->
+<!-- > 2d plot with colour as a third scaling variable -->
 
 
 ```r
@@ -698,6 +827,66 @@ plot2D(hyperLOPIT2015,
 
 # Statistical analyses
 
+## Radom data
+
+
+```r
+set.seed(1)
+x <- matrix(rnorm(3000), ncol = 3)
+res <- rowttests(x)
+par(mfrow = c(1, 2))
+hist(res$p.value, xlab = "p-values",
+     breaks = 100, main = "Random data")
+abline(v = 0.05, col = "red", lwd = 2)
+matplot(t(x[which(res$p.value < 0.01), ]), type = "b",
+        ylab = expression(log[2]~fold-change),
+        main = "Data with a p-value < 0.01")
+```
+
+![plot of chunk random](figure/random-1.png)
+
+```r
+sum(res$p.value < 0.05)
+```
+
+```
+## [1] 49
+```
+
+![p-value histograms](./Figures/plot_melted-1.png)
+
+* A: well-behaved p-values!
+* B: all hypotheses are probably null. 
+* C: Don't blindly apply false discovery rate control, as the peak
+  close to one violates the assumption of uniform distribution towards
+  one. Ask for help!
+* D: Something went wrong: wrong distribution, p-values were already
+  adjusted, ... Ask for help!
+* E: Bootstrap with too few iterations? Non-parametric test with too
+  few samples? Ask for help!
+* F: Ask for help!
+
+See [How to interpret a p-value histogram](http://varianceexplained.org/statistics/interpreting-pvalue-histogram/) for more explanations.
+
+## Adjustment for multiple testing
+
+
+```r
+summary(qvalue(res$p.value)$qvalue)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.4686  0.8637  0.8679  0.8865  0.9196  0.9353
+```
+
+## Real data
+
+Here, we have spectral counting data and use a quasi-likelihood GLM
+regression to compare count data between two treatments taking two
+batches into account. This code chunk comes from the 
+*[msmsTests](http://bioconductor.org/packages/msmsTests)* package.
+
 
 ```r
 data(msms.dataset)
@@ -705,7 +894,7 @@ e <- pp.msms.data(msms.dataset)
 null.f <- "y~batch"
 alt.f <- "y~treat+batch"
 div <- apply(exprs(e), 2, sum)
-res <- msms.glm.qlll(e, alt.f, null.f,div = div)
+res <- msms.glm.qlll(e, alt.f, null.f, div = div)
 lst <- test.results(res, e, pData(e)$treat, "U600", "U200", div,
                     alpha = 0.05, minSpC = 2, minLFC = log2(1.8),
                     method = "BH")
@@ -715,19 +904,21 @@ lst <- test.results(res, e, pData(e)$treat, "U600", "U200", div,
 
 
 ```r
-summary(lst[["tres"]]$p.values)
+summary(lst[["tres"]]$p.value)
 ```
 
 ```
-## Length  Class   Mode 
-##      0   NULL   NULL
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+## 0.00000 0.07823 0.29630 0.36620 0.59780 0.98860
 ```
 
 ```r
-hist(lst[["tres"]]$p.value)
+hist(lst[["tres"]]$p.value, main = "Raw p-values")
 ```
 
 ![plot of chunk pvhist](figure/pvhist-1.png)
+
+
 
 
 ```r
@@ -740,7 +931,7 @@ summary(lst[["tres"]]$adjp)
 ```
 
 ```r
-hist(lst[["tres"]]$adjp)
+hist(lst[["tres"]]$adjp, main = "Adjusted p-values")
 ```
 
 ![plot of chunk adjphist](figure/adjphist-1.png)
@@ -755,6 +946,20 @@ res.volcanoplot(lst$tres, max.pval = 0.05,
 ```
 
 ![plot of chunk volc](figure/volc-1.png)
+
+# Gene-set/pathway enrichment analyses
+
+* There are different approaches to enrichment analyses. One, based on
+  the hyper-geometric distribution assumes that the *universe* (all
+  expected features/proteins) are known. But this is often undefined
+  in proteomics experiments: do we take all the proteins in the
+  database, all identified proteins or protein groups, ...? Other
+  approaches are based on bootstrap re-sampling, which relies on
+  observed features.
+
+* Check your p-values!
+
+![pathway enrichment](./Figures/hsa04620.png)
 
 # References and resources
 
@@ -787,14 +992,15 @@ Software used:
 ## [8] datasets  base     
 ## 
 ## other attached packages:
-##  [1] gridExtra_2.2.1      lattice_0.20-33      AnnotationHub_2.3.16
-##  [4] msmsTests_1.9.0      msmsEDA_1.9.0        pRolocdata_1.9.4    
-##  [7] pRoloc_1.11.19       MLInterfaces_1.51.3  cluster_2.0.3       
-## [10] annotate_1.49.1      XML_3.98-1.4         AnnotationDbi_1.33.7
-## [13] IRanges_2.5.40       S4Vectors_0.9.44     RforProteomics_1.9.4
-## [16] rpx_1.7.2            MSnbase_1.19.17      ProtGenerics_1.3.3  
-## [19] BiocParallel_1.5.21  mzR_2.5.5            Rcpp_0.12.4         
-## [22] Biobase_2.31.3       BiocGenerics_0.17.3  BiocStyle_1.9.8     
+##  [1] qvalue_2.3.2         genefilter_1.53.3    gridExtra_2.2.1     
+##  [4] lattice_0.20-33      AnnotationHub_2.3.16 msmsTests_1.9.0     
+##  [7] msmsEDA_1.9.0        pRolocdata_1.9.5     pRoloc_1.11.19      
+## [10] MLInterfaces_1.51.3  cluster_2.0.3        annotate_1.49.1     
+## [13] XML_3.98-1.4         AnnotationDbi_1.33.7 IRanges_2.5.40      
+## [16] S4Vectors_0.9.44     RforProteomics_1.9.4 rpx_1.7.2           
+## [19] MSnbase_1.19.17      ProtGenerics_1.3.3   BiocParallel_1.5.21 
+## [22] mzR_2.5.5            Rcpp_0.12.4          Biobase_2.31.3      
+## [25] BiocGenerics_0.17.3  BiocStyle_1.9.8     
 ## 
 ## loaded via a namespace (and not attached):
 ##   [1] plyr_1.8.3                   GSEABase_1.33.0             
@@ -807,52 +1013,51 @@ Software used:
 ##  [15] rda_1.0.2-2                  R.utils_2.2.0               
 ##  [17] lpSolve_5.6.13               colorspace_1.2-6            
 ##  [19] dplyr_0.4.3                  RCurl_1.95-4.8              
-##  [21] graph_1.49.1                 genefilter_1.53.3           
-##  [23] lme4_1.1-11                  impute_1.45.0               
-##  [25] survival_2.38-3              iterators_1.0.8             
-##  [27] gtable_0.2.0                 zlibbioc_1.17.1             
-##  [29] MatrixModels_0.4-1           car_2.1-2                   
-##  [31] kernlab_0.9-23               prabclus_2.2-6              
-##  [33] DEoptimR_1.0-4               SparseM_1.7                 
-##  [35] scales_0.4.0                 vsn_3.39.2                  
-##  [37] mvtnorm_1.0-5                DBI_0.3.1                   
-##  [39] edgeR_3.13.5                 xtable_1.8-2                
-##  [41] proxy_0.4-15                 mclust_5.1                  
-##  [43] preprocessCore_1.33.0        htmlwidgets_0.6             
-##  [45] sampling_2.7                 httr_1.1.0                  
-##  [47] threejs_0.2.1                FNN_1.1                     
-##  [49] gplots_3.0.0                 RColorBrewer_1.1-2          
-##  [51] fpc_2.1-10                   modeltools_0.2-21           
-##  [53] R.methodsS3_1.7.1            flexmix_2.3-13              
-##  [55] nnet_7.3-12                  RJSONIO_1.3-0               
-##  [57] caret_6.0-64                 labeling_0.3                
-##  [59] reshape2_1.4.1               munsell_0.4.3               
-##  [61] mlbench_2.1-1                biocViews_1.39.8            
-##  [63] tools_3.3.0                  RSQLite_1.0.0               
-##  [65] pls_2.5-0                    evaluate_0.8.3              
-##  [67] stringr_1.0.0                mzID_1.9.0                  
-##  [69] knitr_1.12.3                 robustbase_0.92-5           
-##  [71] rgl_0.95.1441                caTools_1.17.1              
-##  [73] randomForest_4.6-12          RBGL_1.47.0                 
-##  [75] nlme_3.1-126                 mime_0.4                    
-##  [77] quantreg_5.21                formatR_1.3                 
-##  [79] R.oo_1.20.0                  biomaRt_2.27.2              
-##  [81] pbkrtest_0.4-6               curl_0.9.6                  
-##  [83] interactiveDisplayBase_1.9.0 e1071_1.6-7                 
-##  [85] affyio_1.41.0                stringi_1.0-1               
-##  [87] trimcluster_0.1-2            Matrix_1.2-4                
-##  [89] nloptr_1.0.4                 gbm_2.1.1                   
-##  [91] RUnit_0.4.31                 MALDIquant_1.14             
-##  [93] bitops_1.0-6                 httpuv_1.3.3                
-##  [95] qvalue_2.3.2                 R6_2.1.2                    
-##  [97] pcaMethods_1.63.0            affy_1.49.0                 
-##  [99] hwriter_1.3.2                KernSmooth_2.23-15          
-## [101] gridSVG_1.5-0                codetools_0.2-14            
-## [103] MASS_7.3-45                  gtools_3.5.0                
-## [105] assertthat_0.1               interactiveDisplay_1.9.0    
-## [107] Category_2.37.1              diptest_0.75-7              
-## [109] mgcv_1.8-12                  grid_3.3.0                  
-## [111] rpart_4.1-10                 class_7.3-14                
-## [113] minqa_1.2.4                  shiny_0.13.2                
-## [115] base64enc_0.1-3
+##  [21] graph_1.49.1                 lme4_1.1-11                 
+##  [23] impute_1.45.0                survival_2.38-3             
+##  [25] iterators_1.0.8              gtable_0.2.0                
+##  [27] zlibbioc_1.17.1              MatrixModels_0.4-1          
+##  [29] car_2.1-2                    kernlab_0.9-23              
+##  [31] prabclus_2.2-6               DEoptimR_1.0-4              
+##  [33] SparseM_1.7                  scales_0.4.0                
+##  [35] vsn_3.39.2                   mvtnorm_1.0-5               
+##  [37] DBI_0.3.1                    edgeR_3.13.5                
+##  [39] xtable_1.8-2                 proxy_0.4-15                
+##  [41] mclust_5.1                   preprocessCore_1.33.0       
+##  [43] htmlwidgets_0.6              sampling_2.7                
+##  [45] httr_1.1.0                   threejs_0.2.1               
+##  [47] FNN_1.1                      gplots_3.0.0                
+##  [49] RColorBrewer_1.1-2           fpc_2.1-10                  
+##  [51] modeltools_0.2-21            R.methodsS3_1.7.1           
+##  [53] flexmix_2.3-13               nnet_7.3-12                 
+##  [55] RJSONIO_1.3-0                caret_6.0-64                
+##  [57] labeling_0.3                 reshape2_1.4.1              
+##  [59] munsell_0.4.3                mlbench_2.1-1               
+##  [61] biocViews_1.39.8             tools_3.3.0                 
+##  [63] RSQLite_1.0.0                pls_2.5-0                   
+##  [65] evaluate_0.8.3               stringr_1.0.0               
+##  [67] mzID_1.9.0                   knitr_1.12.3                
+##  [69] robustbase_0.92-5            rgl_0.95.1441               
+##  [71] caTools_1.17.1               randomForest_4.6-12         
+##  [73] RBGL_1.47.0                  nlme_3.1-126                
+##  [75] mime_0.4                     quantreg_5.21               
+##  [77] formatR_1.3                  R.oo_1.20.0                 
+##  [79] biomaRt_2.27.2               pbkrtest_0.4-6              
+##  [81] curl_0.9.6                   interactiveDisplayBase_1.9.0
+##  [83] e1071_1.6-7                  affyio_1.41.0               
+##  [85] stringi_1.0-1                trimcluster_0.1-2           
+##  [87] Matrix_1.2-4                 nloptr_1.0.4                
+##  [89] gbm_2.1.1                    RUnit_0.4.31                
+##  [91] MALDIquant_1.14              bitops_1.0-6                
+##  [93] httpuv_1.3.3                 R6_2.1.2                    
+##  [95] pcaMethods_1.63.0            affy_1.49.0                 
+##  [97] hwriter_1.3.2                KernSmooth_2.23-15          
+##  [99] gridSVG_1.5-0                codetools_0.2-14            
+## [101] MASS_7.3-45                  gtools_3.5.0                
+## [103] assertthat_0.1               interactiveDisplay_1.9.0    
+## [105] Category_2.37.1              diptest_0.75-7              
+## [107] mgcv_1.8-12                  grid_3.3.0                  
+## [109] rpart_4.1-10                 class_7.3-14                
+## [111] minqa_1.2.4                  shiny_0.13.2                
+## [113] base64enc_0.1-3
 ```

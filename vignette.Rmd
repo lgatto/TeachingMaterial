@@ -43,6 +43,8 @@ will need to run the following code:
 source("https://bioconductor.org/biocLite.R")
 biocLite("RforProteomics", dependencies = TRUE)
 biocLite("AnnotationHub")
+biocLite("genefilter")
+biocLite("qvalue")
 ```
 
 For a more thorough introduction to R for proteomics, please read the
@@ -67,7 +69,9 @@ library("pRolocdata")
 library("msmsTests")
 library("AnnotationHub")
 library("lattice")
- require("gridExtra") 
+library("gridExtra")
+library("genefilter")
+library("qvalue")
 ```
 
 # Getting example data
@@ -316,16 +320,20 @@ calculateFragments("SIGFEGDSIGR")
 Visualising a pair of spectra means that we can access them, and that,
 in addition to plotting, we can manipluate them and perform
 computations. The two spectra corresponding to the `IMIDLDGTENK`
-peptide, for example have `r compareSpectra(itraqdata2[[25]],
-itraqdata2[[28]], fun = "common")` common peaks, a correlation of `r
-round(compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "cor"),
-3)` and a dot product of `r round(compareSpectra(itraqdata2[[25]],
-itraqdata2[[28]], fun = "dotproduct"), 3)` (see `?compareSpectra` for
-details).
+peptide, for example have 
+`r compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "common")` 
+common peaks, a correlation of 
+`r round(compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "cor"), 3)` 
+and a dot product of 
+`r round(compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "dotproduct"), 3)` 
+(see `?compareSpectra` for details).
 
+There are 2 Bioconductor packages for peptide-spectrum matching
+directly in R, namely `r Biocpkg("MSGFplus")` and `r Biocpkg("rTANDEM")`,
+replying on `MSGF+` and `X!TANDEM` respectively.
 
-
-See also the `r Biocpkg("MSGFgui")` package.
+See also the `r Biocpkg("MSGFgui")` package for visualisation of
+identification data.
 
 ![MSGFgui screenshot](./Figures/03-2-msgfgui_panel_BW.png)
 
@@ -338,29 +346,159 @@ Here's where the experimental design becomes essential: what are
 **replicates**: technical and biological, what **variability**
 (technical vs biological vs different conditions) are we exploring.
 
+<!-- > A set of protein LFQ data let’s say - two conditions, with 6 -->
+<!-- > replicates of each, and with a list of protein accession number and -->
+<!-- > the LFQ data: This is a fabulous dataset for  -->
 
-> A set of protein LFQ data let’s say - two conditions, with 6
-> replicates of each, and with a list of protein accession number and
-> the LFQ data: This is a fabulous dataset for 
+<!-- > S curves for means of both, with errors Matrix plot of all against -->
+<!-- all log(Abundance) vs. protein index. -->
 
-> S curves for means of both, with errors Matrix plot of all against
-> all
 
-log(Abundance) vs. protein index.
+The data illustrated in the heatmap below is available as the
+`mulvey2015norm` `MSnSet` data. In this experiment,
+[Mulvey and colleagues](http://www.ncbi.nlm.nih.gov/pubmed/26059426),
+performed a time course experiment on mouse extra-embryonic endoderm
+(XEN) stem cells. Extra-embryonic endoderm differentiation can be
+modelled in vitro by induced expression of GATA transcription factors
+in mouse embryonic stem cells. They used this GATA-inducible system to
+quantitatively monitor the dynamics of global proteomic changes during
+the early stages of this differentiation event (at 0, 16, 24, 48 and
+72 hours) and also investigate the fully differentiated phenotype, as
+represented by embryo-derived XEN cells.
 
-```{r msnset}
-data(msnset)
-pairs(exprs(msnset))
-## pairs(exprs(msnset), log = "xy")
+## Heatmaps 
+
+```{r mulveyhm}
+data(mulvey2015norm)
+heatmap(exprs(mulvey2015norm))
+```
+
+**Note:** Often, heatmap illustrating the results of a statistical
+analysis show very distinctive coloured patterns. While stinking,
+these patterns *only* display the obvious, i.e. a set of features that
+have been selected for differences between experimental conditions. It
+would be very worrying in no pattern was to be observed and, in case
+of such a pattern, the figure itself does not enable to assess the
+validity of the results.
+
+## Images
+
+```{r imacefacet, fig.width = 18}
+i0 <- image(mulvey2015norm, plot = FALSE)
+i1 <- image(mulvey2015norm, facetBy = "rep", plot = FALSE)
+i2 <- image(mulvey2015norm, facetBy = "times", plot = FALSE)
+grid.arrange(i0, i1, i2, ncol = 3)
+```
+
+## Pair plots with all vs all scatterplots
+
+```{r pairplot}
+i <- c(grep("0hr", sampleNames(mulvey2015norm)),
+       grep("XEN", sampleNames(mulvey2015norm)))
+
+## plot all pairs with correlations - see ?pairs for details
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor = 1) {
+    usr <- par("usr"); on.exit(par(usr))
+    par(usr = c(0, 1, 0, 1))
+    r <- cor(x, y)
+    txt <- format(c(r, 0.123456789), digits = digits)[1]
+    txt <- paste0(prefix, txt)
+    text(0.5, 0.5, txt, cex = cex.cor)
+}
+
+pairs(exprs(mulvey2015norm[, i]), lower.panel = panel.cor)
+```
+
+
+## Hierarchical clustering only
+
+```{r hclust, fig.width = 15}
+par(mfrow = c(1, 2))
+hc <- hclust(dist(exprs(mulvey2015norm)))
+plot(hc)
+hc2 <- hclust(dist(t(exprs(mulvey2015norm))))
+plot(hc2)
 ```
 
 ## MA plots
+
+```{r mztab, message=FALSE, warning=FALSE}
+mztab <- pxget(px1, "PXD000001_mztab.txt")
+qnt <- readMzTabData(mztab, what = "PEP", version = "0.9")
+sampleNames(qnt) <- reporterNames(TMT6)
+qnt <- filterNA(qnt)
+spikes <- c("P02769", "P00924", "P62894", "P00489")
+protclasses <- as.character(fData(qnt)$accession)
+protclasses[!protclasses %in% spikes] <- "Background"
+```
+
+```{r maplots}
+MAplot(qnt[, 1:2], col = factor(protclasses), pch = 19)
+MAplot(qnt, cex = .8)
+```
+
+
+The `r Biocannopkg("RforProteomics")`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)
+has a dedicated section about
+[MA plots](http://www.bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html#the-ma-plot-example),
+describing the different R plotting systems and various customisations
+that can be applied to improve such figures and scatterplots in
+general.
+
+
+The `shinyMA` interactive application enables to navigate an MA plot
+an a linked expression plot. It can be tested online
+(https://lgatto.shinyapps.io/shinyMA/) or offline (as part of the 
+`r Biocannopkg("RforProteomics")` package), as shown below:
+
+```{r shinyma, eval=FALSE}
+shinyMA()
+```
 
 
 ## Normalisation strategies
 
 **Normalisation**: remove unwanted (technical) variation while
 retaining biological variability.
+
+### Ratios (SILAC)
+
+```{r silacnorm}
+sf <- downloadData("http://proteome.sysbiol.cam.ac.uk/lgatto/files/silac.rda")
+load(sf)
+ns1 <- s1; ns2 <- s2; ns3 <- s3
+exprs(ns1) <- exprs(s1) - median(exprs(s1))
+exprs(ns2) <- exprs(s2) - median(exprs(s2))
+exprs(ns3) <- exprs(s3) - median(exprs(s3))
+```
+
+```{r silacnormplot, fig.width=14}
+par(mfrow = c(1, 2))
+
+plot(density(exprs(s1)), col = "red", main = expression(SILAC~log[2]~ratios))
+rug(exprs(s1))
+lines(density(exprs(s2)), col = "green")
+lines(density(exprs(s3)), col = "blue")
+grid()
+abline(v = 0)
+
+plot(density(exprs(ns1)), col = "red", main = expression(Normalised~SILAC~log[2]~ratios))
+rug(exprs(ns1))
+lines(density(exprs(ns2)), col = "green")
+lines(density(exprs(ns3)), col = "blue")
+grid()
+abline(v = 0)
+```
+
+Other approaches for ratio normalisation: 
+
+* `loess` polynomial regression that uses the raw intensities.
+* `quantile` (as below) for between acquisition normalisation.
+
+See the `r Biocpkg("limma")` package.
+
+### Intensities (iTRAQ)
 
 ```{r normbxplot, fig.width=20}
 par(mfrow = c(1, 4))
@@ -374,38 +512,20 @@ boxplot(exprs(normalise(dunkley2006, method = "quantiles")),
         main = "Quantile")
 ```
 
-## Heatmap plot
-
-
-
-```{r heatmap}
-data(msnset)
-heatmap(exprs(msnset))
-image(msnset)
-```
-
-## Hierarchical clustering (with or without heatmap)
-
-```{r hclust}
-data(dunkley2006)
-heatmap(exprs(msnset))
-hc <- hclust(dist(exprs(dunkley2006)))
-plot(hc)
-```
-
 ## PCA analysis and plots
+
+```{r pca1}
+plot2D(t(mulvey2015norm), fcol = "times", fpch = "rep")
+addLegend(t(mulvey2015norm), where = "bottomright", fcol = "times")
+```
 
 ```{r pca}
 plot2D(dunkley2006)
 addLegend(dunkley2006, where = "topleft")
 ```
 
-## Abundance histograms
-
-See normalisation above.
-
-> From a simpler set (e.g. Dean’s kdeg/protein/abundance) data, plot a
-> 2d plot with colour as a third scaling variable
+<!-- > From a simpler set (e.g. Dean’s kdeg/protein/abundance) data, plot a -->
+<!-- > 2d plot with colour as a third scaling variable -->
 
 ```{r pcacex}
 data(hyperLOPIT2015)
@@ -417,13 +537,57 @@ plot2D(hyperLOPIT2015,
 
 # Statistical analyses
 
+## Radom data
+
+```{r random, fig.width=12}
+set.seed(1)
+x <- matrix(rnorm(3000), ncol = 3)
+res <- rowttests(x)
+par(mfrow = c(1, 2))
+hist(res$p.value, xlab = "p-values",
+     breaks = 100, main = "Random data")
+abline(v = 0.05, col = "red", lwd = 2)
+matplot(t(x[which(res$p.value < 0.01), ]), type = "b",
+        ylab = expression(log[2]~fold-change),
+        main = "Data with a p-value < 0.01")
+sum(res$p.value < 0.05)
+```
+
+![p-value histograms](./Figures/plot_melted-1.png)
+
+* A: well-behaved p-values!
+* B: all hypotheses are probably null. 
+* C: Don't blindly apply false discovery rate control, as the peak
+  close to one violates the assumption of uniform distribution towards
+  one. Ask for help!
+* D: Something went wrong: wrong distribution, p-values were already
+  adjusted, ... Ask for help!
+* E: Bootstrap with too few iterations? Non-parametric test with too
+  few samples? Ask for help!
+* F: Ask for help!
+
+See [How to interpret a p-value histogram](http://varianceexplained.org/statistics/interpreting-pvalue-histogram/) for more explanations.
+
+## Adjustment for multiple testing
+
+```{r bhadj}
+summary(qvalue(res$p.value)$qvalue)
+```
+
+## Real data
+
+Here, we have spectral counting data and use a quasi-likelihood GLM
+regression to compare count data between two treatments taking two
+batches into account. This code chunk comes from the 
+`r Biocpkg("msmsTests")` package.
+
 ```{r msmsstats, cache=TRUE}
 data(msms.dataset)
 e <- pp.msms.data(msms.dataset)
 null.f <- "y~batch"
 alt.f <- "y~treat+batch"
 div <- apply(exprs(e), 2, sum)
-res <- msms.glm.qlll(e, alt.f, null.f,div = div)
+res <- msms.glm.qlll(e, alt.f, null.f, div = div)
 lst <- test.results(res, e, pData(e)$treat, "U600", "U200", div,
                     alpha = 0.05, minSpC = 2, minLFC = log2(1.8),
                     method = "BH")
@@ -432,22 +596,38 @@ lst <- test.results(res, e, pData(e)$treat, "U600", "U200", div,
 ## p-values
 
 ```{r pvhist}
-summary(lst[["tres"]]$p.values)
-hist(lst[["tres"]]$p.value)
+summary(lst[["tres"]]$p.value)
+hist(lst[["tres"]]$p.value, main = "Raw p-values")
 ```
+
+
 
 ```{r adjphist}
 summary(lst[["tres"]]$adjp)
-hist(lst[["tres"]]$adjp)
+hist(lst[["tres"]]$adjp, main = "Adjusted p-values")
 ```
 
 ## Volcano plots
 
-````{r volc}
+```{r volc}
 res.volcanoplot(lst$tres, max.pval = 0.05,
                 min.LFC = 1, maxx = 3, maxy = NULL,
                 ylbls = 4)
 ```
+
+# Gene-set/pathway enrichment analyses
+
+* There are different approaches to enrichment analyses. One, based on
+  the hyper-geometric distribution assumes that the *universe* (all
+  expected features/proteins) are known. But this is often undefined
+  in proteomics experiments: do we take all the proteins in the
+  database, all identified proteins or protein groups, ...? Other
+  approaches are based on bootstrap re-sampling, which relies on
+  observed features.
+
+* Check your p-values!
+
+![pathway enrichment](./Figures/hsa04620.png)
 
 # References and resources
 
