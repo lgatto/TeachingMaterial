@@ -7,7 +7,7 @@ output:
      toc_depth: 1
 ---
 
-Last update: Mon Apr  4 03:28:52 2016
+Last update: Mon Apr  4 10:37:11 2016
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -263,6 +263,7 @@ source("https://bioconductor.org/biocLite.R")
 biocLite("RforProteomics", dependencies = TRUE)
 biocLite("AnnotationHub")
 biocLite("genefilter")
+biocLite("gplots")
 biocLite("qvalue")
 ```
 
@@ -290,6 +291,7 @@ library("msmsTests")
 library("AnnotationHub")
 library("lattice")
 library("gridExtra")
+library("gplots")
 library("genefilter")
 library("qvalue")
 ```
@@ -765,6 +767,38 @@ an a linked expression plot. It can be tested online
 shinyMA()
 ```
 
+## Missing values
+
+
+```r
+data(naset)
+naplot(naset, col = "black")
+```
+
+![plot of chunk na](figure/na-1.png)
+
+```
+## features.na
+##   0   1   2   3   4   8   9  10 
+## 301 247  91  13   2  23  10   2 
+## samples.na
+## 34 39 41 42 43 45 47 49 51 52 53 55 56 57 61 
+##  1  1  1  1  1  2  1  1  1  1  1  1  1  1  1
+```
+
+
+```r
+x <- impute(naset, "zero")
+exprs(x)[exprs(x) != 0] <- 1
+suppressPackageStartupMessages(library("gplots"))
+heatmap.2(exprs(x), col = c("lightgray", "black"),
+          scale = "none", dendrogram = "none",
+          trace = "none", keysize = 0.5, key = FALSE,
+          RowSideColors = ifelse(fData(x)$randna, "orange", "brown"),
+          ColSideColors = rep(c("steelblue", "darkolivegreen"), each = 8))
+```
+
+![plot of chunk naheatmap](figure/naheatmap-1.png)
 
 ## Normalisation strategies
 
@@ -1027,15 +1061,15 @@ Software used:
 ## [8] datasets  base     
 ## 
 ## other attached packages:
-##  [1] qvalue_2.3.2         genefilter_1.53.3    gridExtra_2.2.1     
-##  [4] lattice_0.20-33      AnnotationHub_2.3.16 msmsTests_1.9.0     
-##  [7] msmsEDA_1.9.0        pRolocdata_1.9.5     pRoloc_1.11.19      
-## [10] MLInterfaces_1.51.3  cluster_2.0.3        annotate_1.49.1     
-## [13] XML_3.98-1.4         AnnotationDbi_1.33.7 IRanges_2.5.40      
-## [16] S4Vectors_0.9.44     RforProteomics_1.9.4 rpx_1.7.2           
-## [19] MSnbase_1.19.17      ProtGenerics_1.3.3   BiocParallel_1.5.21 
-## [22] mzR_2.5.5            Rcpp_0.12.4          Biobase_2.31.3      
-## [25] BiocGenerics_0.17.3  BiocStyle_1.9.8     
+##  [1] qvalue_2.3.2         genefilter_1.53.3    gplots_3.0.0        
+##  [4] gridExtra_2.2.1      lattice_0.20-33      AnnotationHub_2.3.16
+##  [7] msmsTests_1.9.0      msmsEDA_1.9.0        pRolocdata_1.9.5    
+## [10] pRoloc_1.11.19       MLInterfaces_1.51.3  cluster_2.0.3       
+## [13] annotate_1.49.1      XML_3.98-1.4         AnnotationDbi_1.33.7
+## [16] IRanges_2.5.40       S4Vectors_0.9.44     RforProteomics_1.9.4
+## [19] rpx_1.7.2            MSnbase_1.19.19      ProtGenerics_1.3.3  
+## [22] BiocParallel_1.5.21  mzR_2.5.5            Rcpp_0.12.4         
+## [25] Biobase_2.31.3       BiocGenerics_0.17.3  BiocStyle_1.9.8     
 ## 
 ## loaded via a namespace (and not attached):
 ##   [1] plyr_1.8.3                   GSEABase_1.33.0             
@@ -1061,38 +1095,37 @@ Software used:
 ##  [41] mclust_5.1                   preprocessCore_1.33.0       
 ##  [43] htmlwidgets_0.6              sampling_2.7                
 ##  [45] httr_1.1.0                   threejs_0.2.1               
-##  [47] FNN_1.1                      gplots_3.0.0                
-##  [49] RColorBrewer_1.1-2           fpc_2.1-10                  
-##  [51] modeltools_0.2-21            R.methodsS3_1.7.1           
-##  [53] flexmix_2.3-13               nnet_7.3-12                 
-##  [55] RJSONIO_1.3-0                caret_6.0-64                
-##  [57] labeling_0.3                 reshape2_1.4.1              
-##  [59] munsell_0.4.3                mlbench_2.1-1               
-##  [61] biocViews_1.39.8             tools_3.3.0                 
-##  [63] RSQLite_1.0.0                pls_2.5-0                   
-##  [65] evaluate_0.8.3               stringr_1.0.0               
-##  [67] mzID_1.9.0                   knitr_1.12.3                
-##  [69] robustbase_0.92-5            rgl_0.95.1441               
-##  [71] caTools_1.17.1               randomForest_4.6-12         
-##  [73] RBGL_1.47.0                  nlme_3.1-126                
-##  [75] mime_0.4                     quantreg_5.21               
-##  [77] formatR_1.3                  R.oo_1.20.0                 
-##  [79] biomaRt_2.27.2               pbkrtest_0.4-6              
-##  [81] curl_0.9.6                   interactiveDisplayBase_1.9.0
-##  [83] e1071_1.6-7                  affyio_1.41.0               
-##  [85] stringi_1.0-1                trimcluster_0.1-2           
-##  [87] Matrix_1.2-4                 nloptr_1.0.4                
-##  [89] gbm_2.1.1                    RUnit_0.4.31                
-##  [91] MALDIquant_1.14              bitops_1.0-6                
-##  [93] httpuv_1.3.3                 R6_2.1.2                    
-##  [95] pcaMethods_1.63.0            affy_1.49.0                 
-##  [97] hwriter_1.3.2                KernSmooth_2.23-15          
-##  [99] gridSVG_1.5-0                codetools_0.2-14            
-## [101] MASS_7.3-45                  gtools_3.5.0                
-## [103] assertthat_0.1               interactiveDisplay_1.9.0    
-## [105] Category_2.37.1              diptest_0.75-7              
-## [107] mgcv_1.8-12                  grid_3.3.0                  
-## [109] rpart_4.1-10                 class_7.3-14                
-## [111] minqa_1.2.4                  shiny_0.13.2                
-## [113] base64enc_0.1-3
+##  [47] FNN_1.1                      RColorBrewer_1.1-2          
+##  [49] fpc_2.1-10                   modeltools_0.2-21           
+##  [51] R.methodsS3_1.7.1            flexmix_2.3-13              
+##  [53] nnet_7.3-12                  RJSONIO_1.3-0               
+##  [55] caret_6.0-64                 labeling_0.3                
+##  [57] reshape2_1.4.1               munsell_0.4.3               
+##  [59] mlbench_2.1-1                biocViews_1.39.8            
+##  [61] tools_3.3.0                  RSQLite_1.0.0               
+##  [63] pls_2.5-0                    evaluate_0.8.3              
+##  [65] stringr_1.0.0                mzID_1.9.0                  
+##  [67] knitr_1.12.3                 robustbase_0.92-5           
+##  [69] rgl_0.95.1441                caTools_1.17.1              
+##  [71] randomForest_4.6-12          RBGL_1.47.0                 
+##  [73] nlme_3.1-126                 mime_0.4                    
+##  [75] quantreg_5.21                formatR_1.3                 
+##  [77] R.oo_1.20.0                  biomaRt_2.27.2              
+##  [79] pbkrtest_0.4-6               curl_0.9.6                  
+##  [81] interactiveDisplayBase_1.9.0 e1071_1.6-7                 
+##  [83] affyio_1.41.0                stringi_1.0-1               
+##  [85] trimcluster_0.1-2            Matrix_1.2-4                
+##  [87] nloptr_1.0.4                 gbm_2.1.1                   
+##  [89] RUnit_0.4.31                 MALDIquant_1.14             
+##  [91] bitops_1.0-6                 httpuv_1.3.3                
+##  [93] R6_2.1.2                     pcaMethods_1.63.0           
+##  [95] affy_1.49.0                  hwriter_1.3.2               
+##  [97] KernSmooth_2.23-15           gridSVG_1.5-0               
+##  [99] codetools_0.2-14             MASS_7.3-45                 
+## [101] gtools_3.5.0                 assertthat_0.1              
+## [103] interactiveDisplay_1.9.0     Category_2.37.1             
+## [105] diptest_0.75-7               mgcv_1.8-12                 
+## [107] grid_3.3.0                   rpart_4.1-10                
+## [109] class_7.3-14                 minqa_1.2.4                 
+## [111] shiny_0.13.2                 base64enc_0.1-3
 ```

@@ -44,6 +44,7 @@ source("https://bioconductor.org/biocLite.R")
 biocLite("RforProteomics", dependencies = TRUE)
 biocLite("AnnotationHub")
 biocLite("genefilter")
+biocLite("gplots")
 biocLite("qvalue")
 ```
 
@@ -70,6 +71,7 @@ library("msmsTests")
 library("AnnotationHub")
 library("lattice")
 library("gridExtra")
+library("gplots")
 library("genefilter")
 library("qvalue")
 ```
@@ -466,6 +468,23 @@ an a linked expression plot. It can be tested online
 shinyMA()
 ```
 
+## Missing values
+
+```{r na}
+data(naset)
+naplot(naset, col = "black")
+```
+
+```{r naheatmap}
+x <- impute(naset, "zero")
+exprs(x)[exprs(x) != 0] <- 1
+suppressPackageStartupMessages(library("gplots"))
+heatmap.2(exprs(x), col = c("lightgray", "black"),
+          scale = "none", dendrogram = "none",
+          trace = "none", keysize = 0.5, key = FALSE,
+          RowSideColors = ifelse(fData(x)$randna, "orange", "brown"),
+          ColSideColors = rep(c("steelblue", "darkolivegreen"), each = 8))
+```
 
 ## Normalisation strategies
 
