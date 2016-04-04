@@ -7,7 +7,7 @@ output:
      toc_depth: 1
 ---
 
-Last update: Mon Apr  4 03:16:54 2016
+Last update: Mon Apr  4 03:28:52 2016
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function() {
@@ -618,11 +618,46 @@ the early stages of this differentiation event (at 0, 16, 24, 48 and
 72 hours) and also investigate the fully differentiated phenotype, as
 represented by embryo-derived XEN cells.
 
+
+```r
+data(mulvey2015norm)
+table(pData(mulvey2015norm))
+```
+
+```
+## , , cond = 1
+## 
+##    times
+## rep 1 2 3 4 5 6
+##   1 1 1 1 1 1 1
+##   2 1 1 1 1 1 1
+##   3 1 1 1 1 1 1
+```
+
+```r
+table(pData(mulvey2015norm)[, -1])
+```
+
+```
+##      cond
+## times 1
+##     1 3
+##     2 3
+##     3 3
+##     4 3
+##     5 3
+##     6 3
+```
+
+`MSnSet` can be created from various formats such as raw data, `mzTab`
+and spreadsheets, when using third-party software for data
+quantitation and pro-processing. See `?readMSnSet` for details about
+the latter.
+
 ## Heatmaps 
 
 
 ```r
-data(mulvey2015norm)
 heatmap(exprs(mulvey2015norm))
 ```
 

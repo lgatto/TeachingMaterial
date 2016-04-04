@@ -366,10 +366,20 @@ the early stages of this differentiation event (at 0, 16, 24, 48 and
 72 hours) and also investigate the fully differentiated phenotype, as
 represented by embryo-derived XEN cells.
 
+```{r expdestbl}
+data(mulvey2015norm)
+table(pData(mulvey2015norm))
+table(pData(mulvey2015norm)[, -1])
+```
+
+`MSnSet` can be created from various formats such as raw data, `mzTab`
+and spreadsheets, when using third-party software for data
+quantitation and pro-processing. See `?readMSnSet` for details about
+the latter.
+
 ## Heatmaps 
 
 ```{r mulveyhm}
-data(mulvey2015norm)
 heatmap(exprs(mulvey2015norm))
 ```
 
