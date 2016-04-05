@@ -1,0 +1,704 @@
+---
+title: "Inspection, visualisation and analysis of quantitative proteomics data"
+author: "Laurent Gatto"
+output:
+  BiocStyle::html_document:
+     toc: true
+     toc_depth: 1
+---
+
+Last update: `r date()`
+
+```{r style, echo = FALSE, results = 'asis', message=FALSE}
+BiocStyle::markdown()
+```
+
+------------
+
+> This vignette available under a
+> [**creative common CC-BY**](http://creativecommons.org/licenses/by/4.0/)
+> license. You are free to **share** (copy and redistribute the
+> material in any medium or format) and **adapt** (remix, transform,
+> and build upon the material) for any purpose, even commercially.
+
+------------
+
+# Introduction
+
+This document provides annotated and reproducible quantitative
+proteomics data analysis examples for the *Quantitative Proteomics And
+Data Analysis*
+[course](http://lgatto.githiub.io/Quantitative-Proteomics-And-Data-Analysis)
+(intro
+[slides](http://lgatto.github.io/Quantitative-Proteomics-and-Data-Analysis/slides.html)).
+
+To be able to execute the code below, you will need to have a working
+R installation. I also recommend using the
+[RStudio editor](https://www.rstudio.com/products/RStudio/). To
+install the proteomics add-on packages required for this tutorial, you
+will need to run the following code:
+
+```{r install, eval=FALSE}
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
+biocLite("RforProteomics", dependencies = TRUE)
+biocLite("AnnotationHub")
+biocLite("genefilter")
+biocLite("gplots")
+biocLite("qvalue")
+```
+
+For a more thorough introduction to R for proteomics, please read the
+`RforProteomics` vignette
+([online](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RforProteomics.pdf)
+or off-line with `vignette("RforProteomics")` after installing as
+described above), the
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)
+and the corresonding papers
+[[1](http://www.ncbi.nlm.nih.gov/pubmed/25690415),
+[2](http://www.ncbi.nlm.nih.gov/pubmed/23692960)]
+
+We first need to load the proteomics packages:
+
+```{r env, message=FALSE}
+library("MSnbase")
+library("rpx")
+library("mzR")
+library("RforProteomics")
+library("pRoloc")
+library("pRolocdata")
+library("msmsTests")
+library("AnnotationHub")
+library("lattice")
+library("gridExtra")
+library("gplots")
+library("genefilter")
+library("qvalue")
+```
+
+# Getting example data
+
+`r Biocpkg("AnnotationHub")` is a cloud resource set up and managed by
+the Bioconductor project that programmatically disseminates omics
+data. I am currently working on contributing 
+[proteomics data](http://bioconductor.org/packages/devel/bioc/vignettes/ProteomicsAnnotationHubData/inst/doc/ProteomicsAnnotationHubData.html).
+
+
+Below, we download a raw mass spectrometry dataset with identifier
+`AH49008` and store it in a variable names `ms`.
+
+```{r ah, message=FALSE}
+ah <- AnnotationHub()
+ms <- ah[["AH49008"]]
+ms
+```
+
+```{r hd, echo=FALSE}
+hd <- header(ms)
+```
+
+The data contains `r length(ms)` spectra - `r table(hd$msLevel)[[1]]`
+MS1 spectra and `r table(hd$msLevel)[[2]]` MS2 spectra. The filename,
+`r basename(fileName(ms))`, is not very descriptive because the data
+originates from the `AnnotationHub` cloud repository. If the data was
+read from a local file, is would be named as the `mzML` (or `mzXML`)
+file. 
+
+Later, we will use data that is distributed direclty with package and
+access them using the `data` function. One can also use the 
+`r Biocpkg("rpx")` package to access and download data from the
+ProteomeXchange repository.
+
+```{r, pxget, message=FALSE}
+px1 <- PXDataset("PXD000001")
+px1
+mzf <- pxget(px1, 6)
+mzf
+```
+
+Manual download:
+
+```{r thermoprt}
+f1 <- downloadData("http://proteome.sysbiol.cam.ac.uk/lgatto/files/Thermo-HELA-PRT/Thermo_Hela_PRTC_1.mzML")
+f2 <- downloadData("http://proteome.sysbiol.cam.ac.uk/lgatto/files/Thermo-HELA-PRT/Thermo_Hela_PRTC_2.mzML")
+f3 <- downloadData("http://proteome.sysbiol.cam.ac.uk/lgatto/files/Thermo-HELA-PRT/Thermo_Hela_PRTC_3.mzML")
+f3
+```
+
+# Visualising raw data
+
+## A full chromatogam
+
+```{r chromato}
+chromatogram(ms)
+```
+
+## Multiple chromatograms
+
+```{r chromato3, cache=TRUE}
+c1 <- chromatogram(f1)
+c2 <- chromatogram(f2, plot = FALSE)
+lines(c2, col = "steelblue", lty = "dashed")
+c3 <- chromatogram(f3, plot = FALSE)
+lines(c3, col = "orange", lty = "dotted")
+```
+
+## An extracted ion chromatogram
+
+```{r xic, cache=TRUE, fig.width=12}
+par(mfrow = c(1, 2))
+xic(ms, mz = 636.925, width = 0.01)
+x <- xic(ms, mz = 636.925, width = 0.01, rtlim = c(2120, 2200))
+```
+
+## Spectra
+
+We first load a test iTRAQ data called `itraqdata` and distributed as
+part of the `r Biocpkg("MSnbase")` package using the `data`
+function. This is a pre-packaged data that comes as a dedicated data
+structure called `MSnExp`. We then `plot` the 10th spectum using
+specific code that recognizes what to do with an element of an
+`MSnExp`.
+
+```{r itraqdata}
+data(itraqdata)
+itraqdata
+plot(itraqdata[[10]], reporters = iTRAQ4, full=TRUE) 
+```
+
+The `ms` data is not pre-packaged as an `MSnExp` data. It is a more
+bare-bone `r as.character(class(ms))` object, a pointer to a raw data
+file (here `r basename(fileName(ms))`): we need first to extract a
+spectrum of interest (here the 3071st spectrum, an MS1 spectrum), and
+use the generic `plot` function to visualise the spectrum.
+
+```{r ms1}
+plot(peaks(ms, 3071), type = "h",
+     xlab = "M/Z", ylab = "Intensity",     
+     sub = formatRt(hd[3071, "retentionTime"]))
+```
+
+Below, we use data downloaded from ProteomeXchange (see above) to
+generate additional raw data visualisations. These examples are taken
+from the `r Biocannopkg("RforProteomics")`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html). The
+code, which is not displayed here, can also be seen in the
+[source document](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/vignette.Rmd).
+
+```{r pxd1, echo=FALSE}
+ms <- openMSfile(mzf)
+
+hd <- header(ms)
+ms1 <- which(hd$msLevel == 1)
+
+rtsel <- hd$retentionTime[ms1] / 60 > 30 & hd$retentionTime[ms1] / 60 < 35
+
+i <- ms1[which(rtsel)][1]
+j <- ms1[which(rtsel)][2]
+```
+
+The importance of flexible access to specialised data becomes visible
+in the figure below (taken from the `r Biocannopkg("RforProteomics")`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)). 
+**Not only can we access specific data and understand/visualise them, but we
+can transverse all the data and extracted/visualise/understand
+structured slices of data.**
+
+The upper panel represents the chomatogram of the `r fileName(ms)` raw
+data file. We concentrate at a specific retention time, 
+`r formatRt(hd[i, "retentionTime"])` minutes (`r hd[i, "retentionTime"]` seconds) 
+corresponding to the `r i`th MS1 spectrum, shown on the second row of
+figures. On the right, we zoom on the isotopic envelope of one peptide
+in particular. All vertical lines (red and grey) represent all the
+ions that were selected for a second round of MS analysis; these are
+represented in the bottom part of the figure.
+
+
+```{r mslayout, echo=FALSE}
+lout <- matrix(NA, ncol = 10, nrow = 8)
+lout[1:2, ] <- 1
+for (ii in 3:4)
+    lout[ii, ] <- c(2, 2, 2, 2, 2, 2, 3, 3, 3, 3)
+lout[5, ] <- rep(4:8, each = 2)
+lout[6, ] <- rep(4:8, each = 2)
+lout[7, ] <- rep(9:13, each = 2)
+lout[8, ] <- rep(9:13, each = 2)
+
+ms2 <- (i+1):(j-1)
+
+layout(lout)
+
+par(mar=c(4,2,1,1))
+chromatogram(ms)
+abline(v = hd[i, "retentionTime"], col = "red")
+
+
+par(mar = c(3, 2, 1, 0))
+plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
+legend("topright", bty = "n",
+       legend = paste0(
+           "Acquisition ", hd[i, "acquisitionNum"],  "\n",
+           "Retention time ", formatRt(hd[i, "retentionTime"])))
+abline(h = 0)
+abline(v = hd[ms2, "precursorMZ"],
+       col = c("#FF000080",
+           rep("#12121280", 9)))
+
+par(mar = c(3, 0.5, 1, 1))
+plot(peaks(ms, i), type = "l", xlim = c(521, 522.5),
+     yaxt = "n")
+abline(h = 0)
+abline(v = hd[ms2, "precursorMZ"], col = "#FF000080")
+
+##par(mar = omar)
+par(mar = c(2, 2, 0, 1))
+for (ii in ms2) {
+    p <- peaks(ms, ii)
+    plot(p, xlab = "", ylab = "", type = "h", cex.axis = .6)
+    legend("topright", legend = paste0("Prec M/Z\n",
+                           round(hd[ii, "precursorMZ"], 2)),
+           bty = "n", cex = .8)
+}
+```
+
+Below, we illustrate some additional visualisation and animations of
+raw MS data, also taken from the `r Biocannopkg("RforProteomics")`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html). On
+the left, we have a heatmap like visualisation of a MS map and a 3
+dimensional representation of the same data. On the right, 2 MS1
+spectra in blue and the set of interleaves 10 MS2 spectra.
+
+```{r msmap1, message=FALSE, fig.width=15, echo=FALSE}
+M <- MSmap(ms, ms1[rtsel], 521, 523, .005, hd)
+ff <- colorRampPalette(c("yellow", "steelblue"))
+trellis.par.set(regions=list(col=ff(100)))
+m1 <- plot(M, aspect = 1, allTicks = FALSE)
+M@map[msMap(M) == 0] <- NA
+m2 <- plot3D(M, rgl = FALSE)
+i <- ms1[which(rtsel)][1]
+j <- ms1[which(rtsel)][2]
+M2 <- MSmap(ms, i:j, 100, 1000, 1, hd)
+m3 <- plot3D(M2)
+grid.arrange(m1, m2, m3, ncol = 3)
+```
+
+Below, we have animations build from extracting successive slices as above.
+
+```{r two-col-1, results='asis', echo=FALSE, out.extra=''}
+cat("<table class='container'><tr>")
+cat("<td>")
+```
+![MS animation 1](./Figures/msanim1.gif)
+```{r two-col-2, results='asis', echo=FALSE, out.extra=''}
+cat("</td>")
+cat("<td>")
+```
+ ![MS animation 2](./Figures/msanim2.gif)
+```{r two-col-3, results='asis', echo=FALSE, out.extra=''}
+cat("</td>")
+cat("</tr></table>")
+```
+
+
+# Identification data
+
+Annotated spectra and comparing spectra. 
+
+```{r id1, message=FALSE, fig.width=15, message=FALSE}
+par(mfrow = c(1, 2))
+itraqdata2 <- pickPeaks(itraqdata, verbose = FALSE)
+s <- "SIGFEGDSIGR"
+plot(itraqdata2[[14]], s, main = s)
+plot(itraqdata2[[25]], itraqdata2[[28]], sequences = rep("IMIDLDGTENK", 2))
+```
+
+The annotation of spectra is obtained by simulating fragmentation of a
+peptide and matching observed peaks to fragments:
+
+```{r fag}
+calculateFragments("SIGFEGDSIGR")
+```
+
+Visualising a pair of spectra means that we can access them, and that,
+in addition to plotting, we can manipluate them and perform
+computations. The two spectra corresponding to the `IMIDLDGTENK`
+peptide, for example have 
+`r compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "common")` 
+common peaks, a correlation of 
+`r round(compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "cor"), 3)` 
+and a dot product of 
+`r round(compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "dotproduct"), 3)` 
+(see `?compareSpectra` for details).
+
+There are 2 Bioconductor packages for peptide-spectrum matching
+directly in R, namely `r Biocpkg("MSGFplus")` and `r Biocpkg("rTANDEM")`,
+replying on `MSGF+` and `X!TANDEM` respectively.
+
+See also the `r Biocpkg("MSGFgui")` package for visualisation of
+identification data.
+
+![MSGFgui screenshot](./Figures/03-2-msgfgui_panel_BW.png)
+
+# Quantitation data
+
+> What does the quantitative data encode: ratios or intenstities? Do
+> not let the software decide for you!
+
+Here's where the experimental design becomes essential: what are
+**replicates**: technical and biological, what **variability**
+(technical vs biological vs different conditions) are we exploring.
+
+<!-- > A set of protein LFQ data let’s say - two conditions, with 6 -->
+<!-- > replicates of each, and with a list of protein accession number and -->
+<!-- > the LFQ data: This is a fabulous dataset for  -->
+
+<!-- > S curves for means of both, with errors Matrix plot of all against -->
+<!-- all log(Abundance) vs. protein index. -->
+
+
+The data illustrated in the heatmap below is available as the
+`mulvey2015norm` `MSnSet` data. In this experiment,
+[Mulvey and colleagues](http://www.ncbi.nlm.nih.gov/pubmed/26059426),
+performed a time course experiment on mouse extra-embryonic endoderm
+(XEN) stem cells. Extra-embryonic endoderm differentiation can be
+modelled in vitro by induced expression of GATA transcription factors
+in mouse embryonic stem cells. They used this GATA-inducible system to
+quantitatively monitor the dynamics of global proteomic changes during
+the early stages of this differentiation event (at 0, 16, 24, 48 and
+72 hours) and also investigate the fully differentiated phenotype, as
+represented by embryo-derived XEN cells.
+
+```{r expdestbl}
+data(mulvey2015norm)
+table(pData(mulvey2015norm))
+table(pData(mulvey2015norm)[, -1])
+```
+
+`MSnSet` can be created from various formats such as raw data, `mzTab`
+and spreadsheets, when using third-party software for data
+quantitation and pro-processing. See `?readMSnSet` for details about
+the latter.
+
+## Heatmaps 
+
+```{r mulveyhm}
+heatmap(exprs(mulvey2015norm))
+```
+
+**Note:** Often, heatmap illustrating the results of a statistical
+analysis show very distinctive coloured patterns. While stinking,
+these patterns *only* display the obvious, i.e. a set of features that
+have been selected for differences between experimental conditions. It
+would be very worrying in no pattern was to be observed and, in case
+of such a pattern, the figure itself does not enable to assess the
+validity of the results.
+
+## Images
+
+```{r imacefacet, fig.width = 18}
+i0 <- image(mulvey2015norm, plot = FALSE)
+i1 <- image(mulvey2015norm, facetBy = "rep", plot = FALSE)
+i2 <- image(mulvey2015norm, facetBy = "times", plot = FALSE)
+grid.arrange(i0, i1, i2, ncol = 3)
+```
+
+## Pair plots with all vs all scatterplots
+
+```{r pairplot}
+i <- c(grep("0hr", sampleNames(mulvey2015norm)),
+       grep("XEN", sampleNames(mulvey2015norm)))
+
+## plot all pairs with correlations - see ?pairs for details
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor = 1) {
+    usr <- par("usr"); on.exit(par(usr))
+    par(usr = c(0, 1, 0, 1))
+    r <- cor(x, y)
+    txt <- format(c(r, 0.123456789), digits = digits)[1]
+    txt <- paste0(prefix, txt)
+    text(0.5, 0.5, txt, cex = cex.cor)
+}
+
+pairs(exprs(mulvey2015norm[, i]), lower.panel = panel.cor)
+```
+
+
+## Hierarchical clustering only
+
+```{r hclust, fig.width = 15}
+par(mfrow = c(1, 2))
+hc <- hclust(dist(exprs(mulvey2015norm)))
+plot(hc)
+hc2 <- hclust(dist(t(exprs(mulvey2015norm))))
+plot(hc2)
+```
+
+## MA plots
+
+```{r mztab, message=FALSE, warning=FALSE}
+mztab <- pxget(px1, "PXD000001_mztab.txt")
+qnt <- readMzTabData(mztab, what = "PEP", version = "0.9")
+sampleNames(qnt) <- reporterNames(TMT6)
+qnt <- filterNA(qnt)
+spikes <- c("P02769", "P00924", "P62894", "P00489")
+protclasses <- as.character(fData(qnt)$accession)
+protclasses[!protclasses %in% spikes] <- "Background"
+```
+
+```{r maplots}
+MAplot(qnt[, 1:2], col = factor(protclasses), pch = 19)
+MAplot(qnt, cex = .8)
+```
+
+
+The `r Biocannopkg("RforProteomics")`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)
+has a dedicated section about
+[MA plots](http://www.bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html#the-ma-plot-example),
+describing the different R plotting systems and various customisations
+that can be applied to improve such figures and scatterplots in
+general.
+
+
+The `shinyMA` interactive application enables to navigate an MA plot
+an a linked expression plot. It can be tested online
+(https://lgatto.shinyapps.io/shinyMA/) or offline (as part of the 
+`r Biocannopkg("RforProteomics")` package), as shown below:
+
+```{r shinyma, eval=FALSE}
+shinyMA()
+```
+
+## Missing values
+
+```{r na}
+data(naset)
+naplot(naset, col = "black")
+```
+
+```{r naheatmap}
+x <- impute(naset, "zero")
+exprs(x)[exprs(x) != 0] <- 1
+suppressPackageStartupMessages(library("gplots"))
+heatmap.2(exprs(x), col = c("lightgray", "black"),
+          scale = "none", dendrogram = "none",
+          trace = "none", keysize = 0.5, key = FALSE,
+          RowSideColors = ifelse(fData(x)$randna, "orange", "brown"),
+          ColSideColors = rep(c("steelblue", "darkolivegreen"), each = 8))
+```
+
+One solution is to remove all or part of the features that have
+missing values (see `?filterNA`) and/or impute missing values
+(`?impute`). The latter is not a straighforward thing, as is likely to
+dramatically fail when a high proportion of data is missing (10s of
+%). 
+
+Different imputation methods are more appropriate to different classes
+of missing values (as documented in this
+[paper](http://pubs.acs.org/doi/abs/10.1021/acs.jproteome.5b00981)).
+
+## Normalisation strategies
+
+**Normalisation**: remove unwanted (technical) variation while
+retaining biological variability.
+
+### Ratios (SILAC)
+
+```{r silacnorm}
+sf <- downloadData("http://proteome.sysbiol.cam.ac.uk/lgatto/files/silac.rda")
+load(sf)
+ns1 <- s1; ns2 <- s2; ns3 <- s3
+exprs(ns1) <- exprs(s1) - median(exprs(s1))
+exprs(ns2) <- exprs(s2) - median(exprs(s2))
+exprs(ns3) <- exprs(s3) - median(exprs(s3))
+```
+
+```{r silacnormplot, fig.width=14}
+par(mfrow = c(1, 2))
+
+plot(density(exprs(s1)), col = "red", main = expression(SILAC~log[2]~ratios))
+rug(exprs(s1))
+lines(density(exprs(s2)), col = "green")
+lines(density(exprs(s3)), col = "blue")
+grid()
+abline(v = 0)
+
+plot(density(exprs(ns1)), col = "red", main = expression(Normalised~SILAC~log[2]~ratios))
+rug(exprs(ns1))
+lines(density(exprs(ns2)), col = "green")
+lines(density(exprs(ns3)), col = "blue")
+grid()
+abline(v = 0)
+```
+
+Other approaches for ratio normalisation: 
+
+* `loess` polynomial regression that uses the raw intensities.
+* `quantile` (as below) for between acquisition normalisation.
+
+See the `r Biocpkg("limma")` package.
+
+### Intensities (iTRAQ)
+
+```{r normbxplot, fig.width=20}
+par(mfrow = c(1, 4))
+data(dunkley2006)
+boxplot(exprs(dunkley2006), main = "original")
+boxplot(exprs(normalise(dunkley2006, method = "vsn")),
+        main = "Variance stabilisation normalisation")
+boxplot(exprs(normalise(dunkley2006, method = "center.median")),
+        main = "Median")
+boxplot(exprs(normalise(dunkley2006, method = "quantiles")),
+        main = "Quantile")
+```
+
+## PCA analysis and plots
+
+```{r pca1}
+plot2D(t(mulvey2015norm), fcol = "times", fpch = "rep")
+addLegend(t(mulvey2015norm), where = "bottomright", fcol = "times")
+```
+
+```{r pca}
+plot2D(dunkley2006)
+addLegend(dunkley2006, where = "topleft")
+```
+
+<!-- > From a simpler set (e.g. Dean’s kdeg/protein/abundance) data, plot a -->
+<!-- > 2d plot with colour as a third scaling variable -->
+
+```{r pcacex}
+data(hyperLOPIT2015)
+setStockcol(paste0(getStockcol(), 60))
+plot2D(hyperLOPIT2015,
+       fcol = "final.assignment",
+       cex = exp(fData(hyperLOPIT2015)$svm.score) - 1)
+```
+
+# Statistical analyses
+
+## Radom data
+
+```{r random, fig.width=12}
+set.seed(1)
+x <- matrix(rnorm(3000), ncol = 3)
+res <- rowttests(x)
+par(mfrow = c(1, 2))
+hist(res$p.value, xlab = "p-values",
+     breaks = 100, main = "Random data")
+abline(v = 0.05, col = "red", lwd = 2)
+matplot(t(x[which(res$p.value < 0.01), ]), type = "b",
+        ylab = expression(log[2]~fold-change),
+        main = "Data with a p-value < 0.01")
+sum(res$p.value < 0.05)
+```
+
+![p-value histograms](./Figures/plot_melted-1.png)
+
+* A: well-behaved p-values!
+* B: all hypotheses are probably null. 
+* C: Don't blindly apply false discovery rate control, as the peak
+  close to one violates the assumption of uniform distribution towards
+  one. Ask for help!
+* D: Something went wrong: wrong distribution, p-values were already
+  adjusted, ... Ask for help!
+* E: Bootstrap with too few iterations? Non-parametric test with too
+  few samples? Ask for help!
+* F: Ask for help!
+
+See [How to interpret a p-value histogram](http://varianceexplained.org/statistics/interpreting-pvalue-histogram/) for more explanations.
+
+## Adjustment for multiple testing
+
+```{r bhadj}
+summary(qvalue(res$p.value)$qvalue)
+```
+
+## Real data
+
+Here, we have spectral counting data and use a quasi-likelihood GLM
+regression to compare count data between two treatments taking two
+batches into account. This code chunk comes from the 
+`r Biocpkg("msmsTests")` package.
+
+```{r msmsstats, cache=TRUE}
+data(msms.dataset)
+e <- pp.msms.data(msms.dataset)
+null.f <- "y~batch"
+alt.f <- "y~treat+batch"
+div <- apply(exprs(e), 2, sum)
+res <- msms.glm.qlll(e, alt.f, null.f, div = div)
+lst <- test.results(res, e, pData(e)$treat, "U600", "U200", div,
+                    alpha = 0.05, minSpC = 2, minLFC = log2(1.8),
+                    method = "BH")
+```
+
+## p-values
+
+```{r pvhist}
+summary(lst[["tres"]]$p.value)
+hist(lst[["tres"]]$p.value, main = "Raw p-values")
+```
+
+
+
+```{r adjphist}
+summary(lst[["tres"]]$adjp)
+hist(lst[["tres"]]$adjp, main = "Adjusted p-values")
+```
+
+## Volcano plots
+
+```{r volc}
+res.volcanoplot(lst$tres, max.pval = 0.05,
+                min.LFC = 1, maxx = 3, maxy = NULL,
+                ylbls = 4)
+```
+
+# Annotation
+
+Context is essential in biology: we need to be able to pull
+annotations from `r Biocpkg("GO")`, Biomart (`r Biocpkg("biomaRt")`),
+UniProt (`r Biocpkg("UniProt.ws")`), and many specialised databases as
+well as decorate the data (samples, features) with additional values
+we calculate (such as p-values, classification results, number of
+missing values, ...).
+
+
+# Gene-set/pathway enrichment analyses
+
+* There are different approaches to enrichment analyses. One, based on
+  the hyper-geometric distribution assumes that the *universe* (all
+  expected features/proteins) are known. But this is often undefined
+  in proteomics experiments: do we take all the proteins in the
+  database, all identified proteins or protein groups, ...? Other
+  approaches are based on bootstrap re-sampling, which relies on
+  observed features.
+
+* Check your p-values!
+
+![pathway enrichment](./Figures/hsa04620.png)
+
+# References and resources
+
+* [Visualisation of proteomics data using R and Bioconductor](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4510819/)
+* [Using R and Bioconductor for proteomics data analysis](http://arxiv.org/pdf/1305.6559v1.pdf)
+* `RforProteomics`: http://bioconductor.org/packages/RforProteomics
+* [R/Bioconductor workflow](http://bioconductor.org/help/workflows/proteomics/)
+* [Teaching material](http://lgatto.github.io/TeachingMaterial/) for
+  R and more
+* Workshops: [Software](http://software-carpentry.org/) and
+  [Data Carpentry](http://www.datacarpentry.org/), 
+  [Data Programmers](http://www.dataprogrammers.net/)
+
+
+# About this document
+
+The source used to generate this document is available
+[here](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis/blob/master/vignette.Rmd).
+
+Software used:
+
+```{r si, echo=FALSE}
+options(max.print = 200)
+print(sessionInfo(), locale=FALSE)
+```
