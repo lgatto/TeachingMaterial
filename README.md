@@ -246,3 +246,12 @@ install_github("sequences", "lgatto")
   [significance testing](https://github.com/lgatto/statistics-primer/blob/master/test-slides.pdf), 
   and
   [practical](https://htmlpreview.github.io/?https://github.com/lgatto/statistics-primer/blob/master/03-practical.html).
+
+### Inspection, visualisation and analysis of quantitative proteomics data
+
+- Description: A discussion I lead in the frame of the
+[Quantitative Proteomics and Data Analysis](https://www.biochemistry.org/Events/tabid/379/View/Programme/MeetingNo/TD007/Default.aspx)
+Course.
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/Quantitative-Proteomics-Data-Analysis
+- Slides (http://bit.ly/qprotda) and reproducible vignette (http://bit.ly/qprotdavig)
