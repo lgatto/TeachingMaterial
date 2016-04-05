@@ -253,5 +253,5 @@ install_github("sequences", "lgatto")
 [Quantitative Proteomics and Data Analysis](https://www.biochemistry.org/Events/tabid/379/View/Programme/MeetingNo/TD007/Default.aspx)
 Course.
 - Author: [Laurent Gatto](https://github.com/lgatto)
-- Original repository: https://github.com/lgatto/Quantitative-Proteomics-Data-Analysis
+- Original repository: https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis
 - Slides (http://bit.ly/qprotda) and reproducible vignette (http://bit.ly/qprotdavig)
