@@ -254,7 +254,7 @@ Also of interest is [`maker`](https://github.com/ComputationalProteomicsUnit/mak
   [Managing projects with GNU make](http://oreilly.com/catalog/make3/book/)
   book (part of the [Open Books project](http://oreilly.com/openbook/))
 
-- [Software carpentry](http://software-carpentry.org/)'s [make tutorial](http://software-carpentry.org/v4/make/index.html)
+- [Software carpentry](http://software-carpentry.org/)'s [make tutorial](http://swcarpentry.github.io/make-novice/)
 
 - [Mike Bostock](http://bost.ocks.org/mike/)'s &ldquo;[Why Use Make](http://bost.ocks.org/mike/make/)&rdquo;
 
