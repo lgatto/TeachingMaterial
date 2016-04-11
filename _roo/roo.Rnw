@@ -95,7 +95,7 @@
   Laurent~Gatto \url{lg390@cam.ac.uk} \\
   ~\\
   %Course website:\\
-  %\url{http://logic.sysbiol.cam.ac.uk/teaching/advancedR/}
+  %\url{https://github.com/lgatto/roo}
 }
 
 \institute[CSBC]
@@ -106,9 +106,9 @@
   \pgfuseimage{uc-logo}
 }
 
-\date[15-16/01/2015]
+\date[]
 {
-  15 - 16 January 2015
+  Last update: April 2016
 }
 
 
