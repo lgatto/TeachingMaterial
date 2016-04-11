@@ -61,7 +61,7 @@ to construct new object of given class.
     Methods $\rightarrow$ a list of \textbf{functions}
   \end{block}
 \begin{scriptsize}
-<<RefClass-2, echo=TRUE, tidy = FALSE>>=
+<<RefClass-2, tidy = FALSE>>=
 Seq <- setRefClass("Seq",
                    fields = list(
                      id = "character",
@@ -69,7 +69,7 @@ Seq <- setRefClass("Seq",
                      sequence = "character"),
                    methods = list(
                      comp = function() {
-                       'Complements the (DNA) sequence' ## inline docs
+                       "Complements the (DNA) sequence" ## inline docs
                        sequence <<- chartr("ACGT","TGCA",.self$sequence)
                        id <<- paste(.self$id, "-- complemented")                     
                      }

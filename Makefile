@@ -25,7 +25,8 @@ endif
 
 
 roo.pdf: roo.Rnw intro.tex revision.tex oo-intro.tex roo.Rnw S3.tex S4.tex Ref.tex 
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('roo.Rnw');"
+	"$(R_HOME)/bin/R" --vanilla -e "knitr::knit('roo.Rnw');"
+	pdflatex roo.tex
 	pdflatex roo.tex
 
 intro.tex: intro.Rnw

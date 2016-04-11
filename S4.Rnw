@@ -284,7 +284,7 @@ invisible({
 		\item When to create a new class? \\ - If there is a clear benefit
 		in terms of data organisation and generic re-usage (e.g. \Rfunction{plot()} function). 
 		\smallskip
-		\item When to we create a new generic? 
+		\item When to create a new generic? 
 		\\ - Accessors or general functionality (e.g. \Rfunction{normalize()}). 
 		\\ - If using Bioconductor always check package \Rfunction{BiocGenerics} and other
 		packages you use. 
