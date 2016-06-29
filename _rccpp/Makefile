@@ -1,5 +1,5 @@
 all:
-	## make rccpp.pdf		
+	make rccpp.pdf
 	make rc.md
 	make deferred-eval.md
 
@@ -20,27 +20,21 @@ LATEXFILES = *.aux\
 	Rplots.pdf\
 	*tex
 
-setvars:
-ifeq (${R_HOME},)
-R_HOME= $(shell R RHOME)
-endif
-
-
 %.md: %.Rmd
 	Rscript -e "knitr::knit('$^')"
 
 rccpp.pdf: rccpp.Rnw intro.tex call.tex rcpp.tex
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit2pdf('rccpp.Rnw');"
+	R --vanilla -e "library(knitr); knit2pdf('rccpp.Rnw');"
 	pdflatex rccpp.tex
 
 intro.tex: intro.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('intro.Rnw');"
+	R --vanilla -e "library(knitr); knit('intro.Rnw');"
 
 call.tex: call.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('call.Rnw');"
+	R --vanilla -e "library(knitr); knit('call.Rnw');"
 
 rcpp.tex: rcpp.Rnw
-	"$(R_HOME)/bin/R" --vanilla -e "library(knitr); knit('rcpp.Rnw');"
+	R --vanilla -e "library(knitr); knit('rcpp.Rnw');"
 
 
 clean:
