@@ -87,7 +87,7 @@ To use make:
 
 ### Frills
 
-You can go along way with just simple make files as above, specifying
+You can go a long way with just simple make files as above, specifying
 the target files, their dependencies, and the commands to create
 them. But there are _a lot_ of frills you can add, to save some
 typing.
