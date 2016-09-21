@@ -1,0 +1,2411 @@
+\SweaveOpts{engine=R,eps=FALSE,keep.source=T}
+
+\documentclass{beamer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FOR HANDOUTS UNCOMMENT:
+%\documentclass[handout]{beamer}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Setup appearance:
+% \usetheme{Darmstadt}
+%\usetheme{Copenhagen}
+\usetheme{Boadilla}
+\usefonttheme[onlylarge]{structurebold}
+\usepackage{underscore}
+
+\usepackage[scaled]{beramono}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FOR HANDOUTS UNCOMMENT:
+%\usepackage{handoutWithNotes}
+%\pgfpagesuselayout{3 on 1 with notes}[a4paper,border shrink=5mm]
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamerfont*{frametitle}{size=\normalsize,series=\bfseries}
+\setbeamertemplate{navigation symbols}{}
+% Standard packages
+% \usepackage[english]{babel}
+% \usepackage[latin1]{inputenc}
+% \usepackage{times}
+% \usepackage[T1]{fontenc}
+\usepackage{Sweave}
+\usepackage{ulem}
+\usepackage{colortbl}
+\usepackage{verbatim}
+\usepackage{fancyvrb}
+% Setup TikZ
+\usepackage{tikz}
+\usetikzlibrary{arrows}
+\tikzstyle{block}=[draw opacity=0.7,line width=1.4cm]
+% \usecolortheme{seagull}
+\usecolortheme{seahorse}
+
+%% new commande
+\let\code=\texttt
+\let\proglang=\textsf
+
+\newcommand{\R}{\texttt{R}}
+\newcommand{\Rfunction}[1]{{\texttt{#1}}}
+\newcommand{\Robject}[1]{{\texttt{#1}}}
+\newcommand{\Rpackage}[1]{{\textit{#1}}}
+
+\newcommand{\comments}[1]{}
+
+\newenvironment<>{varblock}[2][\textwidth]{%
+  \setlength{\textwidth}{#1}
+  \begin{actionenv}#3%
+    \def\insertblocktitle{#2}%
+    \par%
+    \usebeamertemplate{block begin}}
+  {\par%
+    \usebeamertemplate{block end}%
+  \end{actionenv}}
+
+
+%% Exercise counter
+\newcounter{exerciseCounter}
+\newcommand{\exerciseCount}{%
+  \stepcounter{exerciseCounter}%
+  \theexerciseCounter}
+
+\newcommand{\exercise}{\textbf{Exercise \exerciseCount:}~}
+
+% Author, Title, etc.
+\title[Advanced R course] 
+{%
+  R OO Programming and Package Development
+}
+
+\author[Stojnic and Gatto]
+{
+  Robert~Stojnic and Laurent~Gatto\\
+  ~\\
+  Teaching material:\\
+  \url{https://github.com/lgatto/TeachingMaterial}
+}
+
+% \institute[CSBC]
+% {
+% %   \inst{1}%
+%   University of Cambridge \\
+%   \pgfuseimage{uc-logo}
+% }
+
+
+\pgfdeclareimage[height=.7cm]{uc-logo}{./Figures/uc-logo}
+\pgfdeclareimage[height=.7cm]{ebi-logo}{./Figures/EMBLEBIlogo}
+\pgfdeclareimage[width=5.5cm]{uml-diagram}{./Figures/uml-diagram}
+%% \logo{\pgfuseimage{uc-logo}}
+
+
+\AtBeginSection[] % Do nothing for \section*
+{
+\begin{frame}<beamer>
+\frametitle{Plan}
+\tableofcontents[currentsection]
+\end{frame}
+}
+
+
+% The main document
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Title frame                                                 %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Disclaimer                                                  %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% \begin{frame}{}
+%%  \begin{alertblock}{Disclaimer}
+%%  \end{alertblock}
+%% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{Prerequisites}
+\begin{frame}
+  \begin{block}{Prerequisites}
+  \begin{itemize}
+  	\item good knowledge of R (data types, functions, scripting ...)
+  	\item basic knowledge of CLI
+  	\item some Latex knowledge helpful but not essential
+  	\item object-oriented programming knowledge helpful but not essential
+  \end{itemize}
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Table of contents                                           %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}{Plan}
+  \footnotesize
+  \tableofcontents
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\section{Introduction}
+
+\begin{frame}[t]{Course introduction}
+
+\begin{block}{Course agenda}
+	\begin{itemize}
+		\item Object-oriented programming in R: S3 and S4 class systems
+		\item Package development in R: creating and documenting packages
+		\item Other advanced topics: testing, debugging, profiling, C interface
+		\item This is an \textbf{intensive} course
+	\end{itemize}
+\end{block}
+
+\begin{block}{Objectives}
+	By the end of the course you should have created a working package written
+	in the S4 class system. 
+
+	\bigskip
+	You should be able to use the code as a template for your own work. Our
+	example has been chosen for demonstrative purposes. 
+
+\end{block}
+
+\end{frame}
+
+\begin{frame}[shrink]{Course working example: "sequences" package}
+
+\begin{block}{Working example}
+	We will make a simple package to handle sequence data.
+	\smallskip
+
+	This package will be able to load a FASTA file and based on sequence type
+	do some operations, like finding the sequence length or reverse sequence.
+	For simplicity we will manipulate single sequences only.
+\end{block}
+
+
+\smallskip
+
+\begin{center}
+\pgfuseimage{uml-diagram}
+
+{\small UML class diagram for the "sequences" package}
+\end{center}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\section{Revision of basic R}
+
+\begin{frame}{Basic R functions (size reflects frequency of usage)}
+\begin{center}
+  \includegraphics[height=0.8\textheight, keepaspectratio=true]{./Figures/functionCloud.png}
+\end{center}
+\end{frame}
+
+\begin{frame}[fragile]{Defining functions in R}
+Simple function with 4 arguments:  
+\begin{scriptsize} 
+<<function-example,echo=TRUE>>=
+# Function to calculate area of rectangle
+area <- function(x1, y1, x2, y2) {
+  abs(x2-x1) * abs(y2-y1)
+}
+area(0, 0, 5, 5)
+@ 
+\end{scriptsize}
+
+Special argument "..." for any:
+
+\begin{scriptsize} 
+<<function-example, echo=TRUE>>=
+# Plot with a message before the plot
+plotMsg <- function(x, y, ...){
+	cat("Plotting", length(x), "data points!\n")
+	plot(x, y, ...)
+}
+plotMsg(1:10, 1:10, main="My plot")
+@ 
+\end{scriptsize}
+
+\end{frame}
+
+\begin{frame}[fragile]{Output of plotMsg()}
+\begin{scriptsize}
+\setkeys{Gin}{height=0.7\textheight,keepaspectratio=true}.
+<<label=plotmsg, echo=TRUE,fig=TRUE,keep.source=TRUE>>=
+plotMsg(1:10, 1:10, main = "My plot")
+@
+\end{scriptsize}
+\end{frame}
+
+%%% Useful functions
+
+\begin{frame}[fragile]{Useful R function 1/2}
+	\begin{itemize}
+	\item readLines() - reads raw lines of text from a file
+	\item nchar() - gives number of characters in a string
+\begin{scriptsize} 
+<<echo=TRUE>>=
+nchar("Some text")
+@
+\end{scriptsize}
+	\item strsplit() - split a string by some separator
+\begin{scriptsize} 
+<<echo=TRUE>>=
+strsplit("Some text", " ")
+strsplit("Some text", "")
+@
+\end{scriptsize}
+	\item unique() - unique elements of a vector
+\begin{scriptsize} 
+<<echo=TRUE>>=
+unique(c(1, 1, 2, 2, 3))
+unique(c("a", "b", "a"))
+@
+\end{scriptsize}
+
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Useful R function 2/2}
+	\begin{itemize}
+	\item \code{grep()} - find which elements of vector match regular expression
+\begin{scriptsize} 
+<<echo=TRUE>>=
+grep("[AT]+", c("CGC", "TAT", "TATCATA"))
+@
+\end{scriptsize}
+
+	\item \code{sub()} - replace matches to regular expression
+\begin{scriptsize} 
+<<echo=TRUE>>=
+sub("[AT]+", "-", c("CGC", "TAT", "TATCATA")) 
+@
+\end{scriptsize}
+
+	\item \code{chartr()} - translate a string by replacing individual characters
+\begin{scriptsize} 
+<<echo=TRUE>>=
+chartr("TA", "AT", "TATCTA")
+@
+\end{scriptsize}
+
+	\item \code{rev()} - reverse ordering in a vector
+\begin{scriptsize} 
+<<echo=TRUE>>=
+rev(c("TAT", "ATT", "TTT"))
+@
+\end{scriptsize}
+
+	\item \code{paste()} - concatenate variables into a string representation
+\begin{scriptsize} 
+<<echo=TRUE>>=
+paste(c("A", "T", "A"), collapse="")
+@
+\end{scriptsize}
+
+	\end{itemize}
+\end{frame}
+
+
+%%% Revision of R lists
+
+\begin{frame}[fragile]{Lists in R}
+List is a data structure that can hold a vector of any other variables.
+\bigskip
+\begin{scriptsize} 
+<<lists,echo=TRUE>>=
+x <- list(a=10, b="text")
+x
+x$a
+x[["b"]]
+x[[1]]
+names(x)
+@
+%$
+\end{scriptsize}
+\end{frame}
+
+%%% Everything is object
+
+\begin{frame}[fragile]{Everything in R has a class}
+Everything in R has a type - in object oriented programming called a \textbf{class}.
+\small
+\begin{scriptsize} 
+<<everythingobj,echo=TRUE>>=
+class(10)
+class(c(1, 2, 3))
+class("Some text")
+class(matrix(0, nrow=10, ncol=10))
+class(plot)
+class(table(1:4, 1:4))
+@
+\end{scriptsize}
+
+\end{frame}
+
+\begin{frame}{Recommended coding standards}
+  \begin{block}{Coding standards}
+    \begin{itemize}
+    \item Use \texttt{<-} for assignment rather than \texttt{=}.
+    \item Avoid long lines (80 characters).
+    \item Use spaces for identation (2 or 4).
+    \item No semi-colomns (unless you have several expression in a line).
+    \item Start names with upper case for classes, lower for the rest.
+    \item Use syntax highlighting
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\section{Object-oriented (OO) Programming}
+
+% OOP basic concepts
+\begin{frame}{Object-oriented Programming (OOP)}
+
+\begin{block}{Object-oriented vs Procedural programming}
+
+\begin{itemize}
+\item OOP introduced in 1970s in Smalltalk but gained wider popularity in 1990s with programming languages like C++ and Delphi
+\bigskip
+\item Traditional (procedural) programming - data and functions decoupled
+\item Object-oriented programming - data and functions tied together in \textbf{objects}
+\end{itemize}
+\end{block}
+
+\begin{block}{OOP concepts}
+	\begin{itemize}
+		\item \textbf{Abstraction} - related data is stored and handled together
+		\item \textbf{Inheritance} - code reuse by hierarchy of more-to-less general object types (classes)
+		\item \textbf{Polymorphism} - the most appropriate function is called based on the dataset (e.g various \texttt{plot} functions)		
+	\end{itemize}
+\end{block}
+
+
+\end{frame}
+
+% explain OOP modelling on a simple example (without emphasis on syntax)
+\begin{frame}[fragile]{Procedural vs Object-oriented Programming}
+
+\begin{columns}[t]
+  \begin{column}{0.4\textwidth}
+    Procedural programming
+    \begin{scriptsize}    
+<<procedural-area,echo=TRUE>>=
+area <- function(x1,y1,x2,y2){
+  abs(x2-x1)*abs(y2-y1)
+}
+area(0, 0, 5, 5)
+@ 
+\end{scriptsize}
+  \end{column}
+
+  \begin{column}{0.6\textwidth}
+    Object-oriented programming
+\begin{scriptsize}
+<<oop-area,echo=TRUE>>=
+setClass("Rectangle", 
+	representation = representation(
+		x1 = "numeric",
+		y1 = "numeric",
+		x2 = "numeric",
+		y2 = "numeric")
+)
+setGeneric("area", function(obj) 
+    standardGeneric("area"))
+setMethod("area", "Rectangle", function(obj){
+	abs(obj@x2 - obj@x1) * abs(obj@y2 - obj@y1)
+})
+rect = new("Rectangle", x1=0, y1=0, x2=5, y2=5)
+area(rect)
+@
+\end{scriptsize}
+
+  \end{column}
+\end{columns}
+
+\end{frame}
+
+% S3 and S4 in R
+\begin{frame}[t]{OOP in R}
+
+	\begin{block}{OOP in R: S3 and S4}
+	R has two object-oriented frameworks:
+	\bigskip
+	\begin{itemize}
+	\item \textbf{S3} - older and less formal (i.e. \textit{ad-hoc}) framework with no explicit class definitions. Many parts of base R use S3, e.g. plotting, linear modelling, ... 
+	\begin{itemize}
+		\item limited introspection, single inheritance, single dispatch, instance-based
+	\end{itemize}
+	\bigskip
+	\item \textbf{S4} - full-fledged object-oriented framework, de-facto standard for most modern packages and required for Bioconductor packages.
+	\begin{itemize}
+		\item introspection, multiple inheritance, multiple dispatch (introduces a small overhead)
+	\end{itemize}
+	\end{itemize}
+	
+	\end{block}
+\end{frame}
+
+% Description of the working example
+\begin{frame}[t]{Course working example}
+
+\begin{block}{Working example revisited}
+\small
+Working example for this course will be \textbf{manipulating DNA/RNA sequence data}.
+\smallskip
+
+Functions we would like to have:
+\begin{itemize}
+	\item \code{readFasta()} - read in a single sequence from a FASTA file
+	\item \code{id(), seq()} - return the ID of sequence and the sequence (accessors)
+	\item \code{rev()} - return reverse DNA/RNA sequence
+	\item \code{length()} - return DNA/RNA sequence length
+	\item \code{comp()} - return complementary DNA/RNA sequence
+	\item \code{transcribe()} - return RNA sequence for DNA sequence	
+\end{itemize}
+\end{block}
+
+\begin{block}{Goal}
+\small
+The final product should be an R package using S4 framework. But we need to get there, 
+so lets start with a procedural and S3 implementation...	
+
+\end{block}
+\end{frame}
+
+% input to readFasta()
+\begin{frame}[fragile]
+
+\begin{block}{\code{readFasta()} input file}
+
+We will start with the implementation of \code{readFasta()}. This function should load the data
+from a FASTA file and somehow represent it in R. 
+\bigskip
+
+A sample FASTA file:
+\begin{Verbatim}[frame=single, xleftmargin=5mm, xrightmargin=5mm]
+> example dna sequence
+agcatacgacgactacgacactacgacatcagacactacagactactac
+gactacagacatcagacactacatatttacatcatcagagattatatta
+acatcagacatcgacacatcatcatcagcatcat
+\end{Verbatim}
+\smallskip
+\end{block}
+
+\begin{block}{Sequence description}
+Notice that a sequence is described by the: 
+\begin{itemize}
+	\item name (\code{example dna sequence})
+	\item nucleotide sequence
+	\item sequence alphabet (in case of DNA ATGC, for RNA AUGC)
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+% simple readFasta()
+\begin{frame}[fragile,shrink]{Naive \code{readFasta()} implementation}
+
+\begin{block}{readFasta() implementation}
+Read in a sequence from FASTA file and return the \code{id, sequence} and \code{alphabet} in a list:
+\end{block}
+
+\begin{scriptsize}
+<<readFasta-S3,echo=TRUE>>=
+readFasta <- function(infile){
+  lines <- readLines(infile)
+  header <- grep("^>", lines)
+ 
+  if ( length(header) > 1 ) {
+    warning("Reading first sequence only.")
+    lines <- lines[header[1]:(header[2]-1)]
+    header <- header[1]
+  }
+  
+  id <- sub("^> *","",lines[header],perl=TRUE)
+  sequence <- toupper(paste(lines[(header+1):length(lines)],collapse=""))
+  alphabet <- unique(strsplit(sequence,"")[[1]])
+  
+  return.value <- list(id=id, sequence=sequence, alphabet=alphabet)
+  class(return.value) <- "GenericSeq"
+  
+  return.value
+}
+@
+\end{scriptsize}
+
+\end{frame}
+
+% inspect S3 objects and introduce methods
+
+\begin{frame}[fragile]{S3 objects}
+
+\begin{scriptsize}
+<<readFasta-use,echo=TRUE>>=
+s <- readFasta("aDnaSeq.fasta")
+s
+names(s)
+@
+\end{scriptsize}
+
+\begin{block}{S3 object definition}
+Any variable that has a "\code{class}" attribute is an S3 object. 
+
+Now we can write class-specific functions - \textbf{methods}.
+\end{block}
+
+\end{frame}
+
+% Methods in S3
+\begin{frame}[fragile,shrink]{S3 methods and dispatch}
+
+\begin{block}{Methods: class-specific functions}
+\small
+Lets write the \code{id()} method that will return the sequence id. 
+There are two parts to defining a class-specific function (\textbf{method}): 
+\begin{itemize}
+	\item Defining a generic function
+	\item Defining the class method
+\end{itemize}
+\end{block}
+
+\begin{small}
+<<def-id,echo=TRUE>>=
+id <- function(x){ UseMethod("id") } # generic
+id.GenericSeq <- function(x){ x$id } # method
+id(s)
+@
+%$
+\end{small}
+
+\begin{block}{S3 methods mechanism}
+\small
+\textbf{Generic function} has the desired function name and contains only one command 
+\code{UseMethod("functionName")} called a \textbf{dispatch command}. This command based
+on the first parameter's class calls an appropriate function of format \code{functionName.className}.
+If such function doesn't exist \code{functionName.default} is called.
+\end{block}
+
+\end{frame}
+
+% seq() function
+\begin{frame}[fragile]{Adding to existing S3 generics}
+
+\begin{block}{The seq() method}
+  
+  \small Now consider the \code{seq()} function. This function already
+  exists (try \code{?seq}). We would like to retain this old function,
+  but also add our \code{seq()} that return the DNA/RNA sequence.
+  \bigskip
+
+  The \code{seq()} function is already a generic. We don't need to
+  redefine it.
+  
+\end{block}
+
+\begin{scriptsize}
+<<seq-investigate, echo=TRUE, eval = FALSE>>=
+seq
+methods("seq")
+@
+
+<<def-seq,echo=TRUE>>=
+seq.GenericSeq <- function(x) { x$sequence }
+seq(s)
+@
+%$
+\end{scriptsize}
+
+\end{frame}
+
+\begin{frame}[t]{S3 methods exercises}
+\small
+Look at the code we have written so far, understand it, and then solve
+the following exercise.
+
+\begin{block}{\exercise}
+\small
+Explore some of the built-in generics and methods. Try the following commands:\\
+\smallskip
+\code{methods("summary")}\\
+\code{methods(class="lm")}\\
+\end{block}
+
+
+\begin{block}{\exercise (code:\code{02_GenericSeq.R}, solution:\code{02_GenericSeq_solution.R})}
+\small
+Both \code{length()} and \code{rev()} are already generic functions,
+but \code{alphabet()} is not. 
+Add these methods for class \code{GenericSeq}:
+\begin{itemize}
+	\item \code{length()} should return the length of the DNA/RNA sequence
+	\item \code{alphabet()} should return the alphabet of the sequence
+	\item \code{rev()} should return the sequence in reverse ({\scriptsize Hint:
+	try to use functions \code{strsplit()} and the existing base \code{rev()} function}).
+\end{itemize}
+\end{block}
+
+\comments{
+<<exercise2,echo=FALSE>>=
+invisible(alphabet <- function(x) UseMethod("alphabet"))
+invisible(alphabet.GenericSeq <- function(x) x$alphabet)
+
+invisible(rev <- function(x) UseMethod("rev"))
+invisible(rev.GenericSeq <- function(x) paste(rev(unlist(strsplit(x$sequence, ""))), collapse=""))
+@
+}
+
+\end{frame}
+
+% Introduce S3 inheritance
+\begin{frame}[fragile,shrink]{S3 inheritance}
+
+\begin{block}{Reusing class methods}
+So far we have written methods for \code{GenericSeq} that work with any sequence type.
+Now lets introduce a new class \code{DnaSeq}. We want to \textbf{inherit}
+all methods from \code{GenericSeq} - to achieve this simply set the \code{class}
+attribute to all applicable class names. 
+\end{block}
+
+\smallskip
+\begin{scriptsize}
+<<seq-type,echo=TRUE>>=
+setSeqSubtype <- function(s){
+  if (all( alphabet(s) %in% c("A","C","G","T") )) {
+    class(s) <- c("DnaSeq", "GenericSeq")  
+  } else if (all( alphabet(s) %in% c("A","C","G","U") )) {
+    class(s) <- c("RnaSeq", "GenericSeq")
+  } else {
+    stop("Alphabet ", alphabet(s) ," is unknown.")
+  }
+  
+  return(s)
+}
+s.dna <- setSeqSubtype(s)
+class(s.dna)
+@
+
+\end{scriptsize}
+
+\end{frame}
+
+% define the DnaSeq function and show how it works
+\begin{frame}[fragile]{S3 inheritance continued}
+
+\begin{block}{\code{DnaSeq} methods}
+\small
+
+Define a \code{DnaSeq} method \code{complement()}. All
+\code{GenericSeq} methods still work with \code{DnaSeq} objects, but
+the \code{complement()} only works with \code{DnaSeq}.
+
+\end{block}
+\begin{scriptsize}
+<<complement,echo=TRUE>>=
+complement <- function(x){ UseMethod("complement") }
+complement.DnaSeq = function(x) chartr("ACGT", "TGCA", seq(x))
+@
+<<inheritance,echo=TRUE>>=
+id(s) # works on GenericSeq
+id(s.dna) # works on DnaSeq, GenericSeq
+try({ complement(s) }) # fails with error
+complement(s.dna)
+@
+\end{scriptsize}
+
+\begin{block}{S3 dispatch and inheritance}
+\small
+The dispatching will look for appropriate methods for all \code{x} (sub-)classes
+(in order in which they are set).
+\end{block}
+
+\end{frame}
+
+% S3 inheritance exercise
+\begin{frame}[t]{S3 inheritance exercise}
+
+Look at the inheritance code and understand how it works. Then solve the following exercise.
+
+\begin{block}{\exercise (code: \code{03_inherit.R}, solution: \code{03_inherit_solution.R})}
+Write the \code{complement()} method for \code{RnaSeq} class. Since we don't have a RNA FASTA
+file you will have to make a new \code{RnaSeq} object by hand and assign the right classes
+to test your code. 
+
+\bigskip
+What do you notice about the S3 class system, is it easy to make mistakes? Could you also make
+your RNA sequence to be of class "\code{lm}"?
+
+\end{block}
+
+\end{frame}
+
+% final S3 revision
+\begin{frame}
+
+\begin{block}{S3 class system revision}
+\smallskip
+\begin{small}
+\begin{itemize}
+	\item Classes are implicit (no formal class definition)
+	\item Making new objects is done by simply setting the \code{class} attribute
+	\item Making class methods is done by defining a generic function \code{functionName()} and a normal function \code{functionName.className()}. 
+	Methods can be retrieved using the \code{methods()} function.
+	\item Objects can inherit multiple classes by setting the \code{class} attribute to a vector of class names
+	\item Many functions in base R use the S3 system
+	\item Easy to make new ad-hoc classes and objects, but also mistakes and inconsistencies
+\end{itemize}
+\end{small}
+\bigskip
+
+The S4 class system is designed to address some of these concerns. 
+
+\end{block}
+
+\end{frame}
+
+%% % Coffee break!
+%% \begin{frame}[fragile]{But before we continue...}
+%%   \begin{center}
+%%     {\Large It is time for morning coffee...}
+%%     \bigskip
+%%     (15 minute break)
+%%   \end{center}
+%% \end{frame}
+
+% S4 class system introduction
+\begin{frame}[t]{Introduction to S4 class system}
+
+\begin{block}{Differences of S4 class system to S3}
+\begin{small}
+\begin{itemize}
+\item \textbf{Classes are explicit} - they have slots which describe what kind of data is stored
+\item \textbf{Improved introspection} - class, method and slot introspection
+\item \textbf{Consistency checking} - can no longer assign any class name, class hierarchy is explicitly checked and reinforced 
+\item \textbf{Validity checking} - custom automatic checks of data consistency 
+\item \textbf{Multiple inheritance, multiple dispatch, virtual classes}
+\end{itemize}
+\end{small}
+
+\bigskip
+S4 class system is the de-facto standard in Bioconductor. 
+
+\end{block}
+
+\end{frame}
+
+% Defining a class in S4
+\begin{frame}[fragile]{Defining S4 classes}
+
+\begin{block}{Defining S4 class}
+
+{\small Each class in S4 needs to be defined before it can be used. At this stage data types and inheritance are specified.}
+\end{block}
+
+\begin{scriptsize}
+<<GenericSeq-S4,echo=TRUE>>=
+setClass("GenericSeq",
+         representation = representation(
+           id = "character",
+           alphabet = "character",
+           sequence =  "character"
+          ))
+@
+\end{scriptsize}
+
+\begin{block}{S4 class slots}
+\begin{small}
+Slots define the {\bf names and types} of variables that are going to be
+stored in the object. Types can be any of the basic R type or S3/S4 classes. To inspect
+how basic R types are called use \code{class()}, e.g.
+\end{small}
+\end{block}
+
+\begin{scriptsize}
+<<basic-types,echo=TRUE>>=
+class("hello")
+@
+\end{scriptsize}
+
+\end{frame}
+
+% S4 objects
+\begin{frame}[fragile]{S4 objects}
+
+\begin{block}{Creating S4 objects}
+{\small Once we have a class definition, we can make an object by filling out the slots. 
+We can directly access the slots using the \code{@} notation although this is discouraged.}
+\end{block}
+
+\begin{scriptsize}
+<<make-obj,echo=TRUE>>=
+genseq <- new("GenericSeq", id="sequence name", 
+       alphabet=c("A", "C", "G", "T"), sequence="AGATACCCCGAAACGA")
+genseq
+genseq@id
+slot(genseq, "id")
+@
+\end{scriptsize}
+
+\end{frame}
+
+% S4 methods
+\begin{frame}[t,fragile]{S4 methods}
+
+\begin{block}{Creating S4 methods}
+Similar to S3 we define object methods in two steps: by defining a 
+\textbf{generic} and the \textbf{method}. 
+\end{block}
+
+\begin{scriptsize}
+<<s4-methods,echo=TRUE>>=
+setGeneric("rev", function(x) standardGeneric("rev"))
+setMethod("rev", "GenericSeq",
+          function(x) paste(rev(unlist(strsplit(x@sequence, ""))), collapse=""))
+          
+rev(genseq)
+showMethods("rev")
+@
+
+\end{scriptsize}
+
+\end{frame}
+
+% S4 methods - getters and setters
+\begin{frame}[t,fragile]
+
+\begin{block}{S4 accessor methods}
+\begin{small}
+It is considered bad practice to use \code{@} in your code to access slots. It breaks the
+division between the internal class implementation and class usage. 
+
+\smallskip
+Instead, create getter and setter methods for all slots you want to expose.
+\smallskip
+\end{small}
+\end{block}
+
+\begin{scriptsize}
+<<s4-accessors,echo=TRUE>>=
+setGeneric("id", function(object) standardGeneric("id"))
+setMethod("id", "GenericSeq", function(object) object@id)
+
+setGeneric("id<-", function(object,value) standardGeneric("id<-"))
+setReplaceMethod("id", signature(object="GenericSeq",
+                           value="character"),
+                 function(object, value) {
+                   object@id <- value
+                   return(object)
+                 })
+id(genseq) <- "new sequence name"
+id(genseq)
+@
+\end{scriptsize}
+
+\end{frame}
+
+% S4 first batch of exercises
+\begin{frame}[fragile,t]{S4 introspection and methods exercises}
+\begin{block}{\exercise (code: \code{04_basic_S4.R})}
+\small
+Try the following introspection functions: \\
+\smallskip
+~~~~~~~~~~~~\code{showMethods("rev")} \\
+~~~~~~~~~~~~\code{getClass("GenericSeq")} \\
+~~~~~~~~~~~~\code{slotNames(genseq)} \\
+~~~~~~~~~~~~\code{getMethod("rev", "GenericSeq")} \\
+~~~~~~~~~~~~\code{findMethods("rev")} \\
+~~~~~~~~~~~~\code{isGeneric("rev")} \\
+\smallskip
+What do these function output? In some cases the result is an object.
+Use the introspection functions to find out more about the results 
+(e.g. \code{class()}, \code{getClass()},...).
+\end{block}
+
+\begin{block}{\exercise (code as above, solution: \code{05_accessors_solution.R})}
+\small
+Lets complete our \code{GenericSeq} implementation with some more methods.
+Implement getter/setter method \code{seq()} and getter only \code{alphabet()}.
+Then implement the method \code{length()} to return sequence length.
+First check if \code{"length"} is already a generic though. 
+\end{block}
+
+\bigskip
+<<echo=FALSE>>=
+invisible({
+setGeneric("alphabet", function(object) standardGeneric("alphabet"))
+
+## There is already a 'seq' method (see ?seq),
+## although not a generic one (see isGeneric(seq))
+setGeneric("seq", function(...) standardGeneric("seq"))
+setGeneric("seq<-", function(object,value) standardGeneric("seq<-"))
+setMethod("alphabet", "GenericSeq", function(object) object@alphabet)
+setMethod("length", "GenericSeq", function(x) nchar(x@sequence))
+setMethod("seq", "GenericSeq", function(object,...) object@sequence)
+
+setMethod("seq<-", "GenericSeq",
+          function(object,value) object@sequence <- value)
+
+setReplaceMethod("seq",
+                 signature(object="GenericSeq",
+                           value="character"),
+                 function(object, value) {
+                   object@sequence <- value
+                   if (validObject(object))
+                     return(object)
+                 })
+})
+@
+
+
+\end{frame}
+
+% S4 further methods
+\begin{frame}[fragile,t]
+\begin{block}{Special methods - \code{show()}}
+You might have noticed that many object print a custom description instead of
+a plain list of slots. We can add this functionality by setting 
+\code{show()} and \code{print()} methods.
+\end{block}
+
+\begin{scriptsize}
+<<s4-show, echo=TRUE>>=
+setMethod("show",
+          "GenericSeq",
+          function(object) {
+            cat("Object of class",class(object),"\n")
+            cat(" Id:",id(object),"\n")
+            cat(" Length:",length(object),"\n")
+            cat(" Alphabet:",alphabet(object),"\n")
+            cat(" Sequence:",seq(object), "\n")
+          })
+genseq
+@
+\end{scriptsize}
+
+\end{frame}
+
+% S4 methods - print
+\begin{frame}[fragile,t]
+
+\begin{block}{Special methods - \code{print()}}
+
+The \code{print()} function already exists, but is not an S4 generic. 
+\end{block}
+
+\begin{scriptsize}
+<<s4-show, echo=TRUE>>=
+setGeneric("print", function(x,...) standardGeneric("print"))
+setMethod("print", "GenericSeq",
+          function(x) {
+            sq <- strsplit(seq(x),"")[[1]]
+            cat(">",id(x),"\n"," 1\t")
+            for (i in 1:length(x)) {
+              if ((i %% 10)==0) {
+                cat("\n",i,"\t")
+              }
+              cat(sq[i])
+            }
+            cat("\n")
+          })
+print(genseq)
+@
+\end{scriptsize}
+
+
+\end{frame}
+
+% S4 methods - initialize
+\begin{frame}[fragile,t]
+
+\begin{block}{Special methods - \code{initialize()}}
+
+We might need to do some special processing on object creation. We can
+do this with a custom \code{initialize()} method.
+\bigskip
+
+Use named arguments with default values (otherwise class checking might fail).
+
+\end{block}
+
+\begin{scriptsize}
+<<initialize,echo=TRUE>>=
+setMethod("initialize", "GenericSeq",
+    function(.Object, ..., id="", sequence=""){
+        .Object@id <- id
+        .Object@sequence <- toupper(sequence)
+        callNextMethod(.Object, ...) # call parent class initialize()
+    })	
+show(new("GenericSeq", id="new seq.", alphabet=c("A", "T"), sequence="atatta"))
+@
+\end{scriptsize}
+
+\end{frame}
+
+% S4 inheritance
+
+\begin{frame}[fragile,t,shrink]
+
+\begin{block}{Inheritance in S4 class system}
+\begin{small}
+Implementation of \code{GenericSeq} is finished. Now we want to
+re-use this code and add some extra functionality for \code{DnaSeq}
+and \code{RnaSeq}.
+\smallskip
+
+We start by defining the new classes that will inherit (contain) our \code{GenericSeq} class. It
+is good practise to provide some default (prototype) values.
+\end{small}
+\end{block}
+
+\begin{scriptsize}
+<<inheritance,echo=TRUE>>=
+setClass("DnaSeq",
+         contains="GenericSeq",
+         prototype = prototype(
+           id = paste("my DNA sequence",date()),
+           alphabet = c("A","C","G","T"),
+           sequence = character())
+         )
+
+setClass("RnaSeq",
+         contains="GenericSeq",
+         prototype = prototype(
+           id = paste("my RNA sequence",date()),
+           alphabet = c("A","C","G","U"),
+           sequence = character())
+         )
+@
+\end{scriptsize}
+
+\end{frame}
+
+% inheritance methods
+\begin{frame}[fragile,t]{Extending child classes with custom methods}
+
+\begin{block}{Custom \code{comp()} methods in two subclasses}
+\small
+Now we can write the \code{comp()} method which is going to work differently
+for DNA and RNA sequences. 
+\end{block}
+
+\begin{scriptsize}
+<<echo=TRUE>>=
+setGeneric("comp",function(object) standardGeneric("comp"))
+
+setMethod("comp","DnaSeq",
+          function(object) {
+            chartr("ACGT","TGCA",seq(object))
+          })
+          
+setMethod("comp","RnaSeq",
+          function(object) {
+            chartr("ACGU","UGCA",seq(object))
+          })
+@
+\end{scriptsize}
+\end{frame}
+
+% Creating inherited objects
+\begin{frame}[fragile,t]
+
+\begin{block}{Creating objects of appropriate class}
+
+\begin{small}
+We could use \code{new()} to create new object instances, but it is
+tedious and error prone. Instead, we should provide a function that
+reads in some data and sets the right class for the data.
+\end{small}
+
+\end{block}
+
+\begin{tiny}
+<<readfasta-full,echo=TRUE>>=
+readFasta <- function(infile){
+  lines <- readLines(infile)
+  header <- grep("^>", lines)
+  if (length(header)>1) {
+    warning("Reading first sequence only.")
+    lines <- lines[header[1]:(header[2]-1)]
+    header <- header[1]
+  }
+  .id <- sub("^> *","",lines[header],perl=TRUE)
+  .sequence <- toupper(paste(lines[(header+1):length(lines)],collapse=""))
+  .alphabet <- toupper(unique(strsplit(.sequence,"")[[1]]))
+  if (all(.alphabet %in% c("A","C","G","T"))) {
+    newseq <- new("DnaSeq",
+                  id=.id,
+                  sequence=.sequence)
+  } else if (all(.alphabet %in% c("A","C","G","U"))) {
+    newseq <- new("RnaSeq",
+                  id=.id,
+                  sequence=.sequence)
+  } else {
+    stop("Alphabet ",.alphabet," is unknown.")
+  }
+  return(newseq)
+}
+@ 
+\end{tiny}
+
+\end{frame}
+
+% Validity test
+\begin{frame}[fragile,t,shrink]
+
+\begin{varblock}[12.8cm]{Object validity tests}
+
+\begin{small}
+The user can still use \code{new} in an inconsistent way or change a consistent
+object in the way that will render it inconsistent (e.g. assign 
+an RNA sequence to an object of class \code{DnaSeq}). 
+
+\smallskip
+
+First lets make sure each new object is consistent, e.g. that alphabet matches sequence.
+\end{small}
+
+\end{varblock}
+
+\begin{scriptsize}
+<<validity-class,echo=TRUE>>=
+setClass("GenericSeq",
+         representation = representation(
+           id = "character",
+           alphabet = "character",
+           sequence =  "character",
+           "VIRTUAL"),
+         validity = function(object) {
+           isValid <- TRUE
+           if (nchar(object@sequence)>0) {
+             chars <- casefold(unique(unlist(strsplit(object@sequence,""))))
+             isValid <- all(chars %in% casefold(object@alphabet))
+           }
+           if (!isValid)
+             cat("Some characters are not defined in the alphabet.\n")
+           return(isValid)
+         })
+@         
+\end{scriptsize}
+
+\end{frame}
+
+% Validity in assignment
+\begin{frame}[fragile,t,shrink]
+
+\begin{block}{Validity tests - setters}
+
+{\small Now lets make sure the user cannot render the objects
+inconsistent by modifying the object.}
+\end{block}
+
+\begin{scriptsize}
+<<validity-class,echo=TRUE>>=
+setReplaceMethod("id",
+                 signature(object="GenericSeq",
+                           value="character"),
+                 function(object, value) {
+                   object@id <- value
+                   if (validObject(object))
+                     return(object)
+                 })
+                 
+setReplaceMethod("seq",
+                 signature(object="GenericSeq",
+                           value="character"),
+                 function(object, value) {
+                   object@sequence <- value
+                   if (validObject(object))
+                     return(object)
+                 })
+@         
+\end{scriptsize}
+
+\end{frame}
+
+% Final S4 exercises
+\begin{frame}[fragile,t]{S4 exercises}
+
+Look at the code we wrote so far and understand it. Then solve the
+following exercise.
+\bigskip
+
+\begin{block}{\exercise (code: \code{06_S4_complete.R})}
+\small
+Try again reading the supplied fasta file using \\
+~~~~~~~~~~~~\code{ x <- readFasta("aDnaSeq.fasta")} \\
+Inspect the resulting object using object introspection tools. Try to break the resulting 
+object by assigning invalid values to sequence. 
+What happens if you do: \\
+~~~~~~~~~~~~~\code{seq(x) <- "!"} \\
+and what if: \\
+~~~~~~~~~~~~~\code{x@sequence <- "!"}
+\end{block}
+
+
+\begin{block}{\exercise (code as above, solution: \code{07_transcribe_solution.R)}}
+\small
+Implement a new method \code{transcribe()} of \code{DnaSeq}. This method should take a
+\code{DnaSeq}, replace the T's with U's and return a \code{RnaSeq} object.
+\end{block}
+
+
+\bigskip
+\bigskip
+\bigskip
+<<echo=FALSE>>=
+invisible({
+setGeneric("transcribe", function(object) standardGeneric("transcribe"))
+setMethod("transcribe","DnaSeq",
+          function(object) {
+            .sequence <- chartr("T","U",toupper(seq(object)))
+            .id <-  paste(id(object),"-- transcribed")
+            rna <- new("RnaSeq",
+                       id=.id,
+                       alphabet=c("A","C","G","U"),
+                       sequence=.sequence)
+            if (validObject(rna))
+              return(rna)
+          })
+})
+@
+
+\end{frame}
+
+% Some final considerations
+\begin{frame}[fragile,t,shrink]{More S4 features and considerations}
+
+\begin{varblock}[12.8cm]{Virtual classes}
+A class can be marked to be \textbf{virtual} so that no objects can be made,
+but it can only be inherited. In our case, we might want to mark
+\code{GenericSeq} as virtual, to do so just add parameter \code{"VIRTUAL"}
+into class \code{representation}. 
+\end{varblock}
+
+\begin{varblock}[12.8cm]{Class unions}
+In some cases we might want a slot to contain an object from one of multiple
+unrelated classes. In that case we would create a "dummy" class to serve
+as a place holder. For this we can use \textbf{class union}, for example
+\code{setClassUnion("AOrB", c("A", "B"))} would create a new virtual
+class \code{AOrB} that is a parent class to both \code{A} and \code{B}. 
+\end{varblock}
+
+\begin{varblock}[12.8cm]{Overriding operators}
+\textbf{Operators} in R can also be over-ridden. For instance \code{setMethod("[", MyClass, ....)} will
+override the subsetting operator \code{[]} for \code{MyClass} to give it custom functionality. 
+\end{varblock}
+
+\end{frame}
+
+\begin{frame}[fragile]{Reference classes}
+  \begin{block}{Mutability}
+    \R~objects are not \textbf{mutable}; \R~has a \textbf{copy on modify} semantics: 
+    whenever you pass an \Robject{a} object to a function, a copy is passed as argument. 
+    This is how things work for both S3 and S4 class systems. 
+  \end{block}
+<<mutability,echo=TRUE>>=
+a <- new("DnaSeq",sequence="ACGTaa")
+seq(a)
+comp(a)
+seq(a)
+@ 
+
+\end{frame}
+
+\begin{frame}[fragile]{Reference classes}
+  \begin{block}{Reference classes}
+    A recent OO system, based on S4 classes, that implements a \textbf{pass by reference} semantic.    
+    See \texttt{?ReferenceClasses} for details.
+  \end{block}
+  \begin{example}
+\begin{verbatim}
+## here, you would have
+> a$seq ## equivalent of seq(a)
+[1] "AGCATG"
+> a$comp()
+> a$seq
+[1] "TCGTAC"
+\end{verbatim}
+  \end{example}
+\end{frame}
+
+%% % Lunch break!
+%% \begin{frame}[fragile]{Lunch break}
+%%   \begin{center}
+%%     {\Large It is time for lunch...}
+%%     \bigskip
+%%     {\large resume at 1:30pm~~~}
+%%   \end{center}
+%% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{A few words about R packages}
+
+\begin{frame}[fragile]
+  \begin{block}{References}
+    \begin{itemize}
+    \item R Installation and Administration [R-admin], R Core team 
+    \item Writing R Extensions [R-ext], R Core team      
+    \end{itemize}    
+    Use \texttt{help.start()} to access them from your local installation, 
+    or \url{http://cran.r-project.org/manuals.html} from the web.
+  \end{block}
+  \begin{block}{Terminology}
+    A \textbf{package} is loaded from a \textbf{library} by the function \Rfunction{library()}. 
+    Thus a library is a directory containing installed packages. \\
+    \bigskip
+    Calling \Rfunction{library("foo", lib.loc = "/path/to/bar")} loads the package (book) \Rpackage{foo} from the 
+    library \texttt{bar} located at \texttt{/path/to/bar}.  
+  \end{block}
+\end{frame}
+
+\begin{frame}
+    \begin{columns}[c]
+      \begin{column}{.55\linewidth}
+        \begin{block}{Packages}
+        One of the aspects that make \R~appealing:
+        \begin{description}
+        \item[CRAN] package repository features 2868 available packages.
+        \item[R-forge] 986 packages.
+        \item[Bioconductor] 517 reviewed packages in latest release (version 2.9).
+        \end{description}
+        \bigskip
+        \flushright \tiny Numbers checked on 2$^{nd}$ March 2011
+      \end{block}
+    \end{column}
+    \begin{column}{.42\linewidth}
+      \includegraphics[width=\linewidth]{./Figures/CRANpackageNumbers.png}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Why packages}
+    \textit{Packages provide a mechanism for loading optional code and attached documentation as needed.} \\
+    There is more to it -- packages are a means to 
+    \begin{itemize}
+    \item logically group your own functions 
+    \item keep code and documentation together and consistent
+    \item keep code and data together
+    \item keep track of changes in code 
+    \item summarise all packages used for a analysis (see \Rfunction{sessionInfo()})
+    \item make a reproducible research compendium (container for code, text, data as a means for distributing, managing and updating)
+    \item optionally test your code
+    \item \ldots project managment
+    \end{itemize}
+    even if you do not plan to distribute them.
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{Administration}
+  \begin{block}{Building packages}
+    \texttt{R CMD build myPackage} -- the \R~package builder builds R package (and vignettes if available).
+  \end{block}
+  \begin{block}{Checking packages}
+    \texttt{R CMD check myPackage\_0.1.1.tar.gz} or \texttt{R CMD check myPackage} -- 
+    the \R~package checker tests whether the package or source work correctly.
+    \begin{itemize}
+    \scriptsize
+    \item The package is installed (checks missing cross-references and duplicate aliases in help files).
+    \item File names validity, permissions.
+    \item Package DESCRIPTION file is checked for completeness, and some of its entries for correctness.
+    \item \texttt{R} and \texttt{.Rd} files are checked for syntax errors.
+    \item A check is made for missing documentation entries.
+    \item Codoc checking
+    \item Examples provided by the package's documentation are run.
+    \item If available, package tests are run and vignettes are executed and compiled.  
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Administration}
+  \begin{block}{Installing packages}
+    \texttt{R CMD INSTALL myPackage\_0.1.1.tar.gz} or \Rfunction{install.packages("myPackage\_0.1.1.tar.gz")}
+    -- installs the package in the default library. 
+    Other libraries can be specified with the \texttt{-l} option or \texttt{lib} argument.
+  \end{block}
+  \begin{block}{Loading}
+    Use \Rfunction{library()} or \Rfunction{require()}.
+  \end{block}
+  \begin{block}{On Windows}
+    \R~is very much Unix centric. To build from source on Windows, you
+    will need \texttt{Rtools}\footnote{%%
+      \url{https://cran.r-project.org/bin/windows/Rtools/}} See the
+    \textit{The Windows toolset} in R-Admin for more details.
+  \end{block}
+\end{frame}
+
+
+\section{Package structure}
+
+\begin{frame}[fragile]
+  \begin{block}{A minimal package}
+    Function package.skeleton() automates some of the setup for a new source package. 
+    Calling it with minimal arguments produces the following hierarchy:
+  \end{block}
+<<minpkg,echo=TRUE>>=
+foo <- function(x) x
+package.skeleton(name="myRpackage",list="foo")
+@ 
+\begin{block}{}
+  produces
+\end{block}
+\begin{scriptsize}
+\begin{verbatim}
+myRpackage/
+|-- DESCRIPTION
+|-- man
+|   |-- foo.Rd
+|   +-- myRpackage-package.Rd
+|-- R
+|   +-- foo.R
++-- Read-and-delete-me
+
+2 directories, 6 files
+\end{verbatim}
+\end{scriptsize}
+\end{frame}
+
+\begin{frame}[fragile]{DESCRIPTION}
+  \begin{small}
+\begin{verbatim}
+Package: myRpackage
+Type: Package
+Title: What the package does (short line)
+Version: 1.0
+Date: 2016-09-21
+Author: Who wrote it
+Maintainer: Who to complain to <yourfault@somewhere.net>
+Description: More about what it does (maybe more than one line)
+License: What license is it under?
+\end{verbatim}
+  \end{small}
+\end{frame}
+
+\begin{frame}{Lazy}
+  \begin{block}{Lazy loading}
+    A mechanism used to defer initialization of an object until the point at which it is needed.
+    The individual objects in the package's environment are indirect references to the actual objects until, 
+    for example a function is called or an object loaded. \\
+    \bigskip
+    The \texttt{LazyLoad} and \texttt{LazyData} fields control whether the R objects and the datasets (respectively) use lazy-loading. 
+    \texttt{LazyLoad} must be set if the \Rpackage{methods} package is used. \\
+    \bigskip
+    \texttt{LazyLoad} is now on by default.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Lazy}
+  \begin{example}
+    \R~uses \textit{Lazy evaluation}, which delays the evaluation of an expression 
+    (here the argument) until its value is actually required 
+      [\footnote{example from Hadley Wickham's devtools}]:
+<<lazy,echo=TRUE>>=
+f <- function(x) { 10 }
+system.time(f(Sys.sleep(3)))
+f <- function(x) { force(x); 10 }
+system.time(f(Sys.sleep(3)))
+@     
+  \end{example}
+\end{frame}
+
+\begin{frame}[fragile]{Lazy}
+\begin{example}
+\begin{verbatim}
+> suppressWarnings(dump("dnaseq","",evaluate=FALSE))
+dnaseq <-
+<promise: lazyLoadDBfetch(c(0L, 195L), datafile, compressed, 
+    envhook)>
+\end{verbatim}
+\end{example}
+\end{frame}
+
+\begin{frame}[fragile]{DESCRIPTION}
+  \begin{block}{Other important fields}  
+    \begin{description}
+      \item[Depends] A comma-separated list of package names (optionally with versions) which this package depends on.
+      \item[Suggests] Packages that are not necessarily needed: used only in examples, tests or vignettes, 
+        packages loaded in the body of functions (see \Rfunction{require()}).
+      \item[Imports] Packages whose name spaces are imported from (as specified in the \texttt{NAMESPACE} file) 
+        but which do not need to be attached to the search path. 
+      \item[Collate] Controls the collation order for the R code files in a package. If filed is present, all source files must be listed.
+      \item[URL] A list of URLs separated by commas or whitespace.
+      \item \ldots
+    \end{description}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{NAMESPACE}
+  \begin{block}{The NAMESPACE file}
+    Stored in the package directory. Restrict the symbols that are exported and imports functionality from other packages. 
+    Only the exported symbols will have to be documented. \\
+    Note: \texttt{NAMESPACE} is now required (since R 2.14).
+  \end{block}
+\begin{verbatim}
+export(f, g) ## exports f and g 
+exportPattern("^[^\\.]")
+import(foo) ## imports all symbols from package foo
+importFrom(foo, f, g) ## imports f and g from foo
+\end{verbatim}
+\begin{block}{}
+  It is possible to explicitely use symbol \Robject{s} from package \Rpackage{foo} with 
+  \texttt{foo::s} or \texttt{foo:::s} if \Robject{s} is not exported.
+\end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{Attach and load}
+    Packages are attached to the search path with \Rfunction{library} or \Rfunction{require}. 
+    \begin{description}
+    \item[Attach] When a package is attached, then all
+      of its dependencies (see \texttt{Depends} field in its \texttt{DESCRIPTION}
+      file) are also attached. Such packages are part of the evaluation environment
+      and will be searched. 
+    \item[Load] One can also use the \texttt{Imports} field in the \texttt{NAMESPACE} file. 
+      Imported packages are loaded but are not attached:
+      they do not appear on the search path and are available only to the package
+      that imported them.
+    \end{description}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Package subdirectories}
+  \begin{block}{R}
+    Contains \Rfunction{source()}able \R~source code to be installed. 
+    Files must start with an ASCII (lower or upper case) letter or digit and have one of the extensions 
+    \texttt{.R} (recommended), \texttt{.S}, \texttt{.q}, \texttt{.r}, or \texttt{.s}.
+    File order is important if code relies on \textit{earlier} code -- order use \texttt{Collate} filed in \texttt{DESCRIPTION} file.
+  \end{block}
+  \begin{example}
+\begin{verbatim}
+## works fine without Collate field
+AllGenerics.R       DataClasses.R
+methods-ClassA.R    methods-ClassB.R
+functions-ClassA.R  ...
+\end{verbatim}
+  \end{example}
+  \begin{block}{}
+    \texttt{zzz.R} is generally used to define special functions used to initialize 
+    (called after a package is loaded and attached) and clean up (just before the package is detached). 
+    See \texttt{help(".onLoad"))}, \Rfunction{?.First.Lib} and \Rfunction{?.Last.Lib} for more details.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Package subdirectories}
+  \begin{block}{man}
+    Manuals for the objects (package, functions, generics, methods, classes and data sets) 
+    in the package in R documentation (\texttt{Rd}) format. 
+    The filenames must start with an ASCII (lower or upper case) letter or digit and 
+    have the extension \texttt{.Rd} or \texttt{.rd} and should be URL compatible. 
+    If you use a NAMESPACE, only exported symbols need to be documented. 
+    Without NAMESPACE, internal use only objects should be documented in \texttt{pkg-internal.Rd}.\\    
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Package subdirectories}
+  \begin{block}{data}
+    Contains data files, made available via \textit{lazy-loading} or for loading using \Rfunction{data()}.
+    Data types that are allowed are
+    \begin{description}
+      \item[R code] self-sufficient plain R code (\texttt{.R} or \texttt{.r}), 
+      \item[Tables] possibly compressed tables (\texttt{.tab}, \texttt{.txt}, or \texttt{.csv}, see \texttt{?data} for the file formats)
+      \item[Objects] created using \Rfunction{save()} (\texttt{.RData} or \texttt{.rda}).
+    \end{description}
+  \end{block}
+  \begin{example}
+    There is a \Robject{DnaSeq} object in \texttt{sequences/data}.
+  \end{example}
+\end{frame}
+
+\begin{frame}[fragile]{Package subdirectories}
+  \begin{block}{inst}
+    Content is copied recursively to the installation directory, for example
+    \begin{description}
+    \item[CITATION] file (see \Rfunction{citation()} function), 
+    \item[doc] directory for additional documents (see vignettes, later).
+    \item[extdata] directory for other data files, not belonging in \texttt{data}.
+    \item[tests] code for unit tests (see later).
+    \end{description}
+  \end{block}
+  \begin{example}
+    In our \Rpackage{sequences} package, there is a \texttt{fasta}
+    sequence in \texttt{sequences/inst/extdata} used to illustrate the 
+    \Rfunction{readFasta} function.
+  \end{example}
+\end{frame}
+  
+\begin{frame}[fragile]{Package subdirectories}
+  \begin{block}{tests}
+    Contains additional package-specific test code. We will talk about unit tests later.
+  \end{block}
+  \begin{block}{src}
+    Contains sources and headers for the compiled code, plus optionally a file Makevars or Makefile.
+  \end{block}
+  \begin{block}{demo}
+    R scripts runned via \Rfunction{demo()} that demonstrate some of the functionality of the package. 
+    Execution of these scripts is not checked.
+  \end{block}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{\exercise Let's create a package}
+    So far, you have defined a set of classes, methods and functions \ldots
+    Create the required directory structure and files using 
+    \Rfunction{package.skeleton(name="sequences")} or manually. 
+    For the former, you can use different arguments:
+    \begin{description}
+    \item[list] to specify the R objects by their names.
+    \item[code\_files] to specify R code files.
+    \item[environment] to specify an environment where objects are looked for.
+    \end{description}
+    See \Rfunction{?package.skeleton} for more details.\\
+    \bigskip
+    %% NB: Do not worry about the content of the \texttt{.Rd} files yet, we will learn this in the next section.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{block}{\exercise Let's build/check it}
+    Do you expect the package to \texttt{build}/\texttt{check}/\texttt{INSTALL}: 
+    \begin{verbatim}
+R CMD build sequences
+R CMD check sequences_1.0.tar.gz
+R CMD INSTALL sequences_1.0.tar.gz
+    \end{verbatim}
+    Why? Have a look at \texttt{R CMD build|check -{}-help}.
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+\section{Writing R documentation}
+
+\begin{frame}{Rd format}
+  \begin{block}{R documentation format}
+    R objects are documented in files written in \textit{R documentation} (\texttt{Rd}) format, 
+    a simple markup language much of which closely resembles \LaTeX, which can be processed 
+    into a variety of formats, including \LaTeX, HTML, pdf and plain text.
+  \end{block}
+\end{frame}
+
+
+\begin{frame}{Rd format}
+  \begin{block}{An \texttt{Rd} file constists of}
+    \begin{description}
+      \item[Header] provides basic information about the name of the file, the topics documented, a title, a short textual description and R usage information -- mandatory.
+      \item[Body] gives further information defined within \textit{sections} (for example, on the function's arguments and return value, as in the example)
+      \item[Footer] with keyword information -- optional.
+    \end{description}
+  \end{block}
+  \begin{alertblock}{}
+    Every (exported) object must be documented. Package documentation is optional.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[fragile]
+  \tiny
+  \begin{example}
+\begin{verbatim}
+% File src/library/base/man/load.Rd
+\name{load}
+\alias{load}
+\title{Reload Saved Datasets}
+\description{
+  Reload the datasets written to a file with the function
+  \code{save}.
+}
+\usage{
+load(file, envir = parent.frame())
+}
+\arguments{
+  \item{file}{a connection or a character string giving the
+    name of the file to load.}
+  \item{envir}{the environment where the data should be
+    loaded.}
+}
+\seealso{
+  \code{\link{save}}.
+}
+\examples{
+## save all data
+save(list = ls(), file= "all.RData")
+
+## restore the saved values to the current environment
+load("all.RData")
+     
+## restore the saved values to the workspace
+load("all.RData", .GlobalEnv)
+}
+\keyword{file}
+\end{verbatim}
+  \end{example}
+\end{frame}
+
+
+\begin{frame}{Documentation}
+  \begin{block}{General comments}
+    \begin{itemize}
+    \item Different objects are documented with different types of \texttt{Rd} files, as defined by  the \texttt{\char`\\docType\{\}} tag. 
+    \item Different object documentation require or are advised to contain different sections.
+    \item One \texttt{.Rd} file can document several objects by defining multiple \texttt{\char`\\alias\{\}}'es.
+    \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Documentation}
+  \begin{block}{Guidelines for Rd files}
+    These are suggested guidelines for the system help files (in
+    \texttt{.Rd} format) that are intended for core developers but may
+    also be useful for package writers.  (see
+    \url{http://developer.r-project.org/Rds.html})
+  \end{block}
+  \begin{block}{}
+    There are many different sections and marking text (for
+    mathematical notation, tables, cross-references, \ldots), that
+    will look very familiar to \LaTeX~users. All are described in
+    \textit{Writing R documentation files} (section 2)
+    of the R-ext manual. \\
+    Fortunately, the \texttt{prompt(object)} \textit{et. al.}
+    functions will inspect the \Robject{object} to be documented and
+    create a specific documentation skeleton for us to be completed.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Package documentation}
+  \begin{block}{}
+    Provides an short and optional overview of a package. 
+  \end{block}
+  \begin{example}
+    \texttt{promptPackage("sequences")}
+  \end{example}
+  \begin{block}{\exercise}
+    Create a \texttt{sequences-package.Rd} and document your package.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Data sets documentation}
+  \begin{example}
+    \tiny
+\begin{verbatim}
+     \name{rivers}
+     \docType{data}
+     \alias{rivers}
+     \title{Lengths of Major North American Rivers}
+     \description{
+       This data set gives the lengths (in miles) of 141 \dQuote{major}
+       rivers in North America, as compiled by the US Geological
+       Survey.
+     }
+     \usage{rivers}
+     \format{A vector containing 141 observations.}
+     \source{World Almanac and Book of Facts, 1975, page 406.}
+     \references{
+       McNeil, D. R. (1977) \emph{Interactive Data Analysis}.
+       New York: Wiley.
+     }
+     \keyword{datasets}
+\end{verbatim}
+  \end{example}
+  \begin{example}
+    \texttt{prompt(myDataFrame)} or \texttt{promptData(myDataObject)}
+  \end{example}
+  \begin{block}{\exercise}
+    Document the \Robject{dnaseq} object.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Function documentation}
+  \begin{block}{}
+    Many markup command, including 
+    \texttt{\char`\\usage\{fun(arg1, arg2, ...)\}}, 
+    \texttt{\char`\\arguments\{...\}},
+    \texttt{\char`\\section\{Warning\}\{...\}} and 
+    \texttt{\char`\\examples\{...\}}, which are executed!
+  \end{block}
+  \begin{example}
+    \texttt{prompt(object=myFunction)} or \texttt{prompt(name="myFunction")}
+  \end{example}
+  \begin{block}{\exercise}
+    Choose one of the functions and document it.
+  \end{block}
+\end{frame}
+
+\begin{frame}{Documenting S4 classes and methods}
+  \begin{block}{}
+   Documentation is 'similar' than for functions. 
+    Note that \texttt{aliases} are of the form \texttt{MyClass-class} or 
+    \texttt{MyGeneric,signature\_list-method}. Additionnal aliases should 
+    be added to refer to \texttt{MyGeneric}, \texttt{MyGeneric-method}, \ldots     
+    and the manuals are accessed with \texttt{class?topic} and \texttt{method?topic}.
+    Overall documentation for methods should be aliased 
+    with \texttt{MyGeneric-methods} \\
+    See \Rfunction{help("Documentation", package = "methods")} for more details.
+  \end{block}
+  \begin{example}    
+     \texttt{promptClass("MyClass")} and \texttt{promptMethods("myMethod")}
+  \end{example}
+  \begin{block}{\exercise}
+    Document one class and one method of the package. \\
+    NB: we have used aliases for the methods to refer to the class documentation.
+  \end{block} 
+\end{frame}
+
+\begin{frame}[fragile]{Roxygen2}
+  \begin{block}{What is it?}
+    Roxygen is a Doxygen-like documentation system for R; allowing \textbf{in-source} 
+    specification of Rd files, collation and namespace directives.\\
+    \bigskip
+    See \url{https://github.com/klutometis/roxygen}. \\
+    \bigskip
+    Install with \Rfunction{install.packages("roxygen2")}.\\
+    \bigskip
+    Use \texttt{R CMD roxygen myPackage} to generate manuals and NAMESPACE. %%call graphs.
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Roxygen}
+  \scriptsize
+  \begin{example}   
+\begin{verbatim}
+##' Reads sequences data in fasta and create \code{DnaSeq}
+##' and \code{RnaSeq} instances. 
+##'
+##' This funtion reads DNA and RNA fasta files and generates
+##' valid \code{"DnaSeq"} and \code{"RnaSeq"} instances.
+##' 
+##' @title Read fasta files.
+##' @param infile  the name of the fasta file which the data are to be read from.
+##' @return an instance of \code{DnaSeq} or \code{RnaSeq}.
+##' @seealso \code{\linkS4class{GenericSeq}}, \code{\linkS4class{DnaSeq}} and \code{\linkS4class{RnaSeq}}.
+##' @examples
+##' f <- dir(system.file("extdata",package="sequences"),pattern="fasta",full.names=TRUE)
+##' f
+##' aa <- readFasta(f[1])
+##' aa
+##' @author Laurent Gatto \email{lg390@@cam.ac.uk}
+##' @keywords IO, file
+readFasta <- function(infile) {
+  ...
+}
+\end{verbatim}
+  \end{example}
+\end{frame}
+  
+\begin{frame}[fragile]{Roxygen2}
+  \begin{block}{Good points}
+    Makes (1) to get from code to full package straightforward and also (2) maintenance much easier.
+  \end{block}
+  \begin{block}{Since roxygen2}
+    S4 support (classes, generics, methods).
+  \end{block}
+  \begin{block}{See also}
+    \texttt{Rd2roxygen} -- Convert Rd to roxygen documentation and utilities to improve 
+    documentation \\ 
+    \small{\url{http://cran.r-project.org/web/packages/Rd2roxygen/index.html}}
+  \end{block}
+  %% \begin{alertblock}{But}
+  %%   Poor support for S4 system. In practice, does not work too well. \\
+  %%   Manuel J. A. Eugster (personal communication)
+  %%   \begin{quote}
+  %%     One problem is, that none of us two really use S4, so the support is pretty basic.
+  %%   \end{quote}
+  %% \end{alertblock}
+  %% \pause
+  %% \begin{block}{But}
+  %%   Peter Danenberg (Roxygen-devel mailing list, 5$^{th}$ March 2011)
+  %%   \begin{quote}
+  %%     I'm currently working with Michael Lawrence and Nicholas Lewin-Koh at
+  %%     Genentech to shore up S4 support; there was some talk of reference
+  %%     classes, too.
+  %%   \end{quote}
+  %% \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Vignettes}
+  \begin{block}{Package vignette}
+    These \textit{executable} documents are in Sweave (\texttt{.Rnw}
+    extension) or Rmarkdown (\texttt{Rmd}) which is an extended
+    \LaTeX~document (markdown) that includes code chunks.  These are
+    executed and the output (variable, but also tables and graphs) are
+    displayed in the document.
+    These dynamic reports, are updated automatically if data or analysis change. \\
+    \bigskip The package vignettes are compiled at build time and are
+    the prefered place
+    for more extensive package documentation and use-cases. \\
+    \bigskip References: \\
+    \url{http://www.stat.uni-muenchen.de/~leisch/Sweave/} and
+    \url{http://yihui.name/knitr/}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Vignettes}
+  \begin{Verbatim}
+ ... LaTeX document ...   
+    
+ <<label=myCode,echo=TRUE,fig=TRUE>>=
+ x <- sort(rnorm(100))
+ y <- sort(rnorm(100,2,2))
+ plot(x,y,pch=19,col="#0000BB80")
+ abline(lm(y~x))
+ @
+ 
+ ... LaTeX document ...   
+  \end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]{Vignettes}
+  \scriptsize
+<<label=myCode,echo=TRUE,fig=TRUE,width=4,height=3.3,keep.source=TRUE>>=
+x <- sort(rnorm(100)); y <- sort(rnorm(100,2,2))
+plot(x,y,pch=19,col="#0000BB80"); abline(lm(y~x))
+@
+\end{frame}
+
+
+\begin{frame}{Vignettes}
+  \begin{example}
+    Have a look at the \Rpackage{sequences} package vignette in 
+    \texttt{sequences/inst/doc}.
+  \end{example}
+  \begin{block}{\exercise}
+    The vignette is very basic. Try to add some code chunks to improve it.
+    You can also embed code in-line with \texttt{\char`\\Sexpr\{\}}. \\
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{\Rfunction{sessionInfo()}}
+  \begin{block}{}
+    Prints version information about R and attached or loaded packages.
+  \end{block}
+  \begin{example}
+    \tiny
+<<sessionInfo,echo=TRUE>>=
+sessionInfo()
+@
+\end{example}
+\end{frame}
+
+
+\begin{frame}[fragile]{\Rfunction{sessionInfo()} in vignettes}
+  \small
+  \begin{example}
+<<label=sessioninfo,results=tex,echo=TRUE,cache=FALSE>>=
+toLatex(sessionInfo())
+@ 
+  \end{example}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Other advanced topics}
+
+\subsection{Testing your package}
+
+\begin{frame}
+  \begin{block}{How to test the code in your package?}
+    Or how to make sure that changes in your code do not break existing functionality?
+    \begin{itemize}
+      \item Implicitely, documentation examples and a vignette do some tests.
+      \item Using \R's build-in testing, that runs some code and compares the output to a saved template.
+      \item Specific packages for unit testing: 
+        \Rpackage{RUnit}\footnote{\url{http://cran.r-project.org/web/packages/RUnit/index.html}} or 
+        \Rpackage{testthat}\footnote{\url{http://cran.r-project.org/web/packages/testthat/index.html}}.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Using an \texttt{.Rout.save} file}
+  \begin{block}{In \texttt{package/tests/}}
+    Create
+    \begin{itemize}
+      \item \texttt{mytest.R} with code to be tested
+      \item \texttt{mytest.Rout.save} with the reference output
+    \end{itemize}
+    When \texttt{check}ing your package \R~ will
+    \begin{enumerate}
+      \item execute the code in \texttt{mytest.R}
+      \item save the output to \texttt{mytest.Rout}
+      \item compare \texttt{mytest.Rout} to \texttt{mytest.Rout.save}
+      \item report any differences
+    \end{enumerate}
+  \end{block}
+\end{frame}
+
+\begin{frame}{Using \Rpackage{testthat}}
+  \begin{block}{Test individual expression}
+    \texttt{expect\_that(object\_or\_expression, condition)} with conditions 
+    \begin{description}
+    \item[equals] \texttt{expect\_that(1+2,equals(3))} or \texttt{expect\_equal(1+2,3)}
+    \item[gives\_warning] \texttt{expect\_that(warning("a"), gives\_warning())}
+    \item[is\_a] \texttt{expect\_that(1, is\_a("numeric"))} or \texttt{expect\_is(1,"numeric")}
+    \item[is\_true] \texttt{expect\_that(2 == 2, is\_true())} or \texttt{expect\_true(2==2)} 
+    \item[matches] \texttt{expect\_that("Testing is fun", matches("fun"))} or 
+      \texttt{expect\_match("Testing is fun", "f.n")}
+    \item[takes\_less\_than] \texttt{expect\_that(Sys.sleep(1),takes\_less\_than(3))}
+    \item[...]
+    \end{description}
+  \end{block}
+\end{frame}
+
+
+\begin{frame}[fragile]{Using \Rpackage{testthat}}
+  \begin{example}
+<<testthat1, echo=TRUE, eval=FALSE>>=
+library(testthat)
+test_that("ok test", {
+  expect_equal(length(a), 6)
+  expect_true(seq(a) == "ACGTAA")
+  expect_is(a, "DnaSeq")
+})
+
+try(expect_true(seq(a) == "ACGTaa")) ## fails with 
+## Error: seq(aa) == "ACGTaa" isn't true
+@ 
+  \end{example}
+\end{frame}
+
+\begin{frame}
+  \begin{block}{\exercise}
+    Update \texttt{sequences/tests/sequences-test.R}
+    and \texttt{sequences-test.Rout.save} accordingly. \\
+    \bigskip
+    Hint: \Rfunction{check} the updated package and look in \texttt{sequences.Rcheck/tests/} 
+  \end{block}
+\end{frame}
+
+\subsection{Debugging}
+
+\begin{frame}{Debugging}
+  \begin{block}{Using \R's tools}
+    \begin{itemize}
+    \item Call \Rfunction{traceback()} after error to print the sequence of calls 
+      that lead to the error.
+    \item Use \Rfunction{debug(faultyFunction)} to register \Rfunction{faultyFunction} for debugging, 
+      so that \Rfunction{browser()} will be called on entry. In \Rfunction{browser} mode, the execution 
+      of an expression is interrupted and it is possible to inspect the environment (with \Rfunction{ls()}).
+      Use \Rfunction{undebug(faultyFunction)} to revert to normal usage. \\
+    \item Use \Rfunction{trace()} to insert code into functions, 
+      start the \Rfunction{browser} or \Rfunction{recover()} from error.
+    \item Set \Rfunction{options(error=recover)} to get the call stack and browse in any of the function calls.
+    \end{itemize}
+    Good reference: \textit{An Introduction to the Interactive Debugging Tools in R}\footnote{%%
+      \url{http://www.biostat.jhsph.edu/~rpeng/docs/R-debug-tools.pdf}}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Debugging}
+  \begin{block}{\exercise}
+    Lets debug \Rpackage{sequences}' \Rfunction{readFasta} function:
+    \begin{enumerate}
+    \item Prepare for debugging: \Rfunction{debug(readFasta)}
+    \item Let get a \texttt{fasta} file from the package:\\
+      {\scriptsize
+        \texttt{fasta <- dir(system.file(dir="extdata",package="sequences"),full.names=TRUE)}}
+    \item Call the function to be debugged: \Rfunction{readFasta(fasta)}
+    \item Debug!
+    \end{enumerate}
+    \bigskip
+    Hint: when debugging, use \texttt{n} (or an empty line) to advance to the next step,
+    \texttt{c} to continue to the end of the current context (to the end of a loop for instance),     
+    \texttt{where} to print the stack trace of all active function calls 
+    and 
+    \texttt{Q} to exit the \Rfunction{browser}. \\
+    Other hint: use \Rfunction{ls(all.names=TRUE)} to see all objects, also those that start with a '\texttt{.}'.
+  \end{block}
+\end{frame}
+
+\subsection{Profiling}
+
+\begin{frame}[fragile]{Profiling time}
+  \begin{block}{Measuring time}
+<<prof1,echo=TRUE>>=
+m <- matrix(runif(1e4), nrow=1000)
+system.time(apply(m, 1, sum))
+@ 
+\end{block}
+  \begin{block}{Replicate}
+<<prof2,echo=TRUE>>=
+replicate(5, system.time(apply(m, 1, sum))[[1]])
+@     
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Profiling time}
+  \begin{block}{Execution time}
+    \tiny
+\begin{verbatim}
+> Rprof("rprof")
+> res <- apply(m,1,mean,trim=.3)
+> Rprof(NULL); summaryRprof("rprof")
+$by.self
+                 self.time self.pct total.time total.pct
+"mean.default"        0.02    33.33       0.06    100.00
+"any"                 0.02    33.33       0.02     33.33
+"unique.default"      0.02    33.33       0.02     33.33
+
+$by.total
+                 total.time total.pct self.time self.pct
+"mean.default"         0.06    100.00      0.02    33.33
+"apply"                0.06    100.00      0.00     0.00
+"FUN"                  0.06    100.00      0.00     0.00
+"any"                  0.02     33.33      0.02    33.33
+"unique.default"       0.02     33.33      0.02    33.33
+"sort.int"             0.02     33.33      0.00     0.00
+"unique"               0.02     33.33      0.00     0.00
+
+$sample.interval
+[1] 0.02
+
+$sampling.time
+[1] 0.06
+\end{verbatim}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{Profiling memory use}
+  \begin{block}{Memory usage using \Rfunction{tracemem}$^*$}
+    \footnotetext{%%
+      $^*$ \Rfunction{tracemem} requires to build \R~with 
+      \texttt{-{}-enable-memory-profiling}}
+    %% This produces more calls than expected
+    %% probably because of Sweave
+%% <<>>=
+%% a
+%% tracemem(a)
+%% seq(a) <- "GATC"
+%% @
+\begin{verbatim}
+> a
+Object of class DnaSeq 
+ Id:  
+ Length: 6 
+ Alphabet: A C G T 
+ Sequence: GCATCA 
+> tracemem(a)
+[1] "<0x20f0978>"
+> seq(a) <- "GTGT"
+tracemem[0x20f0978 -> 0x242a700]: 
+tracemem[0x242a700 -> 0x2223df0]: seq<- seq<- 
+\end{verbatim}
+  \end{block}
+\end{frame}
+
+\subsection{Calling foreign languages}
+
+\begin{frame}{Calling foreign languages}
+      \begin{block}{The \textit{difficult} route}
+        \begin{itemize}
+        \item When \R~is getting too slow or is not doing well in terms of memory management.
+        \item Implement the heavy stuff in \texttt{C}, 
+          \texttt{C++}\footnote{\url{http://dirk.eddelbuettel.com/code/rcpp.html}}, 
+          \texttt{Fortran} or 
+          Java\footnote{\url{http://www.rforge.net/rJava/}}.
+        \end{itemize}
+      \end{block}
+      \begin{block}{Other scripting languages}
+        \begin{itemize}
+        \item R/Perl\footnote{\url{http://www.omegahat.org/RSPerl/}} and 
+          R/Python\footnote{\url{http://www.omegahat.org/RSPython/}} bidirectional interfaces.
+        \item There is also the \Rfunction{system()} function for direct access to OS functions.
+        \end{itemize}
+      \end{block}
+\end{frame}
+
+\begin{frame}{\R's build-in \texttt{C} interfaces}
+  \begin{block}{}
+    \begin{itemize}
+    \item Better know how to program in \texttt{C}.
+    \item Documentation is not always easy to follow: R-Ext, R Internals as well as \R~and other package's code.
+    \end{itemize}
+  \end{block}
+  \begin{block}{\texttt{.C}}
+    \begin{itemize}
+    \item \textit{Easy} way
+    \item Arguments and return values must be \textit{primitive} (vectors of doubles or integers)
+    \end{itemize}
+  \end{block}
+  \begin{block}{\texttt{.Call}}
+    \begin{itemize}
+    \item Accepts \R~data structures as arguments and return values (\texttt{SEXP} and friends) 
+      (no type checking is done though).
+    \item Memory management: memory allocated for R objects is garbage collected. 
+      Thus \R~objects in \texttt{C} code, you must be explicitely \texttt{PROTECT}ed to 
+      avoid being \texttt{gc()}ed, and subsequently \texttt{UNPROTECT}ed.      
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{\texttt{.Call} example}
+  \begin{example}
+    \tiny
+\begin{verbatim}
+#include <R.h> 
+#include <Rdefines.h>
+
+SEXP gccount(SEXP inseq) {
+  int i, l;
+  SEXP ans, dnaseq;    
+  PROTECT(dnaseq = STRING_ELT(inseq, 0)); 
+  l = LENGTH(dnaseq); 
+  printf("length %d\n",l);
+  PROTECT(ans = NEW_NUMERIC(4));
+
+  for (i = 0; i < 4; i++) 
+    REAL(ans)[i] = 0;
+
+  for (i = 0; i < l; i++) {
+    char p = CHAR(dnaseq)[i];
+    if (p=='A') 
+      REAL(ans)[0]++;
+    else if (p=='C') 
+      REAL(ans)[1]++;
+    else if (p=='G') 
+      REAL(ans)[2]++;
+    else if (p=='T') 
+      REAL(ans)[3]++;
+    else 
+      error("Wrong alphabet");
+  }
+  UNPROTECT(2);
+  return(ans);
+}
+\end{verbatim}
+  \end{example}
+\end{frame}
+
+\begin{frame}{Using your \texttt{C} code}
+  \begin{block}{Directly}
+    \begin{enumerate}
+      \item Create a shared library: \texttt{R CMD SHLIB gccount.c}
+      \item Load the shared object: \texttt{dyn.load("gccount.so")}
+      \item Create an \R~function that uses it: \texttt{gccount <- function(inseq) .Call("gccount",inseq)}
+      \item Use you \texttt{C} code: \texttt{gccount("GACAGCATCA")}
+    \end{enumerate}
+  \end{block}
+  \begin{block}{In a package}
+    \begin{itemize}
+    \item Document you function.
+    \item Overwrite \texttt{.First.lib} to \texttt{dyn.load} you shared object.
+    \item If you have a \texttt{NAMESPACE}, export the shared objects with \texttt{useDynLib}.
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\begin{frame}[fragile]{\Rpackage{sequences} example}
+  \begin{example}
+    In \Rpackage{sequences}, we have
+    \begin{itemize}
+      \item The \texttt{gccount.c} code in \texttt{src}.
+      \item Defined a \R~ function in \texttt{R/functions.R}
+\begin{verbatim}
+gccount <- function(inseq) {
+  .Call("gccount",
+        inseq,
+        PACKAGE="sequences")
+}
+\end{verbatim}
+\item Written the \texttt{man/gccount.Rd} man page.
+\item Exported the function in \texttt{NAMESPACE} using \texttt{export(gccount)} and the shared library with \texttt{useDynLib(sequences)}
+    \end{itemize}
+\end{example}
+\end{frame}
+
+\begin{frame}[fragile]{\Rpackage{sequences} example}
+  \begin{example}
+<<lib,echo=FALSE>>=
+library(sequences)
+@ 
+<<gccount,echo=TRUE>>=
+s <- "GACTACGA"
+gccount
+gccount(s)
+table(strsplit(s,""))
+@ 
+  \end{example}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Distributing packages}
+
+\begin{frame}{Submission}
+  \begin{block}{}
+    \begin{description}
+      \item[CRAN] Upload your \alert{checked} \texttt{myPackage\_x.y.z.tar.gz} to 
+        \texttt{ftp://cran.R-project.org/incoming} 
+        and optionally send a message to \url{CRAN@R-project.org}. Your package will be installable 
+        with \Rfunction{install.packages("myRpackage")}.
+      \item[R-forge] Log in, regitser a project and wait for acceptance. 
+        Then commit you code to the svn repository. Your package will be installable with 
+        \Rfunction{install.packages} using \texttt{repos="http://R-Forge.R-project.org"}.
+      \item[Bioconductor] Make sure to satisfy submission criteria (pass \texttt{check}, 
+        have a vignette, use S4, have a \texttt{NAMESPACE}, make use of appropriate existing 
+        infrastructure, include a NEWS file, must \textbf{not} already be on CRAN, \ldots) 
+        and submit by email. Your package will then be reviewed before acceptance. 
+        A svn account will then be created. Package will be installable with 
+        \Rfunction{biocLite("myPackage")}.
+    \end{description}
+  \end{block}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% section                                                     %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section*{References}
+\begin{frame}{References}
+  \begin{block}{Further reading}
+    \begin{itemize}
+    \item \textit{Writing R Extensions}, R Core
+    \item \textit{R Programming for Bioinformatics}, Robert Gentleman
+    \item \textit{Advanced R} and \textit{R Packages} by Hadley
+      Wickham
+    \item \url{https://github.com/lgatto/TeachingMaterial}
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Last slide                                                  %% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%\vspace{5cm}
+\begin{frame}
+\begin{block}{}
+ \centering
+ Thank you for you attention.
+\end{block}
+\end{frame}
+
+\end{document}
