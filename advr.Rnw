@@ -2365,15 +2365,27 @@ table(strsplit(s,""))
         \texttt{ftp://cran.R-project.org/incoming} 
         and optionally send a message to \url{CRAN@R-project.org}. Your package will be installable 
         with \Rfunction{install.packages("myRpackage")}.
-      \item[R-forge] Log in, regitser a project and wait for acceptance. 
-        Then commit you code to the svn repository. Your package will be installable with 
-        \Rfunction{install.packages} using \texttt{repos="http://R-Forge.R-project.org"}.
       \item[Bioconductor] Make sure to satisfy submission criteria (pass \texttt{check}, 
         have a vignette, use S4, have a \texttt{NAMESPACE}, make use of appropriate existing 
         infrastructure, include a NEWS file, must \textbf{not} already be on CRAN, \ldots) 
         and submit by email. Your package will then be reviewed before acceptance. 
         A svn account will then be created. Package will be installable with 
         \Rfunction{biocLite("myPackage")}.
+    \end{description}
+  \end{block}
+\end{frame}
+
+\begin{frame}{}
+  \begin{block}{}
+    \begin{description}
+      \item[R-forge] Log in, regitser a project and wait for acceptance. 
+        Then commit you code to the svn repository. Your package will be installable with 
+        \Rfunction{install.packages} using \texttt{repos="http://R-Forge.R-project.org"}.
+      \item[GitHub] (and \textbf{bitbucket}, ...) Version control,
+        issues, social coding, continuous integration via
+        Travis-CI. Installation using
+        \Rfunction{devtools::install_github("lgatto/sequences")}
+        (\Rfunction{install_bitbucket}).
     \end{description}
   \end{block}
 \end{frame}
@@ -2393,19 +2405,13 @@ table(strsplit(s,""))
     \item \url{https://github.com/lgatto/TeachingMaterial}
     \end{itemize}
   \end{block}
+  
+  \begin{block}{}
+    \centering
+    Thank you for you attention.
+  \end{block}
+
 \end{frame}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Last slide                                                  %% 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%\vspace{5cm}
-\begin{frame}
-\begin{block}{}
- \centering
- Thank you for you attention.
-\end{block}
-\end{frame}
 
 \end{document}
