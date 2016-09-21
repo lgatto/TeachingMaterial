@@ -13,6 +13,9 @@ if (!require("devtools")) install.packages("devtools")
 devtools::install_github("lgatto/sequences", quick = FALSE, dependencies = TRUE)
 ```
 
+We also suggest to install
+[Rstudio](https://www.rstudio.com/products/RStudio/).
+
 For more material, see the
 [TeachingMaterial](http://lgatto.github.io/TeachingMaterial/)
 site/repository.
