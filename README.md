@@ -178,8 +178,8 @@ with your colleagues.
 
 - Description: A short 1-day course about R object-oriented
   programming, package development and various other topics (C
-  interface, unit testing). See also other more recent and detailed
-  lessons about these topic on this page.
+  interface, unit testing, debugging). See also other more recent and
+  detailed lessons about these topic on this page.
 - Author: [Laurent Gatto](https://github.com/lgatto) and Robert Stojnić
 - Original repository: https://github.com/lgatto/advr1
 - More details: https://github.com/lgatto/advr1#readme
