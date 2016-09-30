@@ -16,9 +16,6 @@ setMethod("alphabet", "GenericSeq", function(object) object@alphabet)
 setMethod("length", "GenericSeq", function(x) nchar(x@sequence))
 setMethod("seq", "GenericSeq", function(object,...) object@sequence)
 
-setMethod("seq<-", "GenericSeq",
-          function(object,value) object@sequence <- value)
-
 setReplaceMethod("seq",
                  signature(object="GenericSeq",
                            value="character"),
