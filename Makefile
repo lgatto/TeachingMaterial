@@ -10,6 +10,7 @@ r4p:
 
 clean:
 	rm -f *~
+	rm -f */*~
 	rm -rf .Rcache
 
 .PHONY: clean rintro

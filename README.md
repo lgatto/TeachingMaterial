@@ -2,9 +2,9 @@
 
 ### Material
 
-- [Introduction to R/RStudio](./R-intro/index.md)
-- [R/Bioconductor for proteomics](./r4p/index.md)
-- Data visualiation
+- [Introduction to R/RStudio](./R-intro/REAMDE.md)
+- [R/Bioconductor for proteomics](./r4p/README.md)
+- [Data visualiation](./vis/README.md)
 - `mzR` and `MSnbase` packages for raw data
 - Indentification data in `mzR`, `mzID`, `MSnID`
 - The `MSnbase` package: `MSnSet`s for quantiative proteomics
