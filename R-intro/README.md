@@ -14,3 +14,8 @@ analysis script.
 - [The `dplyr` package (optional)](04-dplyr.md)
 - [R data structures](05-datastructures.md)
 
+
+
+Most of this content is based on the
+[Data Carpentry](http://www.datacarpentry.org) introduction to R
+material.
