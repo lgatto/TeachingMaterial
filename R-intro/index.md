@@ -1,5 +1,7 @@
 # Introduction to R and Rstudio
 
+### Objectives
+
 Getting started with the Rstudio environment and the R language: basic
 data structures, data input/output, how to write, store and run simple
 analysis script.
