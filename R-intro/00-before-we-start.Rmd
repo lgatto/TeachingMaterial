@@ -28,13 +28,13 @@ knitr::opts_chunk$set(results='hide', fig.path='img/r-lesson-')
   `Empty project`
 * Enter a name for this new folder, and choose a convenient location for
   it. This will be your **working directory** for the rest of the day
-  (e.g., `~/data-carpentry`)
+  (e.g., `~/r-intro`)
 * Click on "Create project"
 * Under the `Files` tab on the right of the screen, click on `New Folder` and
   create a folder named `data` within your newly created working directory.
-  (e.g., `~/data-carpentry/data`)
-* Create a new R script (File > New File > R script) and save it in your working
-  directory (e.g. `data-carpentry-script.R`)
+  (e.g., `~/r-intro/data`)
+* Create a new R script (`File > New File > R script`) and save it in your working
+  directory (e.g. `r-intro-script.R`)
 
 Your working directory should now look like this:
 
@@ -201,9 +201,9 @@ data, and have a `data_output/` directory for intermediate datasets and a
 `figure_output/` directory for the plots you will generate.
 
 
-## Seeking help
+# Seeking help
 
-### I know the name of the function I want to use, but I'm not sure how to use it
+# I know the name of the function I want to use, but I'm not sure how to use it
 
 If you need help with a specific function, let's say `barplot()`, you can type:
 
@@ -224,7 +224,7 @@ don't remember which one, you can type:
 ??geom_point
 ```
 
-### I want to use a function that does X, there must be a function for it but I don't know which one...
+# I want to use a function that does X, there must be a function for it but I don't know which one...
 
 If you are looking for a function to do a particular task, you can use
 `help.search()` (but only looks through the installed packages):
@@ -237,7 +237,7 @@ If you can't find what you are looking for, you can use the
 [rdocumention.org](http://www.rdocumentation.org) website that search through
 the help files across all packages available.
 
-### I am stuck... I get an error message that I don't understand
+## I am stuck... I get an error message that I don't understand
 
 Start by googling the error message. However, this doesn't always work very well
 because often, package developers rely on the error catching provided by R. You
@@ -256,7 +256,7 @@ place to understand the underpinnings of the R language.
 The [R FAQ](http://cran.r-project.org/doc/FAQ/R-FAQ.html) is dense and technical
 but it is full of useful information.
 
-### Asking for help
+## Asking for help
 
 The key to get help from someone is for them to grasp your problem rapidly. **You
 should make it as easy as possible to pinpoint where the issue might be**.
@@ -307,7 +307,7 @@ to understand your problem.
 sessionInfo()
 ```
 
-### Where to ask for help?
+## Where to ask for help?
 
 * Your friendly colleagues: if you know someone with more experience than you,
   they might be able and willing to help you.
@@ -329,9 +329,10 @@ sessionInfo()
 * There are also some topic-specific mailing lists (GIS, phylogenetics, etc...),
   the complete list is [here](http://www.r-project.org/mail.html).
 
-### More resources
+# More resources
 
+* My [teaching material](http://lgatto.github.io/TeachingMaterial) repository
 * The [Posting Guide](http://www.r-project.org/posting-guide.html) for the R
   mailing lists.
 * [How to ask for R help](http://blog.revolutionanalytics.com/2014/01/how-to-ask-for-r-help.html)
-  useful guidelines
+  useful guidelin`
