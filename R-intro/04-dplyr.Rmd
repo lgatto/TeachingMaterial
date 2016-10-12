@@ -4,8 +4,8 @@ title: Aggregating and analyzing data with dplyr
 author: Data Carpentry contributors
 ---
 
-```{r, echo=FALSE, purl=FALSE, message = FALSE}
-## surveys <- read.csv("data/portal_data_joined.csv")
+```{r, echo=FALSE, message = FALSE}
+surveys <- read.csv("../data/portal_data_joined.csv")
 ```
 
 ------------
@@ -21,7 +21,7 @@ stuff in R. The functions we've been using, like `str()`, come built into R;
 packages give you access to more functions. You need to install a package and
 then load it to be able to use it.
 
-```{r, eval = FALSE, purl = FALSE}
+```{r, eval = FALSE}
 install.packages("dplyr") ## install
 ```
 
@@ -30,7 +30,7 @@ asking you to choose a site to download the package from. The choice
 doesn't matter too much. A local CRAN mirror is a good choice.
 
 
-```{r, message = FALSE, purl = FALSE}
+```{r, message = FALSE}
 library("dplyr")          ## load
 ```
 
@@ -69,13 +69,13 @@ To select columns of a data frame, use `select()`. The first argument
 to this function is the data frame (`surveys`), and the subsequent
 arguments are the columns to keep.
 
-```{r, results = 'hide', purl = FALSE}
+```{r, results = 'hide'}
 select(surveys, plot_id, species_id, weight)
 ```
 
 To choose rows, use `filter()`:
 
-```{r, purl = FALSE}
+```{r}
 filter(surveys, year == 1995)
 ```
 
@@ -99,7 +99,7 @@ the next, which is useful when you need to many things to the same
 data set.  Pipes in R look like `%>%` and are made available via the
 `magrittr` package installed as part of `dplyr`.
 
-```{r, purl = FALSE}
+```{r}
 surveys %>%
   filter(weight < 5) %>%
   select(species_id, sex, weight)
@@ -115,7 +115,7 @@ argument to these functions anymore.
 If we wanted to create a new object with this smaller version of the
 data we could do so by assigning it a new name:
 
-```{r, purl = FALSE}
+```{r}
 surveys_sml <- surveys %>%
   filter(weight < 5) %>%
   select(species_id, sex, weight)
@@ -123,13 +123,13 @@ surveys_sml <- surveys %>%
 surveys_sml
 ```
 
-> ### Challenge {.challenge}
->
-> Using pipes, subset the data to include rows before 1995. Retain columns
-> `year`, `sex`, and `weight.`
+### Challenge
+
+> Using pipes, subset the data to include rows before 1995. Retain
+> columns `year`, `sex`, and `weight.`
 
 
-```{r, echo=TRUE}
+```{r, echo = FALSE, eval = FALSE}
 surveys %>% filter(year < 1995) %>% select(year, sex, weight)
 ```
 
@@ -142,7 +142,7 @@ columns. For this we'll use `mutate()`.
 
 To create a new column of weight in kg:
 
-```{r, purl = FALSE}
+```{r}
 surveys %>%
   mutate(weight_kg = weight / 1000)
 ```
@@ -151,7 +151,7 @@ If this runs off your screen and you just want to see the first few rows, you
 can use a pipe to view the `head()` of the data (pipes work with non-dplyr
 functions too, as long as the `dplyr` or `magrittr` packages are loaded).
 
-```{r, purl = FALSE}
+```{r}
 surveys %>%
   mutate(weight_kg = weight / 1000) %>%
   head
@@ -160,7 +160,7 @@ surveys %>%
 The first few rows are full of NAs, so if we wanted to remove those we could
 insert a `filter()` in this chain:
 
-```{r, purl = FALSE}
+```{r}
 surveys %>%
   mutate(weight_kg = weight / 1000) %>%
   filter(!is.na(weight)) %>%
@@ -184,7 +184,7 @@ function. `group_by()` splits the data into groups upon which some
 operations can be run. For example, if we wanted to group by sex and
 find the number of rows of data for each sex, we would do:
 
-```{r, purl = FALSE}
+```{r}
 surveys %>%
   group_by(sex) %>%
   tally()
@@ -193,7 +193,7 @@ surveys %>%
 `group_by()` is often used together with `summarize()` which collapses each
 group into a single-row summary of that group. So to view mean `weight` by sex:
 
-```{r, purl = FALSE}
+```{r}
 surveys %>%
   group_by(sex) %>%
   summarize(mean_weight = mean(weight, na.rm = TRUE))
@@ -201,7 +201,7 @@ surveys %>%
 
 You can group by multiple columns too:
 
-```{r, purl = FALSE}
+```{r}
 surveys %>%
   group_by(sex, species_id) %>%
   summarize(mean_weight = mean(weight, na.rm = TRUE))
@@ -211,7 +211,7 @@ surveys %>%
 Looks like most of these species were never weighed. We could then discard rows
 where `mean_weight` is `NaN` (`NaN` refers to "Not a Number") using `filter()`:
 
-```{r, purl = FALSE}
+```{r}
 surveys %>%
   group_by(sex, species_id) %>%
   summarize(mean_weight = mean(weight, na.rm = TRUE)) %>%
@@ -225,7 +225,7 @@ automatically show tons of data going off the screen.
 
 You can also summarize multiple variables at the same time:
 
-```{r, purl = FALSE}
+```{r}
 surveys %>%
   group_by(sex, species_id) %>%
   summarize(mean_weight = mean(weight, na.rm = TRUE),
@@ -233,22 +233,20 @@ surveys %>%
   filter(!is.nan(mean_weight))
 ```
 
-> ### Challenge {.challenge}
->
+### Challenge
+
 > How many times was each `plot_type` surveyed?
 
 
-```{r}
+```{r, eval = FALSE, echo = FALSE}
 surveys %>% group_by(plot_type) %>% tally()
 table(surveys$plot_type)
 ```
 
-> ### Challenge {.challenge}
->
 > Use `group_by()` and `summarize()` to find the mean, min, and max hindfoot
 > length for each species.
 
-```{r} 
+```{r, eval = FALSE, echo = FALSE} 
 surveys %>% 
     filter(!is.na(hindfoot_length)) %>% 
     group_by(species) %>% 
@@ -263,12 +261,11 @@ surveys %>%
               avghf = mean(hindfoot_length, na.rm = TRUE)) 
 ``` 
 
-> ### Challenge {.challenge}
->
-> What was the heaviest animal measured in each year? Return the columns `year`,
-> `genus`, `species`, and `weight`. See also the cheatsheet below for help.
+> What was the heaviest animal measured in each year? Return the
+> columns `year`, `genus`, `species`, and `weight`. See also the
+> cheatsheet below for help.
 
-```{r}
+```{r, eval = FALSE, echo = FALSE}
 surveys %>% group_by(year) %>% top_n(n = 1, wt = weight)
 ```
 

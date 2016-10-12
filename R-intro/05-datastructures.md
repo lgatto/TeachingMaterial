@@ -24,7 +24,7 @@ Such specialised data structures, also called *classes* are
   
 - All parts are **contained/unified** into one *class* and are
   manipulated/processed consistently.
-  
+
 We will see several of these proteomics *ad hoc* classes (for
 quantitative data, for PSMs identification, for raw mass spectrometry
 data) and how to use them throughout the workshop.

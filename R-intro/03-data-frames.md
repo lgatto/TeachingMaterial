@@ -138,8 +138,6 @@ objects besides `data.frame`.
 
 # Indexing and sequences
 
-
-
 If we want to extract one or several values from a vector, we must provide one
 or several indices in square brackets, just as we do in math. For instance:
 
@@ -230,7 +228,7 @@ surveys[1, 1]   # first element in the first column of the data frame
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+## [1] 1
 ```
 
 ```r
@@ -238,7 +236,8 @@ surveys[1, 6]   # first element in the 6th column
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+## [1] NL
+## 48 Levels: AB AH AS BA CB CM CQ CS CT CU CV DM DO DS DX NL OL OT OX ... ZL
 ```
 
 ```r
@@ -246,7 +245,8 @@ surveys[1:3, 7] # first three elements in the 7th column
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+## [1] M M F
+## Levels:  F M
 ```
 
 ```r
@@ -254,7 +254,10 @@ surveys[3, ]    # the 3rd element for all columns
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+##   record_id month day year plot_id species_id sex hindfoot_length weight
+## 3         3     7  16 1977       2         DM   F              37     NA
+##       genus  species   taxa plot_type
+## 3 Dipodomys merriami Rodent   Control
 ```
 
 ```r
@@ -262,36 +265,26 @@ surveys[, 8]    # the entire 8th column
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+##   [1] 32 33 37 36 35 14 NA 37 34 20 53 38 35 NA 36 36 48 22 NA 48 34 31 36
+##  [24] 21 35 31 36 38 NA 52 37 35 36 NA 38 22 35 33 36 36 34 46 36 35 36 35
+##  [47] 32 36 17 32 36 26 36 37 36 34 NA 45 33 20 35 35 35 37 34 35 35 32 15
+##  [70] 21 36 31 44 12 32 47 NA 16 34 48 14 35 37 35 35 33 11 35 20 35 50 35
+##  [93] NA 36 38 36 36 38 37 54
+##  [ reached getOption("max.print") -- omitted 34686 entries ]
 ```
 
 ```r
 head_surveys <- surveys[1:6, ] # surveys[1:6, ] is equivalent to head(surveys)
 ```
 
-```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
-```
-
 ### Challenge
 
-1. The function `nrow()` on a `data.frame` returns the number of rows. Use it,
-   in conjuction with `seq()` to create a new `data.frame` called
-   `surveys_by_10` that includes every 10th row of the survey data frame
-   starting at row 10 (10, 20, 30, ...)
+* The function `nrow()` on a `data.frame` returns the number of
+  rows. Use it, in conjuction with `seq()` to create a new
+  `data.frame` called `surveys_by_10` that includes every 10th row of
+  the survey data frame starting at row 10 (10, 20, 30, ...)
 
 
-
-<!---
-
-```r
-surveys_by_10 <- surveys[seq(10, nrow(surveys), by = 10), ]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
-```
---->
 
 # Indexing by names
 
@@ -323,11 +316,36 @@ But that's a **advantage**, not a drawback, and here is why: **we want
 to know what to expect from the data**, i.e. we want **structured
 data** to be able to effectively analyse it (i.e. programme it)
 without having to direclty look at it (which anyway becomes
-increasingly difficult).
+increasingly difficult). We want **tidy data**!
 
 ## Tidy data
 
+- Each row contains one observation (one sample)
+- Each column documents a single variable
+- Each cell contains a single value: never combine multiple pieces of
+  information in one cell: split them into different cells
+  
 
-More about [data structes](./05-datastructures.md).
+![Don't](./img/multiple-info.png)
+![Do](./img/single-info.png)
+
+>  Hadley Wickham, Tidy Data, Vol. 59, Issue 10, Sep 2014, Journal of Statistical Software. http://www.jstatsoft.org/v59/i10.
+
+Tidying up data is arguably not the most exciting part of a data
+analysis project (as opposed to visualisation, statistical analysis,
+...), but it all too often takes a substantial amount of time!
+
+The tidy data rules above are relevant when creating your own
+spreadsheets (in Excel, for instance). Assuring the data is tidy and
+you avoid information that will be *lost* once the spreadsheet is
+exported into a more generic file type (for instance `csv`) will make
+it very easily usable into R (or any other data science language).
+
+If you are interested in learning more about good data organisation
+and management using spreadsheets, see the
+[Data Carpentry Spreadsheet](http://www.datacarpentry.org/spreadsheet-ecology-lesson)
+course.
+
+More about [structured data and data structure](./05-datastructures.md). 
 
 

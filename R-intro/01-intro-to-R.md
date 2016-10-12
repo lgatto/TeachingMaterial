@@ -283,11 +283,11 @@ collecting or calculating.
 We just saw 2 of the 6 **data types** that R uses: `"character"` and
 `"numeric"`. The other 4 are:
 
-* `"logical"` for `TRUE` and `FALSE` (the boolean data type)
-* `"integer"` for integer numbers (e.g., `2L`, the `L` indicates to R that it's an integer)
-* `"complex"` to represent complex numbers with real and imaginary parts (e.g.,
+* `logical` for `TRUE` and `FALSE` (the boolean data type)
+* `integer` for integer numbers (e.g., `2L`, the `L` indicates to R that it's an integer)
+* `complex` to represent complex numbers with real and imaginary parts (e.g.,
   `1+4i`) and that's all we're going to say about them
-* `"raw"` that we won't discuss further
+* `raw` that we won't discuss further
 
 Vectors are one of the many **data structures** that R uses. Other important
 ones are lists (`list`), matrices (`matrix`), data frames (`data.frame`) and

@@ -18,8 +18,6 @@ minutes: 20
 
 # Presentation of the Survey Data
 
-
-
 We are studying the species and weight of animals caught in plots in our study
 area. The dataset is stored as a `csv` file: each row holds information for a
 single animal, and the columns represent:
@@ -53,23 +51,16 @@ by typing `dir.create("data")` at the terminal.
 
 ```r
 download.file("http://datacarpentry.github.io/dc_zurich/data/portal_data_joined.csv",
-              "data/portal_data_joined.csv")
+              "./data/portal_data_joined.csv")
 ```
 
 You are now ready to load the data:
 
 
+
+
 ```r
 surveys <- read.csv('data/portal_data_joined.csv')
-```
-
-```
-## Warning in file(file, "rt"): cannot open file 'data/
-## portal_data_joined.csv': No such file or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
 ```
 
 This statement doesn't produce any output because assignment doesn't display
@@ -84,15 +75,6 @@ and display it at the same time.
 (surveys <- read.csv('data/portal_data_joined.csv'))
 ```
 
-```
-## Warning in file(file, "rt"): cannot open file 'data/
-## portal_data_joined.csv': No such file or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
 Wow... that was a lot of output. At least it means the data loaded
 properly. Let's check the top (the first 6 lines) of this `data.frame` using the
 function `head()`:
@@ -103,7 +85,20 @@ head(surveys)
 ```
 
 ```
-## Error in head(surveys): object 'surveys' not found
+##   record_id month day year plot_id species_id sex hindfoot_length weight
+## 1         1     7  16 1977       2         NL   M              32     NA
+## 2         2     7  16 1977       3         NL   M              33     NA
+## 3         3     7  16 1977       2         DM   F              37     NA
+## 4         4     7  16 1977       7         DM   M              36     NA
+## 5         5     7  16 1977       3         DM   M              35     NA
+## 6         6     7  16 1977       1         PF   M              14     NA
+##         genus  species   taxa                plot_type
+## 1     Neotoma albigula Rodent                  Control
+## 2     Neotoma albigula Rodent Long-term Krat Exclosure
+## 3   Dipodomys merriami Rodent                  Control
+## 4   Dipodomys merriami Rodent         Rodent Exclosure
+## 5   Dipodomys merriami Rodent Long-term Krat Exclosure
+## 6 Perognathus   flavus Rodent        Spectab exclosure
 ```
 
 Let's now check the __str__ucture of this `data.frame` in more details with the
@@ -115,7 +110,20 @@ str(surveys)
 ```
 
 ```
-## Error in str(surveys): object 'surveys' not found
+## 'data.frame':	34786 obs. of  13 variables:
+##  $ record_id      : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ month          : int  7 7 7 7 7 7 7 7 7 7 ...
+##  $ day            : int  16 16 16 16 16 16 16 16 16 16 ...
+##  $ year           : int  1977 1977 1977 1977 1977 1977 1977 1977 1977 1977 ...
+##  $ plot_id        : int  2 3 2 7 3 1 2 1 1 6 ...
+##  $ species_id     : Factor w/ 48 levels "AB","AH","AS",..: 16 16 12 12 12 23 22 12 12 23 ...
+##  $ sex            : Factor w/ 3 levels "","F","M": 3 3 2 3 3 3 2 3 2 2 ...
+##  $ hindfoot_length: int  32 33 37 36 35 14 NA 37 34 20 ...
+##  $ weight         : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ genus          : Factor w/ 26 levels "Ammodramus","Ammospermophilus",..: 13 13 11 11 11 15 16 11 11 15 ...
+##  $ species        : Factor w/ 40 levels "albigula","audubonii",..: 1 1 23 23 23 9 8 23 23 9 ...
+##  $ taxa           : Factor w/ 4 levels "Bird","Rabbit",..: 4 4 4 4 4 4 4 4 4 4 ...
+##  $ plot_type      : Factor w/ 5 levels "Control","Long-term Krat Exclosure",..: 1 2 1 3 2 5 1 5 5 4 ...
 ```
 
 ### Challenge
@@ -135,8 +143,6 @@ therefore require some attention.
 
 
 ## Factors
-
-
 
 Factors are used to represent categorical data. Factors can be ordered or
 unordered and are an important class for statistical analysis and for plotting.
@@ -294,9 +300,3 @@ barplot(table(exprmt))
 ![plot of chunk wrong-order](figure/wrong-order-1.png)
 
 
-```r
-exprmt <- factor(exprmt, levels = c("treat1", "treat2", "treat3", "control"))
-barplot(table(exprmt))
-```
-
-![plot of chunk correct-order](figure/correct-order-1.png)

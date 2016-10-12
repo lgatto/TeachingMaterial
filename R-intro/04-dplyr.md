@@ -74,10 +74,6 @@ arguments are the columns to keep.
 select(surveys, plot_id, species_id, weight)
 ```
 
-```
-## Error in select_(.data, .dots = lazyeval::lazy_dots(...)): object 'surveys' not found
-```
-
 To choose rows, use `filter()`:
 
 
@@ -86,7 +82,31 @@ filter(surveys, year == 1995)
 ```
 
 ```
-## Error in filter_(.data, .dots = lazyeval::lazy_dots(...)): object 'surveys' not found
+##      record_id month day year plot_id species_id sex hindfoot_length
+## 1        21993     1  11 1995      18         PF   F              16
+## 2        21994     1  11 1995      12         DO   M              36
+## 3        21995     1  11 1995       2         DO   M              36
+## 4        21996     1  11 1995      21         PF   F              14
+## 5        21997     1  11 1995      24         RM   M              15
+## 6        21998     1  11 1995       1         DM   M              38
+## 7        21999     1  11 1995      19         PF   F              15
+##      weight            genus         species    taxa
+## 1         7      Perognathus          flavus  Rodent
+## 2        47        Dipodomys           ordii  Rodent
+## 3        51        Dipodomys           ordii  Rodent
+## 4         7      Perognathus          flavus  Rodent
+## 5        10  Reithrodontomys       megalotis  Rodent
+## 6        46        Dipodomys        merriami  Rodent
+## 7         8      Perognathus          flavus  Rodent
+##                      plot_type
+## 1    Short-term Krat Exclosure
+## 2                      Control
+## 3                      Control
+## 4     Long-term Krat Exclosure
+## 5             Rodent Exclosure
+## 6            Spectab exclosure
+## 7     Long-term Krat Exclosure
+##  [ reached getOption("max.print") -- omitted 1173 rows ]
 ```
 
 ### Pipes
@@ -117,7 +137,24 @@ surveys %>%
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+##    species_id sex weight
+## 1          PF   M      4
+## 2          PF   F      4
+## 3          PF          4
+## 4          PF   F      4
+## 5          PF   F      4
+## 6          RM   M      4
+## 7          RM   F      4
+## 8          RM   M      4
+## 9          RM   M      4
+## 10         RM   M      4
+## 11         RM   M      4
+## 12         RM   F      4
+## 13         RM   M      4
+## 14         RM   M      4
+## 15         RM   M      4
+## 16         PF   M      4
+## 17         PP   M      4
 ```
 
 In the above we use the pipe to send the `surveys` data set first
@@ -135,34 +172,38 @@ data we could do so by assigning it a new name:
 surveys_sml <- surveys %>%
   filter(weight < 5) %>%
   select(species_id, sex, weight)
-```
 
-```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
-```
-
-```r
 surveys_sml
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys_sml' not found
+##    species_id sex weight
+## 1          PF   M      4
+## 2          PF   F      4
+## 3          PF          4
+## 4          PF   F      4
+## 5          PF   F      4
+## 6          RM   M      4
+## 7          RM   F      4
+## 8          RM   M      4
+## 9          RM   M      4
+## 10         RM   M      4
+## 11         RM   M      4
+## 12         RM   F      4
+## 13         RM   M      4
+## 14         RM   M      4
+## 15         RM   M      4
+## 16         PF   M      4
+## 17         PP   M      4
 ```
 
-> ### Challenge {.challenge}
->
-> Using pipes, subset the data to include rows before 1995. Retain columns
-> `year`, `sex`, and `weight.`
+### Challenge
+
+> Using pipes, subset the data to include rows before 1995. Retain
+> columns `year`, `sex`, and `weight.`
 
 
 
-```r
-surveys %>% filter(year < 1995) %>% select(year, sex, weight)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
-```
 
 
 ### Mutate
@@ -180,7 +221,31 @@ surveys %>%
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+##       record_id month day year plot_id species_id sex hindfoot_length
+## 1             1     7  16 1977       2         NL   M              32
+## 2             2     7  16 1977       3         NL   M              33
+## 3             3     7  16 1977       2         DM   F              37
+## 4             4     7  16 1977       7         DM   M              36
+## 5             5     7  16 1977       3         DM   M              35
+## 6             6     7  16 1977       1         PF   M              14
+## 7             7     7  16 1977       2         PE   F              NA
+##       weight            genus         species    taxa
+## 1         NA          Neotoma        albigula  Rodent
+## 2         NA          Neotoma        albigula  Rodent
+## 3         NA        Dipodomys        merriami  Rodent
+## 4         NA        Dipodomys        merriami  Rodent
+## 5         NA        Dipodomys        merriami  Rodent
+## 6         NA      Perognathus          flavus  Rodent
+## 7         NA       Peromyscus        eremicus  Rodent
+##                       plot_type weight_kg
+## 1                       Control        NA
+## 2      Long-term Krat Exclosure        NA
+## 3                       Control        NA
+## 4              Rodent Exclosure        NA
+## 5      Long-term Krat Exclosure        NA
+## 6             Spectab exclosure        NA
+## 7                       Control        NA
+##  [ reached getOption("max.print") -- omitted 34779 rows ]
 ```
 
 If this runs off your screen and you just want to see the first few rows, you
@@ -195,7 +260,20 @@ surveys %>%
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+##   record_id month day year plot_id species_id sex hindfoot_length weight
+## 1         1     7  16 1977       2         NL   M              32     NA
+## 2         2     7  16 1977       3         NL   M              33     NA
+## 3         3     7  16 1977       2         DM   F              37     NA
+## 4         4     7  16 1977       7         DM   M              36     NA
+## 5         5     7  16 1977       3         DM   M              35     NA
+## 6         6     7  16 1977       1         PF   M              14     NA
+##         genus  species   taxa                plot_type weight_kg
+## 1     Neotoma albigula Rodent                  Control        NA
+## 2     Neotoma albigula Rodent Long-term Krat Exclosure        NA
+## 3   Dipodomys merriami Rodent                  Control        NA
+## 4   Dipodomys merriami Rodent         Rodent Exclosure        NA
+## 5   Dipodomys merriami Rodent Long-term Krat Exclosure        NA
+## 6 Perognathus   flavus Rodent        Spectab exclosure        NA
 ```
 
 The first few rows are full of NAs, so if we wanted to remove those we could
@@ -210,7 +288,20 @@ surveys %>%
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+##   record_id month day year plot_id species_id sex hindfoot_length weight
+## 1        63     8  19 1977       3         DM   M              35     40
+## 2        64     8  19 1977       7         DM   M              37     48
+## 3        65     8  19 1977       4         DM   F              34     29
+## 4        66     8  19 1977       4         DM   F              35     46
+## 5        67     8  19 1977       7         DM   M              35     36
+## 6        68     8  19 1977       8         DO   F              32     52
+##       genus  species   taxa                plot_type weight_kg
+## 1 Dipodomys merriami Rodent Long-term Krat Exclosure     0.040
+## 2 Dipodomys merriami Rodent         Rodent Exclosure     0.048
+## 3 Dipodomys merriami Rodent                  Control     0.029
+## 4 Dipodomys merriami Rodent                  Control     0.046
+## 5 Dipodomys merriami Rodent         Rodent Exclosure     0.036
+## 6 Dipodomys    ordii Rodent                  Control     0.052
 ```
 
 `is.na()` is a function that determines whether something is or is not an `NA`.
@@ -238,7 +329,12 @@ surveys %>%
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+## # A tibble: 3 × 2
+##      sex     n
+##   <fctr> <int>
+## 1         1748
+## 2      F 15690
+## 3      M 17348
 ```
 
 `group_by()` is often used together with `summarize()` which collapses each
@@ -252,7 +348,12 @@ surveys %>%
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+## # A tibble: 3 × 2
+##      sex mean_weight
+##   <fctr>       <dbl>
+## 1           64.74257
+## 2      F    42.17055
+## 3      M    42.99538
 ```
 
 You can group by multiple columns too:
@@ -265,7 +366,22 @@ surveys %>%
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+## Source: local data frame [92 x 3]
+## Groups: sex [?]
+## 
+##       sex species_id mean_weight
+##    <fctr>     <fctr>       <dbl>
+## 1                 AB         NaN
+## 2                 AH         NaN
+## 3                 AS         NaN
+## 4                 BA         NaN
+## 5                 CB         NaN
+## 6                 CM         NaN
+## 7                 CQ         NaN
+## 8                 CS         NaN
+## 9                 CT         NaN
+## 10                CU         NaN
+## # ... with 82 more rows
 ```
 
 Looks like most of these species were never weighed. We could then discard rows
@@ -280,7 +396,22 @@ surveys %>%
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+## Source: local data frame [64 x 3]
+## Groups: sex [3]
+## 
+##       sex species_id mean_weight
+##    <fctr>     <fctr>       <dbl>
+## 1                 DM    38.28571
+## 2                 DO    50.66667
+## 3                 DS   120.00000
+## 4                 NL   167.68750
+## 5                 OL    29.00000
+## 6                 OT    21.20000
+## 7                 PB    30.60000
+## 8                 PE    17.66667
+## 9                 PF     6.00000
+## 10                PI    18.00000
+## # ... with 54 more rows
 ```
 
 All of a sudden this isn't running of the screen anymore. That's because `dplyr`
@@ -300,75 +431,41 @@ surveys %>%
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
+## Source: local data frame [64 x 4]
+## Groups: sex [3]
+## 
+##       sex species_id mean_weight min_weight
+##    <fctr>     <fctr>       <dbl>      <int>
+## 1                 DM    38.28571         24
+## 2                 DO    50.66667         44
+## 3                 DS   120.00000         78
+## 4                 NL   167.68750         83
+## 5                 OL    29.00000         21
+## 6                 OT    21.20000         18
+## 7                 PB    30.60000         20
+## 8                 PE    17.66667         17
+## 9                 PF     6.00000          4
+## 10                PI    18.00000         18
+## # ... with 54 more rows
 ```
 
-> ### Challenge {.challenge}
->
+### Challenge
+
 > How many times was each `plot_type` surveyed?
 
 
 
-```r
-surveys %>% group_by(plot_type) %>% tally()
-```
 
-```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
-```
-
-```r
-table(surveys$plot_type)
-```
-
-```
-## Error in table(surveys$plot_type): object 'surveys' not found
-```
-
-> ### Challenge {.challenge}
->
 > Use `group_by()` and `summarize()` to find the mean, min, and max hindfoot
 > length for each species.
 
 
-```r
-surveys %>% 
-    filter(!is.na(hindfoot_length)) %>% 
-    group_by(species) %>% 
-    summarise(minhf = min(hindfoot_length), 
-              maxhf = max(hindfoot_length), 
-              avghf = mean(hindfoot_length)) 
-```
 
-```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
-```
-
-```r
-surveys %>% 
-    group_by(species) %>% 
-    summarise(minhf = min(hindfoot_length, na.rm = TRUE), 
-              maxhf = max(hindfoot_length, na.rm = TRUE), 
-              avghf = mean(hindfoot_length, na.rm = TRUE)) 
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
-```
-
-> ### Challenge {.challenge}
->
-> What was the heaviest animal measured in each year? Return the columns `year`,
-> `genus`, `species`, and `weight`. See also the cheatsheet below for help.
+> What was the heaviest animal measured in each year? Return the
+> columns `year`, `genus`, `species`, and `weight`. See also the
+> cheatsheet below for help.
 
 
-```r
-surveys %>% group_by(year) %>% top_n(n = 1, wt = weight)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'surveys' not found
-```
 
 ### Summary
 

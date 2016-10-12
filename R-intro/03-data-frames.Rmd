@@ -5,8 +5,8 @@ author: Data Carpentry contributors
 minutes: 30
 ---
 
-```{r, echo=FALSE, purl=FALSE, message = FALSE}
-## surveys <- read.csv("data/portal_data_joined.csv")
+```{r, echo=FALSE, message = FALSE}
+surveys <- read.csv("../data/portal_data_joined.csv")
 ```
 
 ------------
@@ -38,7 +38,7 @@ the data, you may want to keep these columns as `character`. To do so,
 `read.csv()` and `read.table()` have an argument called `stringsAsFactors` which
 can be set to `FALSE`:
 
-```{r, eval=FALSE, purl=FALSE}
+```{r, eval=FALSE}
 some_data <- read.csv("data/some_file.csv", stringsAsFactors=FALSE)
 ```
 
@@ -49,7 +49,7 @@ function can also take the argument `stringsAsFactors`. Compare the output of
 these examples, and compare the difference between when the data are being read
 as `character` and when they are being as `factor`.
 
-```{r, results='show', purl=TRUE}
+```{r, results='show'}
 example_data <- data.frame(animal=c("dog", "cat", "sea cucumber", "sea urchin"),
                            feel=c("furry", "furry", "squishy", "spiny"),
                            weight=c(45, 8, 1.1, 0.8))
@@ -65,7 +65,7 @@ str(example_data)
 1. There are a few mistakes in this hand crafted `data.frame`, can you spot and
 fix them? Don't hesitate to experiment!
 
-```{r, eval=FALSE, purl=TRUE, echo=TRUE}
+```{r, eval=FALSE, echo=TRUE}
 author_book <- data.frame(author_first=c("Charles", "Ernst", "Theodosius"),
                           author_last=c(Darwin, Mayr, Dobzhansky),
                           year=c(1942, 1970))
@@ -73,7 +73,7 @@ author_book <- data.frame(author_first=c("Charles", "Ernst", "Theodosius"),
 
 2. Can you predict the class for each of the columns in the following example?
 
-```{r, eval=FALSE, purl=TRUE, echo=TRUE}
+```{r, eval=FALSE, echo=TRUE}
 country_climate <- data.frame(country=c("Canada", "Panama", "South Africa", "Australia"),
                               climate=c("cold", "hot", "temperate", "hot/temperate"),
                               temperature=c(10, 30, 18, "15"),
@@ -119,16 +119,10 @@ objects besides `data.frame`.
 
 # Indexing and sequences
 
-```{r, echo=FALSE, purl=TRUE}
-
-## Indexing and sequences
-
-```
-
 If we want to extract one or several values from a vector, we must provide one
 or several indices in square brackets, just as we do in math. For instance:
 
-```{r, results='show', purl=FALSE}
+```{r, results='show'}
 animals <- c("mouse", "rat", "dog", "cat")
 animals[2]
 animals[c(3, 2)]
@@ -146,7 +140,7 @@ simpler for computers to do.
 or decreasing order, test `1:10` and `10:1` for instance. The function `seq()`
 (for __seq__uence) can be used to create more complex patterns:
 
-```{r, results='show', purl=FALSE}
+```{r, results='show'}
 seq(1, 10, by=2)
 seq(5, 10, length.out=3)
 seq(50, by=5, length.out=10)
@@ -157,7 +151,7 @@ Our survey data frame has rows and columns (it has 2 dimensions), if we want to
 extract some specific data from it, we need to specify the "coordinates" we want
 from it. Row numbers come first, followed by column numbers.
 
-```{r, purl=FALSE}
+```{r}
 surveys[1, 1]   # first element in the first column of the data frame
 surveys[1, 6]   # first element in the 6th column
 surveys[1:3, 7] # first three elements in the 7th column
@@ -168,23 +162,14 @@ head_surveys <- surveys[1:6, ] # surveys[1:6, ] is equivalent to head(surveys)
 
 ### Challenge
 
-1. The function `nrow()` on a `data.frame` returns the number of rows. Use it,
-   in conjuction with `seq()` to create a new `data.frame` called
-   `surveys_by_10` that includes every 10th row of the survey data frame
-   starting at row 10 (10, 20, 30, ...)
+* The function `nrow()` on a `data.frame` returns the number of
+  rows. Use it, in conjuction with `seq()` to create a new
+  `data.frame` called `surveys_by_10` that includes every 10th row of
+  the survey data frame starting at row 10 (10, 20, 30, ...)
 
-```{r, echo=FALSE, purl=TRUE}
-### The function `nrow()` on a `data.frame` returns the number of
-### rows. Use it, in conjuction with `seq()` to create a new
-### `data.frame` called `surveys_by_10` that includes every 10th row
-### of the survey data frame starting at row 10 (10, 20, 30, ...)
-```
-
-<!---
-```{r, purl=FALSE}
+```{r, echo = FALSE}
 surveys_by_10 <- surveys[seq(10, nrow(surveys), by = 10), ]
 ```
---->
 
 # Indexing by names
 
@@ -216,11 +201,36 @@ But that's a **advantage**, not a drawback, and here is why: **we want
 to know what to expect from the data**, i.e. we want **structured
 data** to be able to effectively analyse it (i.e. programme it)
 without having to direclty look at it (which anyway becomes
-increasingly difficult).
+increasingly difficult). We want **tidy data**!
 
 ## Tidy data
 
+- Each row contains one observation (one sample)
+- Each column documents a single variable
+- Each cell contains a single value: never combine multiple pieces of
+  information in one cell: split them into different cells
+  
 
-More about [data structes](./05-datastructures.md).
+![Don't](./img/multiple-info.png)
+![Do](./img/single-info.png)
+
+>  Hadley Wickham, Tidy Data, Vol. 59, Issue 10, Sep 2014, Journal of Statistical Software. http://www.jstatsoft.org/v59/i10.
+
+Tidying up data is arguably not the most exciting part of a data
+analysis project (as opposed to visualisation, statistical analysis,
+...), but it all too often takes a substantial amount of time!
+
+The tidy data rules above are relevant when creating your own
+spreadsheets (in Excel, for instance). Assuring the data is tidy and
+you avoid information that will be *lost* once the spreadsheet is
+exported into a more generic file type (for instance `csv`) will make
+it very easily usable into R (or any other data science language).
+
+If you are interested in learning more about good data organisation
+and management using spreadsheets, see the
+[Data Carpentry Spreadsheet](http://www.datacarpentry.org/spreadsheet-ecology-lesson)
+course.
+
+More about [structured data and data structure](./05-datastructures.md). 
 
 
