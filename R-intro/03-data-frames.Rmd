@@ -6,12 +6,7 @@ minutes: 30
 ---
 
 ```{r, echo=FALSE, purl=FALSE, message = FALSE}
-source("setup.R")
-surveys <- read.csv("data/portal_data_joined.csv")
-```
-
-```{r, echo=FALSE, purl=TRUE}
-## The data.frame class
+## surveys <- read.csv("data/portal_data_joined.csv")
 ```
 
 ------------
@@ -207,3 +202,25 @@ the weights from our datasets, we can use: `surveys$wgt`. You can use
 
 In some cases, you may way to select more than one column. You can do this using
 the square brackets: `surveys[, c("wgt", "sex")]`.
+
+# Data frames and tidy data
+
+Data frames can be compared to spreadsheets with additional constraints: 
+
+- All columns must have the same length
+- All columns must have the same *type*
+- Could can't use colours of font formatting to annotate them
+- You can't merge cells
+
+But that's a **advantage**, not a drawback, and here is why: **we want
+to know what to expect from the data**, i.e. we want **structured
+data** to be able to effectively analyse it (i.e. programme it)
+without having to direclty look at it (which anyway becomes
+increasingly difficult).
+
+## Tidy data
+
+
+More about [data structes](./05-datastructures.md).
+
+

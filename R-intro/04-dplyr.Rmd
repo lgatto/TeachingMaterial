@@ -5,13 +5,12 @@ author: Data Carpentry contributors
 ---
 
 ```{r, echo=FALSE, purl=FALSE, message = FALSE}
-source("setup.R")
-surveys <- read.csv("data/portal_data_joined.csv")
+## surveys <- read.csv("data/portal_data_joined.csv")
 ```
 
 ------------
 
-# Data manipulation using dplyr
+# Data manipulation using `dplyr`
 
 Bracket subsetting is handy, but it can be cumbersome and difficult to read,
 especially for complicated operations. Enter `dplyr`. `dplyr` is a package for

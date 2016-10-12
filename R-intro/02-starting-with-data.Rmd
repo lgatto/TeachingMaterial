@@ -5,10 +5,6 @@ author: Data Carpentry contributors
 minutes: 20
 ---
 
-```{r, echo=FALSE, purl=FALSE, message = FALSE}
-source("setup.R")
-```
-
 ------------
 
 > ## Learning Objectives

@@ -5,27 +5,10 @@ author: Data Carpentry contributors
 ---
 
 
-```
-## Warning in file(filename, "r", encoding = encoding): cannot open file
-## 'setup.R': No such file or directory
-```
-
-```
-## Error in file(filename, "r", encoding = encoding): cannot open the connection
-```
-
-```
-## Warning in file(file, "rt"): cannot open file 'data/
-## portal_data_joined.csv': No such file or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
 
 ------------
 
-# Data manipulation using dplyr
+# Data manipulation using `dplyr`
 
 Bracket subsetting is handy, but it can be cumbersome and difficult to read,
 especially for complicated operations. Enter `dplyr`. `dplyr` is a package for

@@ -6,25 +6,6 @@ minutes: 30
 ---
 
 
-```
-## Warning in file(filename, "r", encoding = encoding): cannot open file
-## 'setup.R': No such file or directory
-```
-
-```
-## Error in file(filename, "r", encoding = encoding): cannot open the connection
-```
-
-```
-## Warning in file(file, "rt"): cannot open file 'data/
-## portal_data_joined.csv': No such file or directory
-```
-
-```
-## Error in file(file, "rt"): cannot open the connection
-```
-
-
 
 ------------
 
@@ -328,3 +309,25 @@ the weights from our datasets, we can use: `surveys$wgt`. You can use
 
 In some cases, you may way to select more than one column. You can do this using
 the square brackets: `surveys[, c("wgt", "sex")]`.
+
+# Data frames and tidy data
+
+Data frames can be compared to spreadsheets with additional constraints: 
+
+- All columns must have the same length
+- All columns must have the same *type*
+- Could can't use colours of font formatting to annotate them
+- You can't merge cells
+
+But that's a **advantage**, not a drawback, and here is why: **we want
+to know what to expect from the data**, i.e. we want **structured
+data** to be able to effectively analyse it (i.e. programme it)
+without having to direclty look at it (which anyway becomes
+increasingly difficult).
+
+## Tidy data
+
+
+More about [data structes](./05-datastructures.md).
+
+

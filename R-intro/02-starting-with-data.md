@@ -5,16 +5,6 @@ author: Data Carpentry contributors
 minutes: 20
 ---
 
-
-```
-## Warning in file(filename, "r", encoding = encoding): cannot open file
-## 'setup.R': No such file or directory
-```
-
-```
-## Error in file(filename, "r", encoding = encoding): cannot open the connection
-```
-
 ------------
 
 > ## Learning Objectives
