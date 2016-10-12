@@ -3,7 +3,7 @@
 ### Material
 
 - [Introduction to R/RStudio](./R-intro/index.md)
-- R/Bioconductor for proteomics
+- [R/Bioconductor for proteomics](./r4p/index.md)
 - Data visualiation
 - `mzR` and `MSnbase` packages for raw data
 - Indentification data in `mzR`, `mzID`, `MSnID`

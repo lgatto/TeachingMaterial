@@ -87,14 +87,39 @@ R is a versatile, open source programming/scripting language that's useful both
 for statistics but also data science. Inspired by the programming language S.
 
 * **Open source** software under GPL.
-* Superior (if not just comparable) to commercial alternatives. R has over 7,000
-  user contributed **packages** at this time. It's widely used both in **academia and
-  industry**.
+* Superior (if not just comparable) to commercial alternatives. R has
+  over 7,000 user contributed **packages** at this time. It's widely
+  used both in **academia and industry**.
 * Available on **all platforms**.
 * Not just for **statistics**, but also **general purpose programming**.
 * For people who have experience in programmming: R is both an **object-oriented**
   and a so-called [**functional language**](http://adv-r.had.co.nz/Functional-programming.html)
 * Large and growing **community** of peers.
+
+## Packages
+
+Packages are how developers around the world can contribute their
+expertise to the R language. They enable to complement R's core
+functionality with specialised domain code. We will discuss this more
+later, in the frame of [Bioconductor and proteomics](../r4p/index.md).
+
+Using the `ggplot2` plotting package as an example, to make use of its
+new functionality, one needs to
+
+1. Install the package (and all its dependencies) from one the CRAN
+   servers
+
+
+```r
+install.packages("ggplot2")
+```
+
+2. Load it
+
+
+```r
+library("ggplot2")
+```
 
 ## Commenting
 
