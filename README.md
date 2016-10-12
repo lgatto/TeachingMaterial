@@ -30,9 +30,24 @@
 |16:00 - 17:00 |Practical with R: the mzR and MSnbase packages for raw data |The MSnbase package: MSnSets for quantiative proteomics |Wrap-up                                                                                       |
 
 
-### Related material
+### Related material and references
 
 * [Teaching material](http://lgatto.github.io/TeachingMaterial/)
+
+
+* Gatto L. and Christoforou A. *Using R and Bioconductor for
+  proteomics data analysis*, Biochim Biophys Acta - Proteins and
+  Proteomics, 2013. [PMID:23692960](https://www.ncbi.nlm.nih.gov/pubmed/23692960)
+  ([preprint](https://arxiv.org/abs/1305.6559))
+
+* Gatto L, Breckels LM, Naake T, Gibb S. *Visualisation of proteomics
+  data using R and Bioconductor*. Proteomics. 2015 Feb 18. doi:
+  10.1002/pmic.201400392. [PMID:25690415](http://www.ncbi.nlm.nih.gov/pubmed/25690415).
+
+* Gatto L. and Lilley K.S. MSnbase - an R/Bioconductor package for
+  isobaric tagged mass spectrometry data visualisation, processing and
+  quantitation, Bioinformatics, 28(2), 288-289, 2012
+  [PMID:22113085](https://www.ncbi.nlm.nih.gov/pubmed/22113085)
 
 ### License
 
