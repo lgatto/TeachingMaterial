@@ -12,5 +12,7 @@ clean:
 	rm -f *~
 	rm -f */*~
 	rm -rf .Rcache
+	rm -f .Rhistory
+	rm -f */.Rhistory
 
 .PHONY: clean rintro

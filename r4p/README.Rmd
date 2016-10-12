@@ -16,8 +16,7 @@ In addition to *software* package, it also has *experiment* and
 
 First time
 
-
-```r
+```{r, eval = FALSE}
 ## try http:// if https:// URLs are not supported
 source("https://bioconductor.org/biocLite.R")
 biocLite("RforProteomics")
@@ -25,8 +24,7 @@ biocLite("RforProteomics")
 
 Then
 
-
-```r
+```{r, eval = FALSE}
 library(BiocInstaller)
 biocLite("RforProteomics")
 ```
@@ -34,8 +32,7 @@ biocLite("RforProteomics")
 To install all Bioconductor software that will be used throughout this
 workshop:
 
-
-```r
+```{r, eval = FALSE}
 > biocLite(c("RforProteomics", "pRolocGUI"), dependencies = TRUE)
 ```
 ## Proteomics and mass spectrometry
@@ -62,26 +59,13 @@ R and Bioconductor* papers. Two vignettes describe the code and data
 needed to reproduce all the examples and figures.
 
 
+```{r, echo=FALSE, message=FALSE}
+suppressPackageStartupMessages(library("mzR"))
+suppressPackageStartupMessages(library("MSnbase"))
+```
 
-
-
-```r
+```{r}
 library("RforProteomics")
-```
-
-```
-## 
-## This is the 'RforProteomics' version 1.11.2.
-## 
-##   To get started, visit
-##     http://lgatto.github.com/RforProteomics/
-## 
-##   or, in R, open package vignettes by typing
-##     RforProteomics() # R/Bioc for proteomics overview
-##     RProtVis()       # R/Bioc for proteomics visualisation
-## 
-##   For a full list of available documents:
-##     vignette(package='RforProteomics')
 ```
 
 Package vignettes are overview package documentations. They generally
