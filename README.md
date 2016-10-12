@@ -2,7 +2,7 @@
 
 ### Material
 
-- [Introduction to R/RStudio](./R-intro/REAMDE.md)
+- [Introduction to R/RStudio](./R-intro/README.md)
 - [R/Bioconductor for proteomics](./r4p/README.md)
 - [Data visualiation](./vis/README.md)
 - `mzR` and `MSnbase` packages for raw data
