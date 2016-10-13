@@ -124,8 +124,8 @@ be discussed tomorrow).
 library("MSnbase")
 ```
 
-Using the `readMSdata` or `readMSdata2` functions, passing a raw data
-filename as input, we create an `MSnExp` object.
+Using the `readMSdata` or `readMSdata2` functions, passing one or more
+raw data filenames as input, we create an `MSnExp` object.
 
 ```{r}
 rw1 <- readMSData(f[2], verbose = FALSE)
@@ -174,6 +174,33 @@ be accessed with the `fData` accessor function
 
 ```{r}
 fData(rw2)
+```
+
+### More data handling
+
+Currently, the software is not aware whether the data is
+centroided. If we know this, we can set it when we read the data in by
+passing a `centroided` argument. 
+
+```{r}
+tmp <- readMSData2(f[2], centroided = c(FALSE, TRUE), verbose = FALSE)
+table(centroided(tmp), msLevel(tmp))
+```
+
+Is is also possible to set 
+
+```{r}
+tmp <- readMSData2(f[2], verbose = FALSE)
+centroided(tmp, msLevel = 1) <- FALSE
+centroided(tmp, msLevel = 2) <- TRUE
+table(centroided(tmp), msLevel(tmp))
+```
+
+Finally, the `isCentroided` function will guess from the data is it is
+centroided or in profile mode
+
+```{r}
+invisible(isCentroided(rw2))
 ```
 
 ### Peak lists

@@ -216,8 +216,8 @@ be discussed tomorrow).
 library("MSnbase")
 ```
 
-Using the `readMSdata` or `readMSdata2` functions, passing a raw data
-filename as input, we create an `MSnExp` object.
+Using the `readMSdata` or `readMSdata2` functions, passing one or more
+raw data filenames as input, we create an `MSnExp` object.
 
 
 ```r
@@ -233,7 +233,7 @@ rw1
 ##  Number of spectra: 451 
 ##  MSn retention times: 18:29 - 22:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 18:42:01 2016 
+## Data loaded: Thu Oct 13 19:04:59 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -265,7 +265,7 @@ rw2
 ##  Number of spectra: 509 
 ##  MSn retention times: 18:28 - 22:3 minutes
 ## - - - Processing information - - -
-## Data loaded [Thu Oct 13 18:42:03 2016] 
+## Data loaded [Thu Oct 13 19:05:01 2016] 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -336,8 +336,8 @@ rw1[1:5]
 ##  Number of spectra: 5 
 ##  MSn retention times: 18:29 - 18:31 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 18:42:01 2016 
-## Data [numerically] subsetted 5 spectra: Thu Oct 13 18:42:04 2016 
+## Data loaded: Thu Oct 13 19:04:59 2016 
+## Data [numerically] subsetted 5 spectra: Thu Oct 13 19:05:02 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -409,6 +409,57 @@ fData(rw2)
 ## X002.1        2
 ## X003.1        3
 ##  [ reached getOption("max.print") -- omitted 506 rows ]
+```
+
+### More data handling
+
+Currently, the software is not aware whether the data is
+centroided. If we know this, we can set it when we read the data in by
+passing a `centroided` argument. 
+
+
+```r
+tmp <- readMSData2(f[2], centroided = c(FALSE, TRUE), verbose = FALSE)
+table(centroided(tmp), msLevel(tmp))
+```
+
+```
+##        
+##           1   2
+##   FALSE  58   0
+##   TRUE    0 451
+```
+
+Is is also possible to set 
+
+
+```r
+tmp <- readMSData2(f[2], verbose = FALSE)
+centroided(tmp, msLevel = 1) <- FALSE
+centroided(tmp, msLevel = 2) <- TRUE
+table(centroided(tmp), msLevel(tmp))
+```
+
+```
+##        
+##           1   2
+##   FALSE  58   0
+##   TRUE    0 451
+```
+
+Finally, the `isCentroided` function will guess from the data is it is
+centroided or in profile mode
+
+
+```r
+invisible(isCentroided(rw2))
+```
+
+```
+##        
+## ctrd      1   2
+##   FALSE  58   0
+##   TRUE    0 451
 ```
 
 ### Peak lists
