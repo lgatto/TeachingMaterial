@@ -1,20 +1,10 @@
 ---
 layout: topic
 title: Data visualisation with ggplot2
-subtitle: Visualising data in R with ggplot2 package
 minutes: 60
 ---
 
-```{r, echo=FALSE}
-knitr::opts_chunk$set(fig.keep='last')
-```
-
-```{r setup, echo=FALSE, purl=FALSE}
-source("setup.R")
-```
-
 Authors: **Mateusz Kuzak**, **Diana Marek**, **Hedi Peterson**
-
 
 #### Disclaimer
 

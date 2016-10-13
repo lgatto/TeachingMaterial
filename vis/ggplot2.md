@@ -1,24 +1,10 @@
 ---
 layout: topic
 title: Data visualisation with ggplot2
-subtitle: Visualising data in R with ggplot2 package
 minutes: 60
 ---
 
-
-
-
-```
-## Warning in file(filename, "r", encoding = encoding): cannot open file
-## 'setup.R': No such file or directory
-```
-
-```
-## Error in file(filename, "r", encoding = encoding): cannot open the connection
-```
-
 Authors: **Mateusz Kuzak**, **Diana Marek**, **Hedi Peterson**
-
 
 #### Disclaimer
 
@@ -198,7 +184,7 @@ plotting capabilities.
 plot(x = surveys_complete$weight, y = surveys_complete$hindfoot_length)
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
 
 ## Plotting with ggplot2
 
@@ -237,7 +223,7 @@ ggplot(surveys_complete, aes(x = weight, y = hindfoot_length)) +
   geom_point()
 ```
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png)
 
 ## Modifying plots
 
@@ -249,7 +235,7 @@ ggplot(surveys_complete, aes(x = weight, y = hindfoot_length)) +
   geom_point(alpha=0.1)
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
 
 - adding colors
 
@@ -259,7 +245,7 @@ ggplot(surveys_complete, aes(x = weight, y = hindfoot_length)) +
   geom_point(alpha=0.1, color="blue")
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
 
 Example of complex visualisation in which plot area is divided into hexagonal
 sections and points are counted wihin hexagons. The number of points per hexagon
@@ -279,7 +265,7 @@ ggplot(surveys_complete, aes(x = weight, y = hindfoot_length)) +
     stat_binhex(bins=50) 
 ```
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
 
 
 ```r
@@ -288,7 +274,7 @@ ggplot(surveys_complete, aes(x = weight, y = hindfoot_length)) +
     scale_fill_gradientn(trans="log10", colours = heat.colors(10, alpha=0.5))
 ```
 
-![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
 
 (See the `hexbin` function for a non-`ggplot2` alternative)
 
@@ -302,7 +288,7 @@ ggplot(surveys_weight_present, aes(factor(species_id), weight)) +
                    geom_boxplot()
 ```
 
-![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
+![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
 
 By adding points to boxplot, we can see particular measurements and the
 abundance of measurements.
@@ -314,7 +300,7 @@ ggplot(surveys_weight_present, aes(factor(species_id), weight)) +
                    geom_boxplot(alpha=0)
 ```
 
-![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
+![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
 
 (See `boxplot` for a base function.)
 
@@ -345,7 +331,7 @@ ggplot(yearly_counts, aes(x=year, y=count)) +
                   geom_line()
 ```
 
-![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png)
+![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png)
 
 Unfortunately this does not work, because we plot data for all the species
 together. We need to tell ggplot to split graphed data by `species_id`
@@ -356,7 +342,7 @@ ggplot(yearly_counts, aes(x=year, y=count, group=species_id)) +
   geom_line()
 ```
 
-![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
+![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png)
 
 We will be able to distiguish species in the plot if we add colors.
 
@@ -366,7 +352,7 @@ ggplot(yearly_counts, aes(x=year, y=count, group=species_id, color=species_id)) 
   geom_line()
 ```
 
-![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png)
+![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
 
 ## Faceting
 
@@ -380,7 +366,7 @@ ggplot(yearly_counts, aes(x=year, y=count, color=species_id)) +
   geom_line() + facet_wrap(~species_id)
 ```
 
-![plot of chunk unnamed-chunk-26](figure/unnamed-chunk-26-1.png)
+![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png)
 
 Now we would like to split lines in each plot by sex of each individual
 measured. To do that we need to make **counts grouped by sex**.
@@ -419,7 +405,7 @@ ggplot(yearly_sex_counts, aes(x=year, y=count, color=species_id, group=sex)) +
 ## adjust the group aesthetic?
 ```
 
-![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29-1.png)
+![plot of chunk unnamed-chunk-28](figure/unnamed-chunk-28-1.png)
 
 > - Improve the plot by coloring by sex instead of species (species
 >   are already in separate plots, so we don't need to distinguish
@@ -436,4 +422,4 @@ ggplot(yearly_sex_counts, aes(x=year, y=count, color=sex, group=sex)) +
 ## adjust the group aesthetic?
 ```
 
-![plot of chunk unnamed-chunk-30](figure/unnamed-chunk-30-1.png)
+![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29-1.png)
