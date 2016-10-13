@@ -233,7 +233,7 @@ rw1
 ##  Number of spectra: 451 
 ##  MSn retention times: 18:29 - 22:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 17:54:44 2016 
+## Data loaded: Thu Oct 13 18:32:23 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -265,7 +265,7 @@ rw2
 ##  Number of spectra: 509 
 ##  MSn retention times: 18:28 - 22:3 minutes
 ## - - - Processing information - - -
-## Data loaded [Thu Oct 13 17:54:46 2016] 
+## Data loaded [Thu Oct 13 18:32:25 2016] 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -336,8 +336,8 @@ rw1[1:5]
 ##  Number of spectra: 5 
 ##  MSn retention times: 18:29 - 18:31 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 17:54:44 2016 
-## Data [numerically] subsetted 5 spectra: Thu Oct 13 17:54:47 2016 
+## Data loaded: Thu Oct 13 18:32:23 2016 
+## Data [numerically] subsetted 5 spectra: Thu Oct 13 18:32:26 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -435,6 +435,13 @@ minutes of retention time.
 ```r
 ## (1) Open raw data file
 ms <- openMSfile("../data/TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzXML")
+```
+
+```
+## Error in openMSfile("../data/TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzXML"): File ../data/TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzXML not found.
+```
+
+```r
 ## (2) Extract the header information
 hd <- header(ms)
 ## (3) MS1 spectra indices
@@ -448,9 +455,13 @@ j <- ms1[which(rtsel)][2]
 ms2 <- (i+1):(j-1)
 ```
 
+```
+## Error in (i + 1):(j - 1): NA/NaN argument
+```
+
 Now now extract and plot all relevant information:
 
-1. The upper panel represents the chromatogram of the TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzXML
+1. The upper panel represents the chromatogram of the TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.mzML.gz
    raw data file, produced with `chromatogram`.
 
 
@@ -461,7 +472,7 @@ chromatogram(ms)
 ![plot of chunk visfig01](figure/visfig01-1.png)
 
 2. We concentrate at a specific retention time, 
-   30:1 minutes (1800.68 seconds) 
+   NA:NA minutes (NA seconds) 
 
 
 ```r
@@ -471,19 +482,38 @@ abline(v = hd[i, "retentionTime"], col = "red")
 
 ![plot of chunk visfig02](figure/visfig02-1.png)
 
-3. This corresponds to the 2807th MS1 spectrum, shown on the second
+3. This corresponds to the NAth MS1 spectrum, shown on the second
    row of figures.
 
 
 ```r
 plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
+```
+
+```
+## Index whichScan out of bounds [1 ... 509].
+```
+
+```
+## Warning in min(x): no non-missing arguments to min; returning Inf
+```
+
+```
+## Warning in max(x): no non-missing arguments to max; returning -Inf
+```
+
+```
+## Error in plot.window(...): need finite 'ylim' values
+```
+
+![plot of chunk visfig03](figure/visfig03-1.png)
+
+```r
 legend("topright", bty = "n",
        legend = paste0(
            "Acquisition ", hd[i, "acquisitionNum"],  "\n",
            "Retention time ", formatRt(hd[i, "retentionTime"])))
 ```
-
-![plot of chunk visfig03](figure/visfig03-1.png)
 
 4. The ions that were selected for MS2 are highlighted by vertical
    lines. These are represented in the bottom part of the figure.
@@ -491,6 +521,27 @@ legend("topright", bty = "n",
 
 ```r
 plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
+```
+
+```
+## Index whichScan out of bounds [1 ... 509].
+```
+
+```
+## Warning in min(x): no non-missing arguments to min; returning Inf
+```
+
+```
+## Warning in max(x): no non-missing arguments to max; returning -Inf
+```
+
+```
+## Error in plot.window(...): need finite 'ylim' values
+```
+
+![plot of chunk visfig04](figure/visfig04-1.png)
+
+```r
 legend("topright", bty = "n",
        legend = paste0(
            "Acquisition ", hd[i, "acquisitionNum"],  "\n",
@@ -500,7 +551,9 @@ abline(v = hd[ms2, "precursorMZ"],
            rep("#12121280", 9)))
 ```
 
-![plot of chunk visfig04](figure/visfig04-1.png)
+```
+## Error in `[.data.frame`(hd, ms2, "precursorMZ"): object 'ms2' not found
+```
 
 5. On the right, we zoom on the isotopic envelope of one peptide in
    particular (the one highlighted with a red line).
@@ -508,10 +561,33 @@ abline(v = hd[ms2, "precursorMZ"],
 
 ```r
 plot(peaks(ms, i), type = "l", xlim = c(521, 522.5))
-abline(v = hd[ms2, "precursorMZ"], col = "#FF000080")
+```
+
+```
+## Index whichScan out of bounds [1 ... 509].
+```
+
+```
+## Warning in min(x): no non-missing arguments to min; returning Inf
+```
+
+```
+## Warning in max(x): no non-missing arguments to max; returning -Inf
+```
+
+```
+## Error in plot.window(...): need finite 'ylim' values
 ```
 
 ![plot of chunk visfig05](figure/visfig05-1.png)
+
+```r
+abline(v = hd[ms2, "precursorMZ"], col = "#FF000080")
+```
+
+```
+## Error in `[.data.frame`(hd, ms2, "precursorMZ"): object 'ms2' not found
+```
 
 6. A final loop through the relevant MS2 spectra plots the
    `length(ms2)` MS2 spectra highlighted above.
@@ -528,7 +604,9 @@ for (ii in ms2) {
 }
 ```
 
-![plot of chunk visfig06](figure/visfig06-1.png)
+```
+## Error in eval(expr, envir, enclos): object 'ms2' not found
+```
 
 
 
@@ -543,6 +621,25 @@ chromatogram(ms)
 abline(v = hd[i, "retentionTime"], col = "red")
 par(mar = c(3, 2, 1, 0))
 plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
+```
+
+```
+## Index whichScan out of bounds [1 ... 509].
+```
+
+```
+## Warning in min(x): no non-missing arguments to min; returning Inf
+```
+
+```
+## Warning in max(x): no non-missing arguments to max; returning -Inf
+```
+
+```
+## Error in plot.window(...): need finite 'ylim' values
+```
+
+```r
 legend("topright", bty = "n",
        legend = paste0(
            "Acquisition ", hd[i, "acquisitionNum"],  "\n",
@@ -551,13 +648,42 @@ abline(h = 0)
 abline(v = hd[ms2, "precursorMZ"],
        col = c("#FF000080",
            rep("#12121280", 9)))
+```
 
+```
+## Error in `[.data.frame`(hd, ms2, "precursorMZ"): object 'ms2' not found
+```
+
+```r
 par(mar = c(3, 0.5, 1, 1))
 plot(peaks(ms, i), type = "l", xlim = c(521, 522.5),
      yaxt = "n")
+```
+
+```
+## Index whichScan out of bounds [1 ... 509].
+```
+
+```
+## Warning in min(x): no non-missing arguments to min; returning Inf
+
+## Warning in min(x): no non-missing arguments to max; returning -Inf
+```
+
+```
+## Error in plot.window(...): need finite 'ylim' values
+```
+
+```r
 abline(h = 0)
 abline(v = hd[ms2, "precursorMZ"], col = "#FF000080")
+```
 
+```
+## Error in `[.data.frame`(hd, ms2, "precursorMZ"): object 'ms2' not found
+```
+
+```r
 par(mar = c(2, 2, 0, 1))
 for (ii in ms2) {
     p <- peaks(ms, ii)
@@ -566,6 +692,10 @@ for (ii in ms2) {
                            round(hd[ii, "precursorMZ"], 2)),
            bty = "n", cex = .8)
 }
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'ms2' not found
 ```
 
 ![plot of chunk visfig](figure/visfig-1.png)
@@ -579,6 +709,9 @@ spectra in blue and the set of interleaves 10 MS2 spectra.
 
 
 ```r
+## Additional packages
+library("lattice")
+library("gridExtra")
 ## (1) MS space heaptmap
 M <- MSmap(ms, ms1[rtsel], 521, 523, .005, hd)
 ```
@@ -591,9 +724,51 @@ M <- MSmap(ms, ms1[rtsel], 521, 523, .005, hd)
 ff <- colorRampPalette(c("yellow", "steelblue"))
 trellis.par.set(regions=list(col=ff(100)))
 m1 <- plot(M, aspect = 1, allTicks = FALSE)
+```
+
+```
+## Error in `rownames<-`(`*tmp*`, value = ":"): length of 'dimnames' [1] not equal to array extent
+```
+
+```r
 ## (2) Same data as (1), in 3 dimenstion
 M@map[msMap(M) == 0] <- NA
 m2 <- plot3D(M, rgl = FALSE)
+```
+
+```
+## Warning in min(x): no non-missing arguments to min; returning Inf
+```
+
+```
+## Warning in max(x): no non-missing arguments to max; returning -Inf
+```
+
+```
+## Warning in min(x): no non-missing arguments to min; returning Inf
+```
+
+```
+## Warning in max(x): no non-missing arguments to max; returning -Inf
+```
+
+```
+## Warning in min(x): no non-missing arguments to min; returning Inf
+```
+
+```
+## Warning in max(x): no non-missing arguments to max; returning -Inf
+```
+
+```
+## Warning in min(x): no non-missing arguments to min; returning Inf
+```
+
+```
+## Warning in max(x): no non-missing arguments to max; returning -Inf
+```
+
+```r
 ## (3) The 2 MS1 and 10 interleaved MS2 spectra from above
 i <- ms1[which(rtsel)][1]
 j <- ms1[which(rtsel)][2]
@@ -601,15 +776,24 @@ M2 <- MSmap(ms, i:j, 100, 1000, 1, hd)
 ```
 
 ```
-## 1
+## Error in i:j: NA/NaN argument
 ```
 
 ```r
 m3 <- plot3D(M2)
+```
+
+```
+## Error in plot3D(M2): object 'M2' not found
+```
+
+```r
 grid.arrange(m1, m2, m3, ncol = 3)
 ```
 
-![plot of chunk msmap1](figure/msmap1-1.png)
+```
+## Error in arrangeGrob(...): object 'm1' not found
+```
 
 Below, we have animations build from extracting successive slices as above.
 
@@ -618,3 +802,19 @@ Below, we have animations build from extracting successive slices as above.
 </td><td>
  ![MS animation 2](../img/msanim2.gif)
 </td></tr></table>
+
+# Raw data processing
+
+`MSnbase` also provides some raw data processing functionality, that
+can be used for some targetted data exploration; for example, mz
+trimming, intensity thresholding, peak picking, smoothing, ... We
+redirect you to section 6 *Raw data processing* of the
+[main `MSnbase` vignette](http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/inst/doc/MSnbase-demo.pdf)
+(available with `vignette("MSnbase-demo", package =
+"MSnbase")`). Large scale and systematic data processing should be
+delegated to proteowizard and msconvert. 
+
+The
+[`MALDIquant`](https://cran.r-project.org/web/packages/MALDIquant/index.html)
+also provides data processing capabilities, described in great details
+in the package vignette.

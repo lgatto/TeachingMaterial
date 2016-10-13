@@ -366,3 +366,19 @@ cat("<td>")
 cat("</td>")
 cat("</tr></table>")
 ```
+
+# Raw data processing
+
+`MSnbase` also provides some raw data processing functionality, that
+can be used for some targetted data exploration; for example, mz
+trimming, intensity thresholding, peak picking, smoothing, ... We
+redirect you to section 6 *Raw data processing* of the
+[main `MSnbase` vignette](http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/inst/doc/MSnbase-demo.pdf)
+(available with `vignette("MSnbase-demo", package =
+"MSnbase")`). Large scale and systematic data processing should be
+delegated to proteowizard and msconvert. 
+
+The
+[`MALDIquant`](https://cran.r-project.org/web/packages/MALDIquant/index.html)
+also provides data processing capabilities, described in great details
+in the package vignette.
