@@ -371,3 +371,4 @@ The
 [`MALDIquant`](https://cran.r-project.org/web/packages/MALDIquant/index.html)
 also provides data processing capabilities, described in great details
 in the package vignette.
+

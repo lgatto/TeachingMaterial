@@ -233,7 +233,7 @@ rw1
 ##  Number of spectra: 451 
 ##  MSn retention times: 18:29 - 22:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 18:39:05 2016 
+## Data loaded: Thu Oct 13 18:42:01 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -265,7 +265,7 @@ rw2
 ##  Number of spectra: 509 
 ##  MSn retention times: 18:28 - 22:3 minutes
 ## - - - Processing information - - -
-## Data loaded [Thu Oct 13 18:39:07 2016] 
+## Data loaded [Thu Oct 13 18:42:03 2016] 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -336,8 +336,8 @@ rw1[1:5]
 ##  Number of spectra: 5 
 ##  MSn retention times: 18:29 - 18:31 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 18:39:05 2016 
-## Data [numerically] subsetted 5 spectra: Thu Oct 13 18:39:08 2016 
+## Data loaded: Thu Oct 13 18:42:01 2016 
+## Data [numerically] subsetted 5 spectra: Thu Oct 13 18:42:04 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -635,3 +635,4 @@ The
 [`MALDIquant`](https://cran.r-project.org/web/packages/MALDIquant/index.html)
 also provides data processing capabilities, described in great details
 in the package vignette.
+
