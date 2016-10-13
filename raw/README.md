@@ -1,6 +1,8 @@
 # Raw MS data: `mzR` and `MSnbase`
 
 
+
+
 |   |Data type  |File format   |Data structure               |Package           |
 |:--|:----------|:-------------|:----------------------------|:-----------------|
 |1  |Raw        |mzXML or mzML |mzRpwiz or mzRramp           |mzR               |
@@ -55,13 +57,6 @@ gather general information about a run.
 
 ```r
 library("mzR")
-```
-
-```
-## Loading required package: Rcpp
-```
-
-```r
 ms <- openMSfile(f2)
 ms
 ```
@@ -217,8 +212,6 @@ can be extended as need (adding identification data, for example - to
 be discussed tomorrow).
 
 
-
-
 ```r
 library("MSnbase")
 ```
@@ -240,8 +233,8 @@ rw1
 ##  Number of spectra: 451 
 ##  MSn retention times: 18:29 - 22:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 17:22:05 2016 
-##  MSnbase version: 1.99.6 
+## Data loaded: Thu Oct 13 17:54:44 2016 
+##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
 ##   rowNames:
@@ -272,8 +265,8 @@ rw2
 ##  Number of spectra: 509 
 ##  MSn retention times: 18:28 - 22:3 minutes
 ## - - - Processing information - - -
-## Data loaded [Thu Oct 13 17:22:07 2016] 
-##  MSnbase version: 1.99.6 
+## Data loaded [Thu Oct 13 17:54:46 2016] 
+##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
 ##   rowNames:
@@ -343,9 +336,9 @@ rw1[1:5]
 ##  Number of spectra: 5 
 ##  MSn retention times: 18:29 - 18:31 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 17:22:05 2016 
-## Data [numerically] subsetted 5 spectra: Thu Oct 13 17:22:08 2016 
-##  MSnbase version: 1.99.6 
+## Data loaded: Thu Oct 13 17:54:44 2016 
+## Data [numerically] subsetted 5 spectra: Thu Oct 13 17:54:47 2016 
+##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
 ##   rowNames:
@@ -369,14 +362,14 @@ And plot them
 plot(rw2[[j]])
 ```
 
-![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
 
 
 ```r
 plot(rw2[[i]], full = TRUE, reporters = TMT6, centroided = TRUE)
 ```
 
-![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
 
 The feature metadata is stored as part of the `MSnExp` object and can
 be accessed with the `fData` accessor function
@@ -424,3 +417,204 @@ Similarly as for raw data, peak lists can be read into R as `MSnExp`
 data using the `readMgfData`. See `?readMgfData` for details.
 
 ## Visualisation of raw MS data
+
+
+The importance of flexible access to specialised data becomes visible
+in the figure below (taken from the `RforProteomics`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)).
+**Not only can we access specific data and understand/visualise them,
+but we can transverse all the data and extracted/visualise/understand
+structured slices of data.**
+
+In this code chunks we start by selecting relevant spectra of
+interest. We will focus on the first MS1 spectrum acquired after 30
+minutes of retention time.
+
+
+
+```r
+## (1) Open raw data file
+ms <- openMSfile("../data/TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzXML")
+## (2) Extract the header information
+hd <- header(ms)
+## (3) MS1 spectra indices
+ms1 <- which(hd$msLevel == 1)
+## (4) Select MS1 spectra with retention time between 30 and 35 minutes
+rtsel <- hd$retentionTime[ms1] / 60 > 30 & hd$retentionTime[ms1] / 60 < 35
+## (5) Indices of the 1st and 2nd MS1 spectra after 30 minutes
+i <- ms1[which(rtsel)][1]
+j <- ms1[which(rtsel)][2]
+## (6) Interleaved MS2 spectra
+ms2 <- (i+1):(j-1)
+```
+
+Now now extract and plot all relevant information:
+
+1. The upper panel represents the chromatogram of the TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzXML
+   raw data file, produced with `chromatogram`.
+
+
+```r
+chromatogram(ms)
+```
+
+![plot of chunk visfig01](figure/visfig01-1.png)
+
+2. We concentrate at a specific retention time, 
+   30:1 minutes (1800.68 seconds) 
+
+
+```r
+chromatogram(ms)
+abline(v = hd[i, "retentionTime"], col = "red")
+```
+
+![plot of chunk visfig02](figure/visfig02-1.png)
+
+3. This corresponds to the 2807th MS1 spectrum, shown on the second
+   row of figures.
+
+
+```r
+plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
+legend("topright", bty = "n",
+       legend = paste0(
+           "Acquisition ", hd[i, "acquisitionNum"],  "\n",
+           "Retention time ", formatRt(hd[i, "retentionTime"])))
+```
+
+![plot of chunk visfig03](figure/visfig03-1.png)
+
+4. The ions that were selected for MS2 are highlighted by vertical
+   lines. These are represented in the bottom part of the figure.
+
+
+```r
+plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
+legend("topright", bty = "n",
+       legend = paste0(
+           "Acquisition ", hd[i, "acquisitionNum"],  "\n",
+           "Retention time ", formatRt(hd[i, "retentionTime"])))
+abline(v = hd[ms2, "precursorMZ"],
+       col = c("#FF000080",
+           rep("#12121280", 9)))
+```
+
+![plot of chunk visfig04](figure/visfig04-1.png)
+
+5. On the right, we zoom on the isotopic envelope of one peptide in
+   particular (the one highlighted with a red line).
+
+
+```r
+plot(peaks(ms, i), type = "l", xlim = c(521, 522.5))
+abline(v = hd[ms2, "precursorMZ"], col = "#FF000080")
+```
+
+![plot of chunk visfig05](figure/visfig05-1.png)
+
+6. A final loop through the relevant MS2 spectra plots the
+   `length(ms2)` MS2 spectra highlighted above.
+
+
+```r
+par(mfrow = c(5, 2), mar = c(2, 2, 0, 1))
+for (ii in ms2) {
+    p <- peaks(ms, ii)
+    plot(p, xlab = "", ylab = "", type = "h", cex.axis = .6)
+    legend("topright", legend = paste0("Prec M/Z\n",
+                           round(hd[ii, "precursorMZ"], 2)),
+           bty = "n", cex = .8)
+}
+```
+
+![plot of chunk visfig06](figure/visfig06-1.png)
+
+
+
+Putting it all together:
+
+
+```r
+layout(lout)
+par(mar=c(4,2,1,1))
+chromatogram(ms)
+
+abline(v = hd[i, "retentionTime"], col = "red")
+par(mar = c(3, 2, 1, 0))
+plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
+legend("topright", bty = "n",
+       legend = paste0(
+           "Acquisition ", hd[i, "acquisitionNum"],  "\n",
+           "Retention time ", formatRt(hd[i, "retentionTime"])))
+abline(h = 0)
+abline(v = hd[ms2, "precursorMZ"],
+       col = c("#FF000080",
+           rep("#12121280", 9)))
+
+par(mar = c(3, 0.5, 1, 1))
+plot(peaks(ms, i), type = "l", xlim = c(521, 522.5),
+     yaxt = "n")
+abline(h = 0)
+abline(v = hd[ms2, "precursorMZ"], col = "#FF000080")
+
+par(mar = c(2, 2, 0, 1))
+for (ii in ms2) {
+    p <- peaks(ms, ii)
+    plot(p, xlab = "", ylab = "", type = "h", cex.axis = .6)
+    legend("topright", legend = paste0("Prec M/Z\n",
+                           round(hd[ii, "precursorMZ"], 2)),
+           bty = "n", cex = .8)
+}
+```
+
+![plot of chunk visfig](figure/visfig-1.png)
+
+Below, we illustrate some additional visualisation and animations of
+raw MS data, also taken from the `RforProteomics`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html). On
+the left, we have a heatmap visualisation of a MS map and a 3
+dimensional representation of the same data. On the right, 2 MS1
+spectra in blue and the set of interleaves 10 MS2 spectra.
+
+
+```r
+## (1) MS space heaptmap
+M <- MSmap(ms, ms1[rtsel], 521, 523, .005, hd)
+```
+
+```
+## 1
+```
+
+```r
+ff <- colorRampPalette(c("yellow", "steelblue"))
+trellis.par.set(regions=list(col=ff(100)))
+m1 <- plot(M, aspect = 1, allTicks = FALSE)
+## (2) Same data as (1), in 3 dimenstion
+M@map[msMap(M) == 0] <- NA
+m2 <- plot3D(M, rgl = FALSE)
+## (3) The 2 MS1 and 10 interleaved MS2 spectra from above
+i <- ms1[which(rtsel)][1]
+j <- ms1[which(rtsel)][2]
+M2 <- MSmap(ms, i:j, 100, 1000, 1, hd)
+```
+
+```
+## 1
+```
+
+```r
+m3 <- plot3D(M2)
+grid.arrange(m1, m2, m3, ncol = 3)
+```
+
+![plot of chunk msmap1](figure/msmap1-1.png)
+
+Below, we have animations build from extracting successive slices as above.
+
+<table class='container'><tr><td>
+![MS animation 1](../img/msanim1.gif)
+</td><td>
+ ![MS animation 2](../img/msanim2.gif)
+</td></tr></table>

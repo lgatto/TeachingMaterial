@@ -5,7 +5,7 @@
 - [Introduction to R/RStudio](./R-intro/README.md)
 - [R/Bioconductor for proteomics](./r4p/README.md)
 - [Data visualiation](./vis/README.md)
-- `mzR` and `MSnbase` packages for raw data
+- [`mzR` and `MSnbase` packages for raw data](./raw/README.md)
 - Indentification data in `mzR`, `mzID`, `MSnID`
 - The `MSnbase` package: `MSnSet`s for quantiative proteomics
 - Experimental designs: biological and technical variability, blocking

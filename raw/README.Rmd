@@ -1,5 +1,11 @@
 # Raw MS data: `mzR` and `MSnbase`
 
+```{r env, echo = FALSE}
+suppressPackageStartupMessages(library("MSnbase"))
+suppressPackageStartupMessages(library("lattice"))
+suppressPackageStartupMessages(library("gridExtra"))
+```
+
 ```{r, echo = FALSE}
 x <- RforProteomics:::msDataTab()
 sel <- x[, 1] %in% c("Raw", "Peak lists")
@@ -114,10 +120,6 @@ contain, to be precise) the content the `mzR::header` seen above, but
 can be extended as need (adding identification data, for example - to
 be discussed tomorrow).
 
-```{r, echo = FALSE}
-suppressPackageStartupMessages(library("MSnbase"))
-```
-
 ```{r}
 library("MSnbase")
 ```
@@ -180,3 +182,187 @@ Similarly as for raw data, peak lists can be read into R as `MSnExp`
 data using the `readMgfData`. See `?readMgfData` for details.
 
 ## Visualisation of raw MS data
+
+
+The importance of flexible access to specialised data becomes visible
+in the figure below (taken from the `RforProteomics`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html)).
+**Not only can we access specific data and understand/visualise them,
+but we can transverse all the data and extracted/visualise/understand
+structured slices of data.**
+
+In this code chunks we start by selecting relevant spectra of
+interest. We will focus on the first MS1 spectrum acquired after 30
+minutes of retention time.
+
+
+```{r pxd1}
+## (1) Open raw data file
+ms <- openMSfile("../data/TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzXML")
+## (2) Extract the header information
+hd <- header(ms)
+## (3) MS1 spectra indices
+ms1 <- which(hd$msLevel == 1)
+## (4) Select MS1 spectra with retention time between 30 and 35 minutes
+rtsel <- hd$retentionTime[ms1] / 60 > 30 & hd$retentionTime[ms1] / 60 < 35
+## (5) Indices of the 1st and 2nd MS1 spectra after 30 minutes
+i <- ms1[which(rtsel)][1]
+j <- ms1[which(rtsel)][2]
+## (6) Interleaved MS2 spectra
+ms2 <- (i+1):(j-1)
+```
+
+Now now extract and plot all relevant information:
+
+1. The upper panel represents the chromatogram of the `r basename(fileName(ms))`
+   raw data file, produced with `chromatogram`.
+
+```{r visfig01}
+chromatogram(ms)
+```
+
+2. We concentrate at a specific retention time, 
+   `r formatRt(hd[i, "retentionTime"])` minutes (`r hd[i, "retentionTime"]` seconds) 
+
+```{r visfig02}
+chromatogram(ms)
+abline(v = hd[i, "retentionTime"], col = "red")
+```
+
+3. This corresponds to the `r i`th MS1 spectrum, shown on the second
+   row of figures.
+
+```{r visfig03}
+plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
+legend("topright", bty = "n",
+       legend = paste0(
+           "Acquisition ", hd[i, "acquisitionNum"],  "\n",
+           "Retention time ", formatRt(hd[i, "retentionTime"])))
+```
+
+4. The ions that were selected for MS2 are highlighted by vertical
+   lines. These are represented in the bottom part of the figure.
+
+```{r visfig04}
+plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
+legend("topright", bty = "n",
+       legend = paste0(
+           "Acquisition ", hd[i, "acquisitionNum"],  "\n",
+           "Retention time ", formatRt(hd[i, "retentionTime"])))
+abline(v = hd[ms2, "precursorMZ"],
+       col = c("#FF000080",
+           rep("#12121280", 9)))
+```
+
+5. On the right, we zoom on the isotopic envelope of one peptide in
+   particular (the one highlighted with a red line).
+
+```{r visfig05}
+plot(peaks(ms, i), type = "l", xlim = c(521, 522.5))
+abline(v = hd[ms2, "precursorMZ"], col = "#FF000080")
+```
+
+6. A final loop through the relevant MS2 spectra plots the
+   `length(ms2)` MS2 spectra highlighted above.
+
+```{r visfig06, fig.width = 8, fig.height = 10}
+par(mfrow = c(5, 2), mar = c(2, 2, 0, 1))
+for (ii in ms2) {
+    p <- peaks(ms, ii)
+    plot(p, xlab = "", ylab = "", type = "h", cex.axis = .6)
+    legend("topright", legend = paste0("Prec M/Z\n",
+                           round(hd[ii, "precursorMZ"], 2)),
+           bty = "n", cex = .8)
+}
+```
+
+```{r mslayout, echo=FALSE}
+## Preparing the layout (not shown)
+lout <- matrix(NA, ncol = 10, nrow = 8)
+lout[1:2, ] <- 1
+for (ii in 3:4)
+    lout[ii, ] <- c(2, 2, 2, 2, 2, 2, 3, 3, 3, 3)
+lout[5, ] <- rep(4:8, each = 2)
+lout[6, ] <- rep(4:8, each = 2)
+lout[7, ] <- rep(9:13, each = 2)
+lout[8, ] <- rep(9:13, each = 2)
+```
+
+Putting it all together:
+
+```{r visfig}
+layout(lout)
+par(mar=c(4,2,1,1))
+chromatogram(ms)
+
+abline(v = hd[i, "retentionTime"], col = "red")
+par(mar = c(3, 2, 1, 0))
+plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
+legend("topright", bty = "n",
+       legend = paste0(
+           "Acquisition ", hd[i, "acquisitionNum"],  "\n",
+           "Retention time ", formatRt(hd[i, "retentionTime"])))
+abline(h = 0)
+abline(v = hd[ms2, "precursorMZ"],
+       col = c("#FF000080",
+           rep("#12121280", 9)))
+
+par(mar = c(3, 0.5, 1, 1))
+plot(peaks(ms, i), type = "l", xlim = c(521, 522.5),
+     yaxt = "n")
+abline(h = 0)
+abline(v = hd[ms2, "precursorMZ"], col = "#FF000080")
+
+par(mar = c(2, 2, 0, 1))
+for (ii in ms2) {
+    p <- peaks(ms, ii)
+    plot(p, xlab = "", ylab = "", type = "h", cex.axis = .6)
+    legend("topright", legend = paste0("Prec M/Z\n",
+                           round(hd[ii, "precursorMZ"], 2)),
+           bty = "n", cex = .8)
+}
+```
+
+Below, we illustrate some additional visualisation and animations of
+raw MS data, also taken from the `RforProteomics`
+[visualisation vignette](http://bioconductor.org/packages/release/data/experiment/vignettes/RforProteomics/inst/doc/RProtVis.html). On
+the left, we have a heatmap visualisation of a MS map and a 3
+dimensional representation of the same data. On the right, 2 MS1
+spectra in blue and the set of interleaves 10 MS2 spectra.
+
+```{r msmap1, message=FALSE, fig.width=15, echo=TRUE}
+## Additional packages
+library("lattice")
+library("gridExtra")
+## (1) MS space heaptmap
+M <- MSmap(ms, ms1[rtsel], 521, 523, .005, hd)
+ff <- colorRampPalette(c("yellow", "steelblue"))
+trellis.par.set(regions=list(col=ff(100)))
+m1 <- plot(M, aspect = 1, allTicks = FALSE)
+## (2) Same data as (1), in 3 dimenstion
+M@map[msMap(M) == 0] <- NA
+m2 <- plot3D(M, rgl = FALSE)
+## (3) The 2 MS1 and 10 interleaved MS2 spectra from above
+i <- ms1[which(rtsel)][1]
+j <- ms1[which(rtsel)][2]
+M2 <- MSmap(ms, i:j, 100, 1000, 1, hd)
+m3 <- plot3D(M2)
+grid.arrange(m1, m2, m3, ncol = 3)
+```
+
+Below, we have animations build from extracting successive slices as above.
+
+```{r two-col-1, results='asis', echo=FALSE, out.extra=''}
+cat("<table class='container'><tr>")
+cat("<td>")
+```
+![MS animation 1](../img/msanim1.gif)
+```{r two-col-2, results='asis', echo=FALSE, out.extra=''}
+cat("</td>")
+cat("<td>")
+```
+ ![MS animation 2](../img/msanim2.gif)
+```{r two-col-3, results='asis', echo=FALSE, out.extra=''}
+cat("</td>")
+cat("</tr></table>")
+```
