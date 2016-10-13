@@ -1,0 +1,182 @@
+# Raw MS data: `mzR` and `MSnbase`
+
+```{r, echo = FALSE}
+x <- RforProteomics:::msDataTab()
+sel <- x[, 1] %in% c("Raw", "Peak lists")
+knitr::kable(x[sel, ])
+```
+
+In this section, we will learn how to read raw data in one of the
+commonly used open formats (`mzML`, `mzXML` and `netCDF`) into R using
+`mzR` (low level access) and `MSnbase` (higher level abstration).
+
+## Low level access
+
+The `mzR` package in a direct interface to the
+[proteowizard](http://proteowizard.sourceforge.net/) code base. It
+includes a substantial proportion of *pwiz*'s C/C++ code for fast and
+efficient parsing of these large raw data files.
+
+Let's start by using some raw data files from the `msdata`
+package. After loading it, we use the `proteomics()` function to
+return the full file names for two raw data files. We will start by
+focusing on the second one.
+
+```{r}
+library(msdata)
+f <- proteomics(full.names = TRUE)
+f
+f2 <- f[2]
+```
+
+The three main functions of `mzR` are
+
+* `openMSfile` to create a file handle to a raw data file
+* `header` to extract metadata about the spectra contained in the file
+* `peaks` to extract one or multiple spectra of interest. 
+
+Other functions such as `instrumentInfo`, or `runInfo` can be used to
+gather general information about a run.
+
+### Demonstration
+
+
+```{r rawms}
+library("mzR")
+ms <- openMSfile(f2)
+ms
+```
+
+```{r hd}
+hd <- header(ms)
+dim(hd)
+names(hd)
+```
+
+```{r peaks}
+head(peaks(ms, 117))
+str(peaks(ms, 1:5))
+```
+
+Let's extract the index of the MS2 spectrum with the highest base peak
+intensity and plot its spectrum. Is the data centroided or in profile
+mode?
+
+```{r ex_raw, echo=TRUE, eval=TRUE, fig.align='center'}
+hd2 <- hd[hd$msLevel == 2, ]
+i <- which.max(hd2$basePeakIntensity)
+hd2[i, ]
+pi <- peaks(ms, hd2[i, 1])
+plot(pi, type = "h")
+mz <- hd2[i, "basePeakMZ"]
+plot(pi, type = "h", xlim = c(mz-0.5, mz+0.5))
+```
+
+Zooming into spectrum 300 (an MS1 spectrum).
+
+```{r ex_raw2}
+j <- 300
+pj <- peaks(ms, j)
+plot(pj, type = "l")
+plot(pj, type = "l", xlim = c(480, 485))
+```
+
+### Exercise
+
+Using the second raw data file (`f[2]` above), answer the following
+questions:
+
+* What type of data is returned by the `openMSfile` function?
+* How many spectra are there in that file?
+* How many MS levels, and how many spectra per MS level?
+* What is the index of the MS2 spectrum with the highest precursor
+  intensity?
+* Plot one spectrum of each level.
+
+## High level abstraction
+
+While having full access to the raw data gives full control, at times
+it requires a lot of effort to achieve mundane things and can be very
+repetitive. There is a need for abstraction, i.e. that we shouldn't
+need to know about all the details that are exposed by `mzR` to access
+and manipulate raw data. In comes `MSnbase` and the `MSnExp` data
+structure, that provides a much smoother approach to *handle* and
+*annotate* raw data (we will see this in more details tomorrow).
+
+ADD FIGURE HERE
+
+An `MSnExp` contains the data and annotation to describe an MS
+experiment. The data is composed of all the MS spectra (the output of
+`mzR::peaks` above) and the annotation is stored in a
+`data.frame`-like structure called the *feature metadata* slot
+(*fData* for short). This feature metadata contains by default (or can
+contain, to be precise) the content the `mzR::header` seen above, but
+can be extended as need (adding identification data, for example - to
+be discussed tomorrow).
+
+```{r, echo = FALSE}
+suppressPackageStartupMessages(library("MSnbase"))
+```
+
+```{r}
+library("MSnbase")
+```
+
+Using the `readMSdata` or `readMSdata2` functions, passing a raw data
+filename as input, we create an `MSnExp` object.
+
+```{r}
+rw1 <- readMSData(f[2], verbose = FALSE)
+rw1
+```
+
+```{r}
+rw2 <- readMSData2(f[2], verbose = FALSE)
+rw2
+```
+
+For most of our need, the two functions above are equivalent. The
+major difference is that the former reads the data from only one type
+of MS level into memory. The second function (newly added in MSnbase
+verison 2.0), does not read any raw data into memory (and hence is
+much faster) and supports any number of MS levels. The raw data is
+accessed on demand when needed. If you are interested in a benchmark
+between the two approaches, look at the
+[*benchmarking* vignette](http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/inst/doc/benchmarking.html),
+available by typing `vignette("benchmarking", package = "MSnbase")`.
+
+Let's extrace spectra `r i` and `r j`, or 1 to 5, as we did above. We
+can do this using the familiar `[[` and `[` operators:
+
+```{r}
+rw2[[i]]
+rw2[[j]]
+```
+
+```{r}
+rw1[1:5]
+```
+
+And plot them
+
+```{r}
+plot(rw2[[j]])
+```
+
+```{r}
+plot(rw2[[i]], full = TRUE, reporters = TMT6, centroided = TRUE)
+```
+
+The feature metadata is stored as part of the `MSnExp` object and can
+be accessed with the `fData` accessor function
+
+```{r}
+fData(rw2)
+```
+
+### Peak lists
+
+Similarly as for raw data, peak lists can be read into R as `MSnExp`
+data using the `readMgfData`. See `?readMgfData` for details.
+
+## Visualisation of raw MS data
