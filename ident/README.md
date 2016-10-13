@@ -115,7 +115,7 @@ head(flatten(id))
 
 #### Exercise
 
-Open the /home/lg390/R/x86_64-pc-linux-gnu-library/3.3/msdata/ident/TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzid file as shown above. What software and how many
+Open the TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzid file as shown above. What software and how many
 proteins were in the database used to perform the search?
 
 ### `mzR`

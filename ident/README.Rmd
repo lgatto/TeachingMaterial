@@ -44,7 +44,7 @@ head(flatten(id))
 
 #### Exercise
 
-Open the `r idf` file as shown above. What software and how many
+Open the `r basename(idf)` file as shown above. What software and how many
 proteins were in the database used to perform the search?
 
 ### `mzR`
