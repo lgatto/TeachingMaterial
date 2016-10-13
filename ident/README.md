@@ -70,7 +70,47 @@ head(flatten(id))
 ```
 
 ```
-## Error in head(flatten(id)): could not find function "flatten"
+##                                      spectrumid scan number(s)
+## 1 controllerType=0 controllerNumber=1 scan=5782           5782
+## 2 controllerType=0 controllerNumber=1 scan=6037           6037
+## 3 controllerType=0 controllerNumber=1 scan=5235           5235
+##   acquisitionnum passthreshold rank calculatedmasstocharge
+## 1           5782          TRUE    1              1080.2321
+## 2           6037          TRUE    1              1002.2115
+## 3           5235          TRUE    1              1189.2800
+##   experimentalmasstocharge chargestate ms-gf:denovoscore ms-gf:evalue
+## 1                1080.2325           3               174 1.086033e-20
+## 2                1002.2089           3               245 1.988774e-19
+## 3                1189.2836           3               264 5.129649e-19
+##   ms-gf:pepqvalue ms-gf:qvalue ms-gf:rawscore ms-gf:specevalue
+## 1               0            0            147     3.764831e-27
+## 2               0            0            214     6.902626e-26
+## 3               0            0            211     1.778789e-25
+##   assumeddissociationmethod isotopeerror isdecoy post pre end start
+## 1                       HCD            0   FALSE    S   R  84    50
+## 2                       HCD            0   FALSE    R   K 315   288
+## 3                       HCD            0   FALSE    A   R 224   192
+##   accession length                                       description
+## 1   ECA1932    155                        outer membrane lipoprotein
+## 2   ECA1147    434                                    trigger factor
+## 3   ECA0013    295                ribose-binding periplasmic protein
+##                                pepseq modified modification
+## 1 PVQIQAGEDSNVIGALGGAVLGGFLGNTIGGGSGR    FALSE         <NA>
+## 2        TQVLDGLINANDIEVPVALIDGEIDVLR    FALSE         <NA>
+## 3   TKGLNVMQNLLTAHPDVQAVFAQNDEMALGALR    FALSE         <NA>
+##                                                                idFile
+## 1 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzid
+## 2 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzid
+## 3 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzid
+##                                                          spectrumFile
+## 1 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzML
+## 2 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzML
+## 3 TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzML
+##               databaseFile
+## 1 erwinia_carotovora.fasta
+## 2 erwinia_carotovora.fasta
+## 3 erwinia_carotovora.fasta
+##  [ reached getOption("max.print") -- omitted 3 rows ]
 ```
 
 #### Exercise
