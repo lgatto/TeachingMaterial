@@ -14,6 +14,7 @@
 - Differential expression of proteomics data (t-test for continuous
   data, count data, `limma`)
 - Multiple testing
+- [Wrap-up](./wrapup.md)
 
 ### Schedule
 
