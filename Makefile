@@ -5,6 +5,8 @@
 %.html: %.md
 	/opt/Rpatched/lib/R/bin/Rscript -e 'rmarkdown::render("$^")'
 
+README.md: README.Rmd
+
 rintro:
 	cd R-intro; make all
 

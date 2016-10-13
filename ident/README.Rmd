@@ -1,0 +1,107 @@
+# Indentification data using `mzR`, `mzID`, `MSnID`
+
+## Handling identification data
+
+There are two packages that can be used to parse `mzIdentML` files,
+namely `mzR` (that we have already used for raw data) and `mzID`. The
+major difference is that the former leverages C++ code from
+`proteowizard` and is hence faster than the latter (which uses the
+`XML` R package). They both work in similar ways.
+
+```{r, echo = FALSE}
+x <- RforProteomics:::msDataTab()
+sel <- x[, 1] %in% c("Identification")
+knitr::kable(x[sel, ])
+```
+
+We are going to use the following identification file in this practical:
+
+```{r}
+library("msdata")
+idf <- ident(full.names = TRUE)
+idf
+```
+
+### mzID
+
+The main functions are `mzID` to read the data into a dedicated data
+class and `flatten` to transform it into a `data.frame`. 
+
+```{r id}
+library("mzID")
+id <- mzID(idf)
+id
+```
+
+Various data can be extracted from the `mzID` object, using one the
+accessor functions such as `database`, `sofware`, `scans`, `peptides`,
+... The object can also be converted into a `data.frame` using the
+`flatten` function.
+
+```{r fid}
+head(flatten(id))
+```
+
+#### Exercise
+
+Open the `r idf` file as shown above. What software and how many
+proteins were in the database used to perform the search?
+
+### `mzR`
+
+The `mzR` interface provides a similar interface. It is however much
+faster as it does not read all the data into memory and only extracts
+relevant data on demand. It has also accessor functions such as
+`softwareInfo`, `mzidInfo`, ... (use `showMethods(classes = "mzRident", where = "package:mzR")`)
+to see all available methods.
+
+```{r id2}
+library("mzR")
+id2 <- openIDfile(idf)
+id2
+softwareInfo(id2)
+```
+
+The identification data can be accessed as a `data.frame` with the
+`psms` accessor.
+
+```{r fid2}
+head(psms(id2))
+```
+
+#### Exercise
+
+Is there a relation between the length of a protein and the number of
+identified peptides, conditioned by the (average) e-value of the
+identifications?
+
+```{r, ex_id, echo=FALSE, eval=FALSE}
+fid <- flatten(id)
+x <- by(fid, fid$accession,
+        function(x)
+            c(unique(x$length),
+              length(unique(x$pepseq)),
+              mean(x$'ms-gf:specevalue')))
+x <- data.frame(do.call(rbind, x))
+colnames(x) <- c("plength", "npep", "eval")
+x$bins <- cut(x$eval, summary(x$eval))
+library("lattice")
+xyplot(plength ~ npep | bins, data = x)
+```
+
+## Exploration and Assessment of Confidence of LC-MSn Proteomics Identifications using `MSnID`
+
+Extracts MS/MS ID data from mzIdentML (leveraging the `mzID` package)
+or text files. After collating the search results from multiple
+datasets it assesses their identification quality and optimize
+filtering criteria to achieve the maximum number of identifications
+while not exceeding a specified false discovery rate. Also contains a
+number of utilities to explore the MS/MS results and assess missed and
+irregular enzymatic cleavages, mass measurement accuracy, etc.
+
+Let's reproduce the analysis described the `MSnID` vignette. Open it
+with
+
+```{r, eval = FALSE}
+vignette("msnid_vignette", package = "MSnID")
+```
