@@ -233,7 +233,7 @@ rw1
 ##  Number of spectra: 451 
 ##  MSn retention times: 18:29 - 22:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 18:32:23 2016 
+## Data loaded: Thu Oct 13 18:36:40 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -265,7 +265,7 @@ rw2
 ##  Number of spectra: 509 
 ##  MSn retention times: 18:28 - 22:3 minutes
 ## - - - Processing information - - -
-## Data loaded [Thu Oct 13 18:32:25 2016] 
+## Data loaded [Thu Oct 13 18:36:42 2016] 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -336,8 +336,8 @@ rw1[1:5]
 ##  Number of spectra: 5 
 ##  MSn retention times: 18:29 - 18:31 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 18:32:23 2016 
-## Data [numerically] subsetted 5 spectra: Thu Oct 13 18:32:26 2016 
+## Data loaded: Thu Oct 13 18:36:40 2016 
+## Data [numerically] subsetted 5 spectra: Thu Oct 13 18:36:43 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -797,11 +797,9 @@ grid.arrange(m1, m2, m3, ncol = 3)
 
 Below, we have animations build from extracting successive slices as above.
 
-<table class='container'><tr><td>
 ![MS animation 1](../img/msanim1.gif)
-</td><td>
- ![MS animation 2](../img/msanim2.gif)
-</td></tr></table>
+![MS animation 2](../img/msanim2.gif)
+
 
 # Raw data processing
 

@@ -352,20 +352,9 @@ grid.arrange(m1, m2, m3, ncol = 3)
 
 Below, we have animations build from extracting successive slices as above.
 
-```{r two-col-1, results='asis', echo=FALSE, out.extra=''}
-cat("<table class='container'><tr>")
-cat("<td>")
-```
 ![MS animation 1](../img/msanim1.gif)
-```{r two-col-2, results='asis', echo=FALSE, out.extra=''}
-cat("</td>")
-cat("<td>")
-```
- ![MS animation 2](../img/msanim2.gif)
-```{r two-col-3, results='asis', echo=FALSE, out.extra=''}
-cat("</td>")
-cat("</tr></table>")
-```
+![MS animation 2](../img/msanim2.gif)
+
 
 # Raw data processing
 
