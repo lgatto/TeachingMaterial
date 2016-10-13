@@ -1,5 +1,25 @@
 # The `MSnbase` package: `MSnSet`s for quantiative proteomics
 
+There are a wide range of proteomics quantitation techniques that can
+broadly be classified as labelled vs. label-free, depending whether
+the features are labelled prior the MS acquisition and the MS level at
+which quantitation is inferred, namely MS1 or MS2. 
+
+```{r, quanttab, echo=FALSE, results='asis'}
+qtb <- matrix(c("XIC", "Counting", "SILAC, 15N", "iTRAQ, TMT"),
+              nrow = 2, ncol = 2)
+dimnames(qtb) <- list(
+    'MS level' = c("MS1", "MS2"),
+    'Quantitation' = c("Label-free", "Labelled"))
+knitr::kable(qtb)
+```
+
+* Isobaric tagging (iTRAQ and TMT): `r Biocpkg("MSnbase")` and `r Biocpkg("isobar")`.
+* Label-free: `r Biocpkg("xcms")` (metabolomics).
+* Counting: `r Biocpkg("MSnbase")` and `r Biocpkg("MSnID")` for
+  peptide-spectrum matching confidence assessment.
+* `r Githubpkg("vladpetyuk/N14N15")` for heavy Nitrogen-labelled data.
+
 ## The `MSnSet` class
 
 - schematic
@@ -7,8 +27,14 @@
 
 ## Creating `MSnSet` data
 
-- from an `MSnExp` object
-- from a spreadsheet
+### From an `MSnExp` object
+
+Different quantifications...
+
+### From third-party software
+
+- spreadsheet
+- MzTab 
 
 ## Adding identification data 
 

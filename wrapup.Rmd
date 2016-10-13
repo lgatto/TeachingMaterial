@@ -1,0 +1,73 @@
+# Wrap-up
+
+```{r, echo = FALSE}
+suppressPackageStartupMessages(library("lattice"))
+suppressPackageStartupMessages(library("msdata"))
+suppressPackageStartupMessages(library("MSnbase"))
+suppressPackageStartupMessages(library("mzID"))
+suppressPackageStartupMessages(library("mzR"))
+suppressPackageStartupMessages(library("RforProteomics"))
+suppressPackageStartupMessages(library("gridExtra"))
+suppressPackageStartupMessages(library("lattice"))
+suppressPackageStartupMessages(library("MSnbase"))
+suppressPackageStartupMessages(library("dplyr"))
+suppressPackageStartupMessages(library("readxl"))
+suppressPackageStartupMessages(library("dplyr"))
+suppressPackageStartupMessages(library("hexbin"))
+suppressPackageStartupMessages(library("magrittr"))
+suppressPackageStartupMessages(library("ggplot2"))
+suppressPackageStartupMessages(library("knitr"))
+suppressPackageStartupMessages(library("lattice"))
+suppressPackageStartupMessages(library("RColorBrewer"))
+suppressPackageStartupMessages(library("mzR"))
+suppressPackageStartupMessages(library("gridExtra"))
+suppressPackageStartupMessages(library("lattice"))
+suppressPackageStartupMessages(library("MSnbase"))
+library("BiocStyle")
+```
+
+## References and resources
+
+* [Visualisation of proteomics data using R and Bioconductor](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4510819/)
+* [Using R and Bioconductor for proteomics data analysis](http://arxiv.org/pdf/1305.6559v1.pdf)
+* `RforProteomics`: http://bioconductor.org/packages/RforProteomics
+* [R/Bioconductor workflow](http://bioconductor.org/help/workflows/proteomics/)
+
+## Other relevant packages/pipelines
+
+- Analysis of post translational modification with `r Biocpkg("isobar")`.
+- Processing and analysis or isobaric tagging mass spectrometry with
+  `r Biocpkg("isobar")` and `r Biocpkg("MSnbase")`.
+- Analysis of spatial proteomics data with `r Biocpkg("pRoloc")`.
+- Analysis of MALDI data with the `r Biocpkg("MALDIquant")` package.
+- Access to the Proteomics Standard Initiative Common QUery InterfaCe
+  with the `r Biocpkg("PSICQUIC")` package.
+- `r Biocpkg("Cardinal")`: A mass spectrometry imaging toolbox for
+  statistical analysis.
+- `r CRANpkg("protViz") `: Visualising and Analysing Mass Spectrometry
+  Related Data in Proteomics
+- `r CRANpkg("aLFQ")`: Estimating Absolute Protein Quantities from
+  Label-Free LC-MS/MS Proteomics Data.
+- `r CRANpkg("protiq")`: Protein (identification and) quantification
+  based on peptide evidence.
+- `r Biocpkg("MSstats")`: Protein Significance Analysis in DDA, SRM
+  and DIA for Label-free or Label-based Proteomics Experiments
+
+
+### DIA
+
+- Analysis of label-free data from a Synapt G2 (including ion
+  mobility) with `r Biocpkg("synapter")`.
+- `r Biocpkg("SWATH2stats")`: Transform and Filter SWATH Data for
+  Statistical Packages and
+- `r Biocpkg("specL")`: Prepare Peptide Spectrum Matches for Use in
+  Targeted Proteomics
+- `r Biocpkg("SwathXtend")`: SWATH extended library generation and
+  statistical data analysis
+
+
+### Session info
+
+```{r}
+sessionInfo()
+```
