@@ -356,8 +356,8 @@ increasingly difficult). We want **tidy data**!
   information in one cell: split them into different cells
   
 
-![Don't](./img/multiple-info.png)
-![Do](./img/single-info.png)
+![Don't](../img/multiple-info.png)
+![Do](../img/single-info.png)
 
 >  Hadley Wickham, Tidy Data, Vol. 59, Issue 10, Sep 2014, Journal of Statistical Software. http://www.jstatsoft.org/v59/i10.
 

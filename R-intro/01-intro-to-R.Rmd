@@ -29,7 +29,7 @@ _Start by showing an example of a script_
   - the `$` operator
 * Point to indentation and consistency in spacing to improve clarity
 
-![Example of a simple R script](img/r_starting_example_script.png)
+![Example of a simple R script](../img/r_starting_example_script.png)
 
 ## Creating objects
 

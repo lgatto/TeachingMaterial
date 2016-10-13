@@ -1,0 +1,327 @@
+
+> ## Objectives
+>
+> * Learn base graphics plotting function
+> * Learn some basic customisation
+> * Other plotting frameworks: `ggplot2` and `lattice`
+> * Save plot(s) as pdf/png.
+
+```{r env, echo=FALSE, message=FALSE}
+library("knitr")
+library("ggplot2")
+```
+
+# Motivations
+
+```{r ascprep, echo=FALSE}
+tab <- matrix(NA, 5, 4)
+colnames(tab) <- 1:4
+rownames(tab) <- c("var(x)", "mean(x)",
+                   "var(y)", "mean(y)",
+                   "cor(x,y)")
+
+for (i in 1:4)
+    tab[, i] <- c(var(anscombe[, i]),
+                  mean(anscombe[, i]),
+                  var(anscombe[, i+4]),
+                  mean(anscombe[, i+4]),
+                  cor(anscombe[, i], anscombe[, i+4]))
+```
+
+Anscombe's quartet are four x-y datasets which have the same
+traditional statistical properties (mean, variance, correlation,
+regression line, etc.), yet are very different. These difference
+become clear when the data are visualised.
+
+```{r asc, echo=FALSE}
+kable(anscombe, format = "html")
+
+kable(tab)
+```
+
+```{r anscombefig, echo=FALSE, fig.cap = "Anscombe's quartet"}
+ff <- y ~ x
+mods <- setNames(as.list(1:4), paste0("lm", 1:4))
+par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))
+for (i in 1:4) {
+    ff[2:3] <- lapply(paste0(c("y","x"), i), as.name)
+    plot(ff, data = anscombe, pch = 19, xlim = c(3, 19), ylim = c(3, 13))
+    mods[[i]] <- lm(ff, data = anscombe)
+    abline(mods[[i]])
+}
+```
+
+The goal of visualisation is to **explore** the data to identify
+**unexpected** patterns. R is particularly well suited because if
+offers
+
+* high-level plotting functions that produce useful figures with
+  minimal efforts and enables
+
+* flexibility and customisation to produce specialised/customized
+  figures
+
+# Base plotting
+
+**Painters model**: Graphical elements are added to the canvas one
+  layer at a time, and the picture builds up in levels. Lower levels
+  are obscured by higher levels, allowing for blending, masking and
+  overlaying of objects.
+
+```{r}
+plot(1:10, 1:10)
+rect(2, 2, 8, 8, col = "black")
+rect(3, 3, 7, 7, col = "white")
+abline(0, 1, col = "red")
+```
+
+## High level plotting functions
+
+High level plotting functions produce an appropriate chart based on the input.
+
+### Scatter plots
+
+`plot` is the generic plotting function. By default produces scatter
+plots but other types can be set.
+
+```{r, eval=FALSE}
+  plot(x, y = NULL, type = "p",  xlim = NULL, ylim = NULL,
+       log = "", main = NULL, sub = NULL, xlab = NULL, ylab = NULL,
+       col = "black", cex = 1, pch = 1, ...)
+```
+
+```{r plot, fig.cap = "Plot examples"}
+par(mfrow = c(2, 2))
+plot(1:10, type = "p", main = "points (default)")
+plot(1:10, type = "l", main = "lines")
+plot(1:10, 10:1, type = "b", main = "both (points and lines)")
+plot(1:10, type = "h", main = "histogram")
+```
+
+Setting colours and point character
+
+```{r pchcol, fig.cap = "Colours and plotting characters"}
+plot(1:10, col = c("red", "blue"),
+     pch = c(15, 19), cex = 2,
+     main = "points (default)")
+```
+
+### Challenge
+
+1. Reproduce the figures above. Then customize the last figure so
+   that even points are discribed with plus and odd points with an
+   empty diamond. All plotting symbols should be of colour
+   `"steelblue"`. See `?points` for details about plotting
+   characters. Then, set the title of your plot using either `main`
+   as argument to `plot` (as above) or with the `title` function.
+
+2. Load the `madata.rda` data set. This data represents quantitative
+   proteomics data. Inspect the data: how many rows and columns,
+   what class is `madata`? Produce an MA-plot, i.e the log2
+   fold-change (`M`) as a function of the average expression
+   intensity (`A`) using the `plot` function.
+
+
+### Distributions
+
+```{r distplots, fig.cap = "Distributions"}
+m <- matrix(rnorm(1000), ncol = 10)
+colnames(m) <- LETTERS[1:10]
+par(mfrow = c(1, 2))
+hist(m[, 1], main  = "histogram of A")
+boxplot(m)
+```
+
+### Counts
+
+```{r}
+x <- sample(10)
+names(x) <- LETTERS[1:10]
+par(mfrow = c(1, 2))
+barplot(x)
+abline(h = 6)
+dotchart(x)
+abline(v = 6, col = "red")
+```
+
+> ## Tip
+>
+> There is also a `pie` function to produce pie charts, which is
+> however not recommended, as areas are much more difficult to compare
+> that heights. Contrast the following bar and pie charts:
+>
+> ```{r pievsbar, echo=FALSE}
+> x <- sort(x)
+> par(mfrow = c(1, 2))
+> barplot(x)
+> pie(x)
+> ```
+
+### Heatmap
+
+```{r hmap, fig.cap = "Heatmap"}
+heatmap(m)
+```
+
+## These functions are methods
+
+These high-level functions have customised behaviour that depends on their inputs:
+
+* A `boxplot` of a `vector`, `a matrix` or a `list`:
+
+```{r bxmeth, fig.cap = "Boxplot methods", fig.width = 12, fig.height = 5}
+par(mfrow = c(1, 3))
+boxplot(rnorm(100), main = "vector")
+m <- matrix(rnorm(1000), ncol = 10)
+boxplot(m, main = "matrix")
+ll <- list(A = rnorm(100), B = rnorm(100, 1))
+boxplot(ll, main = "list")
+```
+
+* A `plot` of 1 of 2 `vector`s of a `data.frame`:
+
+```{r pltmeth, fig.cap = "Plot methods", fig.width = 12, fig.height = 5}
+par(mfrow = c(1, 3))
+x <- rnorm(100)
+plot(x, main = "vector")
+y <- rnorm(100)
+plot(x, y, main = "2 vectors")
+dfr <- data.frame(x, y)
+plot(dfr, main = "data.frame")
+```
+
+## Low level interaction
+
+Low level interaction with the drawing device to build up a figure piece by piece.
+
+```
+  points, lines, rect, arrows, axis, abline, ...
+```
+
+### Tip
+
+The `colours()` function returns a vector of `length(colours())`
+colour names. One can also use one of the pre-defined colour
+palettes: `rainbow(n)`, `heat.colors(n)`, `terrain.colours(n)`,
+`topo.colors(n)`, `cm.colors(n)`, where `n` defined the number of
+colours. The `RColorBrewer` package offers well characterised
+palettes; see for example
+
+```{r, fig.cap = "RColorBrewer palettes"}
+library("RColorBrewer")
+display.brewer.all()
+```
+
+# `ggplot2`
+
+We need to install and load the package first.
+
+```{r ggplot2, eval=FALSE}
+install.packages("ggplot2")
+library("ggplots")
+```
+
+Based on the Grammar of Graphics
+
+*  A plot is made up of multiple layers
+* A layer consists of data (must be a data.frame), a set of mappings
+   between variables and aesthetics (aes), a geometric object (geom)
+   and a statistical transformation
+*  Scales control the details of the mapping
+*  All components are independent and reusable
+
+```{r ggplot2fig, fig.cap = "MA plot with `ggplot2`"}
+load("../data/madata.rda")
+ggplot(data = madata, aes(x = A, y = M, colour = class)) +
+    geom_point()
+```
+
+```{r ggplot2facet, fig.cap = "Facets"}
+load("../data/madata2.rda")
+head(madata2)
+tail(madata2)
+ggplot(data = madata2, aes(x = A, y = M, colour = class)) +
+    geom_point() + facet_grid(. ~ data)
+```
+
+More details: `ggplot2` [web page](http://ggplot2.org/) and
+[book](http://www.amazon.com/dp/0387981403) (slightly outdated
+though, second edition on its way).
+
+# `lattice`
+
+The `lattice` package provides its own set of high-level plotting
+functions for `data.frames`, with an emphasis on multivariate data
+visualisation. It makes heavily use of the formula interface to
+produce effective data visualisations.
+
+```{r, fig.cap = "MAplot with `lattice`"}
+library("lattice")
+xyplot(M ~ A, data = madata, col = madata$class)
+xyplot(M ~ A | data, data = madata2, col = madata$class)
+```
+
+More details:
+[Lattice: Multivariate Data Visualization with R](http://lmdvr.r-forge.r-project.org/figures/figures.html)
+book.
+
+## Overview table
+
+```{r, echo=FALSE}
+plotfuns <- rbind(c("scatterplots", "plot", "xyplot", "geom_point"),
+                  c("histograms", "hist", "histgram", "geom_histogram"),
+                  c("density plots", "plot(density())", "densityplot", "geom_density"),
+                  c("boxplots", "boxplot", "bwplot", "geom_boxplot"),
+                  c("violin plots", "vioplot::vioplot", "bwplot(..., panel = panel.violin)", "geom_violin"),
+                  c("line plots", "plot, matplot", "xyploy, parallelplot", "geom_line"),
+                  c("bar plots", "barplot", "barchart", "geom_bar"),
+                  c("pie charts", "pie", "", "geom_bar with polar coordinates"),
+                  c("dot plots", "dotchart", "dotplot", "geom_point"),
+                  c("stip plots", "stripchart", "stripplot", "goem_point"),
+                  c("dendrogramms", "plot(hclust())", "latticeExtra package", "ggdendro package"),
+                  c("heatmaps", "image, heatmap", "levelplot", "geom_tile"))
+colnames(plotfuns) <- c("plot type", "traditional", "lattice", "ggplot2")
+kable(plotfuns)
+```
+
+# Saving plots 
+
+The functions `pdf` redirects all the plots generated by R into a pdf
+file, rather than rendering them on the screen. After we are done
+generating our plot to be saved in the file, we stop R from
+redirecting plots with the function `dev.off`.
+
+```{r, eval = FALSE}
+pdf("myplot.pdf")
+plot(1:10)
+dev.off()
+```
+
+There are similar devive functions for other formats: `png()` to save
+a plot to a png file, `postscript()` for a ps file, `jpeg()` for a jpg
+file, ...
+
+## Interactive graphics
+
+```{r}
+dfr <- data.frame(x = rnorm(10),
+                  y = rnorm(10))
+rownames(dfr) <- LETTERS[1:10]
+plot(dfr)
+text(dfr$x, dfr$y, rownames(dfr), pos = 3)
+```
+
+```{r, eval = FALSE}
+plot(dfr)
+identify(dfr, labels = rownames(dfr))
+```
+
+Not covered here: `shiny`
+([example](https://lgatto.shinyapps.io/shinyMA/)), `htmlwidgets`,
+`rCharts`, `googleVis`.
+
+## Resources
+
+* [R Graphics Cookbook](http://www.amazon.com/dp/1449316956)
+* [R Graphics](https://www.stat.auckland.ac.nz/%7Epaul/RG2e/) book
+* [R Graphical Manual](http://rgm3.lab.nig.ac.jp/RGM/R_image_list?page=1133&init=true)

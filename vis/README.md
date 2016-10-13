@@ -1,5 +1,9 @@
 # Data visualisation with R
 
-- basic plotting
-- principles of visualisation
-- dimensionality reduction (and outlier detection)
+- Principles of visualisation
+
+![Choosing a good chart](../img/choosing-a-goog-char.jpg)
+
+- [Basic plotting with R](./plotting.md)
+- [`ggplot2`](./ggplot2.md) (optional)
+- Use case: dimensionality reduction

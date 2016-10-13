@@ -1,3 +1,3 @@
-all: ABRF-data.md
+include ../Makefile
 
-
+all: ABRF-data.md plotting.md ggplot2.md

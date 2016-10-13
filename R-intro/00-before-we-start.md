@@ -5,8 +5,6 @@ author: Data Carpentry contributors
 minutes: 15
 ---
 
-
-
 ------------
 
 > ## Learning Objectives
@@ -36,7 +34,7 @@ minutes: 15
 
 Your working directory should now look like this:
 
-![How it should look like at the beginning of this lesson](img/r_starting_how_it_should_like.png)
+![How it should look like at the beginning of this lesson](../img/r_starting_how_it_should_like.png)
 
 # Presentation of RStudio
 
@@ -391,7 +389,7 @@ sessionInfo()
 ## 
 ## loaded via a namespace (and not attached):
 ## [1] magrittr_1.5  formatR_1.4   tools_3.3.1   msdata_0.12.3 stringi_1.1.2
-## [6] methods_3.3.1 stringr_1.1.0 evaluate_0.9
+## [6] methods_3.3.1 stringr_1.1.0 evaluate_0.10
 ```
 
 ## Where to ask for help?
