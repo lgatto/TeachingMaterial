@@ -73,6 +73,12 @@ provide a complete use case demonstrating the package's
 functionality. All Biocondcuctor software packages have vignettes in
 addition to all function manuals.
 
+## Proteomics/MS data structures
+
+```{r}
+knitr::kable(RforProteomics:::msDataTab())
+```
+
 ## References
 
 Gatto L. and Christoforou A. *Using R and Bioconductor for proteomics

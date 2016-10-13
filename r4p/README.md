@@ -89,6 +89,27 @@ provide a complete use case demonstrating the package's
 functionality. All Biocondcuctor software packages have vignettes in
 addition to all function manuals.
 
+## Proteomics/MS data structures
+
+
+```r
+knitr::kable(RforProteomics:::msDataTab())
+```
+
+
+
+|Data type      |File format          |Data structure               |Package           |
+|:--------------|:--------------------|:----------------------------|:-----------------|
+|Raw            |mzXML or mzML        |mzRpwiz or mzRramp           |mzR               |
+|Raw            |mzXML or mzML        |list of MassSpectrum objects |MALDIquantForeign |
+|Raw            |mzXML or mzML        |MSnExp                       |MSnbase           |
+|Identification |mzIdentML            |mzRident                     |mzR               |
+|Identification |mzIdentML            |mzID                         |mzID              |
+|Quantitative   |mzTab                |MSnSet                       |MSnbase           |
+|Peak lists     |mgf                  |MSnExp                       |MSnbase           |
+|Imaging        |imzML or Analyze 7.5 |MSImageSet                   |Cardinal          |
+|Imaging        |imzML or Analyze 7.5 |list of MassSpectrum objects |MALDIquantForeign |
+
 ## References
 
 Gatto L. and Christoforou A. *Using R and Bioconductor for proteomics
