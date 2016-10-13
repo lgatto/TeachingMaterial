@@ -303,6 +303,36 @@ the weights from our datasets, we can use: `surveys$wgt`. You can use
 In some cases, you may way to select more than one column. You can do this using
 the square brackets: `surveys[, c("wgt", "sex")]`.
 
+## Saving and exporting data
+
+We have already seen `saveRDS` and `readRDS` to save and read
+serialised R data. These function deal with binary data that can be
+used across platforms and R versions.
+
+Note that there is are also two similar functions `save` and
+`load`. With the RDS versions, the data is loaded and is then be
+assigned into a variable; `load`, on the other hand, loads the
+variable in the working space. These functions work with any type of
+data (we have seen vectors and data frames so far, but will see more
+later).
+
+To export a `data.frame` to text-based spreadsheets, one can use the
+`write.csv` function. As it's name implies, it writes the data to a
+comma-separated values file.
+
+### Challenge 
+
+Create a new `minisurveys` `data.frame` that contains the 5 first rows
+and 3 first columns of `surveys`. 
+
+* Serialise it to disk using either `save` or `saveRDS`, remove it
+  from your working space, then load it again (using `load` or
+  `readRDS` respectively).
+
+* Export it to `./data/minisurveys.csv`. Delete it and read it back
+  in, verifying that it corresponds to the `data.frame` that you
+  exported.
+
 # Data frames and tidy data
 
 Data frames can be compared to spreadsheets with additional constraints: 

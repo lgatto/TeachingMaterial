@@ -19,7 +19,7 @@
 
 |time          |Tue.25.Oct                                                  |Wed.26.Oct                                              |Thu.27.Oct                                                                                    |
 |:-------------|:-----------------------------------------------------------|:-------------------------------------------------------|:---------------------------------------------------------------------------------------------|
-|9:00 - 10:00  |R/Rstudio intro                                             |Identification 1: DB Search and other methods           |Advanced quant: Technology selection, Power, Biofluids                                        |
+|9:00 - 10:00  |R/RStudio intro                                             |Identification 1: DB Search and other methods           |Advanced quant: Technology selection, Power, Biofluids                                        |
 |10:00 - 11:00 |R                                                           |Practical                                               |Bridget Calder, UCT, demos Skyline                                                            |
 |11:00 - 11:30 |Coffee                                                      |Coffee                                                  |Coffee                                                                                        |
 |11:30 - 12:30 |R/Bioconductor for proteomics                               |Identification 3: protein inference and controlling FDR |Missing values, bio and tech variability, blocking / randomization (lecture + demo/practical) |

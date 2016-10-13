@@ -277,7 +277,79 @@ collecting or calculating.
 * Start by creating two vectors `weight1` and `weight2` each
   containing 5 values of your choice, then combine these two into a
   single variable named `weight_all`.
-  
+
+### Names
+
+It is also possible to name vectors. The `prots` vector contains the description of 5 mouse proteins.
+
+
+```r
+prots <- c("Cytoplasmic dynein 1 heavy chain 1 OS=Mus musculus GN=Dync1h1 PE=1 SV=2 - [DYHC1_MOUSE]",          
+           "Isoform PLEC-1 of Plectin OS=Mus musculus GN=Plec - [PLEC_MOUSE]|Isoform PLEC-1A of Plectin OS=Mus musculus GN=Plec - [PLEC_MOUSE]",
+           "E3 SUMO-protein ligase RanBP2 OS=Mus musculus GN=Ranbp2 PE=1 SV=2 - [RBP2_MOUSE]",
+           "Talin-1 OS=Mus musculus GN=Tln1 PE=1 SV=2 - [TLN1_MOUSE]",
+           "Filamin-A OS=Mus musculus GN=Flna PE=1 SV=5 - [FLNA_MOUSE]")                                                              
+```
+
+Currently, it doesn't have any names:
+
+
+```r
+names(prots)
+```
+
+```
+## NULL
+```
+
+Let's use the UniProt identifiers to name each element of the protein
+description vector. Before doing so, we make sure that the vector's
+lengths match.
+
+
+```r
+protids <- c("Q9JHU4", "Q9QXS1-3", "Q9ERU9", "P26039", "Q8BTM8")
+length(prots)
+```
+
+```
+## [1] 5
+```
+
+```r
+length(protids)
+```
+
+```
+## [1] 5
+```
+
+```r
+names(prots) <- protids
+prots
+```
+
+```
+##                                                                                                                               Q9JHU4 
+##                                            "Cytoplasmic dynein 1 heavy chain 1 OS=Mus musculus GN=Dync1h1 PE=1 SV=2 - [DYHC1_MOUSE]" 
+##                                                                                                                             Q9QXS1-3 
+## "Isoform PLEC-1 of Plectin OS=Mus musculus GN=Plec - [PLEC_MOUSE]|Isoform PLEC-1A of Plectin OS=Mus musculus GN=Plec - [PLEC_MOUSE]" 
+##                                                                                                                               Q9ERU9 
+##                                                   "E3 SUMO-protein ligase RanBP2 OS=Mus musculus GN=Ranbp2 PE=1 SV=2 - [RBP2_MOUSE]" 
+##                                                                                                                               P26039 
+##                                                                           "Talin-1 OS=Mus musculus GN=Tln1 PE=1 SV=2 - [TLN1_MOUSE]" 
+##                                                                                                                               Q8BTM8 
+##                                                                         "Filamin-A OS=Mus musculus GN=Flna PE=1 SV=5 - [FLNA_MOUSE]"
+```
+
+```r
+names(prots)
+```
+
+```
+## [1] "Q9JHU4"   "Q9QXS1-3" "Q9ERU9"   "P26039"   "Q8BTM8"
+```
+
 ## Data types
 
 We just saw 2 of the 6 **data types** that R uses: `"character"` and

@@ -134,13 +134,10 @@ Based on the output of `str(surveys)`, can you answer the following questions?
 * How many rows and how many columns are in this object?
 * How many species have been recorded during these surveys?
 
-
-
 As you can see, the columns `species` and `sex` are of a special class called
 `factor`. Before we learn more about the `data.frame` class, we are going to
 talk about factors. They are very useful but not necessarily intuitive, and
 therefore require some attention.
-
 
 ## Factors
 
