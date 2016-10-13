@@ -7,7 +7,7 @@
 - [Data visualiation](./vis/README.md)
 - [`mzR` and `MSnbase` packages for raw data](./raw/README.md)
 - [Indentification data in `mzR`, `mzID`, `MSnID`](./ident/README.md)
-- The `MSnbase` package: `MSnSet`s for quantiative proteomics
+- [The `MSnbase` package: `MSnSet`s for quantiative proteomics](./quant/README.md)
 - Experimental designs: biological and technical variability, blocking
   and randomization
 - Handling missing values in proteomics data

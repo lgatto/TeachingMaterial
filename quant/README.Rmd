@@ -1,0 +1,18 @@
+# The `MSnbase` package: `MSnSet`s for quantiative proteomics
+
+## The `MSnSet` class
+
+- schematic
+- accessors
+
+## Creating `MSnSet` data
+
+- from an `MSnExp` object
+- from a spreadsheet
+
+## Adding identification data 
+
+## Visualisation
+
+
+

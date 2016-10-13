@@ -1,5 +1,10 @@
 # Indentification data using `mzR`, `mzID`, `MSnID`
 
+```{r env, echo=FALSE}
+library(BiocStyle)
+suppressPackageStartupMessages(library("mzR"))
+suppressPackageStartupMessages(library("MSnbase"))
+```
 ## Handling identification data
 
 There are two packages that can be used to parse `mzIdentML` files,
@@ -19,7 +24,7 @@ We are going to use the following identification file in this practical:
 ```{r}
 library("msdata")
 idf <- ident(full.names = TRUE)
-idf
+basename(idf)
 ```
 
 ### mzID
@@ -88,6 +93,93 @@ x$bins <- cut(x$eval, summary(x$eval))
 library("lattice")
 xyplot(plength ~ npep | bins, data = x)
 ```
+
+## Adding identification data to raw data
+
+Here are two matching raw and identiciation data files:
+
+```{r}
+libary("MSnbase")
+## find path to a mzXML file
+rwf <- dir(system.file(package = "MSnbase", dir = "extdata"),
+           full.name = TRUE, pattern = "mzXML$")
+## find path to a mzIdentML file
+idf <- dir(system.file(package = "MSnbase", dir = "extdata"),
+           full.name = TRUE, pattern = "dummyiTRAQ.mzid")
+```
+
+We first create the raw data object:
+
+```{r}
+msexp <- readMSData(rwf, verbose = FALSE)
+head(fData(msexp))
+```
+
+The simply add identification data. The matching of spectra from the
+raw data and the PSMs from the identification data is done internally.
+
+```{r}
+msexp <- addIdentificationData(msexp, idf)
+head(fData(msexp))
+```
+
+## Visualising identification data
+
+For this part, let's use a ready made `MSnExp` object that is
+distributed with the `MSnbase` package. Simply use the `data()`
+function with the name of the desired data.
+
+```{r}
+library("MSnbase")
+data(itraqdata)
+```
+
+### Annotated spectra and spectra comparison
+
+```{r id1, message=FALSE, fig.width=15, message=FALSE}
+par(mfrow = c(1, 2))
+itraqdata2 <- pickPeaks(itraqdata, verbose = FALSE)
+s <- "SIGFEGDSIGR"
+plot(itraqdata2[[14]], s, main = s)
+plot(itraqdata2[[25]], itraqdata2[[28]], sequences = rep("IMIDLDGTENK", 2))
+```
+
+The annotation of spectra is obtained by simulating fragmentation of a
+peptide and matching observed peaks to fragments:
+
+```{r fag}
+calculateFragments("SIGFEGDSIGR")
+```
+
+Visualising a pair of spectra means that we can access them, and that,
+in addition to plotting, we can manipulate them and perform
+computations. The two spectra corresponding to the `IMIDLDGTENK`
+peptide, for example have 
+
+```{r}
+compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "common")
+```
+
+common peaks, a correlation of
+
+```{r}
+compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "cor")
+```
+
+and a dot product of 
+
+```{r}
+compareSpectra(itraqdata2[[25]], itraqdata2[[28]], fun = "dotproduct")
+```
+
+See `?compareSpectra` for details.
+
+There are 2 Bioconductor packages for peptide-spectrum matching
+directly in R, namely `r Biocpkg("MSGFplus")` and `r Biocpkg("rTANDEM")`, 
+replying on `MSGF+` and `X!TANDEM` respectively.
+See also the `r Biocpkg("MSGFgui")` package for visualisation of
+identification data.
+
 
 ## Exploration and Assessment of Confidence of LC-MSn Proteomics Identifications using `MSnID`
 
