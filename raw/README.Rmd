@@ -109,7 +109,7 @@ and manipulate raw data. In comes `MSnbase` and the `MSnExp` data
 structure, that provides a much smoother approach to *handle* and
 *annotate* raw data (we will see this in more details tomorrow).
 
-ADD FIGURE HERE
+![MSnExp schematics](../img/pset.jpg)
 
 An `MSnExp` contains the data and annotation to describe an MS
 experiment. The data is composed of all the MS spectra (the output of

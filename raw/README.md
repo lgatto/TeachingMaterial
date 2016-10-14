@@ -200,7 +200,7 @@ and manipulate raw data. In comes `MSnbase` and the `MSnExp` data
 structure, that provides a much smoother approach to *handle* and
 *annotate* raw data (we will see this in more details tomorrow).
 
-ADD FIGURE HERE
+![MSnExp schematics](../img/pset.jpg)
 
 An `MSnExp` contains the data and annotation to describe an MS
 experiment. The data is composed of all the MS spectra (the output of
@@ -233,7 +233,7 @@ rw1
 ##  Number of spectra: 451 
 ##  MSn retention times: 18:29 - 22:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 19:04:59 2016 
+## Data loaded: Fri Oct 14 13:56:24 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -265,7 +265,7 @@ rw2
 ##  Number of spectra: 509 
 ##  MSn retention times: 18:28 - 22:3 minutes
 ## - - - Processing information - - -
-## Data loaded [Thu Oct 13 19:05:01 2016] 
+## Data loaded [Fri Oct 14 13:56:25 2016] 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -336,8 +336,8 @@ rw1[1:5]
 ##  Number of spectra: 5 
 ##  MSn retention times: 18:29 - 18:31 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 13 19:04:59 2016 
-## Data [numerically] subsetted 5 spectra: Thu Oct 13 19:05:02 2016 
+## Data loaded: Fri Oct 14 13:56:24 2016 
+## Data [numerically] subsetted 5 spectra: Fri Oct 14 13:56:26 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
