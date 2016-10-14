@@ -253,10 +253,12 @@ Or PCA plots using the `plot2D` function from the `pRoloc` package.
 library("pRoloc")
 par(mfrow = c(1, 2))
 plot2D(mulvey2015, addLegend = "bottomleft")
-plot2D(t(mulvey2015), fcol = "times", addLegend = "bottomleft")
+plot2D(t(mulvey2015), fcol = "times")
 ```
 
-(Try also the `plot3D` function)
+#### Exercise
+
+Try the `plot3D` function.
 
 
 
