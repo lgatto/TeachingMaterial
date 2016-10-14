@@ -1,14 +1,23 @@
 # Missing values in proteomics
 
-```{r, echo = FALSE}
-library("BiocStyle")
-suppressPackageStartupMessages(library("MSnbase"))
-```
 
-```{r na}
+
+
+```r
 library("MSnbase")
 data(naset)
 naplot(naset, col = "black")
+```
+
+![plot of chunk na](figure/na-1.png)
+
+```
+## features.na
+##   0   1   2   3   4   8   9  10 
+## 301 247  91  13   2  23  10   2 
+## samples.na
+## 34 39 41 42 43 45 47 49 51 52 53 55 56 57 61 
+##  1  1  1  1  1  2  1  1  1  1  1  1  1  1  1
 ```
 
 ## Filtering
@@ -16,9 +25,18 @@ naplot(naset, col = "black")
 One solution is to remove all or part of the features that have
 missing values (see `?filterNA`).
 
-```{r filterNA}
+
+```r
 flt <- filterNA(naset)
 processingData(flt)
+```
+
+```
+## - - - Processing information - - -
+## Subset [689,16][301,16] Sat Oct 15 00:21:58 2016 
+## Removed features with more than 0 NAs: Sat Oct 15 00:21:58 2016 
+## Dropped featureData's levels Sat Oct 15 00:21:58 2016 
+##  MSnbase version: 1.15.6
 ```
 
 ## Identification transfer
@@ -27,7 +45,7 @@ Identification transfer between acquisitions (label-free): if a feature
 was not acquired in MS2 in one replicate, it is possible to find the
 ion in MS space based on the M/Z and retention time coordinates of the
 same ion in a replicate where it was identified. (An example of this
-is implemented in the `r Biocpkg("synapter")` package).
+is implemented in the *[synapter](http://bioconductor.org/packages/synapter)* package).
 
 ![Identification transfer](../img/Fig6-EMRTmatching.png)
 
@@ -53,16 +71,7 @@ experiments.
   distributed in the data and are defined as **missing not at random**
   (MNAR).
   
-```{r naheatmap, echo=FALSE}
-x <- impute(naset, "zero")
-exprs(x)[exprs(x) != 0] <- 1
-suppressPackageStartupMessages(library("gplots"))
-heatmap.2(exprs(x), col = c("lightgray", "black"),
-          scale = "none", dendrogram = "none",
-          trace = "none", keysize = 0.5, key = FALSE,
-          RowSideColors = ifelse(fData(x)$randna, "orange", "brown"),
-          ColSideColors = rep(c("steelblue", "darkolivegreen"), each = 8))
-```
+![plot of chunk naheatmap](figure/naheatmap-1.png)
 
 Different imputation methods are more appropriate to different classes
 of missing values (as documented in this

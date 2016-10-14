@@ -10,7 +10,7 @@
 - [The `MSnbase` package: `MSnSet`s for quantiative proteomics](./quant/README.md)
 - Experimental designs: biological and technical variability, blocking
   and randomization
-- Handling missing values in proteomics data
+- [Handling missing values in proteomics data](./missing/README.md)
 - Differential expression of proteomics data (t-test for continuous
   data, count data, `limma`)
 - Multiple testing

@@ -1,0 +1,6 @@
+# Adjustment for multiple testing
+
+- demonstrate the problem using a simulation
+- describe p-value histogramme
+- False discover rate
+- multiple testing adjustment
