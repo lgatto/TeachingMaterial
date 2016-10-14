@@ -249,7 +249,7 @@ image(mulvey2015, facetBy = "times")
 
 Or PCA plots using the `plot2D` function from the `pRoloc` package.
 
-```{r plot2D, fig.asp = 0.5}
+```{r plot2D, fig.asp = 0.5, fig.width = 16}
 library("pRoloc")
 par(mfrow = c(1, 2))
 plot2D(mulvey2015, addLegend = "bottomleft")

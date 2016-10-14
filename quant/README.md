@@ -102,7 +102,7 @@ msexp
 ##  Number of spectra: 5 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 23:02:59 2016 
+## Data loaded: Fri Oct 14 23:05:06 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -149,8 +149,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 23:02:59 2016 
-## iTRAQ4 quantification by trapezoidation: Fri Oct 14 23:03:01 2016 
+## Data loaded: Fri Oct 14 23:05:06 2016 
+## iTRAQ4 quantification by trapezoidation: Fri Oct 14 23:05:08 2016 
 ##  MSnbase version: 1.99.7
 ```
 
