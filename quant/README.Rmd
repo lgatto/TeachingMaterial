@@ -4,6 +4,8 @@
 library("BiocStyle")
 suppressPackageStartupMessages(library("MSnbase"))
 suppressPackageStartupMessages(library("pRoloc"))
+suppressPackageStartupMessages(library("pRolocdata"))
+data(mulvey)
 ```
 
 There are a wide range of proteomics quantitation techniques that can
@@ -215,7 +217,7 @@ Export the `mulvey2015` data to a text-based spreadsheet.
 ```{r, echo=FALSE}
 tmpf <- tempfile(fileext = ".csv")
 write.exprs(mulvey2015, fcol = fvarLabels(mulvey2015),
-            file = "~/mulvey2015.csv", sep = ",")
+            file = tmpf, sep = ",")
 ```
 
 ## Processing
