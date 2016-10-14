@@ -1,21 +1,6 @@
 # The `MSnbase` package: `MSnSet`s for quantiative proteomics
 
 
-```
-## Warning in .recacheSubclasses(def@className, def, doSubclasses, env):
-## undefined subclass "daboostCont" of class "listOrdata.frame"; definition
-## not updated
-```
-
-```
-## Warning in .recacheSubclasses(def@className, def, doSubclasses, env):
-## undefined subclass "daboostCont" of class "input"; definition not updated
-```
-
-```
-## Warning in .recacheSubclasses(def@className, def, doSubclasses, env):
-## undefined subclass "daboostCont" of class "output"; definition not updated
-```
 
 There are a wide range of proteomics quantitation techniques that can
 broadly be classified as labelled vs. label-free, depending whether
@@ -117,7 +102,7 @@ msexp
 ##  Number of spectra: 5 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 22:52:55 2016 
+## Data loaded: Fri Oct 14 22:55:10 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -164,8 +149,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 22:52:55 2016 
-## iTRAQ4 quantification by trapezoidation: Fri Oct 14 22:52:57 2016 
+## Data loaded: Fri Oct 14 22:55:10 2016 
+## iTRAQ4 quantification by trapezoidation: Fri Oct 14 22:55:12 2016 
 ##  MSnbase version: 1.99.7
 ```
 

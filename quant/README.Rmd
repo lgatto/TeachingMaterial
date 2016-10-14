@@ -1,6 +1,6 @@
 # The `MSnbase` package: `MSnSet`s for quantiative proteomics
 
-```{r env, echo = FALSE}
+```{r env, echo = FALSE, warning = FALSE}
 library("BiocStyle")
 suppressPackageStartupMessages(library("MSnbase"))
 suppressPackageStartupMessages(library("pRoloc"))
