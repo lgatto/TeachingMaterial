@@ -102,7 +102,7 @@ msexp
 ##  Number of spectra: 5 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 22:59:24 2016 
+## Data loaded: Fri Oct 14 23:01:55 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -149,8 +149,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 22:59:24 2016 
-## iTRAQ4 quantification by trapezoidation: Fri Oct 14 22:59:26 2016 
+## Data loaded: Fri Oct 14 23:01:55 2016 
+## iTRAQ4 quantification by trapezoidation: Fri Oct 14 23:01:57 2016 
 ##  MSnbase version: 1.99.7
 ```
 
@@ -450,7 +450,7 @@ plot2D(mulvey2015, addLegend = "bottomleft")
 plot2D(t(mulvey2015), fcol = "times", addLegend = "bottomleft")
 ```
 
-![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
+![plot of chunk plot2D](figure/plot2D-1.png)
 
 (Try also the `plot3D` function)
 
