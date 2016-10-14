@@ -5,7 +5,7 @@ library("BiocStyle")
 suppressPackageStartupMessages(library("MSnbase"))
 suppressPackageStartupMessages(library("pRoloc"))
 suppressPackageStartupMessages(library("pRolocdata"))
-data(mulvey)
+data(mulvey2015)
 ```
 
 There are a wide range of proteomics quantitation techniques that can

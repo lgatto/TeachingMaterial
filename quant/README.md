@@ -102,7 +102,7 @@ msexp
 ##  Number of spectra: 5 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 22:58:17 2016 
+## Data loaded: Fri Oct 14 22:59:24 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -149,8 +149,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 22:58:17 2016 
-## iTRAQ4 quantification by trapezoidation: Fri Oct 14 22:58:19 2016 
+## Data loaded: Fri Oct 14 22:59:24 2016 
+## iTRAQ4 quantification by trapezoidation: Fri Oct 14 22:59:26 2016 
 ##  MSnbase version: 1.99.7
 ```
 
@@ -399,9 +399,6 @@ expression data and the feature metadata in a single file.
 Export the `mulvey2015` data to a text-based spreadsheet.
 
 
-```
-## Error in write.exprs(mulvey2015, fcol = fvarLabels(mulvey2015), file = tmpf, : object 'mulvey2015' not found
-```
 
 ## Processing
 
@@ -429,25 +426,19 @@ For example, we can produce annotated heatmaps:
 image2(mulvey2015)
 ```
 
-```
-## Error in inherits(x, "MSnSet"): object 'mulvey2015' not found
-```
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
 
 ```r
 image(mulvey2015, facetBy = "rep")
 ```
 
-```
-## Error in image(mulvey2015, facetBy = "rep"): object 'mulvey2015' not found
-```
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-2.png)
 
 ```r
 image(mulvey2015, facetBy = "times")
 ```
 
-```
-## Error in image(mulvey2015, facetBy = "times"): object 'mulvey2015' not found
-```
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-3.png)
 
 Or PCA plots using the `plot2D` function from the `pRoloc` package.
 
@@ -456,19 +447,10 @@ Or PCA plots using the `plot2D` function from the `pRoloc` package.
 library("pRoloc")
 par(mfrow = c(1, 2))
 plot2D(mulvey2015, addLegend = "bottomleft")
-```
-
-```
-## Error in plot2D(mulvey2015, addLegend = "bottomleft"): object 'mulvey2015' not found
-```
-
-```r
 plot2D(t(mulvey2015), fcol = "times", addLegend = "bottomleft")
 ```
 
-```
-## Error in t(mulvey2015): object 'mulvey2015' not found
-```
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
 (Try also the `plot3D` function)
 
