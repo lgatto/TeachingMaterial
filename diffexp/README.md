@@ -1,8 +1,6 @@
 # Identifying differentially expressed proteins
 
-```{r, echo = FALSE}
-library("BiocStyle")
-```
+
 
 
 ## Running a `t-test` in R
@@ -44,22 +42,53 @@ to quickly genreate normally distributed data. Its inputs are
 Let's now apply a t-test on two sets of values drawn from identical
 and different distributions:
 
-```{r}
+
+```r
 t1 <- t.test(rnorm(5), rnorm(5))
 t1
 ```
 
-```{r}
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  rnorm(5) and rnorm(5)
+## t = 0.5154, df = 5.9441, p-value = 0.6249
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -1.292701  1.980590
+## sample estimates:
+##   mean of x   mean of y 
+##  0.04179283 -0.30215135
+```
+
+
+```r
 t2 <- t.test(rnorm(5), rnorm(5, mean = 4))
 t2
 ```
 
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  rnorm(5) and rnorm(5, mean = 4)
+## t = -11.458, df = 7.5818, p-value = 4.678e-06
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -5.288970 -3.502512
+## sample estimates:
+##  mean of x  mean of y 
+## -0.2739408  4.1217999
+```
+
 What we see above is a pretty output that is convenient to visualise
 interactively. The output of the `t.test` is an object of class `r
-class(t2)`, which contains `r paste(names(t2), collapse = ", ")`.
+class(t2)`, which contains statistic, parameter, p.value, conf.int, estimate, null.value, alternative, method, data.name.
+
+
 
 ## Multiple testing
-
 
 
 
@@ -74,7 +103,7 @@ Volcano plot
 
 ## Other packages
 
-* `r Biocpkg("MSstats")` for various statistical analyses
-* Isobaric tagging (iTRAQ and TMT): `r Biocpkg("isobar")`
-* Label-free: `r CRANpkg("aLFQ")` and `r CRANpkg("protiq")`
+* *[MSstats](http://bioconductor.org/packages/MSstats)* for various statistical analyses
+* Isobaric tagging (iTRAQ and TMT): *[isobar](http://bioconductor.org/packages/isobar)*
+* Label-free: *[aLFQ](http://cran.fhcrc.org/web/packages/aLFQ/index.html)* and *[protiq](http://cran.fhcrc.org/web/packages/protiq/index.html)*
 

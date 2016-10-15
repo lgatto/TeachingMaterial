@@ -1,5 +1,7 @@
 # Material for R/Bioconductor Proteomics Workshop at Stellenbosch University, October 2016
 
+Short URL to this page: http://bit.ly/2016-rbiocprot-sun
+
 ### Material
 
 - [Introduction to R/RStudio](./R-intro/README.md)
