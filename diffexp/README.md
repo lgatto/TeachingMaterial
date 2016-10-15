@@ -1,7 +1,9 @@
 # Identifying differentially expressed proteins
 
 
-
+```
+## Warning in read.dcf(con): unable to resolve 'bioconductor.org'
+```
 
 ## Running a `t-test` in R
 
@@ -53,13 +55,13 @@ t1
 ## 	Welch Two Sample t-test
 ## 
 ## data:  rnorm(5) and rnorm(5)
-## t = 0.5154, df = 5.9441, p-value = 0.6249
+## t = 0.034702, df = 5.0479, p-value = 0.9736
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -1.292701  1.980590
+##  -1.152196  1.183822
 ## sample estimates:
-##   mean of x   mean of y 
-##  0.04179283 -0.30215135
+##  mean of x  mean of y 
+## -0.1049816 -0.1207944
 ```
 
 
@@ -73,33 +75,117 @@ t2
 ## 	Welch Two Sample t-test
 ## 
 ## data:  rnorm(5) and rnorm(5, mean = 4)
-## t = -11.458, df = 7.5818, p-value = 4.678e-06
+## t = -13.013, df = 7.9975, p-value = 1.157e-06
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -5.288970 -3.502512
+##  -6.638948 -4.640045
 ## sample estimates:
-##  mean of x  mean of y 
-## -0.2739408  4.1217999
+## mean of x mean of y 
+## -1.102658  4.536839
 ```
 
 What we see above is a pretty output that is convenient to visualise
-interactively. The output of the `t.test` is an object of class `r
-class(t2)`, which contains statistic, parameter, p.value, conf.int, estimate, null.value, alternative, method, data.name.
+interactively. The output of the `t.test` is an object of class 
+htest, which contains statistic, parameter, p.value, conf.int, estimate, null.value, alternative, method, data.name 
+values.
+
+We can extract any of these with the `$` accessor
+
+
+```r
+t2$p.value
+```
+
+```
+## [1] 1.157064e-06
+```
+
+
+### Exercise
+
+Let's use the `mulvey2015` dataset, introduced previously, and focus
+on time points 1 and 6. 
+
+1. How can we conveniently use the sample metadata to create the
+   relevant subset?
 
 
 
-## Multiple testing
+
+2. Use the `t.test` function to test P48432 for differences in
+   timepoints 1 and 6.
 
 
+
+In high throughput biology, we have to repeat our tests over every
+feature (transcript, protein, ...). As we are using a programming
+language, this is something easy to do.
+
+Below, we use the apply function, that will iterate a function over
+all elements of its input.
+
+
+```r
+time1 <- time16$time == 1
+time6 <- time16$time != 1
+## first attempt
+pv <- apply(exprs(time16), 1,
+            function(x) t.test(x[time1], x[time6]))
+
+## second attempt
+pv <- apply(exprs(time16), 1,
+            function(x) t.test(x[time1], x[time6])$p.value)
+```
+
+We now have calculated a p-value for each of the 2337
+proteins in the data; let's add them to the feature metadata slot.
+
+
+```r
+fData(time16)$p.value <-
+                apply(exprs(time16), 1,
+                      function(x) t.test(x[time1], x[time6])$p.value)
+```
+
+
+```r
+fData(time16)$fc <-
+                apply(exprs(time16), 1,
+                      function(x) mean(x[time1])/mean(x[time6]))
+fData(time16)$lfc <- log2(fData(time16)$fc)
+```
 
 ## Visualising results
 
-Volcano plot
+There are 3 important factors to consider when assessing the results
+of a test for differential expression:
 
+* The significance of the test, i.e. the p-values
+* The magnitude of the change, i.e. the fold-change
+* The (average) intensity of the measurements
+
+
+```r
+MAplot(time16)
+```
+
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
+
+
+```r
+plot(fData(time16)$lfc, -log10(fData(time16)$p.value))
+```
+
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
+
+## Multiple testing
+
+See [this section](../multtest/README.md)
 
 ## Moderated t-tests: `limma`
 
 ## Count data
+
 
 ## Other packages
 

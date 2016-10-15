@@ -2,8 +2,8 @@
 
 ```{r, echo = FALSE}
 library("BiocStyle")
+suppressPackageStartupMessages(library("pRolocdata"))
 ```
-
 
 ## Running a `t-test` in R
 
@@ -55,22 +55,101 @@ t2
 ```
 
 What we see above is a pretty output that is convenient to visualise
-interactively. The output of the `t.test` is an object of class `r
-class(t2)`, which contains `r paste(names(t2), collapse = ", ")`.
+interactively. The output of the `t.test` is an object of class 
+`r class(t2)`, which contains `r paste(names(t2), collapse = ", ")` 
+values.
 
-## Multiple testing
+We can extract any of these with the `$` accessor
+
+```{r}
+t2$p.value
+```
 
 
+### Exercise
 
+Let's use the `mulvey2015` dataset, introduced previously, and focus
+on time points 1 and 6. 
+
+1. How can we conveniently use the sample metadata to create the
+   relevant subset?
+
+
+```{r, echo = FALSE, eval = TRUE}
+library("pRolocdata")
+data(mulvey2015)
+time16 <- mulvey2015[, mulvey2015$times %in% c(1, 6)]
+## head(exprs(time16))
+```
+
+2. Use the `t.test` function to test P48432 for differences in
+   timepoints 1 and 6.
+
+```{r, echo = FALSE, eval = FALSE}
+t.test(exprs(time16)[1, time16$time == 1],
+       exprs(time16)[1, time16$time != 1])
+```
+
+In high throughput biology, we have to repeat our tests over every
+feature (transcript, protein, ...). As we are using a programming
+language, this is something easy to do.
+
+Below, we use the apply function, that will iterate a function over
+all elements of its input.
+
+```{r}
+time1 <- time16$time == 1
+time6 <- time16$time != 1
+## first attempt
+pv <- apply(exprs(time16), 1,
+            function(x) t.test(x[time1], x[time6]))
+
+## second attempt
+pv <- apply(exprs(time16), 1,
+            function(x) t.test(x[time1], x[time6])$p.value)
+```
+
+We now have calculated a p-value for each of the `r nrow(time16)`
+proteins in the data; let's add them to the feature metadata slot.
+
+```{r}
+fData(time16)$p.value <-
+                apply(exprs(time16), 1,
+                      function(x) t.test(x[time1], x[time6])$p.value)
+```
+
+```{r}
+fData(time16)$fc <-
+                apply(exprs(time16), 1,
+                      function(x) mean(x[time1])/mean(x[time6]))
+fData(time16)$lfc <- log2(fData(time16)$fc)
+```
 
 ## Visualising results
 
-Volcano plot
+There are 3 important factors to consider when assessing the results
+of a test for differential expression:
 
+* The significance of the test, i.e. the p-values
+* The magnitude of the change, i.e. the fold-change
+* The (average) intensity of the measurements
+
+```{r}
+MAplot(time16)
+```
+
+```{r}
+plot(fData(time16)$lfc, -log10(fData(time16)$p.value))
+```
+
+## Multiple testing
+
+See [this section](../multtest/README.md)
 
 ## Moderated t-tests: `limma`
 
 ## Count data
+
 
 ## Other packages
 
