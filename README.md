@@ -13,9 +13,9 @@ Short URL to this page: http://bit.ly/2016-rbiocprot-sun
 - Experimental designs: biological and technical variability, blocking
   and randomization
 - [Handling missing values in proteomics data](./missing/README.md)
-- Differential expression of proteomics data (t-test for continuous
-  data, count data, `limma`)
-- Multiple testing
+- [Differential expression of proteomics data (t-test for continuous
+  data, count data, `limma`)](./diffexp/README.md)
+- [Multiple testing](./multtest/README.md)
 - [Wrap-up](./wrapup.md)
 
 ### Schedule
