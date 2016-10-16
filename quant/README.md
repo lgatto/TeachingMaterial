@@ -102,7 +102,7 @@ msexp
 ##  Number of spectra: 5 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 23:14:09 2016 
+## Data loaded: Sun Oct 16 07:03:32 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -149,8 +149,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 23:14:09 2016 
-## iTRAQ4 quantification by trapezoidation: Fri Oct 14 23:14:11 2016 
+## Data loaded: Sun Oct 16 07:03:32 2016 
+## iTRAQ4 quantification by trapezoidation: Sun Oct 16 07:03:34 2016 
 ##  MSnbase version: 1.99.7
 ```
 
@@ -411,6 +411,113 @@ return.
 We will see more data processing and data analysis using `MSnSet`
 instances later.
 
+One that is worth mentioning here is the aggregation of higher level
+features, i.e. PSMs into peptides into proteins. The `combineFeatures`
+can be used. The main parameters area
+
+* The `MSnSet` to be processed
+* The `groupBy` argument, that defines what features to aggregate
+* The `fun` function, that defines how to aggregate them: mean,
+  median, weighted mean, sum, median polish, iPQF, or any user-defined
+  function are available.
+
+
+Using the `mzt` object, read from the mzTab file, as example.
+
+
+```r
+mztf <- "../data/F063721.dat-mztab.txt"
+mzt <- readMzTabData(mztf, what = "PEP", version = "0.9")
+```
+
+```
+## Warning: Version 0.9 is deprecated. Please see '?readMzTabData' and '?
+## MzTab' for details.
+```
+
+```
+## Detected a metadata section
+```
+
+```
+## Detected a peptide section
+```
+
+We have quantitation information at the peptide level (we have a
+peptide `sequence` column) and the `accession` feature variable
+defines the peptide-protein association - this will be our `groupBy`
+argument.
+
+
+```r
+dim(mzt)
+```
+
+```
+## [1] 1528    6
+```
+
+```r
+head(fData(mzt))
+```
+
+```
+##    sequence accession   unit_id unique database         database_version
+## 1   DGVSVAR   ECA0625 TMTspikes     --  Erwinia erwinia_carotovora.fasta
+## 2    NVVLDK   ECA0625 TMTspikes     --  Erwinia erwinia_carotovora.fasta
+## 3 VEDALHATR   ECA0625 TMTspikes     --  Erwinia erwinia_carotovora.fasta
+## 4 LAGGVAVIK   ECA0625 TMTspikes     --  Erwinia erwinia_carotovora.fasta
+## 5  LIAEAMEK   ECA0625 TMTspikes     --  Erwinia erwinia_carotovora.fasta
+## 6 SFGAPTITK   ECA0625 TMTspikes     --  Erwinia erwinia_carotovora.fasta
+##   search_engine                      search_engine_score reliability
+## 1            -- [PRIDE,PRIDE:0000069,Mascot Score,26.92]          --
+## 2            -- [PRIDE,PRIDE:0000069,Mascot Score,22.66]          --
+## 3            --  [PRIDE,PRIDE:0000069,Mascot Score,41.9]          --
+## 4            -- [PRIDE,PRIDE:0000069,Mascot Score,48.99]          --
+## 5            -- [PRIDE,PRIDE:0000069,Mascot Score,38.04]          --
+## 6            -- [PRIDE,PRIDE:0000069,Mascot Score,39.36]          --
+##   modifications retention_time charge mass_to_charge uri
+## 1            --             --     --             --  --
+## 2            --             --     --             --  --
+## 3            --             --     --             --  --
+## 4            --             --     --             --  --
+## 5            --             --     --             --  --
+## 6            --             --     --             --  --
+```
+
+Assuming we want to use the mean function, we would
+
+
+```r
+prot <- combineFeatures(mzt, groupBy = fData(mzt)$accession, fun = "mean")
+```
+
+```
+## Combined 1528 features into 1528 using mean
+```
+
+```r
+head(exprs(prot))
+```
+
+```
+##            sub[1]    sub[2]    sub[3]    sub[4]    sub[5]    sub[6]
+## ECA0013 1073211.8 1100748.0 1170675.3 1068660.8 1023049.4 1066677.2
+## ECA0020  617856.1  638956.2  693931.0  697029.3  597343.1  721727.4
+## ECA0029  642339.9  684467.1  740933.3  669199.6  627844.2  648905.6
+## ECA0030  213580.4  237362.5  254372.5  218197.7  219043.2  239044.2
+## ECA0039 1633478.8 1638029.5 1833851.5 1689272.1 1554984.7 1691867.1
+## ECA0050  128071.4  130225.2  137200.1  136184.7  138737.2  131038.8
+```
+
+```r
+dim(prot)
+```
+
+```
+## [1] 404   6
+```
+
 ## Visualisation
 
 As we have access to the expression matrix and plenty of metadata, we
@@ -426,19 +533,19 @@ For example, we can produce annotated heatmaps:
 image2(mulvey2015)
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-1.png)
 
 ```r
 image(mulvey2015, facetBy = "rep")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-2.png)
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-2.png)
 
 ```r
 image(mulvey2015, facetBy = "times")
 ```
 
-![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-3.png)
+![plot of chunk unnamed-chunk-5](figure/unnamed-chunk-5-3.png)
 
 Or PCA plots using the `plot2D` function from the `pRoloc` package.
 

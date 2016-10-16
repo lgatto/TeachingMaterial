@@ -231,6 +231,42 @@ return.
 We will see more data processing and data analysis using `MSnSet`
 instances later.
 
+One that is worth mentioning here is the aggregation of higher level
+features, i.e. PSMs into peptides into proteins. The `combineFeatures`
+can be used. The main parameters area
+
+* The `MSnSet` to be processed
+* The `groupBy` argument, that defines what features to aggregate
+* The `fun` function, that defines how to aggregate them: mean,
+  median, weighted mean, sum, median polish, iPQF, or any user-defined
+  function are available.
+
+
+Using the `mzt` object, read from the mzTab file, as example.
+
+```{r aggreg0}
+mztf <- "../data/F063721.dat-mztab.txt"
+mzt <- readMzTabData(mztf, what = "PEP", version = "0.9")
+```
+
+We have quantitation information at the peptide level (we have a
+peptide `sequence` column) and the `accession` feature variable
+defines the peptide-protein association - this will be our `groupBy`
+argument.
+
+```{r aggreg}
+dim(mzt)
+head(fData(mzt))
+```
+
+Assuming we want to use the mean function, we would
+
+```{r}
+prot <- combineFeatures(mzt, groupBy = fData(mzt)$accession, fun = "mean")
+head(exprs(prot))
+dim(prot)
+```
+
 ## Visualisation
 
 As we have access to the expression matrix and plenty of metadata, we
