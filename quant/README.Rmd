@@ -294,7 +294,10 @@ plot2D(t(mulvey2015), fcol = "times")
 
 #### Exercise
 
-Try the `plot3D` function.
+Try the `plot3D` function. For more involved interactive
+visualisation, try the `pRolocVis` function from the `pRolocGUI`
+function. To get started use the `hyperLOPIT2015` from the
+`pRolocdata` package.
 
 
 

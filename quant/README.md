@@ -102,7 +102,7 @@ msexp
 ##  Number of spectra: 5 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Oct 16 07:03:32 2016 
+## Data loaded: Sun Oct 16 07:33:23 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -149,8 +149,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Oct 16 07:03:32 2016 
-## iTRAQ4 quantification by trapezoidation: Sun Oct 16 07:03:34 2016 
+## Data loaded: Sun Oct 16 07:33:23 2016 
+## iTRAQ4 quantification by trapezoidation: Sun Oct 16 07:33:25 2016 
 ##  MSnbase version: 1.99.7
 ```
 
@@ -561,7 +561,10 @@ plot2D(t(mulvey2015), fcol = "times")
 
 #### Exercise
 
-Try the `plot3D` function.
+Try the `plot3D` function. For more involved interactive
+visualisation, try the `pRolocVis` function from the `pRolocGUI`
+function. To get started use the `hyperLOPIT2015` from the
+`pRolocdata` package.
 
 
 
