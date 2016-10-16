@@ -52,13 +52,13 @@ t1
 ## 	Welch Two Sample t-test
 ## 
 ## data:  rnorm(5) and rnorm(5)
-## t = -0.29049, df = 5.9876, p-value = 0.7812
+## t = -0.82865, df = 7.7427, p-value = 0.4321
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -1.819747  1.433702
+##  -1.9631356  0.9296373
 ## sample estimates:
-## mean of x mean of y 
-## 0.2097848 0.4028075
+##  mean of x  mean of y 
+## -0.6265634 -0.1098143
 ```
 
 
@@ -72,13 +72,13 @@ t2
 ## 	Welch Two Sample t-test
 ## 
 ## data:  rnorm(5) and rnorm(5, mean = 4)
-## t = -4.9226, df = 8, p-value = 0.00116
+## t = -5.542, df = 6.2315, p-value = 0.001285
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -4.616365 -1.671030
+##  -5.286538 -2.068256
 ## sample estimates:
-## mean of x mean of y 
-## 0.9009366 4.0446341
+##   mean of x   mean of y 
+## -0.02618335  3.65121321
 ```
 
 What we see above is a pretty output that is convenient to visualise
@@ -94,7 +94,7 @@ t2$p.value
 ```
 
 ```
-## [1] 0.001160179
+## [1] 0.001284698
 ```
 
 ## One-sample test 
@@ -113,13 +113,13 @@ t.test(logsilac, mu = 0)
 ## 	One Sample t-test
 ## 
 ## data:  logsilac
-## t = -1.1196, df = 2, p-value = 0.3793
+## t = -1.002, df = 2, p-value = 0.4219
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -1.3418850  0.7877439
+##  -2.427481  1.510408
 ## sample estimates:
 ##  mean of x 
-## -0.2770706
+## -0.4585366
 ```
 
 ### Exercise
@@ -236,6 +236,28 @@ summary(fData(time16)$q.value)
 
 ## Moderated t-tests: `limma`
 
+Two values are used when computing a t statistics: the effect size
+(i.e. difference in means) and the sample standard
+deviations. Moderated t statistics compute variance estimates that are
+a compromise between global variance estimate and individual genewise
+variance estimates.
+
+From the *[limma](http://bioconductor.org/packages/limma)* reference:
+
+> This procedure is implemented in the limma software package (Ritchie
+> et al., 2015) and the resulting EB [Empirical Bayes] tests have been
+> shown to offer improved statistical power and false discovery rate
+> (FDR) control relative to the ordinary genewise t-tests, especially
+> when the sam- ple sizes are small (Kooperberg et al., 2005; Murie et
+> al., 2009; Ji and Liu, 2010; Jeanmougin et al., 2010). The limma
+> software has been used successfully in thousands of published
+> biological studies using data from a variety of genomic
+> technologies, especially studies using expression microarrays and
+> RNA-seq.
+
+The *[limma](http://bioconductor.org/packages/limma)* comes with extensive documentation, available
+with the `limmaUsersGuide()` function. While is doen't explicity
+mention proteomics, its methodology is applicable to proteomics data.
 
 
 ## Count data
@@ -289,7 +311,7 @@ dim(msms.spk)
 
 We are going to model the data according to the negative-binomial
 distribution, using the implementation of the *[edgeR](http://bioconductor.org/packages/edgeR)*
-package, which uses an empirical Bayes method to share information
+package, which uses an Empirical Bayes method to share information
 across features and is this particularly relevant with a restricted
 number of replicates. We will focus on the `U200` and `U600`
 conditions.
