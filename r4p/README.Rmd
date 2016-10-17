@@ -75,7 +75,7 @@ addition to all function manuals.
 
 ## Proteomics/MS data structures
 
-```{r, echo=FALSE}
+```{r, echo = FALSE}
 knitr::kable(RforProteomics:::msDataTab())
 ```
 

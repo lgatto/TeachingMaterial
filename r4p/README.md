@@ -92,12 +92,6 @@ addition to all function manuals.
 ## Proteomics/MS data structures
 
 
-```r
-knitr::kable(RforProteomics:::msDataTab())
-```
-
-
-
 |Data type      |File format          |Data structure               |Package           |
 |:--------------|:--------------------|:----------------------------|:-----------------|
 |Raw            |mzXML or mzML        |mzRpwiz or mzRramp           |mzR               |
