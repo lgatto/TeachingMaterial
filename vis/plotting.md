@@ -347,7 +347,7 @@ We need to install and load the package first.
 
 ```r
 install.packages("ggplot2")
-library("ggplots")
+library("ggplot2")
 ```
 
 Based on the Grammar of Graphics
