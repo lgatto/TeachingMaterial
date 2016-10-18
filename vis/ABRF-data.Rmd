@@ -86,3 +86,35 @@ dim(idfree)
 colnames(idfree)
 class(idfree)
 ```
+
+## Principal component analysis (PCA)
+
+We can hardly visualise all `r ncol(idfree) - 4` QC metrics to
+identify any outliers.
+
+```{r}
+pca <- prcomp(idfree[, -(1:4)], scale = TRUE, center = TRUE)
+```
+
+```{r}
+plot(pca)
+biplot(pca)
+```
+
+
+```{r}
+plot(pca$x[, 1:2], col = idfree$Id, cex = 2, pch = 19)
+text(pca$x[, 1], pca$x[, 2], rownames(idfree), cex = .7)
+```
+
+```{r}
+library(RColorBrewer)
+cls <- brewer.pal(12, "Set3")
+cls <- rep(cls, 4)
+pch <- rep(c(15, 20), each = 26)
+names(cls) <- names(pch) <- unique(idfree$Id)
+
+plot(pca$x[, 1:2], cex = 2, col = cls[as.character(idfree$Id)],
+     pch = pch[as.character(idfree$Id)])
+text(pca$x[, 1], pca$x[, 2], rownames(idfree), cex = .7)
+```
