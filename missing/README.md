@@ -3,6 +3,7 @@
 
 
 
+
 ```r
 library("MSnbase")
 data(naset)
@@ -33,9 +34,9 @@ processingData(flt)
 
 ```
 ## - - - Processing information - - -
-## Subset [689,16][301,16] Sat Oct 15 00:21:58 2016 
-## Removed features with more than 0 NAs: Sat Oct 15 00:21:58 2016 
-## Dropped featureData's levels Sat Oct 15 00:21:58 2016 
+## Subset [689,16][301,16] Wed Oct 19 08:23:12 2016 
+## Removed features with more than 0 NAs: Wed Oct 19 08:23:12 2016 
+## Dropped featureData's levels Wed Oct 19 08:23:12 2016 
 ##  MSnbase version: 1.15.6
 ```
 
@@ -50,6 +51,29 @@ is implemented in the *[synapter](http://bioconductor.org/packages/synapter)* pa
 ![Identification transfer](../img/Fig6-EMRTmatching.png)
 
 ## Imputation
+
+> Missing values are a genuine issue in label-free quantitative
+> proteomics. Recent works have surveyed the different statistical
+> methods to conduct imputation and have compared them on real or
+> simulated datasets, and recommended a list of missing value
+> imputation methods for proteomics application. Although insightful,
+> these comparisons do not account for two important facts: (i)
+> depending on the proteomics dataset, the missingness mechanism may
+> be of different natures, and (ii) each imputation method is devoted
+> to a specific type of missingness mechanism. As a result, we believe
+> that the question at stake is not to find the most accurate
+> imputation method in general, but instead, the most appropriate
+> one. In this article, we describe a series of comparisons that
+> support our views: for instance, we show that a supposedly
+> *under-performing* method (i.e. giving baseline average results), if
+> applied at the *appropriate* time in the data processing pipeline
+> (before or after peptide aggregation) on a dataset with the
+> *appropriate* nature of missing values, can outperform a blindly
+> applied, supposedly *better performing* method (i.e. the reference
+> method from the state-of-the-art). This leads us to formulate few
+> practical guidelines, regarding the choice and the application of an
+> imputation method in a proteomics context.
+
 
 It is of course possible to impute missing values. This is however not
 a straightforward thing, as is likely to dramatically fail when a high
@@ -83,7 +107,7 @@ with different methods.
 
 It is recommended to use **hot deck** methods (nearest neighbour
 (**left**), maximum likelihood, ...) when data are missing at
-random.Conversely, MNAR features should ideally be imputed with a
+random. Conversely, MNAR features should ideally be imputed with a
 **left-censor** (minimum value (**right**), but not zero, ...) method.
 
 ## In `MSnbase`
@@ -180,5 +204,17 @@ missing values will not be imputed.
 
 ### Exercise
 
-Walk through the example in the `impute` documentation.
+Walk through the example in the `impute` examples.
 
+### Reference
+
+Lazar C, Gatto L, Ferro M, Bruley C, Burger T. *Accounting for the
+Multiple Natures of Missing Values in Label-Free Quantitative
+Proteomics Data Sets to Compare Imputation Strategies*. J Proteome
+Res. 2016 Apr
+1;15(4):1116-25. ([Publisher](http://pubsdc3.acs.org/doi/abs/10.1021/acs.jproteome.5b00981),
+[PMID:26906401](http://www.ncbi.nlm.nih.gov/pubmed/26906401),
+Software:
+[CRAN](https://cran.r-project.org/web/packages/imputeLCMD/index.html)
+and
+[Bioconductor](http://bioconductor.org/packages/release/bioc/html/MSnbase.html))
