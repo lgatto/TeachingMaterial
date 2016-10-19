@@ -3,9 +3,17 @@
 Missing values are a recurring issue in quantitative proteomics, and
 yet, it is too often explicitly or implicitly ignored (when, for
 example, software systematically and silently assign zeros when
-features are not observed). There is certainly no unique answer that
-fits all cases, but one can get a long way in handling them adequately
-by exploring the data and its degree of missingness.
+features are not observed). Many downstream algorithms are not
+applicable to data with missing values, such as most classification
+algorithms, hierarchical clustering, PCA analysis, t-test, but not
+`limma`, ... And even if they work around it (often by implicitly
+imputing missing values or simply ignoring data with missing values),
+missing values or how they were imputed will have an impact on the
+results.
+
+There is certainly no unique answer that fits all cases, but one can
+get a long way in handling them adequately by exploring the data and
+its degree of missingness.
 
 In this section, we will see how to **explore**, **filter** and/or
 **impute** missing values, and when/why to apply different options.
@@ -46,9 +54,9 @@ processingData(flt)
 
 ```
 ## - - - Processing information - - -
-## Subset [689,16][301,16] Wed Oct 19 20:40:12 2016 
-## Removed features with more than 0 NAs: Wed Oct 19 20:40:12 2016 
-## Dropped featureData's levels Wed Oct 19 20:40:12 2016 
+## Subset [689,16][301,16] Wed Oct 19 21:10:51 2016 
+## Removed features with more than 0 NAs: Wed Oct 19 21:10:51 2016 
+## Dropped featureData's levels Wed Oct 19 21:10:51 2016 
 ##  MSnbase version: 1.15.6
 ```
 

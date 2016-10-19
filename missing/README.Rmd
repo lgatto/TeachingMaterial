@@ -3,9 +3,17 @@
 Missing values are a recurring issue in quantitative proteomics, and
 yet, it is too often explicitly or implicitly ignored (when, for
 example, software systematically and silently assign zeros when
-features are not observed). There is certainly no unique answer that
-fits all cases, but one can get a long way in handling them adequately
-by exploring the data and its degree of missingness.
+features are not observed). Many downstream algorithms are not
+applicable to data with missing values, such as most classification
+algorithms, hierarchical clustering, PCA analysis, t-test, but not
+`limma`, ... And even if they work around it (often by implicitly
+imputing missing values or simply ignoring data with missing values),
+missing values or how they were imputed will have an impact on the
+results.
+
+There is certainly no unique answer that fits all cases, but one can
+get a long way in handling them adequately by exploring the data and
+its degree of missingness.
 
 In this section, we will see how to **explore**, **filter** and/or
 **impute** missing values, and when/why to apply different options.
