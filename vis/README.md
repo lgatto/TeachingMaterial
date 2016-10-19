@@ -6,5 +6,5 @@
 
 - [Basic plotting with R](./plotting.md)
 - [`ggplot2`](./ggplot2.md) (optional)
-- Use case: dimensionality reduction
+- Use case: [dimensionality reduction](./ABRF-data.md)
 

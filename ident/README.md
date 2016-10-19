@@ -1,6 +1,9 @@
-# Indentification data using `mzR`, `mzID`, `MSnID`
+# Indentification data: `mzR`, `mzID`, `MSnID`
 
 
+```
+## Warning in read.dcf(con): unable to resolve 'bioconductor.org'
+```
 ## Handling identification data
 
 There are two packages that can be used to parse `mzIdentML` files,
@@ -191,13 +194,28 @@ head(psms(id2))
 ##  [ reached getOption("max.print") -- omitted 1 row ]
 ```
 
-#### Exercise
+#### Example
 
 Is there a relation between the length of a protein and the number of
 identified peptides, conditioned by the (average) e-value of the
 identifications?
 
 
+```r
+fid <- flatten(id)
+x <- by(fid, fid$accession,
+        function(x)
+            c(unique(x$length),
+              length(unique(x$pepseq)),
+              mean(x$'ms-gf:specevalue')))
+x <- data.frame(do.call(rbind, x))
+colnames(x) <- c("plength", "npep", "eval")
+x$bins <- cut(x$eval, summary(x$eval))
+library("lattice")
+xyplot(log10(plength) ~ npep | bins, data = x)
+```
+
+![plot of chunk ex_id](figure/ex_id-1.png)
 
 ## Adding identification data to raw data
 
@@ -205,14 +223,7 @@ Here are two matching raw and identiciation data files:
 
 
 ```r
-libary("MSnbase")
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "libary"
-```
-
-```r
+library("MSnbase")
 ## find path to a mzXML file
 rwf <- dir(system.file(package = "MSnbase", dir = "extdata"),
            full.name = TRUE, pattern = "mzXML$")
@@ -391,18 +402,390 @@ identification data.
 
 ## Exploration and Assessment of Confidence of LC-MSn Proteomics Identifications using `MSnID`
 
-Extracts MS/MS ID data from mzIdentML (leveraging the `mzID` package)
-or text files. After collating the search results from multiple
-datasets it assesses their identification quality and optimize
-filtering criteria to achieve the maximum number of identifications
-while not exceeding a specified false discovery rate. Also contains a
-number of utilities to explore the MS/MS results and assess missed and
-irregular enzymatic cleavages, mass measurement accuracy, etc.
+The `MSnID` package extracts MS/MS ID data from mzIdentML (leveraging
+the `mzID` package) or text files. After collating the search results
+from multiple datasets it assesses their identification quality and
+optimises filtering criteria to achieve the maximum number of
+identifications while not exceeding a specified false discovery
+rate. It also contains a number of utilities to explore the MS/MS
+results and assess missed and irregular enzymatic cleavages, mass
+measurement accuracy, etc.
 
-Let's reproduce the analysis described the `MSnID` vignette. Open it
-with
+### Step-by-step workflow
+
+Let's reproduce parts of the analysis described the `MSnID`
+vignette. You can expole more with 
 
 
 ```r
 vignette("msnid_vignette", package = "MSnID")
+```
+
+The *[MSnID](http://bioconductor.org/packages/MSnID)* package can be used for post-search filtering
+of MS/MS identifications. One starts with the construction of an
+`MSnID` object that is populated with identification results that can
+be imported from a `data.frame` or from `mzIdenML` files. Here, we
+will use the example identification data provided with the package.
+
+
+```r
+mzids <- system.file("extdata", "c_elegans.mzid.gz", package="MSnID")
+basename(mzids)
+```
+
+```
+## [1] "c_elegans.mzid.gz"
+```
+
+We start by loading the package, initialising the `MSnID` object, and
+add the identification result from our `mzid` file (there could of
+course be more that one).
+
+
+```r
+library("MSnID")
+msnid <- MSnID(".")
+```
+
+```
+## Note, the anticipated/suggested columns in the
+## peptide-to-spectrum matching results are:
+## -----------------------------------------------
+## accession
+## calculatedMassToCharge
+## chargeState
+## experimentalMassToCharge
+## isDecoy
+## peptide
+## spectrumFile
+## spectrumID
+```
+
+```r
+msnid <- read_mzIDs(msnid, mzids)
+```
+
+```
+## Loaded cached data
+```
+
+```r
+show(msnid)
+```
+
+```
+## MSnID object
+## Working directory: "."
+## #Spectrum Files:  1 
+## #PSMs: 12263 at 36 % FDR
+## #peptides: 9489 at 44 % FDR
+## #accessions: 7414 at 76 % FDR
+```
+
+Printing the `MSnID` object returns some basic information such as
+
+* Working directory.
+* Number of spectrum files used to generate data.
+* Number of peptide-to-spectrum matches and corresponding FDR.
+* Number of unique peptide sequences and corresponding FDR.
+* Number of unique proteins or amino acid sequence accessions and corresponding FDR.
+
+
+The package then enables to define, optimise and apply filtering based
+for example on missed cleavages, identification scores, precursor mass
+errors, etc. and assess PSM, peptide and protein FDR levels. To
+properly function, it expects to have access to the following data
+
+
+```
+## [1] "accession"                "calculatedMassToCharge"  
+## [3] "chargeState"              "experimentalMassToCharge"
+## [5] "isDecoy"                  "peptide"                 
+## [7] "spectrumFile"             "spectrumID"
+```
+
+which are indeed present in our data:
+
+
+```r
+names(msnid)
+```
+
+```
+##  [1] "spectrumID"                "scan number(s)"           
+##  [3] "acquisitionNum"            "passThreshold"            
+##  [5] "rank"                      "calculatedMassToCharge"   
+##  [7] "experimentalMassToCharge"  "chargeState"              
+##  [9] "MS-GF:DeNovoScore"         "MS-GF:EValue"             
+## [11] "MS-GF:PepQValue"           "MS-GF:QValue"             
+## [13] "MS-GF:RawScore"            "MS-GF:SpecEValue"         
+## [15] "AssumedDissociationMethod" "IsotopeError"             
+## [17] "isDecoy"                   "post"                     
+## [19] "pre"                       "end"                      
+## [21] "start"                     "accession"                
+## [23] "length"                    "description"              
+## [25] "pepSeq"                    "modified"                 
+## [27] "modification"              "idFile"                   
+## [29] "spectrumFile"              "databaseFile"             
+## [31] "peptide"
+```
+
+Here, we summarise a few steps and redirect the reader to the
+package's vignette for more details:
+
+
+### Analysis of peptide sequences
+
+Cleaning irregular cleavages at the termini of the peptides and
+missing cleavage site within the peptide sequences. The following two
+function call create the new `numMisCleavages` and `numIrregCleavages`
+columns in the `MSnID` object
+
+
+```r
+msnid <- assess_termini(msnid, validCleavagePattern="[KR]\\.[^P]")
+msnid <- assess_missed_cleavages(msnid, missedCleavagePattern="[KR](?=[^P$])")
+```
+
+## Trimming the data
+
+Now, we can use the `apply_filter` function to effectively apply
+filters. The strings passed to the function represent expressions that
+will be evaludated, this keeping only PSMs that have 0 irregular
+cleavages and 2 or less missed cleavages.
+
+
+```r
+msnid <- apply_filter(msnid, "numIrregCleavages == 0")
+msnid <- apply_filter(msnid, "numMissCleavages <= 2")
+show(msnid)
+```
+
+```
+## MSnID object
+## Working directory: "."
+## #Spectrum Files:  1 
+## #PSMs: 7838 at 17 % FDR
+## #peptides: 5598 at 23 % FDR
+## #accessions: 3759 at 53 % FDR
+```
+
+## Parent ion mass errors
+
+Using `"calculatedMassToCharge"` and `"experimentalMassToCharge"`, the
+`mass_measurement_error` function calculates the parent ion mass
+measurement error in parts per million.
+
+
+```r
+summary(mass_measurement_error(msnid))
+```
+
+```
+##       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. 
+## -2184.0000    -0.6992     0.0000    17.6100     0.7512  2013.0000
+```
+
+We then filter any matches that do not fit the +/- 20 ppm tolerance
+
+
+```r
+msnid <- apply_filter(msnid, "abs(mass_measurement_error(msnid)) < 20")
+summary(mass_measurement_error(msnid))
+```
+
+```
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
+## -19.7800  -0.5866   0.0000  -0.2970   0.5713  19.6800
+```
+
+## Filtering criteria
+
+Filtering of the identification data will rely on 
+
+* -log10 transformed MS-GF+ Spectrum E-value, reflecting the goodness
+  of match experimental and theoretical fragmentation patterns
+  
+
+```r
+msnid$msmsScore <- -log10(msnid$`MS-GF:SpecEValue`)
+```
+
+* the absolute mass measurement error (in ppm units) of the parent ion
+
+
+```r
+msnid$absParentMassErrorPPM <- abs(mass_measurement_error(msnid))
+```
+
+## Setting filters
+
+MS2 fiters are handled by a special `MSnIDFilter` class objects, where
+individual filters are set by name (that is present in `names(msnid)`)
+and comparison operator (>, <, = , ...)  defining if we should retain
+hits with higher or lower given the threshold and finally the
+threshold value itself.
+
+
+```r
+filtObj <- MSnIDFilter(msnid)
+filtObj$absParentMassErrorPPM <- list(comparison="<", threshold=10.0)
+filtObj$msmsScore <- list(comparison=">", threshold=10.0)
+show(filtObj)
+```
+
+```
+## MSnIDFilter object
+## (absParentMassErrorPPM < 10) & (msmsScore > 10)
+```
+
+We can then evaluate the filter on the identification data object,
+which return the false discovery rate and number of retained
+identifications for the filtering criteria at hand.
+
+
+```r
+evaluate_filter(msnid, filtObj)
+```
+
+```
+##           fdr    n
+## PSM         0 3807
+## peptide     0 2455
+## accession   0 1009
+```
+
+## Filter optimisation
+
+Rather than setting filtering values by hand, as shown above, these
+can be set automativally to meet a specific false discovery rate.
+
+
+```r
+filtObj.grid <- optimize_filter(filtObj, msnid, fdr.max=0.01,
+                                method="Grid", level="peptide",
+                                n.iter=500)
+show(filtObj.grid)
+```
+
+```
+## MSnIDFilter object
+## (absParentMassErrorPPM < 3) & (msmsScore > 7.4)
+```
+
+
+```r
+evaluate_filter(msnid, filtObj.grid)
+```
+
+```
+##                   fdr    n
+## PSM       0.004097561 5146
+## peptide   0.006447651 3278
+## accession 0.021996616 1208
+```
+
+Filters can eventually be applied (rather than just evaluated) using
+the `apply_filter` function.
+
+
+```r
+msnid <- apply_filter(msnid, filtObj.grid)
+show(msnid)
+```
+
+```
+## MSnID object
+## Working directory: "."
+## #Spectrum Files:  1 
+## #PSMs: 5146 at 0.41 % FDR
+## #peptides: 3278 at 0.64 % FDR
+## #accessions: 1208 at 2.2 % FDR
+```
+
+And finally, identifications that matched decoy and contaminant
+protein sequences are removed 
+
+
+```r
+msnid <- apply_filter(msnid, "isDecoy == FALSE") 
+msnid <- apply_filter(msnid, "!grepl('Contaminant',accession)")
+show(msnid)
+```
+
+```
+## MSnID object
+## Working directory: "."
+## #Spectrum Files:  1 
+## #PSMs: 5117 at 0 % FDR
+## #peptides: 3251 at 0 % FDR
+## #accessions: 1179 at 0 % FDR
+```
+
+## Export `MSnID` data
+
+The resulting filtered identification data can be exported to a
+`data.frame` or to a dedicated `MSnSet` data structure for
+quantitative MS data, described below, and further processed and
+analyses using appropriate statistical tests.
+
+
+```r
+head(psms(msnid))
+```
+
+```
+##   spectrumID scan number(s) acquisitionNum passThreshold rank
+## 1 index=7151           8819           7151          TRUE    1
+## 2 index=8520          10419           8520          TRUE    1
+##   calculatedMassToCharge experimentalMassToCharge chargeState
+## 1               1270.318                 1270.318           3
+## 2               1426.737                 1426.739           3
+##   MS-GF:DeNovoScore MS-GF:EValue MS-GF:PepQValue MS-GF:QValue
+## 1               287 1.709082e-24               0            0
+## 2               270 3.780745e-24               0            0
+##   MS-GF:RawScore MS-GF:SpecEValue AssumedDissociationMethod IsotopeError
+## 1            239     1.007452e-31                       CID            0
+## 2            230     2.217275e-31                       CID            0
+##   isDecoy post pre end start accession length
+## 1   FALSE    A   K 283   249   CE02347    393
+## 2   FALSE    A   K 182   142   CE07055    206
+##                                                                                                                           description
+## 1 WBGene00001993; locus:hpd-1; 4-hydroxyphenylpyruvate dioxygenase; status:Confirmed; UniProt:Q22633; protein_id:CAA90315.1; T21C12.2
+## 2           WBGene00001755; locus:gst-7; glutathione S-transferase; status:Confirmed; UniProt:P91253; protein_id:AAB37846.1; F11G11.2
+##                                      pepSeq modified modification
+## 1       AISQIQEYVDYYGGSGVQHIALNTSDIITAIEALR    FALSE         <NA>
+## 2 SAGSGYLVGDSLTFVDLLVAQHTADLLAANAALLDEFPQFK    FALSE         <NA>
+##              idFile                                   spectrumFile
+## 1 c_elegans.mzid.gz c_elegans_A_3_1_21Apr10_Draco_10-03-04_dta.txt
+## 2 c_elegans.mzid.gz c_elegans_A_3_1_21Apr10_Draco_10-03-04_dta.txt
+##               databaseFile                                       peptide
+## 1 ID_004174_E48C5B52.fasta       K.AISQIQEYVDYYGGSGVQHIALNTSDIITAIEALR.A
+## 2 ID_004174_E48C5B52.fasta K.SAGSGYLVGDSLTFVDLLVAQHTADLLAANAALLDEFPQFK.A
+##   numIrregCleavages numMissCleavages msmsScore absParentMassErrorPPM
+## 1                 0                0  30.99678             0.3843772
+## 2                 0                0  30.65418             1.3689451
+##  [ reached getOption("max.print") -- omitted 4 rows ]
+```
+
+```r
+as(msnid, "MSnSet")
+```
+
+```
+## MSnSet (storageMode: lockedEnvironment)
+## assayData: 3251 features, 1 samples 
+##   element names: exprs 
+## protocolData: none
+## phenoData: none
+## featureData
+##   featureNames: -.APPSQDVLKEIFNLYDEELDGK.I
+##     -.APPSQDVLKEIFNLYDEELDGKIDGTQVGDVAR.A ... R.YWNMVQAYLR.T (3251
+##     total)
+##   fvarLabels: peptide accession
+##   fvarMetadata: labelDescription
+## experimentData: use 'experimentData(object)'
+## Annotation:  
+## - - - Processing information - - -
+##  MSnbase version: 1.99.7
 ```

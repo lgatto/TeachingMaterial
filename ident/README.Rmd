@@ -1,9 +1,10 @@
-# Indentification data using `mzR`, `mzID`, `MSnID`
+# Indentification data: `mzR`, `mzID`, `MSnID`
 
 ```{r env, echo=FALSE}
 library(BiocStyle)
 suppressPackageStartupMessages(library("mzR"))
 suppressPackageStartupMessages(library("MSnbase"))
+suppressPackageStartupMessages(library("MSnID"))
 ```
 ## Handling identification data
 
@@ -74,13 +75,13 @@ The identification data can be accessed as a `data.frame` with the
 head(psms(id2))
 ```
 
-#### Exercise
+#### Example
 
 Is there a relation between the length of a protein and the number of
 identified peptides, conditioned by the (average) e-value of the
 identifications?
 
-```{r, ex_id, echo=FALSE, eval=FALSE}
+```{r, ex_id, echo=TRUE, eval=TRUE}
 fid <- flatten(id)
 x <- by(fid, fid$accession,
         function(x)
@@ -91,7 +92,7 @@ x <- data.frame(do.call(rbind, x))
 colnames(x) <- c("plength", "npep", "eval")
 x$bins <- cut(x$eval, summary(x$eval))
 library("lattice")
-xyplot(plength ~ npep | bins, data = x)
+xyplot(log10(plength) ~ npep | bins, data = x)
 ```
 
 ## Adding identification data to raw data
@@ -99,7 +100,7 @@ xyplot(plength ~ npep | bins, data = x)
 Here are two matching raw and identiciation data files:
 
 ```{r}
-libary("MSnbase")
+library("MSnbase")
 ## find path to a mzXML file
 rwf <- dir(system.file(package = "MSnbase", dir = "extdata"),
            full.name = TRUE, pattern = "mzXML$")
@@ -183,17 +184,197 @@ identification data.
 
 ## Exploration and Assessment of Confidence of LC-MSn Proteomics Identifications using `MSnID`
 
-Extracts MS/MS ID data from mzIdentML (leveraging the `mzID` package)
-or text files. After collating the search results from multiple
-datasets it assesses their identification quality and optimize
-filtering criteria to achieve the maximum number of identifications
-while not exceeding a specified false discovery rate. Also contains a
-number of utilities to explore the MS/MS results and assess missed and
-irregular enzymatic cleavages, mass measurement accuracy, etc.
+The `MSnID` package extracts MS/MS ID data from mzIdentML (leveraging
+the `mzID` package) or text files. After collating the search results
+from multiple datasets it assesses their identification quality and
+optimises filtering criteria to achieve the maximum number of
+identifications while not exceeding a specified false discovery
+rate. It also contains a number of utilities to explore the MS/MS
+results and assess missed and irregular enzymatic cleavages, mass
+measurement accuracy, etc.
 
-Let's reproduce the analysis described the `MSnID` vignette. Open it
-with
+### Step-by-step workflow
+
+Let's reproduce parts of the analysis described the `MSnID`
+vignette. You can expole more with 
 
 ```{r, eval = FALSE}
 vignette("msnid_vignette", package = "MSnID")
+```
+
+The `r Biocpkg("MSnID")` package can be used for post-search filtering
+of MS/MS identifications. One starts with the construction of an
+`MSnID` object that is populated with identification results that can
+be imported from a `data.frame` or from `mzIdenML` files. Here, we
+will use the example identification data provided with the package.
+
+```{r idf}
+mzids <- system.file("extdata", "c_elegans.mzid.gz", package="MSnID")
+basename(mzids)
+```
+
+We start by loading the package, initialising the `MSnID` object, and
+add the identification result from our `mzid` file (there could of
+course be more that one).
+
+```{r msnid1}
+library("MSnID")
+msnid <- MSnID(".")
+msnid <- read_mzIDs(msnid, mzids)
+show(msnid)
+```
+
+Printing the `MSnID` object returns some basic information such as
+
+* Working directory.
+* Number of spectrum files used to generate data.
+* Number of peptide-to-spectrum matches and corresponding FDR.
+* Number of unique peptide sequences and corresponding FDR.
+* Number of unique proteins or amino acid sequence accessions and corresponding FDR.
+
+
+The package then enables to define, optimise and apply filtering based
+for example on missed cleavages, identification scores, precursor mass
+errors, etc. and assess PSM, peptide and protein FDR levels. To
+properly function, it expects to have access to the following data
+
+```{r msnidcols, echo=FALSE}
+sort(MSnID:::.mustBeColumns)
+```
+
+which are indeed present in our data:
+
+```{r msnidnames}
+names(msnid)
+```
+
+Here, we summarise a few steps and redirect the reader to the
+package's vignette for more details:
+
+
+### Analysis of peptide sequences
+
+Cleaning irregular cleavages at the termini of the peptides and
+missing cleavage site within the peptide sequences. The following two
+function call create the new `numMisCleavages` and `numIrregCleavages`
+columns in the `MSnID` object
+
+```{r msnidtermini}
+msnid <- assess_termini(msnid, validCleavagePattern="[KR]\\.[^P]")
+msnid <- assess_missed_cleavages(msnid, missedCleavagePattern="[KR](?=[^P$])")
+```
+
+## Trimming the data
+
+Now, we can use the `apply_filter` function to effectively apply
+filters. The strings passed to the function represent expressions that
+will be evaludated, this keeping only PSMs that have 0 irregular
+cleavages and 2 or less missed cleavages.
+
+```{r msnidtrim}
+msnid <- apply_filter(msnid, "numIrregCleavages == 0")
+msnid <- apply_filter(msnid, "numMissCleavages <= 2")
+show(msnid)
+```
+
+## Parent ion mass errors
+
+Using `"calculatedMassToCharge"` and `"experimentalMassToCharge"`, the
+`mass_measurement_error` function calculates the parent ion mass
+measurement error in parts per million.
+
+```{r msnidppm1}
+summary(mass_measurement_error(msnid))
+```
+
+We then filter any matches that do not fit the +/- 20 ppm tolerance
+
+```{r msnidppm2}
+msnid <- apply_filter(msnid, "abs(mass_measurement_error(msnid)) < 20")
+summary(mass_measurement_error(msnid))
+```
+
+## Filtering criteria
+
+Filtering of the identification data will rely on 
+
+* -log10 transformed MS-GF+ Spectrum E-value, reflecting the goodness
+  of match experimental and theoretical fragmentation patterns
+  
+```{r filt1}
+msnid$msmsScore <- -log10(msnid$`MS-GF:SpecEValue`)
+```  
+
+* the absolute mass measurement error (in ppm units) of the parent ion
+
+```{r filt2}
+msnid$absParentMassErrorPPM <- abs(mass_measurement_error(msnid))
+```
+
+## Setting filters
+
+MS2 fiters are handled by a special `MSnIDFilter` class objects, where
+individual filters are set by name (that is present in `names(msnid)`)
+and comparison operator (>, <, = , ...)  defining if we should retain
+hits with higher or lower given the threshold and finally the
+threshold value itself.
+
+```{r filt3}
+filtObj <- MSnIDFilter(msnid)
+filtObj$absParentMassErrorPPM <- list(comparison="<", threshold=10.0)
+filtObj$msmsScore <- list(comparison=">", threshold=10.0)
+show(filtObj)
+```
+
+We can then evaluate the filter on the identification data object,
+which return the false discovery rate and number of retained
+identifications for the filtering criteria at hand.
+
+```{r filt4}
+evaluate_filter(msnid, filtObj)
+```
+
+## Filter optimisation
+
+Rather than setting filtering values by hand, as shown above, these
+can be set automativally to meet a specific false discovery rate.
+
+```{r optim1}
+filtObj.grid <- optimize_filter(filtObj, msnid, fdr.max=0.01,
+                                method="Grid", level="peptide",
+                                n.iter=500)
+show(filtObj.grid)
+```
+
+```{r optim2}
+evaluate_filter(msnid, filtObj.grid)
+```
+
+Filters can eventually be applied (rather than just evaluated) using
+the `apply_filter` function.
+
+```{r optim3}
+msnid <- apply_filter(msnid, filtObj.grid)
+show(msnid)
+```
+
+And finally, identifications that matched decoy and contaminant
+protein sequences are removed 
+
+```{r optim4}
+msnid <- apply_filter(msnid, "isDecoy == FALSE") 
+msnid <- apply_filter(msnid, "!grepl('Contaminant',accession)")
+show(msnid)
+```
+
+## Export `MSnID` data
+
+The resulting filtered identification data can be exported to a
+`data.frame` or to a dedicated `MSnSet` data structure for
+quantitative MS data, described below, and further processed and
+analyses using appropriate statistical tests.
+
+```{r}
+head(psms(msnid))
+as(msnid, "MSnSet")
 ```
