@@ -1,7 +1,19 @@
 # Missing values in proteomics
 
+Missing values are a recurring issue in quantitative proteomics, and
+yet, it is too often explicitly or implicitly ignored (when, for
+example, software systematically and silently assign zeros when
+features are not observed). There is certainly no unique answer that
+fits all cases, but one can get a long way in handling them adequately
+by exploring the data and its degree of missingness.
+
+In this section, we will see how to **explore**, **filter** and/or
+**impute** missing values, and when/why to apply different options.
 
 
+
+
+## Exploring
 
 
 ```r
@@ -34,23 +46,28 @@ processingData(flt)
 
 ```
 ## - - - Processing information - - -
-## Subset [689,16][301,16] Wed Oct 19 08:23:12 2016 
-## Removed features with more than 0 NAs: Wed Oct 19 08:23:12 2016 
-## Dropped featureData's levels Wed Oct 19 08:23:12 2016 
+## Subset [689,16][301,16] Wed Oct 19 20:40:12 2016 
+## Removed features with more than 0 NAs: Wed Oct 19 20:40:12 2016 
+## Dropped featureData's levels Wed Oct 19 20:40:12 2016 
 ##  MSnbase version: 1.15.6
 ```
 
 ## Identification transfer
 
-Identification transfer between acquisitions (label-free): if a feature
-was not acquired in MS2 in one replicate, it is possible to find the
-ion in MS space based on the M/Z and retention time coordinates of the
-same ion in a replicate where it was identified. (An example of this
-is implemented in the *[synapter](http://bioconductor.org/packages/synapter)* package).
+Identification transfer between acquisitions (label-free): if a
+feature was not acquired in MS2 in one replicate, it is possible to
+find the ion in MS space based on the M/Z and retention time
+coordinates of the same ion in a replicate where it was
+identified. (An example of this is implemented in the Bioconductor 
+*[synapter](http://bioconductor.org/packages/synapter)* package for Synapt MSe DIA data).
 
 ![Identification transfer](../img/Fig6-EMRTmatching.png)
 
 ## Imputation
+
+From *Accounting for the Multiple Natures of Missing Values in
+Label-Free Quantitative Proteomics Data Sets to Compare Imputation
+Strategies* (reference below):
 
 > Missing values are a genuine issue in label-free quantitative
 > proteomics. Recent works have surveyed the different statistical
@@ -124,7 +141,7 @@ algorithm. Implemented in the `norm::imp.norm` function. See
 `...` are passed to the `em.norm` function, rather to the actual
 imputation function `imp.norm`.
 	   
-#### bcpa 
+#### bpca 
 
 Bayesian missing value imputation are available, as implemented in the
 and `pcaMethods::pca` functions. See `pca` for details and additional
@@ -170,7 +187,6 @@ the peptides/proteins which present more than 50% recorded values are
 considered. Implemented in the `imputeLCMD::impute.MinProb`
 function. See `impute.MinProb` for details and additional parameters.
 
-
 #### min 
 
 Replaces the missing values by the smallest non-missing value in the data.
@@ -178,7 +194,6 @@ Replaces the missing values by the smallest non-missing value in the data.
 
 #### zero 
 Replaces the missing values by 0.
-
 
 #### mixed 
 
@@ -204,7 +219,15 @@ missing values will not be imputed.
 
 ### Exercise
 
-Walk through the example in the `impute` examples.
+* Walk through the example in the `impute` examples. 
+
+* How would you calculate the `pData` and `fData` `nNA` variables
+  (i.e. number of missing values).
+  
+* Two chunk of code are in an `if` statemet and executed
+  conditionally. Can you figure out when they are executed, when
+  not. If they are not, what would you need to do to get them to be
+  executed.
 
 ### Reference
 
