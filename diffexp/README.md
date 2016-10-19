@@ -13,13 +13,13 @@ t.test(x, y = NULL,
        conf.level = 0.95, ...)
 ```
 
-We will focus on **two sample** unpaires t-test, assuming unequal
+We will focus on **two sample** unpaired t-test, assuming unequal
 variances, as this is the most common scenario in proteomics. Using a
 **paired test** when appropriate is essential, as it will
 substantially increase your test power.
 
 We are going to use the `rnorm` function in this an the next section
-to quickly genreate normally distributed data. Its inputs are 
+to quickly generate normally distributed data. Its inputs are 
 
 - `n`: the number of data points to be generated;
 - `mean`: the mean of the normal distribution to draw the data from
@@ -52,13 +52,13 @@ t1
 ## 	Welch Two Sample t-test
 ## 
 ## data:  rnorm(5) and rnorm(5)
-## t = -0.82865, df = 7.7427, p-value = 0.4321
+## t = -0.20081, df = 7.9673, p-value = 0.8459
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -1.9631356  0.9296373
+##  -1.969972  1.654570
 ## sample estimates:
-##  mean of x  mean of y 
-## -0.6265634 -0.1098143
+## mean of x mean of y 
+## 0.2301373 0.3878384
 ```
 
 
@@ -72,19 +72,25 @@ t2
 ## 	Welch Two Sample t-test
 ## 
 ## data:  rnorm(5) and rnorm(5, mean = 4)
-## t = -5.542, df = 6.2315, p-value = 0.001285
+## t = -11.721, df = 6.0162, p-value = 2.283e-05
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -5.286538 -2.068256
+##  -5.144158 -3.368255
 ## sample estimates:
-##   mean of x   mean of y 
-## -0.02618335  3.65121321
+##  mean of x  mean of y 
+## -0.5893708  3.6668359
 ```
 
 What we see above is a pretty output that is convenient to visualise
 interactively. The output of the `t.test` is an object of class 
-htest, which contains statistic, parameter, p.value, conf.int, estimate, null.value, alternative, method, data.name 
-values.
+htest, which contains the following values: 
+
+
+```
+## [1] "statistic, parameter, p.value, conf.int, estimate, null.value, alternative, method, data.name"
+```
+
+
 
 We can extract any of these with the `$` accessor
 
@@ -94,7 +100,7 @@ t2$p.value
 ```
 
 ```
-## [1] 0.001284698
+## [1] 2.282681e-05
 ```
 
 ## One-sample test 
@@ -113,13 +119,13 @@ t.test(logsilac, mu = 0)
 ## 	One Sample t-test
 ## 
 ## data:  logsilac
-## t = -1.002, df = 2, p-value = 0.4219
+## t = 2.2358, df = 2, p-value = 0.1549
 ## alternative hypothesis: true mean is not equal to 0
 ## 95 percent confidence interval:
-##  -2.427481  1.510408
+##  -0.4051798  1.2817941
 ## sample estimates:
-##  mean of x 
-## -0.4585366
+## mean of x 
+## 0.4383072
 ```
 
 ### Exercise
@@ -134,7 +140,7 @@ on time points 1 and 6.
 
 
 2. Use the `t.test` function to test P48432 for differences in
-   timepoints 1 and 6.
+   time points 1 and 6.
 
 
 
@@ -190,14 +196,14 @@ of a test for differential expression:
 MAplot(time16)
 ```
 
-![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
 
 
 ```r
 plot(fData(time16)$lfc, -log10(fData(time16)$p.value))
 ```
 
-![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png)
 
 ## Multiple testing
 
@@ -210,7 +216,7 @@ Applying this to our data, we obtain
 hist(fData(time16)$p.value)
 ```
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png)
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
 
 
 ```r
@@ -223,7 +229,7 @@ fData(time16)$q.value <- qvalue(fData(time16)$p.value)$qvalue
 plot(fData(time16)$lfc, -log10(fData(time16)$q.value))
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
 
 ```r
 summary(fData(time16)$q.value)
@@ -239,7 +245,7 @@ summary(fData(time16)$q.value)
 Two values are used when computing a t statistics: the effect size
 (i.e. difference in means) and the sample standard
 deviations. Moderated t statistics compute variance estimates that are
-a compromise between global variance estimate and individual genewise
+a compromise between global variance estimate and individual gene-wise
 variance estimates.
 
 From the *[limma](http://bioconductor.org/packages/limma)* reference:
@@ -247,8 +253,8 @@ From the *[limma](http://bioconductor.org/packages/limma)* reference:
 > This procedure is implemented in the limma software package (Ritchie
 > et al., 2015) and the resulting EB [Empirical Bayes] tests have been
 > shown to offer improved statistical power and false discovery rate
-> (FDR) control relative to the ordinary genewise t-tests, especially
-> when the sam- ple sizes are small (Kooperberg et al., 2005; Murie et
+> (FDR) control relative to the ordinary gene-wise t-tests, especially
+> when the sample sizes are small (Kooperberg et al., 2005; Murie et
 > al., 2009; Ji and Liu, 2010; Jeanmougin et al., 2010). The limma
 > software has been used successfully in thousands of published
 > biological studies using data from a variety of genomic
@@ -256,7 +262,7 @@ From the *[limma](http://bioconductor.org/packages/limma)* reference:
 > RNA-seq.
 
 The *[limma](http://bioconductor.org/packages/limma)* comes with extensive documentation, available
-with the `limmaUsersGuide()` function. While is doen't explicity
+with the `limmaUsersGuide()` function. While is doesn't explicitly
 mention proteomics, its methodology is applicable to proteomics data.
 
 
@@ -266,7 +272,7 @@ As discussed in the lecture, count data cannot be handled using a test
 for continuous data. One could log-transform the data (adding one to
 the data to keep 0 counts). Alternatively, using a dedicated count
 distribution has proved successful. Methods originally developed for
-high throughput sequencing data, have benefitted from tremebdous
+high throughput sequencing data, have benefited from tremendous
 development within the Bioconductor project, and can be readily
 applied to proteomics count data.
 
@@ -375,7 +381,7 @@ head(res)
 * Inspect the p-values distribution and, if relevant, adjust as
   demonstrated above.
 
-![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23-1.png)
+![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
 
 * Estimate the number true/false positives and negatives and an alpha
   level of 0.01.

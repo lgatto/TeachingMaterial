@@ -60,12 +60,13 @@ sum(pv <= 0.05)
 ```
 
 Oh dear, there are 86 *significant* random data (at p
-<= 0.05), i.e. 0.04. This is, of
-course, exactly what we expected.
+<= 0.05), i.e. about 4
+percent. This is, of course, exactly what we expected at an alpha of
+5%.
 
 Before adjusting the p-value for multiple testing and controlling the
-false discovery rate (FDR), let first explore the p-values from the
-random data. The histogramme below show that we have a **uniform**
+false discovery rate (FDR), let's first explore the p-values from the
+random data. The histogram below shows that we have a **uniform**
 distribution of values between 0 and 1, some of which are smaller than
 0.05 (or whatever arbitrary threshold we choose).
 
