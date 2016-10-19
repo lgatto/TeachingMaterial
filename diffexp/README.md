@@ -390,12 +390,13 @@ head(res)
 
 ![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
 
+* Visualise the results on a volcano plot
+
+
+
 * Estimate the number true/false positives and negatives and an alpha
   level of 0.01.
 
-
-
-* Visualise the results on a volcano plot
 
 
 

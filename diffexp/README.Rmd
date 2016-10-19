@@ -320,8 +320,18 @@ res$BH <- adj$adjp[order(adj$index), "BH"]
 ## with(res, plot(LogFC, -log10(BH)))
 ```
 
+* Visualise the results on a volcano plot
+
+```{r, eval = FALSE, echo = FALSE}
+plot(res$LogFC, -log10(res$BH),
+     col = ifelse(sig, "red", "black"),
+     pch = ifelse(grepl("HUMAN", featureNames(e)),
+                  19, 1))
+```
+
 * Estimate the number true/false positives and negatives and an alpha
   level of 0.01.
+
 
 ```{r, echo = FALSE}
 sig <- res$BH < 0.01
@@ -331,15 +341,6 @@ FN <- length(grep("HUMAN", rownames(res)[!sig]))
 TN <- sum(!sig) - FN
 stopifnot(TN + FP + FN + TP == nrow(e))
 tab <- data.frame(TP, FP, TN, FN)
-```
-
-* Visualise the results on a volcano plot
-
-```{r, eval = FALSE, echo = FALSE}
-plot(res$LogFC, -log10(res$BH),
-     col = ifelse(sig, "red", "black"),
-     pch = ifelse(grepl("HUMAN", featureNames(e)),
-                  19, 1))
 ```
 
 ## Other packages
