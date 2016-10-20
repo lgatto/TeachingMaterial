@@ -223,7 +223,7 @@ missing values will not be imputed.
 * How would you calculate the `pData` and `fData` `nNA` variables
   (i.e. number of missing values).
   
-* Two chunk of code are in an `if` statemet and executed
+* Two chunk of code are in an `if` statement and executed
   conditionally. Can you figure out when they are executed, when
   not. If they are not, what would you need to do to get them to be
   executed.

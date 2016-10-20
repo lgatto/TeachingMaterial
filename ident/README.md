@@ -1,9 +1,6 @@
-# Indentification data: `mzR`, `mzID`, `MSnID`
+# Identification data: `mzR`, `mzID`, `MSnID`
 
 
-```
-## Warning in read.dcf(con): unable to resolve 'bioconductor.org'
-```
 ## Handling identification data
 
 There are two packages that can be used to parse `mzIdentML` files,
@@ -64,7 +61,7 @@ id
 ```
 
 Various data can be extracted from the `mzID` object, using one the
-accessor functions such as `database`, `sofware`, `scans`, `peptides`,
+accessor functions such as `database`, `software`, `scans`, `peptides`,
 ... The object can also be converted into a `data.frame` using the
 `flatten` function.
 
@@ -219,7 +216,7 @@ xyplot(log10(plength) ~ npep | bins, data = x)
 
 ## Adding identification data to raw data
 
-Here are two matching raw and identiciation data files:
+Here are two matching raw and identification data files:
 
 
 ```r
@@ -411,10 +408,10 @@ rate. It also contains a number of utilities to explore the MS/MS
 results and assess missed and irregular enzymatic cleavages, mass
 measurement accuracy, etc.
 
-### Step-by-step workflow
+### Step-by-step work-flow
 
 Let's reproduce parts of the analysis described the `MSnID`
-vignette. You can expole more with 
+vignette. You can explore more with 
 
 
 ```r
@@ -551,7 +548,7 @@ msnid <- assess_missed_cleavages(msnid, missedCleavagePattern="[KR](?=[^P$])")
 
 Now, we can use the `apply_filter` function to effectively apply
 filters. The strings passed to the function represent expressions that
-will be evaludated, this keeping only PSMs that have 0 irregular
+will be evaluated, this keeping only PSMs that have 0 irregular
 cleavages and 2 or less missed cleavages.
 
 
@@ -620,7 +617,7 @@ msnid$absParentMassErrorPPM <- abs(mass_measurement_error(msnid))
 
 ## Setting filters
 
-MS2 fiters are handled by a special `MSnIDFilter` class objects, where
+MS2 filters are handled by a special `MSnIDFilter` class objects, where
 individual filters are set by name (that is present in `names(msnid)`)
 and comparison operator (>, <, = , ...)  defining if we should retain
 hits with higher or lower given the threshold and finally the
@@ -658,7 +655,7 @@ evaluate_filter(msnid, filtObj)
 ## Filter optimisation
 
 Rather than setting filtering values by hand, as shown above, these
-can be set automativally to meet a specific false discovery rate.
+can be set automatically to meet a specific false discovery rate.
 
 
 ```r

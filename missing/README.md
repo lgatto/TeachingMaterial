@@ -54,9 +54,9 @@ processingData(flt)
 
 ```
 ## - - - Processing information - - -
-## Subset [689,16][301,16] Wed Oct 19 21:10:51 2016 
-## Removed features with more than 0 NAs: Wed Oct 19 21:10:51 2016 
-## Dropped featureData's levels Wed Oct 19 21:10:51 2016 
+## Subset [689,16][301,16] Thu Oct 20 21:35:03 2016 
+## Removed features with more than 0 NAs: Thu Oct 20 21:35:03 2016 
+## Dropped featureData's levels Thu Oct 20 21:35:03 2016 
 ##  MSnbase version: 1.15.6
 ```
 
@@ -232,7 +232,7 @@ missing values will not be imputed.
 * How would you calculate the `pData` and `fData` `nNA` variables
   (i.e. number of missing values).
   
-* Two chunk of code are in an `if` statemet and executed
+* Two chunk of code are in an `if` statement and executed
   conditionally. Can you figure out when they are executed, when
   not. If they are not, what would you need to do to get them to be
   executed.

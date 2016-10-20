@@ -12,7 +12,7 @@
 
 In this section, we will learn how to read raw data in one of the
 commonly used open formats (`mzML`, `mzXML` and `netCDF`) into R using
-`mzR` (low level access) and `MSnbase` (higher level abstration).
+`mzR` (low level access) and `MSnbase` (higher level abstraction).
 
 ## Low level access
 
@@ -217,7 +217,7 @@ library("MSnbase")
 ```
 
 Using the `readMSdata` or `readMSdata2` functions, passing one or more
-raw data filenames as input, we create an `MSnExp` object.
+raw data file names as input, we create an `MSnExp` object.
 
 
 ```r
@@ -233,7 +233,7 @@ rw1
 ##  Number of spectra: 451 
 ##  MSn retention times: 18:29 - 22:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 13:56:24 2016 
+## Data loaded: Thu Oct 20 21:41:29 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -265,7 +265,7 @@ rw2
 ##  Number of spectra: 509 
 ##  MSn retention times: 18:28 - 22:3 minutes
 ## - - - Processing information - - -
-## Data loaded [Fri Oct 14 13:56:25 2016] 
+## Data loaded [Thu Oct 20 21:41:30 2016] 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -293,7 +293,7 @@ between the two approaches, look at the
 [*benchmarking* vignette](http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/inst/doc/benchmarking.html),
 available by typing `vignette("benchmarking", package = "MSnbase")`.
 
-Let's extrace spectra 372 and 300, or 1 to 5, as we did above. We
+Let's extract spectra 372 and 300, or 1 to 5, as we did above. We
 can do this using the familiar `[[` and `[` operators:
 
 
@@ -336,8 +336,8 @@ rw1[1:5]
 ##  Number of spectra: 5 
 ##  MSn retention times: 18:29 - 18:31 minutes
 ## - - - Processing information - - -
-## Data loaded: Fri Oct 14 13:56:24 2016 
-## Data [numerically] subsetted 5 spectra: Fri Oct 14 13:56:26 2016 
+## Data loaded: Thu Oct 20 21:41:29 2016 
+## Data [numerically] subsetted 5 spectra: Thu Oct 20 21:41:31 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -674,7 +674,7 @@ Below, we have animations build from extracting successive slices as above.
 # Raw data processing
 
 `MSnbase` also provides some raw data processing functionality, that
-can be used for some targetted data exploration; for example, mz
+can be used for some targeted data exploration; for example, mz
 trimming, intensity thresholding, peak picking, smoothing, ... We
 redirect you to section 6 *Raw data processing* of the
 [main `MSnbase` vignette](http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/inst/doc/MSnbase-demo.pdf)

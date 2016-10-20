@@ -67,9 +67,6 @@ needed to reproduce all the examples and figures.
 
 
 
-```
-## Warning in read.dcf(con): unable to resolve 'bioconductor.org'
-```
 
 
 ```r

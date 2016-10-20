@@ -15,7 +15,7 @@ a p-value smaller or equal than *p* by chance with probability
 repeat the test many times?
 
 Let's simulate a **random** dataset, with the same dimensions as
-`mulvey2015` or timepoints 1 and 6 (`r nrow(time16)` proteins and 
+`mulvey2015` or time points 1 and 6 (`r nrow(time16)` proteins and 
 `r ncol(time16)`). 
 
 ```{r}

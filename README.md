@@ -6,12 +6,12 @@ Short URL to this page: http://bit.ly/2016-rbiocprot-sun
 
 - [Introduction to R/RStudio](./R-intro/README.md)
 - [R/Bioconductor for proteomics](./r4p/README.md)
-- [Data visualiation](./vis/README.md)
+- [Data visualisation](./vis/README.md)
 - [`mzR` and `MSnbase` packages for raw data](./raw/README.md)
-- [Indentification data in `mzR`, `mzID`, `MSnID`](./ident/README.md)
-- [The `MSnbase` package: `MSnSet`s for quantiative proteomics](./quant/README.md)
+- [Identification data in `mzR`, `mzID`, `MSnID`](./ident/README.md)
+- [The `MSnbase` package: `MSnSet`s for quantitative proteomics](./quant/README.md)
 - Experimental designs: biological and technical variability, blocking
-  and randomization
+  and randomisation
 - [Handling missing values in proteomics data](./missing/README.md)
 - [Differential expression of proteomics data (t-test for continuous
   data, count data, `limma`)](./diffexp/README.md)
@@ -25,12 +25,12 @@ Short URL to this page: http://bit.ly/2016-rbiocprot-sun
 |9:00 - 10:00  |R/RStudio intro                                             |Identification 1: DB Search and other methods           |Advanced quant: Technology selection, Power, Biofluids                                        |
 |10:00 - 11:00 |R                                                           |Practical                                               |Bridget Calder, UCT, demos Skyline                                                            |
 |11:00 - 11:30 |Coffee                                                      |Coffee                                                  |Coffee                                                                                        |
-|11:30 - 12:30 |R/Bioconductor for proteomics                               |Identification 3: protein inference and controlling FDR |Missing values, bio and tech variability, blocking / randomization (lecture + demo/practical) |
+|11:30 - 12:30 |R/Bioconductor for proteomics                               |Identification 3: protein inference and controlling FDR |Missing values, bio and tech variability, blocking / randomisation (lecture + demo/practical) |
 |12:30 - 13:30 |Lunch                                                       |Lunch                                                   |Lunch                                                                                         |
 |13:30 - 14:30 |MS data: pwiz and quameter                                  |R/Bioconductor: mzR, mzID, MSnID                        |Differential expression (t-test for continuous data, count data, limma)                       |
 |14:30 - 15:30 |Data visualisation                                          |Intro: quantitative proteomics                          |Multiple testing                                                                              |
 |15:30 - 16:00 |Coffee                                                      |Coffee                                                  |Coffee                                                                                        |
-|16:00 - 17:00 |Practical with R: the mzR and MSnbase packages for raw data |The MSnbase package: MSnSets for quantiative proteomics |Wrap-up                                                                                       |
+|16:00 - 17:00 |Practical with R: the mzR and MSnbase packages for raw data |The MSnbase package: MSnSets for quantitative proteomics |Wrap-up                                                                                       |
 
 
 ### Related material and references

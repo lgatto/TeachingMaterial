@@ -1,6 +1,6 @@
 # Raw MS data: `mzR` and `MSnbase`
 
-```{r env, echo = FALSE}
+```{r env, echo = FALSE, warning=FALSE}
 suppressPackageStartupMessages(library("MSnbase"))
 suppressPackageStartupMessages(library("lattice"))
 suppressPackageStartupMessages(library("gridExtra"))
@@ -14,7 +14,7 @@ knitr::kable(x[sel, ])
 
 In this section, we will learn how to read raw data in one of the
 commonly used open formats (`mzML`, `mzXML` and `netCDF`) into R using
-`mzR` (low level access) and `MSnbase` (higher level abstration).
+`mzR` (low level access) and `MSnbase` (higher level abstraction).
 
 ## Low level access
 
@@ -125,7 +125,7 @@ library("MSnbase")
 ```
 
 Using the `readMSdata` or `readMSdata2` functions, passing one or more
-raw data filenames as input, we create an `MSnExp` object.
+raw data file names as input, we create an `MSnExp` object.
 
 ```{r}
 rw1 <- readMSData(f[2], verbose = FALSE)
@@ -147,7 +147,7 @@ between the two approaches, look at the
 [*benchmarking* vignette](http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/inst/doc/benchmarking.html),
 available by typing `vignette("benchmarking", package = "MSnbase")`.
 
-Let's extrace spectra `r i` and `r j`, or 1 to 5, as we did above. We
+Let's extract spectra `r i` and `r j`, or 1 to 5, as we did above. We
 can do this using the familiar `[[` and `[` operators:
 
 ```{r}
@@ -386,7 +386,7 @@ Below, we have animations build from extracting successive slices as above.
 # Raw data processing
 
 `MSnbase` also provides some raw data processing functionality, that
-can be used for some targetted data exploration; for example, mz
+can be used for some targeted data exploration; for example, mz
 trimming, intensity thresholding, peak picking, smoothing, ... We
 redirect you to section 6 *Raw data processing* of the
 [main `MSnbase` vignette](http://bioconductor.org/packages/devel/bioc/vignettes/MSnbase/inst/doc/MSnbase-demo.pdf)

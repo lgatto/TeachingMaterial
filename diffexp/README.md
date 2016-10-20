@@ -4,7 +4,7 @@
 
 ## Running a `t-test` in R
 
-Usig the `t.test` function:
+Using the `t.test` function:
 
 ```
 t.test(x, y = NULL,
@@ -285,7 +285,7 @@ applied to proteomics count data.
 
 The *[msmsTests](http://bioconductor.org/packages/msmsTests)* package applies various such count-based
 tests on `MSnSet` objects containing spectral counting data. The
-package provides a test data `msm.spk`, described as follows in the
+package provides a test data `msms.spk`, described as follows in the
 manual page:
 
      A MSnSet with a spectral counts in the expression matrix and a

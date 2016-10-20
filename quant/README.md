@@ -1,4 +1,4 @@
-# The `MSnbase` package: `MSnSet`s for quantiative proteomics
+# The `MSnbase` package: `MSnSet`s for quantitative proteomics
 
 
 
@@ -33,7 +33,7 @@ class that we saw [previously](../raw/README.md). It contains
 
 ![The MSnSet class](../img/msnset.png)
 
-Subsetting `MSnSet` objects works like other rectangluar data
+Sub-setting `MSnSet` objects works like other rectangular data
 structures we have seen: `[i, j]`, where `i` subsets assay data and
 feature metadata **rows**, and `j` subsets assay data and sample
 metadata **columns**. Conversely, one can add and remove columns to
@@ -49,7 +49,7 @@ The different parts of an `MSnSet` class can be accessed with
 - `fData` to access the feature metadata `data.frame`
 - `pData` to access the sample metadata `data.frame`
 - the names of the features (which can be spectra, peptides, proteins
-  or protein groups) can be accessed with `feaureNames`
+  or protein groups) can be accessed with `featureNames`
 - The feature variable names (i.e. `fData`'s' column names) can be
   accessed with `fvarLabels`
 
@@ -61,7 +61,7 @@ The different parts of an `MSnSet` class can be accessed with
    what are the dimensions of the data.
 3. Display the expression intensity of the 5 first proteins and 3
    first samples.
-4. The data comes from `mulbey2015` was published in
+4. The data comes from `mulvey2015` was published in
    [*Dynamic Proteomic Profiling of Extra-Embryonic Endoderm Differentiation in Mouse Embryonic Stem Cells.*](https://www.ncbi.nlm.nih.gov/pubmed/26059426). Can
    you find out from the `MSnSet` home many time points and replicates
    where used in the study.
@@ -102,7 +102,7 @@ msexp
 ##  Number of spectra: 5 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Oct 16 07:33:23 2016 
+## Data loaded: Thu Oct 20 21:32:19 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -149,8 +149,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Sun Oct 16 07:33:23 2016 
-## iTRAQ4 quantification by trapezoidation: Sun Oct 16 07:33:25 2016 
+## Data loaded: Thu Oct 20 21:32:19 2016 
+## iTRAQ4 quantification by trapezoidation: Thu Oct 20 21:32:21 2016 
 ##  MSnbase version: 1.99.7
 ```
 
@@ -228,7 +228,7 @@ Other MS2 quantitation methods available in `quantify` include the
 (normalised) spectral index `SI` and (normalised) spectral abundance
 factor `SAF` or simply a simple count method.
 
-For these quantation methods, we need to add the identification data
+For these quantitation methods, we need to add the identification data
 first, as information such as the protein length is required.
 
 

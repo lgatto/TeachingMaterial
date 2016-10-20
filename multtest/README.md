@@ -9,7 +9,7 @@ a p-value smaller or equal than *p* by chance with probability
 repeat the test many times?
 
 Let's simulate a **random** dataset, with the same dimensions as
-`mulvey2015` or timepoints 1 and 6 (2337 proteins and 
+`mulvey2015` or time points 1 and 6 (2337 proteins and 
 6). 
 
 

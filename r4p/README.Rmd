@@ -63,7 +63,7 @@ R and Bioconductor* papers. Two vignettes describe the code and data
 needed to reproduce all the examples and figures.
 
 
-```{r, echo=FALSE, message=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 suppressPackageStartupMessages(library("mzR"))
 suppressPackageStartupMessages(library("MSnbase"))
 ```
