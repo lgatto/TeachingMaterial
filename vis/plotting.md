@@ -352,56 +352,36 @@ library("ggplot2")
 
 Based on the Grammar of Graphics
 
-*  A plot is made up of multiple layers
-* A layer consists of data (must be a data.frame), a set of mappings
-   between variables and aesthetics (aes), a geometric object (geom)
-   and a statistical transformation
-*  Scales control the details of the mapping
-*  All components are independent and reusable
+* A plot is made up of multiple layers
+* A layer consists of data (must be a `data.frame`), a set of mappings
+  between variables and aesthetics (`aes`), a geometric object (`geom`)
+  and a statistical transformation
+* Scales control the details of the mapping
+* All components are independent and reusable
 
 
 ```r
 load("../data/madata.rda")
-```
-
-```
-## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
-## '../data/madata.rda', probable reason 'No such file or directory'
-```
-
-```
-## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection
-```
-
-```r
 ggplot(data = madata, aes(x = A, y = M, colour = class)) +
     geom_point()
 ```
 
-```
-## Error in ggplot(data = madata, aes(x = A, y = M, colour = class)): object 'madata' not found
-```
+![MA plot with `ggplot2`](figure/ggplot2fig-1.png)
 
 
 ```r
 load("../data/madata2.rda")
-```
-
-```
-## Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
-## '../data/madata2.rda', probable reason 'No such file or directory'
-```
-
-```
-## Error in readChar(con, 5L, useBytes = TRUE): cannot open the connection
-```
-
-```r
 head(madata2)
 ```
 
 ```
-## Error in head(madata2): object 'madata2' not found
+##           A            M data protein      class
+## 2  7.046010 -0.031266127 4vs2 ECA0625 Background
+## 5  7.090470 -0.020368859 4vs2 ECA0625 Background
+## 6  6.108037 -0.088470638 4vs2 ECA0625 Background
+## 8  6.764458  0.155656421 4vs2 ECA0625 Background
+## 10 7.275194  0.144162890 4vs2 ECA0625 Background
+## 11 7.011953 -0.005855139 4vs2 ECA0625 Background
 ```
 
 ```r
@@ -409,7 +389,13 @@ tail(madata2)
 ```
 
 ```
-## Error in tail(madata2): object 'madata2' not found
+##              A             M data protein      class
+## 23061 4.748683 -0.1696683555 6vs2 ECA2541 Background
+## 23091 5.576012  0.0004449593 6vs2 ECA4517 Background
+## 23141 5.524194 -0.1757914391 6vs2 ECA1777 Background
+## 23251 4.649809 -0.2185994857 6vs2 ECA0765 Background
+## 23351 5.916290  0.0531455603 6vs2 ECA1148 Background
+## 23481 5.537965 -0.0640589155 6vs2 ECA3291 Background
 ```
 
 ```r
@@ -417,9 +403,7 @@ ggplot(data = madata2, aes(x = A, y = M, colour = class)) +
     geom_point() + facet_grid(. ~ data)
 ```
 
-```
-## Error in ggplot(data = madata2, aes(x = A, y = M, colour = class)): object 'madata2' not found
-```
+![Facets](figure/ggplot2facet-1.png)
 
 More details: `ggplot2` [web page](http://ggplot2.org/) and
 [book](http://www.amazon.com/dp/0387981403) (slightly outdated
@@ -438,17 +422,13 @@ library("lattice")
 xyplot(M ~ A, data = madata, col = madata$class)
 ```
 
-```
-## Error in xyplot.formula(M ~ A, data = madata, col = madata$class): object 'madata' not found
-```
+![MAplot with `lattice`](figure/unnamed-chunk-5-1.png)
 
 ```r
 xyplot(M ~ A | data, data = madata2, col = madata$class)
 ```
 
-```
-## Error in xyplot.formula(M ~ A | data, data = madata2, col = madata$class): object 'madata' not found
-```
+![MAplot with `lattice`](figure/unnamed-chunk-5-2.png)
 
 More details:
 [Lattice: Multivariate Data Visualization with R](http://lmdvr.r-forge.r-project.org/figures/figures.html)

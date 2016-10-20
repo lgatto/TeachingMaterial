@@ -92,17 +92,18 @@ class(idfree)
 ## Principal component analysis (PCA)
 
 We can hardly visualise all `r ncol(idfree) - 4` QC metrics to
-identify any outliers. A technique that is often used to visualise
-high dimensional data is **dimensionality reduction** or
-**ordination**, which reduce the number of dimensions that need to be
-visualised to make sense of the data. Principle coordinate analysis
-will remap the data is such a way that the first new axis, called
-first principal component (PC1), explains most of the variability in
-the data. The second PC is then chosen to be perpendicular to PC1 and
-explain as much variability in the data as possible. This is repeated
-until as many PC as there are dimensions are defined. Only the first
-few PCs are then used; enough to explain a certain proportion of
-variability in the data, or for visualisation, the 2 or 3 first PCs.
+identify structure or outliers among the data files. A technique that
+is often used to visualise high dimensional data is **dimensionality
+reduction** or **ordination**, which reduce the number of dimensions
+that need to be visualised to make sense of the data. Principle
+coordinate analysis will remap the data is such a way that the first
+new axis, called first principal component (PC1), explains most of the
+variability in the data. The second PC is then chosen to be
+perpendicular to PC1 and explain as much variability in the data as
+possible. This is repeated until as many PC as there are dimensions
+are defined. Only the first few PCs are then used; enough to explain a
+certain proportion of variability in the data, or for visualisation,
+the 2 or 3 first PCs.
 
 ### PCA in R
 
@@ -135,7 +136,7 @@ We can also extract the projected data points from the output of
 stored in the element names `x`. 
 
 > Extract the PCA data and plot the projection of the MS acquisitions
-> alond PC1 and PC2, and PC1 and PC3. 
+> along PC1 and PC2, and PC1 and PC3. 
 
 ```{r, echo = echo., eval = echo.}
 plot(pca$x[, 1:2], col = idfree$Id, cex = 2, pch = 19)
@@ -143,8 +144,8 @@ plot(pca$x[, c(1, 3)], col = idfree$Id, cex = 2, pch = 19)
 text(pca$x[, 1], pca$x[, 2], rownames(idfree), cex = .7)
 ```
 
-> Extra: added colours representing the acquisitions identifiers and
-> add the row indices on the plot (using the `text` function).
+> **Extra**: added colours representing the acquisitions identifiers
+> and add the row indices on the plot (using the `text` function).
 
 ```{r, echo = echo., eval = echo.}
 library("RColorBrewer")

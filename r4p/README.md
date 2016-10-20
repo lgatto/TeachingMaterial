@@ -12,7 +12,7 @@ packages, and an active user community.
 In addition to *software* package, it also has *experiment* and
 *annotation* packages.
 
-## Installing Biocondcuctor packages
+## Installing Bioconductor packages
 
 First time
 
@@ -36,12 +36,16 @@ workshop:
 
 
 ```r
-> biocLite(c("RforProteomics", "pRolocGUI"), dependencies = TRUE)
+biocLite(c("RforProteomics", "pRolocGUI"), dependencies = TRUE)
 ```
+
+See the detailed session information in the [wrap up](../wrapup.md)
+section for packages and versions used to generate this material.
+
 ## Proteomics and mass spectrometry
 
-The easiest way to browser and search Biocondcuctor packages is to
-naviate [task
+The easiest way to browser and search Bioconductor packages is to
+navigate [task
 views](http://www.bioconductor.org/packages/release/BiocViews.html#___Software).
 
 Particularly relevant for this course are the [mass
@@ -63,6 +67,9 @@ needed to reproduce all the examples and figures.
 
 
 
+```
+## Warning in read.dcf(con): unable to resolve 'bioconductor.org'
+```
 
 
 ```r
@@ -86,7 +93,7 @@ library("RforProteomics")
 
 Package vignettes are overview package documentations. They generally
 provide a complete use case demonstrating the package's
-functionality. All Biocondcuctor software packages have vignettes in
+functionality. All Bioconductor software packages have vignettes in
 addition to all function manuals.
 
 ## Proteomics/MS data structures

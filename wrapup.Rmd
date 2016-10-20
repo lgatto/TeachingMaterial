@@ -1,6 +1,9 @@
 # Wrap-up
 
 ```{r, echo = FALSE, warning = FALSE}
+suppressPackageStartupMessages(library("gplots"))
+suppressPackageStartupMessages(library("pRoloc"))
+suppressPackageStartupMessages(library("pRolocdata"))
 suppressPackageStartupMessages(library("lattice"))
 suppressPackageStartupMessages(library("msdata"))
 suppressPackageStartupMessages(library("MSnbase"))
@@ -10,7 +13,6 @@ suppressPackageStartupMessages(library("RforProteomics"))
 suppressPackageStartupMessages(library("gridExtra"))
 suppressPackageStartupMessages(library("lattice"))
 suppressPackageStartupMessages(library("MSnbase"))
-suppressPackageStartupMessages(library("dplyr"))
 suppressPackageStartupMessages(library("readxl"))
 suppressPackageStartupMessages(library("dplyr"))
 suppressPackageStartupMessages(library("hexbin"))

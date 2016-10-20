@@ -223,12 +223,12 @@ library("ggplot2")
 
 Based on the Grammar of Graphics
 
-*  A plot is made up of multiple layers
-* A layer consists of data (must be a data.frame), a set of mappings
-   between variables and aesthetics (aes), a geometric object (geom)
-   and a statistical transformation
-*  Scales control the details of the mapping
-*  All components are independent and reusable
+* A plot is made up of multiple layers
+* A layer consists of data (must be a `data.frame`), a set of mappings
+  between variables and aesthetics (`aes`), a geometric object (`geom`)
+  and a statistical transformation
+* Scales control the details of the mapping
+* All components are independent and reusable
 
 ```{r ggplot2fig, fig.cap = "MA plot with `ggplot2`"}
 load("../data/madata.rda")
