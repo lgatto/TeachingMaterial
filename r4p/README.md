@@ -27,7 +27,7 @@ Then
 
 
 ```r
-library(BiocInstaller)
+library("BiocInstaller")
 biocLite("RforProteomics")
 ```
 
@@ -100,6 +100,20 @@ Package vignettes are overview package documentations. They generally
 provide a complete use case demonstrating the package's
 functionality. All Bioconductor software packages have vignettes in
 addition to all function manuals.
+
+## Package landing pages
+
+Each Bioconductor package has an official page on the Bioconductor website:
+
+* `http://www.bioconductor.org/packages/packageName`
+
+For example
+
+* http://www.bioconductor.org/packages/RforProteomics
+* http://www.bioconductor.org/packages/MSnbase
+
+These pages summarise general information about the package and
+provides links to its vignettes.
 
 ## Proteomics/MS data structures
 
