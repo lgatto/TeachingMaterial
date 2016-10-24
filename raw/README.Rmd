@@ -29,7 +29,7 @@ return the full file names for two raw data files. We will start by
 focusing on the second one.
 
 ```{r}
-library(msdata)
+library("msdata")
 f <- proteomics(full.names = TRUE)
 f
 f2 <- f[2]
@@ -64,9 +64,11 @@ head(peaks(ms, 117))
 str(peaks(ms, 1:5))
 ```
 
-Let's extract the index of the MS2 spectrum with the highest base peak
-intensity and plot its spectrum. Is the data centroided or in profile
-mode?
+## Exercise
+
+> Let's extract the index of the MS2 spectrum with the highest base
+> peak intensity and plot its spectrum. Is the data centroided or in
+> profile mode?
 
 ```{r ex_raw, echo=TRUE, eval=TRUE, fig.align='center'}
 hd2 <- hd[hd$msLevel == 2, ]
@@ -89,7 +91,7 @@ plot(pj, type = "l", xlim = c(480, 485))
 
 ### Exercise
 
-Using the second raw data file (`f[2]` above), answer the following
+Using the first raw data file (`f[1]` above), answer the following
 questions:
 
 * What type of data is returned by the `openMSfile` function?
@@ -209,6 +211,14 @@ invisible(isCentroided(rw2))
 Similarly as for raw data, peak lists can be read into R as `MSnExp`
 data using the `readMgfData`. See `?readMgfData` for details.
 
+### Exercise
+
+Using the first example file `f[1]`:
+
+* Create an `MSnExp` object
+* What MS levels do you have, and how many spectra of each
+* What is the mode of the different MS levels
+
 ## Visualisation of raw MS data
 
 
@@ -242,23 +252,23 @@ ms2 <- (i+1):(j-1)
 
 Now now extract and plot all relevant information:
 
-1. The upper panel represents the chromatogram of the `r basename(fileName(ms))`
-   raw data file, produced with `chromatogram`.
+* The upper panel represents the chromatogram of the `r basename(fileName(ms))`
+  raw data file, produced with `chromatogram`.
 
 ```{r visfig01}
 chromatogram(ms)
 ```
 
-2. We concentrate at a specific retention time, 
-   `r formatRt(hd[i, "retentionTime"])` minutes (`r hd[i, "retentionTime"]` seconds) 
+* We concentrate at a specific retention time, 
+  `r formatRt(hd[i, "retentionTime"])` minutes (`r hd[i, "retentionTime"]` seconds) 
 
 ```{r visfig02}
 chromatogram(ms)
 abline(v = hd[i, "retentionTime"], col = "red")
 ```
 
-3. This corresponds to the `r i`th MS1 spectrum, shown on the second
-   row of figures.
+* This corresponds to the `r i`th MS1 spectrum, shown on the second
+  row of figures.
 
 ```{r visfig03}
 plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
@@ -268,8 +278,8 @@ legend("topright", bty = "n",
            "Retention time ", formatRt(hd[i, "retentionTime"])))
 ```
 
-4. The ions that were selected for MS2 are highlighted by vertical
-   lines. These are represented in the bottom part of the figure.
+* The ions that were selected for MS2 are highlighted by vertical
+  lines. These are represented in the bottom part of the figure.
 
 ```{r visfig04}
 plot(peaks(ms, i), type = "l", xlim = c(400, 1000))
@@ -282,16 +292,16 @@ abline(v = hd[ms2, "precursorMZ"],
            rep("#12121280", 9)))
 ```
 
-5. On the right, we zoom on the isotopic envelope of one peptide in
-   particular (the one highlighted with a red line).
+* On the right, we zoom on the isotopic envelope of one peptide in
+  particular (the one highlighted with a red line).
 
 ```{r visfig05}
 plot(peaks(ms, i), type = "l", xlim = c(521, 522.5))
 abline(v = hd[ms2, "precursorMZ"], col = "#FF000080")
 ```
 
-6. A final loop through the relevant MS2 spectra plots the
-   `length(ms2)` MS2 spectra highlighted above.
+* A final loop through the relevant MS2 spectra plots the
+  `length(ms2)` MS2 spectra highlighted above.
 
 ```{r visfig06, fig.width = 8, fig.height = 10}
 par(mfrow = c(5, 2), mar = c(2, 2, 0, 1))

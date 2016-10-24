@@ -28,7 +28,7 @@ focusing on the second one.
 
 
 ```r
-library(msdata)
+library("msdata")
 f <- proteomics(full.names = TRUE)
 f
 ```
@@ -123,9 +123,11 @@ str(peaks(ms, 1:5))
 ##  $ : num [1:215, 1:2] 105 106 107 112 112 ...
 ```
 
-Let's extract the index of the MS2 spectrum with the highest base peak
-intensity and plot its spectrum. Is the data centroided or in profile
-mode?
+## Exercise
+
+> Let's extract the index of the MS2 spectrum with the highest base
+> peak intensity and plot its spectrum. Is the data centroided or in
+> profile mode?
 
 
 ```r
@@ -180,7 +182,7 @@ plot(pj, type = "l", xlim = c(480, 485))
 
 ### Exercise
 
-Using the second raw data file (`f[2]` above), answer the following
+Using the first raw data file (`f[1]` above), answer the following
 questions:
 
 * What type of data is returned by the `openMSfile` function?
@@ -233,7 +235,7 @@ rw1
 ##  Number of spectra: 451 
 ##  MSn retention times: 18:29 - 22:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Oct 23 21:02:52 2016 
+## Data loaded: Mon Oct 24 21:04:11 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -265,7 +267,7 @@ rw2
 ##  Number of spectra: 509 
 ##  MSn retention times: 18:28 - 22:3 minutes
 ## - - - Processing information - - -
-## Data loaded [Sun Oct 23 21:02:53 2016] 
+## Data loaded [Mon Oct 24 21:04:12 2016] 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -337,8 +339,8 @@ rw1[1:5]
 ##  Number of spectra: 5 
 ##  MSn retention times: 18:29 - 18:31 minutes
 ## - - - Processing information - - -
-## Data loaded: Sun Oct 23 21:02:52 2016 
-## Data [numerically] subsetted 5 spectra: Sun Oct 23 21:02:54 2016 
+## Data loaded: Mon Oct 24 21:04:11 2016 
+## Data [numerically] subsetted 5 spectra: Mon Oct 24 21:04:13 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -468,6 +470,14 @@ invisible(isCentroided(rw2))
 Similarly as for raw data, peak lists can be read into R as `MSnExp`
 data using the `readMgfData`. See `?readMgfData` for details.
 
+### Exercise
+
+Using the first example file `f[1]`:
+
+* Create an `MSnExp` object
+* What MS levels do you have, and how many spectra of each
+* What is the mode of the different MS levels
+
 ## Visualisation of raw MS data
 
 
@@ -502,8 +512,8 @@ ms2 <- (i+1):(j-1)
 
 Now now extract and plot all relevant information:
 
-1. The upper panel represents the chromatogram of the TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzXML
-   raw data file, produced with `chromatogram`.
+* The upper panel represents the chromatogram of the TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01-20141210.mzXML
+  raw data file, produced with `chromatogram`.
 
 
 ```r
@@ -512,8 +522,8 @@ chromatogram(ms)
 
 ![plot of chunk visfig01](figure/visfig01-1.png)
 
-2. We concentrate at a specific retention time, 
-   30:1 minutes (1800.68 seconds) 
+* We concentrate at a specific retention time, 
+  30:1 minutes (1800.68 seconds) 
 
 
 ```r
@@ -523,8 +533,8 @@ abline(v = hd[i, "retentionTime"], col = "red")
 
 ![plot of chunk visfig02](figure/visfig02-1.png)
 
-3. This corresponds to the 2807th MS1 spectrum, shown on the second
-   row of figures.
+* This corresponds to the 2807th MS1 spectrum, shown on the second
+  row of figures.
 
 
 ```r
@@ -537,8 +547,8 @@ legend("topright", bty = "n",
 
 ![plot of chunk visfig03](figure/visfig03-1.png)
 
-4. The ions that were selected for MS2 are highlighted by vertical
-   lines. These are represented in the bottom part of the figure.
+* The ions that were selected for MS2 are highlighted by vertical
+  lines. These are represented in the bottom part of the figure.
 
 
 ```r
@@ -554,8 +564,8 @@ abline(v = hd[ms2, "precursorMZ"],
 
 ![plot of chunk visfig04](figure/visfig04-1.png)
 
-5. On the right, we zoom on the isotopic envelope of one peptide in
-   particular (the one highlighted with a red line).
+* On the right, we zoom on the isotopic envelope of one peptide in
+  particular (the one highlighted with a red line).
 
 
 ```r
@@ -565,8 +575,8 @@ abline(v = hd[ms2, "precursorMZ"], col = "#FF000080")
 
 ![plot of chunk visfig05](figure/visfig05-1.png)
 
-6. A final loop through the relevant MS2 spectra plots the
-   `length(ms2)` MS2 spectra highlighted above.
+* A final loop through the relevant MS2 spectra plots the
+  `length(ms2)` MS2 spectra highlighted above.
 
 
 ```r
