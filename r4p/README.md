@@ -6,7 +6,7 @@
 analysis and comprehension of high-throughput biology (genomics,
 proteomics, metabolomics, flow cytometry, ...)  data. Bioconductor
 uses the R statistical programming language, and is open source and
-open development. It has two releases each year, 1211 software
+open development. It has two releases each year, 1295 software
 packages, and an active user community.
 
 In addition to *software* package, it also has *experiment* and
