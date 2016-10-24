@@ -104,15 +104,15 @@ later, in the frame of [Bioconductor and proteomics](../r4p/index.md).
 Using the `ggplot2` plotting package as an example, to make use of its
 new functionality, one needs to
 
-1. Install the package (and all its dependencies) from one the CRAN
-   servers
+* Install the package (and all its dependencies) from one the CRAN
+  servers
 
 
 ```r
 install.packages("ggplot2")
 ```
 
-2. Load it
+* Load it
 
 
 ```r
@@ -388,7 +388,7 @@ sessionInfo()
 ## [1] knitr_1.14
 ## 
 ## loaded via a namespace (and not attached):
-## [1] magrittr_1.5  formatR_1.4   tools_3.3.1   msdata_0.12.3 stringi_1.1.2
+## [1] magrittr_1.5  formatR_1.4   tools_3.3.1   msdata_0.12.4 stringi_1.1.2
 ## [6] methods_3.3.1 stringr_1.1.0 evaluate_0.10
 ```
 
