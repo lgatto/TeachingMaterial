@@ -151,6 +151,7 @@ Let's extract spectra `r i` and `r j`, or 1 to 5, as we did above. We
 can do this using the familiar `[[` and `[` operators:
 
 ```{r}
+## i and j were defined above
 rw2[[i]]
 rw2[[j]]
 ```

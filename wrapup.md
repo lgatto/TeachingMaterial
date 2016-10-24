@@ -131,5 +131,10 @@ sessionInfo()
 ##  [95] KernSmooth_2.23-15            gridSVG_1.5-0                
 ##  [97] codetools_0.2-15              MASS_7.3-45                  
 ##  [99] gtools_3.5.0                  assertthat_0.1               
-##  [ reached getOption("max.print") -- omitted 11 entries ]
+## [101] interactiveDisplay_1.11.2     chron_2.3-47                 
+## [103] Category_2.39.0               diptest_0.75-7               
+## [105] mgcv_1.8-15                   grid_3.3.1                   
+## [107] rpart_4.1-10                  class_7.3-14                 
+## [109] minqa_1.2.4                   shiny_0.14.1                 
+## [111] base64enc_0.1-3
 ```

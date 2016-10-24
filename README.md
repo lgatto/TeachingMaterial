@@ -10,8 +10,8 @@ Short URL to this page: http://bit.ly/2016-rbiocprot-sun
 - [`mzR` and `MSnbase` packages for raw data](./raw/README.md)
 - [Identification data in `mzR`, `mzID`, `MSnID`](./ident/README.md)
 - [The `MSnbase` package: `MSnSet`s for quantitative proteomics](./quant/README.md)
-- Experimental designs: biological and technical variability, blocking
-  and randomisation
+- [Experimental designs](./expdes/README.md): biological and technical
+  variability, blocking and randomisation
 - [Handling missing values in proteomics data](./missing/README.md)
 - [Differential expression of proteomics data (t-test for continuous
   data, count data, `limma`)](./diffexp/README.md)
@@ -22,16 +22,17 @@ Short URL to this page: http://bit.ly/2016-rbiocprot-sun
 
 |time          |Tue.25.Oct                                                  |Wed.26.Oct                                              |Thu.27.Oct                                                                                    |
 |:-------------|:-----------------------------------------------------------|:-------------------------------------------------------|:---------------------------------------------------------------------------------------------|
-|9:00 - 10:00  |R/RStudio intro                                             |Identification 1: DB Search and other methods           |Advanced quant: Technology selection, Power, Biofluids                                        |
-|10:00 - 11:00 |R                                                           |Practical                                               |Bridget Calder, UCT, demos Skyline                                                            |
+|9:00 - 10:00  |R/RStudio intro (LG)                                        |Identification 1: DB Search and other methods (DT)      |Advanced quant: Technology selection, Power, Biofluids (DT)                                   |
+|10:00 - 11:00 |R (LG)                                                      |Practical (DT)                                          |Bridget Calder, UCT, demos Skyline                                                            |
 |11:00 - 11:30 |Coffee                                                      |Coffee                                                  |Coffee                                                                                        |
-|11:30 - 12:30 |R/Bioconductor for proteomics                               |Identification 3: protein inference and controlling FDR |Missing values, bio and tech variability, blocking / randomisation (lecture + demo/practical) |
+|11:30 - 12:30 |R/Bioconductor for proteomics (LG)                          |Identification 2: protein inference and controlling FDR |Missing values (lecture + demo/practical) (LG)                                                |
 |12:30 - 13:30 |Lunch                                                       |Lunch                                                   |Lunch                                                                                         |
-|13:30 - 14:30 |MS data: pwiz and quameter                                  |R/Bioconductor: mzR, mzID, MSnID                        |Differential expression (t-test for continuous data, count data, limma)                       |
-|14:30 - 15:30 |Data visualisation                                          |Intro: quantitative proteomics                          |Multiple testing                                                                              |
+|13:30 - 14:30 |MS data: pwiz and quameter (DT)                             |R/Bioconductor: mzR, mzID, MSnID (LG)                   |Differential expression (t-test for continuous data, count data, limma) (LG)                  |
+|14:30 - 15:30 |Data visualisation (LG)                                     |Intro: quantitative proteomics (DT)                     |Multiple testing (LG)                                                                         |
 |15:30 - 16:00 |Coffee                                                      |Coffee                                                  |Coffee                                                                                        |
-|16:00 - 17:00 |Practical with R: the mzR and MSnbase packages for raw data |The MSnbase package: MSnSets for quantitative proteomics |Wrap-up                                                                                       |
+|16:00 - 17:00 |Practical with R: the mzR and MSnbase packages for raw data (LG) |The MSnbase package: MSnSets for quantitative proteomics (LG) |Wrap-up                                                                            |
 
+LG: Laurent Gatto - DT: David Tabb
 
 ### Related material and references
 

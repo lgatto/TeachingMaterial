@@ -39,6 +39,14 @@ biocLite(c("RforProteomics", "pRolocGUI"), dependencies = TRUE)
 See the detailed session information in the [wrap up](../wrapup.md)
 section for packages and versions used to generate this material.
 
+## Support
+
+- the [Bioconductor support forum](http://support.bioconductor.org/)
+
+Some packages have GitHub pages and use GitHub issues. That would be a
+good place to report bugs. But the preferred place to ask questions is
+the support forum.
+
 ## Proteomics and mass spectrometry
 
 The easiest way to browser and search Bioconductor packages is to
@@ -86,9 +94,8 @@ knitr::kable(RforProteomics:::msDataTab())
 ## References
 
 Gatto L. and Christoforou A. *Using R and Bioconductor for proteomics
-data analysis*, Biochim Biophys Acta - Proteins and Proteomics,
-2013. [PMID:23692960](https://www.ncbi.nlm.nih.gov/pubmed/23692960)
-([preprint](https://arxiv.org/abs/1305.6559))
+data analysis*, Biochim Biophys Acta - Proteins and
+Proteomics, 2013. [PMID:23692960](https://www.ncbi.nlm.nih.gov/pubmed/23692960)([preprint](https://arxiv.org/abs/1305.6559))
 
 Gatto L, Breckels LM, Naake T, Gibb S. *Visualisation of proteomics
 data using R and Bioconductor*. Proteomics. 2015 Feb 18. doi:

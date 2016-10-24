@@ -1,6 +1,7 @@
 # Wrap-up
 
 ```{r, echo = FALSE, warning = FALSE}
+options("max.print" = 300)
 suppressPackageStartupMessages(library("gplots"))
 suppressPackageStartupMessages(library("pRoloc"))
 suppressPackageStartupMessages(library("pRolocdata"))

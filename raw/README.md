@@ -233,7 +233,7 @@ rw1
 ##  Number of spectra: 451 
 ##  MSn retention times: 18:29 - 22:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 20 21:41:29 2016 
+## Data loaded: Sun Oct 23 21:02:52 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -265,7 +265,7 @@ rw2
 ##  Number of spectra: 509 
 ##  MSn retention times: 18:28 - 22:3 minutes
 ## - - - Processing information - - -
-## Data loaded [Thu Oct 20 21:41:30 2016] 
+## Data loaded [Sun Oct 23 21:02:53 2016] 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -298,6 +298,7 @@ can do this using the familiar `[[` and `[` operators:
 
 
 ```r
+## i and j were defined above
 rw2[[i]]
 ```
 
@@ -336,8 +337,8 @@ rw1[1:5]
 ##  Number of spectra: 5 
 ##  MSn retention times: 18:29 - 18:31 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 20 21:41:29 2016 
-## Data [numerically] subsetted 5 spectra: Thu Oct 20 21:41:31 2016 
+## Data loaded: Sun Oct 23 21:02:52 2016 
+## Data [numerically] subsetted 5 spectra: Sun Oct 23 21:02:54 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData

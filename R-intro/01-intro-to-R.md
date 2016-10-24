@@ -284,11 +284,11 @@ It is also possible to name vectors. The `prots` vector contains the description
 
 
 ```r
-prots <- c("Cytoplasmic dynein 1 heavy chain 1 OS=Mus musculus GN=Dync1h1 PE=1 SV=2 - [DYHC1_MOUSE]",          
-           "Isoform PLEC-1 of Plectin OS=Mus musculus GN=Plec - [PLEC_MOUSE]|Isoform PLEC-1A of Plectin OS=Mus musculus GN=Plec - [PLEC_MOUSE]",
-           "E3 SUMO-protein ligase RanBP2 OS=Mus musculus GN=Ranbp2 PE=1 SV=2 - [RBP2_MOUSE]",
-           "Talin-1 OS=Mus musculus GN=Tln1 PE=1 SV=2 - [TLN1_MOUSE]",
-           "Filamin-A OS=Mus musculus GN=Flna PE=1 SV=5 - [FLNA_MOUSE]")                                                              
+prots <- c("Cytoplasmic dynein 1 heavy chain 1 OS=Mus musculus", 
+           "Isoform PLEC-1 of Plectin",
+           "E3 SUMO-protein ligase RanBP2",
+           "Talin-1",
+           "Filamin-A")
 ```
 
 Currently, it doesn't have any names:
@@ -330,16 +330,16 @@ prots
 ```
 
 ```
-##                                                                                                                               Q9JHU4 
-##                                            "Cytoplasmic dynein 1 heavy chain 1 OS=Mus musculus GN=Dync1h1 PE=1 SV=2 - [DYHC1_MOUSE]" 
-##                                                                                                                             Q9QXS1-3 
-## "Isoform PLEC-1 of Plectin OS=Mus musculus GN=Plec - [PLEC_MOUSE]|Isoform PLEC-1A of Plectin OS=Mus musculus GN=Plec - [PLEC_MOUSE]" 
-##                                                                                                                               Q9ERU9 
-##                                                   "E3 SUMO-protein ligase RanBP2 OS=Mus musculus GN=Ranbp2 PE=1 SV=2 - [RBP2_MOUSE]" 
-##                                                                                                                               P26039 
-##                                                                           "Talin-1 OS=Mus musculus GN=Tln1 PE=1 SV=2 - [TLN1_MOUSE]" 
-##                                                                                                                               Q8BTM8 
-##                                                                         "Filamin-A OS=Mus musculus GN=Flna PE=1 SV=5 - [FLNA_MOUSE]"
+##                                               Q9JHU4 
+## "Cytoplasmic dynein 1 heavy chain 1 OS=Mus musculus" 
+##                                             Q9QXS1-3 
+##                          "Isoform PLEC-1 of Plectin" 
+##                                               Q9ERU9 
+##                      "E3 SUMO-protein ligase RanBP2" 
+##                                               P26039 
+##                                            "Talin-1" 
+##                                               Q8BTM8 
+##                                          "Filamin-A"
 ```
 
 ```r

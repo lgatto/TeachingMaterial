@@ -76,6 +76,21 @@ them.
 
 ## Multiple testing adjustment
 
+### The `p.adjust` function
+
+Adjusting using the Benjamini-Hochberg FDR control:
+
+```{r}
+adjp <- p.adjust(pv, method = "BH")
+summary(adjp)
+```
+
+Other methods:
+
+```{r}
+p.adjust.methods
+```
+
 ### The `multtest` package
 
 ```{r}

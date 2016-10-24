@@ -26,9 +26,9 @@ implemented. It is build along the same principles as the `MSnExp`
 class that we saw [previously](../raw/README.md). It contains 
 
 - an *assay data* with the quantitative (expression) data `matrix`
-- a feature metadata `data.frame` annotating the quantitative features
-  (i.e. rows in the assay data)
-- a sample metadata `data.frame` (coined phenodata) annotating the
+- a feature metadata (*featuredata*) `data.frame` annotating the
+  quantitative features (i.e. rows in the assay data)
+- a sample metadata `data.frame` (coined *phenodata*) annotating the
   samples (i.e. the columns in the assay data)
 
 ![The MSnSet class](../img/msnset.png)
@@ -52,6 +52,23 @@ The different parts of an `MSnSet` class can be accessed with
   or protein groups) can be accessed with `featureNames`
 - The feature variable names (i.e. `fData`'s' column names) can be
   accessed with `fvarLabels`
+
+### Experimental design
+
+The *phenodata* slot is where the experimental design is recorded:
+
+- Positive/negative controls
+- biological replicates, indicative of the **biological variability**
+- technical replicates, indicative of the **technical variability**
+- other technical factors such as operator (if multiple), processing
+  date/time (a well know variable confounding factor)
+- another other variables related to the samples: gender, age,
+  cultivar, phenotype, genotype, ...
+- ...
+- As much information as possible, even if it doesn't seem relevant in
+  the first place.
+
+More about [experimental designs](../expdes/README.md)
 
 ### Exercise
 
@@ -102,7 +119,7 @@ msexp
 ##  Number of spectra: 5 
 ##  MSn retention times: 25:1 - 25:2 minutes
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 20 21:32:19 2016 
+## Data loaded: Mon Oct 24 06:49:10 2016 
 ##  MSnbase version: 1.99.7 
 ## - - - Meta data  - - -
 ## phenoData
@@ -149,8 +166,8 @@ processingData(msset)
 
 ```
 ## - - - Processing information - - -
-## Data loaded: Thu Oct 20 21:32:19 2016 
-## iTRAQ4 quantification by trapezoidation: Thu Oct 20 21:32:21 2016 
+## Data loaded: Mon Oct 24 06:49:10 2016 
+## iTRAQ4 quantification by trapezoidation: Mon Oct 24 06:49:12 2016 
 ##  MSnbase version: 1.99.7
 ```
 

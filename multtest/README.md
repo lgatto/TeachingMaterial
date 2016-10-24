@@ -104,6 +104,33 @@ them.
 
 ## Multiple testing adjustment
 
+### The `p.adjust` function
+
+Adjusting using the Benjamini-Hochberg FDR control:
+
+
+```r
+adjp <- p.adjust(pv, method = "BH")
+summary(adjp)
+```
+
+```
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.3307  0.9959  0.9959  0.9952  0.9959  0.9991
+```
+
+Other methods:
+
+
+```r
+p.adjust.methods
+```
+
+```
+## [1] "holm"       "hochberg"   "hommel"     "bonferroni" "BH"        
+## [6] "BY"         "fdr"        "none"
+```
+
 ### The `multtest` package
 
 
