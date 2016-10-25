@@ -49,7 +49,7 @@ knitr::kable(read.csv("../data/20121213-ABRF-PRF-IDFree-metrics-feature-vars.csv
 ## Exercice
 
 ```{r, echo = FALSE}
-echo. <- FALSE
+echo. <- TRUE
 ```
 
 * Locate the data file is `20121213-ABRF-PRF-IDFree-metrics.xlsx` on your disk.
