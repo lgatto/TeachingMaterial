@@ -200,7 +200,9 @@ identifications?
 
 ```r
 fid <- flatten(id)
-x <- by(fid, fid$accession,
+fid2 <- fid[!fid$isdecoy, ]
+
+x <- by(fid2, fid2$accession,
         function(x)
             c(unique(x$length),
               length(unique(x$pepseq)),
