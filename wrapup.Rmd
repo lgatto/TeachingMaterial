@@ -74,6 +74,14 @@ library("BiocStyle")
 - `r Biocpkg("SwathXtend")`: SWATH extended library generation and
   statistical data analysis
 
+### Citations
+
+The package vignettes often provide details on how to cite the
+software.  There's also the `citation` function:
+
+```{r}
+citation("pRoloc")
+```
 
 ### Session info
 

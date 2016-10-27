@@ -41,6 +41,42 @@
 - *[SwathXtend](http://bioconductor.org/packages/SwathXtend)*: SWATH extended library generation and
   statistical data analysis
 
+### Citations
+
+The package vignettes often provide details on how to cite the
+software.  There's also the `citation` function:
+
+
+```r
+citation("pRoloc")
+```
+
+```
+## 
+## To cite package 'pRoloc' in publications use:
+## 
+##   Gatto L, Breckels LM, Wieczorek S, Burger T, Lilley KS.
+##   Mass-spectrometry-based spatial proteomics data analysis using
+##   pRoloc and pRolocdata. Bioinformatics. 2014 May 1;30(9):1322-4.
+##   doi:10.1093/bioinformatics/btu013. Epub 2014 Jan 11. PubMed
+##   PMID: 24413670; PubMed Central PMCID: PMC3998135.
+## 
+##   Breckels LM, Gatto L, Christoforou A, Groen AJ, Lilley KS,
+##   Trotter MW. The effect of organelle discovery upon sub-cellular
+##   protein localisation. J Proteomics. 2013 Mar 21. doi:pii:
+##   S1874-3919(13)00094-8. 10.1016/j.jprot.2013.02.019. PubMed PMID:
+##   23523639.
+## 
+##   Gatto L., Breckels L.M., Burger T, Nightingale D.J.H., Groen
+##   A.J., Campbell C., Mulvey C.M., Christoforou A., Ferro M.,
+##   Lilley K.S. 'A foundation for reliable spatial proteomics data
+##   analysis' Mol Cell Proteomics. 2014 May 20.
+## 
+##   Breckels L.M., Holden S., Wonjar D., Mulvey C.M, Christoforou
+##   A., Groen A., Kohlbacker O., Lilley K.S. and Gatto L. 'Learning
+##   from heterogeneous data sources: an application in spatial
+##   proteomics' bioRxiv doi: http://dx.doi.org/xxx
+```
 
 ### Session info
 
@@ -72,7 +108,7 @@ sessionInfo()
 ##  [7] multtest_2.29.0       RColorBrewer_1.1-2    ggplot2_2.1.0        
 ## [10] magrittr_1.5          hexbin_1.27.1         dplyr_0.5.0          
 ## [13] readxl_0.1.1          gridExtra_2.2.1       RforProteomics_1.11.2
-## [16] mzID_1.11.2           msdata_0.12.4         lattice_0.20-34      
+## [16] mzID_1.11.2           msdata_0.14.0         lattice_0.20-34      
 ## [19] pRolocdata_1.11.9     pRoloc_1.13.17        MLInterfaces_1.53.1  
 ## [22] cluster_2.0.5         annotate_1.51.1       XML_3.98-1.4         
 ## [25] AnnotationDbi_1.35.4  IRanges_2.7.17        S4Vectors_0.11.19    
@@ -84,7 +120,7 @@ sessionInfo()
 ##   [1] plyr_1.8.4                    GSEABase_1.35.5              
 ##   [3] splines_3.3.1                 ggvis_0.4.3                  
 ##   [5] digest_0.6.10                 foreach_1.4.3                
-##   [7] BiocInstaller_1.23.9          htmltools_0.3.5              
+##   [7] BiocInstaller_1.24.0          htmltools_0.3.5              
 ##   [9] gdata_2.17.0                  doParallel_1.0.10            
 ##  [11] sfsmisc_1.1-0                 rda_1.0.2-2                  
 ##  [13] R.utils_2.4.0                 lpSolve_5.6.13               
