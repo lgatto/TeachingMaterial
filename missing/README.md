@@ -5,11 +5,11 @@ yet, it is too often explicitly or implicitly ignored (when, for
 example, software systematically and silently assign zeros when
 features are not observed). Many downstream algorithms are not
 applicable to data with missing values, such as most classification
-algorithms, hierarchical clustering, PCA analysis, t-test, but not
-`limma`, ... And even if they work around it (often by implicitly
-imputing missing values or simply ignoring data with missing values),
-missing values or how they were imputed will have an impact on the
-results.
+algorithms, hierarchical clustering, PCA analysis, ... (t-test works,
+but ...  so does limma). And even if they work around it (often by
+implicitly imputing missing values or simply ignoring data with
+missing values), missing values or how they were imputed will have an
+impact on the results.
 
 There is certainly no unique answer that fits all cases, but one can
 get a long way in handling them adequately by exploring the data and
@@ -54,9 +54,9 @@ processingData(flt)
 
 ```
 ## - - - Processing information - - -
-## Subset [689,16][301,16] Thu Oct 20 21:35:03 2016 
-## Removed features with more than 0 NAs: Thu Oct 20 21:35:03 2016 
-## Dropped featureData's levels Thu Oct 20 21:35:03 2016 
+## Subset [689,16][301,16] Thu Oct 27 06:13:47 2016 
+## Removed features with more than 0 NAs: Thu Oct 27 06:13:47 2016 
+## Dropped featureData's levels Thu Oct 27 06:13:47 2016 
 ##  MSnbase version: 1.15.6
 ```
 
@@ -230,7 +230,10 @@ missing values will not be imputed.
 * Walk through the example in the `impute` examples. 
 
 * How would you calculate the `pData` and `fData` `nNA` variables
-  (i.e. number of missing values).
+  (i.e. number of missing values), as reported when running
+  `naplot`. **Hint 1** look at the documentation of the `is.na`
+  function. **Hint 2** look at the code of `naplot` by just typing the
+  function name without the `()`. 
   
 * Two chunk of code are in an `if` statement and executed
   conditionally. Can you figure out when they are executed, when
