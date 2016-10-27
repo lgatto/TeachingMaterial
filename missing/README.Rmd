@@ -53,6 +53,8 @@ identified. (An example of this is implemented in the Bioconductor
 
 ![Identification transfer](../img/Fig6-EMRTmatching.png)
 
+![RT aligment](../img/rtmodel.png)
+
 ## Imputation
 
 From *Accounting for the Multiple Natures of Missing Values in

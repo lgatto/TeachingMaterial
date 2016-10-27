@@ -54,9 +54,9 @@ processingData(flt)
 
 ```
 ## - - - Processing information - - -
-## Subset [689,16][301,16] Thu Oct 27 06:13:47 2016 
-## Removed features with more than 0 NAs: Thu Oct 27 06:13:47 2016 
-## Dropped featureData's levels Thu Oct 27 06:13:47 2016 
+## Subset [689,16][301,16] Thu Oct 27 08:49:18 2016 
+## Removed features with more than 0 NAs: Thu Oct 27 08:49:18 2016 
+## Dropped featureData's levels Thu Oct 27 08:49:18 2016 
 ##  MSnbase version: 1.15.6
 ```
 
@@ -70,6 +70,8 @@ identified. (An example of this is implemented in the Bioconductor
 *[synapter](http://bioconductor.org/packages/synapter)* package for Synapt MSe DIA data).
 
 ![Identification transfer](../img/Fig6-EMRTmatching.png)
+
+![RT aligment](../img/rtmodel.png)
 
 ## Imputation
 
