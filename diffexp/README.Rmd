@@ -349,7 +349,8 @@ tab <- data.frame(TP, FP, TN, FN)
 
 ## Other packages
 
-* `r Biocpkg("MSstats")` for various statistical analyses
+* `r Biocpkg("MSstats")` for various statistical analyses, works with
+  `MSnSet` objects.
 * Isobaric tagging (iTRAQ and TMT): `r Biocpkg("isobar")`
 * Label-free: `r CRANpkg("aLFQ")` and `r CRANpkg("protiq")`
 

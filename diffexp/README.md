@@ -405,7 +405,8 @@ head(res)
 
 ## Other packages
 
-* *[MSstats](http://bioconductor.org/packages/MSstats)* for various statistical analyses
+* *[MSstats](http://bioconductor.org/packages/MSstats)* for various statistical analyses, works with
+  `MSnSet` objects.
 * Isobaric tagging (iTRAQ and TMT): *[isobar](http://bioconductor.org/packages/isobar)*
 * Label-free: *[aLFQ](http://cran.fhcrc.org/web/packages/aLFQ/index.html)* and *[protiq](http://cran.fhcrc.org/web/packages/protiq/index.html)*
 

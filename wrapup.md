@@ -27,7 +27,8 @@
 - *[protiq](http://cran.fhcrc.org/web/packages/protiq/index.html)*: Protein (identification and) quantification
   based on peptide evidence.
 - *[MSstats](http://bioconductor.org/packages/MSstats)*: Protein Significance Analysis in DDA, SRM
-  and DIA for Label-free or Label-based Proteomics Experiments
+  and DIA for Label-free or Label-based Proteomics Experiments. Works
+  with `MSnSet` objects.
 
 
 ### DIA
