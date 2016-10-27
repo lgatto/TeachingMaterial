@@ -138,11 +138,45 @@ on time points 1 and 6.
 
 
 
+```r
+library("pRolocdata")
+data(mulvey2015)
+time16 <- mulvey2015[, mulvey2015$times %in% c(1, 6)]
+head(exprs(time16))
+```
+
+```
+##          rep1_0hr rep1_XEN rep2_0hr rep2_XEN rep3_0hr rep3_XEN
+## P48432      0.486    0.058    0.446    0.017    0.525    0.033
+## Q62315-2    0.388    0.068    0.345    0.065    0.452    0.038
+## P55821      0.349    0.055    0.314    0.034    0.436    0.055
+## P17809      0.321    0.101    0.303    0.093    0.414    0.052
+## Q8K3F7      0.363    0.047    0.297    0.045    0.395    0.019
+## Q60953-2    0.371    0.039    0.314    0.046    0.386    0.057
+```
 
 2. Use the `t.test` function to test P48432 for differences in
    time points 1 and 6.
 
 
+```r
+t.test(exprs(time16)[1, time16$time == 1],
+       exprs(time16)[1, time16$time != 1])
+```
+
+```
+## 
+## 	Welch Two Sample t-test
+## 
+## data:  exprs(time16)[1, time16$time == 1] and exprs(time16)[1, time16$time != 1]
+## t = 17.471, df = 3.0184, p-value = 0.0003943
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  0.3680382 0.5312951
+## sample estimates:
+## mean of x mean of y 
+## 0.4856667 0.0360000
+```
 
 In high throughput biology, we have to repeat our tests over every
 feature (transcript, protein, ...). As we are using a programming

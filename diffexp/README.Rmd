@@ -91,17 +91,17 @@ on time points 1 and 6.
    relevant subset?
 
 
-```{r, echo = FALSE, eval = TRUE}
+```{r, echo = TRUE, eval = TRUE}
 library("pRolocdata")
 data(mulvey2015)
 time16 <- mulvey2015[, mulvey2015$times %in% c(1, 6)]
-## head(exprs(time16))
+head(exprs(time16))
 ```
 
 2. Use the `t.test` function to test P48432 for differences in
    time points 1 and 6.
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = TRUE}
 t.test(exprs(time16)[1, time16$time == 1],
        exprs(time16)[1, time16$time != 1])
 ```
