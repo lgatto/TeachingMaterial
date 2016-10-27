@@ -182,6 +182,9 @@ fData(time16)$fc <-
 fData(time16)$lfc <- log2(fData(time16)$fc)
 ```
 
+We could also use the `rowttests` function from the `genefilter`
+package to run a t-test on all rows at once.
+
 ## Visualising results
 
 There are 3 important factors to consider when assessing the results
@@ -312,9 +315,6 @@ data(msms.spk)
 * How many samples and proteins are there in the data
 
 
-```r
-dim(msms.spk)
-```
 
 * Look at the distribution of all proteins and compare it to the spike
   in proteins. The spikes all contain the suffix `"HUMAN"` that can be
@@ -388,7 +388,7 @@ head(res)
 * Inspect the p-values distribution and, if relevant, adjust as
   demonstrated above.
 
-![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
+
 
 * Visualise the results on a volcano plot
 
@@ -399,6 +399,9 @@ head(res)
 
 
 
+```
+## Error: TN + FP + FN + TP == nrow(e) is not TRUE
+```
 
 ## Other packages
 

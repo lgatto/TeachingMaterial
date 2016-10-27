@@ -141,6 +141,9 @@ fData(time16)$fc <-
 fData(time16)$lfc <- log2(fData(time16)$fc)
 ```
 
+We could also use the `rowttests` function from the `genefilter`
+package to run a t-test on all rows at once.
+
 ## Visualising results
 
 There are 3 important factors to consider when assessing the results
@@ -251,7 +254,7 @@ table(msms.spk$treat)
 
 * How many samples and proteins are there in the data
 
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo=FALSE}
 dim(msms.spk)
 ```
 
@@ -312,7 +315,7 @@ head(res)
 * Inspect the p-values distribution and, if relevant, adjust as
   demonstrated above.
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 hist(res$p.value, breaks = 50)
 library("multtest")
 adj <- mt.rawp2adjp(res$p.value)
@@ -323,6 +326,7 @@ res$BH <- adj$adjp[order(adj$index), "BH"]
 * Visualise the results on a volcano plot
 
 ```{r, eval = FALSE, echo = FALSE}
+sig <- res$BH < 0.01
 plot(res$LogFC, -log10(res$BH),
      col = ifelse(sig, "red", "black"),
      pch = ifelse(grepl("HUMAN", featureNames(e)),
