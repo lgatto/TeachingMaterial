@@ -247,14 +247,14 @@ data(msms.spk)
 * Familiarise yourself with the experimental design of this
   dataset. Hint: look at the phenoData slot.
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = TRUE}
 pData(msms.spk)
 table(msms.spk$treat)
 ```
 
 * How many samples and proteins are there in the data
 
-```{r, eval = FALSE, echo=FALSE}
+```{r, eval = TRUE, echo=TRUE}
 dim(msms.spk)
 ```
 
@@ -262,7 +262,7 @@ dim(msms.spk)
   in proteins. The spikes all contain the suffix `"HUMAN"` that can be
   extracted with the grep function.
   
-```{r, eval = FALSE, echo = FALSE}
+```{r, eval = TRUE, echo = TRUE}
 boxplot(exprs(msms.spk))  
 spks <- grep("HUMAN", featureNames(msms.spk))  
 boxplot(exprs(msms.spk[spks, ]))
@@ -315,7 +315,7 @@ head(res)
 * Inspect the p-values distribution and, if relevant, adjust as
   demonstrated above.
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = TRUE, eval = TRUE}
 hist(res$p.value, breaks = 50)
 library("multtest")
 adj <- mt.rawp2adjp(res$p.value)
@@ -325,7 +325,7 @@ res$BH <- adj$adjp[order(adj$index), "BH"]
 
 * Visualise the results on a volcano plot
 
-```{r, eval = FALSE, echo = FALSE}
+```{r, eval = TRUE, echo = TRUE}
 sig <- res$BH < 0.01
 plot(res$LogFC, -log10(res$BH),
      col = ifelse(sig, "red", "black"),
@@ -337,7 +337,7 @@ plot(res$LogFC, -log10(res$BH),
   level of 0.01.
 
 
-```{r, echo = FALSE}
+```{r, echo = TRUE}
 sig <- res$BH < 0.01
 TP <- length(grep("HUMAN", rownames(res)[sig]))
 FP <- sum(sig) - TP

@@ -345,16 +345,71 @@ data(msms.spk)
   dataset. Hint: look at the phenoData slot.
 
 
+```r
+pData(msms.spk)
+```
+
+```
+##              treat
+## Y500U100_001  U100
+## Y500U100_002  U100
+## Y500U100_003  U100
+## Y500U100_004  U100
+## Y500U200_001  U200
+## Y500U200_002  U200
+## Y500U200_003  U200
+## Y500U200_004  U200
+## Y500U200_010  U200
+## Y500U200_011  U200
+## Y500U400_002  U400
+## Y500U400_003  U400
+## Y500U400_004  U400
+## Y500U600_001  U600
+## Y500U600_002  U600
+## Y500U600_003  U600
+## Y500U600_004  U600
+## Y500U600_005  U600
+## Y500U600_006  U600
+```
+
+```r
+table(msms.spk$treat)
+```
+
+```
+## 
+## U100 U200 U400 U600 
+##    4    6    3    6
+```
 
 * How many samples and proteins are there in the data
 
 
+```r
+dim(msms.spk)
+```
+
+```
+## [1] 685  19
+```
 
 * Look at the distribution of all proteins and compare it to the spike
   in proteins. The spikes all contain the suffix `"HUMAN"` that can be
   extracted with the grep function.
   
 
+```r
+boxplot(exprs(msms.spk))  
+```
+
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
+
+```r
+spks <- grep("HUMAN", featureNames(msms.spk))  
+boxplot(exprs(msms.spk[spks, ]))
+```
+
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-2.png)
 
 We are going to model the data according to the negative-binomial
 distribution, using the implementation of the *[edgeR](http://bioconductor.org/packages/edgeR)*
@@ -423,18 +478,45 @@ head(res)
   demonstrated above.
 
 
+```r
+hist(res$p.value, breaks = 50)
+```
+
+![plot of chunk unnamed-chunk-24](figure/unnamed-chunk-24-1.png)
+
+```r
+library("multtest")
+adj <- mt.rawp2adjp(res$p.value)
+res$BH <- adj$adjp[order(adj$index), "BH"]
+## with(res, plot(LogFC, -log10(BH)))
+```
 
 * Visualise the results on a volcano plot
 
 
+```r
+sig <- res$BH < 0.01
+plot(res$LogFC, -log10(res$BH),
+     col = ifelse(sig, "red", "black"),
+     pch = ifelse(grepl("HUMAN", featureNames(e)),
+                  19, 1))
+```
+
+![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25-1.png)
 
 * Estimate the number true/false positives and negatives and an alpha
   level of 0.01.
 
 
 
-```
-## Error: TN + FP + FN + TP == nrow(e) is not TRUE
+```r
+sig <- res$BH < 0.01
+TP <- length(grep("HUMAN", rownames(res)[sig]))
+FP <- sum(sig) - TP
+FN <- length(grep("HUMAN", rownames(res)[!sig]))
+TN <- sum(!sig) - FN
+stopifnot(TN + FP + FN + TP == nrow(e))
+tab <- data.frame(TP, FP, TN, FN)
 ```
 
 ## Other packages
