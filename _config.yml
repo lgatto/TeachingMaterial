@@ -1,0 +1,8 @@
+title: Teachingmaterial
+description: Various teaching material
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-minimal
+
+gems:
+  - jekyll-mentions
