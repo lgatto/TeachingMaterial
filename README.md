@@ -174,7 +174,7 @@ with your colleagues.
 - More details: https://github.com/lgatto/roo#readme
 - Download the [pdf](https://github.com/lgatto/roo/blob/master/roo.pdf?raw=true)
 
-### 1 day course on R OO programming and package development
+### One day course on R OO programming and package development
 
 - Description: A short 1-day course about R object-oriented
   programming, package development and various other topics (C
