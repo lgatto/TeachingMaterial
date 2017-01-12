@@ -224,7 +224,7 @@ with your colleagues.
 
 ```c
 library(devtools)
-install_github("sequences", "lgatto")
+install_github("lgatto/sequences")
 ```
 
 ### Best practices in bioinformatics research: open source software and reproducibility
