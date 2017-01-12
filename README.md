@@ -266,3 +266,10 @@ Course.
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis
 - Slides (http://bit.ly/qprotda) and reproducible vignette (http://bit.ly/qprotdavig)
+
+### R and Bioconductor for Mass Spectrometry and Proteomics data analysis
+
+- Description: Material for the 2-day R/Bioconductor Proteomics
+  Workshop at Stellenbosch University, October 2016
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: https://github.com/lgatto/2016-10-rbioc-prot-Stellenbosch
