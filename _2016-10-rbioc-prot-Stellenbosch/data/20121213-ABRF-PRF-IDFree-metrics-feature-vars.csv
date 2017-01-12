@@ -1,0 +1,46 @@
+Filename,What is the name of the file from which the metrics were computed?
+StartTimeStamp,At what time did acquisition begin for this experiment?
+XIC-WideFrac,What fraction of precursor ions account for the top half of all peak width?
+XIC-FWHM-Q1,What is the 25%ile of peak widths for the wide XICs?
+XIC-FWHM-Q2,What is the 50%ile of peak widths for the wide XICs?
+XIC-FWHM-Q3,What is the 75%ile of peak widths for the wide XICs?
+XIC-Height-Q2,The log ratio for 50%ile of wide XIC heights over 25%ile of heights.
+XIC-Height-Q3,The log ratio for 75%ile of wide XIC heights over 50%ile of heights.
+XIC-Height-Q4,The log ratio for maximum of wide XIC heights over 75%ile of heights.
+RT-Duration,What is the highest scan time observed minus the lowest scan time observed?
+RT-TIC-Q1,The interval when the first 25% of TIC accumulates divided by RT-Duration
+RT-TIC-Q2,The interval when the second 25% of TIC accumulates divided by RT-Duration
+RT-TIC-Q3,The interval when the third 25% of TIC accumulates divided by RT-Duration
+RT-TIC-Q4,The interval when the fourth 25% of TIC accumulates divided by RT-Duration
+RT-MS-Q1,The interval for the first 25% of all MS events divided by RT-Duration
+RT-MS-Q2,The interval for the second 25% of all MS events divided by RT-Duration
+RT-MS-Q3,The interval for the third 25% of all MS events divided by RT-Duration
+RT-MS-Q4,The interval for the fourth 25% of all MS events divided by RT-Duration
+RT-MSMS-Q1,The interval for the first 25% of all MS/MS events divided by RT-Duration
+RT-MSMS-Q2,The interval for the second 25% of all MS/MS events divided by RT-Duration
+RT-MSMS-Q3,The interval for the third 25% of all MS/MS events divided by RT-Duration
+RT-MSMS-Q4,The interval for the fourth 25% of all MS/MS events divided by RT-Duration
+MS1-TIC-Change-Q2,The log ratio for 50%ile of TIC changes over 25%ile of TIC changes
+MS1-TIC-Change-Q3,The log ratio for 75%ile of TIC changes over 50%ile of TIC changes
+MS1-TIC-Change-Q4,The log ratio for largest TIC change over 75%ile of TIC changes
+MS1-TIC-Q2,The log ratio for 50%ile of TIC over 25%ile of TIC
+MS1-TIC-Q3,The log ratio for 75%ile of TIC over 50%ile of TIC
+MS1-TIC-Q4,The log ratio for largest TIC over 75%ile TIC
+MS1-Count,How many MS scans were collected?
+MS1-Freq-Max,What was the fastest frequency for MS collection in any minute? (Hz)
+MS1-Density-Q1,What was the 25%ile of MS scan peak counts?
+MS1-Density-Q2,What was the 50%ile of MS scan peak counts?
+MS1-Density-Q3,What was the 75%ile of MS scan peak counts?
+MS2-Count,How many MS/MS scans were collected?
+MS2-Freq-Max,What was the fastest frequency for MS/MS collection in any minute? (Hz)
+MS2-Density-Q1,What was the 25%ile of MS/MS scan peak counts?
+MS2-Density-Q2,What was the 50%ile of MS/MS scan peak counts?
+MS2-Density-Q3,What was the 75%ile of MS/MS scan peak counts?
+MS2-PrecZ-1,What fraction of MS/MS precursors is singly charged?
+MS2-PrecZ-2,What fraction of MS/MS precursors is doubly charged?
+MS2-PrecZ-3,What fraction of MS/MS precursors is triply charged?
+MS2-PrecZ-4,What fraction of MS/MS precursors is quadruply charged?
+MS2-PrecZ-5,What fraction of MS/MS precursors is quintuply charged?
+MS2-PrecZ-more,What fraction of MS/MS precursors is charged higher than +5?
+MS2-PrecZ-likely-1,What fraction of MS/MS precursors lack known charge but look like +1s?
+MS2-PrecZ-likely-multi,What fraction of MS/MS precursors lack known charge but look like >+1s?

@@ -1,0 +1,116 @@
+# Adjustment for multiple testing
+
+```{r, echo = FALSE, warning = FALSE}
+suppressPackageStartupMessages(library("MSnbase"))
+suppressPackageStartupMessages(library("pRolocdata"))
+data(mulvey2015)
+time16 <- mulvey2015[, mulvey2015$times %in% c(1, 6)]
+set.seed(1)
+```
+
+A p-value of *p* tells us that, if all conditions are met and no
+difference between groups was to be expected, one would expect to see
+a p-value smaller or equal than *p* by chance with probability
+*p*. That is valid for a singe test. What are the implications when we
+repeat the test many times?
+
+Let's simulate a **random** dataset, with the same dimensions as
+`mulvey2015` or time points 1 and 6 (`r nrow(time16)` proteins and 
+`r ncol(time16)`). 
+
+```{r}
+n <- prod(dim(time16))
+m <- matrix(rnorm(n), nrow = nrow(time16))
+colnames(m) <- colnames(time16)
+rownames(m) <- rownames(time16)
+head(m)
+```
+
+We don't expect to see any *significant* results, do we?
+
+```{r}
+pv <- apply(m, 1, function(x) t.test(x[1:3], x[4:6])$p.value)
+summary(pv)
+sum(pv <= 0.05)
+```
+
+Oh dear, there are `r sum(pv <= 0.05)` *significant* random data (at p
+<= 0.05), i.e. about `r 100 * round(sum(pv < 0.05)/nrow(m), 2)`
+percent. This is, of course, exactly what we expected at an alpha of
+5%.
+
+Before adjusting the p-value for multiple testing and controlling the
+false discovery rate (FDR), let's first explore the p-values from the
+random data. The histogram below shows that we have a **uniform**
+distribution of values between 0 and 1, some of which are smaller than
+0.05 (or whatever arbitrary threshold we choose).
+
+```{r}
+hist(pv, breaks = 50)
+abline(v = 0.05, col = "red")
+```
+
+### How to interpret a p-value histogram ([link](http://varianceexplained.org/statistics/interpreting-pvalue-histogram/))
+
+It is a very important quality control to visualise the distribution
+of (non-adjusted) p-values before proceeding with adjustment. The
+p-value distribution tells a lot about the data before interpreting
+them.
+
+![How to interpret a p-value histogram](../img/plot_melted-1.png)
+
+## Adjusting for multiple comparisons
+
+* **Family-wise error rate** (FWER) The probability of one or more
+    false positives. **Bonferroni correction** For *m* tests, multiply
+    each p-value by *m*. Then consider those that still are below
+    significance threshold.
+
+* **False discovery rate** (FDR): The expected fraction of false
+  positives among all discoveries. Allows to choose *n* results with a
+  given FDR. Examples are **Benjamini-Hochberg** or **q-values**.
+
+## FDR adjustment
+
+![FDR adjustment](../img/adjhist.png)
+
+## Multiple testing adjustment
+
+### The `p.adjust` function
+
+Adjusting using the Benjamini-Hochberg FDR control:
+
+```{r}
+adjp <- p.adjust(pv, method = "BH")
+summary(adjp)
+```
+
+Other methods:
+
+```{r}
+p.adjust.methods
+```
+
+### The `multtest` package
+
+```{r}
+library("multtest")
+adjp <- mt.rawp2adjp(pv)
+names(adjp)
+```
+
+```{r}
+head(adjp$adjp)
+head(adjp <- adjp$adjp[order(adjp$index), ])
+summary(adjp[, "Bonferroni"])
+summary(adjp[, "BH"])
+```
+
+### The `q-value` package
+
+```{r}
+library(qvalue)
+qv <- qvalue(pv)
+head(qv$pvalue)
+summary(qv$qvalues)
+```
