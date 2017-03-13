@@ -1,5 +1,7 @@
 # Advanced R programming course at EMBL, 3-4 April 2017
 
+[Course page](http://www.dataprogrammers.net/embl_apr2017/)
+
 Computational analysis using free, cross-platform scripting languages
 such as R is becoming an increasingly common part of biological
 research. For a scientist, knowledge of advanced programming
