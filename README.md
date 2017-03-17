@@ -26,13 +26,28 @@ many practical exercises.
 
 The material will focus on:
 
-- Package development
-- Testing
-- Coding style & good practice
-- Object-oriented programming
-- Functional programming
-- Debugging
-- The tidyverse approach to handling data
-- Grammar of graphics approach to visualisation
-- Shiny for browser-based interactive visualisations
+* [Package development](https://github.com/lgatto/RPackageDevelopment),
+  but could be updated and streamlined. Estimated time: 2 hours.
+* [Testing](https://github.com/DataProgrammers/2015-01-15-EMBLHeidelberg/tree/master/R-debugging)
+  and
+  [unit testing](https://github.com/DataProgrammers/2015-01-15-EMBLHeidelberg/blob/master/R-debugging/unittesting.md). Also
+  introduce `testthat` syntax in latter example and inclusion in a
+  package. Estimated time: 2 hours.
+* [Debugging](https://github.com/lgatto/R-debugging/blob/master/debugging.pdf)
+  and
+  [here](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/03-debug.md)
+  About 1.5 hours.
+* Coding style & good practice - this would be new material, linking
+  to functional programming, good practice in package and OO
+  development, and tidyverse.
+* [Object-oriented programming](https://github.com/lgatto/roo) Estimated time: 3 - 4 hours.
+
+* [Functional programming](https://github.com/lgatto/R-functional-programming)
+  and
+  [here](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/02-funprog.md).
+* The tidyverse approach to handling data - new, see DC material.
+* Grammar of graphics approach to visualisation - new, see DC material
+  and [here](https://github.com/lgatto/visualisation).
+* Shiny for browser-based interactive visualisations - new (check with
+  Wolfgang if Mike is doing this).
 
