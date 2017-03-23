@@ -1,0 +1,136 @@
+---
+output: md_document
+---
+# S3 OOP
+
+Many of the commonly used R functions use S3 in the background, such as `summary`, `plot`, ... 
+
+Lets see how `summary` works. It can be called on different _types_ of inputs:
+
+```{r}
+df = data.frame(a=1:5, b=6:10)
+vect = 1:5
+
+class(df)
+class(vect)
+
+summary(df)
+summary(vect)
+```
+
+So how does the code for `summary` looks like, does it have a lot of if-else statements to provide different outputs for different types of inputs? No, it uses S3 OOP to achieve that. 
+
+```{r}
+summary
+
+methods(summary)
+```
+
+The algorithm by which an appropriate method is called here is called *dispatching*:
+
+1. The line of code is `UseMethod("summary")` is the dispatch function call, and we call `summary` a *generic function*
+2. The call to this function does `class(object)` (ie class of the first argument), and based on the output of it calls the appropriate implementation:
+    1. If a function with name `summary.<class name>` exists, it will call that one
+    2. If such a function doesn't exist, it calls `summary.default`
+
+Therefore effectively:
+```{r}
+summary.data.frame(df)  # same as summary(df) because class(df) == "data.frame"
+summary.default(vect)  # same as summary(vect) because class(vect) == "integer"
+```
+
+What if we wanted `summary(vect)` to output something different? We just define a new method. 
+
+```{r}
+summary.integer = function(object, ...){
+  message("This is our own version of summary for integers!")
+}
+methods("summary")
+summary(vect)
+```
+
+### Introducing your own classes
+
+You can create your own data types (classes) very simply. Lets says we want to wrap two pieces of information:
+- DNA sequence name
+- DNA sequence into 
+
+a single new data type. And we want to implement our own version of the ```summary``` for this data type. 
+
+```{r}
+dna = list(name="Our sequence name", sequence="ATGGATGACGATG")
+class(dna) = "MyDNASeq"
+
+summary(dna)
+
+summary.MyDNASeq = function(object, ...){
+  message("This is a DNA sequence of length ", nchar(dna$sequence))
+}
+
+summary(dna)
+```
+
+You can also introduce generics by creating a function that has `UseMethod("<name of the generic>")` as only code. 
+
+### Generics from primitives
+
+All primitve functions are also implicily generics, e.g. `length`:
+
+```{r}
+length
+methods(length)
+```
+
+So we can define methods as usual:
+
+```{r}
+
+length(dna) # before defining our implementation
+
+length.MyDNASeq = function(x){
+  nchar(x$sequence)
+}
+
+length(dna)
+```
+
+### Exercise: create a plotting function for our "MyDNASeq" type
+
+Calling `plot()` on our data doesn't work. Create our own implementation of `plot()` for `MyDNASeq`. You can put any meaningful code, e.g. plot a pie chart of the distribution of DNA letters.  
+
+```{r, error=TRUE}
+plot(dna)
+```
+
+### Solution
+
+```{r}
+plot.MyDNASeq = function(x, y, ...){
+  letters = table(strsplit(x$sequence,""))
+  pie(letters)
+}
+
+plot(dna)
+```
+
+## Problems with S3
+
+S3 is very informal, with very little consistency checking, so things can go wrong with little warning:
+
+```{r, error=TRUE}
+class(dna) = "lm" # dna is now a linear model?!
+```
+
+R lets us set any `class` atribute for our DNA sequence object. However, the object is invalid and we'll get and error if we try to use it:
+
+```{r, error=TRUE}
+summary(dna)
+```
+
+## S3 summary
+
+- Create new types by simply setting the `class` property of any existing base R object, usually a `list`.
+- Create new methods by naming convention `generic.className`.
+- Easy to make an error, e.g. mistype class name, assing nonsensical class names, or unknowingly override a method if you use `.` in your function names. 
+- No consisency checking - no formal guarantee that two objects of class will have the same properties
+
