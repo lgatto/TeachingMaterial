@@ -40,7 +40,7 @@ The material will focus on:
 * Coding style & good practice - this would be new material, linking
   to functional programming, good practice in package and OO
   development, and tidyverse.
-* [Object-oriented programming](roo/roo.md) Estimated time: 3 - 4 hours.
+* [Object-oriented programming](roo/) Estimated time: 3 - 4 hours.
 
 * [Functional programming](https://github.com/lgatto/R-functional-programming)
   and

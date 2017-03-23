@@ -61,4 +61,4 @@ Sections
 
 -   [S3 OOP](s3.md)
 -   [S4 OOP](s4.md)
--   \[RC OOP\]\[rc.md\]
+-   [RC OOP](rc.md)
