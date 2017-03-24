@@ -383,7 +383,7 @@ setGeneric("sequence", function(object, ...) standardGeneric("sequence"))
 setMethod("sequence", "GenericSeq", function(object, ...) object@sequence)
 ```
 
-In this example we've exported the class and method, and put the documentation for the generic and the method into a same `.rd` file name `sequence-methods`. You can now generate the the `NAMESPACE` and `.rd` documentation files by running `roxygenise("path/to/your/package")`. 
+In this example we've exported the class and method, and put the documentation for the generic and the method into the same `.rd` file name `sequence-methods.rd`. You can now generate the the `NAMESPACE` and `.rd` documentation files by running `roxygenise("path/to/your/package")`. 
 
 # Summary of S4
 
