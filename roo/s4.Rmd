@@ -357,7 +357,7 @@ We use `exportClasses` to export our classes, `exportMethods` to export all of o
 
 R can generate template documentation files for classes and generic's methods using `promptClass("GenericSeq")` and `promptMethods("sequence")` where `sequence` is the name of the generic we want to document.
 
-If you wish to keep the documentation together with the code you can use the `roxygen2` package. It has custom tags to document classes and methods:
+If you wish to keep the documentation together with the code you can use the `roxygen2` package:
 
 ```{r}
 #' GenericSeq class
