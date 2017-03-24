@@ -2,13 +2,7 @@ Object-oriented programming in R
 ================================
 
 Object-oriented programming (OOP) can help us encapsulate complex data
-structures in a simple interface. This is especially important when
-writing code that is meant to be re-used by other people. In that
-situation it's useful to make a distinction between you, *the
-developer*, and you *users*. You will have absolute knowledge of the
-code and data structure, and will want to present a simple way for the
-user to interact with it, that doesn't require this full knowledge. It
-can also help you write simpler and more robust code in the long run.
+structures into a simple interface.
 
 Unlike other main-stream languages, R has multiple OOP systems that
 co-exist in parallel:

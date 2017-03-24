@@ -12,8 +12,8 @@ usual pass-by-value logic R uses. This means when we assign `a=b` both
 Creating classes
 ----------------
 
-Similar syntax as S4, but now slots are called fields, and the
-`setRefClass` returns a constructor object.
+Similar syntax as S4, but now slots are called fields, and `setRefClass`
+returns a constructor object.
 
     Seq <- setRefClass("Seq",
                        fields = list(
@@ -109,7 +109,9 @@ Summary
 
 Reference classes are suitable for objects that are dynamically tracked
 by all the code: GUI components, read-only access to files (streams,
-data bases), internet resources, editing facilities, ...
+data bases), internet resources, editing facilities, ... Because they
+are passed by reference they are *never* copied, which means they are
+never duplicated in memory.
 
 Because of their pass-by-reference semantics they are not appropriate as
 a replacement for S3 and S4 as this would lead to a lot of unanticipated

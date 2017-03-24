@@ -9,7 +9,7 @@ Reference classes use pass-by-reference logic that is different from the usual p
 
 ## Creating classes
 
-Similar syntax as S4, but now slots are called fields, and the `setRefClass` returns a constructor object. 
+Similar syntax as S4, but now slots are called fields, and `setRefClass` returns a constructor object. 
 
 ```{r}
 Seq <- setRefClass("Seq",
@@ -75,7 +75,7 @@ s2$sequence
 
 # Summary
 
-Reference classes are suitable for objects that are dynamically tracked by all the code: GUI components, read-only access to files (streams, data bases), internet resources, editing facilities, ...
+Reference classes are suitable for objects that are dynamically tracked by all the code: GUI components, read-only access to files (streams, data bases), internet resources, editing facilities, ... Because they are passed by reference they are _never_ copied, which means they are never duplicated in memory. 
 
 Because of their pass-by-reference semantics they are not appropriate as a replacement for S3 and S4 as this would lead to a lot of unanticipated side effects. 
 

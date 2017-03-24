@@ -8,7 +8,7 @@ S4 is a more formal version of [S3](s3.md).
 
 ## Creating classes in S4
 
-We can create new data types using the `setMethod` function. We need to specify both the name of the class, and which attributes the class has (in R speak: `slots`).
+We create new S4 classes using the `setClass` function. We need to specify both the name of the class, and which attributes the class has (in R terminology: `slots`).
 
 ```{r}
 setClass("GenericSeq", 
@@ -21,13 +21,13 @@ setClass("GenericSeq",
 
 This declares a new class `GenericSeq` which contains three pieces of information, each of type `character`. 
 
-We can create a new object of this class by using `new()`:
+We create a new object of this class by using `new()`:
 
 ```{r}
 genseq = new("GenericSeq", name="A generic sequence", alphabet=c("A", "T"), sequence="AATTTAAATTTTT")
 ```
 
-When calling `new` R will check if the supplied slots match the definition:
+When calling `new` R will check if the supplied slots match the definition, so this will give an error:
 
 ```{r, error=TRUE}
 genseq = new("GenericSeq", name=10, alphabet=c("A", "T"), sequence="ATTTA")
@@ -46,7 +46,7 @@ slotNames(genseq)
 
 S4 methods use a similar `dispatch` logic as S3, but uses its own system of generics. 
 
-Bioconductor packages `BiocGenerics` and `Biobase` define a large number of S4 generics used in the Bioconductor project. 
+Bioconductor packages `BiocGenerics` and `Biobase` define a large number of S4 generics used in the Bioconductor project, and are the first place to look for generics to re-use. 
 
 ```{r}
 suppressMessages(library(BiocGenerics))
@@ -73,7 +73,7 @@ More examples here:
 
 If you think you'll need some functionality implemented differently for different classes, you might want to create a generic so that dispatching makes this invisible to the user. 
 
-You only need to create an S4 generic if it doens't exist as an S3 generic (or a primitive as `length()`). Every S3 generic (e.g. `summary()`) has an automatic S4 generic as well. 
+You only need to create an S4 generic if it doens't exist as an S3 generic (or as a primitive e.g. `length()`). Every S3 generic (e.g. `summary()`) has an automatic S4 generic as well. 
 
 Lets make a new generic `complement` which we'll use with multiple classes.  
 
@@ -84,7 +84,7 @@ complement # see if exists as S3 generic
 isGeneric("complement") # see if it exists as S4 generic
 ```
 
-We can define our own generics:
+We define our own generics using `setGeneric`:
 
 ```{r}
 setGeneric("complement", 
@@ -92,11 +92,11 @@ setGeneric("complement",
 )
 ```
 
-NOTE: the formal arguments of the generic specify the formal arguments of all the implementations. It's good practice to always add `...` to the end to enable methods to introduce additional parameters. 
+NOTE: the formal arguments of the generic acts as a templated for the formal arguments of all the implementations. It's good practice to always add `...` to the end to enable methods to introduce additional parameters. 
 
 ## Creating S4 methods
 
-Once we have a generic, we can plug in our own implementation for it. 
+For existing generics we define our own implementation with `setMethod`. 
 
 ```{r}
 
@@ -169,13 +169,13 @@ name(genseq) = "New name"
 name(genseq)
 ```
 
-In our case, both methods have very simple implementations, but this gives us an opportunity to continue working on the implementation. E.g. what if we at some point decided we wanted to keep all the information in a big-data backend? We an change our internal implementation, e.g. the object might just have a single slot that is the connection to the big data backend, but we would keep these methods the same, and from user's perspective everything still works the same, but better. 
+In our case, both methods have a very simple implementations, but this gives us an opportunity to continue working on the implementation. E.g. what if we at some point decided we wanted to keep all the information in a big-data backend? We can change our internal implementation, e.g. the object now has a single slot that is the connection to the big data backend, but we would keep these methods the same, and from user's perspective everything still works the same, but better. 
 
 *Discussion*: do we need one method per every slot? Do we need to use methods, or can we also use functions? 
 
 ### Exercise
 
-Implement methods for getting the setting the ```sequence`` slot of our object. 
+Implement methods for getting the setting the ```sequence`` property of our `GenericSeq` object. 
 
 ### Solution
 
@@ -269,9 +269,11 @@ setMethod("show",
 genseq
 ```
 
-## Over-riding operators
+This is useful for the same reasons of separating implementation and interface. 
 
-It might be useful to over-ride operators such as `[`, `$`, `+`, ... All of these already have generics we just need to implement them:
+## Overriding operators
+
+It might be useful to override operators such as `[`, `$`, `+`, ... All of these already have generics we just need to implement them:
 
 ```{r}
 findMethods("[")@generic
@@ -289,7 +291,7 @@ setMethod("[","GenericSeq",
 
 ```
 
-We can now use the `[` notation to create new GenericSeq objects that contain the subset of the sequence. 
+We can now use the `[` notation to create new `GenericSeq` objects that contain the subset of the sequence. 
 
 ```{r}
 sequence(genseq)
@@ -324,8 +326,67 @@ sequence(dnaseq)
 length(dnaseq)
 ```
 
+# Using S4 in packages
+
+When using S4 in a package, we need to make sure that generics and class definitions are sourced _before_ methods. The easiest way to achieve this is by naming convention. 
+
+When loading a package R sources files alphabetically (in absence of `Collate` in the `DESCRIPTION` file), so if we name our files like this the they will be sourced in the correct order for S4:
+
+- ```AllGenerics.R```
+- ```DataClasses.R```
+- all other files starting with a lowercase letter
+
+## Exporting S4 in a package
+
+To make S4 classes, methods and generics available for the user of your package, you need to export them in the `NAMESPACE` file. Your namespace file might look like this:
+
+```
+exportClasses(GenericSeq)
+
+exportMethods(name, "name<-",
+              sequence, "sequence<-",
+              "[",
+              show,
+              rev,
+              length)
+```
+
+We use `exportClasses` to export our classes, `exportMethods` to export all of our method implementations and any associated generics. 
+
+## Documenting S4
+
+R can generate template documentation files for classes and generic's methods using `promptClass("GenericSeq")` and `promptMethods("sequence")` where `sequence` is the name of the generic we want to document.
+
+If you wish to keep the documentation together with the code you can use the `roxygen2` package. It has custom tags to document classes and methods:
+
+```{r}
+#' GenericSeq class
+#'
+#' A class representing operations with a generic sequence. 
+#'
+#' @export
+setClass("GenericSeq", 
+          slots=list(
+            name="character",
+            alphabet="character",
+            sequence="character"
+          ))
+
+
+#' Get the sequence
+#'
+#' @rdname sequence-methods
+setGeneric("sequence", function(object, ...) standardGeneric("sequence"))
+
+#' @rdname sequence-methods 
+#' @export
+setMethod("sequence", "GenericSeq", function(object, ...) object@sequence)
+```
+
+In this example we've exported the class and method, and put the documentation for the generic and the method into a same `.rd` file name `sequence-methods`. You can now generate the the `NAMESPACE` and `.rd` documentation files by running `roxygenise("path/to/your/package")`. 
+
 # Summary of S4
 
-- Same overall logic as S3, but more formal
+- Same overall dispatching logic as S3, but more formal
 - Classes, methods and generics are all explicit and can be inspected with introspection tools
 - Supports custom validity checks
