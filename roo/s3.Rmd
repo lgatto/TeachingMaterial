@@ -1,0 +1,147 @@
+---
+output: md_document
+---
+# S3 OOP
+
+Many of the commonly used R functions use S3 in the background, such as `plot`, `summary`, `mean`, ... 
+
+Lets see how `summary` works. Note that it produces different outputs for different _types_ of inputs:
+
+```{r}
+df = data.frame(a=1:5, b=6:10)
+vect = 1:5
+
+class(df)
+class(vect)
+
+summary(df)
+summary(vect)
+```
+
+So how does the code for `summary` look like, does it have a lot of if-else statements to provide different outputs for different types of inputs? No, it uses S3 OOP to achieve that. 
+
+```{r}
+summary
+
+methods(summary)
+```
+
+The algorithm by which an appropriate method is called is called *dispatching*:
+
+1. The line of code is `UseMethod("summary")` is the dispatch function call, and we call `summary` a *generic function*
+2. The call to this function finds out the class of the first argument (ie `class(object)`), and based on it calls the appropriate implementation:
+    1. If a function with name `summary.<class name>` exists, it will call that one
+    2. If such a function doesn't exist, it calls `summary.default`
+
+Therefore we are effectively calling:
+```{r}
+summary.data.frame(df)  # same as summary(df) because class(df) == "data.frame"
+summary.default(vect)  # same as summary(vect) because class(vect) == "integer"
+```
+
+What if we wanted `summary(vect)` to output something different? We just define a new method. 
+
+```{r}
+summary.integer = function(object, ...){
+  message("This is our own version of summary for integers!")
+}
+methods("summary")
+summary(vect)
+```
+
+Therefore, generics and dispatching enable us to re-implement some of the well-known R functions for any data type, including our own - which we'll cover next. 
+
+### Introducing your own classes
+
+You can also create your own data types (classes). Lets says we want to wrap two pieces of information:
+- DNA sequence name
+- DNA sequence  
+
+into a single new data type. And, we want to implement our own version of ```summary``` for this new data type. 
+
+To create a new object of our class `MyDNASeq` we just modify the `class` attribute of any base R object, e.g. a list. 
+
+```{r}
+dna = list(name="Our sequence name", sequence="ATGGATGACGATG")
+class(dna) = "MyDNASeq"
+dna
+```
+
+At this point we created a new object `dna` with class `MyDNASeq`. We can now go ahead and plug in our implementation for `summary`:
+
+```{r}
+summary(dna)
+
+summary.MyDNASeq = function(object, ...){
+  message("This is a DNA sequence of length ", nchar(dna$sequence))
+}
+
+summary(dna)
+```
+
+You can also introduce generics by creating a function that has `UseMethod("<name of the generic>")` as the only code. 
+
+### Generics from primitives
+
+All primitve functions are implicily generics, e.g. `length`:
+
+```{r}
+length
+methods(length)
+```
+
+So we can define methods as usual:
+
+```{r}
+
+length(dna) # before defining our implementation
+
+length.MyDNASeq = function(x){
+  nchar(x$sequence)
+}
+
+length(dna)
+```
+
+Here we redefined `length()` to return the number of characters in our DNA sequence.  
+
+### Exercise: create a plotting function for our "MyDNASeq" type
+
+Calling `plot()` on our data doesn't work. Create your own implementation of `plot()` for `MyDNASeq`. You can put any meaningful code, e.g. plot a pie chart of the distribution of DNA letters.  
+
+```{r, error=TRUE}
+plot(dna)
+```
+
+### Solution
+
+```{r}
+plot.MyDNASeq = function(x, y, ...){
+  letters = table(strsplit(x$sequence,""))
+  pie(letters)
+}
+
+plot(dna)
+```
+
+## Issues with S3
+
+S3 is very informal, with very little consistency checking, so things can easily go wrong:
+
+```{r, error=TRUE}
+class(dna) = "lm" # dna is now a linear model?!
+```
+
+R lets us set any `class` atribute for any object. However, the object is invalid and we'll get and error if we try to use it:
+
+```{r, error=TRUE}
+summary(dna)
+```
+
+## S3 summary
+
+- New types are created by setting the `class` property of any existing base R object, usually a `list`.
+- New methods are created by naming convention `generic.className`.
+- Easy to make errors, e.g. mistype class name, assing nonsensical class names, or unknowingly override a method if you use `.` in your function names. 
+- No consisency checking - no formal guarantee that two objects of same class will have the same properties
+

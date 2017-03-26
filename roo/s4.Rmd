@@ -1,0 +1,392 @@
+---
+output: md_document
+---
+
+# S4 OOP
+
+S4 is a more formal version of [S3](s3.md). 
+
+## Creating classes in S4
+
+We create new S4 classes using the `setClass` function. We need to specify both the name of the class, and which attributes the class has (in R terminology: `slots`).
+
+```{r}
+setClass("GenericSeq", 
+          slots=list(
+            name="character",
+            alphabet="character",
+            sequence="character"
+          ))
+```
+
+This declares a new class `GenericSeq` which contains three pieces of information, each of type `character`. 
+
+We create a new object of this class by using `new()`:
+
+```{r}
+genseq = new("GenericSeq", name="A generic sequence", alphabet=c("A", "T"), sequence="AATTTAAATTTTT")
+```
+
+When calling `new` R will check if the supplied slots match the definition, so this will give an error:
+
+```{r, error=TRUE}
+genseq = new("GenericSeq", name=10, alphabet=c("A", "T"), sequence="ATTTA")
+```
+
+You can access the slots directly by using a special `@` operators, or using `slots` progamatically:
+
+```{r}
+genseq
+genseq@name
+slot(genseq, "name")
+slotNames(genseq)
+```
+
+## S4 generics
+
+S4 methods use a similar `dispatch` logic as S3, but uses its own system of generics. 
+
+Bioconductor packages `BiocGenerics` and `Biobase` define a large number of S4 generics used in the Bioconductor project, and are the first place to look for generics to re-use. 
+
+```{r}
+suppressMessages(library(BiocGenerics))
+suppressMessages(library(Biobase))
+```
+
+Multiple regular R functions have been turned into S4 generics, e.g.:
+
+```{r}
+base::nrow
+BiocGenerics::nrow
+base::ncol
+BiocGenerics::ncol
+```
+
+This means that it is easy to re-define the behaviour of these functions for your own class. 
+
+More examples here:
+
+- [BiocGenerics generics](https://github.com/Bioconductor-mirror/BiocGenerics/tree/release-3.4/R)
+- [Biobase generics](https://github.com/Bioconductor-mirror/Biobase/blob/release-3.4/R/AllGenerics.R)
+
+### Creating S4 generics
+
+If you think you'll need some functionality implemented differently for different classes, you might want to create a generic so that dispatching makes this invisible to the user. 
+
+You only need to create an S4 generic if it doens't exist as an S3 generic (or as a primitive e.g. `length()`). Every S3 generic (e.g. `summary()`) has an automatic S4 generic as well. 
+
+Lets make a new generic `complement` which we'll use with multiple classes.  
+
+First, lets check it doesn't exist 
+
+```{r, error=TRUE}
+complement # see if exists as S3 generic
+isGeneric("complement") # see if it exists as S4 generic
+```
+
+We define our own generics using `setGeneric`:
+
+```{r}
+setGeneric("complement", 
+    function(object, ...) standardGeneric("complement")
+)
+```
+
+NOTE: the formal arguments of the generic acts as a templated for the formal arguments of all the implementations. It's good practice to always add `...` to the end to enable methods to introduce additional parameters. 
+
+## Creating S4 methods
+
+For existing generics we define our own implementation with `setMethod`. 
+
+```{r}
+
+length(genseq) # before defining our implementation
+
+setMethod("length", "GenericSeq", function(x) nchar(x@sequence))
+
+length(genseq)
+```
+
+*NOTE*: when implementing generics in S4, make sure the arguments to your implementation match those of the generic. So, `length` has `x` as a parameters:
+
+```
+length
+```
+
+and so should our implementation `function(x) ...`. 
+
+### Exercise: Create a custom `rev` implementation
+
+Create a custom implementation of `rev` for `GenericSeq` that will return a new `GenericSeq` objects where the sequence has been reversed. 
+
+### Solution
+
+```{r}
+setMethod("rev", "GenericSeq", function(x){
+  letters = strsplit(x@sequence, "")[[1]]
+  reversed = paste(rev(letters), collapse="")
+  
+  new("GenericSeq", name=paste(x@name, "--reversed"), alphabet=x@alphabet, sequence=reversed)
+})
+
+genseq
+rev(genseq)
+```
+
+## The seperation of implementation and interface
+
+Best practice:
+
+1. The _user_ should *never* have to use the `@` operator. This operator is for the developer. 
+
+2. The _user_ should *never* have to call `new()`, but create objects with functions we write as wrappers around `new()`. 
+
+As developers, we should be writing _functions and methods_ for the user to use our object. How the object is internally implemented is of no interest to the user. The interface (functions and methods) should be kept stable over time, not to break any external code that depends on our code, while the internal implementation can evolve rapidly. 
+
+### Implementing accessors as methods
+
+We can implement methods to read and modify the properties of our object:
+
+```{r}
+setGeneric("name", function(object, ...) standardGeneric("name"))
+setGeneric("name<-", function(object, value) standardGeneric("name<-"))
+
+setMethod("name", "GenericSeq", function(object, ...) object@name)
+setReplaceMethod("name", signature(object="GenericSeq", value="character"), 
+                 function(object, value){
+                   object@name <- value
+                   return(object)
+                 })
+```
+
+The first generic is a regular generic we saw before. The second is a generic for a "replacement method" that supported the replacement syntax ```name(genseq) = "New name"```. 
+
+We can use these to work with our object:
+
+```{r}
+name(genseq)
+name(genseq) = "New name"
+name(genseq)
+```
+
+In our case, both methods have a very simple implementations, but this gives us an opportunity to continue working on the implementation. E.g. what if we at some point decided we wanted to keep all the information in a big-data backend? We can change our internal implementation, e.g. the object now has a single slot that is the connection to the big data backend, but we would keep these methods the same, and from user's perspective everything still works the same, but better. 
+
+*Discussion*: do we need one method per every slot? Do we need to use methods, or can we also use functions? 
+
+### Exercise
+
+Implement methods for getting the setting the ```sequence`` property of our `GenericSeq` object. 
+
+### Solution
+
+```{r}
+setGeneric("sequence", function(object, ...) standardGeneric("sequence"))
+setGeneric("sequence<-", function(object, value) standardGeneric("sequence<-"))
+
+setMethod("sequence", "GenericSeq", function(object, ...) object@sequence)
+setReplaceMethod("sequence", signature(object="GenericSeq", value="character"), 
+                 function(object, value){
+                   object@sequence <- value
+                   return(object)
+                 })
+
+sequence(genseq)
+sequence(genseq) = "TAATTTT"
+sequence(genseq)
+
+```
+
+## Validity
+
+Objects might have further contrains on them, e.g. in our case, we assume that `alphabet` slot matches the letters used in the `sequence` slot. 
+
+We can attach custom validity checks to our object. 
+
+```{r}
+setValidity("GenericSeq", function(object){
+  # check if the alphabet matches letters in sequence
+  letters = strsplit(object@sequence, "")[[1]]
+  if(!all(letters %in% object@alphabet)){
+    return("The alphabet does not match the sequence")
+  }
+  return(TRUE)
+})
+
+validObject(genseq)
+```
+
+To ensure that the object remains valid we can include it in our `sequence` replacement method implementation:
+
+```{r}
+setReplaceMethod("sequence", signature(object="GenericSeq", value="character"), 
+                 function(object, value){
+                   object@sequence <- value
+                   if(validObject(object))
+                     return(object)
+                 })
+```
+
+So now trying to set an invalid value for the `sequence` will result in a validity error:
+
+```{r, error=TRUE}
+sequence(genseq) = "ATTAAAAAAAA" # this still works as the object is valid
+sequence(genseq) = "ABCD" # this produces an error
+```
+
+## Introspection
+
+Because S4 is more formal and explicit there are multiple functions you can use to find out information about your and other people's classes. 
+
+```{r}
+showMethods("rev")
+getClass("GenericSeq")
+getMethod("rev", "GenericSeq")
+findMethods("rev")
+showMethods(classes="GenericSeq")
+isGeneric("rev")
+```
+
+## Over-riding default object display
+
+We can over-ride how the object is shown to the user. The default is:
+
+```{r}
+genseq
+```
+
+We can over-ride this by implementing `show`:
+
+```{r}
+setMethod("show",
+          "GenericSeq",
+          function(object) {
+            cat("Object of class",class(object),"\n")
+            cat(" Name:", object@name,"\n")
+            cat(" Length:",length(object),"\n")
+            cat(" Alphabet:",object@alphabet,"\n")
+            cat(" Sequence:",object@sequence, "\n")
+          })
+genseq
+```
+
+This is useful for the same reasons of separating implementation and interface. 
+
+## Overriding operators
+
+It might be useful to override operators such as `[`, `$`, `+`, ... All of these already have generics we just need to implement them:
+
+```{r}
+findMethods("[")@generic
+
+setMethod("[","GenericSeq",
+          function(x,i,j="missing",drop="missing") {
+            if (any(i > length(x)))
+              stop("subscript out of bounds")
+            s <- sequence(x)
+            s <- paste(strsplit(s,"")[[1]][i], collapse="")
+            x@sequence <- s
+            if (validObject(x))
+              return(x)
+          })
+
+```
+
+We can now use the `[` notation to create new `GenericSeq` objects that contain the subset of the sequence. 
+
+```{r}
+sequence(genseq)
+genseq[1:3]
+```
+
+## Inheritance 
+
+When we create a new class, we can set it to inherit the slots and methods of another class. 
+
+```{r}
+setClass("DNASeq",
+         contains="GenericSeq",
+         slots=list(
+           adapterSeq="character"
+         ))
+```
+
+In this example `contains` signifies that the `DNASeq` class inherits the `GenericSeq` class. So `DNASeq` will have all the slots of `GenericSeq` plus the one new one we defined:
+
+```{r}
+dnaseq = new("DNASeq", name="Illumina short sequence", 
+             sequence="ATGAAAAAGGG", alphabet=c("A", "C", "G", "T"),
+             adapterSeq="ATGA")
+slotNames(dnaseq)
+```
+
+All the methods we defined for `GenericSeq` still work:
+
+```{r}
+sequence(dnaseq)
+length(dnaseq)
+```
+
+# Using S4 in packages
+
+When using S4 in a package, we need to make sure that generics and class definitions are sourced _before_ methods. The easiest way to achieve this is by naming convention. 
+
+When loading a package R sources files alphabetically (in absence of `Collate` in the `DESCRIPTION` file), so if we name our files like this the they will be sourced in the correct order for S4:
+
+- ```AllGenerics.R```
+- ```DataClasses.R```
+- all other files starting with a lowercase letter
+
+## Exporting S4 in a package
+
+To make S4 classes, methods and generics available for the user of your package, you need to export them in the `NAMESPACE` file. Your namespace file might look like this:
+
+```
+exportClasses(GenericSeq)
+
+exportMethods(name, "name<-",
+              sequence, "sequence<-",
+              "[",
+              show,
+              rev,
+              length)
+```
+
+We use `exportClasses` to export our classes, `exportMethods` to export all of our method implementations and any associated generics. 
+
+## Documenting S4
+
+R can generate template documentation files for classes and generic's methods using `promptClass("GenericSeq")` and `promptMethods("sequence")` where `sequence` is the name of the generic we want to document.
+
+If you wish to keep the documentation together with the code you can use the `roxygen2` package:
+
+```{r}
+#' GenericSeq class
+#'
+#' A class representing operations with a generic sequence. 
+#'
+#' @export
+setClass("GenericSeq", 
+          slots=list(
+            name="character",
+            alphabet="character",
+            sequence="character"
+          ))
+
+
+#' Get the sequence
+#'
+#' @rdname sequence-methods
+setGeneric("sequence", function(object, ...) standardGeneric("sequence"))
+
+#' @rdname sequence-methods 
+#' @export
+setMethod("sequence", "GenericSeq", function(object, ...) object@sequence)
+```
+
+In this example we've exported the class and method, and put the documentation for the generic and the method into the same `.rd` file name `sequence-methods.rd`. You can now generate the the `NAMESPACE` and `.rd` documentation files by running `roxygenise("path/to/your/package")`. 
+
+# Summary of S4
+
+- Same overall dispatching logic as S3, but more formal
+- Classes, methods and generics are all explicit and can be inspected with introspection tools
+- Supports custom validity checks
