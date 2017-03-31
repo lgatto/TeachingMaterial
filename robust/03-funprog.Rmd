@@ -1,5 +1,5 @@
 ---
-title: "Part II: Functional programming"
+title: "Part III: Functional programming"
 author: "Laurent Gatto"
 ---
 

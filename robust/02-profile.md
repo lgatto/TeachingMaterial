@@ -1,5 +1,5 @@
 ---
-title: "Part IV: Performance"
+title: "Part II: Profiling"
 author: "Laurent Gatto"
 ---
 
@@ -57,7 +57,8 @@ idioms that make code too slow.
 Let's compare two implementation of the square root calculation:
 `sqrt(x)` and `x ^ 0.5`.
 
-```{r, eval=FALSE}
+
+```r
 x <- runif(100)
 system.time(sqrt(x))
 system.time(x^0.5)
@@ -65,7 +66,8 @@ system.time(x^0.5)
 
 Does this work? Try
 
-```{r, eval=FALSE}
+
+```r
 x <- runif(1e5)
 system.time(sqrt(x))
 system.time(x^0.5)
@@ -73,7 +75,8 @@ system.time(x^0.5)
 
 We want to repeat timings multiple times:
 
-```{r, eval=FALSE}
+
+```r
 summary(replicate(10, system.time(x^0.5)[["elapsed"]]))
 ```
 
@@ -86,166 +89,14 @@ Each expression is run 100 times (controlled by the `times`
 argument). In addition, the execution order is randomised and summary
 timings are reported.
 
-```{r, eval=FALSE}
+
+```r
 x <- runif(100)
 library(microbenchmark)
 
 microbenchmark(sqrt(x),
                x ^ 0.5)
 ```
-
-**Question**: where does this difference come from?
-
-<!-- ```{r, eval=FALSE} -->
-<!-- sqrt ## 1 argument -->
-<!-- `^`  ## 2 arguments -->
-<!-- as.list(body(function(x) x^0.5))   ## 2 symbols -->
-<!-- as.list(body(function(x) sqrt(x))) ## 3 symbols -->
-<!-- ``` -->
-
-Below are some illustrations of R's language designs and
-implementations that account for some cuts in performance (taken from
-*Advanced R*).
-
-## Extreme dynamism 
-
-R is an extremely dynamics language where almost any symbol (there are
-a few reserved key words such as `TRUE`, `if`, `for`, ..., package
-namespaces, locked environment with locked binding) can be modified at
-any points; in particular
-
-
-- body, arguments, and environments of functions
-
-```{r, eval=FALSE}
-f <- function() 1
-f()
-body(f)
-body(f) <- 2
-f()
-formals(f) <- pairlist(x = 1)
-body(f) <- quote(x + 1)
-f()
-f(10)
-```
-
-- Change the S4 methods for a generic
-
-```{r, eval=FALSE}
-setMethod(...)
-```
-
-- Add new fields to an S3 object
-
-```{r, eval=FALSE}
-ctl <- c(4.17,5.58,5.18,6.11,4.50,4.61,5.17,4.53,5.33,5.14)
-trt <- c(4.81,4.17,4.41,3.59,5.87,3.83,6.03,4.89,4.32,4.69)
-group <- gl(2, 10, 20, labels = c("Ctl","Trt"))
-weight <- c(ctl, trt)
-mod <- lm(weight ~ group)
-mod
-mod$foo <- 1
-mod
-summary(mod)
-names(mod)
-```
-
-- Change the class of an object
-
-```{r, eval=FALSE}
-class(mod) <- c("mod", "foo")
-```
-- modify objects outside or the local environment with `<<-`, or
-  anywhere with `assign(..., envir)`.
-
-While this dynamism gives a lot of flexibility, the interpreter can
-not make any assumptions or optimisations. For example, let's assess
-the cost of methods lookup:
-
-```{r, eval=FALSE}
-## function
-f <- function(x) NULL
-
-## S3 method
-s3 <- function(x) UseMethod("s3")
-s3.integer <- f
-
-## S4 method
-A <- setClass("A", slots = c(a = "list"))
-setGeneric("s4", function(x) standardGeneric("s4"))
-setMethod("s4", "A", f)
-a <- A()
-
-## S4 Reference Class
-B <- setRefClass("B", methods = list(rc = f))
-b <- B$new()
-```
-
-```{r, eval=FALSE}
-microbenchmark(
-     fun = f(),
-     S3 = s3(1L),
-     S4 = s4(a),
-     RC = b$rc()
-)
-```
-
-## Name lookup
-
-To find the value of a symbol is difficult, given that **everything**
-can be modified (extreme dynamics, see above) and lexical scoping.
-
-```{r, eval=TRUE}
-a <- 1
-f <- function() {
-    g <- function() {
-        print(a) ## from global workspace
-        assign("a", 2, envir = parent.frame())
-        print(a) ## f's environment
-        a <- 3
-        print(a) ## g's environment
-    }
-    g()
-}
-f()
-```
-
-And by **everything**, we mean really nearly **everything**: `+`, `^`, `(`, and `{` in
-
-```{r, eval=FALSE}
-f <- function(x, y) {
-    (x + y) ^ 2
-}
-```
-
-## Extracting a single value from a data frame
-
-```{r, eval=FALSE}
-microbenchmark(
-    "[32, 11]"      = mtcars[32, 11],
-    "$carb[32]"     = mtcars$carb[32],
-    "[[c(11, 32)]]" = mtcars[[c(11, 32)]],
-    "[[11]][32]"    = mtcars[[11]][32],
-    ".subset"       = .subset(mtcars, 11)[32],
-    ".subset2"      = .subset2(mtcars, 11)[32]
-)
-```
-
-
-## Improving R's performance
-
-R implementation:
-
-- [GNU R](http://www.r-project.org/)
-- [pqR](http://www.pqr-project.org)
-- [Renjin](http://www.renjin.org)
-- [FastR](https://github.com/allr/fastr)
-- [Riposte](https://github.com/jtalbot/riposte)
-- [CXXR](http://www.cs.kent.ac.uk/project/cxxr/)
-
-Several of these projects implement *deferred evaluation*,
-i.e. evaluations are only executed if they really need to be. We will
-see (and implement) and example in the `Rcpp` section.
 
 # Profiling
 
@@ -284,18 +135,22 @@ then
 
 #### Make sure the code remains correct
 
-```{r, eval=TRUE}
+
+```r
 x <- runif(100)
 all.equal(sqrt(x), x ^ 0.5)
 ```
 
-and/or [unit
-tests](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/unittesting.md)
-to compare different implementations (and regression test).
+```
+## [1] TRUE
+```
+
+and/or unit tests to compare different implementations (and regression test).
 
 #### Are implementations really equivalent?
 
-```{r, eval=FALSE}
+
+```r
 library("sequences")
 gccount
 gccountr <- function(x) table(strsplit(x, "")[[1]])
@@ -304,7 +159,8 @@ gccountr2 <- function(x) tabulate(factor(strsplit(x, "")[[1]]))
 
 Checking that our different implementations give the same results:
 
-```{r, eval=FALSE}
+
+```r
 s <- paste(sample(c("A", "C", "G", "T"),
                   100, replace = TRUE),
            collapse = "")
@@ -319,7 +175,8 @@ functionalities?
 
 Is it worth it?
 
-```{r, eval=FALSE}
+
+```r
 library("microbenchmark")
 microbenchmark(gccount(s),
                      gccountr(s),
@@ -328,7 +185,8 @@ microbenchmark(gccount(s),
 					 unit = "eps")
 ```
 
-```{r, eval=FALSE}
+
+```r
 library("ggplot2")
 mb <- microbenchmark(gccount(s),
                      gccountr(s),
@@ -373,7 +231,8 @@ are now deprecated in favour of
 
 ## `Rprof`
 
-```{r, eval=FALSE}
+
+```r
 m <- matrix(rnorm(1e6), ncol = 10)
 
 Rprof("rprof")
@@ -387,7 +246,8 @@ summaryRprof("rprof")
 Needs to `source()` the code or directly input the code to have access
 to the individual lines.
 
-```{r, eval=TRUE, echo=TRUE}
+
+```r
 f <- function() {
   pause(0.1)
   g()
@@ -402,10 +262,10 @@ g <- function() {
 h <- function() {
   pause(0.1)
 }
-
 ```
 
-```{r, eval=FALSE}
+
+```r
 library("profvis")
 source("lineprof-example.R")
 profvis(f())
@@ -425,7 +285,8 @@ profvis(f())
 Profile the code chunk that calculates the timmed means using
 `profvis` and interpret the results.
 
-```{r, eval=FALSE}
+
+```r
 profvis({
     m <- matrix(rnorm(1e6), ncol = 10)
     res <- apply(m, 1, mean, trim=.3)
@@ -449,7 +310,8 @@ profvis({
 
 ## Names
 
-```{r, eval=TRUE, cache=TRUE}
+
+```r
 make_id2GO <- function(n = 1e3) { ## could be 1e4 - 1e5
     gn <- sprintf(paste0("ENSG%0", 10, "d"), sample(1e6, n))
     goid <- function(n = 10) sprintf(paste0("GO:%0", 10, "d"), sample(1e6, n))
@@ -459,12 +321,13 @@ make_id2GO <- function(n = 1e3) { ## could be 1e4 - 1e5
 id2GO <- make_id2GO()
 ```
 
-We have a list of `r length(id2GO)` genes, and each of these genes is
-characterised by a set of `r min(lengths(id2GO))` to `r max(lengths(id2GO))` GO terms. 
+We have a list of 1000 genes, and each of these genes is
+characterised by a set of 1 to 50 GO terms. 
 
 To obtain the go terms, we `unlist` the gene list.
 
-```{r, eval=FALSE}
+
+```r
 length(id2GO)
 str(head(id2GO))
 str(unlist(id2GO))
@@ -473,7 +336,8 @@ str(unlist(id2GO))
 This can be executed much faster if we ignore the names in the
 original list.
 
-```{r, eval=FALSE}
+
+```r
 library(microbenchmark)
 microbenchmark(unlist(l),
                unlist(l, use.names = FALSE),
@@ -482,7 +346,8 @@ microbenchmark(unlist(l),
 
 ## Initialise, do not grow dynamically (to avoid copies)
 
-```{r, echo=TRUE, echo=TRUE}
+
+```r
 f1 <- function(n) {
   a <- NULL 
   for (i in 1:n) a <- c(a, sqrt(i))
@@ -496,7 +361,8 @@ f2 <- function(n) {
 }
 ```
 
-```{r, eval=FALSE}
+
+```r
 microbenchmark(f1(1e3), f2(1e3))
 microbenchmark(f1(1e4), f2(1e4))
 ```
@@ -507,7 +373,8 @@ When passing an environment as function argument, it is **not**
 copied: all its values are accessible within the function and can be
 persistently modified.
 
-```{r, eval=TRUE}
+
+```r
 e <- new.env()
 e$x <- 1
 f <- function(myenv) myenv$x <- 2
@@ -515,12 +382,17 @@ f(e)
 e$x
 ```
 
+```
+## [1] 2
+```
+
 This is used in the `eSet` et al. microarray data structures to store
 the expression data.
 
 ## Vectorisation
 
-```{r, eval=TRUE}
+
+```r
 f3 <- function(n)
   sapply(seq_len(n), sqrt)
 
@@ -529,52 +401,7 @@ f4 <- function(n) sqrt(n)
 
 ![Initialisation and vectorisation](./figs/vectimings.png)
 
-```{r, eval=FALSE, echo=FALSE}
-n <- 10^(2:5)
-t1 <- sapply(n, function(.n) system.time(f1(.n))[["elapsed"]])
-t2 <- sapply(n, function(.n) system.time(f2(.n))[["elapsed"]])
-t3 <- sapply(n, function(.n) system.time(f3(.n))[["elapsed"]])
-t4 <- sapply(n, function(.n) system.time(f4(.n))[["elapsed"]])
-  
-elapsed <- data.frame(t1, t2, t3, t4)
-rownames(elapsed) <- n
-  
-colnames(elapsed) <-
-    c("for loop\nwithout init",
-      "for loop\nwith init",
-      "wrapped in\napply",
-      "built-in sqrt\n(vectorised)")
-	  
-suppressPackageStartupMessages(library("grid"))
-suppressPackageStartupMessages(library("reshape2"))
-suppressPackageStartupMessages(library("scales"))
-suppressPackageStartupMessages(library("ggplot2"))
 
-mainvp <- viewport(width = 1,
-                   height = 1,
-                   x = 0.5, y = 0.5)
-subvp <- viewport(width = 6/9,
-                  height = 5/9,
-                  x = .1,
-                  y = .95,
-                  just = c("left","top"))
-df <- melt(elapsed)
-colnames(df) <- c("Implementation", "Elapsed")
-df$Iterations <- rep(n, 4)
-ymax <- max(elapsed[, -1])
-p <- ggplot(data=df, aes(x=Iterations, y=Elapsed, col=Implementation)) +
-    geom_line() + geom_point() +
-        theme(legend.position="bottom") +
-            scale_x_continuous(trans=log10_trans()) + 
-                coord_trans(x="log2")
-q <- p + coord_cartesian(ylim=c(0, (ymax+.05))) +
-    theme_gray(8) +
-        labs(x = NULL, y = NULL) +
-            theme(plot.margin = unit(rep(0.3, 4), "lines")) +
-                theme(legend.position="none")
-print(p, vp = mainvp)
-print(q, vp = subvp)
-```
 
 Code vectorisation is not only about avoiding loops at all cost, and
 replacing them with `*apply`. As we have seen, this does not make any
@@ -584,14 +411,6 @@ Difference between vectorisation in high level code, to improve
 clarity (`apply`, `Vectorise`, ...) and, vectorise to improve
 performance, which involved re-writing for loops in C/C++ (see below).
 
-## Re-implementing the code in C/C++ 
-
-See below
-
-## Parallelisation
-
-See the [R-parallel](https://github.com/lgatto/R-parallel/blob/f83667f3ef62ca3f82a7f2ef58b05db497da4b75/parallel.pdf) material.
-
 ## Byte-code compilation
 
 The `compile::cmpfun` function compiles the body of a closure and
@@ -599,7 +418,8 @@ returns a new closure with the same formals and the body replaced by
 the compiled body expression. It does not always provide a speed
 improvement, but is very easy to implement.
 
-```{r, eval=FALSE}
+
+```r
 lapply2 <- function(x, f, ...) {
   out <- vector("list", length(x))
   for (i in seq_along(x)) {
@@ -630,14 +450,16 @@ memory access (read/write), which is one common bottleneck in R.
 
 Requirement: 
 
-```{r, eval=FALSE}
+
+```r
 library("pryr")
 library("profvis")
 ```
 
 ## Object size
 
-```{r, eval=FALSE}
+
+```r
 x <- 1:1e5
 object.size(x)
 print(object.size(x), units = "Kb")
@@ -647,7 +469,8 @@ object_size(x)
 But, `object.size` does not account for shared elements, nor for the
 size of environments.
 
-```{r, eval=FALSE}
+
+```r
 ll <- list(x, x, x)
 print(object.size(ll), units = "Kb")
 object_size(ll)
@@ -655,7 +478,8 @@ object_size(ll)
 
 But, this does not hold when there's no shared components:
 
-```{r, eval=FALSE}
+
+```r
 x <- 1:1e6
 y <- list(1:1e6, 1:1e6, 1:1e6)
 object_size(x)
@@ -664,7 +488,8 @@ object_size(y)
 
 Environments:
 
-```{r, eval=FALSE}
+
+```r
 e <- new.env()
 object.size(e)
 object_size(e)
@@ -706,18 +531,21 @@ object_size(e)
 To get the total size of all object that were created by R that
 currently take space in memory:
 
-```{r, eval=FALSE}
+
+```r
 mem_used()
 ```
 
 To track memory change
 
-```{r, eval=FALSE}
+
+```r
 mem_change(v <- 1:1e6)
 mem_change(rm(v))
 ```
 
-```{r, eval=FALSE}
+
+```r
 rm(list = ls())
 mem_change(x <- 1:1e6)
 mem_change(y <- x)
@@ -738,7 +566,8 @@ effect of this is for R to explicitly return memory to the OS.
 What happens in this cas? Is `x` copied (and hence more memory is used
 up), or is it modified in place?
 
-```{r, eval=FALSE}
+
+```r
 x <- 1:10
 c(address(x), refs(x))
 x[5] <- 0L
@@ -768,7 +597,8 @@ c(address(x), refs(x)) ## should be 3
 
 `tracemem` tracks memory location of objects:
 
-```{r, eval=FALSE}
+
+```r
 x <- 1:10
 tracemem(x)
 x[5] <- 0L
@@ -786,25 +616,7 @@ We have quantified the substantial cost in execution time when growing
 data dynamically. Trace the impact of dynamically growing a vector on
 the memory. You can use `f1()` and `f2()` above, and trace `a`.
   
-```{r, eval=FALSE, echo=FALSE}
-f1 <- function(n) {
-  a <- NULL 
-  for (i in 1:n) {
-      a <- c(a, sqrt(i))
-      print(address(a))
-  }
-  invisible(a)
-}
 
-f2 <- function(n) {
-  a <- numeric(n)
-  for (i in 1:n) {
-      a[i] <- sqrt(i)
-      print(address(a))
-  }
-  invisible(a)
-}
-```
 
 
 # Rcpp

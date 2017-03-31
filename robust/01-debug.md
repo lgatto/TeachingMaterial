@@ -1,14 +1,106 @@
 ---
-title: "Part III: Debugging"
+title: "Part I: Debugging"
 author: "Laurent Gatto"
 ---
 
 # Overview
 
+- Coding style(s)
 - Defensive programming
 - Debbugging: techniques and tools
 - Condition handling
-- Testing
+
+# Coding style(s)
+
+> Computers are cheap, and thinking hurts. -- Uwe Ligges
+
+Simplicity, readability and consistency are a long way towards
+robust code.
+
+Why?
+
+> Good coding style is like using correct punctuation. You can manage
+> without it, but it sure makes things easier to read.
+-- Hadley Wickham
+
+for **consistency** and **readability**.
+
+## Which one?
+
+- [Bioconductor](http://master.bioconductor.org/developers/how-to/coding-style/)
+- [Hadley Wickham](http://r-pkgs.had.co.nz/style.html)
+- [Google](http://google.github.io/styleguide/Rguide.xml)
+- ...
+
+## Examples
+
+- Place spaces around all infix operators (`=`, `+`, `-`, `<-`, etc., but *not* `:`)
+  and after a comma (`x[i, j]`).
+- Spaces before `(` and after `)`; not for function.
+- Use `<-` rather than `=`.
+- Limit your code to 80 characters per line
+- Indentation: do not use tabs, use 2 (HW)/4 (Bioc) spaces
+- Function names: use verbs
+- Variable names: camelCaps (Bioc)/ `_` (HW) (but not a `.`)
+- Prefix non-exported functions with a ‘.’ (Bioc).
+- Class names: start with a capital
+- Comments: `# ` or `## ` (from emacs)
+
+## [`formatR`](https://cran.rstudio.com/web/packages/formatR/index.html)
+
+
+```r
+library("formatR")
+tidy_source(text = "a=1+1;a  # print the value
+                    matrix ( rnorm(10),5)",
+            arrow = TRUE)
+```
+
+```
+## a <- 1 + 1
+## a  # print the value
+## matrix(rnorm(10), 5)
+```
+
+## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
+
+```
+$ R CMD BiocCheck package_1.0.0.tgz
+```
+
+```
+* Checking function lengths................
+  The longest function is 677 lines long
+  The longest 5 functions are:
+* Checking formatting of DESCRIPTION, NAMESPACE, man pages, R source,
+  and vignette source...
+    * CONSIDER: Shortening lines; 616 lines (11%) are > 80 characters
+      long.
+    * CONSIDER: Replacing tabs with 4 spaces; 3295 lines (60%) contain
+      tabs.
+    * CONSIDER: Indenting lines with a multiple of 4 spaces; 162 lines
+      (2%) are not.
+```
+
+## Style changes over time
+
+![Style changes over time](./figs/style.png)
+
+
+## Ineractive use vs programming
+
+Moving from using R to programming R is *abstraction*, *automation*,
+*generalisation*.
+
+## Interactive use vs programming: `drop`
+
+
+```r
+head(cars)
+head(cars[, 1])
+head(cars[, 1, drop = FALSE])
+```
+
 
 # Defensive programming
 
@@ -28,11 +120,13 @@ for interactive of programmatic usage.
 
 ### Diagnostic messages
 
-```{r, eval=FALSE}
+
+```r
 message("This is a message for our dear users.")
 ```
 
-```{r, eval=FALSE}
+
+```r
 message("This is a message for our dear users. ",
 	paste("Thank you for using our software",
               sw, "version", packageVersion(sw)))
@@ -40,7 +134,8 @@ message("This is a message for our dear users. ",
 
 Do not use `print` or `cat`:
 
-```{r, eval=FALSE}
+
+```r
 f1 <- function() {
     cat("I AM LOUD AND YOU CAN'T HELP IT.\n")
     ## do stuff
@@ -49,7 +144,8 @@ f1 <- function() {
 f1()
 ```
 
-```{r, eval=FALSE}
+
+```r
 f2 <- function() {
     message("Sorry to interup, but...")
     ## do stuff
@@ -63,7 +159,8 @@ Of course, it is also possible to manually define verbosity. This
 makes you write more code for a feature readily available. But still
 better to use `message`.
 
-```{r, eval=FALSE}
+
+```r
 f3 <- function(verbose = TRUE) {
     if (verbose)
         message("I am being verbose because you let me.")
@@ -79,12 +176,14 @@ f3(verbose = FALSE)
 > There is a problem with warnings. No one reads them. Pat Burns, in
 > *R inferno*.
 
-```{r, eval=FALSE}
+
+```r
 warning("Do not ignore me. Somthing bad might have happened.")
 warning("Do not ignore me. Somthing bad might be happening.", immediate. = TRUE)
 ```
 
-```{r, eval=FALSE}
+
+```r
 f <- function(...)
     warning("Attention, attention, ...!", ...)
 f()
@@ -92,31 +191,36 @@ f(call. = FALSE)
 ```
 Print warnings after they have been thrown.
 
-```{r, eval=FALSE}
+
+```r
 warnings()
 last.warning
 ```
 
 See also to `warn` option in `?options` .
 
-```{r, eval=FALSE}
+
+```r
 option("warn")
 ```
 
 ### Error
 
-```{r, eval=FALSE}
+
+```r
 stop("This is the end, my friend.")
 ```
 
-```{r, eval=FALSE}
+
+```r
 log(c(2, 1, 0, -1, 2)); print('end') ## warning 
 xor(c(TRUE, FALSE));  print ('end')  ## error
 ```
 
 Stop also has a `call.` parameter.
 
-```{r, eval=FALSE}
+
+```r
 geterrmessage()
 ```
 
@@ -136,18 +240,21 @@ Keep your functions simple and stupid (and short).
 > to put lots of self checks in your program. -- Practical C++
 > Programming, Steve Oualline, O'Reilly.
 
-```{r, eval=FALSE}
+
+```r
 if (!condition) stop(...)
 ```
 
-```{r, eval=FALSE}
+
+```r
 stopifnot(TRUE)
 stopifnot(TRUE, FALSE)
 ```
 
 For example to test input classes, lengths, ...
 
-```{r, eval=FALSE}
+
+```r
 f <- function(x) {
     stopifnot(is.numeric(x), length(x) == 1)
     invisible(TRUE)
@@ -161,7 +268,8 @@ f(letters)
 
 The [`assertthat`](https://github.com/hadley/assertthat) package:
 
-```{r, eval=FALSE}
+
+```r
 x <- "1"
 library("assertthat")
 stopifnot(is.numeric(x))
@@ -235,7 +343,8 @@ consuming.
 Bugs are shy, and are generally hidden, deep down in your code, to
 make it as difficult as possible for you to find them.
 
-```{r, echo=TRUE}
+
+```r
 e <- function(i) {
   x <- 1:4
   if (i < 5) x[1:2]
@@ -247,7 +356,8 @@ g <- function() f()
 
 `traceback`: lists the sequence of calls that lead to the error
 
-```{r, eval=FALSE}
+
+```r
 g()
 traceback()
 ```
@@ -267,7 +377,8 @@ form `filename.R#linenum`.
 - To finish debugging: `undebug(g)`.
 
 
-```{r, eval=FALSE}
+
+```r
 debug(g)
 g()
 ```
@@ -341,7 +452,8 @@ workspace.
 
 (Example originally by Martin Morgan and Robert Gentleman.)
 
-```{r, echo=TRUE}
+
+```r
 e <- function(i) {
   x <- 1:4
   if (i < 5) x[1:2]
@@ -353,7 +465,8 @@ g <- function() f()
 
 2. Fix `readFasta2`.
 
-```{r, eval=FALSE}
+
+```r
 ## make sure you have the 'sequences' package.
 ## Get readFasta2, the function to debug
 library(devtools)
@@ -375,7 +488,8 @@ readFasta2(f)
 
 The function `f` will never terminate.
 
-```{r, eval=FALSE}
+
+```r
 f <- function() {
     x <- "1"
     log(x)
@@ -386,7 +500,8 @@ f()
 
 Use `try` to proceed with the execution even when an error occurs.
 
-```{r, eval=FALSE}
+
+```r
 f <- function() {
     x <- "1"
     try(log(x))
@@ -395,7 +510,8 @@ f <- function() {
 f()
 ```
 
-```{r, eval=FALSE}
+
+```r
 try({
     a <- 1
     b <- "2"
@@ -405,14 +521,16 @@ try({
 
 In case of error, `try` returns a object of class `try-error`:
 
-```{r, eval=FALSE}
+
+```r
 success <- try(1 + 2)
 failure <- try(1 + "2", silent = TRUE)
 class(success)
 class(failure)
 ```
 
-```{r, eval=FALSE}
+
+```r
 inherits(failure, "try-error")
 
 if (inherits(failure, "try-error"))
@@ -422,7 +540,8 @@ Handling errors is particularly useful to iterate over all elements of
 an input, despite errors (and inspecting/handling/fixing the errors
 afterwards).
 
-```{r, eval=FALSE}
+
+```r
 el <- list(1:10, c(-1, 1), TRUE, "1")
 res <- lapply(el, log)
 res
@@ -436,7 +555,8 @@ res
 > expression fails. Simply assign the default outside the `try` block,
 > and then run the risky code:
 
-```{r, eval=FALSE}
+
+```r
 default <- NULL
 try(default <- read.csv("possibly-bad-input.csv"), silent = TRUE)
 ```
@@ -444,7 +564,8 @@ try(default <- read.csv("possibly-bad-input.csv"), silent = TRUE)
 > There is also `plyr::failwith()`, which makes this strategy even
 > easier to implement.
 
-```{r, eval=FALSE}
+
+```r
 f <- function(x)
     if (x == 1) stop("Error!") else 1
 
@@ -460,7 +581,8 @@ safef(2)
 Use `tryCatch` to specify a behaviour (handler function) in case of
 error, warning or message.
 
-```{r, eval=FALSE}
+
+```r
 f <- function() {
     x <- "1"
     tryCatch(log(x),
@@ -472,7 +594,8 @@ f()
 
 More example from Hadleys' *Advanced R* book.
 
-```{r, eval=FALSE}
+
+```r
 show_condition <- function(code) {
   tryCatch(code,
     error = function(c) "error",
@@ -488,7 +611,8 @@ show_condition(0)
 
 A more informative `read.csv` version:
 
-```{r, eval=FALSE}
+
+```r
 read.csv2 <- function(file, ...) {
   tryCatch(read.csv(file, ...), error = function(c) {
     c$message <- paste0(c$message, " (in ", file, ")")
@@ -512,7 +636,8 @@ The `withCallingHandlers` function allows to defined special behaviour
 in case of *unusual conditions*, including warnings and errors. In the
 example below, we start a browser in case of (obscure) warnings.
 
-```{r, eval=FALSE}
+
+```r
 f <- function(x = 10) {
     lapply(seq_len(x), function(i) {
         ## make an example 2x2 contingency table
@@ -524,7 +649,8 @@ f <- function(x = 10) {
 }
 ```
 
-```{r, eval=FALSE}
+
+```r
 set.seed(1)
 f()
 set.seed(1)
@@ -541,7 +667,8 @@ the call that generated the condition whereas the handlers in
 here with `sys.calls()`, which is the run-time equivalent of
 `traceback()` -- it lists all calls leading to the current function.
 
-```{r, eval=FALSE}
+
+```r
 f <- function() g()
 g <- function() h()
 h <- function() stop("!")
@@ -552,30 +679,69 @@ withCallingHandlers(f(), error = function(e) print(sys.calls()))
 
 ### Exercise
 
-```{r, eval=TRUE, echo=FALSE}
-safelog <- function(x) {
-  tryCatch(log(x),
-           error = function(e) paste("an error with input", x),
-           warning = function(e) paste("a warning with input", x))
-}
-```
+
 
 
 Write a new `safelog` function that catches and handles errors and
 warnings to emulate the following behaviour.
 
-```{r, echo=TRUE, eval=TRUE}
+
+```r
 log(1)
+```
+
+```
+## [1] 0
+```
+
+```r
 safelog(1)
+```
+
+```
+## [1] 0
+```
+
+```r
 log(-1)
+```
+
+```
+## Warning in log(-1): NaNs produced
+```
+
+```
+## [1] NaN
+```
+
+```r
 safelog(-1)
+```
+
+```
+## [1] "a warning with input -1"
+```
+
+```r
 log("a")
+```
+
+```
+## Error in log("a"): non-numeric argument to mathematical function
+```
+
+```r
 safelog("a")
+```
+
+```
+## [1] "an error with input a"
 ```
 
 **Answer**
 
-```{r, echo=TRUE}
+
+```r
 safelog <- function(x) {
   tryCatch(log(x),
            error = function(e) paste("an error with input", x),
@@ -591,14 +757,16 @@ From `?trace`:
 > to `browser` or `recover`) at chosen places in any function. A call
 > to `untrace` cancels the tracing.
 
-```{r, eval=FALSE}
+
+```r
 ## Report whenever e invoked
 trace(sum)
 hist(rnorm(100))
 untrace(sum)
 ```
 
-```{r, eval=FALSE}
+
+```r
 ## Evaluate arbitrary code whenever e invoked
 trace(e, quote(cat("i am", i, "\n")))
 ## Another way to enter browser whenver e invoked
@@ -613,7 +781,8 @@ untrace(e)
 > the function (or of the method, if ‘signature’ is supplied), and
 > assigning the new object back where the original was found.
 
-```{r, eval=FALSE}
+
+```r
 f <- function() {
     ## make an example 2x2 contingency table
     d <- matrix(sample(4:10, 4), nrow=2, ncol=2)
@@ -629,29 +798,34 @@ f() ## warning
 We want to conditionally enter brower mode, when an element of `d` is
 smaller than 5.
 
-```{r, eval=FALSE}
+
+```r
 if (any(d < 5))
   browser()
 ```
 
 This expression must be executed at a specific location in our function `f`:
 
-```{r, eval=FALSE}
+
+```r
 as.list(body(f))
 ```
 
-```{r, eval=FALSE}
+
+```r
 trace("f", quote(if (any(d < 5)) browser()), at = 3)
 ```
 
 We can now run our updated function `f`
 
-```{r, eval=FALSE}
+
+```r
 f
 body(f)
 ```
 
-```{r, eval=FALSE}
+
+```r
 set.seed(1)
 f() ## normal execution
 
@@ -665,7 +839,8 @@ f() ## enters browser mode
 > the function (or of the method, if ‘signature’ is supplied), and
 > assigning the new object back where the original was found.
 
-```{r, eval=FALSE}
+
+```r
 library("MSnbase")
 data(itraqdata)
 x <- itraqdata[[1]]
@@ -674,14 +849,16 @@ plot(x, full=TRUE)
 
 Not helpful:
 
-```{r, eval=FALSE}
+
+```r
 debug(plot)
 plot(x, full=TRUE)
 ```
 
 Try again:
 
-```{r, eval=FALSE}
+
+```r
 trace("plot", browser, 
       signature = c("Spectrum", "missing"))
 plot(x, full=TRUE)

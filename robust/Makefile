@@ -10,7 +10,7 @@
 	perl -pi -e 's/^## (--.+)?//' $@
 
 all: 
-	make 01-intro.md 02-funprog.md 03-debug.md 04-perf.md
-	make 01-intro.R 02-funprog.R 03-debug.R 04-perf.R 
+	make 01-debug.md 02-profile.md 03-funprog.md
+	make 01-debug.R 02-profile.R 03-funprog.R 
 
 .PHONY: all

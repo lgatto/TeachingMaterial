@@ -34,21 +34,21 @@ Morning and afternoon coffee breaks: 30 minutes
 | 10:30 - 11:00 | Package development       |
 | 11:00 - 13:00 | Testing and unit testing  |
 | 13:00 - 14:00 | Lunch                     |
-| 14:00 - 17:00 | OO programming            |
-| 17:00 - 17:30 | Discusion, wrap-up        |
+| 14:00 - 17:00 | [OO programming](roo/)    |
+| 17:00 - 17:30 | Discussion, wrap-up       |
 
 Social dinner in Heiderberg.
 
 ### Tuesday 4 April
 
-| Time          | Material                  |
-|---------------|---------------------------|
-| 9:30 - 10:30  | Debugging                 |
-| 10:30 - 11:00 | Profiling                 |
-| 11:00 - 13:00 | Functional programming    |
-| 13:00 - 14:00 | Lunch                     |
-| 14:00 - 17:30 | Tidyverse, ggplot, shiny  |
-| 17:00 - 17:30 | Coding style, good practice and wrap-up |
+| Time          | Material                                        |
+|---------------|-------------------------------------------------|
+| 9:30 - 10:30  | [Debugging](robust/01-debug.md)                 |
+| 10:30 - 11:00 | [Profiling](robust/02-profile.md)               |
+| 11:00 - 13:00 | [Functional programming](robust/03-funprog.md)  |
+| 13:00 - 14:00 | Lunch                                           |
+| 14:00 - 17:30 | Tidyverse, ggplot, shiny                        |
+| 17:00 - 17:30 | Coding style, good practice and wrap-up         |
 
 
 ## Course outline
