@@ -132,70 +132,6 @@ Stop also has a `call.` parameter.
 geterrmessage()
 ```
 
-### Logging
-
-See for example the [`log4r`](https://github.com/johnmyleswhite/log4r)
-package:
-
-
-```r
-## Import the log4r package.
-library('log4r')
-
-## Create a new logger object with create.logger().
-logger <- create.logger()
-
-## Set the logger's file output: currently only allows flat files.
-logfile(logger) <- file.path('base.log')
-
-## Set the current level of the logger.
-level(logger) <- "INFO"
-
-## Try logging messages at different priority levels.
-debug(logger, 'A Debugging Message') ## Won't print anything
-info(logger, 'An Info Message')
-warn(logger, 'A Warning Message')
-error(logger, 'An Error Message')
-fatal(logger, 'A Fatal Error Message')
-```
-
-### Progress bars
-
-- `utils::txtProgressBar` function
-
-
-```r
-n <- 10
-pb <- txtProgressBar(min = 0, max = n, style = 3)
-for (i in 1:n) {
-    setTxtProgressBar(pb, i)
-    Sys.sleep(0.5)
-}
-close(pb)
-```
-
-- [`progress`](https://github.com/gaborcsardi/progress) package
-
-
-```r
-library("progress")
-pb <- progress_bar$new(total = n)
-for (i in 1:n) {
-    pb$tick()
-    Sys.sleep(0.5)
-}
-```
-
-Tip: do not over use progress bars. Ideally, a user should be
-confident that everything is under control and progress is made while
-waiting for a function to return. In my experience, a progress bar is
-usefull when there is a specific and/or user-defined number of
-iterations, such a *iterating over n files*, or *running a simulation
-n times*.
-
-**Question**: What about mixing progress bars and verbosity.
-
-
 ## KISS
 
 Keep your functions simple and stupid (and short). 
@@ -269,98 +205,6 @@ assert_that(length(x) == 2)
 * `has_extension(path, extension)`: does `file` have given `extension`?
 
 
-## Consistency and predictability
-
-Reminder of the interactive use vs programming examples: 
-- `[` and `drop` 
-- `sapply`, `lapply`, `vapply`
-
-Remember also the concept of *tidy data*.
-
-## Comparisons
-
-### Floating point issues to be aware of
-
-R FAQ [7.31](http://cran.r-project.org/doc/FAQ/R-FAQ.html#Why-doesn_0027t-R-think-these-numbers-are-equal_003f)?
-
-
-
-```r
-a <- sqrt(2)
-a * a == 2
-a * a - 2
-```
-
-
-```r
-1L + 2L == 3L
-1.0 + 2.0 == 3.0
-0.1 + 0.2 == 0.3
-```
-
-### Floating point: how to compare
-
-- `all.equal` compares R objects for *near equality*. Takes into
-  account whether object attributes and names ought the taken into
-  consideration (`check.attributes` and `check.names` parameters) and
-  tolerance, which is machine dependent.
-
-
-```r
-all.equal(0.1 + 0.2, 0.3)
-all.equal(0.1 + 0.2, 3.0)
-isTRUE(all.equal(0.1 + 0.2, 3)) ## when you just want TRUE/FALSE
-```
-
-### Exact identity
-
-`identical`: test objects for exact equality
-
-
-```r
-1 == NULL
-all.equal(1, NULL)
-identical(1, NULL)
-identical(1, 1.)   ## TRUE in R (both are stored as doubles)
-all.equal(1, 1L)
-identical(1, 1L)   ## stored as different types
-```
-
-Appropriate within `if`, `while` condition statements. (not
-`all.equal`, unless wrapped in `isTRUE`).
-
-## Exercise
-
-(From [adv-r](http://adv-r.had.co.nz/Exceptions-Debugging.html#defensive-programming).)
-
-The `col_means` function computes the means of all numeric columns in
-a data frame.
-
-
-```r
-col_means <- function(df) {
-  numeric <- sapply(df, is.numeric)
-  numeric_cols <- df[, numeric]
-  data.frame(lapply(numeric_cols, mean))
-}
-```
-
-Is it a robust function? What happens if there are unusual inputs.
-
-
-```r
-col_means(mtcars)
-col_means(mtcars[, 0])
-col_means(mtcars[0, ])
-col_means(mtcars[, "mpg", drop = FALSE])
-col_means(1:10)
-col_means(as.matrix(mtcars))
-col_means(as.list(mtcars))
-
-mtcars2 <- mtcars
-mtcars2[-1] <- lapply(mtcars2[-1], as.character)
-col_means(mtcars2)
-```
 # Debugging: techniques and tools
 
 ### Shit happens
@@ -741,10 +585,6 @@ tryCatch(f(), error = function(e) print(sys.calls()))
 withCallingHandlers(f(), error = function(e) print(sys.calls()))
 ```
 
-### Debugging at the C level with `ddd` or `gdb`
-
-Demo
-
 ### Exercise
 
 
@@ -931,9 +771,4 @@ trace("plot", browser,
       signature = c("Spectrum", "missing"))
 plot(x, full=TRUE)
 ```
-
-
-## Unit testing
-
-See [here](https://github.com/lgatto/2016-02-25-adv-programming-EMBL/blob/master/unittesting.md).
 

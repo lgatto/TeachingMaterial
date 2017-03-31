@@ -61,43 +61,6 @@ xor(c(TRUE, FALSE));  print ('end')  ## error
 geterrmessage()
 
 
-## Import the log4r package.
-library('log4r')
-
-## Create a new logger object with create.logger().
-logger <- create.logger()
-
-## Set the logger's file output: currently only allows flat files.
-logfile(logger) <- file.path('base.log')
-
-## Set the current level of the logger.
-level(logger) <- "INFO"
-
-## Try logging messages at different priority levels.
-debug(logger, 'A Debugging Message') ## Won't print anything
-info(logger, 'An Info Message')
-warn(logger, 'A Warning Message')
-error(logger, 'An Error Message')
-fatal(logger, 'A Fatal Error Message')
-
-
-n <- 10
-pb <- txtProgressBar(min = 0, max = n, style = 3)
-for (i in 1:n) {
-    setTxtProgressBar(pb, i)
-    Sys.sleep(0.5)
-}
-close(pb)
-
-
-library("progress")
-pb <- progress_bar$new(total = n)
-for (i in 1:n) {
-    pb$tick()
-    Sys.sleep(0.5)
-}
-
-
 if (!condition) stop(...)
 
 
@@ -121,49 +84,6 @@ library("assertthat")
 stopifnot(is.numeric(x))
 assert_that(is.numeric(x))
 assert_that(length(x) == 2)
-
-
-a <- sqrt(2)
-a * a == 2
-a * a - 2
-
-
-1L + 2L == 3L
-1.0 + 2.0 == 3.0
-0.1 + 0.2 == 0.3
-
-
-all.equal(0.1 + 0.2, 0.3)
-all.equal(0.1 + 0.2, 3.0)
-isTRUE(all.equal(0.1 + 0.2, 3)) ## when you just want TRUE/FALSE
-
-
-1 == NULL
-all.equal(1, NULL)
-identical(1, NULL)
-identical(1, 1.)   ## TRUE in R (both are stored as doubles)
-all.equal(1, 1L)
-identical(1, 1L)   ## stored as different types
-
-
-col_means <- function(df) {
-  numeric <- sapply(df, is.numeric)
-  numeric_cols <- df[, numeric]
-  data.frame(lapply(numeric_cols, mean))
-}
-
-
-col_means(mtcars)
-col_means(mtcars[, 0])
-col_means(mtcars[0, ])
-col_means(mtcars[, "mpg", drop = FALSE])
-col_means(1:10)
-col_means(as.matrix(mtcars))
-col_means(as.list(mtcars))
-
-mtcars2 <- mtcars
-mtcars2[-1] <- lapply(mtcars2[-1], as.character)
-col_means(mtcars2)
 
 
 e <- function(i) {

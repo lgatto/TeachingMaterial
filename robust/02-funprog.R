@@ -24,15 +24,6 @@ y <- 2
 f(1)
 
 
-
-e <- new.env()
-environment(f) <- e
-
-f(1)
-e$y <- 10
-f(1)
-
-
 codetools::findGlobals(f)
 
 
@@ -157,99 +148,6 @@ args(function(x) x + y)
 environment(function(x) x + y)
 
 
-make.power <- function(n)
-    function(x) x^n
-
-
-cube <- make.power(3)
-square <- make.power(2)
-cube(2)
-square(2)
-environment(cube)
-environment(square)
-
-
-new_counter <- function() {
-    i <- 0
-    function() {
-        i <<- i + 1
-        i
-    }
-}
-
-count1 <- new_counter()
-count2 <- new_counter()
-
-count1()
-count1()
-count2()
-
-environment(count1)
-environment(count2)
-environment(count1)$i
-environment(count2)$i
-
-
-colramp <- colorRampPalette(c("blue", "yellow"))
-colramp(5)
-plot(1:10, col = colramp(10), pch = 19, cex = 2,
-     main = "colramp(10)")
-
-
-L <- replicate(3, matrix(rnorm(9), 3), simplify = FALSE)
-Reduce("+", L)
-try(sum(L))
-
-
-Reduce("+", list(1, 2, 3), init = 10)
-Reduce("+", list(1, 2, 3), accumulate = TRUE)
-Reduce("+", list(1, 2, 3), right = TRUE, accumulate = TRUE)
-
-
-even <- function(x) x %% 2 == 0
-(y <- sample(100, 10))
-Filter(even, y)
-Filter(Negate(even), y)
-
-
-Map(even, 1:3)
-
-
-Find(even, 10:15)
-Find(even, 10:15, right = TRUE)
-Position(Negate(even), 10:15)
-Position(Negate(even), 10:15, right = TRUE)
-
-
-(x <- 1:5)
-(y <- 5:1)
-x + y
-
-
-(x <- 1:6)
-(y <- 1:2)
-x+y
-
-
-diff1 <- function(e) {
-  n <- length(e)
-  interval <- rep(0, n - 1)
-  for (i in 1:(n - 1))
-      interval[i] <- e[i + 1] - e[i]
-  interval
-}
-e <- c(2, 5, 10.2, 12, 19)
-diff1(e)
-
-
-diff2 <- function(e) {
-  n <- length(e)
-  e[-1] - e[-n]
-}
-e <- c(2, 5, 10.2, 12, 19)
-diff2(e)
-
-
 v <- rnorm(1000) ## or a list
 res <- numeric(length(v))
 
@@ -267,34 +165,16 @@ apply(M, 1, function(Mrow) 'do something with Mrow')
 apply(M, 2, function(Mcol) 'do something with Mcol')
 
 
-f <- function(x, a = 1) sin(x^2)/ (a + abs(x))
-x <- seq(-7, 7, 0.02 )
-x0 <- seq(-2, 2, 0.02)
-y0 <- f(x0)
-y0[y0 < 0] <- 0
-plot(x, f(x), type = "l", main = expression(f(x) ==  frac(sin(x^2),(a + abs(x)))))
-grid()
-abline(v = c(-2, 2), lty = "dotted")
-polygon(x0, y0, col = "#00000010")
+df1 <- data.frame(x = 1:3, y = LETTERS[1:3])
+sapply(df1, class)
+df2 <- data.frame(x = 1:3, y = Sys.time() + 1:3)
+sapply(df2, class)
 
 
-f <- function(x, a = 1) sin(x^2)/ (a + abs(x))
-integrate(f, lower = -2, upper = 2)
+lapply(df1, class)
+lapply(df2, class)
 
 
-lo <- c(-2, 0)
-hi <- c(0, 2)
-integrate(f, lower = lo, upper = hi)
-
-
-mapply(function(lo, hi) integrate(f, lo, hi)$value,
-       lo, hi)
-
-
-Integrate <- Vectorize(
-  function(fn, lower, upper)
-  integrate(fn, lower, upper)$value,
-  vectorize.args=c("lower", "upper")
-  )
-Integrate(f, lower=lo, upper=hi)
+vapply(df1, class, "1")
+vapply(df2, class, "1")
 
