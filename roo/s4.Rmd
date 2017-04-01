@@ -196,6 +196,23 @@ sequence(genseq)
 
 ```
 
+***NOTE***: `sequence` already exists in base R, and we've broken it:
+
+```{r, error=TRUE}
+base::sequence
+
+base::sequence(c(3,2))
+sequence(c(3,2))
+```
+
+To make sure we haven't broken any code we'll create a default S4 method that will default to the base R function:
+
+```{r}
+setMethod("sequence", "ANY", function(object,...) base::sequence(object))
+```
+
+Alternatively, we could've used a different name, e.g. one with an existing generic `seq` (pros? cons?) or a completely new name e.g. `genericSeq()`.
+
 ## Validity
 
 Objects might have further contrains on them, e.g. in our case, we assume that `alphabet` slot matches the letters used in the `sequence` slot. 
