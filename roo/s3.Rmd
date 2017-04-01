@@ -53,7 +53,7 @@ Therefore, generics and dispatching enable us to re-implement some of the well-k
 
 ### Introducing our own classes
 
-You can also create our own data types (classes). Lets says we want to wrap two pieces of information:
+We can also create our own data types (classes). Lets says we want to wrap two pieces of information:
 
 - DNA sequence name
 - DNA sequence  
