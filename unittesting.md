@@ -57,7 +57,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "S" "H" "J" "G" "B"
+## [1] "C" "W" "I" "O" "Z"
 ```
 But
 
@@ -68,7 +68,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "S" "H" "J" "G" "B" NA
+## [1] "C" "W" "I" "O" "Z" NA
 ```
 
 ### Solution
@@ -159,60 +159,13 @@ col_means <- function(df) {
 
 ## Expected
 col_means(mtcars)
-```
 
-```
-##        mpg    cyl     disp       hp     drat      wt     qsec     vs
-## 1 20.09062 6.1875 230.7219 146.6875 3.596563 3.21725 17.84875 0.4375
-##        am   gear   carb
-## 1 0.40625 3.6875 2.8125
-```
-
-```r
 ## Bugs
 col_means(mtcars[, "mpg"])
-```
-
-```
-## Error in df[, numeric]: incorrect number of dimensions
-```
-
-```r
-col_means(mtcars[, "mpg", drop=FALSE])
-```
-
-```
-##   X21 X21.1 X22.8 X21.4 X18.7 X18.1 X14.3 X24.4 X22.8.1 X19.2 X17.8 X16.4
-## 1  21    21  22.8  21.4  18.7  18.1  14.3  24.4    22.8  19.2  17.8  16.4
-##   X17.3 X15.2 X10.4 X10.4.1 X14.7 X32.4 X30.4 X33.9 X21.5 X15.5 X15.2.1
-## 1  17.3  15.2  10.4    10.4  14.7  32.4  30.4  33.9  21.5  15.5    15.2
-##   X13.3 X19.2.1 X27.3 X26 X30.4.1 X15.8 X19.7 X15 X21.4.1
-## 1  13.3    19.2  27.3  26    30.4  15.8  19.7  15    21.4
-```
-
-```r
+col_means(mtcars[, "mpg", drop = FALSE])
 col_means(mtcars[, 0])
-```
-
-```
-## Error in .subset(x, j): invalid subscript type 'list'
-```
-
-```r
 col_means(mtcars[0, ])
-```
-
-```
-##   mpg cyl disp  hp drat  wt qsec  vs  am gear carb
-## 1 NaN NaN  NaN NaN  NaN NaN  NaN NaN NaN  NaN  NaN
-```
-
-```r
 col_means(as.list(mtcars))
-```
-
-```
-## Error in df[, numeric]: incorrect number of dimensions
 ```
 
 ## Character matching
@@ -228,65 +181,31 @@ isExactIn <- function(x, y)
 
 ## Expected
 isExactIn("a", letters)
-```
 
-```
-## [1] "a"
-```
-
-```r
 ## Bugs
 isExactIn("a", c("abc", letters))
-```
-
-```
-## [1] "abc" "a"
-```
-
-```r
 isExactIn(c("a", "z"), c("abc", letters))
 ```
 
-```
-## Warning in grep(x, y): argument 'pattern' has length > 1 and only the first
-## element will be used
-```
+<!-- ### Solution -->
 
-```
-## [1] "abc" "a"
-```
+<!-- ```{r} -->
+<!-- ## Unit test: -->
+<!-- library("RUnit") -->
+<!-- test_isExactIn <- function() { -->
+<!--     checkIdentical("a", isExactIn("a", letters)) -->
+<!--     checkIdentical("a", isExactIn("a", c("abc", letters))) -->
+<!--     checkIdentical(c("a", "z"), isExactIn(c("a", "z"), c("abc", letters))) -->
+<!-- } -->
 
-### Solution
+<!-- test_isExactIn() -->
 
+<!-- ## updated function: -->
+<!-- isExactIn <- function(x, y) -->
+<!--     x[x %in% y] -->
 
-```r
-## Unit test:
-library("RUnit")
-test_isExactIn <- function() {
-    checkIdentical("a", isExactIn("a", letters))
-    checkIdentical("a", isExactIn("a", c("abc", letters)))
-    checkIdentical(c("a", "z"), isExactIn(c("a", "z"), c("abc", letters)))
-}
-
-test_isExactIn()
-```
-
-```
-## Error in checkIdentical("a", isExactIn("a", c("abc", letters))): FALSE 
-## 
-```
-
-```r
-## updated function:
-isExactIn <- function(x, y)
-    x[x %in% y]
-
-test_isExactIn()
-```
-
-```
-## [1] TRUE
-```
+<!-- test_isExactIn() -->
+<!-- ``` -->
 
 ## If conditions with length > 1
 
@@ -308,79 +227,33 @@ ifcond <- function(x, y) {
 
 ## Expected
 ifcond(3, 2)
-```
-
-```
-## [1] 5
-```
-
-```r
 ifcond(2, 2)
-```
-
-```
-## [1] 8
-```
-
-```r
 ifcond(1, 2)
-```
 
-```
-## [1] 5
-```
-
-```r
 ## Bug!
 ifcond(3:1, c(2, 2, 2))
 ```
 
-```
-## Warning in if (x > y) {: the condition has length > 1 and only the first
-## element will be used
-```
+<!-- ### Solution -->
 
-```
-## [1]  5  0 -3
-```
+<!-- ```{r} -->
+<!-- ## Unit test: -->
+<!-- library("RUnit") -->
+<!-- test_ifcond <- function() { -->
+<!--     checkIdentical(5, ifcond(3, 2)) -->
+<!--     checkIdentical(8, ifcond(2, 2)) -->
+<!--     checkIdentical(5, ifcond(1, 2)) -->
+<!--     checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2))) -->
+<!-- } -->
 
-### Solution
+<!-- test_ifcond() -->
 
+<!-- ## updated function: -->
+<!-- ifcond <- function(x, y) -->
+<!--     ifelse(x > y, x*x - y*y, x*x + y*y) -->
 
-```r
-## Unit test:
-library("RUnit")
-test_ifcond <- function() {
-    checkIdentical(5, ifcond(3, 2))
-    checkIdentical(8, ifcond(2, 2))
-    checkIdentical(5, ifcond(1, 2))
-    checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2)))
-}
-
-test_ifcond()
-```
-
-```
-## Warning in if (x > y) {: the condition has length > 1 and only the first
-## element will be used
-```
-
-```
-## Error in checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2))): FALSE 
-## 
-```
-
-```r
-## updated function:
-ifcond <- function(x, y)
-    ifelse(x > y, x*x - y*y, x*x + y*y)
-
-test_ifcond()
-```
-
-```
-## [1] TRUE
-```
+<!-- test_ifcond() -->
+<!-- ``` -->
 
 ## Know your inputs
 
@@ -405,109 +278,48 @@ x <- rnorm(5)
 y <- rnorm(5)
 
 (m <- cbind(x, y))
-```
-
-```
-##               x            y
-## [1,] -0.5392231  0.451111375
-## [2,] -0.1621279 -0.003166429
-## [3,]  0.8120278  2.419942061
-## [4,]  0.4211771 -0.497325360
-## [5,]  0.6833474  0.268201285
-```
-
-```r
 (p <- m[1, ])
-```
 
-```
-##          x          y 
-## -0.5392231  0.4511114
-```
-
-```r
 distances(p, m)
-```
 
-```
-## [1] 0.0000000 0.5903974 2.3879224 1.3497780 1.2361775
-```
-
-```r
 ## Bug!
 (dd <- data.frame(x, y))
-```
-
-```
-##            x            y
-## 1 -0.5392231  0.451111375
-## 2 -0.1621279 -0.003166429
-## 3  0.8120278  2.419942061
-## 4  0.4211771 -0.497325360
-## 5  0.6833474  0.268201285
-```
-
-```r
 (q <- dd[1, ])
-```
 
-```
-##            x         y
-## 1 -0.5392231 0.4511114
-```
-
-```r
 distances(q, dd)
 ```
 
-```
-##   x
-## 1 0
-```
+<!-- ### Solution -->
 
-### Solution
+<!-- ```{r} -->
+<!-- ## Unit test: -->
+<!-- library("RUnit") -->
+<!-- test_distances <- function() { -->
+<!--     x <- y <- c(0, 1, 2) -->
+<!--     m <- cbind(x, y) -->
+<!--     p <- m[1, ] -->
+<!--     dd <- data.frame(x, y) -->
+<!--     q <- dd[1, ] -->
+<!--     expct <- c(0, sqrt(c(2, 8))) -->
+<!--     checkIdentical(expct, distances(p, m)) -->
+<!--     checkIdentical(expct, distances(q, dd)) -->
+<!-- } -->
 
+<!-- test_distances() -->
 
-```r
-## Unit test:
-library("RUnit")
-test_distances <- function() {
-    x <- y <- c(0, 1, 2)
-    m <- cbind(x, y)
-    p <- m[1, ]
-    dd <- data.frame(x, y)
-    q <- dd[1, ]
-    expct <- c(0, sqrt(c(2, 8)))
-    checkIdentical(expct, distances(p, m))
-    checkIdentical(expct, distances(q, dd))
-}
+<!-- ## updated function -->
+<!-- distances <- function(point, pointVec) { -->
+<!--     point <- as.numeric(point) -->
+<!--     x <- point[1] -->
+<!--     y <- point[2] -->
+<!--     xVec <- pointVec[,1] -->
+<!--     yVec <- pointVec[,2] -->
+<!--     dist <- sqrt((xVec - x)^2 + (yVec - y)^2) -->
+<!--     return(dist) -->
+<!-- } -->
 
-test_distances()
-```
-
-```
-## Error in checkIdentical(expct, distances(q, dd)): FALSE 
-## 
-```
-
-```r
-## updated function
-distances <- function(point, pointVec) {
-    point <- as.numeric(point)
-    x <- point[1]
-    y <- point[2]
-    xVec <- pointVec[,1]
-    yVec <- pointVec[,2]
-    dist <- sqrt((xVec - x)^2 + (yVec - y)^2)
-    return(dist)
-}
-
-test_distances()
-```
-
-```
-## [1] TRUE
-```
+<!-- test_distances() -->
+<!-- ``` -->
 
 ## Iterate on 0 length
 
@@ -524,71 +336,37 @@ sqrtabs <- function(x) {
 
 ## Expected
 all(sqrtabs(c(-4, 0, 4)) == c(2, 0, 2))
-```
 
-```
-## [1] TRUE
-```
-
-```r
 ## Bug!
 sqrtabs(numeric())
 ```
 
-```
-## [[1]]
-## [1] NA
-## 
-## [[2]]
-## numeric(0)
-```
+<!-- ### Solution -->
 
-### Solution
+<!-- ```{r} -->
+<!-- ## Unit test: -->
+<!-- library(RUnit) -->
+<!-- test_sqrtabs <- function() { -->
+<!--     checkIdentical(c(2, 0, 2), sqrtabs(c(-4, 0, 4))) -->
+<!--     checkIdentical(numeric(), sqrtabs(numeric())) -->
+<!-- } -->
+<!-- test_sqrtabs() -->
 
+<!-- ## updated function: -->
+<!-- sqrtabs <- function(x) { -->
+<!--   v <- abs(x) -->
+<!--   sapply(seq_along(v), function(i) sqrt(v[i])) -->
+<!-- } -->
+<!-- test_sqrtabs()                          # nope! -->
 
-```r
-## Unit test:
-library(RUnit)
-test_sqrtabs <- function() {
-    checkIdentical(c(2, 0, 2), sqrtabs(c(-4, 0, 4)))
-    checkIdentical(numeric(), sqrtabs(numeric()))
-}
-test_sqrtabs()
-```
-
-```
-## Error in checkIdentical(numeric(), sqrtabs(numeric())): FALSE 
-## 
-```
-
-```r
-## updated function:
-sqrtabs <- function(x) {
-  v <- abs(x)
-  sapply(seq_along(v), function(i) sqrt(v[i]))
-}
-test_sqrtabs()                          # nope!
-```
-
-```
-## Error in checkIdentical(numeric(), sqrtabs(numeric())): FALSE 
-## 
-```
-
-```r
-sqrtabs <- function(x) {
-  v <- abs(x)
-  vapply(seq_along(v), function(i) sqrt(v[i]), 0)
-}
-test_sqrtabs()                          # yes!
-```
-
-```
-## [1] TRUE
-```
+<!-- sqrtabs <- function(x) { -->
+<!--   v <- abs(x) -->
+<!--   vapply(seq_along(v), function(i) sqrt(v[i]), 0) -->
+<!-- } -->
+<!-- test_sqrtabs()                          # yes! -->
+<!-- ``` -->
 
 # Unit testing in a package 
-
 
 ## In a package
 
@@ -635,7 +413,8 @@ test_that("readFasta", {
   ## loading _valid_ dnaseq
   data(dnaseq)
   ## reading fasta sequence
-  f <- dir(system.file("extdata",package="sequences"),pattern="fasta",full.names=TRUE)
+  f <- dir(system.file("extdata", package = "sequences"),
+           pattern="fasta", full.names = TRUE)
   xx <- readFasta(f[1])
   expect_true(all.equal(xx, dnaseq))
 })
