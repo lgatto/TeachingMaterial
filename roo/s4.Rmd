@@ -33,7 +33,7 @@ When calling `new` R will check if the supplied slots match the definition, so t
 genseq = new("GenericSeq", name=10, alphabet=c("A", "T"), sequence="ATTTA")
 ```
 
-You can access the slots directly by using a special `@` operators, or using `slots` progamatically:
+We can access the slots directly by using a special `@` operators, or using `slots` progamatically:
 
 ```{r}
 genseq
@@ -71,9 +71,9 @@ More examples here:
 
 ### Creating S4 generics
 
-If you think you'll need some functionality implemented differently for different classes, you might want to create a generic so that dispatching makes this invisible to the user. 
+If we think we'll need some functionality implemented differently for different classes, we might want to create a generic so that dispatching makes this invisible to the user. 
 
-You only need to create an S4 generic if it doens't exist as an S3 generic (or as a primitive e.g. `length()`). Every S3 generic (e.g. `summary()`) has an automatic S4 generic as well. 
+We only need to create an S4 generic if it doens't exist as an S3 generic (or as a primitive e.g. `length()`). Every S3 generic (e.g. `summary()`) has an automatic S4 generic as well. 
 
 Lets make a new generic `complement` which we'll use with multiple classes.  
 
@@ -109,7 +109,7 @@ length(genseq)
 
 *NOTE*: when implementing generics in S4, make sure the arguments to your implementation match those of the generic. So, `length` has `x` as a parameters:
 
-```
+```{r}
 length
 ```
 
@@ -169,13 +169,13 @@ name(genseq) = "New name"
 name(genseq)
 ```
 
-In our case, both methods have a very simple implementations, but this gives us an opportunity to continue working on the implementation. E.g. what if we at some point decided we wanted to keep all the information in a big-data backend? We can change our internal implementation, e.g. the object now has a single slot that is the connection to the big data backend, but we would keep these methods the same, and from user's perspective everything still works the same, but better. 
+In our case, both methods have a very simple implementations, but this gives us an opportunity to continue working on the implementation. E.g. at some point we might decide we want to keep all the information in a big-data backend. We can change our internal implementation, e.g. the object might now have a single slot that is the connection to the big data backend, but we would keep the methods the same, and from user's perspective everything would still works the same, but better. 
 
 *Discussion*: do we need one method per every slot? Do we need to use methods, or can we also use functions? 
 
 ### Exercise
 
-Implement methods for getting the setting the ```sequence`` property of our `GenericSeq` object. 
+Implement methods for getting the setting the `sequence` property of our `GenericSeq` object. 
 
 ### Solution
 

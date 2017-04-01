@@ -51,9 +51,10 @@ summary(vect)
 
 Therefore, generics and dispatching enable us to re-implement some of the well-known R functions for any data type, including our own - which we'll cover next. 
 
-### Introducing your own classes
+### Introducing our own classes
 
-You can also create your own data types (classes). Lets says we want to wrap two pieces of information:
+You can also create our own data types (classes). Lets says we want to wrap two pieces of information:
+
 - DNA sequence name
 - DNA sequence  
 
