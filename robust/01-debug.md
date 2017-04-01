@@ -17,91 +17,6 @@ author: "Laurent Gatto"
 Simplicity, readability and consistency are a long way towards
 robust code.
 
-Why?
-
-> Good coding style is like using correct punctuation. You can manage
-> without it, but it sure makes things easier to read.
--- Hadley Wickham
-
-for **consistency** and **readability**.
-
-## Which one?
-
-- [Bioconductor](http://master.bioconductor.org/developers/how-to/coding-style/)
-- [Hadley Wickham](http://r-pkgs.had.co.nz/style.html)
-- [Google](http://google.github.io/styleguide/Rguide.xml)
-- ...
-
-## Examples
-
-- Place spaces around all infix operators (`=`, `+`, `-`, `<-`, etc., but *not* `:`)
-  and after a comma (`x[i, j]`).
-- Spaces before `(` and after `)`; not for function.
-- Use `<-` rather than `=`.
-- Limit your code to 80 characters per line
-- Indentation: do not use tabs, use 2 (HW)/4 (Bioc) spaces
-- Function names: use verbs
-- Variable names: camelCaps (Bioc)/ `_` (HW) (but not a `.`)
-- Prefix non-exported functions with a ‘.’ (Bioc).
-- Class names: start with a capital
-- Comments: `# ` or `## ` (from emacs)
-
-## [`formatR`](https://cran.rstudio.com/web/packages/formatR/index.html)
-
-
-```r
-library("formatR")
-tidy_source(text = "a=1+1;a  # print the value
-                    matrix ( rnorm(10),5)",
-            arrow = TRUE)
-```
-
-```
-## a <- 1 + 1
-## a  # print the value
-## matrix(rnorm(10), 5)
-```
-
-## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
-
-```
-$ R CMD BiocCheck package_1.0.0.tgz
-```
-
-```
-* Checking function lengths................
-  The longest function is 677 lines long
-  The longest 5 functions are:
-* Checking formatting of DESCRIPTION, NAMESPACE, man pages, R source,
-  and vignette source...
-    * CONSIDER: Shortening lines; 616 lines (11%) are > 80 characters
-      long.
-    * CONSIDER: Replacing tabs with 4 spaces; 3295 lines (60%) contain
-      tabs.
-    * CONSIDER: Indenting lines with a multiple of 4 spaces; 162 lines
-      (2%) are not.
-```
-
-## Style changes over time
-
-![Style changes over time](./figs/style.png)
-
-
-## Ineractive use vs programming
-
-Moving from using R to programming R is *abstraction*, *automation*,
-*generalisation*.
-
-## Interactive use vs programming: `drop`
-
-
-```r
-head(cars)
-head(cars[, 1])
-head(cars[, 1, drop = FALSE])
-```
-
-
 # Defensive programming
 
 Before we begin with debugging, let's look at ways to prevent bugs
@@ -230,27 +145,6 @@ Keep your functions simple and stupid (and short).
 
 ## Failing fast and well
 
-> Bounds errors are ugly, nasty things that should be stamped out
-> whenever possible. One solution to this problem is to use the
-> `assert` statement. The `assert` statement tells C++, "This can
-> never happen, but if it does, abort the program in a nice way." One
-> thing you find out as you gain programming experience is that things
-> that can "never happen" happen with alarming frequency. So just to
-> make sure that things work as they are supposed to, it’s a good idea
-> to put lots of self checks in your program. -- Practical C++
-> Programming, Steve Oualline, O'Reilly.
-
-
-```r
-if (!condition) stop(...)
-```
-
-
-```r
-stopifnot(TRUE)
-stopifnot(TRUE, FALSE)
-```
-
 For example to test input classes, lengths, ...
 
 
@@ -272,30 +166,38 @@ The [`assertthat`](https://github.com/hadley/assertthat) package:
 ```r
 x <- "1"
 library("assertthat")
-stopifnot(is.numeric(x))
 assert_that(is.numeric(x))
-assert_that(length(x) == 2)
 ```
 
-* `assert_that()` signal an error.
-* `see_if()` returns a logical value, with the error message as an attribute.
-* `validate_that()` returns `TRUE` on success, otherwise returns the error as
-  a string.
+```
+## Error: x is not a numeric or integer vector
+```
 
-  
-  
-* `is.flag(x)`: is x `TRUE` or `FALSE`? (a boolean flag)
-* `is.string(x)`: is x a length 1 character vector?
-* `has_name(x, nm)`, `x %has_name% nm`: does `x` have component `nm`?
-* `has_attr(x, attr)`, `x %has_attr% attr`: does `x` have attribute `attr`?
-* `is.count(x)`: is x a single positive integer?
-* `are_equal(x, y)`: are `x` and `y` equal?
-* `not_empty(x)`: are all dimensions of `x` greater than 0?
-* `noNA(x)`: is `x` free from missing values?
-* `is.dir(path)`: is `path` a directory?
-* `is.writeable(path)`/`is.readable(path)`: is `path` writeable/readable?
-* `has_extension(path, extension)`: does `file` have given `extension`?
+```r
+see_if(is.numeric(x))
+```
 
+```
+## [1] FALSE
+## attr(,"msg")
+## [1] "x is not a numeric or integer vector"
+```
+
+```r
+is.string("letters")
+```
+
+```
+## [1] TRUE
+```
+
+```r
+is.string(letters)
+```
+
+```
+## [1] FALSE
+```
 
 # Debugging: techniques and tools
 

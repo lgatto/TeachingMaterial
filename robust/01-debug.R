@@ -1,15 +1,4 @@
 
-library("formatR")
-tidy_source(text = "a=1+1;a  # print the value
-                    matrix ( rnorm(10),5)",
-            arrow = TRUE)
-
-
-head(cars)
-head(cars[, 1])
-head(cars[, 1, drop = FALSE])
-
-
 message("This is a message for our dear users.")
 
 
@@ -72,13 +61,6 @@ xor(c(TRUE, FALSE));  print ('end')  ## error
 geterrmessage()
 
 
-if (!condition) stop(...)
-
-
-stopifnot(TRUE)
-stopifnot(TRUE, FALSE)
-
-
 f <- function(x) {
     stopifnot(is.numeric(x), length(x) == 1)
     invisible(TRUE)
@@ -92,9 +74,10 @@ f(letters)
 
 x <- "1"
 library("assertthat")
-stopifnot(is.numeric(x))
 assert_that(is.numeric(x))
-assert_that(length(x) == 2)
+see_if(is.numeric(x))
+is.string("letters")
+is.string(letters)
 
 
 e <- function(i) {
