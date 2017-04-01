@@ -47,6 +47,9 @@ The components of `ggplot2`'s of graphics are
 
 ## Plotting with `ggplot2`
 
+Credit: This material is based on the Data Carpentry
+[*R for data analysis and visualization of Ecological Data* material](http://www.datacarpentry.org/R-ecology-lesson/index.html)
+
 We are going to use a complete version of the surveys data:
 
 ```{r, message = FALSE, cache=TRUE}

@@ -48,6 +48,9 @@ The components of `ggplot2`'s of graphics are
 
 ## Plotting with `ggplot2`
 
+Credit: This material is based on the Data Carpentry
+[*R for data analysis and visualization of Ecological Data* material](http://www.datacarpentry.org/R-ecology-lesson/index.html)
+
 We are going to use a complete version of the surveys data:
 
 
@@ -397,6 +400,8 @@ ggplot(data = yearly_weight, aes(x=year, y=avg_weight, color = species_id, group
 > differently, and adds new features to make your plots
 > interactive. ggvis also incorporates shiny’s reactive programming
 > model and dplyr’s grammar of data transformation.
+
+See http://ggvis.rstudio.com/interactivity.html
 
 
 
