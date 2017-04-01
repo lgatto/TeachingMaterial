@@ -68,9 +68,9 @@ category 4.
 
 Finally, functions are
 
-- Easier to debug (part III)
-- Easier to profile (part IV)
-- Easier to parallelise (part IV)
+- Easier to debug
+- Easier to profile
+- Easier to parallelise
 
 Functions are an central part of robust R programming.
 
