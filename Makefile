@@ -46,3 +46,8 @@ clean:
 	rm -f $(LATEXFILES)
 	rm -rf myRpackage
 	rm -rf figure
+%.md: %.Rmd
+	Rscript -e "knitr::knit('$^')"
+
+%.html: %.md
+	Rscript -e "rmarkdown::render('$^')"
