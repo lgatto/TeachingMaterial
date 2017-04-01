@@ -1,7 +1,15 @@
+---
+title: "Unit testing"
+author: "Laurent Gatto"
+---
+
 These exercises were written by Martin Morgan and Laurent Gatto for a
 [Bioconductor Developer Day workshop](http://bioconductor.org/help/course-materials/2013/BioC2013/developer-day-debug/).
 
 # Introduction
+
+> Whenever you are templted to type something into a print statement
+> or a debugger expression, write it as a test insted -- Martin Fowler
 
 **Why unit testing?**
 
@@ -49,7 +57,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "G" "R" "N" "H" "A"
+## [1] "S" "H" "J" "G" "B"
 ```
 But
 
@@ -60,7 +68,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "G" "R" "N" "H" "A" NA
+## [1] "S" "H" "J" "G" "B" NA
 ```
 
 ### Solution
@@ -82,7 +90,8 @@ test_isIn()
 ```
 
 ```
-## Error in checkIdentical(x, isIn(c(x, "a"), LETTERS)): FALSE
+## Error in checkIdentical(x, isIn(c(x, "a"), LETTERS)): FALSE 
+## 
 ```
 
 Update the buggy function until the unit test succeeds
@@ -102,7 +111,109 @@ test_isIn() ## the bug is fixed and monitored
 ## [1] TRUE
 ```
 
+## The `testthat` syntax
+
+`expect_that(object_or_expression, condition)` with conditions
+- equals: `expect_that(1+2,equals(3))` or `expect_equal(1+2,3)`
+- gives warning: `expect_that(warning("a")`, `gives_warning())`
+- is a: `expect_that(1, is_a("numeric"))` or `expect_is(1,"numeric")`
+- is true: `expect_that(2 == 2, is_true())` or `expect_true(2==2)`
+- matches: `expect_that("Testing is fun", matches("fun"))` or `expect_match("Testing is fun", "f.n")`
+- takes less: `than expect_that(Sys.sleep(1), takes_less_than(3))`
+
+and
+
+```r
+test_that("description", {
+    a <- foo()
+    b <- bar()
+    expect_equal(a, b)
+})
+```
+
+## Batch unit testing
+
+```r
+library("testthat")
+test_dir("./unittests/")
+test_file("./unittests/test_foo.R")
+```
+
 # Exercises
+
+## Column means
+
+## Problem
+
+The `col_means` function computes the means of all numeric columns in
+a data frame (example from *Advanced R*, to illustrate defensive
+programming).
+
+
+```r
+col_means <- function(df) {
+  numeric <- sapply(df, is.numeric)
+  numeric_cols <- df[, numeric]
+  data.frame(lapply(numeric_cols, mean))
+}
+
+## Expected
+col_means(mtcars)
+```
+
+```
+##        mpg    cyl     disp       hp     drat      wt     qsec     vs
+## 1 20.09062 6.1875 230.7219 146.6875 3.596563 3.21725 17.84875 0.4375
+##        am   gear   carb
+## 1 0.40625 3.6875 2.8125
+```
+
+```r
+## Bugs
+col_means(mtcars[, "mpg"])
+```
+
+```
+## Error in df[, numeric]: incorrect number of dimensions
+```
+
+```r
+col_means(mtcars[, "mpg", drop=FALSE])
+```
+
+```
+##   X21 X21.1 X22.8 X21.4 X18.7 X18.1 X14.3 X24.4 X22.8.1 X19.2 X17.8 X16.4
+## 1  21    21  22.8  21.4  18.7  18.1  14.3  24.4    22.8  19.2  17.8  16.4
+##   X17.3 X15.2 X10.4 X10.4.1 X14.7 X32.4 X30.4 X33.9 X21.5 X15.5 X15.2.1
+## 1  17.3  15.2  10.4    10.4  14.7  32.4  30.4  33.9  21.5  15.5    15.2
+##   X13.3 X19.2.1 X27.3 X26 X30.4.1 X15.8 X19.7 X15 X21.4.1
+## 1  13.3    19.2  27.3  26    30.4  15.8  19.7  15    21.4
+```
+
+```r
+col_means(mtcars[, 0])
+```
+
+```
+## Error in .subset(x, j): invalid subscript type 'list'
+```
+
+```r
+col_means(mtcars[0, ])
+```
+
+```
+##   mpg cyl disp  hp drat  wt qsec  vs  am gear carb
+## 1 NaN NaN  NaN NaN  NaN NaN  NaN NaN NaN  NaN  NaN
+```
+
+```r
+col_means(as.list(mtcars))
+```
+
+```
+## Error in df[, numeric]: incorrect number of dimensions
+```
 
 ## Character matching
 
@@ -137,8 +248,8 @@ isExactIn(c("a", "z"), c("abc", letters))
 ```
 
 ```
-## Warning in grep(x, y): argument 'pattern' has length > 1 and only the
-## first element will be used
+## Warning in grep(x, y): argument 'pattern' has length > 1 and only the first
+## element will be used
 ```
 
 ```
@@ -147,23 +258,35 @@ isExactIn(c("a", "z"), c("abc", letters))
 
 ### Solution
 
-<!-- ```{r} -->
-<!-- ## Unit test: -->
-<!-- library("RUnit") -->
-<!-- test_isExactIn <- function() { -->
-<!--     checkIdentical("a", isExactIn("a", letters)) -->
-<!--     checkIdentical("a", isExactIn("a", c("abc", letters))) -->
-<!--     checkIdentical(c("a", "z"), isExactIn(c("a", "z"), c("abc", letters))) -->
-<!-- } -->
 
-<!-- test_isExactIn() -->
+```r
+## Unit test:
+library("RUnit")
+test_isExactIn <- function() {
+    checkIdentical("a", isExactIn("a", letters))
+    checkIdentical("a", isExactIn("a", c("abc", letters)))
+    checkIdentical(c("a", "z"), isExactIn(c("a", "z"), c("abc", letters)))
+}
 
-<!-- ## updated function: -->
-<!-- isExactIn <- function(x, y) -->
-<!--     x[x %in% y] -->
+test_isExactIn()
+```
 
-<!-- test_isExactIn() -->
-<!-- ``` -->
+```
+## Error in checkIdentical("a", isExactIn("a", c("abc", letters))): FALSE 
+## 
+```
+
+```r
+## updated function:
+isExactIn <- function(x, y)
+    x[x %in% y]
+
+test_isExactIn()
+```
+
+```
+## [1] TRUE
+```
 
 ## If conditions with length > 1
 
@@ -223,24 +346,41 @@ ifcond(3:1, c(2, 2, 2))
 
 ### Solution
 
-<!-- ```{r} -->
-<!-- ## Unit test: -->
-<!-- library("RUnit") -->
-<!-- test_ifcond <- function() { -->
-<!--     checkIdentical(5, ifcond(3, 2)) -->
-<!--     checkIdentical(8, ifcond(2, 2)) -->
-<!--     checkIdentical(5, ifcond(1, 2)) -->
-<!--     checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2))) -->
-<!-- } -->
 
-<!-- test_ifcond() -->
+```r
+## Unit test:
+library("RUnit")
+test_ifcond <- function() {
+    checkIdentical(5, ifcond(3, 2))
+    checkIdentical(8, ifcond(2, 2))
+    checkIdentical(5, ifcond(1, 2))
+    checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2)))
+}
 
-<!-- ## updated function: -->
-<!-- ifcond <- function(x, y) -->
-<!--     ifelse(x > y, x*x - y*y, x*x + y*y) -->
+test_ifcond()
+```
 
-<!-- test_ifcond() -->
-<!-- ``` -->
+```
+## Warning in if (x > y) {: the condition has length > 1 and only the first
+## element will be used
+```
+
+```
+## Error in checkIdentical(c(5, 8, 5), ifcond(3:1, c(2, 2, 2))): FALSE 
+## 
+```
+
+```r
+## updated function:
+ifcond <- function(x, y)
+    ifelse(x > y, x*x - y*y, x*x + y*y)
+
+test_ifcond()
+```
+
+```
+## [1] TRUE
+```
 
 ## Know your inputs
 
@@ -268,12 +408,12 @@ y <- rnorm(5)
 ```
 
 ```
-##                x          y
-## [1,] -0.08866721 -0.1689596
-## [2,] -0.56628485 -0.3466350
-## [3,]  0.60314345 -1.5913059
-## [4,]  1.19967540  0.2114289
-## [5,]  2.12492564 -0.4756302
+##               x            y
+## [1,] -0.5392231  0.451111375
+## [2,] -0.1621279 -0.003166429
+## [3,]  0.8120278  2.419942061
+## [4,]  0.4211771 -0.497325360
+## [5,]  0.6833474  0.268201285
 ```
 
 ```r
@@ -281,8 +421,8 @@ y <- rnorm(5)
 ```
 
 ```
-##           x           y 
-## -0.08866721 -0.16895957
+##          x          y 
+## -0.5392231  0.4511114
 ```
 
 ```r
@@ -290,7 +430,7 @@ distances(p, m)
 ```
 
 ```
-## [1] 0.0000000 0.5095951 1.5816672 1.3433250 2.2347349
+## [1] 0.0000000 0.5903974 2.3879224 1.3497780 1.2361775
 ```
 
 ```r
@@ -299,12 +439,12 @@ distances(p, m)
 ```
 
 ```
-##             x          y
-## 1 -0.08866721 -0.1689596
-## 2 -0.56628485 -0.3466350
-## 3  0.60314345 -1.5913059
-## 4  1.19967540  0.2114289
-## 5  2.12492564 -0.4756302
+##            x            y
+## 1 -0.5392231  0.451111375
+## 2 -0.1621279 -0.003166429
+## 3  0.8120278  2.419942061
+## 4  0.4211771 -0.497325360
+## 5  0.6833474  0.268201285
 ```
 
 ```r
@@ -312,8 +452,8 @@ distances(p, m)
 ```
 
 ```
-##             x          y
-## 1 -0.08866721 -0.1689596
+##            x         y
+## 1 -0.5392231 0.4511114
 ```
 
 ```r
@@ -327,35 +467,47 @@ distances(q, dd)
 
 ### Solution
 
-<!-- ```{r} -->
-<!-- ## Unit test: -->
-<!-- library("RUnit") -->
-<!-- test_distances <- function() { -->
-<!--     x <- y <- c(0, 1, 2) -->
-<!--     m <- cbind(x, y) -->
-<!--     p <- m[1, ] -->
-<!--     dd <- data.frame(x, y) -->
-<!--     q <- dd[1, ] -->
-<!--     expct <- c(0, sqrt(c(2, 8))) -->
-<!--     checkIdentical(expct, distances(p, m)) -->
-<!--     checkIdentical(expct, distances(q, dd)) -->
-<!-- } -->
 
-<!-- test_distances() -->
+```r
+## Unit test:
+library("RUnit")
+test_distances <- function() {
+    x <- y <- c(0, 1, 2)
+    m <- cbind(x, y)
+    p <- m[1, ]
+    dd <- data.frame(x, y)
+    q <- dd[1, ]
+    expct <- c(0, sqrt(c(2, 8)))
+    checkIdentical(expct, distances(p, m))
+    checkIdentical(expct, distances(q, dd))
+}
 
-<!-- ## updated function -->
-<!-- distances <- function(point, pointVec) { -->
-<!--     point <- as.numeric(point) -->
-<!--     x <- point[1] -->
-<!--     y <- point[2] -->
-<!--     xVec <- pointVec[,1] -->
-<!--     yVec <- pointVec[,2] -->
-<!--     dist <- sqrt((xVec - x)^2 + (yVec - y)^2) -->
-<!--     return(dist) -->
-<!-- } -->
+test_distances()
+```
 
-<!-- test_distances() -->
-<!-- ``` -->
+```
+## Error in checkIdentical(expct, distances(q, dd)): FALSE 
+## 
+```
+
+```r
+## updated function
+distances <- function(point, pointVec) {
+    point <- as.numeric(point)
+    x <- point[1]
+    y <- point[2]
+    xVec <- pointVec[,1]
+    yVec <- pointVec[,2]
+    dist <- sqrt((xVec - x)^2 + (yVec - y)^2)
+    return(dist)
+}
+
+test_distances()
+```
+
+```
+## [1] TRUE
+```
 
 ## Iterate on 0 length
 
@@ -393,58 +545,50 @@ sqrtabs(numeric())
 
 ### Solution
 
-<!-- ```{r} -->
-<!-- ## Unit test: -->
-<!-- library(RUnit) -->
-<!-- test_sqrtabs <- function() { -->
-<!--     checkIdentical(c(2, 0, 2), sqrtabs(c(-4, 0, 4))) -->
-<!--     checkIdentical(numeric(), sqrtabs(numeric())) -->
-<!-- } -->
-<!-- test_sqrtabs() -->
 
-<!-- ## updated function: -->
-<!-- sqrtabs <- function(x) { -->
-<!--   v <- abs(x) -->
-<!--   sapply(seq_along(v), function(i) sqrt(v[i])) -->
-<!-- } -->
-<!-- test_sqrtabs()                          # nope! -->
+```r
+## Unit test:
+library(RUnit)
+test_sqrtabs <- function() {
+    checkIdentical(c(2, 0, 2), sqrtabs(c(-4, 0, 4)))
+    checkIdentical(numeric(), sqrtabs(numeric()))
+}
+test_sqrtabs()
+```
 
-<!-- sqrtabs <- function(x) { -->
-<!--   v <- abs(x) -->
-<!--   vapply(seq_along(v), function(i) sqrt(v[i]), 0) -->
-<!-- } -->
-<!-- test_sqrtabs()                          # yes! -->
-<!-- ``` -->
+```
+## Error in checkIdentical(numeric(), sqrtabs(numeric())): FALSE 
+## 
+```
+
+```r
+## updated function:
+sqrtabs <- function(x) {
+  v <- abs(x)
+  sapply(seq_along(v), function(i) sqrt(v[i]))
+}
+test_sqrtabs()                          # nope!
+```
+
+```
+## Error in checkIdentical(numeric(), sqrtabs(numeric())): FALSE 
+## 
+```
+
+```r
+sqrtabs <- function(x) {
+  v <- abs(x)
+  vapply(seq_along(v), function(i) sqrt(v[i]), 0)
+}
+test_sqrtabs()                          # yes!
+```
+
+```
+## [1] TRUE
+```
 
 # Unit testing in a package 
 
-## The `testthat` syntax
-
-`expect_that(object_or_expression, condition)` with conditions
-- equals: `expect_that(1+2,equals(3))` or `expect_equal(1+2,3)`
-- gives warning: `expect_that(warning("a")`, `gives_warning())`
-- is a: `expect_that(1, is_a("numeric"))` or `expect_is(1,"numeric")`
-- is true: `expect_that(2 == 2, is_true())` or `expect_true(2==2)`
-- matches: `expect_that("Testing is fun", matches("fun"))` or `expect_match("Testing is fun", "f.n")`
-- takes less: `than expect_that(Sys.sleep(1), takes_less_than(3))`
-
-and
-
-```r
-test_that("description", {
-    a <- foo()
-    b <- bar()
-    expect_equal(a, b)
-})
-```
-
-## Interactive unit testing
-
-```r
-library("testthat")
-test_dir("./unittests/")
-test_file("./unittests/test_foo.R")
-```
 
 ## In a package
 
@@ -510,3 +654,63 @@ test_that("ccpp code", {
   expect_true(identical(gccount2(x), gccountr(x)))
 })
 ```
+
+## Exercise
+
+Choose any data package of your choice and write a unit test that
+tests the validity of all the its data. 
+
+Tips 
+
+- To get all the data distributed with a package, use `data(package = "packageName")`
+
+
+```r
+library("pRolocdata")
+data(package = "pRolocdata")
+```
+
+- To test the validity of an object, use `validObject`
+
+
+```
+## Warning in read.dcf(con): URL 'http://bioconductor.org/BiocInstaller.dcf':
+## status was 'Couldn't resolve host name'
+```
+
+
+```r
+data(andy2011)
+validObject(andy2011)
+```
+
+```
+## [1] TRUE
+```
+
+- Using the `testthat` syntax, the actual test for that data set would be 
+
+
+```r
+library("testthat")
+expect_true(validObject(andy2011))
+```
+
+
+## Testing coverage in a package
+
+The [covr](https://github.com/jimhester/covr) package:
+
+![package coverage](./figs/covr.png)
+
+We can use `type="all"` to examine the coverage in unit tests, examples and vignettes. This can
+also be done interactively with Shiny:
+
+
+```r
+library(covr)
+coverage <- package_coverage("/path/to/package/source", type="all")
+shine(coverage)
+```
+
+[Coverage for all Bioconductor packages](https://codecov.io/github/Bioconductor-mirror).
