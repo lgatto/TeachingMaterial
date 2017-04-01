@@ -30,7 +30,7 @@ Morning and afternoon coffee breaks: 30 minutes
 
 | Time          | Material                  |
 |---------------|---------------------------|
-| 9:30 - 10:30  | Introduction              |
+| 9:30 - 10:30  | [Introduction](./intro.md)|
 | 10:30 - 11:00 | [Package development](rpd2.md) |
 | 11:00 - 13:00 | [Testing](./testing.md) and [unit testing](./unittesting.md) |
 | 13:00 - 14:00 | *Lunch*                   |
