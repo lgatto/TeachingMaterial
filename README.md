@@ -78,3 +78,6 @@ No additional restrictions - You may not apply legal terms or
 technological measures that legally restrict others from doing
 anything the license permits.
 
+Some content from the tidyverse and ggplot2 material is used from the
+Data Carpentry lessons (see references in the respective sections),
+which are also licensed under CC-BY.

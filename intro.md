@@ -1,4 +1,4 @@
-# Introduction
+# Advanced R - Introduction and Prerequisites
 
 # Coding style(s)
 
