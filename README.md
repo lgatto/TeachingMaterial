@@ -31,9 +31,9 @@ Morning and afternoon coffee breaks: 30 minutes
 | Time          | Material                  |
 |---------------|---------------------------|
 | 9:30 - 10:30  | Introduction              |
-| 10:30 - 11:00 | [Package development](rpd2.md) ([source](https://github.com/lgatto/RPackageDevelopment)) |
-| 11:00 - 13:00 | [Testing](./testing.md) and [unit testing](./unittesting.md)  |
-| 13:00 - 14:00 | Lunch                     |
+| 10:30 - 11:00 | [Package development](rpd2.md) |
+| 11:00 - 13:00 | [Testing](./testing.md) and [unit testing](./unittesting.md) |
+| 13:00 - 14:00 | *Lunch*                   |
 | 14:00 - 17:00 | [OO programming](roo/)    |
 | 17:00 - 17:30 | Discussion, wrap-up       |
 
@@ -46,7 +46,7 @@ Social dinner in Heiderberg.
 | 9:30 - 10:30  | [Debugging](robust/01-debug.md)                 |
 | 10:30 - 11:00 | [Profiling](robust/02-profile.md)               |
 | 11:00 - 13:00 | [Functional programming](robust/03-funprog.md)  |
-| 13:00 - 14:00 | Lunch                                           |
+| 13:00 - 14:00 | *Lunch*                                         |
 | 14:00 - 17:30 | Tidyverse, ggplot, shiny                        |
 | 17:00 - 17:30 | General good practice discussion and wrap-up    |
 
