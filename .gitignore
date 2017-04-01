@@ -5,3 +5,4 @@
 .idea
 *.Rproj
 robust/cache
+Makefile
