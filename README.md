@@ -47,7 +47,7 @@ Social dinner in Heiderberg.
 | 10:30 - 11:00 | [Profiling](robust/02-profile.md)               |
 | 11:00 - 13:00 | [Functional programming](robust/03-funprog.md)  |
 | 13:00 - 14:00 | *Lunch*                                         |
-| 14:00 - 17:30 | Tidyverse, ggplot, shiny                        |
+| 14:00 - 17:30 | [Tidyverse](./tidy.md), ggplot, shiny                        |
 | 17:00 - 17:30 | General good practice discussion and wrap-up    |
 
 
