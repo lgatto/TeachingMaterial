@@ -209,6 +209,9 @@ To make sure we haven't broken any code we'll create a default S4 method that wi
 
 ```{r}
 setMethod("sequence", "ANY", function(object,...) base::sequence(object))
+
+sequence(c(3,2))
+
 ```
 
 Alternatively, we could've used a different name, e.g. one with an existing generic `seq` (pros? cons?) or a completely new name e.g. `genericSeq()`.
