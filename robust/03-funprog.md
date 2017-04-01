@@ -177,6 +177,20 @@ h()
 
 
 ```r
+x <- 1
+i <- function() {
+    z <- 3
+    c(x, y, z)
+}
+h <- function() {
+    y <- 2
+    i()
+}
+h()
+```
+
+
+```r
 j <- function(x) {
     y <- 2
     function(){
