@@ -561,64 +561,6 @@ automatically by the garbage collector, as illustrated in the examples
 above. There is no need to call it explicityly with `gc()`; the only
 effect of this is for R to explicitly return memory to the OS. 
 
-## Modifiation in place
-
-What happens in this cas? Is `x` copied (and hence more memory is used
-up), or is it modified in place?
-
-
-```r
-x <- 1:10
-c(address(x), refs(x))
-x[5] <- 0L
-c(address(x), refs(x))
-
-
-y <- x
-c(address(x), refs(x))
-c(address(y), refs(y))
-
-x[5] <- 1L
-c(address(x), refs(x))
-c(address(y), refs(y))
-
-
-x <- 1:5
-y <- x
-c(address(x), refs(x))
-rm(y)
-c(address(x), refs(x)) ## should be 1
-
-x <- 1:5
-y <- x
-z <- x
-c(address(x), refs(x)) ## should be 3
-```
-
-`tracemem` tracks memory location of objects:
-
-
-```r
-x <- 1:10
-tracemem(x)
-x[5] <- 0L
-
-y <- x
-x[5] <- 10L
-
-address(x)
-address(y)
-```
-
-## Exercise
-
-We have quantified the substantial cost in execution time when growing
-data dynamically. Trace the impact of dynamically growing a vector on
-the memory. You can use `f1()` and `f2()` above, and trace `a`.
-  
-
-
-
 # Rcpp
 
 See [here](https://github.com/lgatto/rccpp/blob/b59a1ee23dd1ace7c45bb9e2239e853c93e9ca0c/rc.md).
