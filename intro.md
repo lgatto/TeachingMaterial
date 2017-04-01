@@ -68,7 +68,7 @@ $ R CMD BiocCheck package_1.0.0.tgz
 
 ## Style changes over time
 
-![Style changes over time](./figs/style.png)
+![Style changes over time](./robust/figs/style.png)
 
 
 ## Ineractive use vs programming
