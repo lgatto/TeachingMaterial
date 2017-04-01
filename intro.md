@@ -85,7 +85,7 @@ head(cars[, 1, drop = FALSE])
 ```
 
 
-## Writing R functions
+# Writing R functions
 
 A function is made of
 - a name
@@ -101,7 +101,7 @@ f <- function(x) {
 }
 ```
 
-## The `apply` functions
+# The `apply` functions
 
 A functional approach to iteration:
 
