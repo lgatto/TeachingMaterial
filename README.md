@@ -273,3 +273,13 @@ Course.
   Workshop at Stellenbosch University, October 2016
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/2016-10-rbioc-prot-Stellenbosch
+
+## License
+
+We try to only aggregate material that is openly available, generally
+under
+[Creative Commons Attribution license](https://creativecommons.org/licenses/by/4.0/),
+which gives you the right to share and adapt the material as long as
+you credit to original author(s). Please refer to the orignal
+repository for details.
+
