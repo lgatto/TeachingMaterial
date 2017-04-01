@@ -212,8 +212,11 @@ up (just before the package is detached).  See `help(".onLoad"))`,
 * **inst/docs** for additional documentation. That's also where the
   vignettes will be installed after compilation.
 * **inst/extdata** directory for other data files, not belonging in `data`.
-* **tests** code for unit tests.
-* **src** for compiled code.
+* **tests** code for unit tests (see
+  [here](https://github.com/lgatto/R-debugging) and
+  [here](https://github.com/lgatto/2016-02-25-adv-programming-EMBL)).
+* **src** for compiled code (see the
+  [rccpp](https://github.com/lgatto/rccpp/) material)
 * **demo** for demo code (see `?demo`)
 
 ## Documentation
