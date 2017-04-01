@@ -4,6 +4,8 @@ based on the example provided during the course.
 The slides are used in various advanced programming and developement courses taught by 
 Laurent Gatto and Robert Stojnić in Cambridge and at the EMBL.
 
+The markdown version is slightly shorted and udpated with more `devtools` content.
+
 The educational [`sequences`](https://github.com/lgatto/sequences/) package is used as reference material for the course.
 
 See the [TeachingMaterial](https://github.com/lgatto/TeachingMaterial) repository for more material.
