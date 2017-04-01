@@ -2,7 +2,8 @@
 
 We will need
 
-```{r, message = FALSE}
+
+```r
 library("dplyr")
 library("readr")
 library("ggplot2")
@@ -49,7 +50,8 @@ The components of `ggplot2`'s of graphics are
 
 We are going to use a complete version of the surveys data:
 
-```{r, message = FALSE, cache=TRUE}
+
+```r
 surveys <- read_csv("https://ndownloader.figshare.com/files/2292169")
 surveys_complete <- surveys %>%
   filter(species_id != "",         # remove missing species_id
@@ -62,89 +64,121 @@ To build a ggplot we need to:
 
 - bind the plot to a specific data frame using the `data` argument
 
-```{r, eval=FALSE, purl=FALSE}
+
+```r
 ggplot(data = surveys_complete)
 ```
 
 - define aesthetics (`aes`), by selecting the variables to be plotted and the variables to define the presentation
      such as plotting size, shape color, etc.,
 
-```{r, eval=FALSE, purl=FALSE}
+
+```r
 ggplot(data = surveys_complete, aes(x = weight, y = hindfoot_length))
 ```
 
 - add `geoms` -- graphical representation of the data in the plot (points,
      lines, bars). To add a geom to the plot use `+` operator:
 
-```{r first-ggplot, purl=FALSE}
+
+```r
 ggplot(data = surveys_complete, aes(x = weight, y = hindfoot_length)) +
   geom_point()
 ```
+
+![plot of chunk first-ggplot](figure/first-ggplot-1.png)
 
 In practice, we prepare the data and aesthetics and store them in a
 plot `ggplot` variable that we can re-use during our data exploration
 using different geoms.
 
-```{r}
+
+```r
 surveys_plot <-
     ggplot(data = surveys_complete,
            aes(x = weight, y = hindfoot_length))
 ```
 
-```{r}
+
+```r
 surveys_plot + geom_point()
+```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png)
+
+```r
 surveys_plot + geom_hex()
 ```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-2.png)
 
 ### Building your plots iteratively
 
 Building plots with ggplot is typically an iterative process. We start
 by defining the dataset we'll use, lay the axes, and choose a geom.
 
-```{r}
+
+```r
 surveys_plot + geom_point()
 ```
+
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png)
 
 Then, we start modifying this plot to extract more information from it. For
 instance, we can add transparency (alpha) to avoid overplotting.
 
-```{r}
+
+```r
 surveys_plot +
     geom_point(alpha = 0.1)
 ```
 
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png)
+
 We can also add colors for all the points
 
-```{r}
+
+```r
 surveys_plot +
     geom_point(alpha = 0.1, color = "blue")
 ```
 
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
+
 Or to color each species in the plot differently:
 
-```{r}
+
+```r
 surveys_plot +
     geom_point(alpha = 0.1, aes(color = species_id))
 ```
+
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
 
 ## Boxplot
 
 Visualising the distribution of weight within each species.
 
-```{r}
+
+```r
 surveys_bw <- ggplot(data = surveys_complete,
                      aes(x = species_id, y = hindfoot_length))
 surveys_bw + geom_boxplot()
 ```
 
+![plot of chunk unnamed-chunk-11](figure/unnamed-chunk-11-1.png)
+
 By adding points to boxplot, we can have a better idea of the number of
 measurements and of their distribution:
 
-```{r}
+
+```r
 surveys_bw + 
     geom_boxplot(alpha = 0.6) +
     geom_jitter(alpha = 0.1, color = "tomato")
 ```
+
+![plot of chunk unnamed-chunk-12](figure/unnamed-chunk-12-1.png)
 
 Notice how the boxplot layer is behind the jitter layer? What do you need to
 change in the code to put the boxplot in front of the points such that it's not
@@ -178,7 +212,8 @@ hidden.
 Let's calculate number of counts per year for each species. To do that
 we need to group data first and count records within each group.
 
-```{r}
+
+```r
 yearly_counts <- surveys_complete %>%
                  group_by(year, species_id) %>%
                  tally
@@ -187,28 +222,37 @@ yearly_counts <- surveys_complete %>%
 Timelapse data can be visualised as a line plot with years on x axis and counts
 on y axis.
 
-```{r}
+
+```r
 ggplot(data = yearly_counts, aes(x = year, y = n)) +
      geom_line()
 ```
+
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
 
 Unfortunately this does not work, because we plot data for all the species
 together. We need to tell ggplot to draw a line for each species by modifying
 the aesthetic function to include `group = species_id`.
 
-```{r}
+
+```r
 ggplot(data = yearly_counts,
        aes(x = year, y = n, group = species_id)) +
     geom_line()
 ```
 
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
+
 We will be able to distinguish species in the plot if we add colors.
 
-```{r}
+
+```r
 ggplot(data = yearly_counts,
        aes(x = year, y = n, group = species_id, colour = species_id)) +
     geom_line()
 ```
+
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
 
 ## Faceting
 
@@ -216,18 +260,27 @@ ggplot has a special technique called *faceting* that allows to split one plot
 into multiple plots based on a factor included in the dataset. We will use it to
 make one plot for a time series for each species.
 
-```{r}
+
+```r
 ggplot(data = yearly_counts,
        aes(x = year, y = n, group = species_id, colour = species_id)) +
     geom_line() +
     facet_wrap(~ species_id)
 ```
 
+```
+## geom_path: Each group consists of only one observation. Do you need to
+## adjust the group aesthetic?
+```
+
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
+
 Now we would like to split line in each plot by sex of each individual
 measured. To do that we need to make counts in data frame grouped by year,
 species_id, and sex:
 
-```{r}
+
+```r
 yearly_sex_counts <- surveys_complete %>%
     group_by(year, species_id, sex) %>%
     tally
@@ -235,18 +288,27 @@ yearly_sex_counts <- surveys_complete %>%
 
 We can now make the faceted plot splitting further by sex (within a single plot):
 
-```{r}
+
+```r
 ggplot(data = yearly_sex_counts,
        aes(x = year, y = n, color = species_id, group = sex)) +
      geom_line() +
      facet_wrap(~ species_id)
 ```
 
+```
+## geom_path: Each group consists of only one observation. Do you need to
+## adjust the group aesthetic?
+```
+
+![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
+
 Usually plots with white background look more readable when printed.
 We can set the background to white using the function
 `theme_bw()`. Additionally you can also remove the grid.
 
-```{r}
+
+```r
 ggplot(data = yearly_sex_counts,
        aes(x = year, y = n, color = species_id, group = sex)) +
      geom_line() +
@@ -254,17 +316,32 @@ ggplot(data = yearly_sex_counts,
      theme_bw() 
 ```
 
+```
+## geom_path: Each group consists of only one observation. Do you need to
+## adjust the group aesthetic?
+```
+
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
+
 To make the plot easier to read, we can color by sex instead of
 species (species are already in separate plots, so we don’t need to
 distinguish them further).
 
-```{r}
+
+```r
 ggplot(data = yearly_sex_counts,
        aes(x = year, y = n, color = sex, group = sex)) +
     geom_line() +
     facet_wrap(~ species_id) +
     theme_bw()
 ```
+
+```
+## geom_path: Each group consists of only one observation. Do you need to
+## adjust the group aesthetic?
+```
+
+![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
 
 #### The ggplot2 themes
 
@@ -282,7 +359,8 @@ starting point to create a new hand-crafted theme.
 > average weight of each species changes through the years.
 
 <!-- Answer
-```{r average-weight-timeseries, purl=FALSE}
+
+```r
 yearly_weight <- surveys_complete %>%
                  group_by(year, species_id) %>%
                  summarise(avg_weight = mean(weight))
@@ -291,6 +369,13 @@ ggplot(data = yearly_weight, aes(x=year, y=avg_weight, color = species_id, group
     facet_wrap(~ species_id) +
     theme_bw()
 ```
+
+```
+## geom_path: Each group consists of only one observation. Do you need to
+## adjust the group aesthetic?
+```
+
+![plot of chunk average-weight-timeseries](figure/average-weight-timeseries-1.png)
 -->
 
 
@@ -312,8 +397,6 @@ ggplot(data = yearly_weight, aes(x=year, y=avg_weight, color = species_id, group
 > differently, and adds new features to make your plots
 > interactive. ggvis also incorporates shiny’s reactive programming
 > model and dplyr’s grammar of data transformation.
-
-See http://ggvis.rstudio.com/interactivity.html
 
 
 
