@@ -31,7 +31,7 @@ Morning and afternoon coffee breaks: 30 minutes
 | Time          | Material                  |
 |---------------|---------------------------|
 | 9:30 - 10:30  | Introduction              |
-| 10:30 - 11:00 | Package development       |
+| 10:30 - 11:00 | [Package development](rpd2.md) ([source](https://github.com/lgatto/RPackageDevelopment)) |
 | 11:00 - 13:00 | Testing and unit testing  |
 | 13:00 - 14:00 | Lunch                     |
 | 14:00 - 17:00 | [OO programming](roo/)    |
