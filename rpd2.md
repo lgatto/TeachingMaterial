@@ -53,7 +53,7 @@ Basic workflow
 4. **Check** the package
 5. **Install** the package
 
-Package developement cycles through 3 - 5.
+Step 2 is done only once. Package developement cycles through 3 - 5.
 
 Also 
 - Wrinting package documentation
@@ -71,62 +71,194 @@ fn <- function()
 
 ## Package layout
 
+We can use
 
-```r
-package.skeleton("myRpackage", list = "fn")
-```
-
-```
-## Creating directories ...
-```
-
-```
-## Creating DESCRIPTION ...
-```
-
-```
-## Creating NAMESPACE ...
-```
-
-```
-## Creating Read-and-delete-me ...
-```
-
-```
-## Saving functions and data ...
-```
-
-```
-## Making help files ...
-```
-
-```
-## Done.
-```
-
-```
-## Further steps are described in './myRpackage/Read-and-delete-me'.
-```
+- `package.skeleton("myRpackage", list = "fn")`
+- `devtools::create("myRpackage")` also create an `.Rproj` file.
+- Use the RStudio wizard: `New Project > New Directory > R Package`
 
 ```
 myRpackage/
 |-- DESCRIPTION
 |-- NAMESPACE
 |-- man
-|   `-- myRpackage-package.Rd
 |   `-- fun.Rd
-|-- R
-|   `-- fun.R
-`-- Read-and-delete-me
-
-2 directories, 6 files
+`-- R
+    `-- fun.R
 ```
 
-We can use
+This is the *source package*. From this, we need to create the
+*package tarball* (or *package bundle*), i.e. a compressed archive of
+the source. We can also create *binary packages* for Windows and Mac.
 
-- `package.skeleton` (only once!)
-- 
+## Package developement cycle
+
+In the shell
+
+```
+R CMD build myPackage               ## creates myRpackage_1.0.tar.gz
+R CMD check myPackage_1.0.tar.gz    ## create myRpackage.Rcheck
+R CMD INSTALL myRpackage_1.0.tar.gz ## Installation in the default library
+```
+
+Using RStudio useful keyboard shortcuts for package authoring:
+
+* Build and Reload Package: `Ctrl + Shift + B`
+* Check Package: `Ctrl + Shift + E`
+* Test Package: `Ctrl + Shift + T`
+
+Using devtools:
+* `devtools::build()` 
+* `devtools::build(binary = TRUE)`
+* `devtools::check()`
+* `devtools::install()`
+
+A shortcut when developing:
+
+* `devtools::load_all()`
+
+## Package metadata
+
+The `DESCRIPTION` file
+
+```
+Package: myRpackage ## mandatory (*)
+Type: Package ## optional, 'Package' is default type 
+Title: What the package does (short line) ## *
+Version: 1.0 ##  *
+Date: 2013-05-10 ## release date of the current version 
+Author: Who wrote it ## *
+Maintainer: Who to complain to <yourfault@somewhere.net> ## *
+Description: More about what it does (maybe more than one line) ## *
+License: What license is it under? ## *
+Depends: methods, Biostrings ## for e.g.
+Imports: evd ## for e.g.
+Suggests: BSgenome.Hsapiens.UCSC.hg19 ## for e.g.
+Collate: 'DataClasses.R' 'read.R' ## for e.g.
+```
+
+Package dependencies:
+
+* **Depends** A comma-separated list of package names (optionally with
+  versions) which this package depends on.
+* **Suggests** Packages that are not necessarily needed: used only in
+  examples, tests or vignettes, loaded in the body of functions
+* **Imports** Packages whose name spaces are imported from (as
+  specified in the `NAMESPACE` file) which do not need to be attached
+  to the search path.
+* **Collate** Controls the collation order for the R code files in a
+  package. If filed is present, all source files must be listed.
+
+ Packages are attached to the search path with \Rfunction{library} or \Rfunction{require}. 
+ 
+
+* **Attach** When a package is attached, then all of its dependencies
+  (see `Depends` field in its `DESCRIPTION` file) are also
+  attached. Such packages are part of the evaluation environment and
+  will be searched.
+	  
+* **Load** One can also use the `Imports` field in the `NAMESPACE`
+  file. Imported packages are loaded but are not attached: they do not
+  appear on the search path and are available only to the package that
+  imported them.
+
+## `NAMESPACE`
+
+Restricts the symbols that are exported and imports functionality from
+other packages.  Only the exported symbols will have to be documented.
+
+```
+export(f, g) ## exports f and g 
+exportPattern("^[^\\.]")
+import(foo) ## imports all symbols from package foo
+importFrom(foo, f, g) ## imports f and g from foo
+```
+
+It is possible to explicitely use symbol `s` from package `foo` with
+`foo::s` or `foo:::s` if `s` is not exported.
+
+## R code
+
+Contains `source()`able R source code to be installed. Files must
+start with an ASCII (lower or upper case) letter or digit and have one
+of the extensions `.R`, `.S`, `.q`, `.r`, or `.s` (use `.R` or
+`.r`). 
+
+* General style guidelines and best practice apply.
+* Any number of files in `R`.
+* Any number of functions (methods, classes) in each source file.
+* Order matters (somehow), as the files will be sourced in the
+  alphanumeric order. If that doesn't fit, use the `collate` field in
+  the `DESCRIPTION` files.
+
+Example
+
+```
+## works fine without Collate field
+AllGenerics.R       DataClasses.R
+methods-ClassA.R    methods-ClassB.R
+functions-ClassA.R  ...
+```
+
+`zzz.R` is generally used to define special functions used to
+initialize (called after a package is loaded and attached) and clean
+up (just before the package is detached).  See `help(".onLoad"))`,
+`?.First.Lib` and `?.Last.Lib` for more details.
+
+## Package sub-directories
+
+* **vignettes** directory for vignettes in Sweave or R markdown format.
+* **data** for R code, compressed tables (`.tab`, `.txt`, or .`csv`,
+  see `?data` for the file formats) and binary R objects. Available
+  with `data()`.
+* **inst/docs** for additional documentation. That's also where the
+  vignettes will be installed after compilation.
+* **inst/extdata** directory for other data files, not belonging in `data`.
+* **tests** code for unit tests.
+* **src** for compiled code.
+* **demo** for demo code (see `?demo`)
+
+## Documentation
+
+* `Rd` files and vignettes
+* The `prompt` functions.`
+* Use roxygen
+
+## Additional files
+
+* `.Rbuildignore` with a list of files/dirs to ignore when
+  building. For example the `.Rproj` file.
+* `.Rinstignore`with a list of files/dirs to ignore when installing.
+* `CITATION` file (see `citation()` function)
+* `README.Rmd`/`README.md` files if you use github.
+
+## Distributing packages
+
+* **CRAN** Read the CRAN Repository Policy
+  (http://cran.r-project.org/web/packages/policies.html). Upload your
+  `--as-cran` checked} `myPackage\_x.y.z.tar.gz` to
+  `ftp://cran.R-project.org/incoming` or using
+  `http://CRAN.R-project.org/submit.html`. Your package will be
+  installable with `install.packages("myRpackage")`.
+		
+* **R-forge** Log in, register a project and wait for acceptance. Then
+  commit you code to the svn repository. Your package will be
+  installable with `install.packages` using
+  `repos="http://R-Forge.R-project.org"`.
 
 
+* **GitHub** (and **Bitbucket**) Great for development and promoting
+  interaction and contributions. Unofficial. Autmatic checking
+  possible through CI such as `travis-ci` for example. Packages can be
+  installed with `devtools::install_github`
+  (`devtools::install_bitbucket`).
+
+* **Bioconductor** Make sure to satisfy submission criteria (pass
+  `check` (and `BiocCheck`), have a vignette, use S4 if OO, make use
+  of appropriate existing infrastructure, include a NEWS file, must
+  **not** already be on CRAN, ...). Your package will then be reviewed
+  on github publicly before acceptance. A svn (git very soon) account
+  will then be created. Package will be installable with
+  `biocLite("myPackage")`.
 
 
