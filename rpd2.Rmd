@@ -218,9 +218,131 @@ up (just before the package is detached).  See `help(".onLoad"))`,
 
 ## Documentation
 
-* `Rd` files and vignettes
-* The `prompt` functions.`
+## Manual pages
+
+Package functions, datasets, methods and classes are documented in
+`Rd`, a LaTeX-like format. 
+
+```
+% File src/library/base/man/load.Rd
+% Part of the R package, http://www.R-project.org
+% Copyright 1995-2014 R Core Team
+% Distributed under GPL 2 or later
+
+\name{load}
+\alias{load}
+\title{Reload Saved Datasets}
+\description{
+  Reload datasets written with the function \code{save}.
+}
+\usage{
+load(file, envir = parent.frame(), verbose = FALSE)
+}
+\arguments{
+  \item{file}{a (readable binary-mode) \link{connection} or a character string
+    giving the name of the file to load (when \link{tilde expansion}
+    is done).}
+  \item{envir}{the environment where the data should be loaded.}
+  \item{verbose}{should item names be printed during loading?}
+}
+\details{
+  \code{load} can load \R objects saved in the current or any earlier
+  format.  It can read a compressed file (see \code{\link{save}})
+  directly from a file or from a suitable connection (including a call
+  to \code{\link{url}}).
+
+[...]
+
+\value{
+  A character vector of the names of objects created, invisibly.
+}
+\section{Warning}{
+  Saved \R objects are binary files, even those saved with
+  \code{ascii = TRUE}, so ensure that they are transferred without
+  conversion of end of line markers.  \code{load} tries to detect such a
+  conversion and gives an informative error message.
+
+[...]
+
+\examples{
+## save all data
+xx <- pi # to ensure there is some data
+save(list = ls(all = TRUE), file= "all.RData")
+rm(xx)
+
+## restore the saved values to the current environment
+local({
+   load("all.RData")
+   ls()
+})
+
+xx <- exp(1:3)
+## restore the saved values to the user's workspace
+load("all.RData") ## which is here *equivalent* to
+## load("all.RData", .GlobalEnv)
+## This however annihilates all objects in .GlobalEnv with the same names !
+xx # no longer exp(1:3)
+rm(xx)
+attach("all.RData") # safer and will warn about masked objects w/ same name in .GlobalEnv
+ls(pos = 2)
+##  also typically need to cleanup the search path:
+detach("file:all.RData")
+
+## clean up (the example):
+unlink("all.RData")
+
+\dontrun{
+con <- url("http://some.where.net/R/data/example.rda")
+## print the value to see what objects were created.
+print(load(con))
+close(con) # url() always opens the connection
+}}
+\keyword{file}
+```
+
+These R documentation files can then be converted into text, pdf or
+html:
+
+```{r, eval=FALSE}
+help("load")
+help("load", help_type = "html")
+help("load", help_type = "pdf")
+```
+
+One can use `prompt`, `promptClass`, `promptMethods`, `promptPackage`,
+`promptPackage`, `promptData` to generate `Rd` templates for
+functions, classes, methods, packages and data.
+
+
+
 * Use roxygen
+
+### Vignettes
+
+While manual pages are meant to be specific and technical, vignettes
+are workflow-type documentation files that provide an overview and/or
+a use-case demonstrating the package's functionality.
+
+Vignettes can be written in Sweave format (`.Rnw` extension),
+supporting R code chunks in LaTeX documents, or R markdown formart
+(`.Rmd` extension) for R code and markdown.
+
+The source document (`.Rnw` or `.Rmd`) can be 
+
+* weaved into `tex` or `md` files respectively
+* and converted into `pdf` or `html` (`Rnw` to `pdf` only, `Rmd` to
+  either)
+
+using the `utils::Sweave` (`Rnw` only) or `knitr::knit` functions.
+
+Rstudio makes it very easy to write and compile `Rmd` documents
+(independently of R packages). When inside a package, the documents
+are stored in the `vignettes` directory and compiled/converted
+automatically when the package is built.
+
+Note: if you use `knitr` and `rmarkdown` for your vignette, you'll
+have to add these dependencies in the `Suggests` field and specify
+`VignetteBuilder: knitr` in the `DESCRIPTION` file.
 
 ## Additional files
 
