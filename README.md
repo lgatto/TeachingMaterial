@@ -51,9 +51,4 @@ Social dinner in Heiderberg.
 | 17:00 - 17:30 | Coding style, good practice and wrap-up         |
 
 
-* The tidyverse approach to handling data - new, see DC material.
-* Grammar of graphics approach to visualisation - new, see DC material
-  and [here](https://github.com/lgatto/visualisation).
-* Shiny for browser-based interactive visualisations - new (check with
-  Wolfgang if Mike is doing this).
 
