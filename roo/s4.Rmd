@@ -46,10 +46,13 @@ slotNames(genseq)
 
 S4 methods use a similar `dispatch` logic as S3, but uses its own system of generics. 
 
-Bioconductor packages `BiocGenerics` and `Biobase` define a large number of S4 generics used in the Bioconductor project, and are the first place to look for generics to re-use. 
+Bioconductor packages `BiocGenerics`, `ProtGenerics` and `Biobase`
+define a large number of S4 generics used in the Bioconductor project,
+and are the first place to look for generics to re-use.
 
 ```{r}
 suppressMessages(library(BiocGenerics))
+suppressMessages(library(ProtGenerics))
 suppressMessages(library(Biobase))
 ```
 
@@ -66,8 +69,9 @@ This means that it is easy to re-define the behaviour of these functions for you
 
 More examples here:
 
-- [BiocGenerics generics](https://github.com/Bioconductor-mirror/BiocGenerics/tree/release-3.4/R)
-- [Biobase generics](https://github.com/Bioconductor-mirror/Biobase/blob/release-3.4/R/AllGenerics.R)
+- [BiocGenerics generics](https://github.com/Bioconductor-mirror/BiocGenerics/tree/master/R)
+- [ProtGenerics generics](https://github.com/Bioconductor-mirror/ProtGenerics/tree/master/R)
+- [Biobase generics](https://github.com/Bioconductor-mirror/Biobase/blob/master/R/AllGenerics.R)
 
 ### Creating S4 generics
 

@@ -119,7 +119,7 @@ plot(dna)
 ```{r}
 plot.MyDNASeq = function(x, y, ...){
   letters = table(strsplit(x$sequence,""))
-  pie(letters)
+  barplot(letters)
 }
 
 plot(dna)
