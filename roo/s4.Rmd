@@ -123,6 +123,7 @@ and so should our implementation `function(x) ...`.
 
 Create a custom implementation of `rev` for `GenericSeq` that will return a new `GenericSeq` objects where the sequence has been reversed. 
 
+<!--
 ### Solution
 
 ```{r}
@@ -136,6 +137,7 @@ setMethod("rev", "GenericSeq", function(x){
 genseq
 rev(genseq)
 ```
+-->
 
 ## The seperation of implementation and interface
 
@@ -197,6 +199,9 @@ Implement methods for getting the setting the `sequence` property of our `Generi
 
 ### Solution
 
+(hidden)
+
+<!--
 ```{r}
 setGeneric("sequence", function(object, ...) standardGeneric("sequence"))
 setGeneric("sequence<-", function(object, value) standardGeneric("sequence<-"))
@@ -213,8 +218,9 @@ sequence(genseq) = "TAATTTT"
 sequence(genseq)
 
 ```
+-->
 
-***NOTE***: `sequence` already exists in base R, and we've broken it:
+*NOTE*: `sequence` already exists in base R, and we've broken it:
 
 ```{r, error=TRUE}
 base::sequence
