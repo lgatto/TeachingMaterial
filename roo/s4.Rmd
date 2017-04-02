@@ -275,7 +275,7 @@ sequence(genseq) = "ABCD" # this produces an error
 
 Because S4 is more formal and explicit there are multiple functions you can use to find out information about your and other people's classes. 
 
-```{r}
+```{r, eval=FALSE}
 showMethods("rev")
 getClass("GenericSeq")
 getMethod("rev", "GenericSeq")
