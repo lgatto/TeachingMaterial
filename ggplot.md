@@ -394,6 +394,9 @@ ggplot(data = yearly_weight, aes(x=year, y=avg_weight, color = species_id, group
 
 ## Interactivity with [`ggvis`](http://ggvis.rstudio.com/)
 
+This section is based on the on-line
+[`ggvis` documentation](http://ggvis.rstudio.com/)
+
 > The goal of ggvis is to make it easy to build interactive graphics
 > for exploratory data analysis. ggvis has a similar underlying theory
 > to ggplot2 (the grammar of graphics), but it’s expressed a little
@@ -401,7 +404,122 @@ ggplot(data = yearly_weight, aes(x=year, y=avg_weight, color = species_id, group
 > interactive. ggvis also incorporates shiny’s reactive programming
 > model and dplyr’s grammar of data transformation.
 
-See http://ggvis.rstudio.com/interactivity.html
+
+```r
+library("ggvis")
+sml <- sample(nrow(surveys), 1e3)
+surveys_sml <- surveys_complete[sml, ]
+```
 
 
+```r
+p <- ggvis(surveys_sml, x = ~weight, y = ~hindfoot_length)
+p %>% layer_points()
+```
+
+
+```r
+surveys_sml %>%
+    ggvis(x = ~weight, y = ~hindfoot_length,
+          fill = ~species_id) %>%
+    layer_points()
+```
+
+
+```r
+p %>% layer_points(fill = ~species_id)
+p %>% layer_points(shape = ~species_id)
+```
+
+To set fixed plotting parameters, use `:=`.
+
+
+```r
+p %>% layer_points(fill := "red", stroke := "black")
+p %>% layer_points(size := 300, opacity := 0.4)
+p %>% layer_points(shape := "cross")
+```
+
+### Interactivity
+
+
+```r
+p %>% layer_points(
+          size := input_slider(10, 100),
+          opacity := input_slider(0, 1))
+```
+
+
+```r
+p %>%
+    layer_points() %>% 
+    add_tooltip(function(df) df$weight)
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'p' not found
+```
+
+* `input_slider()`
+* `input_checkbox()`
+* `input_checkboxgroup()`
+* `input_numeric()`
+* `input_radiobuttons()`
+* `input_select()`
+* `input_text()`
+
+See the
+[interactivity vignette](http://ggvis.rstudio.com/interactivity.html)
+for details.
+
+
+### Layers
+
+**Simple layers** 
+
+* `layer_points()`, with properties x, y, shape, stroke, fill,
+  strokeOpacity, fillOpacity, and opacity.
+* `layer_paths()`, for paths and polygons (using the fill argument).
+* `layer_ribbons()` for filled areas.
+* `layer_rects()`, `layer_text()`.
+
+**Compound layers**, which which combine data transformations with one
+or more simple layers.
+
+* `layer_lines()` which automatically orders by the x variable with
+  `arrange()`.
+* `layer_histograms()` and `layer_freqpolys()`, which first bin the
+  data with `compute_bin()`.
+* `layer_smooths()`, which fits and plots a smooth model to the data
+  using `compute_smooth()`.
+
+See the [layers vignette](http://ggvis.rstudio.com/layers.html) for
+details.
+
+
+
+Like for `ggplot2`'s geoms, we can overly multiple layers:
+
+
+
+```r
+p %>%
+    layer_points() %>%
+    layer_smooths(stroke := "red")
+```
+
+```
+## Error in eval(lhs, parent, parent): object 'p' not found
+```
+
+
+## More components 
+
+* `scales`, to control the mapping between data and visual properties;
+  see the
+  [properties and scales vignette](http://ggvis.rstudio.com/properties-scales.html).
+
+* `legends` and `axes` to control the appearance of the guides
+  produced by the scales. See the
+  [axes and legends vignette](http://ggvis.rstudio.com/axes-legends.html).
 
