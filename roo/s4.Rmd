@@ -146,7 +146,9 @@ Best practice:
 
 2. The _user_ should *never* have to call `new()`, but create objects
    with functions we write as wrappers around `new()`. See for example
-   the `sequences::readFasta` function below. 
+   the `sequences::readFasta` function below.  Often, one can also
+   create a constructure named as the class that takes user-sensible
+   inputs to assess the slots when calling `new()`.
    
 ```{r, message = FALSE}
 library("sequences")
@@ -155,9 +157,7 @@ fl <- dir(system.file("extdata", package = "sequences"),
 basename(fl)
 readFasta(fl)
 ```   
-   Often, one can also create a constructure named as the class that
-   takes user-sensible inputs to assess the slots when calling
-   `new()`.
+
 
 As developers, we should be writing _functions and methods_ for the user to use our object. How the object is internally implemented is of no interest to the user. The interface (functions and methods) should be kept stable over time, not to break any external code that depends on our code, while the internal implementation can evolve rapidly. 
 
