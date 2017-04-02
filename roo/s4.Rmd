@@ -201,8 +201,7 @@ Implement methods for getting the setting the `sequence` property of our `Generi
 
 (hidden)
 
-<!--
-```{r}
+```{r, echo=FALSE}
 setGeneric("sequence", function(object, ...) standardGeneric("sequence"))
 setGeneric("sequence<-", function(object, value) standardGeneric("sequence<-"))
 
@@ -218,7 +217,6 @@ sequence(genseq) = "TAATTTT"
 sequence(genseq)
 
 ```
--->
 
 *NOTE*: `sequence` already exists in base R, and we've broken it:
 
