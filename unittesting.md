@@ -8,8 +8,8 @@ These exercises were written by Martin Morgan and Laurent Gatto for a
 
 # Introduction
 
-> Whenever you are templted to type something into a print statement
-> or a debugger expression, write it as a test insted -- Martin Fowler
+> Whenever you are tempted to type something into a print statement
+> or a debugger expression, write it as a test instead -- Martin Fowler
 
 **Why unit testing?**
 
@@ -57,7 +57,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "H" "A" "Z" "F" "G"
+## [1] "V" "I" "Q" "K" "N"
 ```
 But
 
@@ -68,7 +68,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "H" "A" "Z" "F" "G" NA
+## [1] "V" "I" "Q" "K" "N" NA
 ```
 
 ### Solution
@@ -452,10 +452,6 @@ data(package = "pRolocdata")
 - To test the validity of an object, use `validObject`
 
 
-```
-## Warning in read.dcf(con): URL 'http://bioconductor.org/BiocInstaller.dcf':
-## status was 'Couldn't resolve host name'
-```
 
 
 ```r

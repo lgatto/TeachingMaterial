@@ -8,8 +8,8 @@ These exercises were written by Martin Morgan and Laurent Gatto for a
 
 # Introduction
 
-> Whenever you are templted to type something into a print statement
-> or a debugger expression, write it as a test insted -- Martin Fowler
+> Whenever you are tempted to type something into a print statement
+> or a debugger expression, write it as a test instead -- Martin Fowler
 
 **Why unit testing?**
 
