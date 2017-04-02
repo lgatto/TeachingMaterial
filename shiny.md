@@ -22,10 +22,6 @@ The overview figure below is based and makes reference to
 shinyUI(fluidPage(...))
 ```
 
-```
-## Error in shinyUI(fluidPage(...)): '...' used in an incorrect context
-```
-
 
 ```r
 ## in server.R
@@ -37,10 +33,6 @@ shinyServer(function(input, ouput) {
 
 ```r
 runApp("app-dir")
-```
-
-```
-## Error in shinyAppDir(x): No Shiny application exists at the path "app-dir"
 ```
 
 ### Example apps

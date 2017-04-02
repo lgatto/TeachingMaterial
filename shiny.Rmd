@@ -15,19 +15,19 @@ The overview figure below is based and makes reference to
 
 ### Running the apps
 
-```{r}
+```{r, eval = FALSE}
 ## in ui.R
 shinyUI(fluidPage(...))
 ```
 
-```{r}
+```{r, eval = FALSE}
 ## in server.R
 shinyServer(function(input, ouput) {
     ...
 })
 ```
 
-```{r}
+```{r, eval = FALSE}
 runApp("app-dir")
 ```
 
