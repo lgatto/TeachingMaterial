@@ -7,7 +7,7 @@ structures into a simple interface.
 OOP concepts
 ------------
 
--   Abstraction - related data is stored and handled together
+-   Encapsulation - related data is stored and handled together
 -   Polymorphism - the most appropriate function is called based on the
     object type (e.g various plot functions)
 -   Inheritance - code reuse by hierarchy of more-to-less general object
