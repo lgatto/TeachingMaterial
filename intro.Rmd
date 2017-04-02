@@ -39,18 +39,11 @@ for **consistency** and **readability**.
 
 ## [`formatR`](https://cran.rstudio.com/web/packages/formatR/index.html)
 
-
-```r
+```{r, eval=TRUE}
 library("formatR")
 tidy_source(text = "a=1+1;a  # print the value
                     matrix ( rnorm(10),5)",
             arrow = TRUE)
-```
-
-```
-## a <- 1 + 1
-## a  # print the value
-## matrix(rnorm(10), 5)
 ```
 
 ## [`BiocCheck`](http://bioconductor.org/packages/devel/bioc/html/BiocCheck.html)
@@ -85,8 +78,7 @@ Moving from using R to programming R is *abstraction*, *automation*,
 
 ## Interactive use vs programming: `drop`
 
-
-```r
+```{r, eval=FALSE}
 head(cars)
 head(cars[, 1])
 head(cars[, 1, drop = FALSE])
@@ -102,8 +94,7 @@ A function is made of
 - a body
 - an environment, the map of the location of the functions variable
 
-
-```r
+```{r, eval=FALSE}
 f <- function(x) {
     y <- x + 1
     return(x * y)
