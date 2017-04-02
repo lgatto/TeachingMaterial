@@ -406,7 +406,7 @@ details.
 Like for `ggplot2`'s geoms, we can overly multiple layers:
 
 
-```{r}
+```{r, eval = FALSE}
 p %>%
     layer_points() %>%
     layer_smooths(stroke := "red")

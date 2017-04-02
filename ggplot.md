@@ -508,10 +508,6 @@ p %>%
     layer_smooths(stroke := "red")
 ```
 
-```
-## Error in eval(lhs, parent, parent): object 'p' not found
-```
-
 
 ## More components 
 
