@@ -150,7 +150,7 @@ Best practice:
    create a constructure named as the class that takes user-sensible
    inputs to assess the slots when calling `new()`.
    
-```{r, message = FALSE}
+```{r, message = FALSE, eval=FALSE}
 library("sequences")
 fl <- dir(system.file("extdata", package = "sequences"),
           full.names = TRUE)[1]
