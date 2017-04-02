@@ -57,7 +57,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "C" "W" "I" "O" "Z"
+## [1] "H" "A" "Z" "F" "G"
 ```
 But
 
@@ -68,7 +68,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "C" "W" "I" "O" "Z" NA
+## [1] "H" "A" "Z" "F" "G" NA
 ```
 
 ### Solution
@@ -124,10 +124,10 @@ test_isIn() ## the bug is fixed and monitored
 and
 
 ```r
-test_that("description", {
-    a <- foo()
-    b <- bar()
-    expect_equal(a, b)
+test_that("isIn function", {
+    x <- c("A", "B", "Z")
+    expect_identical(x, isIn(x, LETTERS))
+    expect_identical(x, isIn(c(x, "a"), LETTERS))
 })
 ```
 

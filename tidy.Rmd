@@ -125,7 +125,7 @@ surveys %>% dim
 This is particularly suited to tidy data and tidy tools. Instead of 
 
 ```
-tidy_data <- tidy_tool1(tidy_data_new)
+tidy_data_new <- tidy_tool1(tidy_data)
 tidy_data_new <- tidy_tool2(tidy_data_new)
 new_tidy_data_new <- tidy_tool3(tidy_data_new)
 ```
@@ -398,6 +398,18 @@ Tools that preserve data tidyness and endomorphism
 * We should write operations that preserve the classes of the
   data. Ideally, also define simple vocabulary that preserves the rich
   Bioconductor semantic in a consistent paradigm.
+
+```{r, message = FALSE, cache = TRUE}
+library("MSnbase")
+library("msdata")
+library("magrittr")
+
+fl <- proteomics(full.names = TRUE)[2]
+rw <- readMSData2(fl)
+rw2 <- rw %>%
+    filterMsLevel(3L) %>%
+    filterMz(c(126, 132))
+```
 
 ## References
 
