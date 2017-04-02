@@ -158,6 +158,40 @@ is.string("letters")
 is.string(letters)
 ```
 
+## Exercise
+
+(From [adv-r](http://adv-r.had.co.nz/Exceptions-Debugging.html#defensive-programming).)
+
+The `col_means` function computes the means of all numeric columns in
+a data frame.
+
+```{r, eval=FALSE}
+col_means <- function(df) {
+  numeric <- sapply(df, is.numeric)
+  numeric_cols <- df[, numeric]
+  data.frame(lapply(numeric_cols, mean))
+}
+```
+
+Is it a robust function? What happens if there are unusual inputs.
+
+```{r, eval=FALSE}
+col_means(mtcars)
+col_means(mtcars[, 0])
+col_means(mtcars[0, ])
+col_means(mtcars[, "mpg", drop = FALSE])
+col_means(1:10)
+col_means(as.matrix(mtcars))
+col_means(as.list(mtcars))
+
+mtcars2 <- mtcars
+mtcars2[-1] <- lapply(mtcars2[-1], as.character)
+col_means(mtcars2)
+```
+
+Tip: Before update your function and making it more defensive, write a
+[unit test](../unittesting.md) to check that it is and will remain so.
+
 # Debugging: techniques and tools
 
 ### Shit happens
