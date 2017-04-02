@@ -13,9 +13,38 @@ The overview figure below is based and makes reference to
 
 ![shiny app overview](./figs/shiny-overview.jpg)
 
-Example apps:
-* `shiny-app1`
-* `shiny-app2`
+### Running the apps
+
+```{r}
+## in ui.R
+shinyUI(fluidPage(...))
+```
+
+```{r}
+## in server.R
+shinyServer(function(input, ouput) {
+    ...
+})
+```
+
+```{r}
+runApp("app-dir")
+```
+
+### Example apps
+
+* [`shiny-app1`](./shiny-app1)
+* [`shiny-app2`](./shiny-app1)
+
+### Single-file app
+
+```{r, eval = FALSE}
+ui <- fluidPage(...)
+server <- function(input, output) { ... }
+
+app <- list(ui = ui, server = server)
+runApp(app)
+```
 
 ### Sharing
 
