@@ -201,7 +201,7 @@ Implement methods for getting the setting the `sequence` property of our `Generi
 
 (hidden)
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, results="hide"}
 setGeneric("sequence", function(object, ...) standardGeneric("sequence"))
 setGeneric("sequence<-", function(object, value) standardGeneric("sequence<-"))
 
