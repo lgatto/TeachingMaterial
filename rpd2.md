@@ -363,7 +363,7 @@ The roxygen code can then be parsed and converted to `Rd` using the
 
 Note that the `roxygenise` function does more than produce
 documentation (that part is handled by the `rd` roclet, set with
-`roclete = "rd"`). It can also manage your `NAMESPACE` file and
+`roclet = "rd"`). It can also manage your `NAMESPACE` file and
 `Collate` field.
 
 Note: recently, support for markdown format has been added to roxygen.
