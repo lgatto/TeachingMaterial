@@ -2,9 +2,20 @@
 
 We will need
 
-```{r}
+```{r, message = FALSE}
 library("shiny")
 ```
+
+## The architecture of a `shiny` app
+
+The overview figure below is based and makes reference to
+[*the written tutorial*](http://shiny.rstudio.com/tutorial/lesson1/).
+
+![shiny app overview](./figs/shiny-overview.jpg)
+
+Example apps:
+* `shiny-app1`
+* `shiny-app2`
 
 ### Sharing
 
