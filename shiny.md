@@ -60,6 +60,25 @@ runApp(app)
 * [shinyapps](http://wwwshinyapps.io)
 * Shiny server
 
+### Exercise
+
+Design the following app:
+
+### More interactivity
+
+
+```r
+ plotOutput("pca",
+            hover = "hover",
+            click = "click",
+            dblclick = "dblClick",
+            brush = brushOpts(
+                id = "brush",
+                resetOnNew = TRUE))
+```
+
+Example [here](http://shiny.rstudio.com/gallery/plot-interaction-advanced.html).
+
 ## Shiny apps
 
 Push your shiny apps online with [shinyapps](http://www.shinyapps.io/).
