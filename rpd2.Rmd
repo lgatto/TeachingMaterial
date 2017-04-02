@@ -55,7 +55,7 @@ Basic workflow
 Step 2 is done only once. Package developement cycles through 3 - 5.
 
 Also 
-- Wrinting package documentation
+- Writing package documentation
 - Vignettes
 - Testing packages
 - Compiled code
