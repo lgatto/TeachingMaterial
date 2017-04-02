@@ -34,7 +34,7 @@ program.
 
 ```r
 log(c(2, 1, -1)); print('end')   # warning 
-xor(sum(1, "a");  print ('end')  # error
+xor(sum(1, "a"));  print ('end')  # error
 ```
 
 * If you try to isolate warnings, you can change warnings to

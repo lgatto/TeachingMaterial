@@ -372,6 +372,18 @@ See also the `BiocGenerics` package for `[l|m|s|t]apply` S4 generics,
 as well as parallel versions in the `parallel` package (see
 `Performance` section).
 
+> In the *interation on 0 length* [unit test](../unittesting.md)
+> exercice
+> 
+> 
+> ```r
+> sqrtabs <- function(x) {
+>     v <- abs(x)
+>     sapply(1:length(v), function(i) sqrt(v[i]))
+> }
+> ```
+> What where your suggestions to improve the function in the light of
+> the available `*apply` functions?
 
 See also the `plyr` package, that offers its own flavour of `apply`
 functions.

@@ -172,6 +172,12 @@ res <- sapply(v, f)
 f(v)
 
 
+sqrtabs <- function(x) {
+    v <- abs(x)
+    sapply(1:length(v), function(i) sqrt(v[i]))
+}
+
+
 M <- matrix(rnorm(100), 10)
 apply(M, 1, function(Mrow) 'do something with Mrow')
 apply(M, 2, function(Mcol) 'do something with Mcol')
