@@ -123,6 +123,7 @@ and so should our implementation `function(x) ...`.
 
 Create a custom implementation of `rev` for `GenericSeq` that will return a new `GenericSeq` objects where the sequence has been reversed. 
 
+<!--
 ### Solution
 
 ```{r}
@@ -136,6 +137,7 @@ setMethod("rev", "GenericSeq", function(x){
 genseq
 rev(genseq)
 ```
+-->
 
 ## The seperation of implementation and interface
 
@@ -150,7 +152,7 @@ Best practice:
    create a constructure named as the class that takes user-sensible
    inputs to assess the slots when calling `new()`.
    
-```{r, message = FALSE}
+```{r, message = FALSE, eval=FALSE}
 library("sequences")
 fl <- dir(system.file("extdata", package = "sequences"),
           full.names = TRUE)[1]
@@ -197,7 +199,9 @@ Implement methods for getting the setting the `sequence` property of our `Generi
 
 ### Solution
 
-```{r}
+(hidden)
+
+```{r, echo=FALSE, results="hide"}
 setGeneric("sequence", function(object, ...) standardGeneric("sequence"))
 setGeneric("sequence<-", function(object, value) standardGeneric("sequence<-"))
 
@@ -214,7 +218,7 @@ sequence(genseq)
 
 ```
 
-***NOTE***: `sequence` already exists in base R, and we've broken it:
+*NOTE*: `sequence` already exists in base R, and we've broken it:
 
 ```{r, error=TRUE}
 base::sequence
@@ -275,7 +279,7 @@ sequence(genseq) = "ABCD" # this produces an error
 
 Because S4 is more formal and explicit there are multiple functions you can use to find out information about your and other people's classes. 
 
-```{r}
+```{r, eval=FALSE}
 showMethods("rev")
 getClass("GenericSeq")
 getMethod("rev", "GenericSeq")
