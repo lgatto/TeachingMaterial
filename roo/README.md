@@ -4,20 +4,10 @@ Object-oriented programming in R
 Object-oriented programming (OOP) can help us encapsulate complex data
 structures into a simple interface.
 
-Unlike other main-stream languages, R has multiple OOP systems that
-co-exist in parallel:
-
--   S3 - used in base R
--   S4 - *de-facto* standard in Bioconductor
--   Reference classes (RC) - used in special use cases
-
-S3 and S4 are similar, but S4 is more formal. RC is quite different and
-is Java-like.
-
 OOP concepts
 ------------
 
--   Abstraction - related data is stored and handled together
+-   Encapsulation - related data is stored and handled together
 -   Polymorphism - the most appropriate function is called based on the
     object type (e.g various plot functions)
 -   Inheritance - code reuse by hierarchy of more-to-less general object
@@ -49,6 +39,19 @@ In R, everything has a class (i.e type):
     class(x)
 
     ## [1] "numeric"
+
+OOP in R
+========
+
+Unlike other main-stream languages, R has multiple OOP systems that
+co-exist in parallel:
+
+-   S3 - used in base R
+-   S4 - *de-facto* standard in Bioconductor
+-   Reference classes (RC) - used in special use cases
+
+S3 and S4 are similar, but S4 is more formal. RC is quite different and
+is Java-like.
 
 Sections
 ========
