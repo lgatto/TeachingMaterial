@@ -52,6 +52,9 @@ Social dinner in Heiderberg.
 | 17:00 - 17:30 | General good practice discussion and wrap-up    |
 
 
+A list of all required packages and how to install them is proved
+[here](https://github.com/lgatto/2017-04-03-adv-r-progr-EMBL/issues/4).
+
 ## More material and license
 
 This material, unless otherwise stated, has been adapted from our
