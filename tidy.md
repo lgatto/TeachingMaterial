@@ -268,11 +268,11 @@ This is particularly suited to tidy data and tidy tools. Instead of
 ```
 tidy_data_new <- tidy_tool1(tidy_data)
 tidy_data_new <- tidy_tool2(tidy_data_new)
-new_tidy_data_new <- tidy_tool3(tidy_data_new)
+tidy_tool3(tidy_data_new)
 ```
 we have
 ```
-tidy_data_new <- tidy_data %>% tidy_tool1 %>% tidy_tool2 %>% tidy_tools3
+tidy_data %>% tidy_tool1 %>% tidy_tool2 %>% tidy_tools3
 ```
 
 ### Selecting variables (columns) with `select`
@@ -510,82 +510,6 @@ surveys %>%
 ## 9      F         PB    30.21088
 ## 10     F         PE    22.82218
 ## # ... with 82 more rows
-```
-
-When grouping both by `sex` and `species_id`, the first rows are for individuals
-that escaped before their sex could be determined and weighted. You may notice
-that the last column does not contain `NA` but `NaN` (which refers to "Not a
-Number"). To avoid this, we can remove the missing values for weight before we
-attempt to calculate the summary statistics on weight. Because the missing
-values are removed, we can omit `na.rm = TRUE` when computing the mean:
-
-
-```r
-surveys %>%
-  filter(!is.na(weight)) %>%
-  group_by(sex, species_id) %>%
-  summarize(mean_weight = mean(weight))
-```
-
-```
-## Source: local data frame [64 x 3]
-## Groups: sex [?]
-## 
-##      sex species_id mean_weight
-##    <chr>      <chr>       <dbl>
-## 1      F         BA     9.16129
-## 2      F         DM    41.60968
-## 3      F         DO    48.53125
-## 4      F         DS   117.74955
-## 5      F         NL   154.28221
-## 6      F         OL    31.06582
-## 7      F         OT    24.83090
-## 8      F         OX    21.00000
-## 9      F         PB    30.21088
-## 10     F         PE    22.82218
-## # ... with 54 more rows
-```
-
-You may also have noticed that the output from these calls doesn't run off the
-screen anymore. That's because `dplyr` has changed our `data.frame` to a
-`tbl_df`. The `tbl` data structure is very similar to a data frame; for our
-purposes the only difference is that, in addition to displaying the data type
-of each column under its name, it only prints the first few rows of data and
-only as many columns as fit on one screen. If you want to display more data, you
-use the `print()` function at the end of your chain with the argument `n`
-specifying the number of rows to display:
-
-
-```r
-surveys %>%
-  filter(!is.na(weight)) %>%
-  group_by(sex, species_id) %>%
-  summarize(mean_weight = mean(weight)) %>%
-  print(n = 15)
-```
-
-```
-## Source: local data frame [64 x 3]
-## Groups: sex [?]
-## 
-##      sex species_id mean_weight
-##    <chr>      <chr>       <dbl>
-## 1      F         BA    9.161290
-## 2      F         DM   41.609685
-## 3      F         DO   48.531250
-## 4      F         DS  117.749548
-## 5      F         NL  154.282209
-## 6      F         OL   31.065817
-## 7      F         OT   24.830904
-## 8      F         OX   21.000000
-## 9      F         PB   30.210884
-## 10     F         PE   22.822183
-## 11     F         PF    7.974394
-## 12     F         PH   30.850000
-## 13     F         PL   19.312500
-## 14     F         PM   22.125668
-## 15     F         PP   17.180670
-## # ... with 49 more rows
 ```
 
 Once the data are grouped, you can also summarize multiple variables at the same
