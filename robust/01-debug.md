@@ -31,6 +31,22 @@ Before we begin with debugging, let's look at ways to prevent bugs
 The level of defensiveness will depend whether you write a function
 for interactive of programmatic usage.
 
+Your code can be:
+
+1. Correct.
+2. An error occurs that is clearly identified.
+3. An obscure error occurs.
+4. An incorrect value is returned.
+
+We like category 1. Category 2 is the right behavior if the inputs do
+not make sense, but not if the inputs are sensible. Category 3 is an
+unpleasant place for your users, and possibly for you if the users
+have access to you. Category 4 is by far the worst place to be - the
+user has no reason to believe that anything is wrong. Steer clear of
+category 4.
+
+To avoid category 4, we'll have to talk to our users and detect errors and inconsitencies. 
+
 ## Talk to your users
 
 ### Diagnostic messages
@@ -138,10 +154,6 @@ Stop also has a `call.` parameter.
 ```r
 geterrmessage()
 ```
-
-## KISS
-
-Keep your functions simple and stupid (and short). 
 
 ## Failing fast and well
 
