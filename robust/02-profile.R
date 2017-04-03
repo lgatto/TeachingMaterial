@@ -19,41 +19,6 @@ microbenchmark(sqrt(x),
                x ^ 0.5)
 
 
-x <- runif(100)
-all.equal(sqrt(x), x ^ 0.5)
-
-
-library("sequences")
-gccount
-gccountr <- function(x) table(strsplit(x, "")[[1]])
-gccountr2 <- function(x) tabulate(factor(strsplit(x, "")[[1]]))
-
-
-s <- paste(sample(c("A", "C", "G", "T"),
-                  100, replace = TRUE),
-           collapse = "")
-
-gccount(s)
-gccountr(s)
-gccountr2(s)
-
-
-library("microbenchmark")
-microbenchmark(gccount(s),
-                     gccountr(s),
-                     gccountr2(s),
-                     times = 1e4,
-					 unit = "eps")
-
-
-library("ggplot2")
-mb <- microbenchmark(gccount(s),
-                     gccountr(s),
-                     gccountr2(s))
-print(mb)
-microbenchmark:::autoplot.microbenchmark(mb)
-
-
 m <- matrix(rnorm(1e6), ncol = 10)
 
 Rprof("rprof")
@@ -89,6 +54,41 @@ profvis({
     res <- apply(m, 1, mean, trim=.3)
     sum(res)
 })
+
+
+x <- runif(100)
+all.equal(sqrt(x), x ^ 0.5)
+
+
+library("sequences")
+gccount
+gccountr <- function(x) table(strsplit(x, "")[[1]])
+gccountr2 <- function(x) tabulate(factor(strsplit(x, "")[[1]]))
+
+
+s <- paste(sample(c("A", "C", "G", "T"),
+                  100, replace = TRUE),
+           collapse = "")
+
+gccount(s)
+gccountr(s)
+gccountr2(s)
+
+
+library("microbenchmark")
+microbenchmark(gccount(s),
+                     gccountr(s),
+                     gccountr2(s),
+                     times = 1e4,
+					 unit = "eps")
+
+
+library("ggplot2")
+mb <- microbenchmark(gccount(s),
+                     gccountr(s),
+                     gccountr2(s))
+print(mb)
+microbenchmark:::autoplot.microbenchmark(mb)
 
 
 make_id2GO <- function(n = 1e3) { ## could be 1e4 - 1e5

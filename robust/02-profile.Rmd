@@ -96,92 +96,6 @@ microbenchmark(sqrt(x),
 
 # Profiling
 
-### Reminder
-
-> We should forget about small efficiencies, say about 97% of the
-> time: premature optimization is the root of all evil. Yet we should
-> not pass up our opportunities in that critical 3%. A good programmer
-> will not be lulled into complacency by such reasoning, he will be
-> wise to look carefully at the critical code; but only after that
-> code has been identified
-
-Knuth, Donald. *Structured Programming with `go to` Statements*, ACM
-Journal Computing Surveys, Vol 6, No. 4, Dec. 1974. p.268.
-
-### Optimisation
-
-Optimisations often have their own costs:
-
-- Trade-off fast vs dangerous, flexibility/functionality vs performance.
-- Use any assumptions about the data, at the cost of generalisation. 
-
-Pat Burns reminds us that 
-
-> Our first duty is to create clear, correct code. Only consider
-> optimising your code when:
-
-- The code is debugged and stable.
-- Optimisation is likely to make a significant impact. 
-
-then
-
-1. Find the major bottleneck: code *profiling*.
-2. Try to eliminate it.
-3. Repeat until *fast enough*: ideally, define fast enough in advance.
-
-#### Make sure the code remains correct
-
-```{r, eval=TRUE}
-x <- runif(100)
-all.equal(sqrt(x), x ^ 0.5)
-```
-
-and/or unit tests to compare different implementations (and regression test).
-
-#### Are implementations really equivalent?
-
-```{r, eval=FALSE}
-library("sequences")
-gccount
-gccountr <- function(x) table(strsplit(x, "")[[1]])
-gccountr2 <- function(x) tabulate(factor(strsplit(x, "")[[1]]))
-```
-
-Checking that our different implementations give the same results:
-
-```{r, eval=FALSE}
-s <- paste(sample(c("A", "C", "G", "T"),
-                  100, replace = TRUE),
-           collapse = "")
-
-gccount(s)
-gccountr(s)
-gccountr2(s)
-```
-
-But are they really the same? Are we really comparing the same
-functionalities?
-
-Is it worth it?
-
-```{r, eval=FALSE}
-library("microbenchmark")
-microbenchmark(gccount(s),
-                     gccountr(s),
-                     gccountr2(s),
-                     times = 1e4, 
-					 unit = "eps")
-```
-
-```{r, eval=FALSE}
-library("ggplot2")
-mb <- microbenchmark(gccount(s),
-                     gccountr(s),
-                     gccountr2(s))
-print(mb)
-microbenchmark:::autoplot.microbenchmark(mb)
-```
-
 ## Profiling tools
 
 Sampling or statistical profiling: at regular intervals, stop the
@@ -279,6 +193,78 @@ profvis({
 ```
 
 # Optimisation
+
+Optimisations often have their own costs:
+
+- Trade-off fast vs dangerous, flexibility/functionality vs performance.
+- Use any assumptions about the data, at the cost of generalisation. 
+
+Pat Burns reminds us that 
+
+> Our first duty is to create clear, correct code. Only consider
+> optimising your code when:
+
+- The code is debugged and stable.
+- Optimisation is likely to make a significant impact. 
+
+then
+
+1. Find the major bottleneck: code *profiling*.
+2. Try to eliminate it.
+3. Repeat until *fast enough*: ideally, define fast enough in advance.
+
+#### Make sure the code remains correct
+
+```{r, eval=TRUE}
+x <- runif(100)
+all.equal(sqrt(x), x ^ 0.5)
+```
+
+and/or unit tests to compare different implementations (and regression test).
+
+#### Are implementations really equivalent?
+
+```{r, eval=FALSE}
+library("sequences")
+gccount
+gccountr <- function(x) table(strsplit(x, "")[[1]])
+gccountr2 <- function(x) tabulate(factor(strsplit(x, "")[[1]]))
+```
+
+Checking that our different implementations give the same results:
+
+```{r, eval=FALSE}
+s <- paste(sample(c("A", "C", "G", "T"),
+                  100, replace = TRUE),
+           collapse = "")
+
+gccount(s)
+gccountr(s)
+gccountr2(s)
+```
+
+But are they really the same? Are we really comparing the same
+functionalities?
+
+Is it worth it?
+
+```{r, eval=FALSE}
+library("microbenchmark")
+microbenchmark(gccount(s),
+                     gccountr(s),
+                     gccountr2(s),
+                     times = 1e4, 
+					 unit = "eps")
+```
+
+```{r, eval=FALSE}
+library("ggplot2")
+mb <- microbenchmark(gccount(s),
+                     gccountr(s),
+                     gccountr2(s))
+print(mb)
+microbenchmark:::autoplot.microbenchmark(mb)
+```
 
 ## Look for existing solutions
 
