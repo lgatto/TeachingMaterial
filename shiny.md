@@ -38,7 +38,12 @@ runApp("app-dir")
 ### Example apps
 
 * [`shiny-app1`](./shiny-app1)
+
+![shiny-app1](./figs/app1.png)
+
 * [`shiny-app2`](./shiny-app1)
+
+![shiny-app2](./figs/app2.png)
 
 ### Single-file app
 
@@ -62,7 +67,8 @@ runApp(app)
 
 ### Exercise
 
-Design the following app:
+Read and understand the code of the apps above and run them
+locally. Then, try to update them to replace of add some widgets.
 
 ### More interactivity
 
