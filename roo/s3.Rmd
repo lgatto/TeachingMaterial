@@ -114,7 +114,6 @@ Calling `plot()` on our data doesn't work. Create your own implementation of `pl
 plot(dna)
 ```
 
-<!--
 ### Solution
 
 ```{r}
@@ -125,7 +124,7 @@ plot.MyDNASeq = function(x, y, ...){
 
 plot(dna)
 ```
--->
+
 ## Issues with S3
 
 S3 is very informal, with very little consistency checking, so things can easily go wrong:
