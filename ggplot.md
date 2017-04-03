@@ -16,7 +16,7 @@ library("hexbin")
 
 ### Base graphics
 
-Uses a *canvas model*L a series of instructions that sequentially fill
+Uses a *canvas model* a series of instructions that sequentially fill
 the plotting canvas. While this model is very useful to build plots
 bits by bits bottom up, which is useful in some cases, it has some
 clear drawback:
@@ -26,7 +26,7 @@ clear drawback:
 * Different functions for different plot types with different
   interfaces.
 * No standard data input.
-* Many routine tasks require a lot of biolerplate code.
+* Many routine tasks require a lot of boilerplate code.
 * No concept of facets/lattices/viewports.
 * Poor default colours.
 
@@ -41,8 +41,8 @@ The components of `ggplot2`'s of graphics are
 3. A description of how the variables in the data are mapped to visual
    properties (aesthetics) or the geometric objects, and an associated
    scale (e.g. linear, logarithmic, rang)
-4. A stastical summarisation rule
-5. A corrindate system.
+4. A statistical summarisation rule
+5. A coordinate system.
 6. A facet specification, i.e. the use of several plots to look at the
    same data.
 
@@ -206,9 +206,6 @@ hidden.
 > - Represent weight on the log10 scale; see `scale_y_log10()`
 >
 > - Create boxplot for `hindfoot_length`.
->
-> - Add color to the datapoints on your boxplot according to the plot from which
->   the sample was taken (`plot_id`)
 
 ### Plotting time series data
 
