@@ -100,6 +100,8 @@ microbenchmark(sqrt(x),
 
 # Profiling
 
+The goal of profiling is to measure how much time different parts of code take to execute. 
+
 ## Profiling tools
 
 Sampling or statistical profiling: at regular intervals, stop the
