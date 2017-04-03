@@ -45,6 +45,7 @@ have access to you. Category 4 is by far the worst place to be - the
 user has no reason to believe that anything is wrong. Steer clear of
 category 4.
 
+To avoid category 4, we'll have to talk to our users and detect errors and inconsitencies. 
 
 ## Talk to your users
 
