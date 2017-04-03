@@ -142,10 +142,6 @@ Stop also has a `call.` parameter.
 geterrmessage()
 ```
 
-## KISS
-
-Keep your functions simple and stupid (and short). 
-
 ## Failing fast and well
 
 For example to test input classes, lengths, ...
