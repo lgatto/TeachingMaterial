@@ -1,12 +1,20 @@
-**R package development** describes the `R` package development, including documentation and unit testing. 
-The material is adequant for about 1/2 day course, giving the students time to start implementing their own package
-based on the example provided during the course. 
-The slides are used in various advanced programming and developement courses taught by 
+**R package development** (`rpd.pdf` slides and `rpd.Rnw` source)
+describes the `R` package development, including documentation and
+unit testing.  The material is adequant for about 1/2 day course,
+giving the students time to start implementing their own package based
+on the example provided during the course.  The slides are used in
+various advanced programming and developement courses taught by
 Laurent Gatto and Robert Stojnić in Cambridge and at the EMBL.
 
-The educational [`sequences`](https://github.com/lgatto/sequences/) package is used as reference material for the course.
+The markdown version (`rpd2.md` and `rpd2.Rmd` source) is slightly
+shorted, redirecting to other material, and udpated with more
+`devtools` content.
 
-See the [TeachingMaterial](https://github.com/lgatto/TeachingMaterial) repository for more material.
+The educational [`sequences`](https://github.com/lgatto/sequences/)
+package is used as reference material for the course.
 
-This material is licensed under the 
-[Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/). 
+See the [TeachingMaterial](https://github.com/lgatto/TeachingMaterial)
+repository for more material.
+
+This material is licensed under the
+[Creative Commons Attribution-ShareAlike 3.0 License](http://creativecommons.org/licenses/by-sa/3.0/).
