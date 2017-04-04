@@ -370,7 +370,6 @@ sml <- surveys %>%
 >  Using pipes, subset the `survey` data to include individuals collected before
 >  1995 and retain only the columns `year`, `sex`, and `weight`.
 
-<!---
 
 ```r
 ## Answer
@@ -378,7 +377,6 @@ surveys %>%
     filter(year < 1995) %>%
     select(year, sex, weight)
 ```
---->
 
 ### Adding variables with `mutate`
 
@@ -441,7 +439,6 @@ surveys %>%
 >  than 30.
 
 
-<!---
 
 ```r
 ## Answer
@@ -451,7 +448,6 @@ surveys_hindfoot_half <- surveys %>%
     filter(hindfoot_half < 30) %>%
     select(species_id, hindfoot_half)
 ```
---->
 
 ### Split-apply-combine data analysis and the summarize() function
 
@@ -586,7 +582,6 @@ counts the total number of records for each category.
 > using `group_by()` and `summarize()`? Hint: see `?n`.
 
 
-<!---
 
 ```
 ## # A tibble: 5 × 2
@@ -643,7 +638,6 @@ counts the total number of records for each category.
 ## 2     M 17348
 ## 3  <NA>  1748
 ```
---->
 
 
 See also [`dplyr` cheat sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
