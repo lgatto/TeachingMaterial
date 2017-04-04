@@ -167,7 +167,7 @@ sml <- surveys %>%
 >  Using pipes, subset the `survey` data to include individuals collected before
 >  1995 and retain only the columns `year`, `sex`, and `weight`.
 
-```{r, eval=FALSE, purl=FALSE}
+```{r}
 ## Answer
 surveys %>%
     filter(year < 1995) %>%
@@ -199,7 +199,7 @@ surveys %>%
 >  than 30.
 
 
-```{r, eval=FALSE, purl=FALSE}
+```{r}
 ## Answer
 surveys_hindfoot_half <- surveys %>%
     filter(!is.na(hindfoot_length)) %>%
@@ -281,7 +281,7 @@ counts the total number of records for each category.
 > using `group_by()` and `summarize()`? Hint: see `?n`.
 
 
-```{r, echo=FALSE, purl=FALSE}
+```{r}
 ## Answer 1
 surveys %>%
     group_by(plot_type) %>%

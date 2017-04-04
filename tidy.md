@@ -378,6 +378,23 @@ surveys %>%
     select(year, sex, weight)
 ```
 
+```
+## # A tibble: 21,486 × 3
+##     year   sex weight
+##    <int> <chr>  <int>
+## 1   1977     M     NA
+## 2   1977     M     NA
+## 3   1977  <NA>     NA
+## 4   1977  <NA>     NA
+## 5   1977  <NA>     NA
+## 6   1977  <NA>     NA
+## 7   1977  <NA>     NA
+## 8   1978  <NA>     NA
+## 9   1978     M    218
+## 10  1978  <NA>     NA
+## # ... with 21,476 more rows
+```
+
 ### Adding variables with `mutate`
 
 
@@ -583,6 +600,13 @@ counts the total number of records for each category.
 
 
 
+```r
+## Answer 1
+surveys %>%
+    group_by(plot_type) %>%
+    tally
+```
+
 ```
 ## # A tibble: 5 × 2
 ##                   plot_type     n
@@ -592,6 +616,18 @@ counts the total number of records for each category.
 ## 3          Rodent Exclosure  4233
 ## 4 Short-term Krat Exclosure  5906
 ## 5         Spectab exclosure  3918
+```
+
+```r
+## Answer 2
+surveys %>%
+    filter(!is.na(hindfoot_length)) %>%
+    group_by(species_id) %>%
+    summarize(
+        mean_hindfoot_length = mean(hindfoot_length),
+        min_hindfoot_length = min(hindfoot_length),
+        max_hindfoot_length = max(hindfoot_length)
+    )
 ```
 
 ```
@@ -611,6 +647,16 @@ counts the total number of records for each category.
 ## # ... with 15 more rows
 ```
 
+```r
+## Answer 3
+surveys %>%
+    filter(!is.na(weight)) %>%
+    group_by(year) %>%
+    filter(weight == max(weight)) %>%
+    select(year, genus, species, weight) %>%
+    arrange(year)
+```
+
 ```
 ## Source: local data frame [27 x 4]
 ## Groups: year [26]
@@ -628,6 +674,13 @@ counts the total number of records for each category.
 ## 9   1984   Neotoma    albigula    259
 ## 10  1985   Neotoma    albigula    225
 ## # ... with 17 more rows
+```
+
+```r
+## Answer 4
+surveys %>%
+  group_by(sex) %>%
+  summarize(n = n())
 ```
 
 ```
