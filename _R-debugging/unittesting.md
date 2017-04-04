@@ -1,7 +1,15 @@
+---
+title: "Unit testing"
+author: "Laurent Gatto"
+---
+
 These exercises were written by Martin Morgan and Laurent Gatto for a
 [Bioconductor Developer Day workshop](http://bioconductor.org/help/course-materials/2013/BioC2013/developer-day-debug/).
 
 # Introduction
+
+> Whenever you are tempted to type something into a print statement
+> or a debugger expression, write it as a test instead -- Martin Fowler
 
 **Why unit testing?**
 
@@ -49,7 +57,7 @@ isIn(x, LETTERS)
 ```
 
 ```
-## [1] "G" "R" "N" "H" "A"
+## [1] "V" "I" "Q" "K" "N"
 ```
 But
 
@@ -60,7 +68,7 @@ isIn(c(x, "a"), LETTERS)
 ```
 
 ```
-## [1] "G" "R" "N" "H" "A" NA
+## [1] "V" "I" "Q" "K" "N" NA
 ```
 
 ### Solution
@@ -82,7 +90,8 @@ test_isIn()
 ```
 
 ```
-## Error in checkIdentical(x, isIn(c(x, "a"), LETTERS)): FALSE
+## Error in checkIdentical(x, isIn(c(x, "a"), LETTERS)): FALSE 
+## 
 ```
 
 Update the buggy function until the unit test succeeds
@@ -102,7 +111,62 @@ test_isIn() ## the bug is fixed and monitored
 ## [1] TRUE
 ```
 
+## The `testthat` syntax
+
+`expect_that(object_or_expression, condition)` with conditions
+- equals: `expect_that(1+2,equals(3))` or `expect_equal(1+2,3)`
+- gives warning: `expect_that(warning("a")`, `gives_warning())`
+- is a: `expect_that(1, is_a("numeric"))` or `expect_is(1,"numeric")`
+- is true: `expect_that(2 == 2, is_true())` or `expect_true(2==2)`
+- matches: `expect_that("Testing is fun", matches("fun"))` or `expect_match("Testing is fun", "f.n")`
+- takes less: `than expect_that(Sys.sleep(1), takes_less_than(3))`
+
+and
+
+```r
+test_that("isIn function", {
+    x <- c("A", "B", "Z")
+    expect_identical(x, isIn(x, LETTERS))
+    expect_identical(x, isIn(c(x, "a"), LETTERS))
+})
+```
+
+## Batch unit testing
+
+```r
+library("testthat")
+test_dir("./unittests/")
+test_file("./unittests/test_foo.R")
+```
+
 # Exercises
+
+## Column means
+
+## Problem
+
+The `col_means` function computes the means of all numeric columns in
+a data frame (example from *Advanced R*, to illustrate defensive
+programming).
+
+
+```r
+col_means <- function(df) {
+  numeric <- sapply(df, is.numeric)
+  numeric_cols <- df[, numeric]
+  data.frame(lapply(numeric_cols, mean))
+}
+
+## Expected
+col_means(mtcars)
+
+## Bugs
+col_means(mtcars[, "mpg"])
+col_means(mtcars[, "mpg", drop = FALSE])
+col_means(mtcars[, 0])
+col_means(mtcars[0, ])
+col_means(as.list(mtcars))
+```
 
 ## Character matching
 
@@ -117,35 +181,13 @@ isExactIn <- function(x, y)
 
 ## Expected
 isExactIn("a", letters)
-```
 
-```
-## [1] "a"
-```
-
-```r
 ## Bugs
 isExactIn("a", c("abc", letters))
-```
-
-```
-## [1] "abc" "a"
-```
-
-```r
 isExactIn(c("a", "z"), c("abc", letters))
 ```
 
-```
-## Warning in grep(x, y): argument 'pattern' has length > 1 and only the
-## first element will be used
-```
-
-```
-## [1] "abc" "a"
-```
-
-### Solution
+<!-- ### Solution -->
 
 <!-- ```{r} -->
 <!-- ## Unit test: -->
@@ -185,43 +227,14 @@ ifcond <- function(x, y) {
 
 ## Expected
 ifcond(3, 2)
-```
-
-```
-## [1] 5
-```
-
-```r
 ifcond(2, 2)
-```
-
-```
-## [1] 8
-```
-
-```r
 ifcond(1, 2)
-```
 
-```
-## [1] 5
-```
-
-```r
 ## Bug!
 ifcond(3:1, c(2, 2, 2))
 ```
 
-```
-## Warning in if (x > y) {: the condition has length > 1 and only the first
-## element will be used
-```
-
-```
-## [1]  5  0 -3
-```
-
-### Solution
+<!-- ### Solution -->
 
 <!-- ```{r} -->
 <!-- ## Unit test: -->
@@ -265,67 +278,18 @@ x <- rnorm(5)
 y <- rnorm(5)
 
 (m <- cbind(x, y))
-```
-
-```
-##                x          y
-## [1,] -0.08866721 -0.1689596
-## [2,] -0.56628485 -0.3466350
-## [3,]  0.60314345 -1.5913059
-## [4,]  1.19967540  0.2114289
-## [5,]  2.12492564 -0.4756302
-```
-
-```r
 (p <- m[1, ])
-```
 
-```
-##           x           y 
-## -0.08866721 -0.16895957
-```
-
-```r
 distances(p, m)
-```
 
-```
-## [1] 0.0000000 0.5095951 1.5816672 1.3433250 2.2347349
-```
-
-```r
 ## Bug!
 (dd <- data.frame(x, y))
-```
-
-```
-##             x          y
-## 1 -0.08866721 -0.1689596
-## 2 -0.56628485 -0.3466350
-## 3  0.60314345 -1.5913059
-## 4  1.19967540  0.2114289
-## 5  2.12492564 -0.4756302
-```
-
-```r
 (q <- dd[1, ])
-```
 
-```
-##             x          y
-## 1 -0.08866721 -0.1689596
-```
-
-```r
 distances(q, dd)
 ```
 
-```
-##   x
-## 1 0
-```
-
-### Solution
+<!-- ### Solution -->
 
 <!-- ```{r} -->
 <!-- ## Unit test: -->
@@ -372,26 +336,12 @@ sqrtabs <- function(x) {
 
 ## Expected
 all(sqrtabs(c(-4, 0, 4)) == c(2, 0, 2))
-```
 
-```
-## [1] TRUE
-```
-
-```r
 ## Bug!
 sqrtabs(numeric())
 ```
 
-```
-## [[1]]
-## [1] NA
-## 
-## [[2]]
-## numeric(0)
-```
-
-### Solution
+<!-- ### Solution -->
 
 <!-- ```{r} -->
 <!-- ## Unit test: -->
@@ -417,34 +367,6 @@ sqrtabs(numeric())
 <!-- ``` -->
 
 # Unit testing in a package 
-
-## The `testthat` syntax
-
-`expect_that(object_or_expression, condition)` with conditions
-- equals: `expect_that(1+2,equals(3))` or `expect_equal(1+2,3)`
-- gives warning: `expect_that(warning("a")`, `gives_warning())`
-- is a: `expect_that(1, is_a("numeric"))` or `expect_is(1,"numeric")`
-- is true: `expect_that(2 == 2, is_true())` or `expect_true(2==2)`
-- matches: `expect_that("Testing is fun", matches("fun"))` or `expect_match("Testing is fun", "f.n")`
-- takes less: `than expect_that(Sys.sleep(1), takes_less_than(3))`
-
-and
-
-```r
-test_that("description", {
-    a <- foo()
-    b <- bar()
-    expect_equal(a, b)
-})
-```
-
-## Interactive unit testing
-
-```r
-library("testthat")
-test_dir("./unittests/")
-test_file("./unittests/test_foo.R")
-```
 
 ## In a package
 
@@ -491,7 +413,8 @@ test_that("readFasta", {
   ## loading _valid_ dnaseq
   data(dnaseq)
   ## reading fasta sequence
-  f <- dir(system.file("extdata",package="sequences"),pattern="fasta",full.names=TRUE)
+  f <- dir(system.file("extdata", package = "sequences"),
+           pattern="fasta", full.names = TRUE)
   xx <- readFasta(f[1])
   expect_true(all.equal(xx, dnaseq))
 })
@@ -510,3 +433,59 @@ test_that("ccpp code", {
   expect_true(identical(gccount2(x), gccountr(x)))
 })
 ```
+
+## Exercise
+
+Choose any data package of your choice and write a unit test that
+tests the validity of all the its data. 
+
+Tips 
+
+- To get all the data distributed with a package, use `data(package = "packageName")`
+
+
+```r
+library("pRolocdata")
+data(package = "pRolocdata")
+```
+
+- To test the validity of an object, use `validObject`
+
+
+
+
+```r
+data(andy2011)
+validObject(andy2011)
+```
+
+```
+## [1] TRUE
+```
+
+- Using the `testthat` syntax, the actual test for that data set would be 
+
+
+```r
+library("testthat")
+expect_true(validObject(andy2011))
+```
+
+
+## Testing coverage in a package
+
+The [covr](https://github.com/jimhester/covr) package:
+
+![package coverage](./figs/covr.png)
+
+We can use `type="all"` to examine the coverage in unit tests, examples and vignettes. This can
+also be done interactively with Shiny:
+
+
+```r
+library(covr)
+coverage <- package_coverage("/path/to/package/source", type="all")
+shine(coverage)
+```
+
+[Coverage for all Bioconductor packages](https://codecov.io/github/Bioconductor-mirror).
