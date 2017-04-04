@@ -362,7 +362,7 @@ p %>% layer_points(
           opacity := input_slider(0, 1))
 ```
 
-```{r}
+```{r, eval = FALSE}
 p %>%
     layer_points() %>% 
     add_tooltip(function(df) df$weight)

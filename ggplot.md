@@ -459,10 +459,6 @@ p %>%
     add_tooltip(function(df) df$weight)
 ```
 
-```
-## Error in eval(lhs, parent, parent): object 'p' not found
-```
-
 * `input_slider()`
 * `input_checkbox()`
 * `input_checkboxgroup()`
