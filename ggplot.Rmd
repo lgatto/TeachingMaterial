@@ -254,6 +254,12 @@ ggplot(data = yearly_sex_counts,
      theme_bw() 
 ```
 
+> ### Challenges
+>
+> Modify the plotting code above to colour the time series by sex in
+> the different facets.
+
+
 To make the plot easier to read, we can color by sex instead of
 species (species are already in separate plots, so we don’t need to
 distinguish them further).

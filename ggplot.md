@@ -323,6 +323,12 @@ ggplot(data = yearly_sex_counts,
 
 ![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
 
+> ### Challenges
+>
+> Modify the plotting code above to colour the time series by sex in
+> the different facets.
+
+
 To make the plot easier to read, we can color by sex instead of
 species (species are already in separate plots, so we don’t need to
 distinguish them further).
