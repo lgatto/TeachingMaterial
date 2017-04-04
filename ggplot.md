@@ -364,13 +364,14 @@ starting point to create a new hand-crafted theme.
 > Use what you just learned to create a plot that depicts how the
 > average weight of each species changes through the years.
 
-<!-- Answer
+
 
 ```r
 yearly_weight <- surveys_complete %>%
                  group_by(year, species_id) %>%
                  summarise(avg_weight = mean(weight))
-ggplot(data = yearly_weight, aes(x=year, y=avg_weight, color = species_id, group = species_id)) +
+ggplot(data = yearly_weight,
+       aes(x=year, y=avg_weight, color = species_id, group = species_id)) +
     geom_line() +
     facet_wrap(~ species_id) +
     theme_bw()
@@ -382,7 +383,7 @@ ggplot(data = yearly_weight, aes(x=year, y=avg_weight, color = species_id, group
 ```
 
 ![plot of chunk average-weight-timeseries](figure/average-weight-timeseries-1.png)
--->
+
 
 
 ## References
