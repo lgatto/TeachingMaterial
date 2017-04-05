@@ -370,6 +370,7 @@ sml <- surveys %>%
 >  Using pipes, subset the `survey` data to include individuals collected before
 >  1995 and retain only the columns `year`, `sex`, and `weight`.
 
+<details>
 
 ```r
 ## Answer
@@ -394,6 +395,7 @@ surveys %>%
 ## 10  1978  <NA>     NA
 ## # ... with 21,476 more rows
 ```
+</details>
 
 ### Adding variables with `mutate`
 
