@@ -207,6 +207,16 @@ hidden.
 >
 > - Create boxplot for `weight`.
 
+
+```r
+surveys_bw + geom_violin()
+
+surveys_bw + geom_boxplot() + scale_y_log10()
+
+ggplot(data = surveys_complete,
+       aes(x = species_id, y = weight)) +
+    geom_boxplot()
+```
 ### Plotting time series data
 
 Let's calculate number of counts per year for each species. To do that
@@ -228,7 +238,7 @@ ggplot(data = yearly_counts, aes(x = year, y = n)) +
      geom_line()
 ```
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
+![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
 
 Unfortunately this does not work, because we plot data for all the species
 together. We need to tell ggplot to draw a line for each species by modifying
@@ -241,7 +251,7 @@ ggplot(data = yearly_counts,
     geom_line()
 ```
 
-![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-15-1.png)
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
 
 We will be able to distinguish species in the plot if we add colors.
 
@@ -252,7 +262,7 @@ ggplot(data = yearly_counts,
     geom_line()
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png)
+![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
 
 ## Faceting
 
@@ -273,7 +283,7 @@ ggplot(data = yearly_counts,
 ## adjust the group aesthetic?
 ```
 
-![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17-1.png)
+![plot of chunk unnamed-chunk-18](figure/unnamed-chunk-18-1.png)
 
 Now we would like to split line in each plot by sex of each individual
 measured. To do that we need to make counts in data frame grouped by year,
@@ -301,7 +311,7 @@ ggplot(data = yearly_sex_counts,
 ## adjust the group aesthetic?
 ```
 
-![plot of chunk unnamed-chunk-19](figure/unnamed-chunk-19-1.png)
+![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
 
 Usually plots with white background look more readable when printed.
 We can set the background to white using the function
@@ -321,13 +331,12 @@ ggplot(data = yearly_sex_counts,
 ## adjust the group aesthetic?
 ```
 
-![plot of chunk unnamed-chunk-20](figure/unnamed-chunk-20-1.png)
+![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
 
 > ### Challenges
 >
 > Modify the plotting code above to colour the time series by sex in
 > the different facets.
-
 
 To make the plot easier to read, we can color by sex instead of
 species (species are already in separate plots, so we don’t need to
@@ -347,7 +356,7 @@ ggplot(data = yearly_sex_counts,
 ## adjust the group aesthetic?
 ```
 
-![plot of chunk unnamed-chunk-21](figure/unnamed-chunk-21-1.png)
+![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png)
 
 #### The ggplot2 themes
 
@@ -364,7 +373,7 @@ starting point to create a new hand-crafted theme.
 > Use what you just learned to create a plot that depicts how the
 > average weight of each species changes through the years.
 
-
+<details>
 
 ```r
 yearly_weight <- surveys_complete %>%
@@ -383,7 +392,7 @@ ggplot(data = yearly_weight,
 ```
 
 ![plot of chunk average-weight-timeseries](figure/average-weight-timeseries-1.png)
-
+</details>
 
 
 ## References

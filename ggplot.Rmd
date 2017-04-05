@@ -173,6 +173,15 @@ hidden.
 >
 > - Create boxplot for `weight`.
 
+```{r, eval=FALSE}
+surveys_bw + geom_violin()
+
+surveys_bw + geom_boxplot() + scale_y_log10()
+
+ggplot(data = surveys_complete,
+       aes(x = species_id, y = weight)) +
+    geom_boxplot()
+```
 ### Plotting time series data
 
 Let's calculate number of counts per year for each species. To do that
@@ -259,7 +268,6 @@ ggplot(data = yearly_sex_counts,
 > Modify the plotting code above to colour the time series by sex in
 > the different facets.
 
-
 To make the plot easier to read, we can color by sex instead of
 species (species are already in separate plots, so we don’t need to
 distinguish them further).
@@ -287,7 +295,7 @@ starting point to create a new hand-crafted theme.
 > Use what you just learned to create a plot that depicts how the
 > average weight of each species changes through the years.
 
-
+<details>
 ```{r average-weight-timeseries, purl=FALSE}
 yearly_weight <- surveys_complete %>%
                  group_by(year, species_id) %>%
@@ -298,7 +306,7 @@ ggplot(data = yearly_weight,
     facet_wrap(~ species_id) +
     theme_bw()
 ```
-
+</details>
 
 
 ## References

@@ -457,7 +457,7 @@ surveys %>%
 >  In this `hindfoot_half` column, there are no `NA`s and all values are less
 >  than 30.
 
-
+<details>
 
 ```r
 ## Answer
@@ -467,6 +467,7 @@ surveys_hindfoot_half <- surveys %>%
     filter(hindfoot_half < 30) %>%
     select(species_id, hindfoot_half)
 ```
+</details>
 
 ### Split-apply-combine data analysis and the summarize() function
 
@@ -600,7 +601,7 @@ counts the total number of records for each category.
 > combination of `group_by()` and `tally()`. How could you get the same result
 > using `group_by()` and `summarize()`? Hint: see `?n`.
 
-
+<details>
 
 ```r
 ## Answer 1
@@ -693,6 +694,7 @@ surveys %>%
 ## 2     M 17348
 ## 3  <NA>  1748
 ```
+</details>
 
 
 See also [`dplyr` cheat sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
