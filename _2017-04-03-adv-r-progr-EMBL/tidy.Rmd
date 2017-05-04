@@ -1,0 +1,391 @@
+# Tidyverse
+
+The **tidyverse**, popularised by Hadley Wickham, refers to the
+utilisation of **tidy data** and **tools that preserve tidyness**.
+
+We are going to 
+
+* Learn how tidy data is defined for dataframes
+* Learn some tidyverse tools
+* Extend the notion of tidy data to Bioconductor's rich semantic
+
+From http://tidyverse.org/:
+
+> The tidyverse is a set of packages that work in harmony because they
+> share common data representations and API design. The tidyverse
+> package is designed to make it easy to install and load core
+> packages from the tidyverse in a single command.
+
+
+```{r, eval = TRUE}
+library("tidyverse")
+```
+
+(but we are only going to use a subet of these packages)
+
+## Tidy data
+
+Just as
+
+> Happy families are all alike; every unhappy family is unhappy in its
+> own way. – Leo Tolstoy
+
+when it comes to data
+
+> Tidy datasets are all alike, but every messy dataset is messy in its
+> own way. – Hadley Wickham
+
+The reason why tidy data is important is that we waste a lot of time
+in cleaning *messy* data, i.e. tiding it up to get it in a format that
+leads to data analysis and visualisation.
+
+One reason why data is often messy is that its structure is meant to
+make collection of the data easy.
+
+The standard representation of data is in the form of a table. Tidy
+tables are tables where:
+
+1. Each variable is in a column.
+2. Each observation is a row.
+3. Each value is a cell.
+
+### Examples
+
+Beyond messy badly formatted data (from the
+[Data Carpentry *Spreadsheet lessons*](http://www.datacarpentry.org/spreadsheet-ecology-lesson/))
+
+![badly formatted data](./figs/multiple-info.png)
+
+
+Untidy and tidyfied data (from [Wickham](http://www.jstatsoft.org/v59/i10) 2014.)
+
+![untidy data](./figs/tidy-ex-1a.png)![tidy data](./figs/tidy-ex-1b.png)
+
+From the `tidyr` package: country, year, cases and population from the
+World Health Organization Global Tuberculosis Report, organised in
+four different ways.
+
+```{r}
+table1
+table2
+table3
+table4a
+table4b
+```
+
+## Tidy tools: manipulating and analyzing data with `dplyr`
+
+Credit: This material is based on the Data Carpentry
+[*R for data analysis and visualization of Ecological Data* material](http://www.datacarpentry.org/R-ecology-lesson/index.html)
+
+### The data
+
+The *survey data* provides the species and weight of animals caught in
+plots in various study area. The dataset is stored as a comma
+separated value (CSV) file.  Each row holds information for a single
+animal, and the columns represent:
+
+| Column           | Description                        |
+|------------------|------------------------------------|
+| record\_id       | Unique id for the observation      |
+| month            | month of observation               |
+| day              | day of observation                 |
+| year             | year of observation                |
+| plot\_id         | ID of a particular plot            |
+| species\_id      | 2-letter code                      |
+| sex              | sex of animal ("M", "F")           |
+| hindfoot\_length | length of the hindfoot in mm       |
+| weight           | weight of the animal in grams      |
+| genus            | genus of animal                    |
+| species          | species of animal                  |
+| taxa             | e.g. Rodent, Reptile, Bird, Rabbit |
+| plot\_type       | type of plot                       |
+
+It is available online
+[https://ndownloader.figshare.com/files/2292169](https://ndownloader.figshare.com/files/2292169). We read it directly from figshare using `dplyr::read_csv`.
+
+```{r}
+surveys <- read_csv("https://ndownloader.figshare.com/files/2292169")
+head(surveys)
+```
+
+### Piping
+
+When running complex operations on data, we often have to either
+create temporary variables, or nest functions. An alternative is
+piping operations using the `%>%` operator from the `magrittr`
+package.
+
+```{r, message = FALSE}
+library("magrittr")
+dim(surveys)
+surveys %>% dim
+```
+
+This is particularly suited to tidy data and tidy tools. Instead of 
+
+```
+tidy_data_new <- tidy_tool1(tidy_data)
+tidy_data_new <- tidy_tool2(tidy_data_new)
+tidy_tool3(tidy_data_new)
+```
+we have
+```
+tidy_data %>% tidy_tool1 %>% tidy_tool2 %>% tidy_tools3
+```
+
+### Selecting variables (columns) with `select`
+
+```{r}
+surveys %>% select(species, plot_id, species_id)
+```
+
+### Selecting observations (rows) with `filter`
+
+```{r}
+surveys %>% filter(year == 1995)
+```
+
+Pipes come handy when we want to `select` and `filter`:
+
+```{r, purl = FALSE}
+surveys %>%
+  filter(weight < 5) %>%
+  select(species, sex, weight)
+```
+
+And to save the final, left-most, result
+
+```{r, purl = FALSE}
+sml <- surveys %>%
+    filter(weight < 5) %>%
+    select(species, sex, weight)
+```
+
+> ### Challenge 
+>
+>  Using pipes, subset the `survey` data to include individuals collected before
+>  1995 and retain only the columns `year`, `sex`, and `weight`.
+
+<details>
+```{r}
+## Answer
+surveys %>%
+    filter(year < 1995) %>%
+    select(year, sex, weight)
+```
+</details>
+
+### Adding variables with `mutate`
+
+```{r}
+surveys %>%
+    mutate(weight_kg = weight / 1000) %>%
+    select(species, year, weight, weight_kg) 
+```
+
+
+```{r}
+surveys %>%
+  filter(!is.na(weight)) %>%
+    mutate(weight_kg = weight / 1000) %>%
+    select(species, year, weight, weight_kg) 
+```
+
+> ### Challenge
+>
+>  Create a new data frame from the `survey` data that meets the following
+>  criteria: contains only the `species_id` column and a new column called
+>  `hindfoot_half` containing values that are half the `hindfoot_length` values.
+>  In this `hindfoot_half` column, there are no `NA`s and all values are less
+>  than 30.
+
+<details>
+```{r}
+## Answer
+surveys_hindfoot_half <- surveys %>%
+    filter(!is.na(hindfoot_length)) %>%
+    mutate(hindfoot_half = hindfoot_length / 2) %>%
+    filter(hindfoot_half < 30) %>%
+    select(species_id, hindfoot_half)
+```
+</details>
+
+### Split-apply-combine data analysis and the summarize() function
+
+Many data analysis tasks can be approached using the *split-apply-combine*
+paradigm: split the data into groups, apply some analysis to each group, and
+then combine the results. `dplyr` makes this very easy through the use of the
+`group_by()` function.
+
+
+#### The `summarize()` function
+
+`group_by()` is often used together with `summarize()`, which collapses each
+group into a single-row summary of that group.  `group_by()` takes as arguments
+the column names that contain the **categorical** variables for which you want
+to calculate the summary statistics. So to view the mean `weight` by sex:
+
+```{r}
+surveys %>%
+  group_by(sex) %>%
+  summarize(mean_weight = mean(weight, na.rm = TRUE))
+```
+
+You can also group by multiple columns:
+
+```{r}
+surveys %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight, na.rm = TRUE))
+```
+
+Once the data are grouped, you can also summarize multiple variables at the same
+time (and not necessarily on the same variable). For instance, we could add a
+column indicating the minimum weight for each species for each sex:
+
+```{r}
+surveys %>%
+  filter(!is.na(weight)) %>%
+  group_by(sex, species_id) %>%
+  summarize(mean_weight = mean(weight),
+            min_weight = min(weight))
+```
+
+
+#### Tallying
+
+When working with data, it is also common to want to know the number of
+observations found for each factor or combination of factors. For this, `dplyr`
+provides `tally()`. For example, if we wanted to group by sex and find the
+number of rows of data for each sex, we would do:
+
+```{r}
+surveys %>%
+  group_by(sex) %>%
+  tally
+```
+
+Here, `tally()` is the action applied to the groups created by `group_by()` and
+counts the total number of records for each category.
+
+> ### Challenge
+>
+> 1. How many individuals were caught in each `plot_type` surveyed?
+>
+> 2. Use `group_by()` and `summarize()` to find the mean, min, and max hindfoot
+> length for each species (using `species_id`).
+>
+> 3. What was the heaviest animal measured in each year? Return the columns `year`,
+> `genus`, `species_id`, and `weight`.
+>
+> 4. You saw above how to count the number of individuals of each `sex` using a
+> combination of `group_by()` and `tally()`. How could you get the same result
+> using `group_by()` and `summarize()`? Hint: see `?n`.
+
+<details>
+```{r}
+## Answer 1
+surveys %>%
+    group_by(plot_type) %>%
+    tally
+
+## Answer 2
+surveys %>%
+    filter(!is.na(hindfoot_length)) %>%
+    group_by(species_id) %>%
+    summarize(
+        mean_hindfoot_length = mean(hindfoot_length),
+        min_hindfoot_length = min(hindfoot_length),
+        max_hindfoot_length = max(hindfoot_length)
+    )
+
+## Answer 3
+surveys %>%
+    filter(!is.na(weight)) %>%
+    group_by(year) %>%
+    filter(weight == max(weight)) %>%
+    select(year, genus, species, weight) %>%
+    arrange(year)
+
+## Answer 4
+surveys %>%
+  group_by(sex) %>%
+  summarize(n = n())
+```
+</details>
+
+
+See also [`dplyr` cheat sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
+## Extending tidy data
+
+Note that sometimes, data is not tidy for good reasons - either for
+performance reasons, or because of other valid conventions. 
+
+
+Let's look at a well-known example:
+
+```{r, message = FALSE}
+library("Biobase")
+data(sample.ExpressionSet)
+exprs(sample.ExpressionSet)[1:5, 1:5]
+```
+
+Typically, slots in the Bioconductor are not (necessarily) tidy. We
+could make it tidy with:
+
+```{r, message = FALSE}
+library("reshape2")
+exprs(sample.ExpressionSet)[1:5, 1:3] %>% melt()
+```
+
+But that wouldn't be helpful for us, working in omics, and could even
+counterproductive - see for example the
+[Non-tidy data](http://simplystatistics.org/2016/02/17/non-tidy-data/)
+blog post.
+
+But we can easily generalise the tidyverse concept:
+
+From tidy data to adequately structured classes:
+
+* Tidy data is data formatted as a table that guarantees that we know
+  where to find variables (along columns), observations (along rows),
+  and that each cell contains only one value.
+  
+* For S4 classes, that we use in Bioconductor to store complex data
+  that do not fit in rectangular tables, we know where to find every
+  bit of information too.
+
+Tools that preserve data tidyness and endomorphism
+
+* The `dplyr` tools take tidy data as input and guarantee to return
+  tidy data. 
+  
+* We should write operations that preserve the classes of the
+  data. Ideally, also define simple vocabulary that preserves the rich
+  Bioconductor semantic in a consistent paradigm.
+
+```{r, message = FALSE, cache = TRUE}
+library("MSnbase")
+library("msdata")
+library("magrittr")
+
+fl <- proteomics(full.names = TRUE)[2]
+rw <- readMSData2(fl)
+rw2 <- rw %>%
+    filterMsLevel(3L) %>%
+    filterMz(c(126, 132))
+```
+
+## References
+
+* [R for Data Science](http://r4ds.had.co.nz/), Hadley Wickham and
+  Garrett Grolemund.
+* Hadley Wickham, *Tidy Data*, Vol. 59, Issue 10, Sep 2014, Journal of
+  Statistical
+  Software. [http://www.jstatsoft.org/v59/i10](http://www.jstatsoft.org/v59/i10).
+* The tidyverse http://tidyverse.org/, Hadley Wickham.
+* [Non-tidy data](http://simplystatistics.org/2016/02/17/non-tidy-data/), Jeff Leek
+* The
+  [`dplyr` cheat sheet](http://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)

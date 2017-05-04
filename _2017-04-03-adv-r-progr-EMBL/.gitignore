@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+.idea
+*.Rproj
+robust/cache
+Makefile
+notes.org
+cache
