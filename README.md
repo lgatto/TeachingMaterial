@@ -36,6 +36,19 @@ with your colleagues.
 
 ## Material
 
+### Advanced R programming
+
+- Description: A two-day course taught on the 3-4 April 2017, teaching
+  advanced techniques in writing reliable, robust code in R.
+- Author: [Laurent Gatto](https://github.com/lgatto), and Robert
+  Stojnic.
+- Original repository: https://github.com/lgatto/2017-04-03-adv-r-progr-EMBL
+- Content: The material provides the opportunity to gain experience
+  and understanding of object-oriented programming, packaging your
+  code for distribution, advanced approaches for data visualisation,
+  unit testing, and debugging.
+
+
 ### R debugging and robust programming
 
 - Description: A 2-day workshop taught on the 25-26 February 2016 at
