@@ -37,7 +37,7 @@ theoretical lectures were taught by Olga Vitek.
 |         | 5:00 - 6:00pm  | Extra practice       |
 
 
-[Material day 2](https://htmlpreview.github.io/?https://github.com/lgatto/2017-05-03-RstatsIntro-NEU/blob/master/03-rstats.html)
+[Material day 3](https://htmlpreview.github.io/?https://github.com/lgatto/2017-05-03-RstatsIntro-NEU/blob/master/03-rstats.html)
 
 
 | Day     | Time          | Content             |
