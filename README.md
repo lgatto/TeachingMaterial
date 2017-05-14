@@ -1,8 +1,9 @@
-# May Institute 2017: Beginner's statistics in R
+# Beginner's statistics in R
 
-* This page: http://bit.ly/2017MayInstRstats
-* Etherpad: https://public.etherpad-mozilla.org/p/2017MayInstRstat
-* [May Institute page](http://computationalproteomics.ccis.northeastern.edu/programs/beginners-statistics-in-r/)
+This course was set up and taught by Meena Choi and Laurent Gatto in
+the frame the of the
+[May Institute](http://computationalproteomics.ccis.northeastern.edu/programs/beginners-statistics-in-r/),
+at the Northeastern University, Boston, MA from 3 to 5 May 2017.
 
 ### Suggested reading
 
@@ -54,7 +55,6 @@
 Link to [more teaching material](https://lgatto.github.io/TeachingMaterial/)
 
 ### License
-
 
 This material, unless otherwise stated, has been adapted from our is
 made available under the
