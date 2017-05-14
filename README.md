@@ -3,7 +3,8 @@
 This course was set up and taught by Meena Choi and Laurent Gatto in
 the frame the of the
 [May Institute](http://computationalproteomics.ccis.northeastern.edu/programs/beginners-statistics-in-r/),
-at the Northeastern University, Boston, MA from 3 to 5 May 2017.
+at the Northeastern University, Boston, MA from 3 to 5 May 2017. The
+theoretical lectures were taught by Olga Vitek.
 
 ### Suggested reading
 
@@ -11,7 +12,7 @@ at the Northeastern University, Boston, MA from 3 to 5 May 2017.
 
 ### Schedule and material
 
-[Material day 1](https://htmlpreview.github.io/?https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/01-rstats.html)
+[Material day 1](https://htmlpreview.github.io/?https://github.com/lgatto/2017-05-03-RstatsIntro-NEU/blob/master/01-rstats.html)
 
 | Day     | Time          | Content             |
 |---------|---------------|---------------------|
@@ -20,8 +21,7 @@ at the Northeastern University, Boston, MA from 3 to 5 May 2017.
 |         | 3:30 - 5:00pm | R basics and RStudio|
 |         | 5:00 - 6:00pm | R markdown          |
 
-
-[Material day 2](https://htmlpreview.github.io/?https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/02-rstats.html)
+[Material day 2](https://htmlpreview.github.io/?https://github.com/lgatto/2017-05-03-RstatsIntro-NEU/blob/master/02-rstats.html)
 
 
 | Day     | Time          | Content             |
@@ -37,7 +37,8 @@ at the Northeastern University, Boston, MA from 3 to 5 May 2017.
 |         | 5:00 - 6:00pm  | Extra practice       |
 
 
-[Material day 3](https://htmlpreview.github.io/?https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/03-rstats.html)
+[Material day 2](https://htmlpreview.github.io/?https://github.com/lgatto/2017-05-03-RstatsIntro-NEU/blob/master/03-rstats.html)
+
 
 | Day     | Time          | Content             |
 |---------|---------------|---------------------|
@@ -51,6 +52,8 @@ at the Northeastern University, Boston, MA from 3 to 5 May 2017.
 |         | 3:30 - 5:00pm  | Linear models and correlation |
 |         | 5:00 - 6:00pm  | Extra practice       |
 
+
+Lecture slides are available in the [Slides directory](https://github.com/lgatto/2017-05-03-RstatsIntro-NEU-/tree/master/Slides).
 
 Link to [more teaching material](https://lgatto.github.io/TeachingMaterial/)
 
