@@ -1,0 +1,797 @@
+---
+title: 'Day 3: Beginner''s statistics in R'
+author: "Laurent Gatto and Meena Choi"
+output: 
+  html_document:
+    self_contained: true
+    toc: true
+    toc_float: true
+    fig_caption: no
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Objectives
+
+- Statistical hypothesis testing: t-test
+- Sample size calculation
+- Analysis for categorical data 
+- Linear regression and correlation
+
+---
+
+# Part 4: Statistical hypothesis test
+
+First, we are going to prepare the session for further analyses.
+
+```{r}
+load("./data/summaryresults.rda")
+load("./data/iprg.rda")
+```
+
+## Two sample t-test for one protein with one feature
+
+Now, we'll perform a t-test whether protein `sp|P44015|VAC2_YEAST` has
+a change in abundance between Condition 1 and Condition 2.
+
+### Hypothesis
+
+* $H_0$: no change in abundance, mean(Condition1) - mean(Condition2) = 0
+* $H_a$: change in abundance, mean(Condition1) - mean(Condition 2) $\neq$ 0
+
+### Statistics
+
+* Observed $t = \frac{\mbox{difference of group means}}{\mbox{estimate of variation}} = \frac{(mean_{1} - mean_{2})}{SE} \sim t_{\alpha/2, df}$
+* Standard error, $SE=\sqrt{\frac{s_{1}^2}{n_{1}} + \frac{s_{2}^2}{n_{2}}}$
+
+with 
+
+* $n_{i}$: number of replicates
+* $s_{i}^2 = \frac{1}{n_{i}-1} \sum (Y_{ij} - \bar{Y_{i \cdot}})^2$: sample variance
+
+### Data preparation
+
+```{r}
+## Let's start with one protein, named "sp|P44015|VAC2_YEAST"
+oneproteindata <- iprg[iprg$Protein == "sp|P44015|VAC2_YEAST", ]
+
+## Then, get two conditions only, because t.test only works for two groups (conditions).
+oneproteindata.condition12 <- oneproteindata[oneproteindata$Condition %in% 
+                                             c('Condition1', 'Condition2'), ]
+oneproteindata.condition12
+table(oneproteindata.condition12[, c("Condition", "BioReplicate")])
+```
+
+If we want to remove the levels that are not relevant anymore, we can
+use `droplevels`:
+
+```{r}
+oneproteindata.condition12 <- droplevels(oneproteindata.condition12)
+table(oneproteindata.condition12[, c("Condition", "BioReplicate")])
+```
+
+To perform the t-test, we use the `t.test` function. Let's first
+familiarise ourselves with it by looking that the manual 
+
+```{r, eval=FALSE}
+?t.test
+```
+
+And now apply to to our data
+
+```{r}
+# t test for different abundance (log2Int) between Groups (Condition)
+result <- t.test(Log2Intensity ~ Condition,
+                 data = oneproteindata.condition12,
+                 var.equal = FALSE)
+
+result
+```
+
+> **Challenge**
+>
+> Repeat the t-test above but with calculating a 90% confidence interval
+> for the log2 fold change.
+
+```{r, eval=FALSE, echo=FALSE}
+result.ci90 <- t.test(Log2Intensity ~ Condition, 
+                      var.equal = FALSE,
+                      data = oneproteindata.condition12,
+                      conf.level = 0.9)
+result.ci90
+```
+
+### The `htest` class
+
+The `t.test` function, like other hypothesis testing function, return
+a result of a type we haven't encountered yet, the `htest` class:
+
+```{r}
+class(result)
+```
+
+which stores typical results from such tests. Let's have a more
+detailed look at what information we can learn from the results our
+t-test. When we type the name of our `result` object, we get a short
+textual summary, but the object contains more details:
+
+```{r}
+names(result)
+```
+
+and we can access each of these by using the `$` operator, like we
+used to access a single column from a `data.frame`, but the `htest`
+class is not a `data.frame` (it's actually a `list`). For example, to
+access the group means, we would use
+
+```{r}
+result$estimate
+```
+
+> **Challenge**
+> 
+> * Calculate the (log2-transformed) fold change between groups
+> * Extract the value of the t-statistics
+> * Calculate the standard error (fold-change/t-statistics)
+> * Extract the degrees of freedom (parameter)
+> * Extract the p values
+> * Extract the 95% confidence intervals
+
+
+```{r, echo=FALSE, include=FALSE}
+## log2 fold-change
+result$estimate[1]-result$estimate[2]
+## test statistic value, T value
+result$statistic 
+## standard error
+(result$estimate[1]-result$estimate[2])/result$statistic
+## degree of freedom
+result$parameter 
+## p value for two-sides testing
+result$p.value 
+## 95% confidence interval for log2 fold change
+result$conf.int 
+```
+
+We can also manually compute our t-test statistic using the formulas
+we descibed above and compare it with the `summaryresult`.
+
+Recall the `summaryresult` we generated last section.
+
+```{r}
+summaryresult
+summaryresult12 <- summaryresult[1:2, ]
+
+## test statistic, It is the same as 'result$statistic' above.
+diff(summaryresult12$mean) ## different sign, but absolute values are same as result$estimate[1]-result$estimate[2]
+sqrt(sum(summaryresult12$sd^2/summaryresult12$length)) ## same as stand error
+
+## the t-statistic : sign is different
+diff(summaryresult12$mean)/sqrt(sum(summaryresult12$sd^2/summaryresult12$length))
+```
+
+## Re-calculating the p values
+
+See the previous
+[*Working with statistical distributions*](https://htmlpreview.github.io/?https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/02-rstats.html#working_with_statistical_distributions)
+for a reminder.
+
+Referring back to our t-test results above, we can manually calculate
+the one- and two-side tests p-values using the t-statistics and the
+test parameter (using the `pt` function).
+
+
+Our result t statistic was `r as.vector(result$statistic)` (accessible
+with `result$statistic`). Let's start by visualising it along a t
+distribution. Let's create data from such a distribution, making sure
+we set to appropriate parameter.
+
+```{r}
+## generate 10^5 number with the same degree of freedom for distribution.
+xt <- rt(1e5, result$parameter) 
+plot(density(xt), xlim = c(-10, 10))
+abline(v = result$statistic, col = "red") ## where t statistics are located.
+abline(h = 0, col = "gray") ## horizontal line at 0
+```
+
+**The area on the left** of that point is given by `pt(result$statistic,
+result$parameter)`, which is `r pt(result$statistic,
+result$parameter)`. The p-value for a one-sided test, which is ** the area on the right** of red line, is this given by
+
+```{r}
+1 - pt(result$statistic, result$parameter)
+```
+
+And the p-value for a two-sided test is 
+
+```{r}
+2 * (1 - pt(result$statistic, result$parameter))
+```
+
+which is the same as the one calculated by the t-test.
+
+***
+
+# Part 5a: Sample size calculation
+
+To calculate the required sample size, you’ll need to know four
+things:
+
+* $\alpha$: confidence level
+* $power$: 1 - $\beta$, where $\beta$ is probability of a true positive discovery
+* $\Delta$: anticipated fold change
+* $\sigma$: anticipated variance
+
+## R code
+
+Assuming equal varaince and number of samples across groups, the
+following formula is used for sample size estimation:
+
+$$\frac{2{\sigma}^2}{n}\leq(\frac{\Delta}{z_{1-\beta}+z_{1-\alpha/2}})^2$$
+
+
+```{r}
+library("pwr")
+
+## ?pwr.t.test
+
+# Significance level alpha
+alpha <- 0.05
+
+# Power = 1 - beta
+power <- 0.95
+
+# anticipated log2 fold change 
+delta <- 1
+
+# anticipated variability
+sigma <- 0.9
+
+# Effect size
+# It quantifies the size of the difference between two groups
+d <- delta/sigma
+
+#Sample size estimation
+pwr.t.test(d = d, sig.level = alpha, power = power, type = 'two.sample')
+```
+
+
+> **Challenge**
+> 
+> * Calculate power with 10 samples and the same parameters as above.
+
+```{r, echo=FALSE, include=FALSE}
+## log2 fold-change
+pwr.t.test(d = d, sig.level = alpha, n=10, power = NULL, type = 'two.sample')
+```
+
+
+Let's investigate the effect of required fold change and variance on the sample size estimation.
+
+```{r, warning=FALSE}
+# anticipated log2 fold change 
+delta <- seq(0.1, 0.7, .1)
+
+# anticipated variability
+sigma <- seq(0.1,0.5,.1)
+
+d <- expand.grid(delta = delta, sigma = sigma)
+d$d <- d$delta / d$sigma
+d$n <- sapply(d$d, 
+             function(.d) {
+                 res <- pwr.t.test(d = .d, sig.level = 0.05, power = 0.95)
+                 ceiling(res$n)
+             })
+d$sigma <- factor(d$sigma)
+
+library("ggplot2")
+p <- ggplot(data = d, aes(x = delta, y = n,
+                          group = factor(sigma),
+                          colour = sigma))
+p + geom_line() + geom_point()
+print(p)
+```
+
+***
+# Part 5b: Choosing a model
+
+The decision of which statistical model is appropriate for a given set of observations depends on the type of data that have been collected.
+
+* Quantitative response with quantitative predictors : regression model
+
+* Categorical response with quantitative predictors : logistic regression model for bivariate categorical response (e.g., Yes/No, dead/alive), multivariate logistic regression model when the response variable has more than two possible values.
+
+* Quantitative response with categorical predictors : ANOVA model (quantitative response across several populations defined by one or more categorical predictor variables)
+
+* Categorical response with categorical predictors : contingency table that can be used to draw conclusions about the relationships between variables.
+
+
+Part 5b are adapted from *Bremer & Doerge*,
+[Using R at the Bench : Step-by-Step Data Analytics for Biologists](https://www.amazon.com/dp/1621821129/ref=olp_product_details?_encoding=UTF8&me=)
+, cold Spring Harbor LaboratoryPress, 2015.
+
+
+***
+
+# Part 5c: Analysis of categorical data
+
+For this part, we are going to use a new dataset, which contains the
+patient information from TCGA colorectal cohort. This data is from
+*Proteogenomic characterization of human colon and rectal cancer*
+(Zhang et al. 2014).
+
+
+Let's read in and explore the TCGA colorectal cancer data:
+
+```{r}
+TCGA.CRC <- read.csv("./data/TCGA_sample_information.csv")
+head(TCGA.CRC)
+```
+
+Rows in the data array are patients and columns are patient
+information. The column definition is shown as following:
+
+| Variable            |
+|---------------------|
+| TCGA participant ID |
+| Gender              |
+| Cancer type         |
+| BTAF mutation status|
+| History of colon polyps |
+
+Let's be familiar with data first.
+```{r}
+## check the dimension of data
+dim(TCGA.CRC)
+dim(TCGA.CRC$Gender) # dim function is for matrix, array or data frame.
+
+## check unique information of Gender column.
+unique(TCGA.CRC$Gender)
+class(TCGA.CRC$Gender)
+```
+
+> **Challenge**
+> 
+> * Get unique information and class for `Cancer` information
+> * Get unique information and class for `BRAF.mutation` information
+> * Get unique information and class for `history_of_colon_polyps` information
+
+```{r, echo=FALSE, include=FALSE}
+## check unique information of Cancer column.
+unique(TCGA.CRC$Cancer)
+class(TCGA.CRC$Cancer)
+
+## check unique information of BRAF.mutation column.
+unique(TCGA.CRC$BRAF.mutation)
+class(TCGA.CRC$BRAF.mutation)
+
+## check unique information of history_of_colon_polyps column.
+unique(TCGA.CRC$history_of_colon_polyps)
+class(TCGA.CRC$history_of_colon_polyps)
+```
+
+
+`table` function generates contingency table (or classification table with frequency of outcomes) at each combination.
+
+```{r}
+## check how many female and male are in the dataset
+table(TCGA.CRC$Gender)
+
+## check unique information if paticipant ID
+unique(TCGA.CRC$TCGA.participant.ID)
+length(unique(TCGA.CRC$TCGA.participant.ID))
+```
+
+There are 74 unique participant IDs. but there are total 78 rows. We can suspect that there are multiple rows for some IDs. Let's check. Get the count per participants ID
+```{r}
+countID <- table(TCGA.CRC$TCGA.participant.ID)
+countID
+```
+
+Some participant IDs has 2 rows. Let's get the subset that has more than one row.
+```{r}
+unique(countID)
+countID[countID > 1]
+```
+4 participants have two rows per each. Let's check the rows for `parcipant ID = TCGA-AA-A00A`
+
+```{r}
+TCGA.CRC[TCGA.CRC$TCGA.participant.ID == 'TCGA-AA-A00A', ]
+```
+
+There are two rows with the same information. They are duplicated rows. Let's remove them.
+```{r}
+TCGA.CRC <- TCGA.CRC[!duplicated(TCGA.CRC), ]
+```
+
+> **Challenge**
+> 
+> * Check whether dimension and number of participants ID are changed after removing duplicated rows.
+
+```{r, echo=FALSE, include=FALSE}
+## check the dimension of data
+dim(TCGA.CRC)
+
+## check unique information if paticipant ID
+unique(TCGA.CRC$TCGA.participant.ID)
+length(unique(TCGA.CRC$TCGA.participant.ID))
+
+countID <- table(TCGA.CRC$TCGA.participant.ID)
+countID
+
+unique(countID)
+```
+
+
+
+## Generate 2-way contingency tables
+
+`table` function also can calculate 2-way contingency table, which is frequency outcomes of two categorical variables. Let's get the table and visualise the count data.
+
+```{r}
+cancer.polyps <- table(TCGA.CRC$history_of_colon_polyps, TCGA.CRC$Cancer)
+cancer.polyps
+dotchart(cancer.polyps, xlab = "Observed counts")
+```
+
+## Comparison of two proportions
+
+**Hypothesis in general** : 
+
+$H_0$ : each population has the same proportion of observations, $\pi_{j=1|i=1} = \pi_{j=1|i=2}$
+
+$H_a$ : different population have different proportion of observations.
+
+**Hypothesis that we are interested with this example**: whether the proportion of patients who have history of colon polyps in the patients with colon cancer is different from that in the patients with rectal cancer.
+
+
+```{r}
+polyps <- cancer.polyps[2, ]
+cancer <- apply(cancer.polyps, 2, sum)
+pt <- prop.test(polyps, cancer)
+pt
+
+# name of output
+names(pt)
+
+# proportion in each group
+pt$estimate 
+
+# test statistic value
+pt$statistic 
+
+# degree of freedom
+pt$parameter
+```
+
+## Test of independence
+
+**Hypothesis in general** : 
+
+$H_0$ : the factors are independent.
+
+$H_a$ : the factors are not independent.
+
+**Hypothesis that we are interested with this example**: whether history of colon polyps and type of colon cancer are independent or not.
+
+
+### Pearson Chi-squared test
+
+$$\chi^2 =\sum_{i=1}^2 \sum_{j=1}^2 \frac{(O_{ij}-E_{ij})^2}{E_{ij}} \sim \chi^2_{(2-1)(2-1)}$$
+
+$O_{ij}$ : $n_{ij}$, which is the count within the cells
+
+$E_{ij}$ : $n_{i+}n_{+j}/n$, where $n_{i+}$ is the row count sum, $n_{+j}$ is the column count sum and n is the total count.
+
+!! assumption : the distribution of the test statistic is approximately chi-square if the expected counts are large enough. Use this test only if the expected count for each cell is greater than 5.
+
+```{r}
+chisq.test(cancer.polyps)
+```
+
+Mathematically, two tests above are equivalent. `prop.test()` uses `chisq.test()` internally and print output differently.
+
+
+### Fisher's exact test
+
+Fisher's exact test is a non-parametric test for independence.
+It compares the distributions of counts within 4 cells. p-value for Fisher's exact test is the probability of obtaining more extreme data by chance than the data observed if the row and column totals are held fixed.
+
+There are no assumptions on distributions or sample sizes for this test.
+Therefore, the Fisher's exact test can be used with small sample sizes. However, if the sample sizes are very small, then the power of the test will be very low.
+
+Apply the Fisher's exact test using the `fisher.test` function and extract the odds ratio.
+
+```{r}
+ft <- fisher.test(cancer.polyps)
+ft
+```
+
+and extract the odds ratio.
+```{r}
+ft$estimate 
+```
+
+
+> **Challenge**
+> 
+> * Compare the proportion of male patients in the patients with colon cancer is different from that in the patients with rectal cancer.
+
+```{r, echo=FALSE, include=FALSE}
+cancer.gender <- table(TCGA.CRC$Gender, TCGA.CRC$Cancer)
+cancer.gender
+dotchart(cancer.gender, xlab = "Observed counts")
+male <- cancer.gender[2, ]
+cancer <- apply(cancer.gender, 2, sum)
+pt <- prop.test(male, cancer)
+pt
+```
+
+
+### Optional practice :  Large-sample Z-test
+
+We could also apply a z-test for comparison of two proportions, defined as
+
+$$Z=\frac{\widehat{p}_1-\widehat{p}_2}{\sqrt{\widehat{p} (1- \widehat{p}) (\frac{1}{n_1} + \frac{1}{n_2})}}$$
+
+where $\widehat{\pi}_1 = \frac{y_{1}}{n_1}$, $\widehat{\pi}_2 = \frac{y_{2}}{n_2}$ and $\widehat{p}=\frac{x_1 + x_2}{n_1 + n_2}$.
+
+We are going to use this test to illustrate how to write functions in
+R. 
+
+An R function is created with the function constructor, named
+`function`, and is composed of:
+
+1. a name: we will call our function to calculate the p-value
+   `z.prop.p`;
+2. some inputs: our inputs are the number of observations for the
+   outcome of interest, `x1` and `x2`, and the total number of
+   observation in each category, `n1` and `n2`;
+3. a returned value (output): the computed p-value, named `pvalue`;
+4. a body, i.e. the code that, given the inputs, calculates the output.
+
+
+```{r}
+z.prop.p <- function(x1, x2, n1, n2) {
+    pi_1 <- x1/n1
+    pi_2 <- x2/n2
+    numerator <- pi_1 - pi_2
+    p_common <- (x1+x2)/(n1+n2)
+    denominator <- sqrt(p_common * (1-p_common) * (1/n1 + 1/n2))
+    stat <- numerator/denominator
+    pvalue <- 2 * (1 - pnorm(abs(stat)))
+    return(pvalue)
+}
+
+z.prop.p(cancer.polyps[2,1], cancer.polyps[2,2], sum(cancer.polyps[,1]), sum(cancer.polyps[,2]))
+```
+
+
+> **Challenge**
+>
+> Write a function named `f2c` (`c2f`) that converts a temperature
+> from Fahrenheit to Celsium (Celsium to Fahrenheit) using the
+> following formula $F = C \times 1.8 + 32$ ($C = \frac{F - 32}{1.8}$).
+
+
+***
+
+# Part 6: Linear models and correlation
+
+
+When considering correlations and modelling data, visualisation is key. 
+
+Let's use the famous
+[*Anscombe's quartet*](https://en.wikipedia.org/wiki/Anscombe%27s_quartet)
+data as a motivating example. This data is composed of 4 pairs of
+values, $(x_1, y_1)$ to $(x_4, y_4)$:
+
+```{r anscombe, echo = FALSE, results='asis'}
+library("knitr")
+kable(anscombe)
+```
+
+Each of these $x$ and $y$ sets have the same variance, mean and
+correlation:
+
+```{r anscombetab, echo=FALSE}
+tab <- matrix(NA, 5, 4)
+colnames(tab) <- 1:4
+rownames(tab) <- c("var(x)", "mean(x)",
+                   "var(y)", "mean(y)",
+                   "cor(x,y)")
+
+for (i in 1:4)
+    tab[, i] <- c(var(anscombe[, i]),
+                  mean(anscombe[, i]),
+                  var(anscombe[, i+4]),
+                  mean(anscombe[, i+4]),
+                  cor(anscombe[, i], anscombe[, i+4]))
+
+```
+
+```{r anstabdisplay, echo=FALSE}
+kable(tab)
+```
+
+But...
+
+While the *residuals* of the linear regression clearly indicate
+fundamental differences in these data, the most simple and
+straightforward approach is *visualisation* to highlight the
+fundamental differences in the datasets.
+
+```{r anscombefig, echo=FALSE}
+ff <- y ~ x
+
+mods <- setNames(as.list(1:4), paste0("lm", 1:4))
+
+par(mfrow = c(2, 2), mar = c(4, 4, 1, 1))
+for (i in 1:4) {
+    ff[2:3] <- lapply(paste0(c("y","x"), i), as.name)
+    plot(ff, data = anscombe, pch = 19, xlim = c(3, 19), ylim = c(3, 13))
+    mods[[i]] <- lm(ff, data = anscombe)
+    abline(mods[[i]])
+}
+```
+
+See also another, more recent example:
+[The Datasaurus Dozen dataset](https://www.autodeskresearch.com/publications/samestats).
+<details>
+
+![The Datasaurus Dozen dataset](https://d2f99xq7vri1nk.cloudfront.net/DinoSequentialSmaller.gif)
+</details>
+
+
+## Correlation
+
+Here is an example where a wide format comes very handy. We are going
+to convert our iPRG data using the `spread` function from the `tidyr`
+package:
+
+
+```{r}
+library("tidyr")
+iprg2 <- spread(iprg[, 1:3], Run, Log2Intensity)
+rownames(iprg2) <- iprg2$Protein
+iprg2 <- iprg2[, -1]
+```
+
+```{r, echo = FALSE}
+if (!file.exists("./data/iprg2.rda"))
+    save(iprg2, file = "./data/iprg2.rda")
+```
+
+And lets focus on the 3 runs, i.e. 2 replicates from condition
+1 and 
+
+```{r}
+x <- iprg2[, c(1, 2, 10)]
+head(x)
+pairs(x)
+```
+
+We can use the `cor` function to calculate the Pearson correlation
+between two vectors of the same length (making sure the order is
+correct), or a dataframe. But, we have missing values in the data,
+which will stop us from calculating the correlation:
+
+```{r}
+cor(x)
+```
+
+We first need to omit the proteins/rows that contain missing values
+
+```{r}
+x2 <- na.omit(x)
+cor(x2)
+```
+
+### A note on correlation and replication
+
+It is often assumed that high correlation is a halmark of good
+replication. Rather than focus on the correlation of the data, a
+better measurement would be to look a the log2 fold-changes, i.e. the
+distance between or repeated measurements. The ideal way to visualise
+this is on an MA-plot:
+
+
+```{r, fig.width = 12}
+par(mfrow = c(1, 2))
+r1 <- x2[, 1]
+r2 <- x2[, 2]
+M <- r1 - r2
+A <- (r1 + r2)/2
+plot(A, M); grid()
+suppressPackageStartupMessages(library("affy"))
+affy::ma.plot(A, M)
+```
+
+See also this
+[post](http://simplystatistics.org/2015/08/12/correlation-is-not-a-measure-of-reproducibility/)
+on the *Simply Statistics* blog.
+
+## Linear modelling
+
+`abline(0, 1)` can be used to add a line with intercept 0 and
+slop 1. It we want to add the line that models the data linearly, we
+can calculate the parameters using the `lm` function:
+
+```{r}
+lmod <- lm(r2 ~ r1)
+summary(lmod)
+```
+
+which can be used to add the adequate line that reflects the (linear)
+relationship between the two data
+
+```{r}
+plot(r1, r2)
+abline(lmod, col = "red")
+```
+
+As we have seen in the beginning of this section, it is essential not
+to rely solely on the correlation value, but look at the data. This
+also holds true for linear (or any) modelling, which can be done by
+plotting the model:
+
+```{r}
+par(mfrow = c(2, 2))
+plot(lmod)
+```
+
+* *Cook's distance* is a commonly used estimate of the influence of a
+  data point when performing a least-squares regression analysis and
+  can be used to highlight points that particularly influence the
+  regression.
+  
+* *Leverage* quantifies the influence of a given observation on the
+  regression due to its location in the space of the inputs.
+
+See also `?influence.measures`.
+
+
+> **Challenge**
+> 
+> 1. Take any of the `iprg2` replicates, model and plot their linear
+>    relationship. The `iprg2` data is available as an `rda` file, or
+>    regenerate it as shown above.
+> 2. The Anscombe quartet is available as `anscombe`. Load it, create
+>    a linear model for one $(x_i, y_i)$ pair of your choice and
+>    visualise/check the model.
+
+```{r}
+x3 <- anscombe[, 3]
+y3 <- anscombe[, 7]
+lmod <- lm(y3 ~ x3)
+summary(lmod)
+par(mfrow = c(2, 2))
+plot(lmod)
+```
+
+Finally, let's conclude by illustrating how `ggplot2` can very
+elegantly be used to produce similar plots, with useful annotations:
+
+```{r, message=FALSE}
+library("ggplot2")
+dfr <- data.frame(r1, r2, M, A)
+p <- ggplot(aes(x = r1, y = r2), data = dfr) + geom_point()
+p + geom_smooth(method = "lm") +
+    geom_quantile(colour = "red")
+```
+
+> **Challenge**
+>
+> Replicate the MA plot above using `ggplot2`. Then add a
+> non-parametric lowess regression using `geom_smooth()`.
+
+```{r}
+p <- ggplot(aes(x = A, y = M), data = dfr) + geom_point()
+p + geom_smooth() + geom_quantile(colour = "red")
+```
+
+--- 
+Back to course [home page](https://github.com/MayInstitute/MayInstitute2017/blob/master/Program3_Intro%20stat%20in%20R/README.md)
