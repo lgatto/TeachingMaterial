@@ -261,8 +261,9 @@ install_github("lgatto/sequences")
   statistics using proteomics data. The course was developed and
   taught as part of the May Institute, at the Northeastern University,
   Boston, MA in May 2017.
-- Authors: [Laurent Gatto](https://github.com/lgatto) and Meena Choi,
-  with material from the Data Carpentry R lesson.
+- Authors: [Laurent Gatto](https://github.com/lgatto) and
+  [Meena Choi](https://github.com/MeenaChoi), with material from the Data Carpentry R
+  lesson.
 - Original repository: https://github.com/lgatto/2017-05-03-RstatsIntro-NEU
 
 ### Statistics primer
