@@ -1,0 +1,54 @@
+## Working with statistical distributions
+
+For each statistical distribution, we have function to compute
+
+* density
+* distribution function
+* quantile function 
+* random generation
+
+For the normale distribution `norm`, these are respectively
+
+* `dnorm`
+* `pnorm`
+* `qnorm`
+* `rnorm`
+
+Let's start by sampling 10000 values from a normal distribution $N(0, 1)$:
+
+```{r}
+xn <- rnorm(1e6)
+hist(xn, freq = FALSE)
+rug(xn)
+lines(density(xn), lwd = 2)
+```
+
+By definition, the area under the density curve is 1. The area at the
+left of 0, 1, and 2 are respectively:
+
+```{r}
+pnorm(0)
+pnorm(1)
+pnorm(2)
+```
+
+To ask the inverse question, we use the quantile function. The obtain
+0.5, `r pnorm(1)` and `r pnorm(2)` of our distribution, we need means
+of:
+
+```{r}
+qnorm(0.5)
+qnorm(pnorm(1))
+qnorm(pnorm(2))
+```
+
+Finally, the density function gives us the *height* at which we are
+for a given mean:
+
+```{r}
+hist(xn, freq = FALSE)
+lines(density(xn), lwd = 2)
+points(0, dnorm(0), pch = 19, col = "red")
+points(1, dnorm(1), pch = 19, col = "red")
+points(2, dnorm(2), pch = 19, col = "red")
+```
