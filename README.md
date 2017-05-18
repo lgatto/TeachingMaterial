@@ -251,6 +251,20 @@ install_github("lgatto/sequences")
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: https://github.com/lgatto/open-rr-bioinfo-best-practice
 
+### Beginner's statistics in R
+
+- Description: A 2.5 days introductionary course focusing on R and
+  basics statistics for proteomics scientists. The R intruduction
+  material is based on the
+  [Data Carpentry R analysis lesson](http://www.datacarpentry.org/R-ecology-lesson/)
+  and leads to the introduction and application of basic uni-variate
+  statistics using proteomics data. The course was developed and
+  taught as part of the May Institute, at the Northeastern University,
+  Boston, MA in May 2017.
+- Authors: [Laurent Gatto](https://github.com/lgatto) and Meena Choi,
+  with material from the Data Carpentry R lesson.
+- Original repository: https://github.com/lgatto/2017-05-03-RstatsIntro-NEU
+
 ### Statistics primer
 
 - Description: A short course for a Bioinformatics minor at the
