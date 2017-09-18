@@ -22,7 +22,7 @@ and package instructions will be circulated in advance.
   [https://CRAN.R-project.org/package=caret](https://CRAN.R-project.org/package=caret).
 - [Applied predictive
   modeling](https://www.springer.com/us/book/9781461468486), Max Kuhn
-  and Kjell
+  and Kjell and [caret bbok](https://topepo.github.io/caret/index.html)
   Johnson. [http://appliedpredictivemodeling.com/](http://appliedpredictivemodeling.com/).
 - [An Introduction to Statistical Learning (with Applications in
   R)](http://www-bcf.usc.edu/~gareth/ISL/). Gareth James, Daniela
