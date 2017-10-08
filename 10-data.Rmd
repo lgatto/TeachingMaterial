@@ -1,0 +1,40 @@
+title: "An Introduction to Machine Learning with R: data sets"
+author: 
+- name: Laurent Gatto
+output:
+  html_document:
+    toc: yes
+    toc_float: true
+    self_contained: true	
+---
+
+
+```{r setup, echo=FALSE}
+source("./src/setup.R")
+```
+
+# Edgar Anderson's Iris Data
+
+In R:
+
+```{r}
+data(iris)
+```
+From the `iris` manual page:
+
+> This famous (Fisher's or Anderson's) iris data set gives the
+> measurements in centimeters of the variables sepal length and width
+> and petal length and width, respectively, for 50 flowers from each
+> of 3 species of iris.  The species are *Iris setosa*, *versicolor*,
+> and *virginica*.
+
+![Iris setosa](https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kosaciec_szczecinkowaty_Iris_setosa.jpg/220px-Kosaciec_szczecinkowaty_Iris_setosa.jpg)
+![Iris versicolor](https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Iris_versicolor_3.jpg/220px-Iris_versicolor_3.jpg)
+![Iris virginica](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Iris_virginica.jpg/220px-Iris_virginica.jpg)
+
+
+```{r dtiris}
+datatable(iris)
+```
+
+For more details, see `?iris`.

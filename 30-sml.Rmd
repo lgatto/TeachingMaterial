@@ -1,0 +1,33 @@
+---
+title: "An Introduction to Machine Learning with R: Supervised Learning"
+author: 
+- name: Laurent Gatto
+output:
+  html_document:
+    toc: yes
+    toc_float: true
+    self_contained: true	
+---
+
+```{r setup, echo=FALSE}
+source("./src/setup.R")
+```
+
+# Supervised learning
+
+In **supervised learning** (SML), the learning algorithm is presented
+with labelled example inputs, where the labels indicate the desired
+output. SML itself is composed of **classification**, where the output
+is categorical, and **regression**, where the output is numerical.
+
+When two sets of labels, or classes, are available, one speaks of
+**binary classfication**. A classical example thereof is labelling an
+email as *spam* or *not spam*. When more classes are to be learnt, one
+speaks of a **multi-class problem**, such as annotation a new *Iris*
+example as being from the *setosa*, *versicolor* or *virginica*
+species.
+
+In these cases, the output is a single label (of one of the
+anticipated classes). If multiple labels may be assigned to each
+examples, one speaks of **multi-label classification**.
+

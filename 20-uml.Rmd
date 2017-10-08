@@ -1,0 +1,32 @@
+---
+title: "An Introduction to Machine Learning with R: Unsupervised Learning"
+author: 
+- name: Laurent Gatto
+output:
+  html_document:
+    toc: yes
+    toc_float: true
+    self_contained: true	
+---
+
+```{r setup, echo=FALSE}
+source("./src/setup.R")
+```
+
+# Unsupervised learning
+
+In **unsupervised learning** (UML), no labels are provided, and the
+learning algorithm focuses solelt on detecting structure in unlabelled
+input data. One generally differentiates between
+
+
+- **clustering**: find homogeneous subgroups within larger groups
+  (based on some sort of distance)
+- **dimensional reduction**: find patterns in the features of the
+  data, often used to enable visualisation and as a pre-processing
+  method before supervised learning.
+
+
+Challenges and benefits:
+- no single goals
+- much more unlabelled data that (clean) labelled data is available

@@ -1,0 +1,70 @@
+---
+title: "An Introduction to Machine Learning with R"
+author: 
+- name: Laurent Gatto
+output:
+  html_document:
+    toc: yes
+    toc_float: true
+    self_contained: true	
+---
+
+```{r setup, echo=FALSE}
+source("./src/setup.R")
+```
+
+# An Introduction to Machine Learning with R
+
+This introductory workshop on machine learning with R is aimed at
+participants who are not experts in machine learning (introductory
+material will be presented as part of the course), but have some
+familiarity with scripting in general and R in particular. The
+workshop will offer a hands-on overview of typical machine learning
+applications in R, including unsupervised (clustering, such as
+hierarchical and k-means clustering, and dimensionality reduction,
+such as principal component analysis) and supervised (classification
+and regression, such as K-nearest neighbour and linear regression)
+methods. We will also address questions such as model selection using
+cross-validation. The material will have an important hands-on
+component and participants will need to bring a computer with R 3.4.1
+pre-installed. All the course material will be made available online
+and package instructions will be circulated in advance.
+
+
+# Content and objectives
+
+# Why R?
+
+# Overview of machine learning (ML)
+
+
+In **supervised learning** (SML), the learning algorithm is presented
+with labelled example inputs, where the labels indicate the desired
+output. SML itself is composed of **classification**, where the output
+is categorical, and **regression**, where the output is numerical.
+
+In **unsupervised learning** (UML), no labels are provided, and the
+learning algorithm focuses solelt on detecting structure in unlabelled
+input data.
+
+Note that there are also **semi-supervised learning** approaches that
+use labelled data to inform unsupervised learning on the unlabelled
+data to identify and annotate new classes in the dataset (also called
+novely detection). 
+
+**Reinforcement learning**, the learning algorithm performs a task
+using feedback from operating in a real of synthetic environment.
+
+
+## Example data
+
+- Observations or examples along the rows
+- Features (variables) along the columns
+
+```{r iris0, echo=FALSE}
+data(iris)
+```
+
+
+
+
