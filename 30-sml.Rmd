@@ -1,7 +1,5 @@
 ---
 title: "An Introduction to Machine Learning with R: Supervised Learning"
-author: 
-- name: Laurent Gatto
 output:
   html_document:
     toc: yes

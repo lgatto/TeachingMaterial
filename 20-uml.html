@@ -214,16 +214,36 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">An Introduction to Machine Learning with R: Unsupervised Learning</h1>
-<h4 class="author"><em>Laurent Gatto</em></h4>
 
 </div>
 
 
 <div id="unsupervised-learning" class="section level1">
 <h1>Unsupervised learning</h1>
-<p>ML: Unsupervised learning (structure in unlabelled data), supervised learning (classification and regression), reinforcement learning (computer learns from feedback from operating in a real of synthetic environment).</p>
-<p>Unsupervised learning: - clustering: find homogeneous subgroups within larger groups (based on some sort of distance) - dimensional reduction: find patterns in the features of the data, often used to enable visualisation and as a pre-processing method before supervised learning.</p>
-<p>Challenges and benefits: - no single goals - much more unlabelled data that (clean) labelled data is available</p>
+<p>In <strong>unsupervised learning</strong> (UML), no labels are provided, and the learning algorithm focuses solelt on detecting structure in unlabelled input data. One generally differentiates between</p>
+<ul>
+<li><p><strong>Clustering</strong>, where the goal is to find homogeneous subgroups within the data; the grouping is based on distance between observations.</p></li>
+<li><p><strong>Dimensional reduction</strong>, where the goal is to identify patterns in the features of the data. Dimensionality reduction is often used to facilitate visualisation of the data, as well as a pre-processing method before supervised learning.</p></li>
+</ul>
+<p>UML presents specific challenges and benefits: - there is no single goal in UML - there is generally much more unlabelled data available than labelled data.</p>
+</div>
+<div id="k-means-clustering" class="section level1">
+<h1>k-means clustering</h1>
+<p>In R:</p>
+<pre class="r"><code>stats::kmeans(x, centers = 3, nstart = 20)</code></pre>
+<pre><code>## Error in as.matrix(x): object 'x' not found</code></pre>
+</div>
+<div id="hierarchical-clustering" class="section level1">
+<h1>Hierarchical clustering</h1>
+</div>
+<div id="pre-processing" class="section level1">
+<h1>Pre-processing</h1>
+</div>
+<div id="principal-component-analysis-pca" class="section level1">
+<h1>Principal component analysis (PCA)</h1>
+</div>
+<div id="t-sne" class="section level1">
+<h1>t-SNE</h1>
 </div>
 
 

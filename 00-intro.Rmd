@@ -1,7 +1,5 @@
 ---
 title: "An Introduction to Machine Learning with R"
-author: 
-- name: Laurent Gatto
 output:
   html_document:
     toc: yes
@@ -58,13 +56,23 @@ using feedback from operating in a real of synthetic environment.
 
 ## Example data
 
-- Observations or examples along the rows
-- Features (variables) along the columns
+- *Observations*, *examples* or simply *data points* along the rows
+- *Features* or *variables* along the columns
 
-```{r iris0, echo=FALSE}
+Using the *iris* data as an example, for UML, we would have 4 features
+for each unlabelled example.
+
+```{r irisuml, echo=FALSE}
 data(iris)
+knitr::kable(head(iris[, 1:4]))
 ```
 
+The same dataset used in the context of SML contains an additional
+column of labels, documenting the outcome or class of each example.
+
+```{r irissml, echo=FALSE}
+knitr::kable(head(iris[, c(5, 1:4)]))
+```
 
 
 

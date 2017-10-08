@@ -1,6 +1,4 @@
 title: "An Introduction to Machine Learning with R: data sets"
-author: 
-- name: Laurent Gatto
 output:
   html_document:
     toc: yes

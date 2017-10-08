@@ -214,7 +214,6 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">An Introduction to Machine Learning with R</h1>
-<h4 class="author"><em>Laurent Gatto</em></h4>
 
 </div>
 
@@ -231,13 +230,122 @@ div.tocify {
 </div>
 <div id="overview-of-machine-learning-ml" class="section level1">
 <h1>Overview of machine learning (ML)</h1>
+<p>In <strong>supervised learning</strong> (SML), the learning algorithm is presented with labelled example inputs, where the labels indicate the desired output. SML itself is composed of <strong>classification</strong>, where the output is categorical, and <strong>regression</strong>, where the output is numerical.</p>
+<p>In <strong>unsupervised learning</strong> (UML), no labels are provided, and the learning algorithm focuses solelt on detecting structure in unlabelled input data.</p>
+<p>Note that there are also <strong>semi-supervised learning</strong> approaches that use labelled data to inform unsupervised learning on the unlabelled data to identify and annotate new classes in the dataset (also called novely detection).</p>
+<p><strong>Reinforcement learning</strong>, the learning algorithm performs a task using feedback from operating in a real of synthetic environment.</p>
+<div id="example-data" class="section level2">
+<h2>Example data</h2>
 <ul>
-<li>Unsupervised machine learning (UML)</li>
-<li>Supervised machiine learning (SML)</li>
-<li>(Semi-supervised learning)</li>
-<li>Reinforcement learning</li>
+<li><em>Observations</em>, <em>examples</em> or simply <em>data points</em> along the rows</li>
+<li><em>Features</em> or <em>variables</em> along the columns</li>
 </ul>
-<p>In machine learning</p>
+<p>Using the <em>iris</em> data as an example, for UML, we would have 4 features for each unlabelled example.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Sepal.Length</th>
+<th align="right">Sepal.Width</th>
+<th align="right">Petal.Length</th>
+<th align="right">Petal.Width</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">5.1</td>
+<td align="right">3.5</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">4.9</td>
+<td align="right">3.0</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="odd">
+<td align="right">4.7</td>
+<td align="right">3.2</td>
+<td align="right">1.3</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">4.6</td>
+<td align="right">3.1</td>
+<td align="right">1.5</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="odd">
+<td align="right">5.0</td>
+<td align="right">3.6</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="right">5.4</td>
+<td align="right">3.9</td>
+<td align="right">1.7</td>
+<td align="right">0.4</td>
+</tr>
+</tbody>
+</table>
+<p>The same dataset used in the context of SML contains an additional column of labels, documenting the outcome or class of each example.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Species</th>
+<th align="right">Sepal.Length</th>
+<th align="right">Sepal.Width</th>
+<th align="right">Petal.Length</th>
+<th align="right">Petal.Width</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">5.1</td>
+<td align="right">3.5</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="left">setosa</td>
+<td align="right">4.9</td>
+<td align="right">3.0</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">4.7</td>
+<td align="right">3.2</td>
+<td align="right">1.3</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="left">setosa</td>
+<td align="right">4.6</td>
+<td align="right">3.1</td>
+<td align="right">1.5</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="odd">
+<td align="left">setosa</td>
+<td align="right">5.0</td>
+<td align="right">3.6</td>
+<td align="right">1.4</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="left">setosa</td>
+<td align="right">5.4</td>
+<td align="right">3.9</td>
+<td align="right">1.7</td>
+<td align="right">0.4</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 
