@@ -420,7 +420,7 @@ summary(irispca)
 A summary of the `prcomp` output shows that along PC1 along, we are
 able to retain over 92% of the total variability in the data.
 
-```{r histpc1, echo=FALSE, fig.cap=""}
+```{r histpc1, echo=FALSE, fig.cap="Iris data along PC1."}
 ## boxplot(irispca$x[, 1] ~ iris[, 5], ylab = "PC1")
 hist(irispca$x[iris$Species == "setosa", 1],
      xlim = range(irispca$x[, 1]), col = "#FF000030",
