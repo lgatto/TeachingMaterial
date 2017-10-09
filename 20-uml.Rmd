@@ -498,7 +498,7 @@ while the second one is set the `FALSE.
 > comparing the two.
 
 <details>
-```{r scalepcasol, fig.with=12}
+```{r scalepcasol, fig.with=12, fig.cap=""}
 par(mfrow = c(1, 2))
 biplot(prcomp(mtcars, scale = FALSE), main = "No scaling")  ## 1
 biplot(prcomp(mtcars, scale = TRUE), main = "With scaling") ## 2
