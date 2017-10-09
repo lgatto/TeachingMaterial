@@ -11,8 +11,6 @@ output:
 source("./src/setup.R")
 ```
 
-# An Introduction to Machine Learning with R
-
 This introductory workshop on machine learning with R is aimed at
 participants who are not experts in machine learning (introductory
 material will be presented as part of the course), but have some

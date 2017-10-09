@@ -7,14 +7,12 @@ output:
     self_contained: true	
 ---
 
-# More learning
 
-## Semi-supervised learning
+# Semi-supervised learning
 
-## Deep learning in R
+# Deep learning in R
 
 # References and further reading
-
 
 - caret: Classification and Regression Training. Max Kuhn.
   [https://CRAN.R-project.org/package=caret](https://CRAN.R-project.org/package=caret).

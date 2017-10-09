@@ -7,7 +7,6 @@ output:
     self_contained: true
 ---
 
-n
 ```{r setup, echo=FALSE}
 source("./src/setup.R")
 ```
