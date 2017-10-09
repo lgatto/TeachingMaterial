@@ -1,12 +1,13 @@
-title: "An Introduction to Machine Learning with R: data sets"
+---
+title: "An Introduction to Machine Learning with R: datasets"
 output:
   html_document:
     toc: yes
     toc_float: true
-    self_contained: true	
+    self_contained: true
 ---
 
-
+n
 ```{r setup, echo=FALSE}
 source("./src/setup.R")
 ```
@@ -31,7 +32,7 @@ From the `iris` manual page:
 ![Iris virginica  (credit Wikipedia)](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Iris_virginica.jpg/220px-Iris_virginica.jpg)
 
 
-```{r dtiris}
+```{r dtiris, fig.cap=""}
 datatable(iris)
 ```
 
@@ -53,8 +54,33 @@ From the `?mtcars` manual page:
 
 
 
-```{r dtmtcars}
+```{r dtmtcars, fig.cap=""}
 datatable(mtcars)
 ```
 
 For more details, see `?mtcars`.
+
+# Sub-cellular localisation
+
+The `hyperLOPIT2015` data is used to demonstrate t-SNE and its
+comparison to PCA. These data provide sub-cellular localisation of
+proteins in Mouse E14TG2a embryonic stem cells, as published
+in [Christoforou et al. (2016)](https://doi.org/10.1038/ncomms9992).
+
+The data comes as an `MSnSet` object from the `Biocpkg("MSnbase")`
+package, specifically developed for such quantitative proteomics
+data. Alternatively, comma-separated files containing a somehow
+simplified version of the data can also be
+found [here](https://github.com/lgatto/hyperLOPIT-csvs/). 
+
+These data are only used to illustrate some concepts and are not
+loaded and used directly to avoid installing numerous dependencies. 
+
+They are available through the Bioconductor project and can be
+installed with
+
+```{r prolocinstall, eval=FALSE}
+source("http://www.bioconductor.org/biocLite.R")
+biocLite(c("MSnbsase", "pRoloc")) ## software
+biocLite("pRolocdata") ## date
+```
