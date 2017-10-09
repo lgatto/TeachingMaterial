@@ -26,9 +26,9 @@ From the `iris` manual page:
 > of 3 species of iris.  The species are *Iris setosa*, *versicolor*,
 > and *virginica*.
 
-![Iris setosa](https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kosaciec_szczecinkowaty_Iris_setosa.jpg/220px-Kosaciec_szczecinkowaty_Iris_setosa.jpg)
-![Iris versicolor](https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Iris_versicolor_3.jpg/220px-Iris_versicolor_3.jpg)
-![Iris virginica](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Iris_virginica.jpg/220px-Iris_virginica.jpg)
+![Iris setosa  (credit Wikipedia)](https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kosaciec_szczecinkowaty_Iris_setosa.jpg/220px-Kosaciec_szczecinkowaty_Iris_setosa.jpg)
+![Iris versicolor  (credit Wikipedia)](https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Iris_versicolor_3.jpg/220px-Iris_versicolor_3.jpg)
+![Iris virginica  (credit Wikipedia)](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Iris_virginica.jpg/220px-Iris_virginica.jpg)
 
 
 ```{r dtiris}
@@ -36,3 +36,25 @@ datatable(iris)
 ```
 
 For more details, see `?iris`.
+
+# Motor Trend Car Road Tests
+
+In R
+
+```{r}
+data(mtcars)
+```
+
+From the `?mtcars` manual page:
+
+> The data was extracted from the 1974 *Motor Trend* US magazine, and
+> comprises fuel consumption and 10 aspects of automobile design and
+> performance for 32 automobiles (1973-74 models).
+
+
+
+```{r dtmtcars}
+datatable(mtcars)
+```
+
+For more details, see `?mtcars`.

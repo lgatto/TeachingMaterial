@@ -33,15 +33,303 @@ UML presents specific challenges and benefits:
 
 # k-means clustering
 
-In R: 
+The k-means clustering algorithms aims at partitioning *n*
+observations into a fixed number of *k* clusters. The algorithm will
+find homogenous clusters. 
 
-```{r}
-stats::kmeans(x, centers = 3, nstart = 20)
+In R, we use
+
+```{r, eval=FALSE}
+stats::kmeans(x, centers = 3, nstart = 10)
 ```
+
+where 
+
+- `x` is a numeric data matrix
+- `centers` is the pre-defined number of clusters
+- the k-means algorithm has a random component and can be repeated
+  `nstart` times to improve the the returened model
+
+> Challenge:
+>
+> - To learn about k-means, let's use the `iris` with the sepal and
+>   petal length variables only (to factilitate visualisation). Create
+>   such a data matric and name it `x`
+
+```{r solirisx, echo=FALSE}
+i <- grep("Length", names(iris))
+x <- iris[, i]
+```
+
+> - Run the k-means algorithm on the newly generated data `x`, save
+>   the results in a new valiable `cl`, and explore its output when
+>   printed.
+
+```{r solkmcl, echo=FALSE}
+cl <- kmeans(x, 3, nstart = 10)
+```
+
+> - The actual results of the algorithms, i.e. the cluster membership
+>   can be accessed in the `clusters` element of the clustering result
+>   output. Use it to colour the infered clusters to generate a figure
+>   like shown below.
+
+```{r solkmplot, echo=FALSE, fig.cap = "k-means algorithm on sepal and petal lengths"}
+plot(x, col = cl$cluster)
+```
+
+<details>
+```{r soliris, eval=FALSE}
+i <- grep("Length", names(iris))
+x <- iris[, i]
+cl <- kmeans(x, 3, nstart = 10)
+plot(x, col = cl$cluster)
+```
+
+</details>
+
+### How does k-means work
+
+**Initialisation**: randomly assign class membership
+
+```{r kmworks_init, fig.cap = "k-mean random intialisation"}
+init <- sample(3, nrow(x), replace = TRUE)
+plot(x, col = init)
+```
+
+**Iteration**:
+
+1. Calculate the centre of each subgroup as the average position of
+   all observations is that subgroup.
+2. Each observation is then assigned to the group of its nearest
+   centre.
+ 
+It's also possible to stop the algorithm after a certain number of
+iterations, or once the centers move less than a certain distance.
+
+```{r kmworks_iter, fig.width = 12, fig.cap = "k-means iteration: calculate centers (left) and assign new cluster membership (right)"}
+par(mfrow = c(1, 2))
+plot(x, col = init)
+centres <- sapply(1:3, function(i) colMeans(x[init == i, ], ))
+centres <- t(centres)
+points(centres[, 1], centres[, 2], pch = 19, col = 1:3)
+
+tmp <- dist(rbind(centres, x))
+tmp <- as.matrix(tmp)[, 1:3]
+
+ki <- apply(tmp, 1, which.min)
+ki <- ki[-(1:3)]
+
+plot(x, col = ki)
+points(centres[, 1], centres[, 2], pch = 19, col = 1:3)
+```
+
+**Termination**: Repeat iteration until no point changes its cluster
+membership.
+
+![k-means convergence (credit Wikipedia)](https://upload.wikimedia.org/wikipedia/commons/e/ea/K-means_convergence.gif)
+
+### Model selection
+
+Due to the random initialisation, one can obtain different clustering
+results. When k-means is run multiple times, the best outcome,
+i.e. the one that generates the smallest *total within cluster sum of
+squares (SS)*, is selected. The total within SS is calculated as:
+
+For each cluster results:
+
+- for each observation, determine the squared euclidean distance from
+  observation to centre of cluster
+- sum all distances
+
+Note that this is a **local minimum**; there is no guarantee to obtain
+a global minimum.
+
+> Challenge:
+>
+> Repeat kmeans on our `x` data multiple times, setting the number of
+> iterations to 1 or greater and check whether you repeatedly obtain
+> the same results. Try the same with random data of identical
+> dimensions.
+
+<details>
+```{r selrep, fig.width = 12, fig.cap = "Different k-means results on the same (random) data"}
+cl1 <- kmeans(x, centers = 3, nstart = 10)
+cl2 <- kmeans(x, centers = 3, nstart = 10)
+table(cl1$cluster, cl2$cluster)
+
+cl1 <- kmeans(x, centers = 3, nstart = 1)
+cl2 <- kmeans(x, centers = 3, nstart = 1)
+table(cl1$cluster, cl2$cluster)
+
+set.seed(42)
+xr <- matrix(rnorm(prod(dim(x))), ncol = ncol(x))
+cl1 <- kmeans(xr, centers = 3, nstart = 1)
+cl2 <- kmeans(xr, centers = 3, nstart = 1)
+table(cl1$cluster, cl2$cluster)
+diffres <- cl1$cluster != cl2$cluster
+par(mfrow = c(1, 2))
+plot(xr, col = cl1$cluster, pch = ifelse(diffres, 19, 1))
+plot(xr, col = cl2$cluster, pch = ifelse(diffres, 19, 1))
+```
+</details>
+
+### How to determine the number of clusters
+
+1. Run k-means with `k=1`, `k=2`, ..., `k=n`
+2. Record total within SS for each value of k.
+3. Choose k at the *elbow* position, as illustrated below.
+
+```{r kmelbow, echo=FALSE, fig.cap = ""}
+ks <- 1:5
+tot_within_ss <- sapply(ks, function(k) {
+    cl <- kmeans(x, k, nstart = 10)
+    cl$tot.withinss
+})
+plot(ks, tot_within_ss, type = "b",
+     ylab = "Total within squared distances",
+     xlab = "Values of k tested")
+```
+
+> Challenge
+>
+> Calculate the total within sum of squares for k from 1 to 5 for our
+> `x` test data, and reproduce the figure above. 
+
+<details>
+```{r solkmelbow}
+ks <- 1:5
+tot_within_ss <- sapply(ks, function(k) {
+    cl <- kmeans(x, k, nstart = 10)
+    cl$tot.withinss
+})
+plot(ks, tot_within_ss, type = "b")
+```
+</details>
 
 # Hierarchical clustering
 
+## How does hierarchical clustering work
+
+**Initialisation**:  Starts by assigning each of the n point its own cluster
+
+**Iteration**
+
+1. Find the two nearest clusters, and join them together, leading to
+   n-1 clusters
+2. Continue merging cluster process until all are grouped into a
+   single cluster
+
+**Termination:** All observations are grouped within a single cluster.
+
+```{r hcldata, fig.width = 12, echo=FALSE, fig.cap = "Hierarchical clustering: initialisation (left) and colour-coded results after iteration (right)."}
+set.seed(42)
+xr <- data.frame(x = rnorm(5),
+                 y = rnorm(5))
+cls <- c("red", "blue", "orange", "blue", "orange")
+cls <- scales::col2hcl(cls, alpha = 0.5)
+par(mfrow = c(1, 2))
+plot(xr, cex = 3)
+text(xr$x, xr$y, 1:5)
+plot(xr, cex = 3, col = cls, pch = 19)
+text(xr$x, xr$y, 1:5)
+```
+
+The results of hierarchical clustering are typically visualised along
+a **dendrogram**, where the distance between the clusters is
+proportional to the branch lengths.
+
+
+```{r hcldendro, echo=FALSE, fig.cap = "Visualisation of the hierarchical clustering results on a dendrogram"}
+plot(hcr <- hclust(dist(xr)))
+```
+
+In R:
+
+- Calculate the distance using `dist`, typically the Euclidean
+  distance.
+- Hierarchical clustering on this distance matrix using `hclust`
+
+> Challenge
+> 
+> Apply hierarchical clustering on the `iris` data and generate a
+> dendrogram using the dedicated `plot` method.
+
+<details>
+```{r hclsol, fig.cap = ""}
+d <- dist(iris[, 1:4])
+hcl <- hclust(d)
+hcl
+plot(hcl)
+```
+</details>
+
+## Defining clusters
+
+After producing the hierarchical clustering result, we need to *cut
+the tree (dendrogram)* at a specific height to defined the
+clusters. For example, on our test dataset above, we could decide to
+cut it at a distance around 1.5, with would produce 2 clusters.
+
+```{r cuthcl, echo=FALSE, fig.cap = "Cutting the dendrogram at height 1.5."}
+plot(hcr)
+abline(h = 1.5, col = "red")
+```
+
+In R we can us the `cutree` function to
+
+- cut the tree at a specific height: `cutree(hcl, h = 1.5)`
+- cut the tree to get a certain number of clusters: `cutree(hcl, k = 2)`
+
+> Challenge
+> 
+> - Cut the iris hierarchical clustering result at a height to obtain
+>   3 clusters by setting `h`.
+> - Cut the iris hierarchical clustering result at a height to obtain
+>   3 clusters by setting directly `k`, and verify that both provide
+>   the same results.
+
+
+<details>
+```{r cuthclsol}
+plot(hcl)
+abline(h = 3.9, col = "red")
+cutree(hcl, k = 3)
+cutree(hcl, h = 3.9)
+identical(cutree(hcl, k = 3), cutree(hcl, h = 3.9))
+```
+</details>
+
+
+> Challenge
+> 
+> Using the same value `k = 3`, verify if k-means and hierarchical
+> clustering produce the same results on the `iris` data.
+> 
+> Which one, if any, is correct?
+
+
+<details>
+```{r iris2algs, fig.width = 12, fig.cap = ""}
+km <- kmeans(iris[, 1:4], centers = 3, nstart = 10)
+hcl <- hclust(dist(iris[, 1:4]))
+table(km$cluster, cutree(hcl, k = 3))
+par(mfrow = c(1, 2))
+plot(iris$Petal.Length, iris$Sepal.Length, col = km$cluster, main = "k-means")
+plot(iris$Petal.Length, iris$Sepal.Length, col = cutree(hcl, k = 3), main = "Hierarchical clustering")
+## Checking with the labels provided with the iris data
+table(iris$Species, km$cluster)
+table(iris$Species, cutree(hcl, k = 3))
+```
+</details>
+
 # Pre-processing
+
+Many of the machine learning methods that are regularly used are
+sensitive to difference scales. This applies to unsupervised methods
+as well as supervised methods, as we will see in the next chapter.
+
+A typical 
 
 # Principal component analysis (PCA)
 
