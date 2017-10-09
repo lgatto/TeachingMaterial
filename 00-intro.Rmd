@@ -107,7 +107,8 @@ collected and briefly described in the short *Data* chapter.
 
 # Content
 
-- Introduction (this chapter)
-- Unsupervised machine learning
-- Supervised machine learing
-- Conclusing remarks and references
+- [Introduction (this chapter)](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/00-intro.html)
+- [Data set](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/10-data.html)
+- [Unsupervised machine learning](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/20-uml.html)
+- [Supervised machine learing](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/30-sml.html)
+- [Conclusing remarks and references](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/99-more.html)

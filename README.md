@@ -16,19 +16,4 @@ component and participants will need to bring a computer with R 3.4.1
 pre-installed. All the course material will be made available online
 and package instructions will be circulated in advance.
 
-### References:
-
-- caret: Classification and Regression Training. Max Kuhn.
-  [https://CRAN.R-project.org/package=caret](https://CRAN.R-project.org/package=caret).
-- [Applied predictive
-  modeling](https://www.springer.com/us/book/9781461468486), Max Kuhn
-  and Kjell and [caret bbok](https://topepo.github.io/caret/index.html)
-  Johnson. [http://appliedpredictivemodeling.com/](http://appliedpredictivemodeling.com/).
-- [An Introduction to Statistical Learning (with Applications in
-  R)](http://www-bcf.usc.edu/~gareth/ISL/). Gareth James, Daniela
-  Witten, Trevor Hastie and Robert Tibshirani.
-- [mlr: Machine Learning in
-  R](http://jmlr.org/papers/v17/15-066.html). Bischl B, Lang M,
-  Kotthoff L, Schiffner J, Richter J, Studerus E, Casalicchio G and
-  Jones Z (2016). Journal of Machine Learning Research_, *17*(170),
-  pp. 1-5. [https://github.com/mlr-org/mlr](https://github.com/mlr-org/mlr).
+Start [here](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/00-intro.html).
