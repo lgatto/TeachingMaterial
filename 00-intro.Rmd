@@ -29,9 +29,37 @@ pre-installed. All the course material will be made available online
 and package instructions will be circulated in advance.
 
 
-# Content and objectives
+# Objectives and pre-requisites
+
+- The course aims at providing an accessible introduction to various
+  machine learning methods and applications in R. The core of the
+  courses focuses on unsupervised and supervised methods. 
+
+- The course contains numerous expercices to provide amble opportunity
+  to apply the newly learnt material.
+  
+- Participants are expected to be familiar with the R syntax and basic
+  plotting functionality.
+
+- At the end of the course, the participants are anticipated to be
+  able to apply the methods learnt, as well as feel confident enough
+  to explore and apply new methods.
 
 # Why R?
+
+R is one of the major languages for data science currently
+available. It provides excellent visualisation features, which is
+essential to explore the data before submitting it to any automated
+learning, as well as assessing the results of the learning
+algorithm. Many R package
+for [machine learning](https://cran.r-project.org/) are availble of
+the shelf and many modern methods in statical learning are implemented
+in R as part of their development.
+
+Nowadays, there are however other viable alternatives that benefit
+from similar advantages. If we consider python, for example,
+the [scikit-learn](http://scikit-learn.org/stable/index.html) software
+provides all tools that we will present in this course.
 
 # Overview of machine learning (ML)
 
@@ -74,5 +102,12 @@ column of labels, documenting the outcome or class of each example.
 knitr::kable(head(iris[, c(5, 1:4)]))
 ```
 
+The different datasets that are used throughout the course are
+collected and briefly described in the short *Data* chapter.
 
+# Content
 
+- Introduction (this chapter)
+- Unsupervised machine learning
+- Supervised machine learing
+- Conclusing remarks and references
