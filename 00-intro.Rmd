@@ -79,6 +79,7 @@ novely detection).
 **Reinforcement learning**, the learning algorithm performs a task
 using feedback from operating in a real of synthetic environment.
 
+# Material and methods
 
 ## Example data
 
@@ -102,6 +103,20 @@ knitr::kable(head(iris[, c(5, 1:4)]))
 
 The different datasets that are used throughout the course are
 collected and briefly described in the short *Data* chapter.
+
+## Packages
+
+We will be using, direclty or indirectly, the following packages
+through the chapters:
+
+- `r CRANpkg("caret")`
+- `r CRANpkg("ggplot2")`
+- `r CRANpkg("mlbench")`
+- `r CRANpkg("class")`
+- `r CRANpkg("caTools")`
+- `r CRANpkg("ranger")`
+- `r CRANpkg("rpart")`
+- `r CRANpkg("rpart.plot")`
 
 # Content
 

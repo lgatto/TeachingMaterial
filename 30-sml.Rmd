@@ -99,6 +99,7 @@ predicted class.
 set.seed(12L)
 tr <- sample(150, 50)
 nw <- sample(150, 50)
+library("class")
 knnres <- knn(iris[tr, -5], iris[nw, -5], iris$Species[tr])
 head(knnres)
 ```
@@ -120,7 +121,9 @@ unlabelled observation. From the arguments of the function,
 args(knn)
 ```
 
-we see that the default value is 1. But is this a good value? 
+we see that the default value is 1. But is this a good value? Wouldn't
+we prefer to look at more neighbours and infer the new class using a
+vote based on more labels?
 
 > Challenge
 > 
@@ -136,6 +139,19 @@ mean(knnres5 == iris$Species[nw])
 table(knnres5, knnres)
 ```
 </details>
+
+> Challenge
+>
+> Rerun the kNN classifier with a value of *k* > 1, and specify `prob
+> = TRUE` to obtain the proportion of the votes for the winning class.
+
+<details>
+```{r knn5prob}
+knnres5prob <- knn(iris[tr, -5], iris[nw, -5], iris$Species[tr], k = 5, prob = TRUE)
+table(attr(knnres5prob, "prob"))
+```
+</details>
+
 
 This introductory example leads to two important and related questions
 that we need to consider:
@@ -174,6 +190,10 @@ https://topepo.github.io/caret/index.html). It provides a common and
 consistent interface to many, often repetitive, tasks in supervised
 learning.
 
+
+```{r caretlib}
+library("caret")
+```
 
 The code chunk below uses the `lm` function to model the price of
 round cut diamonds and then predicts the price of these very same
@@ -267,6 +287,409 @@ Note that it is important to maintain the class proportions within the
 different folds, i.e. respect the proportion of the different classes
 in the original data. This is also taken care when using the 
 `r CRANpkg("caret")` package.
+
+
+The procedure of creating folds and training the models is handled by
+the `train` function in `r CRANpkg("caret")`. Below, we apply it to
+the diamond price example that we used when introducing the model
+performance.
+
+- We start by setting a random to be able to reproduce the example.
+- We specify the method (the learning algorithm) we want to use. Here,
+  we use `"lm"`, but, as we will see later, there are many others to
+  choose from[^1]. 
+- We then set the out-of-sample training procedure to 10-fold cross
+  validation (`method = "cv"` and `number = 10`). To simplify the
+  output in the material for better readability, we set the verbosity
+  flag to `FALSE`, but it is useful to set it to `TRUE` in interactive
+  mode.
+
+[^1]: There are exactly `r length(names(getModelInfo()))` available
+    methods. See
+    http://topepo.github.io/caret/train-models-by-tag.html for
+    details.
+
+```{r trxval}
+set.seed(42)
+model <- train(price ~ ., diamonds,
+               method = "lm", 
+               trControl = trainControl(method = "cv", 
+                                        number = 10, 
+                                        verboseIter = FALSE))
+model
+```
+
+Once we have trained our model, we can direcly use object of `train`
+as input to the `predict` method:
+
+```{r texval}
+p <- predict(model, diamonds)
+error <- p - diamonds$price
+rmse_xval <- sqrt(mean(error^2)) ## xval RMSE
+rmse_xval
+```
+
+> Challenge
+> 
+> Train a linear model using 10-fold cross-validation and then use it
+> to predict the median value of owner-occupied homes in Boston from
+> the `Boston` dataset as described above. Then calculate the RMSE.
+
+
+<details>
+```{r xvalsol}
+library("MASS")
+data(Boston)
+model <- train(medv ~ .,
+               Boston,
+               method = "lm", 
+               trControl = trainControl(method = "cv", 
+                                        number = 10))
+model
+p <- predict(model, Boston)
+sqrt(mean(p - Boston$medv)^2)
+```
+</details>
+
+# Classification performance
+
+Above, we have used the RMSE to assess the performance of our
+regression model. When using a classification algorithm, we want to
+assess its accuracy to do so. 
+
+## Consfusion matrix
+
+Instead of calculating an error between predicted value and known
+value, in classification we will directly compare of the predicted
+class matches the known label. To do so, rather than calculating the
+mean accuracy as we did above, in the introductory kNN example, we can
+calculate a **confusion matrix**.
+
+A confusion matrix to contrast predictions to actual results. Correct
+results are *true positives* (TP) and *true negatives* that are found
+along the diagonal. All other cells indicate false results, i.e *false
+negatives* (FN) and *false positives8 (FP).
+
+```{r cmat, echo=FALSE}
+cmat <- data.frame(c("TP", "FN"),
+                   c("FP", "TN"))
+rownames(cmat) <- c("Predicted Yes", "Predicted No")
+colnames(cmat) <- c("Reference Yes", "Referenc No")
+knitr::kable(cmat)
+```
+
+The values that populate this table will depend on a the cutoff that
+we set to define whether the classifier should predict *Yes* or
+*No*. Intuitively, we might want to use 0.5 as a threshold, and assign
+every result with a probability > 0.5 to *Yes* and *No* otherwise. 
+
+Let's experiment with this using the `Sonar` dataset, and see if we
+can differentiate mines from rocks using a logistic classification
+model use the `glm` function from the `r CRANpkg("stats")` package.
+
+```{r sonarex0}
+library("mlbench")
+data(Sonar)
+## 60/40 split
+tr <- sample(nrow(Sonar), round(nrow(Sonar) * 0.6))
+train <- Sonar[tr, ]
+test <- Sonar[-tr, ]
+```
+
+```{r sonarex1, warning = FALSE}
+model <- glm(Class ~ ., data = train, family = "binomial")
+p <- predict(model, test, type = "response")
+summary(p)
+```
+
+```{r sonarex2}
+cl <- ifelse(p > 0.5, "M", "R")
+table(cl, test$Class)
+```
+
+The caret package offers it's own, more informative function to
+calculate a confusion matrix:
+
+```{r soncmat}
+confusionMatrix(cl, test$Class)
+```
+
+We get, amond others
+
+- the accuracy: (TP + TN)/(TP + TN + FP + FN)
+- the sensitivity (recall, TP rate): TP/(TP + FN)
+- the specificity: TN/(TN + FP)
+- positive predictive value (precision): TP/(TP + FP)
+- negative predictive value: TN/(TN + FN)
+- FP rate (fall-out): FP/(FP + TN)
+
+> Challenge
+> 
+> Compare the model accuracy (or any other metric) using thresholds of
+> 0.1 and 0.9.
+
+<details>
+```{r confmatsol}
+confusionMatrix(ifelse(p > 0.9, "M", "R"), test$Class)
+confusionMatrix(ifelse(p > 0.1, "M", "R"), test$Class)
+```
+</details>
+
+## Receiver operating characteristic (ROC) curve
+
+There is no reason to use 0.5 as a threshold. One could use a low
+threshold to catch more mines with less certainty or or higher
+threshold to catch fewer mines with more certainty.
+
+This illustrates the need to adequately balance TP and FP rates. We
+need to have a way to do a cost-benefit analysis, and the solution
+will often depend on the question/problem. 
+
+One solution would be to try with different classification
+thresholds. Instead of inspecting numerous confusion matrices, it is
+possible to automate the calculation of the TP and FP rates at each
+threshold and visualise all results along a ROC curve. 
+
+This can be done with the `colAUC` function from the 
+`r CRANpkg("caTools")` package:
+
+
+```{r}
+caTools::colAUC(p, test[["Class"]], plotROC = TRUE)
+```
+
+- x: FP rate (1 - specificity)
+- y: TP rate (sensitivity)
+- each point along the curve represents a confusion matrix for a given
+  threshold
+
+In addition, the `colAUC` function returns the area under the curve
+(AUC) model accuracy metric. This is single number metric, summarising
+the model performance along all possible thresholds:
+
+- an AUC of 0.5 corresponds to a random model
+- values > 0.5 do better than a random guess
+- a value 1 represents a perfect model
+- a value 1 represents a model that is always wrong
+
+## AUC in `caret`
+
+When using `r CRANpkg("caret")`'s `trainControl` function to train a
+model, we can set it so that it computes the ROC and AUC properties
+for us.
+
+```{r trctrlroc, warning = FALSE}
+#  # Create trainControl object: myControl
+myControl <- trainControl(
+  method = "cv", ## cross validation
+  number = 10,   ## 10-fold
+  summaryFunction = twoClassSummary, ## NEW
+  classProbs = TRUE, # IMPORTANT
+  verboseIter = FALSE
+)
+## Train glm with custom trainControl: model
+model <- train(Class ~ ., Sonar,
+         method = "glm", ## to use glm's logistic regression
+         trControl = myControl) 
+
+# Print model to console
+print(model)
+```
+
+> Challenge
+>
+> Define a `train` object that uses the AUC and 10-fold cross
+> validation to classify the Sonar data using a logistic regression,
+> as demonstrated above.
+
+# Random forest
+
+Random forest models are accurate and non-linear models and robust to
+over-fitting and hence quite popular. They howeverrequire
+hyperparameters to be tuned manually, like the value *k* in the
+example above.
+
+Building random forest starts by generating a high number of
+individual decision trees. A single decision tree isn't very accurate,
+but many different trees built using different inputs (with
+bootstrapped inputs, features and observations) enable to explore a
+broad search space and, once combined, produce accurate models, a
+technique called *bootstrap aggregation* or *bagging*.
+
+## Decision trees
+
+A great advantage of decision trees is that they make a complex
+decision simpler by breaking it down into smaller, simpler decisions
+using divide-and-conquer strategy. They basically identify a set of
+if-else conditions that split data according to the value if the
+features.
+
+
+```{r rpart, fig.cap="Descision tree with its if-else conditions"}
+library("rpart") ## recursive partitioning
+m <- rpart(Class ~ ., data = Sonar,
+           method = "class")
+library("rpart.plot")
+rpart.plot(m)
+p <- predict(m, Sonar, type = "class")
+table(p, Sonar$Class)
+```
+
+Decision trees choose splits based on most homogeneous partitions, and
+lead to smaller and more homogeneous partitions over their iterations. 
+
+An issue with single decision trees is that they can grow, and become
+large and complex with many branches, with corresponds to
+overfitting. Overfitting models noise, rather than general patterns in
+the data, focusing on subtle patterns (outliers) that won't
+generalise.
+  
+To avoid overfitting, individual decision trees are pruned. Pruning
+can happen as a pre-condition when growing the tree, or afterward, by
+pruning a large tree. 
+
+- *Pre-pruning*: stop growing process, i.e stops divide-and-conquer
+  after a certain number of iterations (grows tree at certain
+  predefined level), or requires a minimum number of obervations in
+  each mode to allow splitting.
+  
+- *Post-pruning*: grow a large and complex tree, and reduce its size;
+  nodes and branches that have a negligible effect on the
+  classification accuracy are removed.
+  
+## Training a random forst
+
+Let's return to random forests and train a model using the `train`
+infrastructure from `r CRANpkg("caret")`:
+
+```{r loadrange, echo=FALSE, message=FALSE}
+suppressPackageStartupMessages(library("ranger"))
+```
+
+```{r rftrain, fig.cap="", cache=TRUE}
+set.seed(12)
+model <- train(Class ~ .,
+               data = Sonar,
+               method = "ranger") 
+print(model)
+```
+
+```{r rfplotmodel, fig.cap=""}
+plot(model)
+```
+
+The main hyperparanter is *mtry*, i.e. the number of randomly selected
+variables used at each split. 2 variables produce random models, while
+100s of variables tend to be less random, but risk
+overfitting. `caret` automate the tuning of the hyperparameter using a
+**grid search**, which can be parametrised by setting `tuneLength`
+(that sets the number of hyperparameter values to test) or direcly
+defining the `tuneGrid` (the hyperparameter values), which requires
+knowledge of the model.
+
+```{r tuneLength, eval = FALSE}
+model <- train(Class ~ .,
+               data = Sonar,
+               method = "ranger",
+               tuneLength = 5)
+```
+
+```{r tuneGrid, fig.cap="", cache=TRUE}
+set.seed(42)
+myGrid <- expand.grid(mtry = c(5, 10, 20, 40, 60),
+                     splitrule = c("gini", "extratrees"))
+model <- train(Class ~ .,
+               data = Sonar,
+               method = "ranger", 
+               tuneGrid = myGrid,
+               trControl = trainControl(method = "cv",
+                                       number = 5,
+                                       verboseIter = FALSE))
+print(model)
+plot(model)
+```
+
+> Challenge
+> 
+> Experiment with training a random forest model as described above,
+> by using 5-fold cross validation, and setting a `tuneLength` of 5. 
+
+<details>
+```{r rftrainsol, cache=TRUE, fig.cap=""}
+set.seed(42)
+model <- train(Class ~ .,
+               data = Sonar,
+               method = "ranger",
+               tuneLength = 5,
+               trControl = trainControl(method = "cv",
+                                        number = 5,
+                                        verboseIter = FALSE))
+plot(model)
+```
+</details>
+
+# Data pre-processing
+
+
+
+## Median imputation
+
+Filter out observations with NA, but can lead to biases in data and
+thus generate over-confident models. Imputation using median of
+features. Works well if the data is missing at random (MAR).
+
+```
+caret::train(X, Y, preProcess = "medianImpute")
+```
+will do median imputation inside each fold.
+
+If there is a bias in the missing values, i.e. data is missing not at
+random (for example only small values are missing), median imputation
+can lead to incorrect results.
+
+## KNN imputation
+
+Imputes based on other, similar non-missing rows.
+
+```
+caret::train(X, Y, preProcess = "knnImpute")
+```
+
+## Multiple preprocessing methods
+
+It is possible to chain multiple processing methods: median, center,
+scale, glmnet.
+
+```
+train(X, Y, preProcess = c("mediaImpute", "scale", "scale", "pca"))
+train(X, Y, preProcess = c("mediaImpute", "scale", "scale", "spatialSign"))
+```
+
+- Start with median imputation, then try knn imputation
+- Always center and scale
+- Try PCA and spatial sign
+- Tree-based methods don't need much pre-proc
+
+## Low information predictors
+
+- for example constant or random variables
+- remove low variance variables
+
+```
+train(X, Y, method = "glm", preProcess = c("zv", ...)) ## remove constant (zero-variance) columns
+train(X, Y, method = "glm", preProcess = c("nzv", ...)) ## nearly constant columns
+```
+
+## PCA
+
+Used as pre-processing method, generating single set of high-varience
+and perpendicular predictors, preventing collinearity.
+
+```
+train(X, Y, preProcess = c("mediaImpute", "scale", "scale", "pca"))
+```
+
+# Model selection
 
 
 

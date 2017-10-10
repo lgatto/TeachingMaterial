@@ -8,4 +8,7 @@ suppressPackageStartupMessages(library("caret"))
 suppressPackageStartupMessages(library("DT"))
 suppressPackageStartupMessages(library("knitr"))
 suppressPackageStartupMessages(library("class"))
-
+suppressPackageStartupMessages(library("caTools"))
+suppressPackageStartupMessages(library("ranger"))
+suppressPackageStartupMessages(library("rpart"))
+suppressPackageStartupMessages(library("rpart.plot"))

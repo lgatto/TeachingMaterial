@@ -8,9 +8,15 @@ output:
 ---
 
 
-# Semi-supervised learning
+# Other 
 
-# Deep learning in R
+## Semi-supervised learning
+
+## Deep learning in R
+
+## Model performance
+
+- macro F1 scores
 
 # References and further reading
 

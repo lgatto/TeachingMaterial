@@ -122,3 +122,23 @@ datatable(Sonar)
 ```
 
 See also `?Sonar`.
+
+# Housing Values in Suburbs of Boston
+
+The `Boston` data from the `r CRANpkg("MASS")` provides the median
+value of owner-occupied homes (`medv`) in $1000s as well as 13 other
+features for 506 homes in Boston.
+
+In R:
+
+```{r}
+library("MASS")
+data(Boston)
+```
+
+
+```{r dtboston, fig.cap=""}
+datatable(Boston)
+```
+
+See also `?Boston`.
