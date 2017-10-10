@@ -19,7 +19,7 @@ output. SML itself is composed of **classification**, where the output
 is qualitative, and **regression**, where the output is quantitative.
 
 When two sets of labels, or classes, are available, one speaks of
-**binary classfication**. A classical example thereof is labelling an
+**binary classification**. A classical example thereof is labelling an
 email as *spam* or *not spam*. When more classes are to be learnt, one
 speaks of a **multi-class problem**, such as annotation a new *Iris*
 example as being from the *setosa*, *versicolor* or *virginica*
@@ -30,15 +30,15 @@ examples, one speaks of **multi-label classification**.
 # Preview
 
 To start this chapter, let's use a simple, but useful classification
-algorithm, K nearest neighbors (kNN) to classify the *iris*
+algorithm, K nearest neighbours (kNN) to classify the *iris*
 flowers. We will use the `knn` function from the `r CRANpkg("class")`
 package.
 
-K nearest neighbors works by directly measuring the (euclidean)
+K nearest neighbours works by directly measuring the (euclidean)
 distance between observations and infer the class of unlabelled data
 from the class of its nearest neighbours. In the figure below, the
 unlabelled instances *1* and *2* will be assigned classes *c1* (blue)
-and *c2* (red) as their closest neighbors are red and blue,
+and *c2* (red) as their closest neighbours are red and blue,
 respectively.
 
 ```{r knnex, echo=FALSE, fig.cap="Schematic illustrating the k nearest neighbors algorithm."}
@@ -105,7 +105,7 @@ head(knnres)
 ```
 
 We can now compare the observed kNN-predicted class and the expected
-known outcome and caluclate the overall accuracy of our model.
+known outcome and calculate the overall accuracy of our model.
 
 ```{r knn1acc}
 table(knnres, iris$Species[nw])
@@ -113,7 +113,7 @@ mean(knnres == iris$Species[nw])
 ```
 
 We have omitted and important argument from `knn`, which is the
-paremeter *k* of the classifer. This value *k* defines how many
+parameter *k* of the classifier. This value *k* defines how many
 nearest neighbours will be considered to assign a class to a new
 unlabelled observation. From the arguments of the function,
 
@@ -160,7 +160,7 @@ that we need to consider:
   example above, we choose random training and new data, and needed to
   make sure to keep these identical for out subsequent comparison.
   
-- How can we estimate our model paramters so as to obtain good
+- How can we estimate our model parameters so as to obtain good
   classification accuracy?
 
 # Model performance
@@ -168,18 +168,18 @@ that we need to consider:
 ## In-sample and out-of-sample error
 
 In supervised machine learning, we have a desired output and thus know
-precisely what is to be computed. It thus becomes possible to direcly
-evalute a model using a quantifiable and object metric. For
+precisely what is to be computed. It thus becomes possible to directly
+evaluate a model using a quantifiable and object metric. For
 regression, we will use the **root mean squared error** (RMSE), which
 is what linear regression (`lm` in R) seeks to minimise. For
 classification, we will use **model prediction accuracy**.
 
-Typicall, we won't want to calculate any of these metrics using
+Typically, we won't want to calculate any of these metrics using
 observations that were also used to calculate the model. This
-approach, called **in-sample error** lead to optimisitic assessment of
+approach, called **in-sample error** lead to optimistic assessment of
 our model. Indeed, the model has already *seen* these data upon
 construction, and is does considered optimised the these observations
-in particular; it is said to **overfit** the data. We prefer to
+in particular; it is said to **over-fit** the data. We prefer to
 calculate an **out-of-sample error**, on new data, to gain a better
 idea of how to model performs on unseen data, and estimate how well
 the model **generalises**.
@@ -254,7 +254,7 @@ possibly lower than the in-sample error.
 
 When dealing with datasets of smaller sizes, however, the presence of
 a single outlier in the train and test data split can substantially
-influence the model and the RMSE. We can't rely on such an approacj an
+influence the model and the RMSE. We can't rely on such an approach an
 need a more robust one, where, we can generate and use multiple,
 different train/test sets to sample a set of RMSEs, leading to a
 better estimate of the out-of-sample RMSE.
@@ -319,7 +319,7 @@ model <- train(price ~ ., diamonds,
 model
 ```
 
-Once we have trained our model, we can direcly use object of `train`
+Once we have trained our model, we can directly use object of `train`
 as input to the `predict` method:
 
 ```{r texval}
@@ -357,7 +357,7 @@ Above, we have used the RMSE to assess the performance of our
 regression model. When using a classification algorithm, we want to
 assess its accuracy to do so. 
 
-## Consfusion matrix
+## Confusion matrix
 
 Instead of calculating an error between predicted value and known
 value, in classification we will directly compare of the predicted
@@ -414,7 +414,7 @@ calculate a confusion matrix:
 confusionMatrix(cl, test$Class)
 ```
 
-We get, amond others
+We get, among others
 
 - the accuracy: (TP + TN)/(TP + TN + FP + FN)
 - the sensitivity (recall, TP rate): TP/(TP + FN)
@@ -505,7 +505,7 @@ print(model)
 # Random forest
 
 Random forest models are accurate and non-linear models and robust to
-over-fitting and hence quite popular. They howeverrequire
+over-fitting and hence quite popular. They however require
 hyperparameters to be tuned manually, like the value *k* in the
 example above.
 
@@ -540,24 +540,24 @@ lead to smaller and more homogeneous partitions over their iterations.
 
 An issue with single decision trees is that they can grow, and become
 large and complex with many branches, with corresponds to
-overfitting. Overfitting models noise, rather than general patterns in
+over-fitting. Over-fitting models noise, rather than general patterns in
 the data, focusing on subtle patterns (outliers) that won't
 generalise.
   
-To avoid overfitting, individual decision trees are pruned. Pruning
-can happen as a pre-condition when growing the tree, or afterward, by
+To avoid over-fitting, individual decision trees are pruned. Pruning
+can happen as a pre-condition when growing the tree, or afterwards, by
 pruning a large tree. 
 
 - *Pre-pruning*: stop growing process, i.e stops divide-and-conquer
   after a certain number of iterations (grows tree at certain
-  predefined level), or requires a minimum number of obervations in
+  predefined level), or requires a minimum number of observations in
   each mode to allow splitting.
   
 - *Post-pruning*: grow a large and complex tree, and reduce its size;
   nodes and branches that have a negligible effect on the
   classification accuracy are removed.
   
-## Training a random forst
+## Training a random forest
 
 Let's return to random forests and train a model using the `train`
 infrastructure from `r CRANpkg("caret")`:
@@ -578,12 +578,12 @@ print(model)
 plot(model)
 ```
 
-The main hyperparanter is *mtry*, i.e. the number of randomly selected
+The main hyperparameters is *mtry*, i.e. the number of randomly selected
 variables used at each split. 2 variables produce random models, while
 100s of variables tend to be less random, but risk
-overfitting. `caret` automate the tuning of the hyperparameter using a
+over-fitting. `caret` automate the tuning of the hyperparameter using a
 **grid search**, which can be parametrised by setting `tuneLength`
-(that sets the number of hyperparameter values to test) or direcly
+(that sets the number of hyperparameter values to test) or directly
 defining the `tuneGrid` (the hyperparameter values), which requires
 knowledge of the model.
 
@@ -644,9 +644,9 @@ such cases.
 
 - Impute missing values. 
 
-Data imputation can however have citical consequences depending on the
+Data imputation can however have critical consequences depending on the
 proportion of missing values and their nature. From a statistical
-point of view, missing values are classifed as *missing completely at
+point of view, missing values are classified as *missing completely at
 random* (MCAR), *missing at random* (MAR) or *missing not at random*
 (MNAR), and the type of the missing values will influence the
 efficiency of the imputation method.
@@ -654,7 +654,7 @@ efficiency of the imputation method.
 The figure below shows how different imputation methods perform
 depending on the proportion and nature of missing values
 (from [Lazar *et al.*](https://www.ncbi.nlm.nih.gov/pubmed/26906401),
-on quantitative proteomcis data).
+on quantitative proteomics data).
 
 ![Normalised RMSE (RMSE-observation standard deviation ration) describing the effect of different imputation methods depending on the nature and proportion of the missing values: kNN (a), SVDimpute (b), MLE (c), MinDet (d), and MinProb (e).](./figure/imp.png)
 
@@ -671,7 +671,7 @@ Y <- mtcars$mpg    ## target variable
 X <- mtcars[, 2:4] ## predictors
 ```
 
-If we now wanted to train a model (using the non-fromula interface):
+If we now wanted to train a model (using the non-formula interface):
 
 ```{r rflib, echo=FALSE}
 suppressPackageStartupMessages(library("randomForest"))
@@ -682,7 +682,7 @@ suppressPackageStartupMessages(library("randomForest"))
 train(X, Y)
 ```
 
-(Note that the occurence of the error will depend on the model
+(Note that the occurrence of the error will depend on the model
 chosen.)
 
 We could perform imputation manually, but `r CRANpkg("caret")`
@@ -698,7 +698,7 @@ data are missing at random.
 train(X, Y, preProcess = "medianImpute")
 ```
 
-Imputing using caret also allows to otimise the imputation based on
+Imputing using caret also allows to optimise the imputation based on
 the cross validation splits, as `train` will do median imputation
 inside each fold.
 
@@ -718,7 +718,7 @@ train(X, Y, preProcess = "knnImpute")
 We have seen in the *Unsupervised learning* chapter how data at
 different scales can substantially disrupt a learning
 algorithm. Scaling (division by the standard deviation) and centring
-(subtraction of the mean) can also be applied direcly during model
+(subtraction of the mean) can also be applied directly during model
 training by setting. Note that they are set to be applied by default
 prior to training.
 
@@ -729,7 +729,7 @@ train(X, Y, preProcess = "center")
 
 As we have discussed in the section about Principal component
 analysis, PCA can be used as pre-processing method, generating a set
-of high-varience and perpendicular predictors, preventing
+of high-variance and perpendicular predictors, preventing
 collinearity.
 
 ```{r, eval=FALSE}
@@ -738,8 +738,8 @@ train(X, Y, preProcess = "pca")
 
 ## Multiple pre-processing methods
 
-It is possible to chain multiple processing methods: median, center,
-scale, glmnet.
+It is possible to chain multiple processing methods: imputation,
+center, scale, pca.
 
 ```{r, eval=TRUE, warning=FALSE}
 train(X, Y, preProcess = c("knnImpute", "center", "scale", "pca"))
@@ -747,7 +747,7 @@ train(X, Y, preProcess = c("knnImpute", "center", "scale", "pca"))
 
 The pre-processing methods above represent a classical order or
 operations, starting with data imputation to remove missing values,
-then centering and scaling, prior to PCA.
+then centring and scaling, prior to PCA.
 
 <!-- ## Low information predictors -->
 
@@ -768,7 +768,7 @@ models and chose the best one using the tools presented in the
 previous sections.
 
 To to so, we are going to first create a set of common training
-controler object with the same train/test folds and model evaluation
+controller object with the same train/test folds and model evaluation
 metrics that we will re-use. This is important to guarantee fair
 comparison between the different models.
 
@@ -903,11 +903,11 @@ plot(svm_model)
 ```
 </details>
 
-## Naive bayes
+## Naive Bayes
 
 > Challenge
 > 
-> Apply a naive bayes model, making sure you reuse the same train
+> Apply a naive Bayes model, making sure you reuse the same train
 > control object.
 
 <details>

@@ -14,7 +14,7 @@ source("./src/setup.R")
 # Unsupervised learning
 
 In **unsupervised learning** (UML), no labels are provided, and the
-learning algorithm focuses solelt on detecting structure in unlabelled
+learning algorithm focuses solely on detecting structure in unlabelled
 input data. One generally differentiates between
 
 - **Clustering**, where the goal is to find homogeneous subgroups
@@ -36,7 +36,7 @@ UML presents specific challenges and benefits:
 
 The k-means clustering algorithms aims at partitioning *n*
 observations into a fixed number of *k* clusters. The algorithm will
-find homogenous clusters. 
+find homogeneous clusters. 
 
 In R, we use
 
@@ -49,13 +49,13 @@ where
 - `x` is a numeric data matrix
 - `centers` is the pre-defined number of clusters
 - the k-means algorithm has a random component and can be repeated
-  `nstart` times to improve the the returened model
+  `nstart` times to improve the returned model
 
 > Challenge:
 >
 > - To learn about k-means, let's use the `iris` with the sepal and
->   petal length variables only (to factilitate visualisation). Create
->   such a data matric and name it `x`
+>   petal length variables only (to facilitate visualisation). Create
+>   such a data matrix and name it `x`
 
 ```{r solirisx, echo=FALSE}
 i <- grep("Length", names(iris))
@@ -63,7 +63,7 @@ x <- iris[, i]
 ```
 
 > - Run the k-means algorithm on the newly generated data `x`, save
->   the results in a new valiable `cl`, and explore its output when
+>   the results in a new variable `cl`, and explore its output when
 >   printed.
 
 ```{r solkmcl, echo=FALSE}
@@ -72,7 +72,7 @@ cl <- kmeans(x, 3, nstart = 10)
 
 > - The actual results of the algorithms, i.e. the cluster membership
 >   can be accessed in the `clusters` element of the clustering result
->   output. Use it to colour the infered clusters to generate a figure
+>   output. Use it to colour the inferred clusters to generate a figure
 >   like shown below.
 
 ```{r solkmplot, echo=FALSE, fig.cap = "k-means algorithm on sepal and petal lengths"}
@@ -106,7 +106,7 @@ plot(x, col = init)
    centre.
  
 It's also possible to stop the algorithm after a certain number of
-iterations, or once the centers move less than a certain distance.
+iterations, or once the centres move less than a certain distance.
 
 ```{r kmworks_iter, fig.width = 12, fig.cap = "k-means iteration: calculate centers (left) and assign new cluster membership (right)"}
 par(mfrow = c(1, 2))
@@ -331,7 +331,7 @@ sensitive to difference scales. This applies to unsupervised methods
 as well as supervised methods, as we will see in the next chapter.
 
 A typical way to pre-process the data prior to learning is to scale
-the data, or apply princpal component analysis (next section). Scaling
+the data, or apply principal component analysis (next section). Scaling
 assures that all data columns have mean 0 and standard deviate 1.
 
 In R, scaling is done with the `scale` function.
@@ -341,7 +341,7 @@ In R, scaling is done with the `scale` function.
 > Using the `mtcars` data as an example, verify that the variables are
 > of different scales, then scale the data. To observe the effect
 > different scales, compare the hierarchical clusters obtained on the
-> original and scaled ata.
+> original and scaled data.
 
 <details>
 ```{r scalesol, fig.width=12, fig.cap=""}
@@ -360,21 +360,21 @@ plot(hcl2, main = "scaled data")
 techniques that can be used o
 
 - find structure in features
-- preprocessing for other ML algorithms, and
+- pre-processing for other ML algorithms, and
 - as an aid in visualisation.
 
 The basic principle of dimensionality reduction techniques is to
 transform the data into a new space that summarise properties of the
 whole data set along a reduced number of dimensions. These are then
-ideal candiates used to visualise the data along these reducd number
+ideal candidates used to visualise the data along these reduced number
 of informative dimensions.
 
 ## How does it work
 
 Principal Component Analysis (PCA) is a technique that transforms the
-original n-dimentional data into a new n-dimentional space. 
+original n-dimensional data into a new n-dimensional space. 
 
-- These new dimensions are linear combinations of the orignal data,
+- These new dimensions are linear combinations of the original data,
   i.e.  they are composed of proportions of the original variables.
 - Along these new dimensions, called principal components, the data
   expresses most of its variability along the first PC, then second,
@@ -435,8 +435,8 @@ rug(irispca$x[iris$Species == "virginica", 1], col = "blue")
 
 ## Visualisation
 
-A **biplot** features all original points remaped (rotated) along the
-first two PCs as well as the origial features as vectors along the
+A **biplot** features all original points re-mapped (rotated) along the
+first two PCs as well as the original features as vectors along the
 same PCs. Feature vectors that are in the same direction in PC space
 are also correlated in the original data space.
 
@@ -465,7 +465,7 @@ cumsum(pve)
 > - Repeat the PCA analysis on the iris dataset above, reproducing the
 >   biplot and preparing a barplot of the percentage of variance
 >   explained by each PC.
-> - It is often useful to produce constom figures using the data
+> - It is often useful to produce custom figures using the data
 >   coordinates in PCA space, which can be accessed as `x` in the
 >   `prcomp` object. Reproduce the PCA plots below, along PC1 and PC2
 >   and PC3 and PC4 respectively.
@@ -486,7 +486,7 @@ plot(irispca$x[, 3:4], col = iris$Species)
 
 ## Data pre-processing 
 
-We haven't looked at other `prcmop` parameters, other that the first
+We haven't looked at other `prcomp` parameters, other that the first
 one, `x`. There are two other ones that are or importance, in
 particular in the light of the section on pre-processing above, which
 are `center` and `scale.`. The former is set to `TRUE` by default,
@@ -505,10 +505,10 @@ biplot(prcomp(mtcars, scale = FALSE), main = "No scaling")  ## 1
 biplot(prcomp(mtcars, scale = TRUE), main = "With scaling") ## 2
 ```
 
-Without scaling disp and hp are the features with the highest loadings
-along PC1 and 2 (all others are negligible), which are also those with
-the highest units of measurement. Scaling removes this effect.
-</details>
+Without scaling, `disp` and `hp` are the features with the highest
+loadings along PC1 and 2 (all others are negligible), which are also
+those with the highest units of measurement. Scaling removes this
+effect.  </details>
 
 ## Final comments
 
@@ -527,7 +527,7 @@ the unsupervised methods described above. Categories are generally
 represented as factors, which are encoded as integer levels, and might
 give the impression that a distance between levels is a relevant
 measure (which it is not, unless the factors are ordered). In such
-situations, catergorical data can be dropped, or it is possible to
+situations, categorical data can be dropped, or it is possible to
 encode categories as binary **dummy variables**. For example, if we
 have 3 categories, say `A`, `B` and `C`, we would create two dummy
 variables to encode the categories as:
@@ -542,7 +542,7 @@ so that the distance between each category are approximately equal to
 # t-Distributed Stochastic Neighbour Embedding
 
 [t-Distributed Stochastic Neighbour Embedding](https://lvdmaaten.github.io/tsne/) (t-SNE)
-is a *non-linear* dimensionality reduction techique, i.e. that
+is a *non-linear* dimensionality reduction technique, i.e. that
 different regions of the data space will be subjected to different
 transformations. t-SNE will compress small distances, thus bringing
 close neighbours together, and will ignore large distances. It is
@@ -585,5 +585,3 @@ As a comparison, below are the same data with PCA (left) and t-SNE
 (right).
 
 ![PCA and t-SNE on hyperLOPIT](https://raw.githubusercontent.com/lgatto/visualisation/master/figure/tsneex-1.png)
-
-

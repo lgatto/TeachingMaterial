@@ -8,11 +8,13 @@ output:
 ---
 
 
-# Other 
+# Other learning algorithms
 
 ## Semi-supervised learning
 
+
 ## Deep learning in R
+
 
 ## Model performance
 
