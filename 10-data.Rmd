@@ -142,3 +142,23 @@ datatable(Boston)
 ```
 
 See also `?Boston`.
+
+# Customer churn
+
+This data from the `r CRANpkg("C50")` package and distributes a
+training set with 3333 samples and a test set containing 1667 samples
+of customer attrition.
+
+In R:
+
+```{r}
+library("C50")
+data(churn)
+dim(churnTrain)
+dim(churnTest)
+```
+
+
+```{r dtchurn, fig.cap=""}
+datatable(churnTrain)
+```

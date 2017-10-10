@@ -673,7 +673,12 @@ X <- mtcars[, 2:4] ## predictors
 
 If we now wanted to train a model (using the non-fromula interface):
 
-```{r trainna}
+```{r rflib, echo=FALSE}
+suppressPackageStartupMessages(library("randomForest"))
+
+```
+
+```{r trainna, warning=FALSE}
 train(X, Y)
 ```
 
@@ -701,20 +706,25 @@ inside each fold.
 
 If there is a systematic bias in the missing values, then median
 imputation is known to produce incorrect results. kNN imputation will
-impute missing values using on other, similar non-missing rows.
+impute missing values using on other, similar non-missing rows. The
+default value is 5.
 
 ```{r, eval=TRUE}
 train(X, Y, preProcess = "knnImpute")
 ```
 
-## Scaling
+## Scaling and scaling
 
 We have seen in the *Unsupervised learning* chapter how data at
 different scales can substantially disrupt a learning
-algorithm. Scaling can also be applied direcly during model training by setting 
+algorithm. Scaling (division by the standard deviation) and centring
+(subtraction of the mean) can also be applied direcly during model
+training by setting. Note that they are set to be applied by default
+prior to training.
 
 ```{r, eval=FALSE}
 train(X, Y, preProcess = "scale")
+train(X, Y, preProcess = "center")
 ```
 
 As we have discussed in the section about Principal component
@@ -726,36 +736,261 @@ collinearity.
 train(X, Y, preProcess = "pca")
 ```
 
-## Multiple preprocessing methods
+## Multiple pre-processing methods
 
 It is possible to chain multiple processing methods: median, center,
 scale, glmnet.
 
-```{r, eval=TRUE}
-train(X, Y, preProcess = c("knnImpute", "scale", "pca"))
+```{r, eval=TRUE, warning=FALSE}
+train(X, Y, preProcess = c("knnImpute", "center", "scale", "pca"))
 ```
 
-- Start with median imputation, then try knn imputation
-- Always center and scale
-- Try PCA and spatial sign
-- Tree-based methods don't need much pre-proc
+The pre-processing methods above represent a classical order or
+operations, starting with data imputation to remove missing values,
+then centering and scaling, prior to PCA.
 
-## Low information predictors
+<!-- ## Low information predictors -->
 
-- for example constant or random variables
-- remove low variance variables
+<!-- To remove, for example constant or random variables, or variables with -->
+<!-- low variance. -->
 
-```{r, eval=FALSE}
-train(X, Y, preProcess = c("zv", ...))  ## remove constant (zero-variance) columns
-train(X, Y, preProcess = c("nzv", ...)) ## nearly constant columns
-```
+<!-- ```{r, eval=FALSE} -->
+<!-- train(X, Y, preProcess = c("zv", ...))  ## remove constant (zero-variance) columns -->
+<!-- train(X, Y, preProcess = c("nzv", ...)) ## nearly constant columns -->
+<!-- ``` -->
 
-
-
-
+For further details, see `?preProcess`.
 
 # Model selection
 
+In this final section, we are going to compare different predictive
+models and chose the best one using the tools presented in the
+previous sections.
 
+To to so, we are going to first create a set of common training
+controler object with the same train/test folds and model evaluation
+metrics that we will re-use. This is important to guarantee fair
+comparison between the different models.
 
+For this section, we are going to use the `churn` data. Below, we see
+that about 15% of the customers churn. It is important to maintain
+this proportion in all the folds.
 
+```{r churndata}
+library("C50")
+data(churn)
+table(churnTrain$churn)/nrow(churnTrain)
+```
+
+Previously, when creating a train control object, we specified the
+method as `"cv"` and the number of folds. Now, as we want the same
+folds to be re-used over multiple model training rounds, we are going
+to pass the train/test splits directly. These splits are created with
+the `createFolds` function, which creates a list (here of length 5)
+containing the element indices for each fold.
+
+```{r createFolds}
+myFolds <- createFolds(churnTrain$churn, k = 5)
+str(myFolds)
+```
+
+> Challenge
+>
+> Verify that the folds maintain the proportion of yes/no results.
+
+<details>
+```{r foldprop}
+sapply(myFolds, function(i) {
+    table(churnTrain$churn[i])/length(i)
+})
+```
+</details>
+
+We can now a train control object to be reused consistently for
+different model trainings.
+
+```{r trctrol}
+myControl <- trainControl(
+  summaryFunction = twoClassSummary,
+  classProb = TRUE,
+  verboseIter = FALSE,
+  savePredictions = TRUE,
+  index = myFolds
+)
+```
+
+**NB** Some of the model training below will take some time to run,
+depending on the tuning parameter settings.
+
+### `glmnet` model
+
+The `glmnet` is a liner model with build-in variable selection and
+coefficient regularisation.
+
+```{r glmnetmodel, fig.cap=""}
+glm_model <- train(churn ~ .,
+                   churnTrain,
+                   metric = "ROC", 
+                   method = "glmnet",
+                   tuneGrid = expand.grid(
+                       alpha = 0:1,
+                       lambda = 0:10/10),
+                   trControl = myControl)
+print(glm_model)
+plot(glm_model)
+```
+
+## random forest model
+
+> Challenge
+> 
+> Apply a random forest model, making sure you reuse the same train
+> control object.
+
+<details>
+```{r rfmodel, cache=TRUE, fig.cap=""}
+rf_model <- train(churn ~ .,
+                  churnTrain,
+                  metric = "ROC", 
+                  method = "ranger",
+                  tuneGrid = expand.grid(
+                      mtry = c(2, 5, 10, 19),
+                      splitrule = c("gini", "extratrees")),
+                  trControl = myControl)
+print(rf_model)
+plot(rf_model)
+```
+</details>
+
+## kNN model
+
+> Challenge
+> 
+> Apply a kNN model, making sure you reuse the same train
+> control object.
+
+<details>
+```{r knnmodel, cache=TRUE, fig.cap=""}	
+knn_model <- train(churn ~ .,
+                   churnTrain,
+                   metric = "ROC", 
+                   method = "knn",
+                   tuneLength = 20,
+                   trControl = myControl)
+print(knn_model)
+plot(knn_model)
+```
+</details>
+
+## Support vector machine model
+
+> Challenge
+> 
+> Apply a svm model, making sure you reuse the same train control
+> object. Hint: Look at `names(getModelInfo())` for all possible model
+> names.
+
+<details>
+```{r svmmodel, cache=TRUE, fig.cap=""}
+svm_model <- train(churn ~ .,
+                   churnTrain,
+                   metric = "ROC", 
+                   method = "svmRadial",
+                   tuneLength = 10,
+                   trControl = myControl)
+print(svm_model)
+plot(svm_model)
+```
+</details>
+
+## Naive bayes
+
+> Challenge
+> 
+> Apply a naive bayes model, making sure you reuse the same train
+> control object.
+
+<details>
+```{r nbmodel, fig.cap=""}
+nb_model <- train(churn ~ .,
+                  churnTrain,
+                  metric = "ROC", 
+                  method = "naive_bayes",
+                  trControl = myControl)
+
+print(nb_model)
+plot(nb_model)
+```
+</details>
+
+## Comparing models
+
+We can now use the `caret::resamples` function that will compare the
+models and pick the one with the highest AUC and lowest AUC standard
+deviation.
+
+```{r resamples}
+model_list <- list(glmmet = glm_model,
+                   rf = rf_model,
+                   knn = knn_model,
+                   svm = svm_model,
+                   nb = nb_model)
+resamp <- resamples(model_list)
+resamp
+summary(resamp)
+```
+
+```{r plotresam, fig.cap = "Comparing distributions of AUC values for various models."}
+lattice::bwplot(resamp, metric = "ROC")
+```
+
+## Pre-processing
+
+The random forest appears to be the best one. This might be related to
+its ability to cope well with different types of input and require
+little pre-processing. 
+
+> Challenge
+>
+> If you haven't done so, consider pre-processing the data prior to
+> training for a model that didn't perform well and assess whether
+> pre-processing affected to modelling.
+
+<details>
+```{r svmmodel2, cache=TRUE, fig.cap=""}
+svm_model1 <- train(churn ~ .,
+                    churnTrain,
+                    metric = "ROC", 
+                    method = "svmRadial",
+                    tuneLength = 10,
+                    trControl = myControl)
+
+svm_model2 <- train(churn ~ .,
+                    churnTrain[, c(2, 6:20)],
+                    metric = "ROC", 
+                    method = "svmRadial",
+                    preProcess = c("scale", "center", "pca"),
+                    tuneLength = 10,
+                    trControl = myControl)
+
+model_list <- list(svm1 = svm_model1,
+                   svm2 = svm_model2)
+resamp <- resamples(model_list)
+summary(resamp)
+bwplot(resamp, metric = "ROC")
+```
+</details>
+
+## Predict using the best model
+
+> Challenge
+>
+> Choose the best model using the `resamples` function and comparing
+> the results and apply it to predict the `churnTest` labels.
+
+<details>
+```{r}
+p <- predict(rf_model, churnTest)
+confusionMatrix(p, churnTest$churn)
+```
+</details>

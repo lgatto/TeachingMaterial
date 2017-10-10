@@ -33,7 +33,7 @@ and package instructions will be circulated in advance.
   machine learning methods and applications in R. The core of the
   courses focuses on unsupervised and supervised methods. 
 
-- The course contains numerous expercices to provide amble opportunity
+- The course contains numerous exercises to provide amble opportunity
   to apply the newly learnt material.
   
 - Participants are expected to be familiar with the R syntax and basic
@@ -50,8 +50,8 @@ available. It provides excellent visualisation features, which is
 essential to explore the data before submitting it to any automated
 learning, as well as assessing the results of the learning
 algorithm. Many R package
-for [machine learning](https://cran.r-project.org/) are availble of
-the shelf and many modern methods in statical learning are implemented
+for [machine learning](https://cran.r-project.org/) are available of
+the shelf and many modern methods in statistical learning are implemented
 in R as part of their development.
 
 Nowadays, there are however other viable alternatives that benefit
@@ -68,13 +68,13 @@ output. SML itself is composed of **classification**, where the output
 is categorical, and **regression**, where the output is numerical.
 
 In **unsupervised learning** (UML), no labels are provided, and the
-learning algorithm focuses solelt on detecting structure in unlabelled
+learning algorithm focuses solely on detecting structure in unlabelled
 input data.
 
 Note that there are also **semi-supervised learning** approaches that
 use labelled data to inform unsupervised learning on the unlabelled
 data to identify and annotate new classes in the dataset (also called
-novely detection). 
+novelty detection). 
 
 **Reinforcement learning**, the learning algorithm performs a task
 using feedback from operating in a real of synthetic environment.
@@ -106,7 +106,7 @@ collected and briefly described in the short *Data* chapter.
 
 ## Packages
 
-We will be using, direclty or indirectly, the following packages
+We will be using, directly or indirectly, the following packages
 through the chapters:
 
 - `r CRANpkg("caret")`
@@ -114,7 +114,10 @@ through the chapters:
 - `r CRANpkg("mlbench")`
 - `r CRANpkg("class")`
 - `r CRANpkg("caTools")`
+- `r CRANpkg("randomForst")`
+- `r CRANpkg("impute")`
 - `r CRANpkg("ranger")`
+- `r CRANpkg("kernlab")`
 - `r CRANpkg("rpart")`
 - `r CRANpkg("rpart.plot")`
 
@@ -123,5 +126,5 @@ through the chapters:
 - [Introduction (this chapter)](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/00-intro.html)
 - [Data set](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/10-data.html)
 - [Unsupervised machine learning](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/20-uml.html)
-- [Supervised machine learing](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/30-sml.html)
-- [Conclusing remarks and references](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/99-more.html)
+- [Supervised machine learning](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/30-sml.html)
+- [Concluding remarks and references](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/99-more.html)

@@ -20,6 +20,16 @@ output:
 
 # Credit
 
+Many parts of this course have been influenced by the
+DataCamp's
+[*Machine Learning with R* skill track](https://www.datacamp.com/tracks/machine-learning),
+in particular the *Machine Learning Toolbox* (supervised learning
+chapter) and the *Unsupervised Learning in R* (unsupervised learning
+chapter) courses.
+
+The very hands-on approach has also been influenced by the Software
+and Data Carpentry lessons and teaching styles.
+
 # References and further reading
 
 - caret: Classification and Regression Training. Max Kuhn.
