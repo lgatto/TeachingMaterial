@@ -7,7 +7,7 @@ output:
     self_contained: true
 ---
 
-```{r setup, echo=FALSE}
+```{r setup, echo=FALSE, warning=FALSE}
 source("./src/setup.R")
 ```
 
@@ -585,3 +585,5 @@ As a comparison, below are the same data with PCA (left) and t-SNE
 (right).
 
 ![PCA and t-SNE on hyperLOPIT](https://raw.githubusercontent.com/lgatto/visualisation/master/figure/tsneex-1.png)
+
+

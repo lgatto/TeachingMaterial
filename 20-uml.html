@@ -218,10 +218,6 @@ div.tocify {
 </div>
 
 
-<pre><code>## Warning: package 'dplyr' was built under R version 3.4.2</code></pre>
-<pre><code>## Warning: package 'C50' was built under R version 3.4.2</code></pre>
-<pre><code>## Warning: package 'glmnet' was built under R version 3.4.2</code></pre>
-<pre><code>## Warning: package 'ranger' was built under R version 3.4.2</code></pre>
 <div id="unsupervised-learning" class="section level1">
 <h1>Unsupervised learning</h1>
 <p>In <strong>unsupervised learning</strong> (UML), no labels are provided, and the learning algorithm focuses solely on detecting structure in unlabelled input data. One generally differentiates between</p>
@@ -554,7 +550,7 @@ plot(hcl2, main = &quot;scaled data&quot;)</code></pre>
 <p>Let’s use PCA to reduce the dimension.</p>
 <pre class="r"><code>irispca &lt;- prcomp(iris[, -5])
 summary(irispca)</code></pre>
-<pre><code>## Importance of components%s:
+<pre><code>## Importance of components:
 ##                           PC1     PC2    PC3     PC4
 ## Standard deviation     2.0563 0.49262 0.2797 0.15439
 ## Proportion of Variance 0.9246 0.05307 0.0171 0.00521
