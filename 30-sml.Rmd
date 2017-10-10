@@ -630,29 +630,100 @@ plot(model)
 
 # Data pre-processing
 
+## Missing values
+
+Real datasets often come with missing values. In R, these should be
+encoded using `NA`. There are basically two approaches to deal with
+such cases.
+
+- Drop the observations with missing values, or, if one feature
+  contains a very high proportion of NAs, drop the feature
+  altogether. These approaches are only applicable when the proportion
+  of missing values is relatively small. Otherwise, it could lead to
+  loosing too much data. 
+
+- Impute missing values. 
+
+Data imputation can however have citical consequences depending on the
+proportion of missing values and their nature. From a statistical
+point of view, missing values are classifed as *missing completely at
+random* (MCAR), *missing at random* (MAR) or *missing not at random*
+(MNAR), and the type of the missing values will influence the
+efficiency of the imputation method.
+
+The figure below shows how different imputation methods perform
+depending on the proportion and nature of missing values
+(from [Lazar *et al.*](https://www.ncbi.nlm.nih.gov/pubmed/26906401),
+on quantitative proteomcis data).
+
+![Normalised RMSE (RMSE-observation standard deviation ration) describing the effect of different imputation methods depending on the nature and proportion of the missing values: kNN (a), SVDimpute (b), MLE (c), MinDet (d), and MinProb (e).](./figure/imp.png)
 
 
-## Median imputation
+Let's start by simulating a dataset containing missing values using
+the `mtcars` dataset. Below, we will want to predict the `mpg`
+variable using `cyl`, `disp`, and `hp`, with the latter containing 10
+missing values.
 
-Filter out observations with NA, but can lead to biases in data and
-thus generate over-confident models. Imputation using median of
-features. Works well if the data is missing at random (MAR).
-
+```{r makena}
+data(mtcars)
+mtcars[sample(nrow(mtcars), 10), "hp"] <- NA
+Y <- mtcars$mpg    ## target variable
+X <- mtcars[, 2:4] ## predictors
 ```
-caret::train(X, Y, preProcess = "medianImpute")
+
+If we now wanted to train a model (using the non-fromula interface):
+
+```{r trainna}
+train(X, Y)
 ```
-will do median imputation inside each fold.
 
-If there is a bias in the missing values, i.e. data is missing not at
-random (for example only small values are missing), median imputation
-can lead to incorrect results.
+(Note that the occurence of the error will depend on the model
+chosen.)
 
-## KNN imputation
+We could perform imputation manually, but `r CRANpkg("caret")`
+provides a whole range of pre-processing methods, including imputation
+methods, that can directly be passed when training the model.
 
-Imputes based on other, similar non-missing rows.
+### Median imputation
 
+Imputation using median of features. This methods works well if the
+data are missing at random. 
+
+```{r, eval=TRUE}
+train(X, Y, preProcess = "medianImpute")
 ```
-caret::train(X, Y, preProcess = "knnImpute")
+
+Imputing using caret also allows to otimise the imputation based on
+the cross validation splits, as `train` will do median imputation
+inside each fold.
+
+### KNN imputation
+
+If there is a systematic bias in the missing values, then median
+imputation is known to produce incorrect results. kNN imputation will
+impute missing values using on other, similar non-missing rows.
+
+```{r, eval=TRUE}
+train(X, Y, preProcess = "knnImpute")
+```
+
+## Scaling
+
+We have seen in the *Unsupervised learning* chapter how data at
+different scales can substantially disrupt a learning
+algorithm. Scaling can also be applied direcly during model training by setting 
+
+```{r, eval=FALSE}
+train(X, Y, preProcess = "scale")
+```
+
+As we have discussed in the section about Principal component
+analysis, PCA can be used as pre-processing method, generating a set
+of high-varience and perpendicular predictors, preventing
+collinearity.
+
+```{r, eval=FALSE}
+train(X, Y, preProcess = "pca")
 ```
 
 ## Multiple preprocessing methods
@@ -660,9 +731,8 @@ caret::train(X, Y, preProcess = "knnImpute")
 It is possible to chain multiple processing methods: median, center,
 scale, glmnet.
 
-```
-train(X, Y, preProcess = c("mediaImpute", "scale", "scale", "pca"))
-train(X, Y, preProcess = c("mediaImpute", "scale", "scale", "spatialSign"))
+```{r, eval=TRUE}
+train(X, Y, preProcess = c("knnImpute", "scale", "pca"))
 ```
 
 - Start with median imputation, then try knn imputation
@@ -675,19 +745,14 @@ train(X, Y, preProcess = c("mediaImpute", "scale", "scale", "spatialSign"))
 - for example constant or random variables
 - remove low variance variables
 
-```
-train(X, Y, method = "glm", preProcess = c("zv", ...)) ## remove constant (zero-variance) columns
-train(X, Y, method = "glm", preProcess = c("nzv", ...)) ## nearly constant columns
+```{r, eval=FALSE}
+train(X, Y, preProcess = c("zv", ...))  ## remove constant (zero-variance) columns
+train(X, Y, preProcess = c("nzv", ...)) ## nearly constant columns
 ```
 
-## PCA
 
-Used as pre-processing method, generating single set of high-varience
-and perpendicular predictors, preventing collinearity.
 
-```
-train(X, Y, preProcess = c("mediaImpute", "scale", "scale", "pca"))
-```
+
 
 # Model selection
 

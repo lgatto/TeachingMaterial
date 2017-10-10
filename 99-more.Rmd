@@ -18,6 +18,8 @@ output:
 
 - macro F1 scores
 
+# Credit
+
 # References and further reading
 
 - caret: Classification and Regression Training. Max Kuhn.

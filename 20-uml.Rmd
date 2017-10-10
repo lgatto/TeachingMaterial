@@ -512,9 +512,32 @@ the highest units of measurement. Scaling removes this effect.
 
 ## Final comments
 
-- Missing values: drop or impute
-- Categorical data: drop or encode as dummy numerical values
+Real datasets often come with **missing values**. In R, these should
+be encoded using `NA`. Unfortunately, PCA cannot deal with missing
+values, and observations containing `NA` values will be dropped
+automatically. This is a viable solution only when the proportion of
+missing values is low.
 
+It is also possible to impute missing values. This is described in
+greater details in the *Data pre-processing* section in the supervised
+machine learning chapter. 
+
+Finally, we should be careful when using categorical data in any of
+the unsupervised methods described above. Categories are generally
+represented as factors, which are encoded as integer levels, and might
+give the impression that a distance between levels is a relevant
+measure (which it is not, unless the factors are ordered). In such
+situations, catergorical data can be dropped, or it is possible to
+encode categories as binary **dummy variables**. For example, if we
+have 3 categories, say `A`, `B` and `C`, we would create two dummy
+variables to encode the categories as:
+
+- `A`: `1` and `0`
+- `B`: `0` and `1`
+- `C`: `0` and `0` (neither `A` nor `B`)
+
+so that the distance between each category are approximately equal to
+1. 
 
 # t-Distributed Stochastic Neighbour Embedding
 

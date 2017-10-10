@@ -613,10 +613,15 @@ biplot(prcomp(mtcars, scale = TRUE), main = &quot;With scaling&quot;) ## 2</code
 </div>
 <div id="final-comments" class="section level2">
 <h2>Final comments</h2>
+<p>Real datasets often come with <strong>missing values</strong>. In R, these should be encoded using <code>NA</code>. Unfortunately, PCA cannot deal with missing values, and observations containing <code>NA</code> values will be dropped automatically. This is a viable solution only when the proportion of missing values is low.</p>
+<p>It is also possible to impute missing values. This is described in greater details in the <em>Data pre-processing</em> section in the supervised machine learning chapter.</p>
+<p>Finally, we should be careful when using categorical data in any of the unsupervised methods described above. Categories are generally represented as factors, which are encoded as integer levels, and might give the impression that a distance between levels is a relevant measure (which it is not, unless the factors are ordered). In such situations, catergorical data can be dropped, or it is possible to encode categories as binary <strong>dummy variables</strong>. For example, if we have 3 categories, say <code>A</code>, <code>B</code> and <code>C</code>, we would create two dummy variables to encode the categories as:</p>
 <ul>
-<li>Missing values: drop or impute</li>
-<li>Categorical data: drop or encode as dummy numerical values</li>
+<li><code>A</code>: <code>1</code> and <code>0</code></li>
+<li><code>B</code>: <code>0</code> and <code>1</code></li>
+<li><code>C</code>: <code>0</code> and <code>0</code> (neither <code>A</code> nor <code>B</code>)</li>
 </ul>
+<p>so that the distance between each category are approximately equal to 1.</p>
 </div>
 </div>
 <div id="t-distributed-stochastic-neighbour-embedding" class="section level1">
