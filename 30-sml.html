@@ -220,9 +220,58 @@ div.tocify {
 
 <div id="supervised-learning" class="section level1">
 <h1>Supervised learning</h1>
-<p>In <strong>supervised learning</strong> (SML), the learning algorithm is presented with labelled example inputs, where the labels indicate the desired output. SML itself is composed of <strong>classification</strong>, where the output is categorical, and <strong>regression</strong>, where the output is numerical.</p>
-<p>When two sets of labels, or classes, are available, one speaks of <strong>binary classfication</strong>. A classical example thereof is labelling an email as <em>spam</em> or <em>not spam</em>. When more classes are to be learnt, one speaks of a <strong>multi-class problem</strong>, such as annotation a new <em>Iris</em> example as being from the <em>setosa</em>, <em>versicolor</em> or <em>virginica</em> species.</p>
-<p>In these cases, the output is a single label (of one of the anticipated classes). If multiple labels may be assigned to each examples, one speaks of <strong>multi-label classification</strong>.</p>
+<p>In <strong>supervised learning</strong> (SML), the learning algorithm is presented with labelled example inputs, where the labels indicate the desired output. SML itself is composed of <strong>classification</strong>, where the output is qualitative, and <strong>regression</strong>, where the output is quantitative.</p>
+<p>When two sets of labels, or classes, are available, one speaks of <strong>binary classfication</strong>. A classical example thereof is labelling an email as <em>spam</em> or <em>not spam</em>. When more classes are to be learnt, one speaks of a <strong>multi-class problem</strong>, such as annotation a new <em>Iris</em> example as being from the <em>setosa</em>, <em>versicolor</em> or <em>virginica</em> species. In these cases, the output is a single label (of one of the anticipated classes). If multiple labels may be assigned to each examples, one speaks of <strong>multi-label classification</strong>.</p>
+<p>As we have a desired output and thus know precisely what is to be computed, it becomes possible to direcly evalute a model using a quantifiable and object metric. For regression, we will use the <strong>root mean squared error</strong> (RMSE), which is what linear regression (<code>lm</code> in R) seeks to minimise. For classification, we will use <strong>model prediction accuracy</strong>.</p>
+</div>
+<div id="model-performance" class="section level1">
+<h1>Model performance</h1>
+<div id="in-sample-and-out-of-sample-error" class="section level2">
+<h2>In-sample and out-of-sample error</h2>
+<p>Typicall, we won’t want to calculate any of these metrics using observations that were also used to calculate the model. This approach, called <strong>in-sample error</strong> lead to optimisitic assessment of our model. Indeed, the model has already <em>seen</em> these data upon construction, and is does considered optimised the these observations in particular; it is said to <strong>overfit</strong> the data. We prefer to calculate an <strong>out-of-sample error</strong>, on new data, to gain a better idea of how to model performs on unseen data, and estimate how well the model <strong>generalises</strong>.</p>
+<p>In this course, we will focus on the <em><a href="https://CRAN.R-project.org/package=caret">caret</a></em> package for Classification And REgression Training (see also <a href="https://topepo.github.io/caret/index.html" class="uri">https://topepo.github.io/caret/index.html</a>). It provides a common and consistent interface to many, often repetitive, tasks in supervised learning.</p>
+<p>The code chunk below uses the <code>lm</code> function to model the price of round cut diamonds and then predicts the price of these very same diamonds with the <code>predict</code> function.</p>
+<pre class="r"><code>data(diamonds)
+model &lt;- lm(price ~ ., diamonds)
+p &lt;- predict(model, diamonds)</code></pre>
+<blockquote>
+<p>Challenge</p>
+<p>Calculate the root mean squares error for the prediction above</p>
+</blockquote>
+<p><details></p>
+<pre class="r"><code>## Error on prediction
+error &lt;- p - diamonds$price
+rmse_in &lt;- sqrt(mean(error^2)) ## in-sample RMSE 
+rmse_in</code></pre>
+<pre><code>## [1] 1129.843</code></pre>
+<p></details></p>
+<p>Let’s now repeat the exercise above, but by calculating the out-of-sample RMSE. We are prepare a 80/20 split of the data and use 80% to fit our model predict the target variable (this is called the <strong>training data</strong>), the price, on the 20% unseen data (the <strong>testing data</strong>).</p>
+<blockquote>
+<p>Challenge</p>
+<ol style="list-style-type: decimal">
+<li>Let’s create a <strong>random</strong> 80/20 split to define the test and train subsets.</li>
+<li>Train a regression model on the training data.</li>
+<li>Test the model on the testing data.</li>
+<li>Calculating the out-of-sample RMSE.</li>
+</ol>
+</blockquote>
+<p><details></p>
+<pre class="r"><code>set.seed(42)
+ntest &lt;- nrow(diamonds) * 0.80
+test &lt;- sample(nrow(diamonds), ntest)
+model &lt;- lm(price ~ ., data = diamonds[test, ])
+p &lt;- predict(model, diamonds[-test, ])
+error &lt;- p - diamonds$price[-test]
+rmse_out &lt;- sqrt(mean(error^2)) ## out-of-sample RMSE 
+rmse_out</code></pre>
+<pre><code>## [1] 1136.596</code></pre>
+<p></details></p>
+<p>The values for the out-of-sample RMSE will vary depending on the what exact split was used. The diamonds is a rather extensive data, and thus even when building out model using a subset of the available data (80% above), we manage to generate a model with a low RMSE, and possibly lower than the in-sample error.</p>
+<p>When dealing with datasets of smaller sizes, however, the presence of a single outlier in the train and test data split can substantially influence the model and the RMSE. We can’t rely on such an approacj an need a more robust one, where, we can generate and use multiple, different train/test sets to sample a set of RMSEs, leading to a better estimate of the out-of-sample RMSE.</p>
+</div>
+<div id="cross-validation" class="section level2">
+<h2>Cross-validation</h2>
+</div>
 </div>
 
 

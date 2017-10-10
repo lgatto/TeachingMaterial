@@ -16,16 +16,109 @@ source("./src/setup.R")
 In **supervised learning** (SML), the learning algorithm is presented
 with labelled example inputs, where the labels indicate the desired
 output. SML itself is composed of **classification**, where the output
-is categorical, and **regression**, where the output is numerical.
+is qualitative, and **regression**, where the output is quantitative.
 
 When two sets of labels, or classes, are available, one speaks of
 **binary classfication**. A classical example thereof is labelling an
 email as *spam* or *not spam*. When more classes are to be learnt, one
 speaks of a **multi-class problem**, such as annotation a new *Iris*
 example as being from the *setosa*, *versicolor* or *virginica*
-species.
-
-In these cases, the output is a single label (of one of the
+species. In these cases, the output is a single label (of one of the
 anticipated classes). If multiple labels may be assigned to each
 examples, one speaks of **multi-label classification**.
+
+As we have a desired output and thus know precisely what is to be
+computed, it becomes possible to direcly evalute a model using a
+quantifiable and object metric. For regression, we will use the **root
+mean squared error** (RMSE), which is what linear regression (`lm` in
+R) seeks to minimise. For classification, we will use **model
+prediction accuracy**.
+
+# Model performance
+
+## In-sample and out-of-sample error
+
+Typicall, we won't want to calculate any of these metrics using
+observations that were also used to calculate the model. This
+approach, called **in-sample error** lead to optimisitic assessment of
+our model. Indeed, the model has already *seen* these data upon
+construction, and is does considered optimised the these observations
+in particular; it is said to **overfit** the data. We prefer to
+calculate an **out-of-sample error**, on new data, to gain a better
+idea of how to model performs on unseen data, and estimate how well
+the model **generalises**.
+
+In this course, we will focus on the `r CRANpkg("caret")` package for
+Classification And REgression Training (see also
+https://topepo.github.io/caret/index.html). It provides a common and
+consistent interface to many, often repetitive, tasks in supervised
+learning.
+
+
+The code chunk below uses the `lm` function to model the price of
+round cut diamonds and then predicts the price of these very same
+diamonds with the `predict` function.
+
+
+```{r}
+data(diamonds)
+model <- lm(price ~ ., diamonds)
+p <- predict(model, diamonds)
+```
+
+> Challenge
+> 
+> Calculate the root mean squares error for the prediction above 
+
+<details>
+```{r}
+## Error on prediction
+error <- p - diamonds$price
+rmse_in <- sqrt(mean(error^2)) ## in-sample RMSE 
+rmse_in
+```
+</details>
+
+Let's now repeat the exercise above, but by calculating the
+out-of-sample RMSE. We are prepare a 80/20 split of the data and use
+80% to fit our model predict the target variable (this is called the
+**training data**), the price, on the 20% unseen data (the **testing
+data**).
+
+> Challenge
+> 
+> 1. Let's create a **random** 80/20 split to define the test and
+>    train subsets.
+> 2. Train a regression model on the training data.
+> 3. Test the model on the testing data.
+> 4. Calculating the out-of-sample RMSE.
+
+<details>
+```{r}
+set.seed(42)
+ntest <- nrow(diamonds) * 0.80
+test <- sample(nrow(diamonds), ntest)
+model <- lm(price ~ ., data = diamonds[test, ])
+p <- predict(model, diamonds[-test, ])
+error <- p - diamonds$price[-test]
+rmse_out <- sqrt(mean(error^2)) ## out-of-sample RMSE 
+rmse_out
+```
+</details>
+
+The values for the out-of-sample RMSE will vary depending on the what
+exact split was used. The diamonds is a rather extensive data, and
+thus even when building out model using a subset of the available data
+(80% above), we manage to generate a model with a low RMSE, and
+possibly lower than the in-sample error. 
+
+When dealing with datasets of smaller sizes, however, the presence of
+a single outlier in the train and test data split can substantially
+influence the model and the RMSE. We can't rely on such an approacj an
+need a more robust one, where, we can generate and use multiple,
+different train/test sets to sample a set of RMSEs, leading to a
+better estimate of the out-of-sample RMSE.
+
+## Cross-validation
+
 

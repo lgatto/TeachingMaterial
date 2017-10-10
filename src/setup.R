@@ -1,6 +1,7 @@
 set.seed(1L)
 
 suppressPackageStartupMessages(library("BiocStyle"))
+suppressPackageStartupMessages(library("ggplot2"))
 suppressPackageStartupMessages(library("scales"))
 suppressPackageStartupMessages(library("mlbench"))
 suppressPackageStartupMessages(library("caret"))

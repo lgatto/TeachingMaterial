@@ -83,3 +83,23 @@ source("http://www.bioconductor.org/biocLite.R")
 biocLite(c("MSnbsase", "pRoloc")) ## software
 biocLite("pRolocdata") ## date
 ```
+
+# The diamonds data 
+
+The `diamonds` data ships with the `r CRANpkg("ggplot2")` package and
+predict the price (in US dollars) of about 54000 round cut diamonds.
+
+
+In R:
+
+```{r}
+library("ggplot2")
+data(diamonds)
+```
+
+```{r dtdiamonds, fig.cap=""}
+datatable(diamonds)
+```
+
+See also `?diamonds`.
+
