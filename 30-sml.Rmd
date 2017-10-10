@@ -27,16 +27,136 @@ species. In these cases, the output is a single label (of one of the
 anticipated classes). If multiple labels may be assigned to each
 examples, one speaks of **multi-label classification**.
 
-As we have a desired output and thus know precisely what is to be
-computed, it becomes possible to direcly evalute a model using a
-quantifiable and object metric. For regression, we will use the **root
-mean squared error** (RMSE), which is what linear regression (`lm` in
-R) seeks to minimise. For classification, we will use **model
-prediction accuracy**.
+# Preview
+
+To start this chapter, let's use a simple, but useful classification
+algorithm, K nearest neighbors (kNN) to classify the *iris*
+flowers. We will use the `knn` function from the `r CRANpkg("class")`
+package.
+
+K nearest neighbors works by directly measuring the (euclidean)
+distance between observations and infer the class of unlabelled data
+from the class of its nearest neighbours. In the figure below, the
+unlabelled instances *1* and *2* will be assigned classes *c1* (blue)
+and *c2* (red) as their closest neighbors are red and blue,
+respectively.
+
+```{r knnex, echo=FALSE, fig.cap="Schematic illustrating the k nearest neighbors algorithm."}
+p1 <- c(0, 0)
+p2 <- c(0.7, 0.5)
+x1 <- rbind(c(0.2, 0.2),
+            c(-0.3, -0.8),
+            c(-0.2, 1.3))
+x2 <- rbind(c(1, 1),
+            c(0.5, 0.7))
+x3 <- c(1.5, -.9)
+x <- rbind(p1, p2, x1, x2, x3)
+col <- c("black", "black",
+         rep("steelblue", 3),
+         rep("red", 2),
+         "darkgreen")
+
+plot(x, pch = 19, col = col,
+     cex = 5, xlab = "", ylab = "",
+     xaxt = "n", yaxt = "n")
+grid()
+text(p1[1], p1[2], "1", col = "white", cex = 2)
+text(p2[1], p2[2], "2", col = "white", cex = 2)
+for (i in 1:3)
+    segments(p1[1], p1[2],
+             x1[i, 1], x1[i, 2],
+             lty = "dotted",
+             col = "steelblue")
+segments(p2[1], p2[2],
+         x1[1, 1], x1[1, 2],
+         lty = "dotted",
+         col = "steelblue")
+for (i in 1:2)
+    segments(p2[1], p2[2],
+             x2[i, 1], x2[i, 2],
+             lty = "dotted",
+             col = "red")
+legend("topright",
+       legend = expression(c[1], c[2], c[3]),
+       pch = 19,
+       col = c("steelblue", "red", "darkgreen"),
+       cex = 2,
+       bty = "n")
+```
+
+Typically in machine learning, there are two clear steps, where on
+first **trains** a model and then only uses the model to **predict**
+new outputs (class labels in this case). In the kNN, these two steps
+are combined into a single function call to `knn`. 
+
+Let draw a set of 50 random iris observations to train the model and
+predict the species of another set of 50 randomly chosen flowers. The
+`knn` function takes the training data, the new data (to be inferred)
+and the labels of the training data, and returns (by default) the
+predicted class.
+
+```{r knn1}
+set.seed(12L)
+tr <- sample(150, 50)
+nw <- sample(150, 50)
+knnres <- knn(iris[tr, -5], iris[nw, -5], iris$Species[tr])
+head(knnres)
+```
+
+We can now compare the observed kNN-predicted class and the expected
+known outcome and caluclate the overall accuracy of our model.
+
+```{r knn1acc}
+table(knnres, iris$Species[nw])
+mean(knnres == iris$Species[nw])
+```
+
+We have omitted and important argument from `knn`, which is the
+paremeter *k* of the classifer. This value *k* defines how many
+nearest neighbours will be considered to assign a class to a new
+unlabelled observation. From the arguments of the function,
+
+```{r knnargs}
+args(knn)
+```
+
+we see that the default value is 1. But is this a good value? 
+
+> Challenge
+> 
+> Repeat the kNN classification above by using another value of k, and
+> compare the accuracy of this new model to the one above. Make sure
+> to use the same `tr` and `nw` training and new data to avoid any
+> biases in the comparison.
+
+<details>
+```{r knn5}
+knnres5 <- knn(iris[tr, -5], iris[nw, -5], iris$Species[tr], k = 5)
+mean(knnres5 == iris$Species[nw])
+table(knnres5, knnres)
+```
+</details>
+
+This introductory example leads to two important and related questions
+that we need to consider:
+
+- How can we do a good job in training and testing data? In the
+  example above, we choose random training and new data, and needed to
+  make sure to keep these identical for out subsequent comparison.
+  
+- How can we estimate our model paramters so as to obtain good
+  classification accuracy?
 
 # Model performance
 
 ## In-sample and out-of-sample error
+
+In supervised machine learning, we have a desired output and thus know
+precisely what is to be computed. It thus becomes possible to direcly
+evalute a model using a quantifiable and object metric. For
+regression, we will use the **root mean squared error** (RMSE), which
+is what linear regression (`lm` in R) seeks to minimise. For
+classification, we will use **model prediction accuracy**.
 
 Typicall, we won't want to calculate any of these metrics using
 observations that were also used to calculate the model. This
@@ -120,5 +240,34 @@ different train/test sets to sample a set of RMSEs, leading to a
 better estimate of the out-of-sample RMSE.
 
 ## Cross-validation
+
+Instead of doing a single training/testing split, we can systematise
+this process, produce multiple, different out-of-sample train/test
+splits, that will lead to a better estimate of the out-of-sample RMSE.
+
+The figure below illustrates the cross validation procedure, creating
+3 folds. One would typically do a 10-fold cross validation (if the
+size of the data permits it). We split the data into 3 *random* and
+complementary folds, so that each data point appears exactly once in
+each fold. This leads to a total test set size that is identical to
+the size as the full dataset but is composed of out-of-sample
+predictions. 
+
+![Schematic of 3-fold cross validation producing three training (blue) and testing (white) splits.](./figure/xval.png)
+
+After cross-validation, all models used within each fold are
+discarded, and a new model is build using the whole dataset, with the
+best model parameter(s), i.e those that generalised over all folds.
+
+This makes cross-validation quite time consuming, as it takes *x+1*
+(where *x* in the number of cross-validation folds) times as long as
+fitting a single model, but is essential. 
+
+Note that it is important to maintain the class proportions within the
+different folds, i.e. respect the proportion of the different classes
+in the original data. This is also taken care when using the 
+`r CRANpkg("caret")` package.
+
+
 
 

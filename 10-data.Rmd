@@ -103,3 +103,22 @@ datatable(diamonds)
 
 See also `?diamonds`.
 
+# The Sonar data
+
+The `Sonar` data from the `r CRANpkg("mlbench")` package can be used
+to train a classifer to recognise mines from rocks using sonar
+data. The data is composed to 60 features representing the energy
+within a particular frequency band.
+
+In R:
+
+```{r}
+library("mlbench")
+data(Sinar)
+```
+
+```{r dtsonar, fig.cap=""}
+datatable(Sonar)
+```
+
+See also `?Sonar`.
