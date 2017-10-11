@@ -11,7 +11,7 @@ input data. One generally differentiates between
   within the data; the grouping is based on distance between
   observations.
   
-- **Dimensional reduction**, where the goal is to identify patterns in
+- **Dimensionality reduction**, where the goal is to identify patterns in
   the features of the data. Dimensionality reduction is often used to
   facilitate visualisation of the data, as well as a pre-processing
   method before supervised learning.
