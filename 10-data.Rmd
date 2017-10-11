@@ -121,7 +121,7 @@ features for 506 homes in Boston.
 
 In R:
 
-```{r}
+```{r, message=FALSE}
 library("MASS")
 data(Boston)
 ```
