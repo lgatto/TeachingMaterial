@@ -33,6 +33,8 @@ packages used to compile this document is available at the end.
 The source code for this document is available on GitHub at
 https://github.com/lgatto/IntroMachineLearningWithR/
 
+A short URL for this book is http://bit.ly/intromlr
+
 ## Contact 
 
 Feel free to contact me for any question or comments, preferably by

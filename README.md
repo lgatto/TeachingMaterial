@@ -11,8 +11,7 @@ hierarchical and k-means clustering, and dimensionality reduction,
 such as principal component analysis) and supervised (classification
 and regression, such as K-nearest neighbour and linear regression)
 methods. We will also address questions such as model selection using
-cross-validation. The material will have an important hands-on
-component and participants will need to bring a computer with R 3.4.1
-pre-installed. All the course material will be made available online
-and package instructions will be circulated in advance.
+cross-validation. The material has an important hands-on component and
+readers should have a computer running R 3.4.1 or later.
 
+Read to course at http://bit.ly/intromlr
