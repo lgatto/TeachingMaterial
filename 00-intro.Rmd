@@ -21,31 +21,30 @@ readers should have a computer running R 3.4.1 or later.
   machine learning methods and applications in R. The core of the
   courses focuses on unsupervised and supervised methods. 
 
-- The course contains numerous exercises to provide amble opportunity
-  to apply the newly learnt material.
+- The course contains numerous exercises to provide numerous
+  opportunity to apply the newly acquired material.
   
 - Participants are expected to be familiar with the R syntax and basic
   plotting functionality.
 
 - At the end of the course, the participants are anticipated to be
-  able to apply the methods learnt, as well as feel confident enough
-  to explore and apply new methods.
+  able to apply what they have learnt, as well as feel confident
+  enough to explore and apply new methods.
 
 ## Why R?
 
-R is one of the major languages for data science currently
-available. It provides excellent visualisation features, which is
-essential to explore the data before submitting it to any automated
-learning, as well as assessing the results of the learning
-algorithm. Many R package
+R is one of the major languages for data science. It provides
+excellent visualisation features, which is essential to explore the
+data before submitting it to any automated learning, as well as
+assessing the results of the learning algorithm. Many R package
 for [machine learning](https://cran.r-project.org/) are available of
-the shelf and many modern methods in statistical learning are implemented
-in R as part of their development.
+the shelf and many modern methods in statistical learning are
+implemented in R as part of their development.
 
-Nowadays, there are however other viable alternatives that benefit
-from similar advantages. If we consider python, for example,
+There are however other viable alternatives that benefit from similar
+advantages. If we consider python for example,
 the [scikit-learn](http://scikit-learn.org/stable/index.html) software
-provides all tools that we will present in this course.
+provides all the tools that we will discuss in this course.
 
 ## Overview of machine learning (ML)
 
@@ -105,5 +104,10 @@ through the chapters:
 - `r CRANpkg("impute")`
 - `r CRANpkg("ranger")`
 - `r CRANpkg("kernlab")`
+- `r CRANpkg("class")`
+- `r CRANpkg("glmnet")`
+- `r CRANpkg("naivebayes")`
 - `r CRANpkg("rpart")`
 - `r CRANpkg("rpart.plot")`
+
+See the full session informtion for more details.
