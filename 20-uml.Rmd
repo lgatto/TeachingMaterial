@@ -481,7 +481,7 @@ We haven't looked at other `prcomp` parameters, other that the first
 one, `x`. There are two other ones that are or importance, in
 particular in the light of the section on pre-processing above, which
 are `center` and `scale.`. The former is set to `TRUE` by default,
-while the second one is set the `FALSE.
+while the second one is set the `FALSE`.
 
 > Challenge
 > 
