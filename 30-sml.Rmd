@@ -73,12 +73,12 @@ legend("topright",
        bty = "n")
 ```
 
-Typically in machine learning, there are two clear steps, where on
-first **trains** a model and then only uses the model to **predict**
-new outputs (class labels in this case). In the kNN, these two steps
-are combined into a single function call to `knn`. 
+Typically in machine learning, there are two clear steps, where one
+first **trains** a model and then uses the model to **predict** new
+outputs (class labels in this case). In the kNN, these two steps are
+combined into a single function call to `knn`.
 
-Let draw a set of 50 random iris observations to train the model and
+Lets draw a set of 50 random iris observations to train the model and
 predict the species of another set of 50 randomly chosen flowers. The
 `knn` function takes the training data, the new data (to be inferred)
 and the labels of the training data, and returns (by default) the
