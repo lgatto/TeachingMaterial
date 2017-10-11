@@ -307,8 +307,8 @@ model <- train(price ~ ., diamonds,
 model
 ```
 
-Once we have trained our model, we can directly use object of `train`
-as input to the `predict` method:
+Once we have trained our model, we can directly use this `train`
+object as input to the `predict` method:
 
 ```{r texval}
 p <- predict(model, diamonds)
