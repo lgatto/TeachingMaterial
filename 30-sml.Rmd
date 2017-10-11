@@ -146,11 +146,10 @@ This introductory example leads to two important and related questions
 that we need to consider:
 
 - How can we do a good job in training and testing data? In the
-  example above, we choose random training and new data, and needed to
-  make sure to keep these identical for out subsequent comparison.
+  example above, we choose random training and new data.
   
-- How can we estimate our model parameters so as to obtain good
-  classification accuracy?
+- How can we estimate our model parameters (*k* in the example above)
+  so as to obtain good classification accuracy?
 
 ## Model performance
 

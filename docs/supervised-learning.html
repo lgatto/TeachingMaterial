@@ -228,8 +228,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 Figure 5.1: Schematic illustrating the k nearest neighbors algorithm.
 </p>
 </div>
-<p>Typically in machine learning, there are two clear steps, where one first <strong>trains</strong> a model and then only uses the model to <strong>predict</strong> new outputs (class labels in this case). In the kNN, these two steps are combined into a single function call to <code>knn</code>.</p>
-<p>Let draw a set of 50 random iris observations to train the model and predict the species of another set of 50 randomly chosen flowers. The <code>knn</code> function takes the training data, the new data (to be inferred) and the labels of the training data, and returns (by default) the predicted class.</p>
+<p>Typically in machine learning, there are two clear steps, where one first <strong>trains</strong> a model and then uses the model to <strong>predict</strong> new outputs (class labels in this case). In the kNN, these two steps are combined into a single function call to <code>knn</code>.</p>
+<p>Lets draw a set of 50 random iris observations to train the model and predict the species of another set of 50 randomly chosen flowers. The <code>knn</code> function takes the training data, the new data (to be inferred) and the labels of the training data, and returns (by default) the predicted class.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(12L)
 tr &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">150</span>, <span class="dv">50</span>)
 nw &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">150</span>, <span class="dv">50</span>)
@@ -280,8 +280,8 @@ knnres &lt;-<span class="st"> </span><span class="kw">knn</span>(iris[tr, <span 
 <p></details></p>
 <p>This introductory example leads to two important and related questions that we need to consider:</p>
 <ul>
-<li><p>How can we do a good job in training and testing data? In the example above, we choose random training and new data, and needed to make sure to keep these identical for out subsequent comparison.</p></li>
-<li><p>How can we estimate our model parameters so as to obtain good classification accuracy?</p></li>
+<li><p>How can we do a good job in training and testing data? In the example above, we choose random training and new data.</p></li>
+<li><p>How can we estimate our model parameters (<em>k</em> in the example above) so as to obtain good classification accuracy?</p></li>
 </ul>
 </div>
 <div id="model-performance" class="section level2">
