@@ -1,17 +1,7 @@
----
-title: "An Introduction to Machine Learning with R: Unsupervised Learning"
-output:
-  html_document:
-    toc: yes
-    toc_float: true
-    self_contained: true
----
+# Unsupervised Learning 
 
-```{r setup, echo=FALSE, warning=FALSE}
-source("./src/setup.R")
-```
 
-# Unsupervised learning
+## Introduction
 
 In **unsupervised learning** (UML), no labels are provided, and the
 learning algorithm focuses solely on detecting structure in unlabelled
@@ -32,7 +22,7 @@ UML presents specific challenges and benefits:
 - there is generally much more unlabelled data available than labelled
   data.
 
-# k-means clustering
+## k-means clustering
 
 The k-means clustering algorithms aims at partitioning *n*
 observations into a fixed number of *k* clusters. The algorithm will
@@ -208,9 +198,9 @@ plot(ks, tot_within_ss, type = "b")
 ```
 </details>
 
-# Hierarchical clustering
+## Hierarchical clustering
 
-## How does hierarchical clustering work
+### How does hierarchical clustering work
 
 **Initialisation**:  Starts by assigning each of the n point its own cluster
 
@@ -265,7 +255,7 @@ plot(hcl)
 ```
 </details>
 
-## Defining clusters
+### Defining clusters
 
 After producing the hierarchical clustering result, we need to *cut
 the tree (dendrogram)* at a specific height to defined the
@@ -324,7 +314,7 @@ table(iris$Species, cutree(hcl, k = 3))
 ```
 </details>
 
-# Pre-processing
+## Pre-processing
 
 Many of the machine learning methods that are regularly used are
 sensitive to difference scales. This applies to unsupervised methods
@@ -354,7 +344,7 @@ plot(hcl2, main = "scaled data")
 ```
 </details>
 
-# Principal component analysis (PCA)
+## Principal component analysis (PCA)
 
 **Dimensionality reduction** techniques are widely used and versatile
 techniques that can be used o
@@ -369,7 +359,7 @@ whole data set along a reduced number of dimensions. These are then
 ideal candidates used to visualise the data along these reduced number
 of informative dimensions.
 
-## How does it work
+### How does it work
 
 Principal Component Analysis (PCA) is a technique that transforms the
 original n-dimensional data into a new n-dimensional space. 
@@ -433,7 +423,7 @@ hist(irispca$x[iris$Species == "virginica", 1],  add = TRUE, col = "#0000FF30")
 rug(irispca$x[iris$Species == "virginica", 1], col = "blue")
 ```
 
-## Visualisation
+### Visualisation
 
 A **biplot** features all original points re-mapped (rotated) along the
 first two PCs as well as the original features as vectors along the
@@ -484,7 +474,7 @@ plot(irispca$x[, 3:4], col = iris$Species)
 ```
 </details>
 
-## Data pre-processing 
+### Data pre-processing 
 
 We haven't looked at other `prcomp` parameters, other that the first
 one, `x`. There are two other ones that are or importance, in
@@ -510,7 +500,7 @@ loadings along PC1 and 2 (all others are negligible), which are also
 those with the highest units of measurement. Scaling removes this
 effect.  </details>
 
-## Final comments
+### Final comments on PCA
 
 Real datasets often come with **missing values**. In R, these should
 be encoded using `NA`. Unfortunately, PCA cannot deal with missing
@@ -539,7 +529,7 @@ variables to encode the categories as:
 so that the distance between each category are approximately equal to
 1. 
 
-# t-Distributed Stochastic Neighbour Embedding
+## t-Distributed Stochastic Neighbour Embedding
 
 [t-Distributed Stochastic Neighbour Embedding](https://lvdmaaten.github.io/tsne/) (t-SNE)
 is a *non-linear* dimensionality reduction technique, i.e. that
@@ -565,7 +555,7 @@ As with PCA, the data can be scaled and centred prior the running
 t-SNE (see the `pca_center` and `pca_scale` arguments). The algorithm
 is stochastic, and will produce different results at each repetition.
 
-## Parameter tuning
+### Parameter tuning
 
 t-SNE (as well as many other methods, in particular classification
 algorithms) has two important parameters that can substantially

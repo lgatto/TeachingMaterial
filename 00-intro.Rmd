@@ -1,15 +1,4 @@
----
-title: "An Introduction to Machine Learning with R"
-output:
-  html_document:
-    toc: yes
-    toc_float: true
-    self_contained: true	
----
-
-```{r setup, echo=FALSE}
-source("./src/setup.R")
-```
+# An Introduction to Machine Learning with R
 
 This introductory workshop on machine learning with R is aimed at
 participants who are not experts in machine learning (introductory
@@ -23,11 +12,10 @@ and regression, such as K-nearest neighbour and linear regression)
 methods. We will also address questions such as model selection using
 cross-validation. The material will have an important hands-on
 component and participants will need to bring a computer with R 3.4.1
-pre-installed. All the course material will be made available online
-and package instructions will be circulated in advance.
+pre-installed. 
 
 
-# Objectives and pre-requisites
+## Objectives and pre-requisites
 
 - The course aims at providing an accessible introduction to various
   machine learning methods and applications in R. The core of the
@@ -43,7 +31,7 @@ and package instructions will be circulated in advance.
   able to apply the methods learnt, as well as feel confident enough
   to explore and apply new methods.
 
-# Why R?
+## Why R?
 
 R is one of the major languages for data science currently
 available. It provides excellent visualisation features, which is
@@ -59,8 +47,7 @@ from similar advantages. If we consider python, for example,
 the [scikit-learn](http://scikit-learn.org/stable/index.html) software
 provides all tools that we will present in this course.
 
-# Overview of machine learning (ML)
-
+## Overview of machine learning (ML)
 
 In **supervised learning** (SML), the learning algorithm is presented
 with labelled example inputs, where the labels indicate the desired
@@ -79,9 +66,9 @@ novelty detection).
 **Reinforcement learning**, the learning algorithm performs a task
 using feedback from operating in a real of synthetic environment.
 
-# Material and methods
+## Material and methods
 
-## Example data
+### Example data
 
 - *Observations*, *examples* or simply *data points* along the rows
 - *Features* or *variables* along the columns
@@ -104,7 +91,7 @@ knitr::kable(head(iris[, c(5, 1:4)]))
 The different datasets that are used throughout the course are
 collected and briefly described in the short *Data* chapter.
 
-## Packages
+### Packages
 
 We will be using, directly or indirectly, the following packages
 through the chapters:
@@ -120,11 +107,3 @@ through the chapters:
 - `r CRANpkg("kernlab")`
 - `r CRANpkg("rpart")`
 - `r CRANpkg("rpart.plot")`
-
-# Content
-
-- [Introduction (this chapter)](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/00-intro.html)
-- [Data set](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/10-data.html)
-- [Unsupervised machine learning](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/20-uml.html)
-- [Supervised machine learning](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/30-sml.html)
-- [Concluding remarks and references](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/99-more.html)

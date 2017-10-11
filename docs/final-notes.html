@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>An Introduction to Machine Learning with R</title>
+  <meta name="description" content="An hands-on introduction to machine learning with R.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="An Introduction to Machine Learning with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="An hands-on introduction to machine learning with R." />
+  <meta name="github-repo" content="lgatto/IntroMachineLearningWithR" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="An Introduction to Machine Learning with R" />
+  
+  <meta name="twitter:description" content="An hands-on introduction to machine learning with R." />
+  
+
+<meta name="author" content="Laurent Gatto">
+
+
+<meta name="date" content="2017-10-11">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="supervised-learning.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#caution"><i class="fa fa-check"></i><b>1.1</b> Caution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.2</b> Installation</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.3</b> Contact</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html"><i class="fa fa-check"></i><b>2</b> An Introduction to Machine Learning with R</a><ul>
+<li class="chapter" data-level="2.1" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#objectives-and-pre-requisites"><i class="fa fa-check"></i><b>2.1</b> Objectives and pre-requisites</a></li>
+<li class="chapter" data-level="2.2" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#why-r"><i class="fa fa-check"></i><b>2.2</b> Why R?</a></li>
+<li class="chapter" data-level="2.3" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#overview-of-machine-learning-ml"><i class="fa fa-check"></i><b>2.3</b> Overview of machine learning (ML)</a></li>
+<li class="chapter" data-level="2.4" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#material-and-methods"><i class="fa fa-check"></i><b>2.4</b> Material and methods</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#example-data"><i class="fa fa-check"></i><b>2.4.1</b> Example data</a></li>
+<li class="chapter" data-level="2.4.2" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#packages"><i class="fa fa-check"></i><b>2.4.2</b> Packages</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="example-datasets.html"><a href="example-datasets.html"><i class="fa fa-check"></i><b>3</b> Example datasets</a><ul>
+<li class="chapter" data-level="3.1" data-path="example-datasets.html"><a href="example-datasets.html#edgar-andersons-iris-data"><i class="fa fa-check"></i><b>3.1</b> Edgar Anderson’s Iris Data</a></li>
+<li class="chapter" data-level="3.2" data-path="example-datasets.html"><a href="example-datasets.html#motor-trend-car-road-tests"><i class="fa fa-check"></i><b>3.2</b> Motor Trend Car Road Tests</a></li>
+<li class="chapter" data-level="3.3" data-path="example-datasets.html"><a href="example-datasets.html#sub-cellular-localisation"><i class="fa fa-check"></i><b>3.3</b> Sub-cellular localisation</a></li>
+<li class="chapter" data-level="3.4" data-path="example-datasets.html"><a href="example-datasets.html#the-diamonds-data"><i class="fa fa-check"></i><b>3.4</b> The diamonds data</a></li>
+<li class="chapter" data-level="3.5" data-path="example-datasets.html"><a href="example-datasets.html#the-sonar-data"><i class="fa fa-check"></i><b>3.5</b> The Sonar data</a></li>
+<li class="chapter" data-level="3.6" data-path="example-datasets.html"><a href="example-datasets.html#housing-values-in-suburbs-of-boston"><i class="fa fa-check"></i><b>3.6</b> Housing Values in Suburbs of Boston</a></li>
+<li class="chapter" data-level="3.7" data-path="example-datasets.html"><a href="example-datasets.html#customer-churn"><i class="fa fa-check"></i><b>3.7</b> Customer churn</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html"><i class="fa fa-check"></i><b>4</b> Unsupervised Learning</a><ul>
+<li class="chapter" data-level="4.1" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#k-means-clustering"><i class="fa fa-check"></i><b>4.2</b> k-means clustering</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#how-does-k-means-work"><i class="fa fa-check"></i><b>4.2.1</b> How does k-means work</a></li>
+<li class="chapter" data-level="4.2.2" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#model-selection"><i class="fa fa-check"></i><b>4.2.2</b> Model selection</a></li>
+<li class="chapter" data-level="4.2.3" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#how-to-determine-the-number-of-clusters"><i class="fa fa-check"></i><b>4.2.3</b> How to determine the number of clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#hierarchical-clustering"><i class="fa fa-check"></i><b>4.3</b> Hierarchical clustering</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#how-does-hierarchical-clustering-work"><i class="fa fa-check"></i><b>4.3.1</b> How does hierarchical clustering work</a></li>
+<li class="chapter" data-level="4.3.2" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#defining-clusters"><i class="fa fa-check"></i><b>4.3.2</b> Defining clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#pre-processing"><i class="fa fa-check"></i><b>4.4</b> Pre-processing</a></li>
+<li class="chapter" data-level="4.5" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.5</b> Principal component analysis (PCA)</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#how-does-it-work"><i class="fa fa-check"></i><b>4.5.1</b> How does it work</a></li>
+<li class="chapter" data-level="4.5.2" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#visualisation"><i class="fa fa-check"></i><b>4.5.2</b> Visualisation</a></li>
+<li class="chapter" data-level="4.5.3" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#data-pre-processing"><i class="fa fa-check"></i><b>4.5.3</b> Data pre-processing</a></li>
+<li class="chapter" data-level="4.5.4" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#final-comments-on-pca"><i class="fa fa-check"></i><b>4.5.4</b> Final comments on PCA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#t-distributed-stochastic-neighbour-embedding"><i class="fa fa-check"></i><b>4.6</b> t-Distributed Stochastic Neighbour Embedding</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#parameter-tuning"><i class="fa fa-check"></i><b>4.6.1</b> Parameter tuning</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="supervised-learning.html"><a href="supervised-learning.html"><i class="fa fa-check"></i><b>5</b> Supervised Learning</a><ul>
+<li class="chapter" data-level="5.1" data-path="supervised-learning.html"><a href="supervised-learning.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="supervised-learning.html"><a href="supervised-learning.html#preview"><i class="fa fa-check"></i><b>5.2</b> Preview</a></li>
+<li class="chapter" data-level="5.3" data-path="supervised-learning.html"><a href="supervised-learning.html#model-performance"><i class="fa fa-check"></i><b>5.3</b> Model performance</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="supervised-learning.html"><a href="supervised-learning.html#in-sample-and-out-of-sample-error"><i class="fa fa-check"></i><b>5.3.1</b> In-sample and out-of-sample error</a></li>
+<li class="chapter" data-level="5.3.2" data-path="supervised-learning.html"><a href="supervised-learning.html#cross-validation"><i class="fa fa-check"></i><b>5.3.2</b> Cross-validation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="supervised-learning.html"><a href="supervised-learning.html#classification-performance"><i class="fa fa-check"></i><b>5.4</b> Classification performance</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="supervised-learning.html"><a href="supervised-learning.html#confusion-matrix"><i class="fa fa-check"></i><b>5.4.1</b> Confusion matrix</a></li>
+<li class="chapter" data-level="5.4.2" data-path="supervised-learning.html"><a href="supervised-learning.html#receiver-operating-characteristic-roc-curve"><i class="fa fa-check"></i><b>5.4.2</b> Receiver operating characteristic (ROC) curve</a></li>
+<li class="chapter" data-level="5.4.3" data-path="supervised-learning.html"><a href="supervised-learning.html#auc-in-caret"><i class="fa fa-check"></i><b>5.4.3</b> AUC in <code>caret</code></a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="supervised-learning.html"><a href="supervised-learning.html#random-forest"><i class="fa fa-check"></i><b>5.5</b> Random forest</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="supervised-learning.html"><a href="supervised-learning.html#decision-trees"><i class="fa fa-check"></i><b>5.5.1</b> Decision trees</a></li>
+<li class="chapter" data-level="5.5.2" data-path="supervised-learning.html"><a href="supervised-learning.html#training-a-random-forest"><i class="fa fa-check"></i><b>5.5.2</b> Training a random forest</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="supervised-learning.html"><a href="supervised-learning.html#data-pre-processing-1"><i class="fa fa-check"></i><b>5.6</b> Data pre-processing</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="supervised-learning.html"><a href="supervised-learning.html#missing-values"><i class="fa fa-check"></i><b>5.6.1</b> Missing values</a></li>
+<li class="chapter" data-level="5.6.2" data-path="supervised-learning.html"><a href="supervised-learning.html#median-imputation"><i class="fa fa-check"></i><b>5.6.2</b> Median imputation</a></li>
+<li class="chapter" data-level="5.6.3" data-path="supervised-learning.html"><a href="supervised-learning.html#knn-imputation"><i class="fa fa-check"></i><b>5.6.3</b> KNN imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="supervised-learning.html"><a href="supervised-learning.html#scaling-and-scaling"><i class="fa fa-check"></i><b>5.7</b> Scaling and scaling</a><ul>
+<li class="chapter" data-level="5.7.1" data-path="supervised-learning.html"><a href="supervised-learning.html#multiple-pre-processing-methods"><i class="fa fa-check"></i><b>5.7.1</b> Multiple pre-processing methods</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="supervised-learning.html"><a href="supervised-learning.html#model-selection-1"><i class="fa fa-check"></i><b>5.8</b> Model selection</a><ul>
+<li class="chapter" data-level="5.8.1" data-path="supervised-learning.html"><a href="supervised-learning.html#glmnet-model"><i class="fa fa-check"></i><b>5.8.1</b> <code>glmnet</code> model</a></li>
+<li class="chapter" data-level="5.8.2" data-path="supervised-learning.html"><a href="supervised-learning.html#random-forest-model"><i class="fa fa-check"></i><b>5.8.2</b> random forest model</a></li>
+<li class="chapter" data-level="5.8.3" data-path="supervised-learning.html"><a href="supervised-learning.html#knn-model"><i class="fa fa-check"></i><b>5.8.3</b> kNN model</a></li>
+<li class="chapter" data-level="5.8.4" data-path="supervised-learning.html"><a href="supervised-learning.html#support-vector-machine-model"><i class="fa fa-check"></i><b>5.8.4</b> Support vector machine model</a></li>
+<li class="chapter" data-level="5.8.5" data-path="supervised-learning.html"><a href="supervised-learning.html#naive-bayes"><i class="fa fa-check"></i><b>5.8.5</b> Naive Bayes</a></li>
+<li class="chapter" data-level="5.8.6" data-path="supervised-learning.html"><a href="supervised-learning.html#comparing-models"><i class="fa fa-check"></i><b>5.8.6</b> Comparing models</a></li>
+<li class="chapter" data-level="5.8.7" data-path="supervised-learning.html"><a href="supervised-learning.html#pre-processing-1"><i class="fa fa-check"></i><b>5.8.7</b> Pre-processing</a></li>
+<li class="chapter" data-level="5.8.8" data-path="supervised-learning.html"><a href="supervised-learning.html#predict-using-the-best-model"><i class="fa fa-check"></i><b>5.8.8</b> Predict using the best model</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-notes.html"><a href="final-notes.html"><i class="fa fa-check"></i><b>6</b> Final notes</a><ul>
+<li class="chapter" data-level="6.1" data-path="final-notes.html"><a href="final-notes.html#other-learning-algorithms"><i class="fa fa-check"></i><b>6.1</b> Other learning algorithms</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="final-notes.html"><a href="final-notes.html#semi-supervised-learning"><i class="fa fa-check"></i><b>6.1.1</b> Semi-supervised learning</a></li>
+<li class="chapter" data-level="6.1.2" data-path="final-notes.html"><a href="final-notes.html#deep-learning-in-r"><i class="fa fa-check"></i><b>6.1.2</b> Deep learning in R</a></li>
+<li class="chapter" data-level="6.1.3" data-path="final-notes.html"><a href="final-notes.html#model-performance-1"><i class="fa fa-check"></i><b>6.1.3</b> Model performance</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="final-notes.html"><a href="final-notes.html#credit"><i class="fa fa-check"></i><b>6.2</b> Credit</a></li>
+<li class="chapter" data-level="6.3" data-path="final-notes.html"><a href="final-notes.html#references-and-further-reading"><i class="fa fa-check"></i><b>6.3</b> References and further reading</a></li>
+<li class="chapter" data-level="6.4" data-path="final-notes.html"><a href="final-notes.html#session-information"><i class="fa fa-check"></i><b>6.4</b> Session information</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Machine Learning with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="final-notes" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Final notes</h1>
+<div id="other-learning-algorithms" class="section level2">
+<h2><span class="header-section-number">6.1</span> Other learning algorithms</h2>
+<div id="semi-supervised-learning" class="section level3">
+<h3><span class="header-section-number">6.1.1</span> Semi-supervised learning</h3>
+<div class="figure">
+<img src="figure/phenodisco.png" alt="Semi-supervised learning and novelty detection" />
+<p class="caption">Semi-supervised learning and novelty detection</p>
+</div>
+</div>
+<div id="deep-learning-in-r" class="section level3">
+<h3><span class="header-section-number">6.1.2</span> Deep learning in R</h3>
+<p>This teching material focused on introductory material</p>
+<p><a href="https://blog.rstudio.com/2017/09/05/keras-for-r/" class="uri">https://blog.rstudio.com/2017/09/05/keras-for-r/</a></p>
+</div>
+<div id="model-performance-1" class="section level3">
+<h3><span class="header-section-number">6.1.3</span> Model performance</h3>
+<ul>
+<li>macro F1 scores</li>
+</ul>
+</div>
+</div>
+<div id="credit" class="section level2">
+<h2><span class="header-section-number">6.2</span> Credit</h2>
+<p>Many parts of this course have been influenced by the DataCamp’s <a href="https://www.datacamp.com/tracks/machine-learning"><em>Machine Learning with R</em> skill track</a>, in particular the <em>Machine Learning Toolbox</em> (supervised learning chapter) and the <em>Unsupervised Learning in R</em> (unsupervised learning chapter) courses.</p>
+<p>The very hands-on approach has also been influenced by the Software and Data Carpentry lessons and teaching styles.</p>
+</div>
+<div id="references-and-further-reading" class="section level2">
+<h2><span class="header-section-number">6.3</span> References and further reading</h2>
+<ul>
+<li>caret: Classification and Regression Training. Max Kuhn. <a href="https://CRAN.R-project.org/package=caret" class="uri">https://CRAN.R-project.org/package=caret</a>.</li>
+<li><a href="https://www.springer.com/us/book/9781461468486">Applied predictive modeling</a>, Max Kuhn and Kjell and <a href="https://topepo.github.io/caret/index.html">caret bbok</a> Johnson. <a href="http://appliedpredictivemodeling.com/" class="uri">http://appliedpredictivemodeling.com/</a>.</li>
+<li><a href="http://www-bcf.usc.edu/~gareth/ISL/">An Introduction to Statistical Learning (with Applications in R)</a>. Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani.</li>
+<li><a href="http://jmlr.org/papers/v17/15-066.html">mlr: Machine Learning in R</a>. Bischl B, Lang M, Kotthoff L, Schiffner J, Richter J, Studerus E, Casalicchio G and Jones Z (2016). Journal of Machine Learning Research_, <em>17</em>(170), pp. 1-5. <a href="https://github.com/mlr-org/mlr" class="uri">https://github.com/mlr-org/mlr</a>.</li>
+<li>DataCamp’s <a href="https://www.datacamp.com/tracks/machine-learning"><em>Machine Learning with R</em> skill track</a> (requires paid access).</li>
+</ul>
+</div>
+<div id="session-information" class="section level2">
+<h2><span class="header-section-number">6.4</span> Session information</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre></div>
+<pre><code>## R version 3.4.2 Patched (2017-10-03 r73455)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Ubuntu 14.04.5 LTS
+## 
+## Matrix products: default
+## BLAS: /usr/lib/atlas-base/libf77blas.so.3.0
+## LAPACK: /usr/lib/lapack/liblapack.so.3.0
+## 
+## locale:
+##  [1] LC_CTYPE=en_GB.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=en_GB.UTF-8    
+##  [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=en_GB.UTF-8   
+##  [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] Rtsne_0.13          MASS_7.3-47         bookdown_0.5       
+##  [4] naivebayes_0.9.1    kernlab_0.9-25      dplyr_0.7.4        
+##  [7] e1071_1.6-8         impute_1.51.0       randomForest_4.6-12
+## [10] rpart.plot_2.1.2    rpart_4.1-11        ranger_0.8.0       
+## [13] caTools_1.17.1      class_7.3-14        knitr_1.17         
+## [16] DT_0.2              mlbench_2.1-1       scales_0.5.0       
+## [19] BiocStyle_2.5.35    glmnet_2.0-13       foreach_1.4.3      
+## [22] Matrix_1.2-11       C50_0.1.0-24        caret_6.0-77       
+## [25] ggplot2_2.2.1       lattice_0.20-35    
+## 
+## loaded via a namespace (and not attached):
+##  [1] ddalpha_1.3.1      jsonlite_1.5       sfsmisc_1.1-1     
+##  [4] splines_3.4.2      prodlim_1.6.1      Formula_1.2-2     
+##  [7] assertthat_0.2.0   highr_0.6          stats4_3.4.2      
+## [10] DRR_0.0.2          msdata_0.17.1      yaml_2.1.14       
+## [13] robustbase_0.92-7  ipred_0.9-6        backports_1.1.1   
+## [16] glue_1.1.1         digest_0.6.12      colorspace_1.3-2  
+## [19] recipes_0.1.0      htmltools_0.3.6    plyr_1.8.4        
+## [22] timeDate_3012.100  pkgconfig_2.0.1    CVST_0.2-1        
+## [25] purrr_0.2.3        RANN_2.5.1         gower_0.1.2       
+## [28] lava_1.5.1         tibble_1.3.4       withr_2.0.0       
+## [31] nnet_7.3-12        lazyeval_0.2.0     survival_2.41-3   
+## [34] magrittr_1.5       evaluate_0.10.1    nlme_3.1-131      
+## [37] dimRed_0.1.0       tools_3.4.2        stringr_1.2.0     
+## [40] munsell_0.4.3      bindrcpp_0.2       compiler_3.4.2    
+## [43] RcppRoll_0.2.2     rlang_0.1.2        grid_3.4.2        
+## [46] rstudioapi_0.7     iterators_1.0.8    htmlwidgets_0.9   
+## [49] bitops_1.0-6       rmarkdown_1.6      partykit_1.1-1    
+## [52] gtable_0.2.0       ModelMetrics_1.1.0 codetools_0.2-15  
+## [55] reshape2_1.4.2     R6_2.2.2           lubridate_1.6.0   
+## [58] bindr_0.1          rprojroot_1.2      stringi_1.1.5     
+## [61] Rcpp_0.12.13       DEoptimR_1.0-8</code></pre>
+
+</div>
+</div>
+
+
+
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="supervised-learning.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

@@ -16,4 +16,3 @@ component and participants will need to bring a computer with R 3.4.1
 pre-installed. All the course material will be made available online
 and package instructions will be circulated in advance.
 
-Start [here](https://rawgit.com/lgatto/IntroMachineLearningWithR/master/00-intro.html).

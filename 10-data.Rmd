@@ -1,17 +1,7 @@
----
-title: "An Introduction to Machine Learning with R: datasets"
-output:
-  html_document:
-    toc: yes
-    toc_float: true
-    self_contained: true
----
+# Example datasets 
 
-```{r setup, echo=FALSE, warning=FALSE}
-source("./src/setup.R")
-```
 
-# Edgar Anderson's Iris Data
+## Edgar Anderson's Iris Data
 
 In R:
 
@@ -37,7 +27,7 @@ datatable(iris)
 
 For more details, see `?iris`.
 
-# Motor Trend Car Road Tests
+## Motor Trend Car Road Tests
 
 In R
 
@@ -59,7 +49,7 @@ datatable(mtcars)
 
 For more details, see `?mtcars`.
 
-# Sub-cellular localisation
+## Sub-cellular localisation
 
 The `hyperLOPIT2015` data is used to demonstrate t-SNE and its
 comparison to PCA. These data provide sub-cellular localisation of
@@ -84,7 +74,7 @@ biocLite(c("MSnbsase", "pRoloc")) ## software
 biocLite("pRolocdata") ## date
 ```
 
-# The diamonds data 
+## The diamonds data 
 
 The `diamonds` data ships with the `r CRANpkg("ggplot2")` package and
 predict the price (in US dollars) of about 54000 round cut diamonds.
@@ -103,7 +93,7 @@ datatable(diamonds)
 
 See also `?diamonds`.
 
-# The Sonar data
+## The Sonar data
 
 The `Sonar` data from the `r CRANpkg("mlbench")` package can be used
 to train a classifer to recognise mines from rocks using sonar
@@ -123,7 +113,7 @@ datatable(Sonar)
 
 See also `?Sonar`.
 
-# Housing Values in Suburbs of Boston
+## Housing Values in Suburbs of Boston
 
 The `Boston` data from the `r CRANpkg("MASS")` provides the median
 value of owner-occupied homes (`medv`) in $1000s as well as 13 other
@@ -143,7 +133,7 @@ datatable(Boston)
 
 See also `?Boston`.
 
-# Customer churn
+## Customer churn
 
 This data from the `r CRANpkg("C50")` package and distributes a
 training set with 3333 samples and a test set containing 1667 samples

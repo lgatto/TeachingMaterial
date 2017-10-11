@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>An Introduction to Machine Learning with R</title>
+  <meta name="description" content="An hands-on introduction to machine learning with R.">
+  <meta name="generator" content="bookdown 0.5 and GitBook 2.6.7">
+
+  <meta property="og:title" content="An Introduction to Machine Learning with R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="An hands-on introduction to machine learning with R." />
+  <meta name="github-repo" content="lgatto/IntroMachineLearningWithR" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="An Introduction to Machine Learning with R" />
+  
+  <meta name="twitter:description" content="An hands-on introduction to machine learning with R." />
+  
+
+<meta name="author" content="Laurent Gatto">
+
+
+<meta name="date" content="2017-10-11">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="unsupervised-learning.html">
+<link rel="next" href="final-notes.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-0.9/htmlwidgets.js"></script>
+<script src="libs/datatables-binding-0.2/datatables.js"></script>
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.10.12/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.10.12/js/jquery.dataTables.min.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a><ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#caution"><i class="fa fa-check"></i><b>1.1</b> Caution</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#installation"><i class="fa fa-check"></i><b>1.2</b> Installation</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#contact"><i class="fa fa-check"></i><b>1.3</b> Contact</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html"><i class="fa fa-check"></i><b>2</b> An Introduction to Machine Learning with R</a><ul>
+<li class="chapter" data-level="2.1" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#objectives-and-pre-requisites"><i class="fa fa-check"></i><b>2.1</b> Objectives and pre-requisites</a></li>
+<li class="chapter" data-level="2.2" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#why-r"><i class="fa fa-check"></i><b>2.2</b> Why R?</a></li>
+<li class="chapter" data-level="2.3" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#overview-of-machine-learning-ml"><i class="fa fa-check"></i><b>2.3</b> Overview of machine learning (ML)</a></li>
+<li class="chapter" data-level="2.4" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#material-and-methods"><i class="fa fa-check"></i><b>2.4</b> Material and methods</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#example-data"><i class="fa fa-check"></i><b>2.4.1</b> Example data</a></li>
+<li class="chapter" data-level="2.4.2" data-path="an-introduction-to-machine-learning-with-r.html"><a href="an-introduction-to-machine-learning-with-r.html#packages"><i class="fa fa-check"></i><b>2.4.2</b> Packages</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="example-datasets.html"><a href="example-datasets.html"><i class="fa fa-check"></i><b>3</b> Example datasets</a><ul>
+<li class="chapter" data-level="3.1" data-path="example-datasets.html"><a href="example-datasets.html#edgar-andersons-iris-data"><i class="fa fa-check"></i><b>3.1</b> Edgar Anderson’s Iris Data</a></li>
+<li class="chapter" data-level="3.2" data-path="example-datasets.html"><a href="example-datasets.html#motor-trend-car-road-tests"><i class="fa fa-check"></i><b>3.2</b> Motor Trend Car Road Tests</a></li>
+<li class="chapter" data-level="3.3" data-path="example-datasets.html"><a href="example-datasets.html#sub-cellular-localisation"><i class="fa fa-check"></i><b>3.3</b> Sub-cellular localisation</a></li>
+<li class="chapter" data-level="3.4" data-path="example-datasets.html"><a href="example-datasets.html#the-diamonds-data"><i class="fa fa-check"></i><b>3.4</b> The diamonds data</a></li>
+<li class="chapter" data-level="3.5" data-path="example-datasets.html"><a href="example-datasets.html#the-sonar-data"><i class="fa fa-check"></i><b>3.5</b> The Sonar data</a></li>
+<li class="chapter" data-level="3.6" data-path="example-datasets.html"><a href="example-datasets.html#housing-values-in-suburbs-of-boston"><i class="fa fa-check"></i><b>3.6</b> Housing Values in Suburbs of Boston</a></li>
+<li class="chapter" data-level="3.7" data-path="example-datasets.html"><a href="example-datasets.html#customer-churn"><i class="fa fa-check"></i><b>3.7</b> Customer churn</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html"><i class="fa fa-check"></i><b>4</b> Unsupervised Learning</a><ul>
+<li class="chapter" data-level="4.1" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#introduction"><i class="fa fa-check"></i><b>4.1</b> Introduction</a></li>
+<li class="chapter" data-level="4.2" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#k-means-clustering"><i class="fa fa-check"></i><b>4.2</b> k-means clustering</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#how-does-k-means-work"><i class="fa fa-check"></i><b>4.2.1</b> How does k-means work</a></li>
+<li class="chapter" data-level="4.2.2" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#model-selection"><i class="fa fa-check"></i><b>4.2.2</b> Model selection</a></li>
+<li class="chapter" data-level="4.2.3" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#how-to-determine-the-number-of-clusters"><i class="fa fa-check"></i><b>4.2.3</b> How to determine the number of clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#hierarchical-clustering"><i class="fa fa-check"></i><b>4.3</b> Hierarchical clustering</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#how-does-hierarchical-clustering-work"><i class="fa fa-check"></i><b>4.3.1</b> How does hierarchical clustering work</a></li>
+<li class="chapter" data-level="4.3.2" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#defining-clusters"><i class="fa fa-check"></i><b>4.3.2</b> Defining clusters</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#pre-processing"><i class="fa fa-check"></i><b>4.4</b> Pre-processing</a></li>
+<li class="chapter" data-level="4.5" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#principal-component-analysis-pca"><i class="fa fa-check"></i><b>4.5</b> Principal component analysis (PCA)</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#how-does-it-work"><i class="fa fa-check"></i><b>4.5.1</b> How does it work</a></li>
+<li class="chapter" data-level="4.5.2" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#visualisation"><i class="fa fa-check"></i><b>4.5.2</b> Visualisation</a></li>
+<li class="chapter" data-level="4.5.3" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#data-pre-processing"><i class="fa fa-check"></i><b>4.5.3</b> Data pre-processing</a></li>
+<li class="chapter" data-level="4.5.4" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#final-comments-on-pca"><i class="fa fa-check"></i><b>4.5.4</b> Final comments on PCA</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#t-distributed-stochastic-neighbour-embedding"><i class="fa fa-check"></i><b>4.6</b> t-Distributed Stochastic Neighbour Embedding</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="unsupervised-learning.html"><a href="unsupervised-learning.html#parameter-tuning"><i class="fa fa-check"></i><b>4.6.1</b> Parameter tuning</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="supervised-learning.html"><a href="supervised-learning.html"><i class="fa fa-check"></i><b>5</b> Supervised Learning</a><ul>
+<li class="chapter" data-level="5.1" data-path="supervised-learning.html"><a href="supervised-learning.html#introduction-1"><i class="fa fa-check"></i><b>5.1</b> Introduction</a></li>
+<li class="chapter" data-level="5.2" data-path="supervised-learning.html"><a href="supervised-learning.html#preview"><i class="fa fa-check"></i><b>5.2</b> Preview</a></li>
+<li class="chapter" data-level="5.3" data-path="supervised-learning.html"><a href="supervised-learning.html#model-performance"><i class="fa fa-check"></i><b>5.3</b> Model performance</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="supervised-learning.html"><a href="supervised-learning.html#in-sample-and-out-of-sample-error"><i class="fa fa-check"></i><b>5.3.1</b> In-sample and out-of-sample error</a></li>
+<li class="chapter" data-level="5.3.2" data-path="supervised-learning.html"><a href="supervised-learning.html#cross-validation"><i class="fa fa-check"></i><b>5.3.2</b> Cross-validation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="supervised-learning.html"><a href="supervised-learning.html#classification-performance"><i class="fa fa-check"></i><b>5.4</b> Classification performance</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="supervised-learning.html"><a href="supervised-learning.html#confusion-matrix"><i class="fa fa-check"></i><b>5.4.1</b> Confusion matrix</a></li>
+<li class="chapter" data-level="5.4.2" data-path="supervised-learning.html"><a href="supervised-learning.html#receiver-operating-characteristic-roc-curve"><i class="fa fa-check"></i><b>5.4.2</b> Receiver operating characteristic (ROC) curve</a></li>
+<li class="chapter" data-level="5.4.3" data-path="supervised-learning.html"><a href="supervised-learning.html#auc-in-caret"><i class="fa fa-check"></i><b>5.4.3</b> AUC in <code>caret</code></a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="supervised-learning.html"><a href="supervised-learning.html#random-forest"><i class="fa fa-check"></i><b>5.5</b> Random forest</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="supervised-learning.html"><a href="supervised-learning.html#decision-trees"><i class="fa fa-check"></i><b>5.5.1</b> Decision trees</a></li>
+<li class="chapter" data-level="5.5.2" data-path="supervised-learning.html"><a href="supervised-learning.html#training-a-random-forest"><i class="fa fa-check"></i><b>5.5.2</b> Training a random forest</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="supervised-learning.html"><a href="supervised-learning.html#data-pre-processing-1"><i class="fa fa-check"></i><b>5.6</b> Data pre-processing</a><ul>
+<li class="chapter" data-level="5.6.1" data-path="supervised-learning.html"><a href="supervised-learning.html#missing-values"><i class="fa fa-check"></i><b>5.6.1</b> Missing values</a></li>
+<li class="chapter" data-level="5.6.2" data-path="supervised-learning.html"><a href="supervised-learning.html#median-imputation"><i class="fa fa-check"></i><b>5.6.2</b> Median imputation</a></li>
+<li class="chapter" data-level="5.6.3" data-path="supervised-learning.html"><a href="supervised-learning.html#knn-imputation"><i class="fa fa-check"></i><b>5.6.3</b> KNN imputation</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="supervised-learning.html"><a href="supervised-learning.html#scaling-and-scaling"><i class="fa fa-check"></i><b>5.7</b> Scaling and scaling</a><ul>
+<li class="chapter" data-level="5.7.1" data-path="supervised-learning.html"><a href="supervised-learning.html#multiple-pre-processing-methods"><i class="fa fa-check"></i><b>5.7.1</b> Multiple pre-processing methods</a></li>
+</ul></li>
+<li class="chapter" data-level="5.8" data-path="supervised-learning.html"><a href="supervised-learning.html#model-selection-1"><i class="fa fa-check"></i><b>5.8</b> Model selection</a><ul>
+<li class="chapter" data-level="5.8.1" data-path="supervised-learning.html"><a href="supervised-learning.html#glmnet-model"><i class="fa fa-check"></i><b>5.8.1</b> <code>glmnet</code> model</a></li>
+<li class="chapter" data-level="5.8.2" data-path="supervised-learning.html"><a href="supervised-learning.html#random-forest-model"><i class="fa fa-check"></i><b>5.8.2</b> random forest model</a></li>
+<li class="chapter" data-level="5.8.3" data-path="supervised-learning.html"><a href="supervised-learning.html#knn-model"><i class="fa fa-check"></i><b>5.8.3</b> kNN model</a></li>
+<li class="chapter" data-level="5.8.4" data-path="supervised-learning.html"><a href="supervised-learning.html#support-vector-machine-model"><i class="fa fa-check"></i><b>5.8.4</b> Support vector machine model</a></li>
+<li class="chapter" data-level="5.8.5" data-path="supervised-learning.html"><a href="supervised-learning.html#naive-bayes"><i class="fa fa-check"></i><b>5.8.5</b> Naive Bayes</a></li>
+<li class="chapter" data-level="5.8.6" data-path="supervised-learning.html"><a href="supervised-learning.html#comparing-models"><i class="fa fa-check"></i><b>5.8.6</b> Comparing models</a></li>
+<li class="chapter" data-level="5.8.7" data-path="supervised-learning.html"><a href="supervised-learning.html#pre-processing-1"><i class="fa fa-check"></i><b>5.8.7</b> Pre-processing</a></li>
+<li class="chapter" data-level="5.8.8" data-path="supervised-learning.html"><a href="supervised-learning.html#predict-using-the-best-model"><i class="fa fa-check"></i><b>5.8.8</b> Predict using the best model</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-notes.html"><a href="final-notes.html"><i class="fa fa-check"></i><b>6</b> Final notes</a><ul>
+<li class="chapter" data-level="6.1" data-path="final-notes.html"><a href="final-notes.html#other-learning-algorithms"><i class="fa fa-check"></i><b>6.1</b> Other learning algorithms</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="final-notes.html"><a href="final-notes.html#semi-supervised-learning"><i class="fa fa-check"></i><b>6.1.1</b> Semi-supervised learning</a></li>
+<li class="chapter" data-level="6.1.2" data-path="final-notes.html"><a href="final-notes.html#deep-learning-in-r"><i class="fa fa-check"></i><b>6.1.2</b> Deep learning in R</a></li>
+<li class="chapter" data-level="6.1.3" data-path="final-notes.html"><a href="final-notes.html#model-performance-1"><i class="fa fa-check"></i><b>6.1.3</b> Model performance</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="final-notes.html"><a href="final-notes.html#credit"><i class="fa fa-check"></i><b>6.2</b> Credit</a></li>
+<li class="chapter" data-level="6.3" data-path="final-notes.html"><a href="final-notes.html#references-and-further-reading"><i class="fa fa-check"></i><b>6.3</b> References and further reading</a></li>
+<li class="chapter" data-level="6.4" data-path="final-notes.html"><a href="final-notes.html#session-information"><i class="fa fa-check"></i><b>6.4</b> Session information</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Machine Learning with R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="supervised-learning" class="section level1">
+<h1><span class="header-section-number">Chapter 5</span> Supervised Learning</h1>
+<div id="introduction-1" class="section level2">
+<h2><span class="header-section-number">5.1</span> Introduction</h2>
+<p>In <strong>supervised learning</strong> (SML), the learning algorithm is presented with labelled example inputs, where the labels indicate the desired output. SML itself is composed of <strong>classification</strong>, where the output is qualitative, and <strong>regression</strong>, where the output is quantitative.</p>
+<p>When two sets of labels, or classes, are available, one speaks of <strong>binary classification</strong>. A classical example thereof is labelling an email as <em>spam</em> or <em>not spam</em>. When more classes are to be learnt, one speaks of a <strong>multi-class problem</strong>, such as annotation a new <em>Iris</em> example as being from the <em>setosa</em>, <em>versicolor</em> or <em>virginica</em> species. In these cases, the output is a single label (of one of the anticipated classes). If multiple labels may be assigned to each examples, one speaks of <strong>multi-label classification</strong>.</p>
+</div>
+<div id="preview" class="section level2">
+<h2><span class="header-section-number">5.2</span> Preview</h2>
+<p>To start this chapter, let’s use a simple, but useful classification algorithm, K nearest neighbours (kNN) to classify the <em>iris</em> flowers. We will use the <code>knn</code> function from the <em><a href="https://CRAN.R-project.org/package=class">class</a></em> package.</p>
+<p>K nearest neighbours works by directly measuring the (euclidean) distance between observations and infer the class of unlabelled data from the class of its nearest neighbours. In the figure below, the unlabelled instances <em>1</em> and <em>2</em> will be assigned classes <em>c1</em> (blue) and <em>c2</em> (red) as their closest neighbours are red and blue, respectively.</p>
+<div class="figure"><span id="fig:knnex"></span>
+<img src="IntroMachineLearningWithR_files/figure-html/knnex-1.png" alt="Schematic illustrating the k nearest neighbors algorithm." width="672" />
+<p class="caption">
+Figure 5.1: Schematic illustrating the k nearest neighbors algorithm.
+</p>
+</div>
+<p>Typically in machine learning, there are two clear steps, where on first <strong>trains</strong> a model and then only uses the model to <strong>predict</strong> new outputs (class labels in this case). In the kNN, these two steps are combined into a single function call to <code>knn</code>.</p>
+<p>Let draw a set of 50 random iris observations to train the model and predict the species of another set of 50 randomly chosen flowers. The <code>knn</code> function takes the training data, the new data (to be inferred) and the labels of the training data, and returns (by default) the predicted class.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(12L)
+tr &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">150</span>, <span class="dv">50</span>)
+nw &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">150</span>, <span class="dv">50</span>)
+<span class="kw">library</span>(<span class="st">&quot;class&quot;</span>)
+knnres &lt;-<span class="st"> </span><span class="kw">knn</span>(iris[tr, <span class="op">-</span><span class="dv">5</span>], iris[nw, <span class="op">-</span><span class="dv">5</span>], iris<span class="op">$</span>Species[tr])
+<span class="kw">head</span>(knnres)</code></pre></div>
+<pre><code>## [1] versicolor versicolor versicolor setosa     versicolor virginica 
+## Levels: setosa versicolor virginica</code></pre>
+<p>We can now compare the observed kNN-predicted class and the expected known outcome and calculate the overall accuracy of our model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(knnres, iris<span class="op">$</span>Species[nw])</code></pre></div>
+<pre><code>##             
+## knnres       setosa versicolor virginica
+##   setosa         18          0         0
+##   versicolor      0         18         1
+##   virginica       0          1        12</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(knnres <span class="op">==</span><span class="st"> </span>iris<span class="op">$</span>Species[nw])</code></pre></div>
+<pre><code>## [1] 0.96</code></pre>
+<p>We have omitted and important argument from <code>knn</code>, which is the parameter <em>k</em> of the classifier. This value <em>k</em> defines how many nearest neighbours will be considered to assign a class to a new unlabelled observation. From the arguments of the function,</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">args</span>(knn)</code></pre></div>
+<pre><code>## function (train, test, cl, k = 1, l = 0, prob = FALSE, use.all = TRUE) 
+## NULL</code></pre>
+<p>we see that the default value is 1. But is this a good value? Wouldn’t we prefer to look at more neighbours and infer the new class using a vote based on more labels?</p>
+<blockquote>
+<p>Challenge</p>
+<p>Repeat the kNN classification above by using another value of k, and compare the accuracy of this new model to the one above. Make sure to use the same <code>tr</code> and <code>nw</code> training and new data to avoid any biases in the comparison.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knnres5 &lt;-<span class="st"> </span><span class="kw">knn</span>(iris[tr, <span class="op">-</span><span class="dv">5</span>], iris[nw, <span class="op">-</span><span class="dv">5</span>], iris<span class="op">$</span>Species[tr], <span class="dt">k =</span> <span class="dv">5</span>)
+<span class="kw">mean</span>(knnres5 <span class="op">==</span><span class="st"> </span>iris<span class="op">$</span>Species[nw])</code></pre></div>
+<pre><code>## [1] 0.94</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(knnres5, knnres)</code></pre></div>
+<pre><code>##             knnres
+## knnres5      setosa versicolor virginica
+##   setosa         18          0         0
+##   versicolor      0         18         0
+##   virginica       0          1        13</code></pre>
+<p></details></p>
+<blockquote>
+<p>Challenge</p>
+<p>Rerun the kNN classifier with a value of <em>k</em> &gt; 1, and specify <code>prob = TRUE</code> to obtain the proportion of the votes for the winning class.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knnres5prob &lt;-<span class="st"> </span><span class="kw">knn</span>(iris[tr, <span class="op">-</span><span class="dv">5</span>], iris[nw, <span class="op">-</span><span class="dv">5</span>], iris<span class="op">$</span>Species[tr], <span class="dt">k =</span> <span class="dv">5</span>, <span class="dt">prob =</span> <span class="ot">TRUE</span>)
+<span class="kw">table</span>(<span class="kw">attr</span>(knnres5prob, <span class="st">&quot;prob&quot;</span>))</code></pre></div>
+<pre><code>## 
+## 0.6 0.8   1 
+##   4   1  45</code></pre>
+<p></details></p>
+<p>This introductory example leads to two important and related questions that we need to consider:</p>
+<ul>
+<li><p>How can we do a good job in training and testing data? In the example above, we choose random training and new data, and needed to make sure to keep these identical for out subsequent comparison.</p></li>
+<li><p>How can we estimate our model parameters so as to obtain good classification accuracy?</p></li>
+</ul>
+</div>
+<div id="model-performance" class="section level2">
+<h2><span class="header-section-number">5.3</span> Model performance</h2>
+<div id="in-sample-and-out-of-sample-error" class="section level3">
+<h3><span class="header-section-number">5.3.1</span> In-sample and out-of-sample error</h3>
+<p>In supervised machine learning, we have a desired output and thus know precisely what is to be computed. It thus becomes possible to directly evaluate a model using a quantifiable and object metric. For regression, we will use the <strong>root mean squared error</strong> (RMSE), which is what linear regression (<code>lm</code> in R) seeks to minimise. For classification, we will use <strong>model prediction accuracy</strong>.</p>
+<p>Typically, we won’t want to calculate any of these metrics using observations that were also used to calculate the model. This approach, called <strong>in-sample error</strong> lead to optimistic assessment of our model. Indeed, the model has already <em>seen</em> these data upon construction, and is does considered optimised the these observations in particular; it is said to <strong>over-fit</strong> the data. We prefer to calculate an <strong>out-of-sample error</strong>, on new data, to gain a better idea of how to model performs on unseen data, and estimate how well the model <strong>generalises</strong>.</p>
+<p>In this course, we will focus on the <em><a href="https://CRAN.R-project.org/package=caret">caret</a></em> package for Classification And REgression Training (see also <a href="https://topepo.github.io/caret/index.html" class="uri">https://topepo.github.io/caret/index.html</a>). It provides a common and consistent interface to many, often repetitive, tasks in supervised learning.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;caret&quot;</span>)</code></pre></div>
+<p>The code chunk below uses the <code>lm</code> function to model the price of round cut diamonds and then predicts the price of these very same diamonds with the <code>predict</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(diamonds)
+model &lt;-<span class="st"> </span><span class="kw">lm</span>(price <span class="op">~</span><span class="st"> </span>., diamonds)
+p &lt;-<span class="st"> </span><span class="kw">predict</span>(model, diamonds)</code></pre></div>
+<blockquote>
+<p>Challenge</p>
+<p>Calculate the root mean squares error for the prediction above</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Error on prediction
+error &lt;-<span class="st"> </span>p <span class="op">-</span><span class="st"> </span>diamonds<span class="op">$</span>price
+rmse_in &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(error<span class="op">^</span><span class="dv">2</span>)) ## in-sample RMSE 
+rmse_in</code></pre></div>
+<pre><code>## [1] 1129.843</code></pre>
+<p></details></p>
+<p>Let’s now repeat the exercise above, but by calculating the out-of-sample RMSE. We are prepare a 80/20 split of the data and use 80% to fit our model predict the target variable (this is called the <strong>training data</strong>), the price, on the 20% unseen data (the <strong>testing data</strong>).</p>
+<blockquote>
+<p>Challenge</p>
+<ol style="list-style-type: decimal">
+<li>Let’s create a <strong>random</strong> 80/20 split to define the test and train subsets.</li>
+<li>Train a regression model on the training data.</li>
+<li>Test the model on the testing data.</li>
+<li>Calculating the out-of-sample RMSE.</li>
+</ol>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">42</span>)
+ntest &lt;-<span class="st"> </span><span class="kw">nrow</span>(diamonds) <span class="op">*</span><span class="st"> </span><span class="fl">0.80</span>
+test &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">nrow</span>(diamonds), ntest)
+model &lt;-<span class="st"> </span><span class="kw">lm</span>(price <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> diamonds[test, ])
+p &lt;-<span class="st"> </span><span class="kw">predict</span>(model, diamonds[<span class="op">-</span>test, ])
+error &lt;-<span class="st"> </span>p <span class="op">-</span><span class="st"> </span>diamonds<span class="op">$</span>price[<span class="op">-</span>test]
+rmse_out &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(error<span class="op">^</span><span class="dv">2</span>)) ## out-of-sample RMSE 
+rmse_out</code></pre></div>
+<pre><code>## [1] 1136.596</code></pre>
+<p></details></p>
+<p>The values for the out-of-sample RMSE will vary depending on the what exact split was used. The diamonds is a rather extensive data, and thus even when building out model using a subset of the available data (80% above), we manage to generate a model with a low RMSE, and possibly lower than the in-sample error.</p>
+<p>When dealing with datasets of smaller sizes, however, the presence of a single outlier in the train and test data split can substantially influence the model and the RMSE. We can’t rely on such an approach an need a more robust one, where, we can generate and use multiple, different train/test sets to sample a set of RMSEs, leading to a better estimate of the out-of-sample RMSE.</p>
+</div>
+<div id="cross-validation" class="section level3">
+<h3><span class="header-section-number">5.3.2</span> Cross-validation</h3>
+<p>Instead of doing a single training/testing split, we can systematise this process, produce multiple, different out-of-sample train/test splits, that will lead to a better estimate of the out-of-sample RMSE.</p>
+<p>The figure below illustrates the cross validation procedure, creating 3 folds. One would typically do a 10-fold cross validation (if the size of the data permits it). We split the data into 3 <em>random</em> and complementary folds, so that each data point appears exactly once in each fold. This leads to a total test set size that is identical to the size as the full dataset but is composed of out-of-sample predictions.</p>
+<div class="figure">
+<img src="figure/xval.png" alt="Schematic of 3-fold cross validation producing three training (blue) and testing (white) splits." />
+<p class="caption">Schematic of 3-fold cross validation producing three training (blue) and testing (white) splits.</p>
+</div>
+<p>After cross-validation, all models used within each fold are discarded, and a new model is build using the whole dataset, with the best model parameter(s), i.e those that generalised over all folds.</p>
+<p>This makes cross-validation quite time consuming, as it takes <em>x+1</em> (where <em>x</em> in the number of cross-validation folds) times as long as fitting a single model, but is essential.</p>
+<p>Note that it is important to maintain the class proportions within the different folds, i.e. respect the proportion of the different classes in the original data. This is also taken care when using the <em><a href="https://CRAN.R-project.org/package=caret">caret</a></em> package.</p>
+<p>The procedure of creating folds and training the models is handled by the <code>train</code> function in <em><a href="https://CRAN.R-project.org/package=caret">caret</a></em>. Below, we apply it to the diamond price example that we used when introducing the model performance.</p>
+<ul>
+<li>We start by setting a random to be able to reproduce the example.</li>
+<li>We specify the method (the learning algorithm) we want to use. Here, we use <code>&quot;lm&quot;</code>, but, as we will see later, there are many others to choose from<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>.</li>
+<li>We then set the out-of-sample training procedure to 10-fold cross validation (<code>method = &quot;cv&quot;</code> and <code>number = 10</code>). To simplify the output in the material for better readability, we set the verbosity flag to <code>FALSE</code>, but it is useful to set it to <code>TRUE</code> in interactive mode.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">42</span>)
+model &lt;-<span class="st"> </span><span class="kw">train</span>(price <span class="op">~</span><span class="st"> </span>., diamonds,
+               <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, 
+               <span class="dt">trControl =</span> <span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
+                                        <span class="dt">number =</span> <span class="dv">10</span>, 
+                                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>))
+model</code></pre></div>
+<pre><code>## Linear Regression 
+## 
+## 53940 samples
+##     9 predictors
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 48545, 48547, 48546, 48546, 48545, 48546, ... 
+## Resampling results:
+## 
+##   RMSE      Rsquared   MAE     
+##   1131.504  0.9195556  740.6424
+## 
+## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
+<p>Once we have trained our model, we can directly use object of <code>train</code> as input to the <code>predict</code> method:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">predict</span>(model, diamonds)
+error &lt;-<span class="st"> </span>p <span class="op">-</span><span class="st"> </span>diamonds<span class="op">$</span>price
+rmse_xval &lt;-<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">mean</span>(error<span class="op">^</span><span class="dv">2</span>)) ## xval RMSE
+rmse_xval</code></pre></div>
+<pre><code>## [1] 1129.843</code></pre>
+<blockquote>
+<p>Challenge</p>
+<p>Train a linear model using 10-fold cross-validation and then use it to predict the median value of owner-occupied homes in Boston from the <code>Boston</code> dataset as described above. Then calculate the RMSE.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;MASS&quot;</span>)
+<span class="kw">data</span>(Boston)
+model &lt;-<span class="st"> </span><span class="kw">train</span>(medv <span class="op">~</span><span class="st"> </span>.,
+               Boston,
+               <span class="dt">method =</span> <span class="st">&quot;lm&quot;</span>, 
+               <span class="dt">trControl =</span> <span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, 
+                                        <span class="dt">number =</span> <span class="dv">10</span>))
+model</code></pre></div>
+<pre><code>## Linear Regression 
+## 
+## 506 samples
+##  13 predictors
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 455, 456, 454, 454, 455, 454, ... 
+## Resampling results:
+## 
+##   RMSE      Rsquared   MAE    
+##   4.770438  0.7379312  3.38097
+## 
+## Tuning parameter &#39;intercept&#39; was held constant at a value of TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">predict</span>(model, Boston)
+<span class="kw">sqrt</span>(<span class="kw">mean</span>(p <span class="op">-</span><span class="st"> </span>Boston<span class="op">$</span>medv)<span class="op">^</span><span class="dv">2</span>)</code></pre></div>
+<pre><code>## [1] 5.851927e-14</code></pre>
+<p></details></p>
+</div>
+</div>
+<div id="classification-performance" class="section level2">
+<h2><span class="header-section-number">5.4</span> Classification performance</h2>
+<p>Above, we have used the RMSE to assess the performance of our regression model. When using a classification algorithm, we want to assess its accuracy to do so.</p>
+<div id="confusion-matrix" class="section level3">
+<h3><span class="header-section-number">5.4.1</span> Confusion matrix</h3>
+<p>Instead of calculating an error between predicted value and known value, in classification we will directly compare of the predicted class matches the known label. To do so, rather than calculating the mean accuracy as we did above, in the introductory kNN example, we can calculate a <strong>confusion matrix</strong>.</p>
+<p>A confusion matrix to contrast predictions to actual results. Correct results are <em>true positives</em> (TP) and <em>true negatives</em> that are found along the diagonal. All other cells indicate false results, i.e <em>false negatives</em> (FN) and *false positives8 (FP).</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">Reference Yes</th>
+<th align="left">Referenc No</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Predicted Yes</td>
+<td align="left">TP</td>
+<td align="left">FP</td>
+</tr>
+<tr class="even">
+<td>Predicted No</td>
+<td align="left">FN</td>
+<td align="left">TN</td>
+</tr>
+</tbody>
+</table>
+<p>The values that populate this table will depend on a the cutoff that we set to define whether the classifier should predict <em>Yes</em> or <em>No</em>. Intuitively, we might want to use 0.5 as a threshold, and assign every result with a probability &gt; 0.5 to <em>Yes</em> and <em>No</em> otherwise.</p>
+<p>Let’s experiment with this using the <code>Sonar</code> dataset, and see if we can differentiate mines from rocks using a logistic classification model use the <code>glm</code> function from the <em><a href="https://CRAN.R-project.org/package=stats">stats</a></em> package.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;mlbench&quot;</span>)
+<span class="kw">data</span>(Sonar)
+## 60/40 split
+tr &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">nrow</span>(Sonar), <span class="kw">round</span>(<span class="kw">nrow</span>(Sonar) <span class="op">*</span><span class="st"> </span><span class="fl">0.6</span>))
+train &lt;-<span class="st"> </span>Sonar[tr, ]
+test &lt;-<span class="st"> </span>Sonar[<span class="op">-</span>tr, ]</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">glm</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> train, <span class="dt">family =</span> <span class="st">&quot;binomial&quot;</span>)
+p &lt;-<span class="st"> </span><span class="kw">predict</span>(model, test, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)
+<span class="kw">summary</span>(p)</code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.0000  0.0000  0.7265  0.5079  1.0000  1.0000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cl &lt;-<span class="st"> </span><span class="kw">ifelse</span>(p <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.5</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;R&quot;</span>)
+<span class="kw">table</span>(cl, test<span class="op">$</span>Class)</code></pre></div>
+<pre><code>##    
+## cl   M  R
+##   M 16 26
+##   R 29 12</code></pre>
+<p>The caret package offers it’s own, more informative function to calculate a confusion matrix:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confusionMatrix</span>(cl, test<span class="op">$</span>Class)</code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  M  R
+##          M 16 26
+##          R 29 12
+##                                           
+##                Accuracy : 0.3373          
+##                  95% CI : (0.2372, 0.4495)
+##     No Information Rate : 0.5422          
+##     P-Value [Acc &gt; NIR] : 0.9999          
+##                                           
+##                   Kappa : -0.3266         
+##  Mcnemar&#39;s Test P-Value : 0.7874          
+##                                           
+##             Sensitivity : 0.3556          
+##             Specificity : 0.3158          
+##          Pos Pred Value : 0.3810          
+##          Neg Pred Value : 0.2927          
+##              Prevalence : 0.5422          
+##          Detection Rate : 0.1928          
+##    Detection Prevalence : 0.5060          
+##       Balanced Accuracy : 0.3357          
+##                                           
+##        &#39;Positive&#39; Class : M               
+## </code></pre>
+<p>We get, among others</p>
+<ul>
+<li>the accuracy: (TP + TN)/(TP + TN + FP + FN)</li>
+<li>the sensitivity (recall, TP rate): TP/(TP + FN)</li>
+<li>the specificity: TN/(TN + FP)</li>
+<li>positive predictive value (precision): TP/(TP + FP)</li>
+<li>negative predictive value: TN/(TN + FN)</li>
+<li>FP rate (fall-out): FP/(FP + TN)</li>
+</ul>
+<blockquote>
+<p>Challenge</p>
+<p>Compare the model accuracy (or any other metric) using thresholds of 0.1 and 0.9.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confusionMatrix</span>(<span class="kw">ifelse</span>(p <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.9</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;R&quot;</span>), test<span class="op">$</span>Class)</code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  M  R
+##          M 16 25
+##          R 29 13
+##                                          
+##                Accuracy : 0.3494         
+##                  95% CI : (0.248, 0.4619)
+##     No Information Rate : 0.5422         
+##     P-Value [Acc &gt; NIR] : 0.9999         
+##                                          
+##                   Kappa : -0.2999        
+##  Mcnemar&#39;s Test P-Value : 0.6831         
+##                                          
+##             Sensitivity : 0.3556         
+##             Specificity : 0.3421         
+##          Pos Pred Value : 0.3902         
+##          Neg Pred Value : 0.3095         
+##              Prevalence : 0.5422         
+##          Detection Rate : 0.1928         
+##    Detection Prevalence : 0.4940         
+##       Balanced Accuracy : 0.3488         
+##                                          
+##        &#39;Positive&#39; Class : M              
+## </code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">confusionMatrix</span>(<span class="kw">ifelse</span>(p <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.1</span>, <span class="st">&quot;M&quot;</span>, <span class="st">&quot;R&quot;</span>), test<span class="op">$</span>Class)</code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  M  R
+##          M 16 28
+##          R 29 10
+##                                           
+##                Accuracy : 0.3133          
+##                  95% CI : (0.2159, 0.4244)
+##     No Information Rate : 0.5422          
+##     P-Value [Acc &gt; NIR] : 1               
+##                                           
+##                   Kappa : -0.3805         
+##  Mcnemar&#39;s Test P-Value : 1               
+##                                           
+##             Sensitivity : 0.3556          
+##             Specificity : 0.2632          
+##          Pos Pred Value : 0.3636          
+##          Neg Pred Value : 0.2564          
+##              Prevalence : 0.5422          
+##          Detection Rate : 0.1928          
+##    Detection Prevalence : 0.5301          
+##       Balanced Accuracy : 0.3094          
+##                                           
+##        &#39;Positive&#39; Class : M               
+## </code></pre>
+<p></details></p>
+</div>
+<div id="receiver-operating-characteristic-roc-curve" class="section level3">
+<h3><span class="header-section-number">5.4.2</span> Receiver operating characteristic (ROC) curve</h3>
+<p>There is no reason to use 0.5 as a threshold. One could use a low threshold to catch more mines with less certainty or or higher threshold to catch fewer mines with more certainty.</p>
+<p>This illustrates the need to adequately balance TP and FP rates. We need to have a way to do a cost-benefit analysis, and the solution will often depend on the question/problem.</p>
+<p>One solution would be to try with different classification thresholds. Instead of inspecting numerous confusion matrices, it is possible to automate the calculation of the TP and FP rates at each threshold and visualise all results along a ROC curve.</p>
+<p>This can be done with the <code>colAUC</code> function from the <em><a href="https://CRAN.R-project.org/package=caTools">caTools</a></em> package:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">caTools<span class="op">::</span><span class="kw">colAUC</span>(p, test[[<span class="st">&quot;Class&quot;</span>]], <span class="dt">plotROC =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="IntroMachineLearningWithR_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre><code>##              [,1]
+## M vs. R 0.6909357</code></pre>
+<ul>
+<li>x: FP rate (1 - specificity)</li>
+<li>y: TP rate (sensitivity)</li>
+<li>each point along the curve represents a confusion matrix for a given threshold</li>
+</ul>
+<p>In addition, the <code>colAUC</code> function returns the area under the curve (AUC) model accuracy metric. This is single number metric, summarising the model performance along all possible thresholds:</p>
+<ul>
+<li>an AUC of 0.5 corresponds to a random model</li>
+<li>values &gt; 0.5 do better than a random guess</li>
+<li>a value 1 represents a perfect model</li>
+<li>a value 1 represents a model that is always wrong</li>
+</ul>
+</div>
+<div id="auc-in-caret" class="section level3">
+<h3><span class="header-section-number">5.4.3</span> AUC in <code>caret</code></h3>
+<p>When using <em><a href="https://CRAN.R-project.org/package=caret">caret</a></em>’s <code>trainControl</code> function to train a model, we can set it so that it computes the ROC and AUC properties for us.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Create trainControl object: myControl
+myControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(
+  <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, ## cross validation
+  <span class="dt">number =</span> <span class="dv">10</span>,   ## 10-fold
+  <span class="dt">summaryFunction =</span> twoClassSummary, ## NEW
+  <span class="dt">classProbs =</span> <span class="ot">TRUE</span>, <span class="co"># IMPORTANT</span>
+  <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>
+)
+## Train glm with custom trainControl: model
+model &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., Sonar,
+         <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>, ## to use glm&#39;s logistic regression
+         <span class="dt">trControl =</span> myControl) 
+
+## Print model to console
+<span class="kw">print</span>(model)</code></pre></div>
+<pre><code>## Generalized Linear Model 
+## 
+## 208 samples
+##  60 predictors
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (10 fold) 
+## Summary of sample sizes: 187, 187, 187, 187, 188, 188, ... 
+## Resampling results:
+## 
+##   ROC        Sens       Spec
+##   0.7134091  0.7462121  0.67</code></pre>
+<blockquote>
+<p>Challenge</p>
+<p>Define a <code>train</code> object that uses the AUC and 10-fold cross validation to classify the Sonar data using a logistic regression, as demonstrated above.</p>
+</blockquote>
+</div>
+</div>
+<div id="random-forest" class="section level2">
+<h2><span class="header-section-number">5.5</span> Random forest</h2>
+<p>Random forest models are accurate and non-linear models and robust to over-fitting and hence quite popular. They however require hyperparameters to be tuned manually, like the value <em>k</em> in the example above.</p>
+<p>Building random forest starts by generating a high number of individual decision trees. A single decision tree isn’t very accurate, but many different trees built using different inputs (with bootstrapped inputs, features and observations) enable to explore a broad search space and, once combined, produce accurate models, a technique called <em>bootstrap aggregation</em> or <em>bagging</em>.</p>
+<div id="decision-trees" class="section level3">
+<h3><span class="header-section-number">5.5.1</span> Decision trees</h3>
+<p>A great advantage of decision trees is that they make a complex decision simpler by breaking it down into smaller, simpler decisions using divide-and-conquer strategy. They basically identify a set of if-else conditions that split data according to the value if the features.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;rpart&quot;</span>) ## recursive partitioning
+m &lt;-<span class="st"> </span><span class="kw">rpart</span>(Class <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> Sonar,
+           <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>)
+<span class="kw">library</span>(<span class="st">&quot;rpart.plot&quot;</span>)
+<span class="kw">rpart.plot</span>(m)</code></pre></div>
+<div class="figure"><span id="fig:rpart"></span>
+<img src="IntroMachineLearningWithR_files/figure-html/rpart-1.png" alt="Descision tree with its if-else conditions" width="672" />
+<p class="caption">
+Figure 5.2: Descision tree with its if-else conditions
+</p>
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">predict</span>(m, Sonar, <span class="dt">type =</span> <span class="st">&quot;class&quot;</span>)
+<span class="kw">table</span>(p, Sonar<span class="op">$</span>Class)</code></pre></div>
+<pre><code>##    
+## p    M  R
+##   M 95 10
+##   R 16 87</code></pre>
+<p>Decision trees choose splits based on most homogeneous partitions, and lead to smaller and more homogeneous partitions over their iterations.</p>
+<p>An issue with single decision trees is that they can grow, and become large and complex with many branches, with corresponds to over-fitting. Over-fitting models noise, rather than general patterns in the data, focusing on subtle patterns (outliers) that won’t generalise.</p>
+<p>To avoid over-fitting, individual decision trees are pruned. Pruning can happen as a pre-condition when growing the tree, or afterwards, by pruning a large tree.</p>
+<ul>
+<li><p><em>Pre-pruning</em>: stop growing process, i.e stops divide-and-conquer after a certain number of iterations (grows tree at certain predefined level), or requires a minimum number of observations in each mode to allow splitting.</p></li>
+<li><p><em>Post-pruning</em>: grow a large and complex tree, and reduce its size; nodes and branches that have a negligible effect on the classification accuracy are removed.</p></li>
+</ul>
+</div>
+<div id="training-a-random-forest" class="section level3">
+<h3><span class="header-section-number">5.5.2</span> Training a random forest</h3>
+<p>Let’s return to random forests and train a model using the <code>train</code> infrastructure from <em><a href="https://CRAN.R-project.org/package=caret">caret</a></em>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">12</span>)
+model &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>.,
+               <span class="dt">data =</span> Sonar,
+               <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>) 
+<span class="kw">print</span>(model)</code></pre></div>
+<pre><code>## Random Forest 
+## 
+## 208 samples
+##  60 predictors
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: Bootstrapped (25 reps) 
+## Summary of sample sizes: 208, 208, 208, 208, 208, 208, ... 
+## Resampling results across tuning parameters:
+## 
+##   mtry  splitrule   Accuracy   Kappa    
+##    2    gini        0.8221049  0.6417590
+##    2    extratrees  0.8346434  0.6669013
+##   31    gini        0.7884549  0.5747543
+##   31    extratrees  0.8396622  0.6774340
+##   60    gini        0.7776562  0.5524942
+##   60    extratrees  0.8359736  0.6694219
+## 
+## Accuracy was used to select the optimal model using  the largest value.
+## The final values used for the model were mtry = 31 and splitrule
+##  = extratrees.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(model)</code></pre></div>
+<p><img src="IntroMachineLearningWithR_files/figure-html/rfplotmodel-1.png" width="672" /></p>
+<p>The main hyperparameters is <em>mtry</em>, i.e. the number of randomly selected variables used at each split. 2 variables produce random models, while 100s of variables tend to be less random, but risk over-fitting. <code>caret</code> automate the tuning of the hyperparameter using a <strong>grid search</strong>, which can be parametrised by setting <code>tuneLength</code> (that sets the number of hyperparameter values to test) or directly defining the <code>tuneGrid</code> (the hyperparameter values), which requires knowledge of the model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>.,
+               <span class="dt">data =</span> Sonar,
+               <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,
+               <span class="dt">tuneLength =</span> <span class="dv">5</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">42</span>)
+myGrid &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">mtry =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">40</span>, <span class="dv">60</span>),
+                     <span class="dt">splitrule =</span> <span class="kw">c</span>(<span class="st">&quot;gini&quot;</span>, <span class="st">&quot;extratrees&quot;</span>))
+model &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>.,
+               <span class="dt">data =</span> Sonar,
+               <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>, 
+               <span class="dt">tuneGrid =</span> myGrid,
+               <span class="dt">trControl =</span> <span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,
+                                       <span class="dt">number =</span> <span class="dv">5</span>,
+                                       <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>))
+<span class="kw">print</span>(model)</code></pre></div>
+<pre><code>## Random Forest 
+## 
+## 208 samples
+##  60 predictors
+##   2 classes: &#39;M&#39;, &#39;R&#39; 
+## 
+## No pre-processing
+## Resampling: Cross-Validated (5 fold) 
+## Summary of sample sizes: 167, 167, 167, 166, 165 
+## Resampling results across tuning parameters:
+## 
+##   mtry  splitrule   Accuracy   Kappa    
+##    5    gini        0.8228209  0.6388558
+##    5    extratrees  0.8415417  0.6764071
+##   10    gini        0.8175999  0.6291739
+##   10    extratrees  0.8512924  0.6968188
+##   20    gini        0.8030819  0.5994688
+##   20    extratrees  0.8509548  0.6969166
+##   40    gini        0.7838020  0.5612192
+##   40    extratrees  0.8414256  0.6782512
+##   60    gini        0.7692840  0.5310516
+##   60    extratrees  0.8460768  0.6880922
+## 
+## Accuracy was used to select the optimal model using  the largest value.
+## The final values used for the model were mtry = 10 and splitrule
+##  = extratrees.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(model)</code></pre></div>
+<p><img src="IntroMachineLearningWithR_files/figure-html/tuneGrid-1.png" width="672" /></p>
+<blockquote>
+<p>Challenge</p>
+<p>Experiment with training a random forest model as described above, by using 5-fold cross validation, and setting a <code>tuneLength</code> of 5.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">42</span>)
+model &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>.,
+               <span class="dt">data =</span> Sonar,
+               <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,
+               <span class="dt">tuneLength =</span> <span class="dv">5</span>,
+               <span class="dt">trControl =</span> <span class="kw">trainControl</span>(<span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>,
+                                        <span class="dt">number =</span> <span class="dv">5</span>,
+                                        <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>))
+<span class="kw">plot</span>(model)</code></pre></div>
+<p><img src="IntroMachineLearningWithR_files/figure-html/rftrainsol-1.png" width="672" /> </details></p>
+</div>
+</div>
+<div id="data-pre-processing-1" class="section level2">
+<h2><span class="header-section-number">5.6</span> Data pre-processing</h2>
+<div id="missing-values" class="section level3">
+<h3><span class="header-section-number">5.6.1</span> Missing values</h3>
+<p>Real datasets often come with missing values. In R, these should be encoded using <code>NA</code>. There are basically two approaches to deal with such cases.</p>
+<ul>
+<li><p>Drop the observations with missing values, or, if one feature contains a very high proportion of NAs, drop the feature altogether. These approaches are only applicable when the proportion of missing values is relatively small. Otherwise, it could lead to loosing too much data.</p></li>
+<li><p>Impute missing values.</p></li>
+</ul>
+<p>Data imputation can however have critical consequences depending on the proportion of missing values and their nature. From a statistical point of view, missing values are classified as <em>missing completely at random</em> (MCAR), <em>missing at random</em> (MAR) or <em>missing not at random</em> (MNAR), and the type of the missing values will influence the efficiency of the imputation method.</p>
+<p>The figure below shows how different imputation methods perform depending on the proportion and nature of missing values (from <a href="https://www.ncbi.nlm.nih.gov/pubmed/26906401">Lazar <em>et al.</em></a>, on quantitative proteomics data).</p>
+<div class="figure">
+<img src="figure/imp.png" alt="Normalised RMSE (RMSE-observation standard deviation ration) describing the effect of different imputation methods depending on the nature and proportion of the missing values: kNN (a), SVDimpute (b), MLE (c), MinDet (d), and MinProb (e)." />
+<p class="caption">Normalised RMSE (RMSE-observation standard deviation ration) describing the effect of different imputation methods depending on the nature and proportion of the missing values: kNN (a), SVDimpute (b), MLE (c), MinDet (d), and MinProb (e).</p>
+</div>
+<p>Let’s start by simulating a dataset containing missing values using the <code>mtcars</code> dataset. Below, we will want to predict the <code>mpg</code> variable using <code>cyl</code>, <code>disp</code>, and <code>hp</code>, with the latter containing 10 missing values.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(mtcars)
+mtcars[<span class="kw">sample</span>(<span class="kw">nrow</span>(mtcars), <span class="dv">10</span>), <span class="st">&quot;hp&quot;</span>] &lt;-<span class="st"> </span><span class="ot">NA</span>
+Y &lt;-<span class="st"> </span>mtcars<span class="op">$</span>mpg    ## target variable
+X &lt;-<span class="st"> </span>mtcars[, <span class="dv">2</span><span class="op">:</span><span class="dv">4</span>] ## predictors</code></pre></div>
+<p>If we now wanted to train a model (using the non-formula interface):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">try</span>(<span class="kw">train</span>(X, Y))</code></pre></div>
+<pre><code>## note: only 2 unique complexity parameters in default grid. Truncating the grid to 2 .
+## 
+## Something is wrong; all the RMSE metric values are missing:
+##       RMSE        Rsquared        MAE     
+##  Min.   : NA   Min.   : NA   Min.   : NA  
+##  1st Qu.: NA   1st Qu.: NA   1st Qu.: NA  
+##  Median : NA   Median : NA   Median : NA  
+##  Mean   :NaN   Mean   :NaN   Mean   :NaN  
+##  3rd Qu.: NA   3rd Qu.: NA   3rd Qu.: NA  
+##  Max.   : NA   Max.   : NA   Max.   : NA  
+##  NA&#39;s   :2     NA&#39;s   :2     NA&#39;s   :2</code></pre>
+<p>(Note that the occurrence of the error will depend on the model chosen.)</p>
+<p>We could perform imputation manually, but <em><a href="https://CRAN.R-project.org/package=caret">caret</a></em> provides a whole range of pre-processing methods, including imputation methods, that can directly be passed when training the model.</p>
+</div>
+<div id="median-imputation" class="section level3">
+<h3><span class="header-section-number">5.6.2</span> Median imputation</h3>
+<p>Imputation using median of features. This methods works well if the data are missing at random.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">train</span>(X, Y, <span class="dt">preProcess =</span> <span class="st">&quot;medianImpute&quot;</span>)</code></pre></div>
+<pre><code>## note: only 2 unique complexity parameters in default grid. Truncating the grid to 2 .</code></pre>
+<pre><code>## Random Forest 
+## 
+## 32 samples
+##  3 predictors
+## 
+## Pre-processing: median imputation (3) 
+## Resampling: Bootstrapped (25 reps) 
+## Summary of sample sizes: 32, 32, 32, 32, 32, 32, ... 
+## Resampling results across tuning parameters:
+## 
+##   mtry  RMSE      Rsquared  MAE     
+##   2     2.882856  0.808562  2.389234
+##   3     2.888400  0.806260  2.373986
+## 
+## RMSE was used to select the optimal model using  the smallest value.
+## The final value used for the model was mtry = 2.</code></pre>
+<p>Imputing using caret also allows to optimise the imputation based on the cross validation splits, as <code>train</code> will do median imputation inside each fold.</p>
+</div>
+<div id="knn-imputation" class="section level3">
+<h3><span class="header-section-number">5.6.3</span> KNN imputation</h3>
+<p>If there is a systematic bias in the missing values, then median imputation is known to produce incorrect results. kNN imputation will impute missing values using on other, similar non-missing rows. The default value is 5.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">train</span>(X, Y, <span class="dt">preProcess =</span> <span class="st">&quot;knnImpute&quot;</span>)</code></pre></div>
+<pre><code>## note: only 2 unique complexity parameters in default grid. Truncating the grid to 2 .</code></pre>
+<pre><code>## Random Forest 
+## 
+## 32 samples
+##  3 predictors
+## 
+## Pre-processing: nearest neighbor imputation (3), centered (3), scaled (3) 
+## Resampling: Bootstrapped (25 reps) 
+## Summary of sample sizes: 32, 32, 32, 32, 32, 32, ... 
+## Resampling results across tuning parameters:
+## 
+##   mtry  RMSE      Rsquared   MAE     
+##   2     2.868534  0.7995565  2.309105
+##   3     2.871339  0.7907874  2.276478
+## 
+## RMSE was used to select the optimal model using  the smallest value.
+## The final value used for the model was mtry = 2.</code></pre>
+</div>
+</div>
+<div id="scaling-and-scaling" class="section level2">
+<h2><span class="header-section-number">5.7</span> Scaling and scaling</h2>
+<p>We have seen in the <em>Unsupervised learning</em> chapter how data at different scales can substantially disrupt a learning algorithm. Scaling (division by the standard deviation) and centring (subtraction of the mean) can also be applied directly during model training by setting. Note that they are set to be applied by default prior to training.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">train</span>(X, Y, <span class="dt">preProcess =</span> <span class="st">&quot;scale&quot;</span>)
+<span class="kw">train</span>(X, Y, <span class="dt">preProcess =</span> <span class="st">&quot;center&quot;</span>)</code></pre></div>
+<p>As we have discussed in the section about Principal component analysis, PCA can be used as pre-processing method, generating a set of high-variance and perpendicular predictors, preventing collinearity.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">train</span>(X, Y, <span class="dt">preProcess =</span> <span class="st">&quot;pca&quot;</span>)</code></pre></div>
+<div id="multiple-pre-processing-methods" class="section level3">
+<h3><span class="header-section-number">5.7.1</span> Multiple pre-processing methods</h3>
+<p>It is possible to chain multiple processing methods: imputation, center, scale, pca.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">train</span>(X, Y, <span class="dt">preProcess =</span> <span class="kw">c</span>(<span class="st">&quot;knnImpute&quot;</span>, <span class="st">&quot;center&quot;</span>, <span class="st">&quot;scale&quot;</span>, <span class="st">&quot;pca&quot;</span>))</code></pre></div>
+<pre><code>## note: only 2 unique complexity parameters in default grid. Truncating the grid to 2 .</code></pre>
+<pre><code>## Random Forest 
+## 
+## 32 samples
+##  3 predictors
+## 
+## Pre-processing: nearest neighbor imputation (3), centered (3), scaled
+##  (3), principal component signal extraction (3) 
+## Resampling: Bootstrapped (25 reps) 
+## Summary of sample sizes: 32, 32, 32, 32, 32, 32, ... 
+## Resampling results across tuning parameters:
+## 
+##   mtry  RMSE      Rsquared   MAE     
+##   2     3.294041  0.7421489  2.703088
+##   3     3.273033  0.7436632  2.696803
+## 
+## RMSE was used to select the optimal model using  the smallest value.
+## The final value used for the model was mtry = 3.</code></pre>
+<p>The pre-processing methods above represent a classical order or operations, starting with data imputation to remove missing values, then centring and scaling, prior to PCA.</p>
+<!-- ## Low information predictors -->
+<!-- To remove, for example constant or random variables, or variables with -->
+<!-- low variance. -->
+<!-- ```{r, eval=FALSE} -->
+<!-- train(X, Y, preProcess = c("zv", ...))  ## remove constant (zero-variance) columns -->
+<!-- train(X, Y, preProcess = c("nzv", ...)) ## nearly constant columns -->
+<!-- ``` -->
+<p>For further details, see <code>?preProcess</code>.</p>
+</div>
+</div>
+<div id="model-selection-1" class="section level2">
+<h2><span class="header-section-number">5.8</span> Model selection</h2>
+<p>In this final section, we are going to compare different predictive models and chose the best one using the tools presented in the previous sections.</p>
+<p>To to so, we are going to first create a set of common training controller object with the same train/test folds and model evaluation metrics that we will re-use. This is important to guarantee fair comparison between the different models.</p>
+<p>For this section, we are going to use the <code>churn</code> data. Below, we see that about 15% of the customers churn. It is important to maintain this proportion in all the folds.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;C50&quot;</span>)
+<span class="kw">data</span>(churn)
+<span class="kw">table</span>(churnTrain<span class="op">$</span>churn)<span class="op">/</span><span class="kw">nrow</span>(churnTrain)</code></pre></div>
+<pre><code>## 
+##       yes        no 
+## 0.1449145 0.8550855</code></pre>
+<p>Previously, when creating a train control object, we specified the method as <code>&quot;cv&quot;</code> and the number of folds. Now, as we want the same folds to be re-used over multiple model training rounds, we are going to pass the train/test splits directly. These splits are created with the <code>createFolds</code> function, which creates a list (here of length 5) containing the element indices for each fold.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myFolds &lt;-<span class="st"> </span><span class="kw">createFolds</span>(churnTrain<span class="op">$</span>churn, <span class="dt">k =</span> <span class="dv">5</span>)
+<span class="kw">str</span>(myFolds)</code></pre></div>
+<pre><code>## List of 5
+##  $ Fold1: int [1:666] 1 4 14 16 23 28 29 30 34 35 ...
+##  $ Fold2: int [1:667] 6 12 17 32 33 41 49 51 58 65 ...
+##  $ Fold3: int [1:667] 8 15 18 26 37 43 47 50 52 54 ...
+##  $ Fold4: int [1:666] 2 7 11 13 22 24 25 31 39 40 ...
+##  $ Fold5: int [1:667] 3 5 9 10 19 20 21 27 38 48 ...</code></pre>
+<blockquote>
+<p>Challenge</p>
+<p>Verify that the folds maintain the proportion of yes/no results.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sapply</span>(myFolds, <span class="cf">function</span>(i) {
+    <span class="kw">table</span>(churnTrain<span class="op">$</span>churn[i])<span class="op">/</span><span class="kw">length</span>(i)
+})</code></pre></div>
+<pre><code>##         Fold1     Fold2     Fold3     Fold4     Fold5
+## yes 0.1441441 0.1454273 0.1454273 0.1441441 0.1454273
+## no  0.8558559 0.8545727 0.8545727 0.8558559 0.8545727</code></pre>
+<p></details></p>
+<p>We can now a train control object to be reused consistently for different model trainings.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">myControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(
+  <span class="dt">summaryFunction =</span> twoClassSummary,
+  <span class="dt">classProb =</span> <span class="ot">TRUE</span>,
+  <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>,
+  <span class="dt">savePredictions =</span> <span class="ot">TRUE</span>,
+  <span class="dt">index =</span> myFolds
+)</code></pre></div>
+<p><strong>NB</strong> Some of the model training below will take some time to run, depending on the tuning parameter settings.</p>
+<div id="glmnet-model" class="section level3">
+<h3><span class="header-section-number">5.8.1</span> <code>glmnet</code> model</h3>
+<p>The <code>glmnet</code> is a liner model with build-in variable selection and coefficient regularisation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">glm_model &lt;-<span class="st"> </span><span class="kw">train</span>(churn <span class="op">~</span><span class="st"> </span>.,
+                   churnTrain,
+                   <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>, 
+                   <span class="dt">method =</span> <span class="st">&quot;glmnet&quot;</span>,
+                   <span class="dt">tuneGrid =</span> <span class="kw">expand.grid</span>(
+                       <span class="dt">alpha =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">1</span>,
+                       <span class="dt">lambda =</span> <span class="dv">0</span><span class="op">:</span><span class="dv">10</span><span class="op">/</span><span class="dv">10</span>),
+                   <span class="dt">trControl =</span> myControl)
+<span class="kw">print</span>(glm_model)</code></pre></div>
+<pre><code>## glmnet 
+## 
+## 3333 samples
+##   19 predictors
+##    2 classes: &#39;yes&#39;, &#39;no&#39; 
+## 
+## No pre-processing
+## Resampling: Bootstrapped (5 reps) 
+## Summary of sample sizes: 666, 667, 667, 666, 667 
+## Resampling results across tuning parameters:
+## 
+##   alpha  lambda  ROC        Sens         Spec     
+##   0      0.0     0.7571208  0.249493246  0.9563158
+##   0      0.1     0.7724348  0.080234566  0.9921053
+##   0      0.2     0.7734827  0.017605870  0.9986842
+##   0      0.3     0.7732454  0.003107469  0.9999123
+##   0      0.4     0.7727991  0.001036269  1.0000000
+##   0      0.5     0.7724129  0.000000000  1.0000000
+##   0      0.6     0.7721133  0.000000000  1.0000000
+##   0      0.7     0.7718314  0.000000000  1.0000000
+##   0      0.8     0.7715527  0.000000000  1.0000000
+##   0      0.9     0.7713204  0.000000000  1.0000000
+##   0      1.0     0.7711282  0.000000000  1.0000000
+##   1      0.0     0.7305374  0.292971041  0.9410526
+##   1      0.1     0.5210535  0.000000000  1.0000000
+##   1      0.2     0.5000000  0.000000000  1.0000000
+##   1      0.3     0.5000000  0.000000000  1.0000000
+##   1      0.4     0.5000000  0.000000000  1.0000000
+##   1      0.5     0.5000000  0.000000000  1.0000000
+##   1      0.6     0.5000000  0.000000000  1.0000000
+##   1      0.7     0.5000000  0.000000000  1.0000000
+##   1      0.8     0.5000000  0.000000000  1.0000000
+##  [ reached getOption(&quot;max.print&quot;) -- omitted 2 rows ]
+## 
+## ROC was used to select the optimal model using  the largest value.
+## The final values used for the model were alpha = 0 and lambda = 0.2.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(glm_model)</code></pre></div>
+<p><img src="IntroMachineLearningWithR_files/figure-html/glmnetmodel-1.png" width="672" /></p>
+</div>
+<div id="random-forest-model" class="section level3">
+<h3><span class="header-section-number">5.8.2</span> random forest model</h3>
+<blockquote>
+<p>Challenge</p>
+<p>Apply a random forest model, making sure you reuse the same train control object.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">rf_model &lt;-<span class="st"> </span><span class="kw">train</span>(churn <span class="op">~</span><span class="st"> </span>.,
+                  churnTrain,
+                  <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>, 
+                  <span class="dt">method =</span> <span class="st">&quot;ranger&quot;</span>,
+                  <span class="dt">tuneGrid =</span> <span class="kw">expand.grid</span>(
+                      <span class="dt">mtry =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">19</span>),
+                      <span class="dt">splitrule =</span> <span class="kw">c</span>(<span class="st">&quot;gini&quot;</span>, <span class="st">&quot;extratrees&quot;</span>)),
+                  <span class="dt">trControl =</span> myControl)
+<span class="kw">print</span>(rf_model)</code></pre></div>
+<pre><code>## Random Forest 
+## 
+## 3333 samples
+##   19 predictors
+##    2 classes: &#39;yes&#39;, &#39;no&#39; 
+## 
+## No pre-processing
+## Resampling: Bootstrapped (5 reps) 
+## Summary of sample sizes: 666, 667, 667, 666, 667 
+## Resampling results across tuning parameters:
+## 
+##   mtry  splitrule   ROC        Sens        Spec     
+##    2    gini        0.8685414  0.01553735  1.0000000
+##    2    extratrees  0.8308926  0.00000000  1.0000000
+##    5    gini        0.8888916  0.18223213  0.9975439
+##    5    extratrees  0.8664525  0.03573121  0.9998246
+##   10    gini        0.8962862  0.35252306  0.9923684
+##   10    extratrees  0.8826687  0.14806202  0.9990351
+##   19    gini        0.9022172  0.57663038  0.9857018
+##   19    extratrees  0.8922735  0.32660160  0.9943860
+## 
+## ROC was used to select the optimal model using  the largest value.
+## The final values used for the model were mtry = 19 and splitrule = gini.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(rf_model)</code></pre></div>
+<p><img src="IntroMachineLearningWithR_files/figure-html/rfmodel-1.png" width="672" /> </details></p>
+</div>
+<div id="knn-model" class="section level3">
+<h3><span class="header-section-number">5.8.3</span> kNN model</h3>
+<blockquote>
+<p>Challenge</p>
+<p>Apply a kNN model, making sure you reuse the same train control object.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">knn_model &lt;-<span class="st"> </span><span class="kw">train</span>(churn <span class="op">~</span><span class="st"> </span>.,
+                   churnTrain,
+                   <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>, 
+                   <span class="dt">method =</span> <span class="st">&quot;knn&quot;</span>,
+                   <span class="dt">tuneLength =</span> <span class="dv">20</span>,
+                   <span class="dt">trControl =</span> myControl)
+<span class="kw">print</span>(knn_model)</code></pre></div>
+<pre><code>## k-Nearest Neighbors 
+## 
+## 3333 samples
+##   19 predictors
+##    2 classes: &#39;yes&#39;, &#39;no&#39; 
+## 
+## No pre-processing
+## Resampling: Bootstrapped (5 reps) 
+## Summary of sample sizes: 666, 667, 667, 666, 667 
+## Resampling results across tuning parameters:
+## 
+##   k   ROC        Sens        Spec     
+##    5  0.6717223  0.21067063  0.9808772
+##    7  0.6861181  0.19618428  0.9880702
+##    9  0.6917436  0.18272750  0.9906140
+##   11  0.6954371  0.16357928  0.9922807
+##   13  0.6991182  0.14650493  0.9935088
+##   15  0.7015124  0.12994604  0.9942982
+##   17  0.7044329  0.12321163  0.9957018
+##   19  0.7050949  0.11492951  0.9959649
+##   21  0.7081416  0.10457485  0.9964912
+##   23  0.7099561  0.09422420  0.9969298
+##   25  0.7113652  0.08698237  0.9972807
+##   27  0.7134698  0.07973384  0.9978070
+##   29  0.7129408  0.06938185  0.9978070
+##   31  0.7114156  0.06213466  0.9982456
+##   33  0.7123250  0.05954533  0.9984211
+##   35  0.7134920  0.05540694  0.9986842
+##   37  0.7150380  0.04867789  0.9988596
+##   39  0.7140439  0.04350056  0.9992105
+##   41  0.7122415  0.04143337  0.9992982
+##   43  0.7119018  0.03573791  0.9993860
+## 
+## ROC was used to select the optimal model using  the largest value.
+## The final value used for the model was k = 37.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(knn_model)</code></pre></div>
+<p><img src="IntroMachineLearningWithR_files/figure-html/knnmodel-1.png" width="672" /> </details></p>
+</div>
+<div id="support-vector-machine-model" class="section level3">
+<h3><span class="header-section-number">5.8.4</span> Support vector machine model</h3>
+<blockquote>
+<p>Challenge</p>
+<p>Apply a svm model, making sure you reuse the same train control object. Hint: Look at <code>names(getModelInfo())</code> for all possible model names.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">svm_model &lt;-<span class="st"> </span><span class="kw">train</span>(churn <span class="op">~</span><span class="st"> </span>.,
+                   churnTrain,
+                   <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>, 
+                   <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>,
+                   <span class="dt">tuneLength =</span> <span class="dv">10</span>,
+                   <span class="dt">trControl =</span> myControl)</code></pre></div>
+<pre><code>## maximum number of iterations reached -0.0001257902 0.0001205084maximum number of iterations reached -0.0006227097 0.0005710127maximum number of iterations reached 0.0003863967 -0.0003202759maximum number of iterations reached -0.00055456 0.0003969818maximum number of iterations reached -0.0007188688 0.0005149418maximum number of iterations reached -2.898928e-05 2.065934e-05maximum number of iterations reached -3.407462e-05 2.428845e-05maximum number of iterations reached 0.0001003576 -7.124381e-05maximum number of iterations reached 0.0001549887 -0.0001482556maximum number of iterations reached 2.486852e-05 -2.273928e-05maximum number of iterations reached 0.0001809259 -0.0001730299maximum number of iterations reached 0.0001164345 -0.000106206maximum number of iterations reached -0.0008060141 0.0007742342maximum number of iterations reached -0.000885553 0.0008157047maximum number of iterations reached -0.001607283 0.001341666maximum number of iterations reached -0.0005574151 0.0003988282maximum number of iterations reached 0.0007413495 -0.0005259731maximum number of iterations reached -0.0005681514 0.000406542maximum number of iterations reached -0.001310631 0.0009297534maximum number of iterations reached -0.001504384 0.0010636maximum number of iterations reached -0.001542939 0.001089805maximum number of iterations reached -0.001230398 0.0008740843maximum number of iterations reached 6.790484e-05 -6.498721e-05maximum number of iterations reached 0.0001186523 -0.000108221</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(svm_model)</code></pre></div>
+<pre><code>## Support Vector Machines with Radial Basis Function Kernel 
+## 
+## 3333 samples
+##   19 predictors
+##    2 classes: &#39;yes&#39;, &#39;no&#39; 
+## 
+## No pre-processing
+## Resampling: Bootstrapped (5 reps) 
+## Summary of sample sizes: 666, 667, 667, 666, 667 
+## Resampling results across tuning parameters:
+## 
+##   C       ROC        Sens  Spec     
+##     0.25  0.5365726  0     1.0000000
+##     0.50  0.5365465  0     1.0000000
+##     1.00  0.5307694  0     0.9992982
+##     2.00  0.5968179  0     0.9992982
+##     4.00  0.4704393  0     0.9993860
+##     8.00  0.4704644  0     0.9985088
+##    16.00  0.4081586  0     0.9988596
+##    32.00  0.4704441  0     0.9987719
+##    64.00  0.5345049  0     0.9990351
+##   128.00  0.5968091  0     0.9991228
+## 
+## Tuning parameter &#39;sigma&#39; was held constant at a value of 0.007414262
+## ROC was used to select the optimal model using  the largest value.
+## The final values used for the model were sigma = 0.007414262 and C = 2.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(svm_model)</code></pre></div>
+<p><img src="IntroMachineLearningWithR_files/figure-html/svmmodel-1.png" width="672" /> </details></p>
+</div>
+<div id="naive-bayes" class="section level3">
+<h3><span class="header-section-number">5.8.5</span> Naive Bayes</h3>
+<blockquote>
+<p>Challenge</p>
+<p>Apply a naive Bayes model, making sure you reuse the same train control object.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nb_model &lt;-<span class="st"> </span><span class="kw">train</span>(churn <span class="op">~</span><span class="st"> </span>.,
+                  churnTrain,
+                  <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>, 
+                  <span class="dt">method =</span> <span class="st">&quot;naive_bayes&quot;</span>,
+                  <span class="dt">trControl =</span> myControl)
+
+<span class="kw">print</span>(nb_model)</code></pre></div>
+<pre><code>## Naive Bayes 
+## 
+## 3333 samples
+##   19 predictors
+##    2 classes: &#39;yes&#39;, &#39;no&#39; 
+## 
+## No pre-processing
+## Resampling: Bootstrapped (5 reps) 
+## Summary of sample sizes: 666, 667, 667, 666, 667 
+## Resampling results across tuning parameters:
+## 
+##   usekernel  ROC        Sens        Spec     
+##   FALSE      0.4189977  0.08130832  0.8746491
+##    TRUE      0.8058312  0.00000000  1.0000000
+## 
+## Tuning parameter &#39;fL&#39; was held constant at a value of 0
+## Tuning
+##  parameter &#39;adjust&#39; was held constant at a value of 1
+## ROC was used to select the optimal model using  the largest value.
+## The final values used for the model were fL = 0, usekernel = TRUE
+##  and adjust = 1.</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(nb_model)</code></pre></div>
+<p><img src="IntroMachineLearningWithR_files/figure-html/nbmodel-1.png" width="672" /> </details></p>
+</div>
+<div id="comparing-models" class="section level3">
+<h3><span class="header-section-number">5.8.6</span> Comparing models</h3>
+<p>We can now use the <code>caret::resamples</code> function that will compare the models and pick the one with the highest AUC and lowest AUC standard deviation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">model_list &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">glmmet =</span> glm_model,
+                   <span class="dt">rf =</span> rf_model,
+                   <span class="dt">knn =</span> knn_model,
+                   <span class="dt">svm =</span> svm_model,
+                   <span class="dt">nb =</span> nb_model)
+resamp &lt;-<span class="st"> </span><span class="kw">resamples</span>(model_list)
+resamp</code></pre></div>
+<pre><code>## 
+## Call:
+## resamples.default(x = model_list)
+## 
+## Models: glmmet, rf, knn, svm, nb 
+## Number of resamples: 5 
+## Performance metrics: ROC, Sens, Spec 
+## Time estimates for: everything, final model fit</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(resamp)</code></pre></div>
+<pre><code>## 
+## Call:
+## summary.resamples(object = resamp)
+## 
+## Models: glmmet, rf, knn, svm, nb 
+## Number of resamples: 5 
+## 
+## ROC 
+##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## glmmet 0.7672189 0.7717145 0.7719128 0.7734827 0.7762158 0.7803516    0
+## rf     0.8968148 0.8989484 0.9015578 0.9022172 0.9033037 0.9104611    0
+## knn    0.6969638 0.7146390 0.7185091 0.7150380 0.7223889 0.7226892    0
+## svm    0.3443033 0.6507338 0.6557137 0.5968179 0.6652009 0.6681376    0
+## nb     0.7911213 0.7958588 0.8096980 0.8058312 0.8152081 0.8172700    0
+## 
+## Sens 
+##              Min.    1st Qu.     Median       Mean    3rd Qu.       Max.
+## glmmet 0.01033592 0.01033592 0.01813472 0.01760587 0.02331606 0.02590674
+## rf     0.49095607 0.53626943 0.58031088 0.57663038 0.61240310 0.66321244
+## knn    0.01808786 0.03359173 0.04404145 0.04867789 0.05958549 0.08808290
+## svm    0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+## nb     0.00000000 0.00000000 0.00000000 0.00000000 0.00000000 0.00000000
+##        NA&#39;s
+## glmmet    0
+## rf        0
+## knn       0
+## svm       0
+## nb        0
+## 
+## Spec 
+##             Min.   1st Qu.    Median      Mean   3rd Qu.      Max. NA&#39;s
+## glmmet 0.9969298 0.9986842 0.9991228 0.9986842 0.9991228 0.9995614    0
+## rf     0.9697368 0.9846491 0.9899123 0.9857018 0.9916667 0.9925439    0
+## knn    0.9978070 0.9986842 0.9991228 0.9988596 0.9991228 0.9995614    0
+## svm    0.9964912 1.0000000 1.0000000 0.9992982 1.0000000 1.0000000    0
+## nb     1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000    0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lattice<span class="op">::</span><span class="kw">bwplot</span>(resamp, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre></div>
+<div class="figure"><span id="fig:plotresam"></span>
+<img src="IntroMachineLearningWithR_files/figure-html/plotresam-1.png" alt="Comparing distributions of AUC values for various models." width="672" />
+<p class="caption">
+Figure 5.3: Comparing distributions of AUC values for various models.
+</p>
+</div>
+</div>
+<div id="pre-processing-1" class="section level3">
+<h3><span class="header-section-number">5.8.7</span> Pre-processing</h3>
+<p>The random forest appears to be the best one. This might be related to its ability to cope well with different types of input and require little pre-processing.</p>
+<blockquote>
+<p>Challenge</p>
+<p>If you haven’t done so, consider pre-processing the data prior to training for a model that didn’t perform well and assess whether pre-processing affected to modelling.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">svm_model1 &lt;-<span class="st"> </span><span class="kw">train</span>(churn <span class="op">~</span><span class="st"> </span>.,
+                    churnTrain,
+                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>, 
+                    <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>,
+                    <span class="dt">tuneLength =</span> <span class="dv">10</span>,
+                    <span class="dt">trControl =</span> myControl)</code></pre></div>
+<pre><code>## maximum number of iterations reached 9.404755e-05 -9.008094e-05maximum number of iterations reached -0.0002925528 0.0002682108maximum number of iterations reached 0.0004396815 -0.0003642742maximum number of iterations reached -0.0005281173 0.0003772343maximum number of iterations reached -0.0004739693 0.0003384821maximum number of iterations reached 9.358567e-05 -6.64484e-05maximum number of iterations reached -0.001136635 0.0008138266maximum number of iterations reached 0.0004903903 -0.0003487462maximum number of iterations reached -2.445275e-05 1.742317e-05maximum number of iterations reached 1.939925e-05 -1.379596e-05maximum number of iterations reached 1.951941e-05 -1.868688e-05maximum number of iterations reached -6.562668e-05 6.023051e-05maximum number of iterations reached 0.000246633 -0.000235725maximum number of iterations reached -0.0007101679 0.0006820653maximum number of iterations reached -0.001048904 0.0009658041maximum number of iterations reached 1.151978e-05 -9.579987e-06maximum number of iterations reached 0.0007776988 -0.0005530895maximum number of iterations reached -0.0006997083 0.000500055maximum number of iterations reached -0.0006350491 0.0004541533maximum number of iterations reached -0.0005882566 0.00042082maximum number of iterations reached -0.000570176 0.0004079427maximum number of iterations reached 0.0006971342 -0.0004946581maximum number of iterations reached 0.0009399534 -0.0006685108maximum number of iterations reached 0.0003319118 -0.0003170281maximum number of iterations reached 9.233159e-05 -8.428216e-05</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">svm_model2 &lt;-<span class="st"> </span><span class="kw">train</span>(churn <span class="op">~</span><span class="st"> </span>.,
+                    churnTrain[, <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">6</span><span class="op">:</span><span class="dv">20</span>)],
+                    <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>, 
+                    <span class="dt">method =</span> <span class="st">&quot;svmRadial&quot;</span>,
+                    <span class="dt">preProcess =</span> <span class="kw">c</span>(<span class="st">&quot;scale&quot;</span>, <span class="st">&quot;center&quot;</span>, <span class="st">&quot;pca&quot;</span>),
+                    <span class="dt">tuneLength =</span> <span class="dv">10</span>,
+                    <span class="dt">trControl =</span> myControl)
+
+model_list &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">svm1 =</span> svm_model1,
+                   <span class="dt">svm2 =</span> svm_model2)
+resamp &lt;-<span class="st"> </span><span class="kw">resamples</span>(model_list)
+<span class="kw">summary</span>(resamp)</code></pre></div>
+<pre><code>## 
+## Call:
+## summary.resamples(object = resamp)
+## 
+## Models: svm1, svm2 
+## Number of resamples: 5 
+## 
+## ROC 
+##           Min.   1st Qu.    Median      Mean  3rd Qu.      Max. NA&#39;s
+## svm1 0.6506942 0.6556037 0.6558074 0.6590755 0.665152 0.6681199    0
+## svm2 0.7195396 0.7258102 0.7333526 0.7317216 0.736680 0.7432256    0
+## 
+## Sens 
+##      Min. 1st Qu.     Median       Mean    3rd Qu.       Max. NA&#39;s
+## svm1    0       0 0.00000000 0.00000000 0.00000000 0.00000000    0
+## svm2    0       0 0.03359173 0.02329866 0.04145078 0.04145078    0
+## 
+## Spec 
+##           Min.   1st Qu.    Median      Mean  3rd Qu.     Max. NA&#39;s
+## svm1 1.0000000 1.0000000 1.0000000 1.0000000 1.000000 1.000000    0
+## svm2 0.9741228 0.9907895 0.9916667 0.9904386 0.997807 0.997807    0</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">bwplot</span>(resamp, <span class="dt">metric =</span> <span class="st">&quot;ROC&quot;</span>)</code></pre></div>
+<p><img src="IntroMachineLearningWithR_files/figure-html/svmmodel2-1.png" width="672" /> </details></p>
+</div>
+<div id="predict-using-the-best-model" class="section level3">
+<h3><span class="header-section-number">5.8.8</span> Predict using the best model</h3>
+<blockquote>
+<p>Challenge</p>
+<p>Choose the best model using the <code>resamples</code> function and comparing the results and apply it to predict the <code>churnTest</code> labels.</p>
+</blockquote>
+<p><details></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">predict</span>(rf_model, churnTest)
+<span class="kw">confusionMatrix</span>(p, churnTest<span class="op">$</span>churn)</code></pre></div>
+<pre><code>## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  yes   no
+##        yes  165    3
+##        no    59 1440
+##                                           
+##                Accuracy : 0.9628          
+##                  95% CI : (0.9526, 0.9714)
+##     No Information Rate : 0.8656          
+##     P-Value [Acc &gt; NIR] : &lt; 2.2e-16       
+##                                           
+##                   Kappa : 0.8212          
+##  Mcnemar&#39;s Test P-Value : 2.848e-12       
+##                                           
+##             Sensitivity : 0.73661         
+##             Specificity : 0.99792         
+##          Pos Pred Value : 0.98214         
+##          Neg Pred Value : 0.96064         
+##              Prevalence : 0.13437         
+##          Detection Rate : 0.09898         
+##    Detection Prevalence : 0.10078         
+##       Balanced Accuracy : 0.86726         
+##                                           
+##        &#39;Positive&#39; Class : yes             
+## </code></pre>
+<p></details></p>
+
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p>There are exactly 238 available methods. See <a href="http://topepo.github.io/caret/train-models-by-tag.html" class="uri">http://topepo.github.io/caret/train-models-by-tag.html</a> for details.<a href="supervised-learning.html#fnref1">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="unsupervised-learning.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="final-notes.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

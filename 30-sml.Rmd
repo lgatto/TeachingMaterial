@@ -1,17 +1,6 @@
----
-title: "An Introduction to Machine Learning with R: Supervised Learning"
-output:
-  html_document:
-    toc: yes
-    toc_float: true
-    self_contained: true	
----
+# Supervised Learning 
 
-```{r setup, echo=FALSE, warning=FALSE}
-source("./src/setup.R")
-```
-
-# Supervised learning
+## Introduction
 
 In **supervised learning** (SML), the learning algorithm is presented
 with labelled example inputs, where the labels indicate the desired
@@ -27,7 +16,7 @@ species. In these cases, the output is a single label (of one of the
 anticipated classes). If multiple labels may be assigned to each
 examples, one speaks of **multi-label classification**.
 
-# Preview
+## Preview
 
 To start this chapter, let's use a simple, but useful classification
 algorithm, K nearest neighbours (kNN) to classify the *iris*
@@ -163,9 +152,9 @@ that we need to consider:
 - How can we estimate our model parameters so as to obtain good
   classification accuracy?
 
-# Model performance
+## Model performance
 
-## In-sample and out-of-sample error
+### In-sample and out-of-sample error
 
 In supervised machine learning, we have a desired output and thus know
 precisely what is to be computed. It thus becomes possible to directly
@@ -259,7 +248,7 @@ need a more robust one, where, we can generate and use multiple,
 different train/test sets to sample a set of RMSEs, leading to a
 better estimate of the out-of-sample RMSE.
 
-## Cross-validation
+### Cross-validation
 
 Instead of doing a single training/testing split, we can systematise
 this process, produce multiple, different out-of-sample train/test
@@ -351,13 +340,13 @@ sqrt(mean(p - Boston$medv)^2)
 ```
 </details>
 
-# Classification performance
+## Classification performance
 
 Above, we have used the RMSE to assess the performance of our
 regression model. When using a classification algorithm, we want to
 assess its accuracy to do so. 
 
-## Confusion matrix
+### Confusion matrix
 
 Instead of calculating an error between predicted value and known
 value, in classification we will directly compare of the predicted
@@ -435,7 +424,7 @@ confusionMatrix(ifelse(p > 0.1, "M", "R"), test$Class)
 ```
 </details>
 
-## Receiver operating characteristic (ROC) curve
+### Receiver operating characteristic (ROC) curve
 
 There is no reason to use 0.5 as a threshold. One could use a low
 threshold to catch more mines with less certainty or or higher
@@ -472,14 +461,14 @@ the model performance along all possible thresholds:
 - a value 1 represents a perfect model
 - a value 1 represents a model that is always wrong
 
-## AUC in `caret`
+### AUC in `caret`
 
 When using `r CRANpkg("caret")`'s `trainControl` function to train a
 model, we can set it so that it computes the ROC and AUC properties
 for us.
 
 ```{r trctrlroc, warning = FALSE}
-#  # Create trainControl object: myControl
+## Create trainControl object: myControl
 myControl <- trainControl(
   method = "cv", ## cross validation
   number = 10,   ## 10-fold
@@ -492,7 +481,7 @@ model <- train(Class ~ ., Sonar,
          method = "glm", ## to use glm's logistic regression
          trControl = myControl) 
 
-# Print model to console
+## Print model to console
 print(model)
 ```
 
@@ -502,7 +491,7 @@ print(model)
 > validation to classify the Sonar data using a logistic regression,
 > as demonstrated above.
 
-# Random forest
+## Random forest
 
 Random forest models are accurate and non-linear models and robust to
 over-fitting and hence quite popular. They however require
@@ -516,7 +505,7 @@ bootstrapped inputs, features and observations) enable to explore a
 broad search space and, once combined, produce accurate models, a
 technique called *bootstrap aggregation* or *bagging*.
 
-## Decision trees
+### Decision trees
 
 A great advantage of decision trees is that they make a complex
 decision simpler by breaking it down into smaller, simpler decisions
@@ -557,7 +546,7 @@ pruning a large tree.
   nodes and branches that have a negligible effect on the
   classification accuracy are removed.
   
-## Training a random forest
+### Training a random forest
 
 Let's return to random forests and train a model using the `train`
 infrastructure from `r CRANpkg("caret")`:
@@ -628,9 +617,9 @@ plot(model)
 ```
 </details>
 
-# Data pre-processing
+## Data pre-processing
 
-## Missing values
+### Missing values
 
 Real datasets often come with missing values. In R, these should be
 encoded using `NA`. There are basically two approaches to deal with
@@ -679,7 +668,7 @@ suppressPackageStartupMessages(library("randomForest"))
 ```
 
 ```{r trainna, warning=FALSE}
-train(X, Y)
+try(train(X, Y))
 ```
 
 (Note that the occurrence of the error will depend on the model
@@ -736,7 +725,7 @@ collinearity.
 train(X, Y, preProcess = "pca")
 ```
 
-## Multiple pre-processing methods
+### Multiple pre-processing methods
 
 It is possible to chain multiple processing methods: imputation,
 center, scale, pca.
@@ -761,7 +750,7 @@ then centring and scaling, prior to PCA.
 
 For further details, see `?preProcess`.
 
-# Model selection
+## Model selection
 
 In this final section, we are going to compare different predictive
 models and chose the best one using the tools presented in the
@@ -840,7 +829,7 @@ print(glm_model)
 plot(glm_model)
 ```
 
-## random forest model
+### random forest model
 
 > Challenge
 > 
@@ -862,7 +851,7 @@ plot(rf_model)
 ```
 </details>
 
-## kNN model
+### kNN model
 
 > Challenge
 > 
@@ -882,7 +871,7 @@ plot(knn_model)
 ```
 </details>
 
-## Support vector machine model
+### Support vector machine model
 
 > Challenge
 > 
@@ -903,7 +892,7 @@ plot(svm_model)
 ```
 </details>
 
-## Naive Bayes
+### Naive Bayes
 
 > Challenge
 > 
@@ -923,7 +912,7 @@ plot(nb_model)
 ```
 </details>
 
-## Comparing models
+### Comparing models
 
 We can now use the `caret::resamples` function that will compare the
 models and pick the one with the highest AUC and lowest AUC standard
@@ -944,7 +933,7 @@ summary(resamp)
 lattice::bwplot(resamp, metric = "ROC")
 ```
 
-## Pre-processing
+### Pre-processing
 
 The random forest appears to be the best one. This might be related to
 its ability to cope well with different types of input and require
@@ -981,7 +970,7 @@ bwplot(resamp, metric = "ROC")
 ```
 </details>
 
-## Predict using the best model
+### Predict using the best model
 
 > Challenge
 >

@@ -1,26 +1,22 @@
----
-title: "An Introduction to Machine Learning with R: Final notes"
-output:
-  html_document:
-    toc: yes
-    toc_float: true
-    self_contained: true	
----
+# Final notes 
 
+## Other learning algorithms
 
-# Other learning algorithms
+### Semi-supervised learning
 
-## Semi-supervised learning
+![Semi-supervised learning and novelty detection](./figure/phenodisco.png)
 
+### Deep learning in R
 
-## Deep learning in R
+This teching material focused on introductory material 
 
+https://blog.rstudio.com/2017/09/05/keras-for-r/
 
-## Model performance
+### Model performance
 
 - macro F1 scores
 
-# Credit
+## Credit
 
 Many parts of this course have been influenced by the
 DataCamp's
@@ -32,7 +28,7 @@ chapter) courses.
 The very hands-on approach has also been influenced by the Software
 and Data Carpentry lessons and teaching styles.
 
-# References and further reading
+## References and further reading
 
 - caret: Classification and Regression Training. Max Kuhn.
   [https://CRAN.R-project.org/package=caret](https://CRAN.R-project.org/package=caret).
@@ -50,3 +46,9 @@ and Data Carpentry lessons and teaching styles.
   pp. 1-5. [https://github.com/mlr-org/mlr](https://github.com/mlr-org/mlr).
 - DataCamp's
   [*Machine Learning with R* skill track](https://www.datacamp.com/tracks/machine-learning) (requires paid access).
+
+## Session information
+
+```{r si}
+sessionInfo()
+```
