@@ -469,16 +469,16 @@ for us.
 ```{r trctrlroc, warning = FALSE}
 ## Create trainControl object: myControl
 myControl <- trainControl(
-  method = "cv", ## cross validation
-  number = 10,   ## 10-fold
-  summaryFunction = twoClassSummary, ## NEW
-  classProbs = TRUE, # IMPORTANT
-  verboseIter = FALSE
+    method = "cv", ## cross validation
+    number = 10,   ## 10-fold
+    summaryFunction = twoClassSummary, ## NEW
+    classProbs = TRUE, # IMPORTANT
+    verboseIter = FALSE
 )
 ## Train glm with custom trainControl: model
 model <- train(Class ~ ., Sonar,
-         method = "glm", ## to use glm's logistic regression
-         trControl = myControl) 
+               method = "glm", ## to use glm's logistic regression
+               trControl = myControl) 
 
 ## Print model to console
 print(model)

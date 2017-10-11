@@ -581,16 +581,16 @@ p &lt;-<span class="st"> </span><span class="kw">predict</span>(model, test, <sp
 <p>When using <em><a href="https://CRAN.R-project.org/package=caret">caret</a></em>’s <code>trainControl</code> function to train a model, we can set it so that it computes the ROC and AUC properties for us.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Create trainControl object: myControl
 myControl &lt;-<span class="st"> </span><span class="kw">trainControl</span>(
-  <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, ## cross validation
-  <span class="dt">number =</span> <span class="dv">10</span>,   ## 10-fold
-  <span class="dt">summaryFunction =</span> twoClassSummary, ## NEW
-  <span class="dt">classProbs =</span> <span class="ot">TRUE</span>, <span class="co"># IMPORTANT</span>
-  <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>
+    <span class="dt">method =</span> <span class="st">&quot;cv&quot;</span>, ## cross validation
+    <span class="dt">number =</span> <span class="dv">10</span>,   ## 10-fold
+    <span class="dt">summaryFunction =</span> twoClassSummary, ## NEW
+    <span class="dt">classProbs =</span> <span class="ot">TRUE</span>, <span class="co"># IMPORTANT</span>
+    <span class="dt">verboseIter =</span> <span class="ot">FALSE</span>
 )
 ## Train glm with custom trainControl: model
 model &lt;-<span class="st"> </span><span class="kw">train</span>(Class <span class="op">~</span><span class="st"> </span>., Sonar,
-         <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>, ## to use glm&#39;s logistic regression
-         <span class="dt">trControl =</span> myControl) 
+               <span class="dt">method =</span> <span class="st">&quot;glm&quot;</span>, ## to use glm&#39;s logistic regression
+               <span class="dt">trControl =</span> myControl) 
 
 ## Print model to console
 <span class="kw">print</span>(model)</code></pre></div>
