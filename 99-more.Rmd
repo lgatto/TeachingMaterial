@@ -26,17 +26,23 @@ an introduction.
 
 ## Model performance
 
-When investigating multi-class problems, it is could to consider
-additional performance metrics. In such cases, models accuracy can
-evaluated using the F1 score, where $F1 = 2 ~ \frac{precision \times
-recall}{precision + recall}$, calculated as the harmonic mean of the
-precision ($precision = \frac{tp}{tp+fp}$, a measure of *exactness* --
-returned output is a relevant result) and recall
-($recall=\frac{tp}{tp+fn}$, a measure of *completeness* -- indicating
-how much was missed from the output). What we are aiming for are high
-generalisation accuracy, i.e high $F1$, indicating that the marker
-proteins in the test data set are consistently and correctly assigned
-by the algorithms.
+When investigating multi-class problems, it is good to consider
+additional performance metrics and to inspect the confusion matrices
+in more details, to look if some classes suffer from greater
+mis-classification rates.
+
+Models accuracy can also evaluated using the F1 score, where $F1 = 2 ~
+\frac{precision \times recall}{precision + recall}$, calculated as the
+harmonic mean of the precision ($precision = \frac{tp}{tp+fp}$, a
+measure of *exactness* -- returned output is a relevant result) and
+recall ($recall=\frac{tp}{tp+fn}$, a measure of *completeness* --
+indicating how much was missed from the output). What we are aiming
+for are high generalisation accuracy, i.e high $F1$, indicating that
+the marker proteins in the test data set are consistently and
+correctly assigned by the algorithms.
+
+For a multi-class problem, the macro F1 (mean of class F1s) can be
+used.
 
 ## Credit
 
