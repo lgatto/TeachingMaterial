@@ -15,3 +15,8 @@ cross-validation. The material has an important hands-on component and
 readers should have a computer running R 3.4.1 or later.
 
 Read to course at http://bit.ly/intromlr
+
+
+Taught on
+
+- 2017-10-11 Mind Mastering Macines (M3), London
