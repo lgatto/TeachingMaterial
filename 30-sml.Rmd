@@ -362,7 +362,7 @@ negatives* (FN) and *false positives* (FP).
 cmat <- data.frame(c("TP", "FN"),
                    c("FP", "TN"))
 rownames(cmat) <- c("Predicted Yes", "Predicted No")
-colnames(cmat) <- c("Reference Yes", "Referenc No")
+colnames(cmat) <- c("Reference Yes", "Reference No")
 knitr::kable(cmat)
 ```
 
