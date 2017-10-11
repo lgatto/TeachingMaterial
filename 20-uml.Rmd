@@ -76,7 +76,6 @@ x <- iris[, i]
 cl <- kmeans(x, 3, nstart = 10)
 plot(x, col = cl$cluster)
 ```
-
 </details>
 
 ### How does k-means work
@@ -84,6 +83,7 @@ plot(x, col = cl$cluster)
 **Initialisation**: randomly assign class membership
 
 ```{r kmworks_init, fig.cap = "k-mean random intialisation"}
+set.seed(12)
 init <- sample(3, nrow(x), replace = TRUE)
 plot(x, col = init)
 ```

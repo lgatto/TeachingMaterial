@@ -268,7 +268,8 @@ cl &lt;-<span class="st"> </span><span class="kw">kmeans</span>(x, <span class="
 <div id="how-does-k-means-work" class="section level3">
 <h3><span class="header-section-number">4.2.1</span> How does k-means work</h3>
 <p><strong>Initialisation</strong>: randomly assign class membership</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">init &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">3</span>, <span class="kw">nrow</span>(x), <span class="dt">replace =</span> <span class="ot">TRUE</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">12</span>)
+init &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">3</span>, <span class="kw">nrow</span>(x), <span class="dt">replace =</span> <span class="ot">TRUE</span>)
 <span class="kw">plot</span>(x, <span class="dt">col =</span> init)</code></pre></div>
 <div class="figure">
 <img src="IntroMachineLearningWithR_files/figure-html/kmworks_init-1.png" alt="k-mean random intialisation" width="672" />
@@ -327,17 +328,17 @@ cl2 &lt;-<span class="st"> </span><span class="kw">kmeans</span>(x, <span class=
 <span class="kw">table</span>(cl1<span class="op">$</span>cluster, cl2<span class="op">$</span>cluster)</code></pre></div>
 <pre><code>##    
 ##      1  2  3
-##   1  0  0 58
-##   2  0 51  0
-##   3 41  0  0</code></pre>
+##   1 58  0  0
+##   2  0 41  0
+##   3  0  0 51</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cl1 &lt;-<span class="st"> </span><span class="kw">kmeans</span>(x, <span class="dt">centers =</span> <span class="dv">3</span>, <span class="dt">nstart =</span> <span class="dv">1</span>)
 cl2 &lt;-<span class="st"> </span><span class="kw">kmeans</span>(x, <span class="dt">centers =</span> <span class="dv">3</span>, <span class="dt">nstart =</span> <span class="dv">1</span>)
 <span class="kw">table</span>(cl1<span class="op">$</span>cluster, cl2<span class="op">$</span>cluster)</code></pre></div>
 <pre><code>##    
 ##      1  2  3
-##   1 51  0  0
-##   2  0  0 58
-##   3  0 41  0</code></pre>
+##   1  0  0 41
+##   2  0 51  0
+##   3 58  0  0</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">42</span>)
 xr &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(<span class="kw">prod</span>(<span class="kw">dim</span>(x))), <span class="dt">ncol =</span> <span class="kw">ncol</span>(x))
 cl1 &lt;-<span class="st"> </span><span class="kw">kmeans</span>(xr, <span class="dt">centers =</span> <span class="dv">3</span>, <span class="dt">nstart =</span> <span class="dv">1</span>)
