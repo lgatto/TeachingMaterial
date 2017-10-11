@@ -2,3 +2,9 @@ NOTES.md
 TODO.org
 .Rhistory
 _bookdown_files
+00-intro.R
+10-data.R
+20-uml.R
+30-sml.R
+99-more.R
+index.R
