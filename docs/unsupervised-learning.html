@@ -271,10 +271,10 @@ cl &lt;-<span class="st"> </span><span class="kw">kmeans</span>(x, <span class="
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">12</span>)
 init &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="dv">3</span>, <span class="kw">nrow</span>(x), <span class="dt">replace =</span> <span class="ot">TRUE</span>)
 <span class="kw">plot</span>(x, <span class="dt">col =</span> init)</code></pre></div>
-<div class="figure">
-<img src="IntroMachineLearningWithR_files/figure-html/kmworks_init-1.png" alt="k-mean random intialisation" width="672" />
+<div class="figure"><span id="fig:kmworksinit"></span>
+<img src="IntroMachineLearningWithR_files/figure-html/kmworksinit-1.png" alt="k-means random intialisation" width="672" />
 <p class="caption">
-(#fig:kmworks_init)k-mean random intialisation
+Figure 4.2: k-means random intialisation
 </p>
 </div>
 <p><strong>Iteration</strong>:</p>
@@ -297,10 +297,10 @@ ki &lt;-<span class="st"> </span>ki[<span class="op">-</span>(<span class="dv">1
 
 <span class="kw">plot</span>(x, <span class="dt">col =</span> ki)
 <span class="kw">points</span>(centres[, <span class="dv">1</span>], centres[, <span class="dv">2</span>], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">col =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">3</span>)</code></pre></div>
-<div class="figure">
-<img src="IntroMachineLearningWithR_files/figure-html/kmworks_iter-1.png" alt="k-means iteration: calculate centers (left) and assign new cluster membership (right)" width="1152" />
+<div class="figure"><span id="fig:kmworksiter"></span>
+<img src="IntroMachineLearningWithR_files/figure-html/kmworksiter-1.png" alt="k-means iteration: calculate centers (left) and assign new cluster membership (right)" width="1152" />
 <p class="caption">
-(#fig:kmworks_iter)k-means iteration: calculate centers (left) and assign new cluster membership (right)
+Figure 4.3: k-means iteration: calculate centers (left) and assign new cluster membership (right)
 </p>
 </div>
 <p><strong>Termination</strong>: Repeat iteration until no point changes its cluster membership.</p>
@@ -356,7 +356,7 @@ cl2 &lt;-<span class="st"> </span><span class="kw">kmeans</span>(xr, <span class
 <div class="figure"><span id="fig:selrep"></span>
 <img src="IntroMachineLearningWithR_files/figure-html/selrep-1.png" alt="Different k-means results on the same (random) data" width="1152" />
 <p class="caption">
-Figure 4.2: Different k-means results on the same (random) data
+Figure 4.4: Different k-means results on the same (random) data
 </p>
 </div>
 <p></details></p>
@@ -397,14 +397,14 @@ tot_within_ss &lt;-<span class="st"> </span><span class="kw">sapply</span>(ks, <
 <div class="figure"><span id="fig:hcldata"></span>
 <img src="IntroMachineLearningWithR_files/figure-html/hcldata-1.png" alt="Hierarchical clustering: initialisation (left) and colour-coded results after iteration (right)." width="1152" />
 <p class="caption">
-Figure 4.3: Hierarchical clustering: initialisation (left) and colour-coded results after iteration (right).
+Figure 4.5: Hierarchical clustering: initialisation (left) and colour-coded results after iteration (right).
 </p>
 </div>
 <p>The results of hierarchical clustering are typically visualised along a <strong>dendrogram</strong>, where the distance between the clusters is proportional to the branch lengths.</p>
 <div class="figure"><span id="fig:hcldendro"></span>
 <img src="IntroMachineLearningWithR_files/figure-html/hcldendro-1.png" alt="Visualisation of the hierarchical clustering results on a dendrogram" width="672" />
 <p class="caption">
-Figure 4.4: Visualisation of the hierarchical clustering results on a dendrogram
+Figure 4.6: Visualisation of the hierarchical clustering results on a dendrogram
 </p>
 </div>
 <p>In R:</p>
@@ -436,7 +436,7 @@ hcl</code></pre></div>
 <div class="figure"><span id="fig:cuthcl"></span>
 <img src="IntroMachineLearningWithR_files/figure-html/cuthcl-1.png" alt="Cutting the dendrogram at height 1.5." width="672" />
 <p class="caption">
-Figure 4.5: Cutting the dendrogram at height 1.5.
+Figure 4.7: Cutting the dendrogram at height 1.5.
 </p>
 </div>
 <p>In R we can us the <code>cutree</code> function to</p>
@@ -544,7 +544,7 @@ hcl2 &lt;-<span class="st"> </span><span class="kw">hclust</span>(<span class="k
 <div class="figure"><span id="fig:pcaex"></span>
 <img src="IntroMachineLearningWithR_files/figure-html/pcaex-1.png" alt="Original data (left). PC1 will maximise the variability while minimising the residuals (centre). PC2 is orthogonal to PC1 (right)." width="1152" />
 <p class="caption">
-Figure 4.6: Original data (left). PC1 will maximise the variability while minimising the residuals (centre). PC2 is orthogonal to PC1 (right).
+Figure 4.8: Original data (left). PC1 will maximise the variability while minimising the residuals (centre). PC2 is orthogonal to PC1 (right).
 </p>
 </div>
 <p>In R, we can use the <code>prcomp</code> function.</p>
@@ -563,7 +563,7 @@ Figure 4.6: Original data (left). PC1 will maximise the variability while minimi
 <div class="figure"><span id="fig:histpc1"></span>
 <img src="IntroMachineLearningWithR_files/figure-html/histpc1-1.png" alt="Iris data along PC1." width="672" />
 <p class="caption">
-Figure 4.7: Iris data along PC1.
+Figure 4.9: Iris data along PC1.
 </p>
 </div>
 </div>
