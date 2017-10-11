@@ -2,19 +2,41 @@
 
 ## Other learning algorithms
 
-### Semi-supervised learning
+#### Semi-supervised learning
+
+The idea behind semi-supervised learning is to use labelled
+observations to guide the determination of relevant structure in the
+unlabelled data. The figures below described the *phenoDisco*
+algorithm described
+in
+[Breckels *et al.* (2013)](https://www.ncbi.nlm.nih.gov/pubmed/23523639).
 
 ![Semi-supervised learning and novelty detection](./figure/phenodisco.png)
 
-### Deep learning in R
+#### Deep learning in R
 
-This teching material focused on introductory material 
+This book focuses on introductory material in R. This shouldn't
+however give the impression that more modern approaches are not
+available. R has plenty of activity arounds deep learning such as, for
+example, the `r CRANpkg("keras")` package, an interface
+to [Keras](https://keras.io), a high-level neural networks API.
 
-https://blog.rstudio.com/2017/09/05/keras-for-r/
+See [this blog](https://blog.rstudio.com/2017/09/05/keras-for-r/) for
+an introduction.
 
-### Model performance
+## Model performance
 
-- macro F1 scores
+When investigating multi-class problems, it is could to consider
+additional performance metrics. In such cases, models accuracy can
+evaluated using the F1 score, where $F1 = 2 ~ \frac{precision \times
+recall}{precision + recall}$, calculated as the harmonic mean of the
+precision ($precision = \frac{tp}{tp+fp}$, a measure of *exactness* --
+returned output is a relevant result) and recall
+($recall=\frac{tp}{tp+fn}$, a measure of *completeness* -- indicating
+how much was missed from the output). What we are aiming for are high
+generalisation accuracy, i.e high $F1$, indicating that the marker
+proteins in the test data set are consistently and correctly assigned
+by the algorithms.
 
 ## Credit
 

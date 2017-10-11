@@ -185,14 +185,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="final-notes.html"><a href="final-notes.html"><i class="fa fa-check"></i><b>6</b> Final notes</a><ul>
-<li class="chapter" data-level="6.1" data-path="final-notes.html"><a href="final-notes.html#other-learning-algorithms"><i class="fa fa-check"></i><b>6.1</b> Other learning algorithms</a><ul>
-<li class="chapter" data-level="6.1.1" data-path="final-notes.html"><a href="final-notes.html#semi-supervised-learning"><i class="fa fa-check"></i><b>6.1.1</b> Semi-supervised learning</a></li>
-<li class="chapter" data-level="6.1.2" data-path="final-notes.html"><a href="final-notes.html#deep-learning-in-r"><i class="fa fa-check"></i><b>6.1.2</b> Deep learning in R</a></li>
-<li class="chapter" data-level="6.1.3" data-path="final-notes.html"><a href="final-notes.html#model-performance-1"><i class="fa fa-check"></i><b>6.1.3</b> Model performance</a></li>
-</ul></li>
-<li class="chapter" data-level="6.2" data-path="final-notes.html"><a href="final-notes.html#credit"><i class="fa fa-check"></i><b>6.2</b> Credit</a></li>
-<li class="chapter" data-level="6.3" data-path="final-notes.html"><a href="final-notes.html#references-and-further-reading"><i class="fa fa-check"></i><b>6.3</b> References and further reading</a></li>
-<li class="chapter" data-level="6.4" data-path="final-notes.html"><a href="final-notes.html#session-information"><i class="fa fa-check"></i><b>6.4</b> Session information</a></li>
+<li class="chapter" data-level="6.1" data-path="final-notes.html"><a href="final-notes.html#other-learning-algorithms"><i class="fa fa-check"></i><b>6.1</b> Other learning algorithms</a></li>
+<li class="chapter" data-level="6.2" data-path="final-notes.html"><a href="final-notes.html#model-performance-1"><i class="fa fa-check"></i><b>6.2</b> Model performance</a></li>
+<li class="chapter" data-level="6.3" data-path="final-notes.html"><a href="final-notes.html#credit"><i class="fa fa-check"></i><b>6.3</b> Credit</a></li>
+<li class="chapter" data-level="6.4" data-path="final-notes.html"><a href="final-notes.html#references-and-further-reading"><i class="fa fa-check"></i><b>6.4</b> References and further reading</a></li>
+<li class="chapter" data-level="6.5" data-path="final-notes.html"><a href="final-notes.html#session-information"><i class="fa fa-check"></i><b>6.5</b> Session information</a></li>
 </ul></li>
 </ul>
 
@@ -215,32 +212,31 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h1><span class="header-section-number">Chapter 6</span> Final notes</h1>
 <div id="other-learning-algorithms" class="section level2">
 <h2><span class="header-section-number">6.1</span> Other learning algorithms</h2>
-<div id="semi-supervised-learning" class="section level3">
-<h3><span class="header-section-number">6.1.1</span> Semi-supervised learning</h3>
+<div id="semi-supervised-learning" class="section level4">
+<h4><span class="header-section-number">6.1.0.1</span> Semi-supervised learning</h4>
+<p>The idea behind semi-supervised learning is to use labelled observations to guide the determination of relevant structure in the unlabelled data. The figures below described the <em>phenoDisco</em> algorithm described in <a href="https://www.ncbi.nlm.nih.gov/pubmed/23523639">Breckels <em>et al.</em> (2013)</a>.</p>
 <div class="figure">
 <img src="figure/phenodisco.png" alt="Semi-supervised learning and novelty detection" />
 <p class="caption">Semi-supervised learning and novelty detection</p>
 </div>
 </div>
-<div id="deep-learning-in-r" class="section level3">
-<h3><span class="header-section-number">6.1.2</span> Deep learning in R</h3>
-<p>This teching material focused on introductory material</p>
-<p><a href="https://blog.rstudio.com/2017/09/05/keras-for-r/" class="uri">https://blog.rstudio.com/2017/09/05/keras-for-r/</a></p>
+<div id="deep-learning-in-r" class="section level4">
+<h4><span class="header-section-number">6.1.0.2</span> Deep learning in R</h4>
+<p>This book focuses on introductory material in R. This shouldn’t however give the impression that more modern approaches are not available. R has plenty of activity arounds deep learning such as, for example, the <em><a href="https://CRAN.R-project.org/package=keras">keras</a></em> package, an interface to <a href="https://keras.io">Keras</a>, a high-level neural networks API.</p>
+<p>See <a href="https://blog.rstudio.com/2017/09/05/keras-for-r/">this blog</a> for an introduction.</p>
 </div>
-<div id="model-performance-1" class="section level3">
-<h3><span class="header-section-number">6.1.3</span> Model performance</h3>
-<ul>
-<li>macro F1 scores</li>
-</ul>
 </div>
+<div id="model-performance-1" class="section level2">
+<h2><span class="header-section-number">6.2</span> Model performance</h2>
+<p>When investigating multi-class problems, it is could to consider additional performance metrics. In such cases, models accuracy can evaluated using the F1 score, where <span class="math inline">\(F1 = 2 ~ \frac{precision \times recall}{precision + recall}\)</span>, calculated as the harmonic mean of the precision (<span class="math inline">\(precision = \frac{tp}{tp+fp}\)</span>, a measure of <em>exactness</em> – returned output is a relevant result) and recall (<span class="math inline">\(recall=\frac{tp}{tp+fn}\)</span>, a measure of <em>completeness</em> – indicating how much was missed from the output). What we are aiming for are high generalisation accuracy, i.e high <span class="math inline">\(F1\)</span>, indicating that the marker proteins in the test data set are consistently and correctly assigned by the algorithms.</p>
 </div>
 <div id="credit" class="section level2">
-<h2><span class="header-section-number">6.2</span> Credit</h2>
+<h2><span class="header-section-number">6.3</span> Credit</h2>
 <p>Many parts of this course have been influenced by the DataCamp’s <a href="https://www.datacamp.com/tracks/machine-learning"><em>Machine Learning with R</em> skill track</a>, in particular the <em>Machine Learning Toolbox</em> (supervised learning chapter) and the <em>Unsupervised Learning in R</em> (unsupervised learning chapter) courses.</p>
 <p>The very hands-on approach has also been influenced by the Software and Data Carpentry lessons and teaching styles.</p>
 </div>
 <div id="references-and-further-reading" class="section level2">
-<h2><span class="header-section-number">6.3</span> References and further reading</h2>
+<h2><span class="header-section-number">6.4</span> References and further reading</h2>
 <ul>
 <li>caret: Classification and Regression Training. Max Kuhn. <a href="https://CRAN.R-project.org/package=caret" class="uri">https://CRAN.R-project.org/package=caret</a>.</li>
 <li><a href="https://www.springer.com/us/book/9781461468486">Applied predictive modeling</a>, Max Kuhn and Kjell and <a href="https://topepo.github.io/caret/index.html">caret bbok</a> Johnson. <a href="http://appliedpredictivemodeling.com/" class="uri">http://appliedpredictivemodeling.com/</a>.</li>
@@ -250,7 +246,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 </div>
 <div id="session-information" class="section level2">
-<h2><span class="header-section-number">6.4</span> Session information</h2>
+<h2><span class="header-section-number">6.5</span> Session information</h2>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sessionInfo</span>()</code></pre></div>
 <pre><code>## R version 3.4.2 Patched (2017-10-03 r73455)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
@@ -359,6 +355,17 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

@@ -357,7 +357,7 @@ calculate a **confusion matrix**.
 A confusion matrix to contrast predictions to actual results. Correct
 results are *true positives* (TP) and *true negatives* that are found
 along the diagonal. All other cells indicate false results, i.e *false
-negatives* (FN) and *false positives8 (FP).
+negatives* (FN) and *false positives* (FP).
 
 ```{r cmat, echo=FALSE}
 cmat <- data.frame(c("TP", "FN"),
@@ -405,12 +405,12 @@ confusionMatrix(cl, test$Class)
 
 We get, among others
 
-- the accuracy: (TP + TN)/(TP + TN + FP + FN)
-- the sensitivity (recall, TP rate): TP/(TP + FN)
-- the specificity: TN/(TN + FP)
-- positive predictive value (precision): TP/(TP + FP)
-- negative predictive value: TN/(TN + FN)
-- FP rate (fall-out): FP/(FP + TN)
+- the accuracy: $\frac{TP + TN}{TP + TN + FP + FN}$
+- the sensitivity (recall, TP rate): $\frac{TP}{TP + FN}$
+- the specificity: $\frac{TN}{TN + FP}$
+- positive predictive value (precision): $\frac{TP}{TP + FP}$
+- negative predictive value: $\frac{TN}{TN + FN}$
+- FP rate (fall-out): $\frac{FP}{FP + TN}$
 
 > Challenge
 > 
