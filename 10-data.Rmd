@@ -104,7 +104,7 @@ In R:
 
 ```{r}
 library("mlbench")
-data(Sinar)
+data(Sonar)
 ```
 
 ```{r dtsonar, fig.cap=""}

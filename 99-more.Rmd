@@ -2,7 +2,7 @@
 
 ## Other learning algorithms
 
-#### Semi-supervised learning
+### Semi-supervised learning {-}
 
 The idea behind semi-supervised learning is to use labelled
 observations to guide the determination of relevant structure in the
@@ -13,7 +13,7 @@ in
 
 ![Semi-supervised learning and novelty detection](./figure/phenodisco.png)
 
-#### Deep learning in R
+### Deep learning in R {-}
 
 This book focuses on introductory material in R. This shouldn't
 however give the impression that more modern approaches are not
