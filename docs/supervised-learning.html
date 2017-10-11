@@ -900,7 +900,6 @@ X &lt;-<span class="st"> </span>mtcars[, <span class="dv">2</span><span class="o
   <span class="dt">savePredictions =</span> <span class="ot">TRUE</span>,
   <span class="dt">index =</span> myFolds
 )</code></pre></div>
-<p><strong>NB</strong> Some of the model training below will take some time to run, depending on the tuning parameter settings.</p>
 <div id="glmnet-model" class="section level3">
 <h3><span class="header-section-number">5.8.1</span> <code>glmnet</code> model</h3>
 <p>The <code>glmnet</code> is a liner model with build-in variable selection and coefficient regularisation.</p>
@@ -951,6 +950,8 @@ X &lt;-<span class="st"> </span>mtcars[, <span class="dv">2</span><span class="o
 ## The final values used for the model were alpha = 0 and lambda = 0.2.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(glm_model)</code></pre></div>
 <p><img src="IntroMachineLearningWithR_files/figure-html/glmnetmodel-1.png" width="672" /></p>
+<p>Below, we are going to repeat this same modelling with a variety of different classifiers, some of which we haven’t looked at. This illustrates another advantage of of using <strong>meta-packages</strong> such as <em><a href="https://CRAN.R-project.org/package=caret">caret</a></em>, that provide a consistant interface to different backends (in this case for machine learning). Once we have mastered the interface, it becomes easy to apply it to a new backend.</p>
+<p>Note that some of the model training below will take some time to run, depending on the tuning parameter settings.</p>
 </div>
 <div id="random-forest-model" class="section level3">
 <h3><span class="header-section-number">5.8.2</span> random forest model</h3>

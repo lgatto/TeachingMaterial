@@ -807,9 +807,6 @@ myControl <- trainControl(
 )
 ```
 
-**NB** Some of the model training below will take some time to run,
-depending on the tuning parameter settings.
-
 ### `glmnet` model
 
 The `glmnet` is a liner model with build-in variable selection and
@@ -827,6 +824,17 @@ glm_model <- train(churn ~ .,
 print(glm_model)
 plot(glm_model)
 ```
+
+
+Below, we are going to repeat this same modelling with a variety of
+different classifiers, some of which we haven't looked at. This
+illustrates another advantage of of using **meta-packages** such as 
+`r CRANpkg("caret")`, that provide a consistant interface to different
+backends (in this case for machine learning). Once we have mastered
+the interface, it becomes easy to apply it to a new backend. 
+
+Note that some of the model training below will take some time to run,
+depending on the tuning parameter settings.
 
 ### random forest model
 

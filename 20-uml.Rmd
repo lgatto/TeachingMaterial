@@ -523,9 +523,12 @@ encode categories as binary **dummy variables**. For example, if we
 have 3 categories, say `A`, `B` and `C`, we would create two dummy
 variables to encode the categories as:
 
-- `A`: `1` and `0`
-- `B`: `0` and `1`
-- `C`: `0` and `0` (neither `A` nor `B`)
+```{r dummvar, echo=FALSE}
+dfr <- data.frame(x = c(1, 0, 0),
+                  y = c(0, 1, 0))
+rownames(dfr) <- LETTERS[1:3]
+knitr::kable(dfr)
+```
 
 so that the distance between each category are approximately equal to
 1. 
