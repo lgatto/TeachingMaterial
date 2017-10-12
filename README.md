@@ -19,4 +19,4 @@ Read to course at http://bit.ly/intromlr
 
 Taught on
 
-- 2017-10-11 Mind Mastering Macines (M3), London
+- [2017-10-11 Mind Mastering Macines (M3), London](https://github.com/lgatto/IntroMachineLearningWithR/tree/20171011)
