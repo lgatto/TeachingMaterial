@@ -14,9 +14,10 @@ methods. We will also address questions such as model selection using
 cross-validation. The material has an important hands-on component and
 readers should have a computer running R 3.4.1 or later.
 
-Read to course at http://bit.ly/intromlr
+Read the latest version of the the course at http://bit.ly/intromlr
 
 
 Taught on
 
-- [2017-10-11 Mind Mastering Macines (M3), London](https://github.com/lgatto/IntroMachineLearningWithR/tree/20171011)
+- [2017-10-11 Mind Mastering Macines (M3), London](www.mcubed.london)
+  ([version of material taught](https://github.com/lgatto/IntroMachineLearningWithR/tree/20171011))
