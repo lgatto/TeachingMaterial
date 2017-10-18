@@ -1,0 +1,83 @@
+# Final notes 
+
+## Other learning algorithms
+
+### Semi-supervised learning {-}
+
+The idea behind semi-supervised learning is to use labelled
+observations to guide the determination of relevant structure in the
+unlabelled data. The figures below described the *phenoDisco*
+algorithm described
+in
+[Breckels *et al.* (2013)](https://www.ncbi.nlm.nih.gov/pubmed/23523639).
+
+![Semi-supervised learning and novelty detection](./figure/phenodisco.png)
+
+### Deep learning in R {-}
+
+This book focuses on introductory material in R. This shouldn't
+however give the impression that more modern approaches are not
+available. R has plenty of activity arounds deep learning such as, for
+example, the `r CRANpkg("keras")` package, an interface
+to [Keras](https://keras.io), a high-level neural networks API.
+
+See [this blog](https://blog.rstudio.com/2017/09/05/keras-for-r/) for
+an introduction.
+
+## Model performance
+
+When investigating multi-class problems, it is good to consider
+additional performance metrics and to inspect the confusion matrices
+in more details, to look if some classes suffer from greater
+mis-classification rates.
+
+Models accuracy can also evaluated using the F1 score, where $F1 = 2 ~
+\frac{precision \times recall}{precision + recall}$, calculated as the
+harmonic mean of the precision ($precision = \frac{tp}{tp+fp}$, a
+measure of *exactness* -- returned output is a relevant result) and
+recall ($recall=\frac{tp}{tp+fn}$, a measure of *completeness* --
+indicating how much was missed from the output). What we are aiming
+for are high generalisation accuracy, i.e high $F1$, indicating that
+the marker proteins in the test data set are consistently and
+correctly assigned by the algorithms.
+
+For a multi-class problem, the macro F1 (mean of class F1s) can be
+used.
+
+## Credit
+
+Many parts of this course have been influenced by the
+DataCamp's
+[*Machine Learning with R* skill track](https://www.datacamp.com/tracks/machine-learning),
+in particular the *Machine Learning Toolbox* (supervised learning
+chapter) and the *Unsupervised Learning in R* (unsupervised learning
+chapter) courses.
+
+The very hands-on approach has also been influenced by the Software
+and Data Carpentry lessons and teaching styles.
+
+## References and further reading
+
+- caret: Classification and Regression Training. Max Kuhn.
+  [https://CRAN.R-project.org/package=caret](https://CRAN.R-project.org/package=caret).
+- [Applied predictive modeling](https://www.springer.com/us/book/9781461468486),
+  Max Kuhn and Kjell Johnson (book webpage
+  [http://appliedpredictivemodeling.com/](http://appliedpredictivemodeling.com/))
+  and the [caret book](https://topepo.github.io/caret/index.html).
+- [An Introduction to Statistical Learning (with Applications in
+  R)](http://www-bcf.usc.edu/~gareth/ISL/). Gareth James, Daniela
+  Witten, Trevor Hastie and Robert Tibshirani.
+- [mlr: Machine Learning in R](http://jmlr.org/papers/v17/15-066.html). Bischl
+  B, Lang M, Kotthoff L, Schiffner J, Richter J, Studerus E,
+  Casalicchio G and Jones Z (2016). Journal of Machine Learning
+  Research, *17*(170),
+  pp. 1-5. [https://github.com/mlr-org/mlr](https://github.com/mlr-org/mlr).
+- DataCamp's
+  [*Machine Learning with R* skill track](https://www.datacamp.com/tracks/machine-learning) (requires
+  paid access).
+
+## Session information
+
+```{r si}
+sessionInfo()
+```

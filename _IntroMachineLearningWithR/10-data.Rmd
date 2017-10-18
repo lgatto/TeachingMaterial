@@ -1,0 +1,154 @@
+# Example datasets 
+
+
+## Edgar Anderson's Iris Data
+
+In R:
+
+```{r}
+data(iris)
+```
+From the `iris` manual page:
+
+> This famous (Fisher's or Anderson's) iris data set gives the
+> measurements in centimeters of the variables sepal length and width
+> and petal length and width, respectively, for 50 flowers from each
+> of 3 species of iris.  The species are *Iris setosa*, *versicolor*,
+> and *virginica*.
+
+![Iris setosa  (credit Wikipedia)](https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Kosaciec_szczecinkowaty_Iris_setosa.jpg/220px-Kosaciec_szczecinkowaty_Iris_setosa.jpg)
+![Iris versicolor  (credit Wikipedia)](https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Iris_versicolor_3.jpg/220px-Iris_versicolor_3.jpg)
+![Iris virginica  (credit Wikipedia)](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Iris_virginica.jpg/220px-Iris_virginica.jpg)
+
+
+```{r dtiris}
+datatable(iris)
+```
+
+For more details, see `?iris`.
+
+## Motor Trend Car Road Tests
+
+In R
+
+```{r}
+data(mtcars)
+```
+
+From the `?mtcars` manual page:
+
+> The data was extracted from the 1974 *Motor Trend* US magazine, and
+> comprises fuel consumption and 10 aspects of automobile design and
+> performance for 32 automobiles (1973-74 models).
+
+
+
+```{r dtmtcars, fig.cap=""}
+datatable(mtcars)
+```
+
+For more details, see `?mtcars`.
+
+## Sub-cellular localisation
+
+The `hyperLOPIT2015` data is used to demonstrate t-SNE and its
+comparison to PCA. These data provide sub-cellular localisation of
+proteins in Mouse E14TG2a embryonic stem cells, as published
+in [Christoforou et al. (2016)](https://doi.org/10.1038/ncomms9992).
+
+The data comes as an `MSnSet` object from the `Biocpkg("MSnbase")`
+package, specifically developed for such quantitative proteomics
+data. Alternatively, comma-separated files containing a somehow
+simplified version of the data can also be
+found [here](https://github.com/lgatto/hyperLOPIT-csvs/). 
+
+These data are only used to illustrate some concepts and are not
+loaded and used directly to avoid installing numerous dependencies. 
+
+They are available through the Bioconductor project and can be
+installed with
+
+```{r prolocinstall, eval=FALSE}
+source("http://www.bioconductor.org/biocLite.R")
+biocLite(c("MSnbsase", "pRoloc")) ## software
+biocLite("pRolocdata") ## date
+```
+
+## The diamonds data 
+
+The `diamonds` data ships with the `r CRANpkg("ggplot2")` package and
+predict the price (in US dollars) of about 54000 round cut diamonds.
+
+
+In R:
+
+```{r}
+library("ggplot2")
+data(diamonds)
+```
+
+```{r dtdiamonds, fig.cap=""}
+datatable(diamonds)
+```
+
+See also `?diamonds`.
+
+## The Sonar data
+
+The `Sonar` data from the `r CRANpkg("mlbench")` package can be used
+to train a classifer to recognise mines from rocks using sonar
+data. The data is composed to 60 features representing the energy
+within a particular frequency band.
+
+In R:
+
+```{r}
+library("mlbench")
+data(Sonar)
+```
+
+```{r dtsonar, fig.cap=""}
+datatable(Sonar)
+```
+
+See also `?Sonar`.
+
+## Housing Values in Suburbs of Boston
+
+The `Boston` data from the `r CRANpkg("MASS")` provides the median
+value of owner-occupied homes (`medv`) in $1000s as well as 13 other
+features for 506 homes in Boston.
+
+In R:
+
+```{r, message=FALSE}
+library("MASS")
+data(Boston)
+```
+
+
+```{r dtboston, fig.cap=""}
+datatable(Boston)
+```
+
+See also `?Boston`.
+
+## Customer churn
+
+This data from the `r CRANpkg("C50")` package and distributes a
+training set with 3333 samples and a test set containing 1667 samples
+of customer attrition.
+
+In R:
+
+```{r}
+library("C50")
+data(churn)
+dim(churnTrain)
+dim(churnTest)
+```
+
+
+```{r dtchurn, fig.cap=""}
+datatable(churnTrain)
+```
