@@ -317,6 +317,24 @@ Course.
 - Original repository:
   [https://github.com/lgatto/2016-10-rbioc-prot-Stellenbosch](https://github.com/lgatto/2016-10-rbioc-prot-Stellenbosch)
 
+### An Introduction to Machine Learning with R
+
+- Description: This introductory workshop on machine learning with R
+  is aimed at participants who are not experts in machine learning
+  (introductory material will be presented as part of the course), but
+  have some familiarity with scripting in general and R in
+  particular. The workshop will offer a hands-on overview of typical
+  machine learning applications in R, including unsupervised
+  (clustering, such as hierarchical and k-means clustering, and
+  dimensionality reduction, such as principal component analysis) and
+  supervised (classification and regression, such as K-nearest
+  neighbour and linear regression) methods. We will also address
+  questions such as model selection using cross-validation.
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository:
+  [https://lgatto.github.io/IntroMachineLearningWithR/](https://lgatto.github.io/IntroMachineLearningWithR/)
+- Direct access to the material: [bookdown formatted](https://lgatto.github.io/IntroMachineLearningWithR/)
+
 ## License
 
 We try to only aggregate material that is openly available, generally
