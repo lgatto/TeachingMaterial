@@ -268,6 +268,9 @@ providing an R-focused version of make).
 
 - [Makefiles for R/LaTeX projects](http://robjhyndman.com/hyndsight/makefiles/) by [Rob Hyndman](http://robjhyndman.com)
 
+- [drake](https://github.com/wlandau-lilly/drake) is an R package
+  providing an R-focused version of make.
+
 ---
 
 The source for this minimal tutorial is [on github](http://github.com/kbroman/minimal_make).
