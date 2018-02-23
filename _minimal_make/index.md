@@ -87,7 +87,7 @@ To use make:
 
 ### Frills
 
-You can go along way with just simple make files as above, specifying
+You can go a long way with just simple make files as above, specifying
 the target files, their dependencies, and the commands to create
 them. But there are _a lot_ of frills you can add, to save some
 typing.
@@ -230,19 +230,25 @@ Here are some of my own examples:
 
 And here are some examples from [Mike Bostock](http://bost.ocks.org/mike/):
 
-- [Makefile](https://github.com/mbostock/world-atlas/blob/master/Makefile)
-  for his [World Atlas](https://github.com/mbostock/world-atlas)
+- [Makefile](https://github.com/mbostock/us-rivers/blob/master/Makefile)
+  for [us-rivers](https://github.com/mbostock/us-rivers)
 
-- [Makefile](https://github.com/mbostock/us-atlas/blob/master/Makefile)
-  for his [U.S. Atlas](https://github.com/mbostock/us-atlas)
+- [Makefile](https://github.com/mbostock/protovis/blob/master/Makefile)
+  for [protovis](https://github.com/mbostock/protovis)
 
-- [Makefile](https://github.com/mbostock/d3/blob/master/Makefile) for [D3](http://d3js.org/)
+- [Makefile](https://github.com/mbostock/topotree/blob/master/Makefile)
+  for [topotree](https://github.com/mbostock/topotree)
 
 Also look at the
 [Makefile](https://github.com/yihui/knitr/blob/master/Makefile) for
 [Yihui Xie](http://yihui.name/)'s [knitr](http://yihui.name/knitr/) package for [R](http://r-project.org).
 
-Also of interest is [`maker`](https://github.com/ComputationalProteomicsUnit/maker), a `Makefile` for R package development.
+Also of interest are
+[`maker`](https://github.com/ComputationalProteomicsUnit/maker) (a
+`Makefile` for R package development) and
+[drake](https://github.com/wlandau-lilly/drake) (an R package
+providing an R-focused version of make).
+
 
 ### Resources
 
@@ -256,11 +262,14 @@ Also of interest is [`maker`](https://github.com/ComputationalProteomicsUnit/mak
 
 - [Software carpentry](http://software-carpentry.org/)'s [make tutorial](http://swcarpentry.github.io/make-novice/)
 
-- [Mike Bostock](http://bost.ocks.org/mike/)'s &ldquo;[Why Use Make](http://bost.ocks.org/mike/make/)&rdquo;
+- [Mike Bostock](https://bost.ocks.org/mike/)'s &ldquo;[Why Use Make](https://bost.ocks.org/mike/make/)&rdquo;
 
 - [GNU Make for reproducible data analysis](http://zmjones.com/make.html) by [Zachary Jones](http://zmjones.com/)
 
 - [Makefiles for R/LaTeX projects](http://robjhyndman.com/hyndsight/makefiles/) by [Rob Hyndman](http://robjhyndman.com)
+
+- [drake](https://github.com/wlandau-lilly/drake) is an R package
+  providing an R-focused version of make.
 
 ---
 
