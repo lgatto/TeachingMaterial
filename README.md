@@ -94,11 +94,23 @@ with your colleagues.
 - Original repository: [https://github.com/raphg/Biostat-578](https://github.com/raphg/Biostat-578)
 - More details: [README](https://github.com/raphg/Biostat-578/blob/master/README.md)
 
-### rbioc-proteomics
-- Using R/Bioconductor for MS-based proteomics data analysis
+### bioc-ms-prot
+- Mass spectrometry and proteomics using R/Bioconductor
+- Direct link: http://bit.ly/bioc-ms-prot
 - Author: [Laurent Gatto](https://github.com/lgatto)
-- Original repository: [https://github.com/lgatto/rbioc-proteomics](https://github.com/lgatto/rbioc-proteomics)
-- More details: [README](https://github.com/lgatto/rbioc-proteomics#readme)
+- Original repository: [https://github.com/lgatto/bioc-ms-prot](https://github.com/lgatto/bioc-ms-prot)
+- More details: [README](https://github.com/lgatto/bioc-ms-prot/blob/master/README.md)
+
+### VisualisingBiomolecularData
+- Visualising biomolecular data
+- Direct link: http://bit.ly/biomolvis
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: [https://github.com/lgatto/VisualisingBiomolecularData](https://github.com/lgatto/VisualisingBiomolecularData)
+
+### github-intro
+- Description: A gentle introduction to git and Github
+- Blog post: https://lgatto.github.io/github-intro/
+- Author: [Laurent Gatto](https://github.com/lgatto)
 
 ### github_tutorial
 - Description: `git`/`github` guide
@@ -210,22 +222,22 @@ with your colleagues.
 
 ### Short S4 tutorial
 - Description: A practical S4 object-oriented programming tutorial using microarrays as a working example.
-- Author: [Laurent Gatto](https://github.com/lgatto) 
+- Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: [https://github.com/lgatto/S4-tutorial](https://github.com/lgatto/S4-tutorial)
 - More details: [README](https://github.com/lgatto/S4-tutorial#readme)
 - Download the [pdf](https://github.com/lgatto/S4-tutorial/blob/master/S4-tutorial.pdf?raw=true)
 
 ### R programming tutorial
 - Description: A tutorial on R programming of intermediate level, focusing on some aspects of functional programming, profiling, testing, debugging and parallelisation. Used as more advanced `R` programming lecture during the [CSAMA](http://marray.economia.unimi.it/) workshop.
-- Author: [Laurent Gatto](https://github.com/lgatto) 
+- Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: [https://github.com/lgatto/R-programming](https://github.com/lgatto/R-programming)
 - More details: [README](https://github.com/lgatto/R-programming#readme)
 - Download the [pdf](https://github.com/lgatto/R-programming/blob/master/R-programming.pdf?raw=true)
 
 ### R and C/C++
 - Description: Writing and calling `C`/`C++` code for/from `R`
-- Author:  [Laurent Gatto](https://github.com/lgatto) 
-- Many examples from the [Rcpp gallery](http://gallery.rcpp.org/) and 
+- Author:  [Laurent Gatto](https://github.com/lgatto)
+- Many examples from the [Rcpp gallery](http://gallery.rcpp.org/) and
   from [Dirk's slides](http://dirk.eddelbuettel.com/bio/presentations.html).
 - Original repository: [https://github.com/lgatto/rccpp](https://github.com/lgatto/rccpp)
 - More details: [README](https://github.com/lgatto/rccpp#readme)
@@ -244,7 +256,7 @@ with your colleagues.
 - Original repository: [https://github.com/lgatto/sequences](https://github.com/lgatto/sequences)
 - More details: [DESCRIPTION](https://github.com/lgatto/sequences/blob/master/DESCRIPTION)
 - Installation from CRAN: `install.packages("sequences")`
-- Installation from github (requires `R` and `C/C++` building tools): 
+- Installation from github (requires `R` and `C/C++` building tools):
 
 ```c
 library(devtools)
@@ -295,7 +307,7 @@ install_github("lgatto/sequences")
 - Original repository: https://github.com/lgatto/statistics-primer
 - Slides on
   [experimental desing](https://github.com/lgatto/statistics-primer/blob/master/expdes-slides.pdf),
-  [significance testing](https://github.com/lgatto/statistics-primer/blob/master/test-slides.pdf), 
+  [significance testing](https://github.com/lgatto/statistics-primer/blob/master/test-slides.pdf),
   and
   [practical](https://htmlpreview.github.io/?https://github.com/lgatto/statistics-primer/blob/master/03-practical.html).
 
@@ -343,4 +355,3 @@ under
 which gives you the right to share and adapt the material as long as
 you credit to original author(s). Please refer to the orignal
 repository for details.
-

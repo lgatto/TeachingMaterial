@@ -1,7 +1,0 @@
-ARM_ACCESSION	DESCRIPTION	NAME	POPULATION_SELECTION_RULE	SORT_ORDER	STUDY_ACCESSION	TYPE	WORKSPACE_ID
-ARM457	Healthy adults given TIV vaccine	TIV Group	randomized (1:1)	2	SDY61	Experimental	2149
-ARM458	CamKIV -/-mouse	CamKIV -/-mouse	CamKIV -/- mouse	3	SDY61	Observational	2149
-ARM459	WT Mouse	WT Mouse	wild type mouse	4	SDY61	Observational	2149
-ARM460	Control Mouse	Control Mouse	control mouse	5	SDY61	Observational	2149
-ARM456	Healthy adults given LAIV vaccine	LAIV group	randomized (1:1)	1	SDY61	Experimental	2149
-ARM461	Healthy adults	CamKIV Humans	healthy adults	6	SDY61	Observational	2149
