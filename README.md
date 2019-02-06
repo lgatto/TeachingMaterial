@@ -36,6 +36,54 @@ with your colleagues.
 
 ## Material
 
+### Mass spectrometry and proteomics using R/Bioconductor
+- Description: In this course, we will use R/Bioconductor packages to
+  explore, process, visualise and understand mass spectrometry-based
+  proteomics data, starting with raw data, and proceeding with
+  identification and quantitation data, discussing some of their
+  peculiarities compared to sequencing data along the way. The
+  workflow is aimed at a beginner to intermediate level, such as, for
+  example, seasoned R users who want to get started with mass
+  spectrometry and proteomics, or proteomics practitioners who want to
+  familiarise themselves with R and Bioconductor infrastructure.
+- Direct link: http://bit.ly/bioc-ms-prot
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: [https://github.com/lgatto/bioc-ms-prot](https://github.com/lgatto/bioc-ms-prot)
+- More details: [README](https://github.com/lgatto/bioc-ms-prot/blob/master/README.md)
+
+### Visualising biomolecular data
+
+- Description: This Visualisation of biomolecular data course is aimed
+  at people who are already familiar with the R language and syntax,
+  and who would like to get a hands-on introduction to visualisation,
+  with a focus on biomolecular data in general, and proteomics in
+  particular. This course is meant to be mostly hands-on, with an
+  intuitive understanding of the underlying techniques.
+- Direct link: http://bit.ly/biomolvis
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository:
+  [https://github.com/lgatto/VisualisingBiomolecularData](https://github.com/lgatto/VisualisingBiomolecularData)
+
+### A gentle introduction to git and Github
+- Learning GitHub and a bit about git using a pancake recipe as an example.
+- Blog post: https://lgatto.github.io/github-intro/
+- Author: [Laurent Gatto](https://github.com/lgatto)
+
+### Introduction to bioinformatics and data science
+- Description: The WSBIM1207 course is an introduction to
+  bioinformatics (and data science) for biology and biomedical
+  students. It introduces bioinformatics methodology and technologies
+  without relying on any prerequisites. The aim of this course is for
+  students to be in a position to understand important notions of
+  bioinformatics and tackle simple bioinformatics-related problems in
+  R, in particular to develope simple R analysis scripts and
+  reproducible analysis reports to interogate, visualise and
+  understand data in a tidy tabular format.
+- Direct link: http://bit.ly/WSBIM1207
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository:
+  [https://github.com/uclouvain-cbio/wsbim1207](https://github.com/uclouvain-cbio/wsbim1207)
+
 ### Advanced R programming
 
 - Description: A two-day course taught on the 3-4 April 2017, teaching
@@ -93,24 +141,6 @@ with your colleagues.
 - Author: [Raphael Gottardo](http://www.rglab.org/), Fred Hutchinson Cancer Research Center
 - Original repository: [https://github.com/raphg/Biostat-578](https://github.com/raphg/Biostat-578)
 - More details: [README](https://github.com/raphg/Biostat-578/blob/master/README.md)
-
-### bioc-ms-prot
-- Mass spectrometry and proteomics using R/Bioconductor
-- Direct link: http://bit.ly/bioc-ms-prot
-- Author: [Laurent Gatto](https://github.com/lgatto)
-- Original repository: [https://github.com/lgatto/bioc-ms-prot](https://github.com/lgatto/bioc-ms-prot)
-- More details: [README](https://github.com/lgatto/bioc-ms-prot/blob/master/README.md)
-
-### VisualisingBiomolecularData
-- Visualising biomolecular data
-- Direct link: http://bit.ly/biomolvis
-- Author: [Laurent Gatto](https://github.com/lgatto)
-- Original repository: [https://github.com/lgatto/VisualisingBiomolecularData](https://github.com/lgatto/VisualisingBiomolecularData)
-
-### github-intro
-- Description: A gentle introduction to git and Github
-- Blog post: https://lgatto.github.io/github-intro/
-- Author: [Laurent Gatto](https://github.com/lgatto)
 
 ### github_tutorial
 - Description: `git`/`github` guide
