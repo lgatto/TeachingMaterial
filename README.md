@@ -79,7 +79,7 @@ with your colleagues.
   R, in particular to develope simple R analysis scripts and
   reproducible analysis reports to interogate, visualise and
   understand data in a tidy tabular format.
-- Direct link: http://bit.ly/WSBIM1207
+- Direct link: [http://bit.ly/WSBIM1207](http://bit.ly/WSBIM1207)
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository:
   [https://github.com/uclouvain-cbio/wsbim1207](https://github.com/uclouvain-cbio/wsbim1207)
