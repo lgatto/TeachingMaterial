@@ -81,8 +81,21 @@ with your colleagues.
   understand data in a tidy tabular format.
 - Direct link: [http://bit.ly/WSBIM1207](http://bit.ly/WSBIM1207)
 - Author: [Laurent Gatto](https://github.com/lgatto)
-- Original repository:
-  [https://github.com/uclouvain-cbio/wsbim1207](https://github.com/uclouvain-cbio/wsbim1207)
+
+
+### Bioinformatics
+- Description: The
+  [WSBIM1322](https://uclouvain.be/cours-2019-wsbim1322.html) course
+  is teaches the basics of statistical data analysis applied to high
+  throughput biology. It is aimed at biology and biomedical students
+  that are already familiar with the R langauge (see the pre-requisits
+  section below). The students will familiarise themselves with
+  statitical learning concepts such as unsupervised and supervised
+  learning, hypothesis testing, and extend their understanding and
+  practive in R data structures and programming and the Bioconductor
+  project.
+- Direct link: [http://bit.ly/WSBIM1322](http://bit.ly/WSBIM1322)
+- Author: [Laurent Gatto](https://github.com/lgatto)
 
 ### Advanced R programming
 
