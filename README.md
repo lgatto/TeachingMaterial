@@ -46,7 +46,7 @@ with your colleagues.
   example, seasoned R users who want to get started with mass
   spectrometry and proteomics, or proteomics practitioners who want to
   familiarise themselves with R and Bioconductor infrastructure.
-- Direct link: http://bit.ly/bioc-ms-prot
+- Direct link: http://bit.ly/bioc-ms-prot (see also this [3-days workshop](https://lgatto.github.io/2020-02-17-RProt-Berlin/))
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: [https://github.com/lgatto/bioc-ms-prot](https://github.com/lgatto/bioc-ms-prot)
 - More details: [README](https://github.com/lgatto/bioc-ms-prot/blob/master/README.md)
