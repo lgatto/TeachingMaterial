@@ -46,7 +46,7 @@ with your colleagues.
   example, seasoned R users who want to get started with mass
   spectrometry and proteomics, or proteomics practitioners who want to
   familiarise themselves with R and Bioconductor infrastructure.
-- Direct link: http://bit.ly/bioc-ms-prot (see also this [3-days workshop](https://lgatto.github.io/2020-02-17-RProt-Berlin/))
+- Direct link: [http://bit.ly/bioc-ms-prot](http://bit.ly/bioc-ms-prot) (see also this [3-days workshop](https://lgatto.github.io/2020-02-17-RProt-Berlin/))
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository: [https://github.com/lgatto/bioc-ms-prot](https://github.com/lgatto/bioc-ms-prot)
 - More details: [README](https://github.com/lgatto/bioc-ms-prot/blob/master/README.md)
@@ -59,14 +59,14 @@ with your colleagues.
   with a focus on biomolecular data in general, and proteomics in
   particular. This course is meant to be mostly hands-on, with an
   intuitive understanding of the underlying techniques.
-- Direct link: http://bit.ly/biomolvis
+- Direct link: [http://bit.ly/biomolvis](http://bit.ly/biomolvis)
 - Author: [Laurent Gatto](https://github.com/lgatto)
 - Original repository:
   [https://github.com/lgatto/VisualisingBiomolecularData](https://github.com/lgatto/VisualisingBiomolecularData)
 
 ### A gentle introduction to git and Github
 - Learning GitHub and a bit about git using a pancake recipe as an example.
-- Blog post: https://lgatto.github.io/github-intro/
+- Blog post: [https://lgatto.github.io/github-intro/](https://lgatto.github.io/github-intro/)
 - Author: [Laurent Gatto](https://github.com/lgatto)
 
 ### Introduction to bioinformatics and data science
