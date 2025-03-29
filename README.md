@@ -37,19 +37,9 @@ with your colleagues.
 ## Material
 
 ### Mass spectrometry and proteomics using R/Bioconductor
-- Description: In this course, we will use R/Bioconductor packages to
-  explore, process, visualise and understand mass spectrometry-based
-  proteomics data, starting with raw data, and proceeding with
-  identification and quantitation data, discussing some of their
-  peculiarities compared to sequencing data along the way. The
-  workflow is aimed at a beginner to intermediate level, such as, for
-  example, seasoned R users who want to get started with mass
-  spectrometry and proteomics, or proteomics practitioners who want to
-  familiarise themselves with R and Bioconductor infrastructure.
-- Direct link: [http://bit.ly/bioc-ms-prot](http://bit.ly/bioc-ms-prot) (see also this [3-days workshop](https://lgatto.github.io/2020-02-17-RProt-Berlin/))
-- Author: [Laurent Gatto](https://github.com/lgatto)
-- Original repository: [https://github.com/lgatto/bioc-ms-prot](https://github.com/lgatto/bioc-ms-prot)
-- More details: [README](https://github.com/lgatto/bioc-ms-prot/blob/master/README.md)
+- The R for Mass Spectrometry book introduces participants to the analysis and exploration of mass spectrometry (MS) based proteomics data using R and Bioconductor. The course will cover all levels of MS data, from raw data to identification and quantitation data, up to the statistical interpretation of a typical shotgun MS experiment and will focus on hands-on tutorials. At the end of this course, the participants will be able to manipulate MS data in R and use existing packages for their exploratory and statistical proteomics data analysis.
+- [https://rformassspectrometry.github.io/book/](https://rformassspectrometry.github.io/book/)
+- Author: [Laurent Gatto](https://github.com/lgatto), Sebastian Gibb, Johannes Rainer
 
 ### Visualising biomolecular data
 
@@ -81,7 +71,6 @@ with your colleagues.
   understand data in a tidy tabular format.
 - Direct link: [http://bit.ly/WSBIM1207](http://bit.ly/WSBIM1207)
 - Author: [Laurent Gatto](https://github.com/lgatto)
-
 
 ### Bioinformatics
 - Description: The
@@ -354,16 +343,6 @@ install_github("lgatto/sequences")
   and
   [practical](https://htmlpreview.github.io/?https://github.com/lgatto/statistics-primer/blob/master/03-practical.html).
 
-### Inspection, visualisation and analysis of quantitative proteomics data
-
-- Description: A discussion I lead in the frame of the
-[Quantitative Proteomics and Data Analysis](https://www.biochemistry.org/Events/tabid/379/View/Programme/MeetingNo/TD007/Default.aspx)
-Course.
-- Author: [Laurent Gatto](https://github.com/lgatto)
-- Original repository:
-  [https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis)
-- Slides (http://bit.ly/qprotda) and reproducible vignette (http://bit.ly/qprotdavig)
-
 ### R and Bioconductor for Mass Spectrometry and Proteomics data analysis
 
 - Description: Material for the 2-day R/Bioconductor Proteomics
@@ -398,3 +377,31 @@ under
 which gives you the right to share and adapt the material as long as
 you credit to original author(s). Please refer to the orignal
 repository for details.
+
+## Old material
+
+#### Mass spectrometry and proteomics using R/Bioconductor
+- Description: In this course, we will use R/Bioconductor packages to
+  explore, process, visualise and understand mass spectrometry-based
+  proteomics data, starting with raw data, and proceeding with
+  identification and quantitation data, discussing some of their
+  peculiarities compared to sequencing data along the way. The
+  workflow is aimed at a beginner to intermediate level, such as, for
+  example, seasoned R users who want to get started with mass
+  spectrometry and proteomics, or proteomics practitioners who want to
+  familiarise themselves with R and Bioconductor infrastructure.
+- Direct link: [http://bit.ly/bioc-ms-prot](http://bit.ly/bioc-ms-prot) (see also this [3-days workshop](https://lgatto.github.io/2020-02-17-RProt-Berlin/))
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository: [https://github.com/lgatto/bioc-ms-prot](https://github.com/lgatto/bioc-ms-prot)
+- More details: [README](https://github.com/lgatto/bioc-ms-prot/blob/master/README.md)
+
+
+#### Inspection, visualisation and analysis of quantitative proteomics data
+
+- Description: A discussion I lead in the frame of the
+[Quantitative Proteomics and Data Analysis](https://www.biochemistry.org/Events/tabid/379/View/Programme/MeetingNo/TD007/Default.aspx)
+Course.
+- Author: [Laurent Gatto](https://github.com/lgatto)
+- Original repository:
+  [https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis](https://github.com/lgatto/Quantitative-Proteomics-and-Data-Analysis)
+- Slides (http://bit.ly/qprotda) and reproducible vignette (http://bit.ly/qprotdavig)
